@@ -1,0 +1,422 @@
+{
+  "chrome_extension_name": {
+    "message": "Заставка для фотографий"
+  },
+  "chrome_extension_description": {
+    "message": "Заставка с несколькими источниками фотографий, включая ваш Google Фото."
+  },
+  "browser_action_title": {
+    "message": "Заставка фотографий - нажмите для выбора параметров"
+  },
+  "toggle_enabled": {
+    "message": "Включить состояние включения"
+  },
+  "screensaver": {
+    "message": "Хранитель экрана"
+  },
+  "on": {
+    "message": "Включен"
+  },
+  "off": {
+    "message": "выключен"
+  },
+  "disable": {
+    "message": "запрещать"
+  },
+  "enable": {
+    "message": "включить"
+  },
+  "help": {
+    "message": "Помогите"
+  },
+  "no": {
+    "message": "нет"
+  },
+  "ok": {
+    "message": "ОК",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "ОТМЕНА",
+    "description": "All Caps"
+  },
+  "polymer": {
+    "message": "ПОЛИМЕР",
+    "description": "All Caps"
+  },
+  "github": {
+    "message": "ВЗГЛЯД НА GITHUB",
+    "description": "All Caps"
+  },
+  "w3": {
+    "message": "w3schools",
+    "description": "All Caps"
+  },
+  "mdn": {
+    "message": "MDN",
+    "description": "All Caps"
+  },
+  "chromecast": {
+    "message": "CHROMECAST",
+    "description": "All Caps"
+  },
+  "picasa": {
+    "message": "PICASA",
+    "description": "All Caps"
+  },
+  "material": {
+    "message": "МАТЕРИАЛЬНЫЙ ДИЗАЙН",
+    "description": "All Caps"
+  },
+  "chrome_ext": {
+    "message": "РАСШИРЕНИЕ ХРОМА",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "Заметка:"
+  },
+  "photo": {
+    "message": "Фото"
+  },
+  "photos": {
+    "message": "фото"
+  },
+  "seconds": {
+    "message": "секунд"
+  },
+  "minutes": {
+    "message": "минут"
+  },
+  "hours": {
+    "message": "часов"
+  },
+  "days": {
+    "message": "дней"
+  },
+  "off_abbrev": {
+    "message": "OFF",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "Меню"
+  },
+  "menu_settings": {
+    "message": "настройки"
+  },
+  "menu_google": {
+    "message": "Выбрать альбомы Google Фото"
+  },
+  "menu_preview": {
+    "message": "Предварительный просмотр скринсейвера"
+  },
+  "menu_help": {
+    "message": "Помощь и обратная связь"
+  },
+  "menu_support": {
+    "message": "Запросить поддержку"
+  },
+  "menu_rate": {
+    "message": "Оцените расширение"
+  },
+  "menu_pushy": {
+    "message": "Попробуйте расширение Pushing Clipboard"
+  },
+  "menu_letterbox": {
+    "message": "Letterbox"
+  },
+  "menu_zoom": {
+    "message": "Масштаб (может обрезаться)"
+  },
+  "menu_frame": {
+    "message": "Рамка"
+  },
+  "menu_full": {
+    "message": "Полный (может искажаться)"
+  },
+  "menu_random": {
+    "message": "случайный"
+  },
+  "menu_scale_up": {
+    "message": "Увеличить масштаб"
+  },
+  "menu_fade": {
+    "message": "увядать"
+  },
+  "menu_slide_from_right": {
+    "message": "Слайд справа"
+  },
+  "menu_slide_down": {
+    "message": "Скользить вниз"
+  },
+  "menu_spin_up": {
+    "message": "Раскрутить"
+  },
+  "menu_slide_up": {
+    "message": "Скользить вверх"
+  },
+  "menu_slide_from_bottom": {
+    "message": "Слайд снизу"
+  },
+  "menu_slide_right": {
+    "message": "Слайд справа"
+  },
+  "menu_12_hour": {
+    "message": "12 часов"
+  },
+  "menu_24_hour": {
+    "message": "24 часа"
+  },
+  "tooltip_select": {
+    "message": "Выбрать все"
+  },
+  "tooltip_deselect": {
+    "message": "Убрать выделение со всего"
+  },
+  "tooltip_restore": {
+    "message": "Восстановить настройки по умолчанию"
+  },
+  "tooltip_refresh": {
+    "message": "Обновить список"
+  },
+  "tooltip_keep_awake": {
+    "message": "Функции Keep awake доступны, даже если заставка отключена, поэтому вы можете использовать это приложение в качестве общего планировщика питания. Значок отобразит «PWR», когда он находится в этом состоянии."
+  },
+  "tooltip_settings_toggle": {
+    "message": "Включение / выключение экранной заставки"
+  },
+  "tooltip_google_toggle": {
+    "message": "Включить / отключить использование альбомов"
+  },
+  "setting_idle_time": {
+    "message": "Время ожидания"
+  },
+  "setting_transition_time": {
+    "message": "Время перехода фотографии"
+  },
+  "setting_photo_sizing": {
+    "message": "Режим отображения фотографий"
+  },
+  "setting_photo_transition": {
+    "message": "Метод фотопереходов"
+  },
+  "setting_show_time": {
+    "message": "Время для шоу"
+  },
+  "setting_shuffle": {
+    "message": "Перемешайте"
+  },
+  "setting_shuffle_desc": {
+    "message": "Представить фотографии в произвольном порядке"
+  },
+  "setting_skip": {
+    "message": "Пропускать фотографии с большим соотношением сторон"
+  },
+  "setting_skip_desc": {
+    "message": "Не показывать определенные фотографии в режимах масштабирования и полного режима"
+  },
+  "setting_photog": {
+    "message": "Показывать автора для ваших фотографий"
+  },
+  "setting_photog_desc": {
+    "message": "Примечание: всегда отображается в режиме кадра"
+  },
+  "setting_bg": {
+    "message": "Задний план"
+  },
+  "setting_bg_desc": {
+    "message": "Установите фоновое изображение хранителя экрана"
+  },
+  "setting_bg_dialog_title": {
+    "message": "Выбрать фоновое изображение"
+  },
+  "setting_all_displays": {
+    "message": "Все дисплеи"
+  },
+  "setting_all_displays_desc": {
+    "message": "Показывать экранную заставку на всех подключенных дисплеях"
+  },
+  "setting_full_screen": {
+    "message": "Не показывать поверх полноэкранных окон Chrome"
+  },
+  "setting_full_screen_desc": {
+    "message": "Полезно, если вы смотрите видео"
+  },
+  "setting_keep_awake": {
+    "message": "Бодрствовать"
+  },
+  "setting_keep_awake_desc": {
+    "message": "Запрет отображения спящего режима (всегда активен, если время начала и окончания равно)"
+  },
+  "setting_start_time": {
+    "message": "Время, чтобы начать"
+  },
+  "setting_start_time_desc": {
+    "message": "Показать экранную заставку, начиная с этого времени"
+  },
+  "setting_stop_time": {
+    "message": "Время останавливаться"
+  },
+  "setting_stop_time_desc": {
+    "message": "Отключить показ экрана заставки"
+  },
+  "setting_suspend": {
+    "message": "Разрешить приостановку системы"
+  },
+  "setting_suspend_desc": {
+    "message": "Компьютер может спать в неактивное время"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Некоторые фоновые фотографии с устройства Chromecast"
+  },
+  "setting_500editors": {
+    "message": "500px - выбор редакции"
+  },
+  "setting_500editors_desc": {
+    "message": "Выбор фотографий от 500 пикселей"
+  },
+  "setting_500popular": {
+    "message": "500px - популярный"
+  },
+  "setting_500popular_desc": {
+    "message": "Популярные фото от 500px"
+  },
+  "setting_500yest": {
+    "message": "500px - свежий"
+  },
+  "setting_500yest_desc": {
+    "message": "Новые фотографии из 500px, обновленные ежедневно"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr - интересный"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Интересные фотографии с Flickr, обновленные ежедневно"
+  },
+  "setting_reddit_space": {
+    "message": "Reddit - пробел"
+  },
+  "setting_reddit_space_desc": {
+    "message": "В первую очередь астрономические фотографии из reddit, обновляемые ежедневно"
+  },
+  "setting_reddit_earth": {
+    "message": "Reddit - earth"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "В первую очередь пейзажные фотографии от reddit, обновляемые ежедневно"
+  },
+  "setting_reddit_animal": {
+    "message": "Reddit - животные"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Фото животных из reddit, обновляется ежедневно"
+  },
+  "setting_mine": {
+    "message": "Разработчик расширений"
+  },
+  "setting_mine_desc": {
+    "message": "Фотографии от парня, написавшего это"
+  },
+  "setting_click_to_view": {
+    "message": "Щелкните мышью, чтобы просмотреть веб-сайт для фотографий Flickr, 500px и reddit."
+  },
+  "setting_flickr_api": {
+    "message": "Этот продукт использует API Flickr, но не одобрен или не сертифицирован Flickr"
+  },
+  "tab_slideshow": {
+    "message": "УПРАВЛЕНИЕ СЛАЙД-ШОУ",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "УПРАВЛЕНИЕ ДИСПЛЕЕМ",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "ИСТОЧНИКИ ФОТО",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Альбомы Google Фото"
+  },
+  "google_shared_albums_note": {
+    "message": "Примечание. Доступные альбомы могут быть недоступны. Подробнее см. В разделе «Вопросы и ответы»."
+  },
+  "google_loading": {
+    "message": "Загрузка альбомов"
+  },
+  "help_title": {
+    "message": "Помощь и обратная связь"
+  },
+  "help_section_feedback": {
+    "message": "Обратная связь (только на английском языке, пожалуйста)"
+  },
+  "help_question": {
+    "message": "Задавать вопрос"
+  },
+  "help_bug": {
+    "message": "Сообщить об ошибке"
+  },
+  "help_feature": {
+    "message": "Функция запроса"
+  },
+  "help_feedback": {
+    "message": "Обеспечить обратную связь"
+  },
+  "help_issue": {
+    "message": "Отправить вопрос GitHub (требуется учетная запись)"
+  },
+  "help_documentation": {
+    "message": "Документация"
+  },
+  "help_faq": {
+    "message": "Часто задаваемые вопросы"
+  },
+  "help_translations": {
+    "message": "Предлагайте помощь с переводами"
+  },
+  "help_release_notes": {
+    "message": "Примечания к выпуску"
+  },
+  "help_licenses": {
+    "message": "Лицензии с открытым исходным кодом"
+  },
+  "help_source_code": {
+    "message": "Исходный код"
+  },
+  "err_request_failed": {
+    "message": "Запрос не выполнен. Выберите «Обновить», чтобы повторить попытку."
+  },
+  "err_storage_title": {
+    "message": "Превышен лимит хранения"
+  },
+  "err_storage_desc": {
+    "message": "Отмените выбор других источников фотографий и повторите попытку."
+  },
+  "err_status": {
+    "message": "Положение дел"
+  },
+  "err_network": {
+    "message": "Ошибка сети"
+  },
+  "err_photo_source_title": {
+    "message": "Не удалось загрузить источник фото"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

@@ -1,0 +1,159 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Annotator" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="CssMissingSemicolon" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="CssUnusedSymbol" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ES6ModulesDependencies" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="Eslint" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="58">
+            <item index="0" class="java.lang.String" itemvalue="include" />
+            <item index="1" class="java.lang.String" itemvalue="disabled$" />
+            <item index="2" class="java.lang.String" itemvalue="on-tap" />
+            <item index="3" class="java.lang.String" itemvalue="alt" />
+            <item index="4" class="java.lang.String" itemvalue="active" />
+            <item index="5" class="java.lang.String" itemvalue="items" />
+            <item index="6" class="java.lang.String" itemvalue="hidden$" />
+            <item index="7" class="java.lang.String" itemvalue="on-change" />
+            <item index="8" class="java.lang.String" itemvalue="responsive-width" />
+            <item index="9" class="java.lang.String" itemvalue="drawer-width" />
+            <item index="10" class="java.lang.String" itemvalue="fixed" />
+            <item index="11" class="java.lang.String" itemvalue="modal" />
+            <item index="12" class="java.lang.String" itemvalue="attr-for-selected" />
+            <item index="13" class="java.lang.String" itemvalue="selected" />
+            <item index="14" class="java.lang.String" itemvalue="on-click" />
+            <item index="15" class="java.lang.String" itemvalue="entry-animation" />
+            <item index="16" class="java.lang.String" itemvalue="exit-animation" />
+            <item index="17" class="java.lang.String" itemvalue="dialog-dismiss" />
+            <item index="18" class="java.lang.String" itemvalue="data-route" />
+            <item index="19" class="java.lang.String" itemvalue="as" />
+            <item index="20" class="java.lang.String" itemvalue="sort" />
+            <item index="21" class="java.lang.String" itemvalue="filter" />
+            <item index="22" class="java.lang.String" itemvalue="idx" />
+            <item index="23" class="java.lang.String" itemvalue="force-narrow" />
+            <item index="24" class="java.lang.String" itemvalue="{{computefavtooltip(isfavfilter)}}" />
+            <item index="25" class="java.lang.String" itemvalue="main-label" />
+            <item index="26" class="java.lang.String" itemvalue="secondary-label" />
+            <item index="27" class="java.lang.String" itemvalue="two-line" />
+            <item index="28" class="java.lang.String" itemvalue="on-iron-localstorage-load-empty" />
+            <item index="29" class="java.lang.String" itemvalue="indent" />
+            <item index="30" class="java.lang.String" itemvalue="noink" />
+            <item index="31" class="java.lang.String" itemvalue="no-label-float" />
+            <item index="32" class="java.lang.String" itemvalue="value" />
+            <item index="33" class="java.lang.String" itemvalue="on-keyup" />
+            <item index="34" class="java.lang.String" itemvalue="minlength" />
+            <item index="35" class="java.lang.String" itemvalue="maxlength" />
+            <item index="36" class="java.lang.String" itemvalue="placeholder" />
+            <item index="37" class="java.lang.String" itemvalue="on-blur" />
+            <item index="38" class="java.lang.String" itemvalue="min" />
+            <item index="39" class="java.lang.String" itemvalue="max" />
+            <item index="40" class="java.lang.String" itemvalue="step" />
+            <item index="41" class="java.lang.String" itemvalue="style$" />
+            <item index="42" class="java.lang.String" itemvalue="on-neon-animation-finish" />
+            <item index="43" class="java.lang.String" itemvalue="autofocus" />
+            <item index="44" class="java.lang.String" itemvalue="dialog-confirm" />
+            <item index="45" class="java.lang.String" itemvalue="item-icon" />
+            <item index="46" class="java.lang.String" itemvalue="section-title" />
+            <item index="47" class="java.lang.String" itemvalue="href$" />
+            <item index="48" class="java.lang.String" itemvalue="is" />
+            <item index="49" class="java.lang.String" itemvalue="unresolved" />
+            <item index="50" class="java.lang.String" itemvalue="observe" />
+            <item index="51" class="java.lang.String" itemvalue="if" />
+            <item index="52" class="java.lang.String" itemvalue="list-item" />
+            <item index="53" class="java.lang.String" itemvalue="clip" />
+            <item index="54" class="java.lang.String" itemvalue="class$" />
+            <item index="55" class="java.lang.String" itemvalue="file" />
+            <item index="56" class="java.lang.String" itemvalue="iswaiting" />
+            <item index="57" class="java.lang.String" itemvalue="is-waiting" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="64">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="iron-selector" />
+            <item index="7" class="java.lang.String" itemvalue="iron-iconset-svg" />
+            <item index="8" class="java.lang.String" itemvalue="dom-module" />
+            <item index="9" class="java.lang.String" itemvalue="paper-material" />
+            <item index="10" class="java.lang.String" itemvalue="paper-toolbar" />
+            <item index="11" class="java.lang.String" itemvalue="paper-icon-button" />
+            <item index="12" class="java.lang.String" itemvalue="paper-tooltip" />
+            <item index="13" class="java.lang.String" itemvalue="paper-dialog" />
+            <item index="14" class="java.lang.String" itemvalue="paper-checkbox" />
+            <item index="15" class="java.lang.String" itemvalue="paper-button" />
+            <item index="16" class="java.lang.String" itemvalue="paper-item-body" />
+            <item index="17" class="java.lang.String" itemvalue="paper-item" />
+            <item index="18" class="java.lang.String" itemvalue="paper-drawer-panel" />
+            <item index="19" class="java.lang.String" itemvalue="paper-scroll-header-panel" />
+            <item index="20" class="java.lang.String" itemvalue="paper-menu" />
+            <item index="21" class="java.lang.String" itemvalue="iron-icon" />
+            <item index="22" class="java.lang.String" itemvalue="paper-header-panel" />
+            <item index="23" class="java.lang.String" itemvalue="paper-dialog-scrollable" />
+            <item index="24" class="java.lang.String" itemvalue="neon-animated-pages" />
+            <item index="25" class="java.lang.String" itemvalue="neon-animatable" />
+            <item index="26" class="java.lang.String" itemvalue="main-page" />
+            <item index="27" class="java.lang.String" itemvalue="paper-card" />
+            <item index="28" class="java.lang.String" itemvalue="paper-fab" />
+            <item index="29" class="java.lang.String" itemvalue="setting-link" />
+            <item index="30" class="java.lang.String" itemvalue="paper-dropdown-menu" />
+            <item index="31" class="java.lang.String" itemvalue="iron-localstorage" />
+            <item index="32" class="java.lang.String" itemvalue="paper-slider" />
+            <item index="33" class="java.lang.String" itemvalue="paper-input" />
+            <item index="34" class="java.lang.String" itemvalue="iron-label" />
+            <item index="35" class="java.lang.String" itemvalue="paper-ripple" />
+            <item index="36" class="java.lang.String" itemvalue="paper-toggle-button" />
+            <item index="37" class="java.lang.String" itemvalue="setting-toggle" />
+            <item index="38" class="java.lang.String" itemvalue="setting-text" />
+            <item index="39" class="java.lang.String" itemvalue="setting-dropdown" />
+            <item index="40" class="java.lang.String" itemvalue="paper-spinner" />
+            <item index="41" class="java.lang.String" itemvalue="paper-icon-item" />
+            <item index="42" class="java.lang.String" itemvalue="iron-list" />
+            <item index="43" class="java.lang.String" itemvalue="iron-image" />
+            <item index="44" class="java.lang.String" itemvalue="content" />
+            <item index="45" class="java.lang.String" itemvalue="paper-tabs" />
+            <item index="46" class="java.lang.String" itemvalue="iron-pages" />
+            <item index="47" class="java.lang.String" itemvalue="setting-slider" />
+            <item index="48" class="java.lang.String" itemvalue="setting-background" />
+            <item index="49" class="java.lang.String" itemvalue="setting-time" />
+            <item index="50" class="java.lang.String" itemvalue="settings-page" />
+            <item index="51" class="java.lang.String" itemvalue="slide-animatable" />
+            <item index="52" class="java.lang.String" itemvalue="paper-tab" />
+            <item index="53" class="java.lang.String" itemvalue="paper-listbox" />
+            <item index="54" class="java.lang.String" itemvalue="paper-toast" />
+            <item index="55" class="java.lang.String" itemvalue="labels-dialog" />
+            <item index="56" class="java.lang.String" itemvalue="clip-viewer" />
+            <item index="57" class="java.lang.String" itemvalue="clip-list" />
+            <item index="58" class="java.lang.String" itemvalue="clip-row" />
+            <item index="59" class="java.lang.String" itemvalue="paper-textarea" />
+            <item index="60" class="java.lang.String" itemvalue="error-dialog" />
+            <item index="61" class="java.lang.String" itemvalue="waiter-element" />
+            <item index="62" class="java.lang.String" itemvalue="confirm-dialog" />
+            <item index="63" class="java.lang.String" itemvalue="backup-row" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="JSCheckFunctionSignatures" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="JSLastCommaInArrayLiteral" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSLastCommaInObjectLiteral" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSNonStrictModeUsed" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSReferencingArgumentsOutsideOfFunction" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSUndefinedPropertyAssignment" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="NonBlockStatementBodyJS" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SwitchStatementWithNoDefaultBranchJS" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="XmlHighlighting" enabled="false" level="ERROR" enabled_by_default="false" />
+  </profile>
+</component>

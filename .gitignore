@@ -1,0 +1,28 @@
+/node_modules
+/dev
+/dist
+/app/bower_components
+.tmp
+*.db
+*.lock
+
+# jekyll
+_site/
+.sass-cache/
+.jekyll-metadata
+
+# IntelliJ
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/libraries
+
+# Mac OS X clutter
+*.DS_Store
+
+# Windows clutter
+Thumbs.db
+*- Copy*
+

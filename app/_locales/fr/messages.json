@@ -1,0 +1,465 @@
+{
+  "chrome_extension_name": {
+    "message": "Écran de veille photo"
+  },
+  "chrome_extension_description": {
+    "message": "Un écran de veille avec de multiples sources de photos comme vos photos Google."
+  },
+  "browser_action_title": {
+    "message": "Écran de veille photo : cliquez accéder aux options"
+  },
+  "toggle_enabled": {
+    "message": "État activé"
+  },
+  "photo_from": {
+    "message": "Photo de",
+    "description": "use example: Photo from Google"
+  },
+  "screensaver": {
+    "message": "Écran de veille"
+  },
+  "on": {
+    "message": "activé"
+  },
+  "off": {
+    "message": "désactivé"
+  },
+  "disable": {
+    "message": "Désactiver (Alt+Maj+Q)"
+  },
+  "enable": {
+    "message": "Activer (Alt+Maj+Q)"
+  },
+  "display_now": {
+    "message": "Afficher maintenant"
+  },
+  "ss_toggle_paused": {
+    "message": "Basculer en pause"
+  },
+  "ss_forward": {
+    "message": "Aller de l'avant une photo"
+  },
+  "ss_back": {
+    "message": "Retour une photo"
+  },
+  "help": {
+    "message": "Aide"
+  },
+  "no": {
+    "message": "Non"
+  },
+  "ok": {
+    "message": "OK",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "ANNULER",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "Remarque :"
+  },
+  "photo": {
+    "message": "photo"
+  },
+  "photos": {
+    "message": "photos"
+  },
+  "no_photos": {
+    "message": "Pas de Photos"
+  },
+  "seconds": {
+    "message": "secondes"
+  },
+  "minutes": {
+    "message": "minutes"
+  },
+  "hours": {
+    "message": "heures"
+  },
+  "days": {
+    "message": "journées"
+  },
+  "off_abbrev": {
+    "message": "OFF",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "VEIL",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "ON",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "Menu"
+  },
+  "menu_settings": {
+    "message": "Paramètres"
+  },
+  "menu_google": {
+    "message": "Sélectionner les albums photos"
+  },
+  "menu_preview": {
+    "message": "Aperçu des écrans de veille"
+  },
+  "menu_error": {
+    "message": "Afficher la dernière erreur"
+  },
+  "menu_help": {
+    "message": "Aide et commentaires"
+  },
+  "menu_support": {
+    "message": "Demande d'assitance"
+  },
+  "menu_rate": {
+    "message": "Évaluer l'extension"
+  },
+  "menu_pushy": {
+    "message": "Essayer l'extension Pushy Clipboard"
+  },
+  "menu_letterbox": {
+    "message": "Boîte aux lettres"
+  },
+  "menu_zoom": {
+    "message": "Zoom (rognage possible)"
+  },
+  "menu_frame": {
+    "message": "Cadre"
+  },
+  "menu_full": {
+    "message": "Plein écran (déformation possible)"
+  },
+  "menu_random": {
+    "message": "Au hasard"
+  },
+  "menu_scale_up": {
+    "message": "Mise à l'échelle"
+  },
+  "menu_fade": {
+    "message": "Fondu"
+  },
+  "menu_slide_from_right": {
+    "message": "Faire glisser de la droite"
+  },
+  "menu_slide_down": {
+    "message": "Faire glisser vers le bas"
+  },
+  "menu_spin_up": {
+    "message": "Faire tourner vers le haut"
+  },
+  "menu_slide_up": {
+    "message": "Faire glisser vers le haut"
+  },
+  "menu_slide_from_bottom": {
+    "message": "Faire glisser d'en bas"
+  },
+  "menu_slide_right": {
+    "message": "Faire glisser vers la droite"
+  },
+  "menu_12_hour": {
+    "message": "12 heures"
+  },
+  "menu_24_hour": {
+    "message": "24 heures"
+  },
+  "tooltip_select": {
+    "message": "Tout sélectionner"
+  },
+  "tooltip_deselect": {
+    "message": "Tout déselectionner"
+  },
+  "tooltip_restore": {
+    "message": "Restaurer les paramètres par défaut"
+  },
+  "tooltip_refresh": {
+    "message": "Rafraîchir la liste"
+  },
+  "tooltip_keep_awake": {
+    "message": "Les fonctionnalités de veille sont disponibles, même si l’écran de veille est désactivé, vous pouvez ainsi utiliser l’application pour planifier l'alimentation générale de votre dispositif. L’icône affichera « PWR » lorsqu’elle est activée."
+  },
+  "tooltip_settings_toggle": {
+    "message": "Activer/désactiver l'écran de veille"
+  },
+  "tooltip_google_toggle": {
+    "message": "Activer/désactiver l'utilisation des albums"
+  },
+  "tooltip_google_mode_albums": {
+    "message": "Passer en mode photo"
+  },
+  "tooltip_google_mode_photos": {
+    "message": "Passer en mode album"
+  },
+  "setting_background": {
+    "message": "Exécuter Chrome en arrière-plan"
+  },
+  "setting_background_desc": {
+    "message": "Démarre Chrome sur le démarrage de l'ordinateur et continue de fonctionner lorsqu'il est fermé (recommandé)"
+  },
+  "setting_idle_time": {
+    "message": "Temps d'attente"
+  },
+  "setting_transition_time": {
+    "message": "Temps de transition des photos"
+  },
+  "setting_photo_sizing": {
+    "message": "Mode d'affichage des photos"
+  },
+  "setting_photo_transition": {
+    "message": "Méthode de transition des photos"
+  },
+  "setting_interactive": {
+    "message": "Mode interactif"
+  },
+  "setting_interactive_desc": {
+    "message": "Basculer en pause (Alt+Maj+Espace), Retour (Alt+Maj+Gauche), En avant (Alt+Maj+Droit)"
+  },
+  "setting_show_time": {
+    "message": "Afficher l'heure"
+  },
+  "setting_large_time": {
+    "message": "Large étiquette de temps"
+  },
+  "setting_shuffle": {
+    "message": "Aléatoire"
+  },
+  "setting_shuffle_desc": {
+    "message": "Afficher les photos dans un ordre aléatoire"
+  },
+  "setting_skip": {
+    "message": "Ignorer les photos dont le ratio n'est pas adéquate"
+  },
+  "setting_skip_desc": {
+    "message": "Ne pas afficher certaines photos en mode Zoom ou Plein écran"
+  },
+  "setting_photog": {
+    "message": "Afficher l'auteur des photos que vous possédez"
+  },
+  "setting_full_res": {
+    "message": "Utilisez la résolution complète pour les photos que vous possédez"
+  },
+  "setting_full_res_desc": {
+    "message": "Ces fichiers peuvent être très gros et tournés"
+  },
+  "setting_location": {
+    "message": "Afficher l'emplacement des photos, si cela est possible"
+  },
+  "setting_location_desc": {
+    "message": "La localisation estimée de Google Photos ne sera pas affichée"
+  },
+  "setting_photo_clicks": {
+    "message": "Afficher la source de la photo sur le clic de la souris, si disponible"
+  },
+  "setting_bg": {
+    "message": "Contexte"
+  },
+  "setting_bg_desc": {
+    "message": "Définir l'image en arrière-plan de l'écran de veille"
+  },
+  "setting_bg_dialog_title": {
+    "message": "Sélectionner l'image en arrière-plan"
+  },
+  "setting_all_displays": {
+    "message": "Tous les affichages"
+  },
+  "setting_all_displays_desc": {
+    "message": "Afficher l'écran de veille sur tous les écrans connectés"
+  },
+  "setting_full_screen": {
+    "message": "Ne pas chevaucher les fenêtres Chrome en plein écran"
+  },
+  "setting_full_screen_desc": {
+    "message": "Utile si vous regardez des vidéos"
+  },
+  "setting_keep_awake": {
+    "message": "Rester actif"
+  },
+  "setting_keep_awake_desc": {
+    "message": "Empêcher la mise en veille de l'écran (toujours actif si l'heure de démarrage et d'arrêt sont identiques)."
+  },
+  "setting_start_time": {
+    "message": "Heure de démarrage"
+  },
+  "setting_start_time_desc": {
+    "message": "Autoriser l'affichage d'écran de veille à compter de cette heure"
+  },
+  "setting_stop_time": {
+    "message": "Délai d'arrêt"
+  },
+  "setting_stop_time_desc": {
+    "message": "Ne pas autoriser l'écran de veille à compter de cette heure"
+  },
+  "setting_suspend": {
+    "message": "Autoriser l’interruption du système"
+  },
+  "setting_suspend_desc": {
+    "message": "L'ordinateur peut être en veille pendant le délai d'inactivité"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Quelques photos en arrière-plan du dispositif Chromecast"
+  },
+  "setting_500editors": {
+    "message": "500px : choix de la rédaction"
+  },
+  "setting_500editors_desc": {
+    "message": "Choisir des photos sur 500px"
+  },
+  "setting_500popular": {
+    "message": "500px : populaire"
+  },
+  "setting_500popular_desc": {
+    "message": "Photos populaires de 500px"
+  },
+  "setting_500yest": {
+    "message": "500px : frais"
+  },
+  "setting_500yest_desc": {
+    "message": "Photos 500px récentes, actualisées chaque jour"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr : intéressant"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Photos intéressantes de Flickr, actualisées chaque jour"
+  },
+  "setting_reddit_space": {
+    "message": "reddit : espace"
+  },
+  "setting_reddit_space_desc": {
+    "message": "Photos célestes de reddit, actualisées chaque jour"
+  },
+  "setting_reddit_earth": {
+    "message": "reddit - terre"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "Photos de paysage de reddit, actualisées chaque jour"
+  },
+  "setting_reddit_animal": {
+    "message": "reddit - animaux"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Photos d'animaux de reddit, actualisées chaque jour"
+  },
+  "setting_mine": {
+    "message": "Développeur d'extension"
+  },
+  "setting_mine_desc": {
+    "message": "Photos des créateurs de cette extension"
+  },
+  "setting_click_to_view": {
+    "message": "Cliquez sur la souris pour voir la photo"
+  },
+  "setting_flickr_api": {
+    "message": "Ce produit utilise l'API Flickr mais n'est pas approuvé ou certifié par Flickr"
+  },
+  "tab_slideshow": {
+    "message": "PARAMÉTRAGE DES DIAPOSITIVES",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "PARAMÉTRAGE DE L'ÉCRAN",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "SOURCES DES PHOTOS",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Albums Google Photos"
+  },
+  "google_title_photos": {
+    "message": "Google Photos"
+  },
+  "google_shared_albums_note": {
+    "message": "Remarque: les albums partagés ne sont peut-être pas disponibles. Consultez notre FAQ pour obtenir plus d'informations."
+  },
+  "google_loading": {
+    "message": "Chargement des albums"
+  },
+  "help_title": {
+    "message": "Aide et questions"
+  },
+  "help_section_feedback": {
+    "message": "Question (en anglais uniquement, s'il vous plaît)"
+  },
+  "help_question": {
+    "message": "Poser une question"
+  },
+  "help_bug": {
+    "message": "Signaler une erreur"
+  },
+  "help_feature": {
+    "message": "Demande de fonctionnalité"
+  },
+  "help_feedback": {
+    "message": "Fournir une réponse"
+  },
+  "help_issue": {
+    "message": "Soumettre un problème GitHub (compte nécessaire)"
+  },
+  "help_documentation": {
+    "message": "Documentation"
+  },
+  "help_faq": {
+    "message": "Foire aux questions"
+  },
+  "help_translations": {
+    "message": "Proposer de l'aide avec les traductions"
+  },
+  "help_release_notes": {
+    "message": "Notes de version"
+  },
+  "help_contributors": {
+    "message": "Contributeurs"
+  },
+  "help_licenses": {
+    "message": "Licences Open source"
+  },
+  "help_source_code": {
+    "message": "Code source"
+  },
+  "err_request_failed": {
+    "message": "La demande a échoué. Appuyer sur Actualiser pour réessayer."
+  },
+  "err_storage_title": {
+    "message": "Limites de stockage atteintes"
+  },
+  "err_storage_desc": {
+    "message": "Désélectionnez les autres sources photo et essayez à nouveau."
+  },
+  "err_status": {
+    "message": "Statut"
+  },
+  "err_network": {
+    "message": "Erreur réseau"
+  },
+  "err_photo_source_title": {
+    "message": "Impossible de récupérer la source de la photo"
+  },
+  "err_auth_picasa": {
+    "message": "L'utilisateur n'a pas autorisé Picasa."
+  },
+  "err_no_albums": {
+    "message": "Aucun album n'a été trouvé"
+  },
+  "last_error_viewer_title": {
+    "message": "Dernière visionneuse d'erreur"
+  },
+  "err_load_album_list": {
+    "message": "Impossible de récupérer la liste des albums photo Google"
+  },
+  "err_show_ss": {
+    "message": "Échec de l'affichage de l'économiseur d'écran"
+  },
+  "err_optional_permissions": {
+    "message": "Impossible de modifier une autorisation facultative"
+  },
+  "time_format": {
+    "message": "24",
+    "description": "Set to 12 for AM/PM format or 24"
+  }
+}

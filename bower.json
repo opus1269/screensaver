@@ -1,0 +1,49 @@
+{
+  "name": "photo-screen-saver",
+  "authors": [
+    "Michael A. Updike <igreilly1269@gmail.com>"
+  ],
+  "description": "Photo Screen Saver implemented with Polymer",
+  "license": "BSD 3-Clause",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "assets",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
+    "iron-icon": "PolymerElements/iron-icon#^1.0.0",
+    "iron-image": "PolymerElements/iron-image#^1.0.0",
+    "iron-label": "PolymerElements/iron-label#^1.0.0",
+    "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^1.0.0",
+    "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.0",
+    "paper-dialog": "PolymerElements/paper-dialog#^1.0.0",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.0.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
+    "paper-button": "PolymerElements/paper-button#^1.0.0",
+    "paper-item": "PolymerElements/paper-item#^1.0.0",
+    "paper-input": "PolymerElements/paper-input#^1.0.0",
+    "paper-material": "PolymerElements/paper-material#^1.0.0",
+    "paper-menu": "PolymerElements/paper-menu#^1.0.0",
+    "paper-scroll-header-panel": "PolymerElements/paper-scroll-header-panel#^1.0.0",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^1.0.0",
+    "paper-spinner": "PolymerElements/paper-spinner#^1.0.0",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.0.0",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^1.0.0",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.0.0",
+    "neon-animation": "PolymerElements/neon-animation#^1.0.0",
+    "paper-tabs": "PolymerElements/paper-tabs#^1.0.0",
+    "paper-slider": "PolymerElements/paper-slider#^1.0.0",
+    "paper-time-picker": "bendavis78/paper-time-picker#^1.0.0",
+    "chrome-extension-utils": "opus1269/chrome-extension-utils#^4.0.0",
+    "setting-elements": "opus1269/setting-elements#^4.0.0"
+  }
+}

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: http.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.Alarm.html">app.Alarm</a></li><li><a href="app.Data.html">app.Data</a></li><li><a href="app.GA.html">app.GA</a></li><li><a href="app.Geo.html">app.Geo</a></li><li><a href="app.Msg.html">app.Msg</a></li><li><a href="app.Permissions.html">app.Permissions</a></li><li><a href="app.PhotoSources.html">app.PhotoSources</a></li><li><a href="app.Screensaver.html">app.Screensaver</a></li><li><a href="app.SSBuilder.html">app.SSBuilder</a></li><li><a href="app.SSControl.html">app.SSControl</a></li><li><a href="app.SSEvents.html">app.SSEvents</a></li><li><a href="app.SSFinder.html">app.SSFinder</a></li><li><a href="app.SSHistory.html">app.SSHistory</a></li><li><a href="app.SSPhotos.html">app.SSPhotos</a></li><li><a href="app.SSRunner.html">app.SSRunner</a></li><li><a href="app.SSTime.html">app.SSTime</a></li><li><a href="app.SSViews.html">app.SSViews</a></li><li><a href="app.Utils.html">app.Utils</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ContextMenus.html">ContextMenus</a></li><li><a href="Options.html">Options</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.Px500Source.html">app.Px500Source</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#_checkPermissions">_checkPermissions</a></li><li><a href="global.html#_chromeBackgroundTapped">_chromeBackgroundTapped</a></li><li><a href="global.html#_computeAlbumIconDisabled">_computeAlbumIconDisabled</a></li><li><a href="global.html#_computeHidden">_computeHidden</a></li><li><a href="global.html#_computeLargeTimeDisabled">_computeLargeTimeDisabled</a></li><li><a href="global.html#_computeMailToUrl">_computeMailToUrl</a></li><li><a href="global.html#_computeMenuHidden">_computeMenuHidden</a></li><li><a href="global.html#_computeModeIcon">_computeModeIcon</a></li><li><a href="global.html#_computeModeTooltip">_computeModeTooltip</a></li><li><a href="global.html#_computePhotoLabel">_computePhotoLabel</a></li><li><a href="global.html#_computePhotoSizingMenu">_computePhotoSizingMenu</a></li><li><a href="global.html#_computePhotoTransitionMenu">_computePhotoTransitionMenu</a></li><li><a href="global.html#_computeStack">_computeStack</a></li><li><a href="global.html#_computeTimeFormatMenu">_computeTimeFormatMenu</a></li><li><a href="global.html#_computeTitle">_computeTitle</a></li><li><a href="global.html#_computeTransitionTimeUnits">_computeTransitionTimeUnits</a></li><li><a href="global.html#_computeVersion">_computeVersion</a></li><li><a href="global.html#_computeWaitTimeUnits">_computeWaitTimeUnits</a></li><li><a href="global.html#_deselectAllTapped">_deselectAllTapped</a></li><li><a href="global.html#_init">_init</a></li><li><a href="global.html#_initIsAlbumMode">_initIsAlbumMode</a></li><li><a href="global.html#_initPermPicasa">_initPermPicasa</a></li><li><a href="global.html#_initUseGoogleAlbums">_initUseGoogleAlbums</a></li><li><a href="global.html#_initUseGooglePhotos">_initUseGooglePhotos</a></li><li><a href="global.html#_onAlbumSelectChanged">_onAlbumSelectChanged</a></li><li><a href="global.html#_onDeselectAllTapped">_onDeselectAllTapped</a></li><li><a href="global.html#_onEmailTapped">_onEmailTapped</a></li><li><a href="global.html#_onItemSelected">_onItemSelected</a></li><li><a href="global.html#_onModeTapped">_onModeTapped</a></li><li><a href="global.html#_onRefreshTapped">_onRefreshTapped</a></li><li><a href="global.html#_onRemoveTapped">_onRemoveTapped</a></li><li><a href="global.html#_onSelectAllTapped">_onSelectAllTapped</a></li><li><a href="global.html#_onUseGoogleChanged">_onUseGoogleChanged</a></li><li><a href="global.html#_restoreDefaultsTapped">_restoreDefaultsTapped</a></li><li><a href="global.html#_selectAlbums">_selectAlbums</a></li><li><a href="global.html#_selectAllTapped">_selectAllTapped</a></li><li><a href="global.html#_setPhotoSourceChecked">_setPhotoSourceChecked</a></li><li><a href="global.html#_setPhotoSourcesChecked">_setPhotoSourcesChecked</a></li><li><a href="global.html#_setUseKeys">_setUseKeys</a></li><li><a href="global.html#_showStorageErrorDialog">_showStorageErrorDialog</a></li><li><a href="global.html#_uncheckAll">_uncheckAll</a></li><li><a href="global.html#deselectPhotoSource">deselectPhotoSource</a></li><li><a href="global.html#loadAlbumList">loadAlbumList</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: http.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ * Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
+ * Licensed under Apache 2.0
+ * https://opensource.org/licenses/Apache-2.0
+ * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
+ */
+window.Chrome = window.Chrome || {};
+
+/**
+ * Fetch with authentication and exponential back-off
+ * @namespace
+ */
+Chrome.Http = (function() {
+  'use strict';
+
+  new ExceptionHandler();
+
+  const chromep = new ChromePromise();
+
+  /**
+   * Http configuration
+   * @typedef {?{}} Chrome.Http.Config
+   * @property {boolean} [isAuth=false] - if true, authorization required
+   * @property {boolean} [retryToken=false] - if true, retry with new token
+   * @property {boolean} [interactive=false] - user initiated, if true
+   * @property {?string} [token=null] - auth token
+   * @property {boolean} [backoff=true] - if true, do exponential back-off
+   * @property {int} [maxRetries=_MAX_ATTEMPTS] - max retries
+   * @memberOf Chrome.Http
+   */
+
+  /**
+   * Authorization header
+   * @type {string}
+   * @private
+   * @memberOf Chrome.Http
+   */
+  const _AUTH_HEADER = 'Authorization';
+
+  /**
+   * Bearer parameter for authorized call
+   * @type {string}
+   * @private
+   * @memberOf Chrome.Http
+   */
+  const _BEARER = 'Bearer';
+
+  /**
+   * Max retries on 500 errors
+   * @type {int}
+   * @private
+   * @memberOf Chrome.Http
+   */
+  const _MAX_RETRIES = 4;
+
+  /**
+   * Delay multiplier for exponential back-off
+   * @const
+   * @default
+   * @private
+   * @memberOf Chrome.Http
+   */
+  const _DELAY = 1000;
+
+  /**
+   * Configuration object
+   * @type {Chrome.Http.Config}
+   * @private
+   * @memberOf Chrome.Http
+   */
+  const _CONFIG = {
+    isAuth: false,
+    retryToken: false,
+    interactive: false,
+    token: null,
+    backoff: true,
+    maxRetries: _MAX_RETRIES,
+  };
+
+  /**
+   * Check response and act accordingly
+   * @param {{}} response - response from server
+   * @param {string} url - server
+   * @param {Object} opts - fetch options
+   * @param {Chrome.Http.Config} conf - configuration
+   * @param {int} attempt - the retry attempt we are on
+   * @returns {Promise.&lt;JSON>} response from server
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _processResponse(response, url, opts, conf, attempt) {
+    if (response.ok) {
+      // request succeeded - woo hoo!
+      return response.json();
+    }
+
+    if (attempt >= conf.maxRetries) {
+      // request still failed after maxRetries
+      return Promise.reject(_getError(response));
+    }
+
+    const status = response.status;
+
+    if (conf.backoff &amp;&amp; (status >= 500) &amp;&amp; (status &lt; 600)) {
+      // temporary server error, maybe. Retry with backoff
+      return _retry(url, opts, conf, attempt);
+    }
+
+    if (conf.isAuth &amp;&amp; conf.token &amp;&amp; conf.retryToken &amp;&amp; (status === 401)) {
+      // could be expired token. Remove cached one and try again
+      return _retryToken(url, opts, conf, attempt);
+    }
+
+    if (conf.isAuth &amp;&amp; conf.interactive &amp;&amp; conf.token &amp;&amp; conf.retryToken &amp;&amp;
+        (status === 403)) {
+      // user may have revoked access to extension at some point
+      // If interactive, retry so they can authorize again
+      return _retryToken(url, opts, conf, attempt);
+    }
+
+    // request failed
+    return Promise.reject(_getError(response));
+  }
+
+  /**
+   * Get Error message
+   * @param {{}} response - server response
+   * @returns {Error}
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _getError(response) {
+    let msg = 'Unknown error.';
+    if (response &amp;&amp; response.status &amp;&amp;
+        (response.statusText !== undefined)) {
+      let statusMsg = Chrome.Locale.localize('err_status');
+      if ((typeof(statusMsg) === 'undefined') || (statusMsg === '')) {
+        // in case localize is missing
+        statusMsg = 'Status';
+      }
+      msg = `${statusMsg}: ${response.status}`;
+      msg += `\n${response.statusText}`;
+    }
+    return new Error(msg);
+  }
+
+  /**
+   * Get authorization token
+   * @param {boolean} isAuth - if true, authorization required
+   * @param {boolean} interactive - if true, user initiated
+   * @returns {Promise.&lt;string>} auth token
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _getAuthToken(isAuth, interactive) {
+    if (isAuth) {
+      return chromep.identity.getAuthToken({
+        'interactive': interactive,
+      }).then((token) => {
+        return Promise.resolve(token);
+      }).catch((err) => {
+        if (interactive &amp;&amp; (err.message.includes('revoked') ||
+            err.message.includes('Authorization page could not be loaded'))) {
+          // try one more time non-interactively
+          // Always returns Authorization page error
+          // when first registering, Not sure why
+          // Other message is if user revoked access to extension
+          return chromep.identity.getAuthToken({
+            'interactive': false,
+          });
+        } else {
+          throw err;
+        }
+      });
+    } else {
+      // non-authorization branch
+      return Promise.resolve(null);
+    }
+  }
+
+  /**
+   * Retry authorized fetch with exponential back-off
+   * @param {string} url - server request
+   * @param {Object} opts - fetch options
+   * @param {Chrome.Http.Config} conf - configuration
+   * @param {int} attempt - the retry attempt we are on
+   * @returns {Promise.&lt;JSON>} response from server
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _retry(url, opts, conf, attempt) {
+    attempt++;
+    // eslint-disable-next-line promise/avoid-new
+    return new Promise((resolve, reject) => {
+      const delay = (Math.pow(2, attempt) - 1) * _DELAY;
+      setTimeout(() => {
+        const newConfig = Chrome.JSONUtils.shallowCopy(conf);
+        newConfig.backoff = true;
+        return _fetch(url, opts, conf, attempt).then(resolve, reject);
+      }, delay);
+    });
+  }
+
+  /**
+   * Retry fetch after removing cached auth token
+   * @param {string} url - server request
+   * @param {Object} opts - fetch options
+   * @param {Chrome.Http.Config} conf - configuration
+   * @param {int} attempt - the retry attempt we are on
+   * @returns {Promise.&lt;JSON>} response from server
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _retryToken(url, opts, conf, attempt) {
+    Chrome.GA.error('Refresh auth token.', 'Http._retryToken');
+    return chromep.identity.removeCachedAuthToken({
+      token: conf.token,
+    }).then(() => {
+      const newConfig = Chrome.JSONUtils.shallowCopy(conf);
+      newConfig.retryToken = false;
+      return _fetch(url, opts, conf, attempt);
+    });
+  }
+
+  /**
+   * Perform fetch, optionally using authorization and exponential back-off
+   * @param {string} url - server request
+   * @param {Object} opts - fetch options
+   * @param {Chrome.Http.Config} conf - configuration
+   * @param {int} attempt - the retry attempt we are on
+   * @returns {Promise.&lt;JSON>} response from server
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _fetch(url, opts, conf, attempt) {
+    let token = '';
+    return _getAuthToken(conf.isAuth, conf.interactive).then((authToken) => {
+      if (conf.isAuth) {
+        token = authToken;
+        opts.headers.set(_AUTH_HEADER, `${_BEARER} ${token}`);
+      }
+      return fetch(url, opts);
+    }).then((response) => {
+      return _processResponse(response, url, opts, conf, attempt);
+    }).catch((err) => {
+      let msg = err.message;
+      if (msg === 'Failed to fetch') {
+        msg = Chrome.Locale.localize('err_network');
+        if ((typeof(msg) === 'undefined') || (msg === '')) {
+          // in case localize is missing
+          msg = err.message;
+        }
+      }
+      throw new Error(msg);
+    });
+  }
+
+  /**
+   * Do a server request
+   * @param {string} url - server request
+   * @param {Object} opts - fetch options
+   * @param {Chrome.Http.Config} conf - configuration
+   * @returns {Promise.&lt;JSON>} response from server
+   * @private
+   * @memberOf Chrome.Http
+   */
+  function _doIt(url, opts, conf) {
+    conf = (conf === null) ? _CONFIG : conf;
+    if (conf.isAuth) {
+      opts.headers.set(_AUTH_HEADER, `${_BEARER} unknown`);
+    }
+    let attempt = 0;
+    return _fetch(url, opts, conf, attempt);
+  }
+
+  return {
+    conf: _CONFIG,
+
+    /**
+     * Perform GET request
+     * @param {string} url - server request
+     * @param {Chrome.Http.Config} [conf=null] - configuration
+     * @returns {Promise.&lt;JSON>} response from server
+     * @memberOf Chrome.Http
+     */
+    doGet: function(url, conf = null) {
+      const opts = {method: 'GET', headers: new Headers({})};
+      return _doIt(url, opts, conf);
+    },
+
+    /**
+     * Perform POST request
+     * @param {string} url - server request
+     * @param {Chrome.Http.Config} [conf=null] - configuration
+     * @returns {Promise.&lt;JSON>} response from server
+     * @memberOf Chrome.Http
+     */
+    doPost: function(url, conf = null) {
+      const opts = {method: 'POST', headers: new Headers({})};
+      return _doIt(url, opts, conf);
+    },
+  };
+})(window);
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on November 8th 2017, 2:25:10 am
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

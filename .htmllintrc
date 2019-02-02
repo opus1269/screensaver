@@ -1,0 +1,11 @@
+{
+	"attr-req-value": false,
+	"attr-name-style": "dash",
+	"attr-quote-style": "double",
+	"id-class-style": "dash",
+	"class-style": "dash",
+	"id-class-ignore-regex": "{{.*?}}|.*?]]|UA-*-*",
+	"indent-style": "tabs",
+	"indent-width": 2,
+	"line-end-style": "lf"
+}

@@ -1,0 +1,422 @@
+{
+  "chrome_extension_name": {
+    "message": "사진 화면 보호기"
+  },
+  "chrome_extension_description": {
+    "message": "Google 포토를 비롯한 여러 사진 소스가있는 스크린 세이버"
+  },
+  "browser_action_title": {
+    "message": "사진 화면 보호기 - 옵션을 보려면 클릭하십시오"
+  },
+  "toggle_enabled": {
+    "message": "활성화 된 상태 토글"
+  },
+  "screensaver": {
+    "message": "화면 보호기"
+  },
+  "on": {
+    "message": "켜져있다."
+  },
+  "off": {
+    "message": "꺼짐"
+  },
+  "disable": {
+    "message": "사용 안함"
+  },
+  "enable": {
+    "message": "사용"
+  },
+  "help": {
+    "message": "도움"
+  },
+  "no": {
+    "message": "아니"
+  },
+  "ok": {
+    "message": "승인",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "취소",
+    "description": "All Caps"
+  },
+  "polymer": {
+    "message": "중합체",
+    "description": "All Caps"
+  },
+  "github": {
+    "message": "GITHUB에서보기",
+    "description": "All Caps"
+  },
+  "w3": {
+    "message": "W3SCHOOLS",
+    "description": "All Caps"
+  },
+  "mdn": {
+    "message": "MDN",
+    "description": "All Caps"
+  },
+  "chromecast": {
+    "message": "CHROMECAST",
+    "description": "All Caps"
+  },
+  "picasa": {
+    "message": "피카사",
+    "description": "All Caps"
+  },
+  "material": {
+    "message": "재료 디자인",
+    "description": "All Caps"
+  },
+  "chrome_ext": {
+    "message": "크롬 확장",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "노트 :"
+  },
+  "photo": {
+    "message": "사진"
+  },
+  "photos": {
+    "message": "사진들"
+  },
+  "seconds": {
+    "message": "초"
+  },
+  "minutes": {
+    "message": "의사록"
+  },
+  "hours": {
+    "message": "시간"
+  },
+  "days": {
+    "message": "일"
+  },
+  "off_abbrev": {
+    "message": "떨어져서",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "메뉴"
+  },
+  "menu_settings": {
+    "message": "설정"
+  },
+  "menu_google": {
+    "message": "Google 포토 앨범 선택"
+  },
+  "menu_preview": {
+    "message": "스크린 세이버 미리보기"
+  },
+  "menu_help": {
+    "message": "도움말 및 피드백"
+  },
+  "menu_support": {
+    "message": "지원 요청"
+  },
+  "menu_rate": {
+    "message": "확장 프로그램 평가"
+  },
+  "menu_pushy": {
+    "message": "Pushy 클립 보드 확장 기능 사용해보기"
+  },
+  "menu_letterbox": {
+    "message": "우편함"
+  },
+  "menu_zoom": {
+    "message": "확대 / 축소 (5 월 자르기)"
+  },
+  "menu_frame": {
+    "message": "틀"
+  },
+  "menu_full": {
+    "message": "가득 차 있음 (왜곡 될 수 있음)"
+  },
+  "menu_random": {
+    "message": "랜덤"
+  },
+  "menu_scale_up": {
+    "message": "확장"
+  },
+  "menu_fade": {
+    "message": "바래다"
+  },
+  "menu_slide_from_right": {
+    "message": "오른쪽에서 슬라이드"
+  },
+  "menu_slide_down": {
+    "message": "슬라이드 다운"
+  },
+  "menu_spin_up": {
+    "message": "위로 스핀 업"
+  },
+  "menu_slide_up": {
+    "message": "슬라이드 업"
+  },
+  "menu_slide_from_bottom": {
+    "message": "아래에서 슬라이드"
+  },
+  "menu_slide_right": {
+    "message": "슬라이드 오른쪽"
+  },
+  "menu_12_hour": {
+    "message": "12 시간"
+  },
+  "menu_24_hour": {
+    "message": "24 시간"
+  },
+  "tooltip_select": {
+    "message": "모두 선택"
+  },
+  "tooltip_deselect": {
+    "message": "모두 선택 취소"
+  },
+  "tooltip_restore": {
+    "message": "기본 설정 복원"
+  },
+  "tooltip_refresh": {
+    "message": "새로 고침 목록"
+  },
+  "tooltip_keep_awake": {
+    "message": "awake 기능 유지는 스크린 세이버가 비활성화되어 있어도 사용할 수 있으므로 앱을 일반 파워 스케줄러로 사용할 수 있습니다. 이 상태 일 때 아이콘에 'PWR'이 표시됩니다."
+  },
+  "tooltip_settings_toggle": {
+    "message": "스크린 세이버 활성화 / 비활성화"
+  },
+  "tooltip_google_toggle": {
+    "message": "앨범 사용을 활성화 / 비활성화합니다."
+  },
+  "setting_idle_time": {
+    "message": "대기 시간"
+  },
+  "setting_transition_time": {
+    "message": "사진 전환 시간"
+  },
+  "setting_photo_sizing": {
+    "message": "사진 표시 모드"
+  },
+  "setting_photo_transition": {
+    "message": "사진 전환 방법"
+  },
+  "setting_show_time": {
+    "message": "시간 표시"
+  },
+  "setting_shuffle": {
+    "message": "무작위"
+  },
+  "setting_shuffle_desc": {
+    "message": "사진을 임의의 순서로 제시하십시오."
+  },
+  "setting_skip": {
+    "message": "극단적 인 종횡비 사진 건너 뛰기"
+  },
+  "setting_skip_desc": {
+    "message": "특정 사진을 확대 / 축소 및 전체보기 모드로 표시하지 않습니다."
+  },
+  "setting_photog": {
+    "message": "내가 소유 한 사진에 대한 작성자 표시"
+  },
+  "setting_photog_desc": {
+    "message": "참고 : 항상 프레임 모드로 표시됩니다."
+  },
+  "setting_bg": {
+    "message": "배경"
+  },
+  "setting_bg_desc": {
+    "message": "화면 보호기의 배경 이미지 설정"
+  },
+  "setting_bg_dialog_title": {
+    "message": "배경 이미지 선택"
+  },
+  "setting_all_displays": {
+    "message": "모든 디스플레이"
+  },
+  "setting_all_displays_desc": {
+    "message": "연결된 모든 디스플레이에 스크린 세이버 표시"
+  },
+  "setting_full_screen": {
+    "message": "전체 화면 Chrome 창에 표시하지 않음"
+  },
+  "setting_full_screen_desc": {
+    "message": "동영상을 시청하는 경우에 유용합니다."
+  },
+  "setting_keep_awake": {
+    "message": "깨어있어"
+  },
+  "setting_keep_awake_desc": {
+    "message": "모니터가 절전 모드로 전환되지 않도록합니다 (시작 및 정지 시간이 동일하면 항상 활성화 됨)."
+  },
+  "setting_start_time": {
+    "message": "시작 시간"
+  },
+  "setting_start_time_desc": {
+    "message": "이 시점부터 화면 보호기 표시 허용"
+  },
+  "setting_stop_time": {
+    "message": "멈출 시간"
+  },
+  "setting_stop_time_desc": {
+    "message": "이 시간이 지나면 화면 보호기 표시를 허용하지 않습니다."
+  },
+  "setting_suspend": {
+    "message": "시스템 일시 중지 허용"
+  },
+  "setting_suspend_desc": {
+    "message": "컴퓨터가 비활성 시간 동안 잠자기 수 있습니다."
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Chromecast 기기의 일부 배경 사진"
+  },
+  "setting_500editors": {
+    "message": "500px - 편집자 선택"
+  },
+  "setting_500editors_desc": {
+    "message": "500px에서 선택 가능한 사진"
+  },
+  "setting_500popular": {
+    "message": "500px - 인기"
+  },
+  "setting_500popular_desc": {
+    "message": "500px의 인기 사진"
+  },
+  "setting_500yest": {
+    "message": "500px - 신선한"
+  },
+  "setting_500yest_desc": {
+    "message": "최근 업데이트 된 500px 사진 (매일 업데이트 됨)"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr - 재미있는"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Flickr의 흥미로운 사진, 매일 업데이트됩니다."
+  },
+  "setting_reddit_space": {
+    "message": "reddit - 공간"
+  },
+  "setting_reddit_space_desc": {
+    "message": "주로 reddit의 천체 사진으로 매일 업데이트됩니다."
+  },
+  "setting_reddit_earth": {
+    "message": "reddit - 지구"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "주로 reddit의 풍경 사진으로 매일 업데이트됩니다."
+  },
+  "setting_reddit_animal": {
+    "message": "reddit - 동물"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Reddit의 동물 사진, 매일 업데이트 됨"
+  },
+  "setting_mine": {
+    "message": "확장 기능 개발자"
+  },
+  "setting_mine_desc": {
+    "message": "이 편지를 쓴 사람의 사진"
+  },
+  "setting_click_to_view": {
+    "message": "Flickr, 500px 및 reddit 사진을 보려면 웹 사이트를 보려면 마우스를 클릭하십시오."
+  },
+  "setting_flickr_api": {
+    "message": "이 제품은 Flickr API를 사용하지만 Flickr가 보증하거나 인증하지 않았습니다."
+  },
+  "tab_slideshow": {
+    "message": "슬라이드 쇼 컨트롤",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "디스플레이 컨트롤",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "사진 출처",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Google 포토 앨범"
+  },
+  "google_shared_albums_note": {
+    "message": "참고 : 공유 앨범을 사용하지 못할 수 있습니다. 자세한 정보는 FAQ를 참조하십시오."
+  },
+  "google_loading": {
+    "message": "앨범 불러 오기"
+  },
+  "help_title": {
+    "message": "도움말 및 피드백"
+  },
+  "help_section_feedback": {
+    "message": "의견 (영어로만 제공)"
+  },
+  "help_question": {
+    "message": "물어보다"
+  },
+  "help_bug": {
+    "message": "버그보고"
+  },
+  "help_feature": {
+    "message": "요청 기능"
+  },
+  "help_feedback": {
+    "message": "피드백을 제공하다"
+  },
+  "help_issue": {
+    "message": "GitHub 문제 제출 (계정 필요)"
+  },
+  "help_documentation": {
+    "message": "선적 서류 비치"
+  },
+  "help_faq": {
+    "message": "자주 묻는 질문"
+  },
+  "help_translations": {
+    "message": "번역 지원 제공"
+  },
+  "help_release_notes": {
+    "message": "릴리즈 노트"
+  },
+  "help_licenses": {
+    "message": "오픈 소스 라이선스"
+  },
+  "help_source_code": {
+    "message": "소스 코드"
+  },
+  "err_request_failed": {
+    "message": "요청이 실패했습니다. 새로 고침을 선택하면 다시 시도합니다."
+  },
+  "err_storage_title": {
+    "message": "저장 용량 한도 초과"
+  },
+  "err_storage_desc": {
+    "message": "다른 사진 소스를 선택 취소하고 다시 시도하십시오."
+  },
+  "err_status": {
+    "message": "지위"
+  },
+  "err_network": {
+    "message": "네트워크 오류"
+  },
+  "err_photo_source_title": {
+    "message": "사진 소스를 가져 오지 못했습니다."
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

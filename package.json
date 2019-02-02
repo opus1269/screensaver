@@ -1,0 +1,56 @@
+{
+  "name": "photo-screen-saver",
+  "version": "1.0.0",
+  "description": "https://chrome.google.com/webstore/detail/kohpcmlfdjfdggcjmjhhbcbankgmppgc",
+  "main": "background.js",
+  "scripts": {
+    "update_savedev": "npm update --save-dev",
+    "prune": "npm prune",
+    "delete_all": "rmdir node_modules /s /q"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opus1269/photo-screen-saver.git"
+  },
+  "author": "Michael Updike <igreilly1269@gmail.com>",
+  "license": "BSD 3-Clause",
+  "bugs": {
+    "url": "https://github.com/opus1269/photo-screen-saver/issues"
+  },
+  "homepage": "https://github.com/opus1269/photo-screen-saver",
+  "private": true,
+  "devDependencies": {
+    "del": "^3.0.0",
+    "eslint": "^4.10.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-html": "^3.2.2",
+    "eslint-plugin-promise": "^3.6.0",
+    "gulp": "^3.9.1",
+    "gulp-changed": "^3.1.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-crisper": "^1.1.0",
+    "gulp-debug": "^3.1.0",
+    "gulp-eslint": "^4.0.0",
+    "gulp-html-extract": "^0.3.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.4.0",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-minify-inline": "^1.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-polylint": "^1.0.3",
+    "gulp-replace": "^0.6.1",
+    "gulp-size": "^2.1.0",
+    "gulp-strip-line": "0.0.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "gulp-vulcanize": "^6.1.0",
+    "gulp-watch": "^4.3.11",
+    "gulp-zip": "^4.0.0",
+    "run-sequence": "^2.2.0",
+    "uglify-es": "^3.1.6",
+    "vulcanize": "^1.16.0"
+  },
+  "false": {}
+}

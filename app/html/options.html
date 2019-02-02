@@ -1,0 +1,167 @@
+﻿<!--
+  ~  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+  ~  Licensed under the BSD-3-Clause
+  ~  https://opensource.org/licenses/BSD-3-Clause
+  ~  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+  -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="generator" content="Photo Screen Saver"/>
+
+  <!-- !important -->
+  <title>Photo Screen Saver Options Page</title>
+
+  <link rel="stylesheet" href="../styles/options.css">
+
+  <!-- All script and element imports - will be vulcanized -->
+  <link rel="import" href="options_imports.html">
+
+  <!-- For iron-flex-layout -->
+  <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles"></style>
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+<template is="dom-bind" id="t">
+  <style is="custom-style">
+    paper-menu paper-item {
+      --paper-item-selected: {
+        color: var(--dark-primary-color);
+        background-color: var(--selected-color);
+        text-rendering: optimizeLegibility;
+      };
+      --paper-item-focused: {
+        background-color: transparent;
+      };
+      --paper-item-focused-before: {
+        background-color: transparent;
+      };
+    }
+
+    #mainToolbar .middle-container {
+      height: 100%;
+      margin-left: 48px;
+    }
+
+    #mainToolbar .middle {
+      @apply(--paper-font-headline);
+      padding-bottom: 0;
+    }
+
+    #drawerToolbar {
+      color: var(--secondary-text-color);
+      background-color: var(--drawer-menu-color);
+      border-bottom: var(--drawer-toolbar-border-color);
+    }
+
+    #drawerToolbar .menu-name {
+      @apply(--paper-font-title);
+    }
+
+    #drawer.paper-drawer-panel > [drawer] {
+      border-right: 1px solid rgba(0, 0, 0, 0.14);
+    }
+
+    #mainPages neon-animatable {
+      padding: 0 0;
+    }
+
+    /* Height of the main scroll area */
+    #mainContainer {
+      height: 1000px;
+    }
+  </style>
+
+  <paper-drawer-panel id="paperDrawerPanel" responsive-width="800px"
+                      drawer-width="350px">
+    <paper-material elevation="2" drawer fixed>
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel>
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="menu-name">{{_computeMenu()}}</span>
+        </paper-toolbar>
+        <!-- Drawer Content -->
+        <paper-menu class="list" id="mainMenu" attr-for-selected="id"
+                    selected="[[route]]">
+          <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
+            <hr hidden$="[[!item.divider]]"/>
+            <paper-item id="[[item.route]]"
+                        class="center horizontal layout"
+                        on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
+              <iron-icon icon="[[item.icon]]"></iron-icon>
+              <span>[[item.label]]</span>
+            </paper-item>
+          </template>
+        </paper-menu>
+      </paper-scroll-header-panel>
+    </paper-material>
+
+    <!-- Main Scroll Header Panel -->
+    <paper-scroll-header-panel id="scrollPanel" main fixed>
+      <!-- Main Toolbar -->
+      <paper-material class="paper-header" elevation="2">
+        <paper-toolbar id="mainToolbar">
+          <paper-icon-button id="paperToggle" icon="myicons:menu"
+                             paper-drawer-toggle>
+          </paper-icon-button>
+          <span class="flex"></span>
+          <!-- Application name -->
+          <div class="middle middle-container center horizontal layout">
+            <div>
+              {{_computeTitle()}}
+            </div>
+          </div>
+        </paper-toolbar>
+      </paper-material>
+
+      <!-- Main Content -->
+      <div id="mainContainer">
+
+        <!-- Error dialog -->
+        <paper-dialog id="errorDialog" modal
+                      entry-animation="scale-up-animation"
+                      exit-animation="fade-out-animation">
+          <h2 id="dialogTitle">[[dialogTitle]]</h2>
+          <paper-dialog-scrollable>
+            <p id="dialogText">[[dialogText]]</p>
+          </paper-dialog-scrollable>
+          <div class="buttons">
+            <paper-button dialog-dismiss>OK</paper-button>
+          </div>
+        </paper-dialog>
+
+        <neon-animated-pages id="mainPages"
+                             attr-for-selected="data-route"
+                             selected="{{route}}"
+                             entry-animation="fade-in-animation"
+                             exit-animation="fade-out-animation">
+          <neon-animatable data-route="page-settings">
+            <section>
+              <settings-page id="settingsPage"></settings-page>
+            </section>
+          </neon-animatable>
+          <neon-animatable data-route="page-google-photos">
+            <section id="googlePhotosInsertion"></section>
+          </neon-animatable>
+          <neon-animatable data-route="page-error">
+            <section id="errorInsertion"></section>
+          </neon-animatable>
+          <neon-animatable data-route="page-help">
+            <section id="helpInsertion"></section>
+          </neon-animatable>
+        </neon-animated-pages>
+      </div>
+    </paper-scroll-header-panel>
+  </paper-drawer-panel>
+</template>
+
+<script src="../scripts/options/options.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+/*
+ *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ */
+body {
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #FAFAFA;
+  color: #333333;
+  min-width: 600px;
+  min-height: 700px;
+  overflow: hidden;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  background: transparent;
+  width: 8px;
+}
+
+::-webkit-scrollbar-button {
+  background: transparent;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(48, 63, 159, 1);
+  -webkit-border-radius: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -1,0 +1,469 @@
+{
+  "chrome_extension_name": {
+    "message": "Bildschirmschoner"
+  },
+  "chrome_extension_description": {
+    "message": "Ein Bildschirmschoner mit mehreren Fotoquellen, einschließlich Ihrer Google Fotos."
+  },
+  "browser_action_title": {
+    "message": "Photo Screen Saver - Klicken Sie für Optionen"
+  },
+  "toggle_enabled": {
+    "message": "Toggle aktiviert Zustand"
+  },
+  "photo_from": {
+    "message": "Foto von",
+    "description": "use example: Photo from Google"
+  },
+  "screensaver": {
+    "message": "Bildschirmschoner"
+  },
+  "on": {
+    "message": "ist an"
+  },
+  "off": {
+    "message": "ist aus"
+  },
+  "disable": {
+    "message": "Deaktivieren (Alt + Shift + Q)"
+  },
+  "enable": {
+    "message": "Aktivieren (Alt + Umschalt + Q)"
+  },
+  "display_now": {
+    "message": "Jetzt anzeigen"
+  },
+  "ss_toggle_paused": {
+    "message": "Toggle pausiert"
+  },
+  "ss_forward": {
+    "message": "Vorwärts ein Foto"
+  },
+  "ss_back": {
+    "message": "Zurück ein Foto"
+  },
+  "help": {
+    "message": "Hilfe"
+  },
+  "no": {
+    "message": "Nein"
+  },
+  "ok": {
+    "message": "OK",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "STORNIEREN",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "Hinweis:"
+  },
+  "photo": {
+    "message": "Foto"
+  },
+  "photos": {
+    "message": "Fotos"
+  },
+  "no_photos": {
+    "message": "Keine Fotos"
+  },
+  "seconds": {
+    "message": "Sekunden"
+  },
+  "minutes": {
+    "message": "Protokoll"
+  },
+  "hours": {
+    "message": "Std."
+  },
+  "days": {
+    "message": "Tage"
+  },
+  "off_abbrev": {
+    "message": "AUS",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "Menü"
+  },
+  "menu_settings": {
+    "message": "Einstellungen"
+  },
+  "menu_google": {
+    "message": "Wählen Sie Google Fotos-Alben aus"
+  },
+  "menu_preview": {
+    "message": "Vorschau Bildschirmschoner"
+  },
+  "menu_error": {
+    "message": "Letzten Fehler anzeigen"
+  },
+  "menu_help": {
+    "message": "Hilfe & Feedback"
+  },
+  "menu_support": {
+    "message": "Unterstützung anfordern"
+  },
+  "menu_rate": {
+    "message": "Bewerte die Verlängerung"
+  },
+  "menu_pushy": {
+    "message": "Versuchen Sie die Pushy Clipboard Erweiterung"
+  },
+  "menu_letterbox": {
+    "message": "Briefkasten"
+  },
+  "menu_zoom": {
+    "message": "Zoom (kann zuschneiden)"
+  },
+  "menu_frame": {
+    "message": "Rahmen"
+  },
+  "menu_full": {
+    "message": "Voll (kann verzerren)"
+  },
+  "menu_random": {
+    "message": "Zufällig"
+  },
+  "menu_scale_up": {
+    "message": "Vergrößern"
+  },
+  "menu_fade": {
+    "message": "Verblassen"
+  },
+  "menu_slide_from_right": {
+    "message": "Von rechts abschieben"
+  },
+  "menu_slide_down": {
+    "message": "Herunterrutschen"
+  },
+  "menu_spin_up": {
+    "message": "Drehen Sie sich"
+  },
+  "menu_slide_up": {
+    "message": "Aufschieben"
+  },
+  "menu_slide_from_bottom": {
+    "message": "Schieben Sie von unten"
+  },
+  "menu_slide_right": {
+    "message": "Nach rechts schieben"
+  },
+  "menu_12_hour": {
+    "message": "12 stunden"
+  },
+  "menu_24_hour": {
+    "message": "24 Stunden"
+  },
+  "tooltip_select": {
+    "message": "Alles auswählen"
+  },
+  "tooltip_deselect": {
+    "message": "Alle abwählen"
+  },
+  "tooltip_restore": {
+    "message": "Standardeinstellungen wiederherstellen"
+  },
+  "tooltip_refresh": {
+    "message": "Liste aktualisieren"
+  },
+  "tooltip_keep_awake": {
+    "message": "Die Keep wach Features sind verfügbar, auch wenn der Bildschirmschoner deaktiviert ist, so können Sie die App als allgemeine Power Scheduler verwenden. Das Symbol zeigt 'PWR' an, wenn in diesem Zustand."
+  },
+  "tooltip_settings_toggle": {
+    "message": "Aktivieren / deaktivieren Sie den Bildschirmschoner"
+  },
+  "tooltip_google_toggle": {
+    "message": "Aktivieren / Deaktivieren der Verwendung von Alben"
+  },
+  "tooltip_google_mode_albums": {
+    "message": "Wechseln Sie in den Fotomodus"
+  },
+  "tooltip_google_mode_photos": {
+    "message": "Wechseln Sie in den Album-Modus"
+  },
+  "setting_background": {
+    "message": "Chrome im Hintergrund ausführen"
+  },
+  "setting_background_desc": {
+    "message": "Startet Chrome beim Computerstart und läuft weiter, wenn geschlossen (empfohlen)"
+  },
+  "setting_idle_time": {
+    "message": "Wartezeit"
+  },
+  "setting_transition_time": {
+    "message": "Fotoübergangszeit"
+  },
+  "setting_photo_sizing": {
+    "message": "Fotoanzeigemodus"
+  },
+  "setting_photo_transition": {
+    "message": "Fotoübergangsmethode"
+  },
+  "setting_interactive": {
+    "message": "Interaktiver Modus"
+  },
+  "setting_interactive_desc": {
+    "message": "Toggle pausiert (Alt + Umschalt + Leertaste), Zurück (Alt + Umschalt + Linksfeld), Vorwärts (Alt + Umschalt + RechtsArrow)"
+  },
+  "setting_show_time": {
+    "message": "Show Time"
+  },
+  "setting_large_time": {
+    "message": "Großzeit-Etikett"
+  },
+  "setting_shuffle": {
+    "message": "Randomisieren"
+  },
+  "setting_shuffle_desc": {
+    "message": "Präsentiere Fotos in zufälliger Reihenfolge"
+  },
+  "setting_skip": {
+    "message": "Überspringen Sie extreme Seitenverhältnisfotos"
+  },
+  "setting_skip_desc": {
+    "message": "Zeigen Sie keine bestimmten Fotos im Zoom- und Vollmodus an"
+  },
+  "setting_photog": {
+    "message": "Zeigen Sie Autor für Fotos, die Sie besitzen"
+  },
+  "setting_full_res": {
+    "message": "Verwenden Sie die volle Auflösung für Fotos, die Sie besitzen"
+  },
+  "setting_full_res_desc": {
+    "message": "Diese Dateien können sehr groß und gedreht werden"
+  },
+  "setting_location": {
+    "message": "Fotoausstellung anzeigen, falls vorhanden"
+  },
+  "setting_location_desc": {
+    "message": "Der geschätzte Standort von Google Photos wird nicht angezeigt"
+  },
+  "setting_photo_clicks": {
+    "message": "Zeigen Sie die Quelle des Fotos auf Mausklick, falls vorhanden"
+  },
+  "setting_bg": {
+    "message": "Hintergrund"
+  },
+  "setting_bg_desc": {
+    "message": "Legen Sie das Hintergrundbild des Bildschirmschoners fest"
+  },
+  "setting_bg_dialog_title": {
+    "message": "Wählen Sie Hintergrundbild"
+  },
+  "setting_all_displays": {
+    "message": "Alle Anzeigen"
+  },
+  "setting_all_displays_desc": {
+    "message": "Bildschirmschoner auf allen angeschlossenen Displays anzeigen"
+  },
+  "setting_full_screen": {
+    "message": "Nicht über Vollbild-Chrome-Fenster anzeigen"
+  },
+  "setting_full_screen_desc": {
+    "message": "Nützlich, wenn Sie Videos ansehen"
+  },
+  "setting_keep_awake": {
+    "message": "Bleib wach"
+  },
+  "setting_keep_awake_desc": {
+    "message": "Verhindern Sie die Anzeige aus dem Ruhezustand (immer aktiv, wenn Start- und Stoppzeiten gleich sind)"
+  },
+  "setting_start_time": {
+    "message": "Zeit zum Start"
+  },
+  "setting_start_time_desc": {
+    "message": "Erlaube Bildschirmschoner-Anzeige, beginnend zu diesem Zeitpunkt"
+  },
+  "setting_stop_time": {
+    "message": "Zeit zu stoppen"
+  },
+  "setting_stop_time_desc": {
+    "message": "Nach diesem Zeitpunkt die Bildschirmschoneranzeige nicht zulassen"
+  },
+  "setting_suspend": {
+    "message": "System aussetzen lassen"
+  },
+  "setting_suspend_desc": {
+    "message": "Computer kann während der inaktiven Zeit schlafen"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Einige Backdrop-Fotos vom Chromecast-Gerät"
+  },
+  "setting_500editors": {
+    "message": "500px - Redaktion Wahl"
+  },
+  "setting_500editors_desc": {
+    "message": "Auswahl Fotos von 500px"
+  },
+  "setting_500popular": {
+    "message": "500px - beliebt"
+  },
+  "setting_500popular_desc": {
+    "message": "Beliebte Fotos von 500px"
+  },
+  "setting_500yest": {
+    "message": "500px - frisch"
+  },
+  "setting_500yest_desc": {
+    "message": "Aktuelle Fotos aus dem 500px, täglich aktualisiert"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr - interessant"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Interessante Fotos vom Flickr, täglich aktualisiert"
+  },
+  "setting_reddit_space": {
+    "message": "reddit - raum"
+  },
+  "setting_reddit_space_desc": {
+    "message": "In erster Linie himmlische Fotos von reddit, täglich aktualisiert"
+  },
+  "setting_reddit_earth": {
+    "message": "reddit - erde"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "In erster Linie Landschaftsfotos von reddit, täglich aktualisiert"
+  },
+  "setting_reddit_animal": {
+    "message": "reddit - tier"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Tierfotos von reddit, täglich aktualisiert"
+  },
+  "setting_mine": {
+    "message": "Erweiterungsentwickler"
+  },
+  "setting_mine_desc": {
+    "message": "Fotos von dem Kerl, der das geschrieben hat"
+  },
+  "setting_click_to_view": {
+    "message": "Klicken Sie auf die Maus, um das Foto anzusehen"
+  },
+  "setting_flickr_api": {
+    "message": "Dieses Produkt verwendet die Flickr API, wird aber nicht von Flickr bestätigt oder zertifiziert"
+  },
+  "tab_slideshow": {
+    "message": "SCHIEBEN SIE DIE STEUERUNG",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "ANZEIGE KONTROLLEN",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "FOTOQUELLEN",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Google Fotos Alben"
+  },
+  "google_title_photos": {
+    "message": "Google Fotos"
+  },
+  "google_shared_albums_note": {
+    "message": "Hinweis: Freigegebene Alben sind möglicherweise nicht verfügbar. Weitere Informationen finden Sie in der FAQ."
+  },
+  "google_loading": {
+    "message": "Alben laden"
+  },
+  "last_error_viewer_title": {
+    "message": "Letzter Fehlerbetrachter"
+  },
+  "help_title": {
+    "message": "Hilfe & Feedback"
+  },
+  "help_section_feedback": {
+    "message": "Rückmeldung (nur auf Englisch)"
+  },
+  "help_question": {
+    "message": "Frage stellen"
+  },
+  "help_bug": {
+    "message": "Fehler melden"
+  },
+  "help_feature": {
+    "message": "Anforderungsmerkmal"
+  },
+  "help_feedback": {
+    "message": "Rückmeldung geben"
+  },
+  "help_issue": {
+    "message": "GitHub-Problem einreichen (benötigt Account)"
+  },
+  "help_documentation": {
+    "message": "Dokumentation"
+  },
+  "help_faq": {
+    "message": "Häufig gestellte Fragen"
+  },
+  "help_translations": {
+    "message": "Bieten Sie Unterstützung bei Übersetzungen an"
+  },
+  "help_release_notes": {
+    "message": "Versionshinweise"
+  },
+  "help_contributors": {
+    "message": "Mitwirkende"
+  },
+  "help_licenses": {
+    "message": "Open Source Lizenzen"
+  },
+  "help_source_code": {
+    "message": "Quellcode"
+  },
+  "err_load_album_list": {
+    "message": "Fehler beim Abrufen der Liste der Google Foto-Alben"
+  },
+  "err_show_ss": {
+    "message": "Fehler beim Anzeigen des Bildschirmschoners"
+  },
+  "err_optional_permissions": {
+    "message": "Fehler beim Ändern einer optionalen Berechtigung"
+  },
+  "err_request_failed": {
+    "message": "Anfrage fehlgeschlagen. Wählen Sie erneuern, um es erneut zu versuchen."
+  },
+  "err_storage_title": {
+    "message": "Überschrittene Speichergrenzen überschritten"
+  },
+  "err_storage_desc": {
+    "message": "Markieren Sie andere Fotoquellen und versuchen Sie es erneut."
+  },
+  "err_status": {
+    "message": "Status"
+  },
+  "err_network": {
+    "message": "Netzwerkfehler"
+  },
+  "err_photo_source_title": {
+    "message": "Fehler beim Abrufen der Fotoquelle"
+  },
+  "err_auth_picasa": {
+    "message": "Benutzer hat Picasa nicht autorisiert."
+  },
+  "err_no_albums": {
+    "message": "Keine Alben gefunden"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

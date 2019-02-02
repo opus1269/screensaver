@@ -1,0 +1,422 @@
+{
+  "chrome_extension_name": {
+    "message": "照片屏幕保護程序"
+  },
+  "chrome_extension_description": {
+    "message": "包含多個照片來源的屏幕保護程序，包括您的Google相冊。"
+  },
+  "browser_action_title": {
+    "message": "照片屏幕保護程序 - 點擊選項"
+  },
+  "toggle_enabled": {
+    "message": "切換啟用狀態"
+  },
+  "screensaver": {
+    "message": "屏幕保護"
+  },
+  "on": {
+    "message": "是在"
+  },
+  "off": {
+    "message": "已關閉"
+  },
+  "disable": {
+    "message": "禁用"
+  },
+  "enable": {
+    "message": "啟用"
+  },
+  "help": {
+    "message": "幫幫我"
+  },
+  "no": {
+    "message": "沒有"
+  },
+  "ok": {
+    "message": "好",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "All Caps"
+  },
+  "polymer": {
+    "message": "聚合物",
+    "description": "All Caps"
+  },
+  "github": {
+    "message": "查看GITHUB",
+    "description": "All Caps"
+  },
+  "w3": {
+    "message": "W3Schools的",
+    "description": "All Caps"
+  },
+  "mdn": {
+    "message": "MDN",
+    "description": "All Caps"
+  },
+  "chromecast": {
+    "message": "CHROMECAST",
+    "description": "All Caps"
+  },
+  "picasa": {
+    "message": "PICASA",
+    "description": "All Caps"
+  },
+  "material": {
+    "message": "材料設計",
+    "description": "All Caps"
+  },
+  "chrome_ext": {
+    "message": "鉻延伸",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "注意："
+  },
+  "photo": {
+    "message": "照片"
+  },
+  "photos": {
+    "message": "相片"
+  },
+  "seconds": {
+    "message": "秒"
+  },
+  "minutes": {
+    "message": "分鐘"
+  },
+  "hours": {
+    "message": "小時"
+  },
+  "days": {
+    "message": "天"
+  },
+  "off_abbrev": {
+    "message": "關閉",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "菜單"
+  },
+  "menu_settings": {
+    "message": "設置"
+  },
+  "menu_google": {
+    "message": "選擇Google相冊"
+  },
+  "menu_preview": {
+    "message": "預覽屏保"
+  },
+  "menu_help": {
+    "message": "幫助和反饋"
+  },
+  "menu_support": {
+    "message": "請求支持"
+  },
+  "menu_rate": {
+    "message": "評價擴展名"
+  },
+  "menu_pushy": {
+    "message": "嘗試Pushy Clipboard擴展"
+  },
+  "menu_letterbox": {
+    "message": "信箱"
+  },
+  "menu_zoom": {
+    "message": "縮放（可能裁剪）"
+  },
+  "menu_frame": {
+    "message": "幀"
+  },
+  "menu_full": {
+    "message": "滿（可能扭曲）"
+  },
+  "menu_random": {
+    "message": "隨機"
+  },
+  "menu_scale_up": {
+    "message": "放大"
+  },
+  "menu_fade": {
+    "message": "褪色"
+  },
+  "menu_slide_from_right": {
+    "message": "從右邊滑出"
+  },
+  "menu_slide_down": {
+    "message": "滑下"
+  },
+  "menu_spin_up": {
+    "message": "旋轉起來"
+  },
+  "menu_slide_up": {
+    "message": "向上滑動"
+  },
+  "menu_slide_from_bottom": {
+    "message": "從底部滑出"
+  },
+  "menu_slide_right": {
+    "message": "向右滑動"
+  },
+  "menu_12_hour": {
+    "message": "12小時"
+  },
+  "menu_24_hour": {
+    "message": "24小時"
+  },
+  "tooltip_select": {
+    "message": "全選"
+  },
+  "tooltip_deselect": {
+    "message": "全部取消選擇"
+  },
+  "tooltip_restore": {
+    "message": "恢復默認設置"
+  },
+  "tooltip_refresh": {
+    "message": "刷新列表"
+  },
+  "tooltip_keep_awake": {
+    "message": "即使屏幕保護程序被禁用，Keep Wake功能也可用，因此您可以將該應用程序用作通用電源調度程序。在此狀態下，該圖標將顯示“PWR”。"
+  },
+  "tooltip_settings_toggle": {
+    "message": "啟用/禁用屏幕保護程序"
+  },
+  "tooltip_google_toggle": {
+    "message": "啟用/禁用相冊的使用"
+  },
+  "setting_idle_time": {
+    "message": "等待時間"
+  },
+  "setting_transition_time": {
+    "message": "照片轉換時間"
+  },
+  "setting_photo_sizing": {
+    "message": "照片顯示模式"
+  },
+  "setting_photo_transition": {
+    "message": "照片過渡方法"
+  },
+  "setting_show_time": {
+    "message": "開演時間"
+  },
+  "setting_shuffle": {
+    "message": "隨機化"
+  },
+  "setting_shuffle_desc": {
+    "message": "以隨機順序呈現照片"
+  },
+  "setting_skip": {
+    "message": "跳過極限寬高比照片"
+  },
+  "setting_skip_desc": {
+    "message": "不要在縮放和完全模式下顯示某些照片"
+  },
+  "setting_photog": {
+    "message": "顯示您擁有的照片的作者"
+  },
+  "setting_photog_desc": {
+    "message": "注意：始終以幀模式顯示"
+  },
+  "setting_bg": {
+    "message": "背景"
+  },
+  "setting_bg_desc": {
+    "message": "設置屏幕保護程序的背景圖像"
+  },
+  "setting_bg_dialog_title": {
+    "message": "選擇背景圖片"
+  },
+  "setting_all_displays": {
+    "message": "所有顯示"
+  },
+  "setting_all_displays_desc": {
+    "message": "在所有連接的顯示器上顯示屏保"
+  },
+  "setting_full_screen": {
+    "message": "不要顯示全屏Chrome窗口"
+  },
+  "setting_full_screen_desc": {
+    "message": "有用的，如果你正在看視頻"
+  },
+  "setting_keep_awake": {
+    "message": "保持清醒"
+  },
+  "setting_keep_awake_desc": {
+    "message": "防止睡眠顯示（如果啟動和停止時間相等，始終處於活動狀態）"
+  },
+  "setting_start_time": {
+    "message": "時間開始"
+  },
+  "setting_start_time_desc": {
+    "message": "允許屏幕保護程序顯示，從此開始"
+  },
+  "setting_stop_time": {
+    "message": "時間停止"
+  },
+  "setting_stop_time_desc": {
+    "message": "此時不允許屏幕保護程序顯示"
+  },
+  "setting_suspend": {
+    "message": "允許系統掛起"
+  },
+  "setting_suspend_desc": {
+    "message": "計算機可能在非活動時間內睡覺"
+  },
+  "setting_chromecast": {
+    "message": "的Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "來自Chromecast設備的一些背景照片"
+  },
+  "setting_500editors": {
+    "message": "500px  - 編輯選擇"
+  },
+  "setting_500editors_desc": {
+    "message": "選擇照片從500像素"
+  },
+  "setting_500popular": {
+    "message": "500px  - 受歡迎"
+  },
+  "setting_500popular_desc": {
+    "message": "500px的熱門照片"
+  },
+  "setting_500yest": {
+    "message": "500px  - 新鮮"
+  },
+  "setting_500yest_desc": {
+    "message": "最近的照片從500px，每天更新"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr  - 有趣"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Flickr有趣的照片，每天更新"
+  },
+  "setting_reddit_space": {
+    "message": "reddit  - 空間"
+  },
+  "setting_reddit_space_desc": {
+    "message": "主要來自reddit的天文照片，每天更新"
+  },
+  "setting_reddit_earth": {
+    "message": "地球"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "主要來自reddit的風景照片，每天更新"
+  },
+  "setting_reddit_animal": {
+    "message": "reddit  - 動物"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "來自reddit的動物照片，每日更新"
+  },
+  "setting_mine": {
+    "message": "擴展開發者"
+  },
+  "setting_mine_desc": {
+    "message": "寫這個的人的照片"
+  },
+  "setting_click_to_view": {
+    "message": "點擊鼠標查看Flickr的網站，500px和reddit的照片"
+  },
+  "setting_flickr_api": {
+    "message": "本產品使用Flickr API，但未經Flickr認證或認證"
+  },
+  "tab_slideshow": {
+    "message": "幻燈片控制",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "顯示控制",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "照片來源",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Google相簿"
+  },
+  "google_shared_albums_note": {
+    "message": "注意：共享相冊可能不可用。有關更多信息，請參閱常見問題。"
+  },
+  "google_loading": {
+    "message": "載入專輯"
+  },
+  "help_title": {
+    "message": "幫助和反饋"
+  },
+  "help_section_feedback": {
+    "message": "反饋（僅限英文）"
+  },
+  "help_question": {
+    "message": "問問題"
+  },
+  "help_bug": {
+    "message": "報告軟件缺陷"
+  },
+  "help_feature": {
+    "message": "請求功能"
+  },
+  "help_feedback": {
+    "message": "提供反饋信息"
+  },
+  "help_issue": {
+    "message": "提交GitHub問題（需要帳號）"
+  },
+  "help_documentation": {
+    "message": "文檔"
+  },
+  "help_faq": {
+    "message": "經常問的問題"
+  },
+  "help_translations": {
+    "message": "提供翻譯協助"
+  },
+  "help_release_notes": {
+    "message": "發行說明"
+  },
+  "help_licenses": {
+    "message": "開源許可證"
+  },
+  "help_source_code": {
+    "message": "源代碼"
+  },
+  "err_request_failed": {
+    "message": "請求失敗選擇刷新以重試。"
+  },
+  "err_storage_title": {
+    "message": "超出存儲限制"
+  },
+  "err_storage_desc": {
+    "message": "取消選擇其他照片來源，然後重試。"
+  },
+  "err_status": {
+    "message": "狀態"
+  },
+  "err_network": {
+    "message": "網絡錯誤"
+  },
+  "err_photo_source_title": {
+    "message": "無法檢索照片來源"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

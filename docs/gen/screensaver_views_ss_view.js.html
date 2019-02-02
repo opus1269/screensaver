@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: screensaver/views/ss_view.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.Alarm.html">app.Alarm</a></li><li><a href="app.Data.html">app.Data</a></li><li><a href="app.GA.html">app.GA</a></li><li><a href="app.Geo.html">app.Geo</a></li><li><a href="app.Msg.html">app.Msg</a></li><li><a href="app.Permissions.html">app.Permissions</a></li><li><a href="app.PhotoSources.html">app.PhotoSources</a></li><li><a href="app.Screensaver.html">app.Screensaver</a></li><li><a href="app.SSBuilder.html">app.SSBuilder</a></li><li><a href="app.SSControl.html">app.SSControl</a></li><li><a href="app.SSEvents.html">app.SSEvents</a></li><li><a href="app.SSFinder.html">app.SSFinder</a></li><li><a href="app.SSHistory.html">app.SSHistory</a></li><li><a href="app.SSPhotos.html">app.SSPhotos</a></li><li><a href="app.SSRunner.html">app.SSRunner</a></li><li><a href="app.SSTime.html">app.SSTime</a></li><li><a href="app.SSViews.html">app.SSViews</a></li><li><a href="app.Utils.html">app.Utils</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.Auth.html">Chrome.Auth</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ContextMenus.html">ContextMenus</a></li><li><a href="Options.html">Options</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.Px500Source.html">app.Px500Source</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#_checkPermissions">_checkPermissions</a></li><li><a href="global.html#_chromeBackgroundTapped">_chromeBackgroundTapped</a></li><li><a href="global.html#_computeAlbumIconDisabled">_computeAlbumIconDisabled</a></li><li><a href="global.html#_computeHidden">_computeHidden</a></li><li><a href="global.html#_computeLargeTimeDisabled">_computeLargeTimeDisabled</a></li><li><a href="global.html#_computeMailToUrl">_computeMailToUrl</a></li><li><a href="global.html#_computeMenuHidden">_computeMenuHidden</a></li><li><a href="global.html#_computeModeIcon">_computeModeIcon</a></li><li><a href="global.html#_computeModeTooltip">_computeModeTooltip</a></li><li><a href="global.html#_computePhotoLabel">_computePhotoLabel</a></li><li><a href="global.html#_computePhotoSizingMenu">_computePhotoSizingMenu</a></li><li><a href="global.html#_computePhotoTransitionMenu">_computePhotoTransitionMenu</a></li><li><a href="global.html#_computeStack">_computeStack</a></li><li><a href="global.html#_computeTimeFormatMenu">_computeTimeFormatMenu</a></li><li><a href="global.html#_computeTitle">_computeTitle</a></li><li><a href="global.html#_computeTransitionTimeUnits">_computeTransitionTimeUnits</a></li><li><a href="global.html#_computeVersion">_computeVersion</a></li><li><a href="global.html#_computeWaitTimeUnits">_computeWaitTimeUnits</a></li><li><a href="global.html#_deselectAllTapped">_deselectAllTapped</a></li><li><a href="global.html#_initIsAlbumMode">_initIsAlbumMode</a></li><li><a href="global.html#_initPermPicasa">_initPermPicasa</a></li><li><a href="global.html#_initUseGoogleAlbums">_initUseGoogleAlbums</a></li><li><a href="global.html#_initUseGooglePhotos">_initUseGooglePhotos</a></li><li><a href="global.html#_onAlbumSelectChanged">_onAlbumSelectChanged</a></li><li><a href="global.html#_onDeselectAllTapped">_onDeselectAllTapped</a></li><li><a href="global.html#_onEmailTapped">_onEmailTapped</a></li><li><a href="global.html#_onModeTapped">_onModeTapped</a></li><li><a href="global.html#_onRefreshTapped">_onRefreshTapped</a></li><li><a href="global.html#_onRemoveTapped">_onRemoveTapped</a></li><li><a href="global.html#_onSelectAllTapped">_onSelectAllTapped</a></li><li><a href="global.html#_onUseGoogleChanged">_onUseGoogleChanged</a></li><li><a href="global.html#_restoreDefaultsTapped">_restoreDefaultsTapped</a></li><li><a href="global.html#_selectAlbums">_selectAlbums</a></li><li><a href="global.html#_selectAllTapped">_selectAllTapped</a></li><li><a href="global.html#_setPhotoSourceChecked">_setPhotoSourceChecked</a></li><li><a href="global.html#_setPhotoSourcesChecked">_setPhotoSourcesChecked</a></li><li><a href="global.html#_setUseKeys">_setUseKeys</a></li><li><a href="global.html#_showStorageErrorDialog">_showStorageErrorDialog</a></li><li><a href="global.html#_uncheckAll">_uncheckAll</a></li><li><a href="global.html#deselectPhotoSource">deselectPhotoSource</a></li><li><a href="global.html#loadAlbumList">loadAlbumList</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: screensaver/views/ss_view.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ */
+(function() {
+  'use strict';
+  window.app = window.app || {};
+
+  new ExceptionHandler();
+
+  /**
+   * Aspect ratio of screen
+   * @type {number}
+   * @const
+   * @private
+   * @memberOf app.SSView
+   */
+  const _SCREEN_ASP = screen.width / screen.height;
+
+  /**
+   * Screensaver zoom view and base class for other SSView classes
+   * @property {Element} image - paper-image
+   * @property {Element} author - label
+   * @property {Element} time - label
+   * @property {Element} location - Geo location
+   * @property {Object} model - template item model
+   * @property {string} url - photo url, binding
+   * @property {string} authorLabel - author text, binding
+   * @property {string} locationLabel - location text, binding
+   * @alias app.SSView
+   */
+  app.SSView = class SSView {
+
+    /**
+     * Create a new SSView
+     * @param {app.SSPhoto} photo - An {@link app.SSPhoto}
+     * @constructor
+     */
+    constructor(photo) {
+      this.photo = photo;
+      this.image = null;
+      this.author = null;
+      this.time = null;
+      this.location = null;
+      this.model = null;
+      this.url = photo.getUrl();
+      this.authorLabel = '';
+      this.locationLabel = '';
+    }
+
+    /**
+     * Factory Method to create a new {@link app.SSView}
+     * @param {app.SSPhoto} photo - An {@link app.SSPhoto}
+     * @param {app.SSViews.Type} sizing - photo sizing type
+     * @returns {app.SSView} a new SSView or subclass
+     * @static
+     */
+    static createView(photo, sizing) {
+      switch (sizing) {
+        case app.SSViews.Type.LETTERBOX:
+          return new app.SSViewLetterbox(photo);
+        case app.SSViews.Type.ZOOM:
+          return new app.SSView(photo);
+        case app.SSViews.Type.FRAME:
+          return new app.SSViewFrame(photo);
+        case app.SSViews.Type.FULL:
+          return new app.SSViewFull(photo);
+        default:
+          Chrome.Log.error(`Bad SSView type: ${sizing}`, 'SSView.createView');
+          return new app.SSViewLetterbox(photo);
+      }
+    }
+
+    /**
+     * Determine if a photo would look bad zoomed or stretched on the screen
+     * @param {number} asp - an aspect ratio
+     * @returns {boolean} true if a photo aspect ratio differs substantially
+     * from the screens'
+     * @private
+     */
+    static _isBadAspect(asp) {
+      // arbitrary
+      const CUT_OFF = 0.5;
+      return (asp &lt; _SCREEN_ASP - CUT_OFF) || (asp > _SCREEN_ASP + CUT_OFF);
+    }
+
+    /**
+     * Determine if a given aspect ratio should be ignored
+     * @param {number} asp - an aspect ratio
+     * @param {int} photoSizing - the sizing type
+     * @returns {boolean} true if the aspect ratio should be ignored
+     */
+    static ignore(asp, photoSizing) {
+      let ret = false;
+      const skip = Chrome.Storage.getBool('skip');
+
+      if ((!asp || isNaN(asp)) ||
+          (skip &amp;&amp; ((photoSizing === 1) || (photoSizing === 3)) &amp;&amp;
+          app.SSView._isBadAspect(asp))) {
+        // ignore photos that don't have aspect ratio
+        // or would look bad with cropped or stretched sizing options
+        ret = true;
+      }
+      return ret;
+    }
+
+    /**
+     * Should we show the location, if available
+     * @returns {boolean} true if we should show the location
+     * @static
+     */
+    static _showLocation() {
+      return Chrome.Storage.getBool('showLocation');
+    }
+
+    /**
+     * Should we show the time
+     * @returns {boolean} true if we should show the time
+     * @static
+     */
+    static showTime() {
+      return Chrome.Storage.getBool('showTime');
+    }
+
+    /**
+     * Does a photo have an author label to show
+     * @returns {boolean} true if we should show the author
+     */
+    _hasAuthor() {
+      const photographer = this.photo.getPhotographer();
+      return !Chrome.Utils.isWhiteSpace(photographer);
+    }
+
+    /**
+     * Does a view have an author label set
+     * @returns {boolean} true if author label is not empty
+     */
+    _hasAuthorLabel() {
+      return !Chrome.Utils.isWhiteSpace(this.authorLabel);
+    }
+
+    /**
+     * Does a photo have a geolocation
+     * @returns {boolean} true if geolocation point is non-null
+     */
+    _hasLocation() {
+      return !!this.photo.getPoint();
+    }
+
+    /**
+     * Does a view have an location label set
+     * @returns {boolean} true if location label is not empty
+     */
+    _hasLocationLabel() {
+      return !Chrome.Utils.isWhiteSpace(this.locationLabel);
+    }
+
+    /**
+     * Add superscript to the label for 500px photos
+     * @private
+     */
+    _super500px() {
+      const type = this.photo.getType();
+      const authorText = this.authorLabel;
+      const sup = this.author.querySelector('#sup');
+      sup.textContent = '';
+      if (!Chrome.Utils.isWhiteSpace(authorText) &amp;&amp; (type === '500')) {
+        sup.textContent = 'px';
+      }
+    }
+
+    /**
+     * Set the style for the time label
+     */
+    _setTimeStyle() {
+      if (Chrome.Storage.getBool('largeTime')) {
+        this.time.style.fontSize = '8.5vh';
+        this.time.style.fontWeight = 300;
+      }
+    }
+
+    /**
+     * Set the url
+     */
+    _setUrl() {
+      this.url = this.photo.getUrl();
+      this.model.set('view.url', this.url);
+    }
+
+    /**
+     * Set the author text
+     */
+    _setAuthorLabel() {
+      this.authorLabel = '';
+      this.model.set('view.authorLabel', this.authorLabel);
+      this._super500px();
+
+      const type = this.photo.getType();
+      const photographer = this.photo.getPhotographer();
+      let newType = type;
+      const idx = type.search('User');
+
+      if (!Chrome.Storage.getBool('showPhotog') &amp;&amp; (idx !== -1)) {
+        // don't show label for user's own photos, if requested
+        return;
+      }
+
+      if (idx !== -1) {
+        // strip off 'User'
+        newType = type.substring(0, idx - 1);
+      }
+
+      if (this._hasAuthor()) {
+        this.authorLabel = `${photographer} / ${newType}`;
+      } else {
+        // no photographer name
+        this.authorLabel = `${Chrome.Locale.localize('photo_from')} ${newType}`;
+      }
+      this.model.set('view.authorLabel', this.authorLabel);
+      this._super500px();
+    }
+
+    /**
+     * Set the geolocation text
+     */
+    _setLocationLabel() {
+      this.locationLabel = '';
+      this.model.set('view.locationLabel', this.locationLabel);
+
+      if (app.SSView._showLocation() &amp;&amp; this._hasLocation()) {
+        const point = this.photo.getPoint();
+        app.Geo.get(point).then((location) => {
+          if (location &amp;&amp; this.model) {
+            location = location.replace('Unnamed Road, ', '');
+            this.locationLabel = location;
+            this.model.set('view.locationLabel', this.locationLabel);
+          }
+          return Promise.resolve();
+        }).catch((err) => {
+          const networkErr = Chrome.Locale.localize('err_network');
+          if (!err.message.includes(networkErr)) {
+            Chrome.GA.error(`${err.message}, point: ${point}`,
+                'SSView._setLocationLabel');
+          }
+        });
+      }
+    }
+
+    /**
+     * Set the elements of the view
+     * @param {Element} image - paper-image, photo
+     * @param {Element} author - div, photographer
+     * @param {Element} time - div, current time
+     * @param {Element} location - div, geolocation text
+     * @param {Object} model - template item model
+     */
+    setElements(image, author, time, location, model) {
+      this.image = image;
+      this.author = author;
+      this.time = time;
+      this.location = location;
+      this.model = model;
+
+      this._setTimeStyle();
+      this.setPhoto(this.photo);
+    }
+
+    /**
+     * Set the photo
+     * @param {app.SSPhoto} photo - a photo to render
+     */
+    setPhoto(photo) {
+      this.photo = photo;
+      this._setUrl();
+      this._setAuthorLabel(false);
+      this._setLocationLabel();
+    }
+
+    /**
+     * Render the page for display - the default CSS is for our view
+     * subclasses override this to determine the look of photo
+     */
+    render() {}
+
+    /**
+     * Determine if a photo failed to load (usually 404 error)
+     * @returns {boolean} true if image load failed
+     */
+    isError() {
+      return !this.image || this.image.error;
+    }
+
+    /**
+     * Determine if a photo has finished loading
+     * @returns {boolean} true if image is loaded
+     */
+    isLoaded() {
+      return !!this.image &amp;&amp; this.image.loaded;
+    }
+  };
+})();
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on January 31st 2019, 3:56:17 am
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

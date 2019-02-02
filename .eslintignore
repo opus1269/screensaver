@@ -1,0 +1,3 @@
+/bower_components/**/*.js
+/app/bower_components/**/*.js
+/app/lib/*.js

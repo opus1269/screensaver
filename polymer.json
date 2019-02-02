@@ -1,0 +1,10 @@
+{
+  "entrypoint": "app/html/options.html",
+  "shell": "app/html/options.html",
+  "sources": [
+    "app/elements/setting-toggle/*"
+  ],
+  "lint": {
+    "rules": ["polymer-1"]
+  }
+}

@@ -1,0 +1,422 @@
+{
+  "chrome_extension_name": {
+    "message": "फोटो स्क्रीन सेवर"
+  },
+  "chrome_extension_description": {
+    "message": "आपके Google फ़ोटो सहित कई फोटो स्रोतों के साथ एक स्क्रीनसेवर"
+  },
+  "browser_action_title": {
+    "message": "फोटो स्क्रीन सेवर - विकल्प के लिए क्लिक करें"
+  },
+  "toggle_enabled": {
+    "message": "टॉगल सक्षम स्थिति"
+  },
+  "screensaver": {
+    "message": "स्क्रीन सेवर"
+  },
+  "on": {
+    "message": "पर है"
+  },
+  "off": {
+    "message": "बंद है"
+  },
+  "disable": {
+    "message": "अक्षम"
+  },
+  "enable": {
+    "message": "सक्षम करें"
+  },
+  "help": {
+    "message": "मदद"
+  },
+  "no": {
+    "message": "नहीं"
+  },
+  "ok": {
+    "message": "ठीक",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "रद्द करना",
+    "description": "All Caps"
+  },
+  "polymer": {
+    "message": "पॉलीमर",
+    "description": "All Caps"
+  },
+  "github": {
+    "message": "जिथब पर देखें",
+    "description": "All Caps"
+  },
+  "w3": {
+    "message": "W3Schools",
+    "description": "All Caps"
+  },
+  "mdn": {
+    "message": "MDN",
+    "description": "All Caps"
+  },
+  "chromecast": {
+    "message": "CHROMECAST",
+    "description": "All Caps"
+  },
+  "picasa": {
+    "message": "PICASA",
+    "description": "All Caps"
+  },
+  "material": {
+    "message": "सामग्री डिजाइन",
+    "description": "All Caps"
+  },
+  "chrome_ext": {
+    "message": "क्रोम एक्सटेंशन",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "ध्यान दें:"
+  },
+  "photo": {
+    "message": "तस्वीर"
+  },
+  "photos": {
+    "message": "तस्वीरें"
+  },
+  "seconds": {
+    "message": "सेकंड"
+  },
+  "minutes": {
+    "message": "मिनट"
+  },
+  "hours": {
+    "message": "घंटे"
+  },
+  "days": {
+    "message": "दिन"
+  },
+  "off_abbrev": {
+    "message": "बंद",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "एसएलपी",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "मेन्यू"
+  },
+  "menu_settings": {
+    "message": "सेटिंग्स"
+  },
+  "menu_google": {
+    "message": "Google फ़ोटो एल्बम चुनें"
+  },
+  "menu_preview": {
+    "message": "पूर्वावलोकन स्क्रीनसेवर"
+  },
+  "menu_help": {
+    "message": "सहायता और प्रतिक्रिया"
+  },
+  "menu_support": {
+    "message": "अनुरोध समर्थन"
+  },
+  "menu_rate": {
+    "message": "एक्सटेंशन को रेट करें"
+  },
+  "menu_pushy": {
+    "message": "पुशी क्लिपबोर्ड एक्सटेंशन को आज़माएं"
+  },
+  "menu_letterbox": {
+    "message": "पत्र पात्र"
+  },
+  "menu_zoom": {
+    "message": "ज़ूम (मई फसल)"
+  },
+  "menu_frame": {
+    "message": "ढांचा"
+  },
+  "menu_full": {
+    "message": "पूर्ण (मई विकृत)"
+  },
+  "menu_random": {
+    "message": "बिना सोचे समझे"
+  },
+  "menu_scale_up": {
+    "message": "स्केल अप"
+  },
+  "menu_fade": {
+    "message": "मुरझाना"
+  },
+  "menu_slide_from_right": {
+    "message": "दाएं से स्लाइड करें"
+  },
+  "menu_slide_down": {
+    "message": "नीचे खिसकना"
+  },
+  "menu_spin_up": {
+    "message": "घूम जाओ"
+  },
+  "menu_slide_up": {
+    "message": "ऊपर चढ़ाइए"
+  },
+  "menu_slide_from_bottom": {
+    "message": "नीचे से स्लाइड"
+  },
+  "menu_slide_right": {
+    "message": "स्लाइड सही"
+  },
+  "menu_12_hour": {
+    "message": "12 घंटे"
+  },
+  "menu_24_hour": {
+    "message": "24 घंटे"
+  },
+  "tooltip_select": {
+    "message": "सभी का चयन करे"
+  },
+  "tooltip_deselect": {
+    "message": "सभी को अचिन्हिंत करें"
+  },
+  "tooltip_restore": {
+    "message": "डिफ़ॉल्ट सेटिंग्स को पुनर्स्थापित करें"
+  },
+  "tooltip_refresh": {
+    "message": "सूची ताज़ा करे"
+  },
+  "tooltip_keep_awake": {
+    "message": "स्क्रीनसेवर अक्षम होने के बावजूद भी जागृत सुविधाओं को उपलब्ध कराएं, ताकि आप ऐप को सामान्य बिजली अनुसूचक के रूप में इस्तेमाल कर सकें। इस स्थिति में जब आइकन 'पीडब्लूआर' प्रदर्शित करेगा।"
+  },
+  "tooltip_settings_toggle": {
+    "message": "स्क्रीनसेवर सक्षम / अक्षम करें"
+  },
+  "tooltip_google_toggle": {
+    "message": "एल्बमों को सक्षम / अक्षम करें का उपयोग करें"
+  },
+  "setting_idle_time": {
+    "message": "प्रतीक्षा समय"
+  },
+  "setting_transition_time": {
+    "message": "फोटो संक्रमण का समय"
+  },
+  "setting_photo_sizing": {
+    "message": "फोटो प्रदर्शन मोड"
+  },
+  "setting_photo_transition": {
+    "message": "फोटो संक्रमण विधि"
+  },
+  "setting_show_time": {
+    "message": "शो टाइम"
+  },
+  "setting_shuffle": {
+    "message": "अनियमित करें"
+  },
+  "setting_shuffle_desc": {
+    "message": "यादृच्छिक क्रम में वर्तमान फ़ोटो"
+  },
+  "setting_skip": {
+    "message": "चरम पहलू अनुपात तस्वीरें छोड़ें"
+  },
+  "setting_skip_desc": {
+    "message": "ज़ूम और पूर्ण मोड में कुछ फ़ोटो प्रदर्शित न करें"
+  },
+  "setting_photog": {
+    "message": "अपने खुद के फोटो के लिए लेखक दिखाएं"
+  },
+  "setting_photog_desc": {
+    "message": "नोट: फ़्रेम मोड में हमेशा दिखाता है"
+  },
+  "setting_bg": {
+    "message": "पृष्ठभूमि"
+  },
+  "setting_bg_desc": {
+    "message": "स्क्रीनसेवर की पृष्ठभूमि छवि सेट करें"
+  },
+  "setting_bg_dialog_title": {
+    "message": "पृष्ठभूमि चित्र को चुनें"
+  },
+  "setting_all_displays": {
+    "message": "सभी प्रदर्शित करता है"
+  },
+  "setting_all_displays_desc": {
+    "message": "सभी कनेक्टेड डिस्प्ले पर स्क्रीनसेवर दिखाएं"
+  },
+  "setting_full_screen": {
+    "message": "फ़ुलस्क्रीन क्रोम विंडो पर नहीं दिखाएं"
+  },
+  "setting_full_screen_desc": {
+    "message": "यदि आप वीडियो देख रहे हैं तो उपयोगी है"
+  },
+  "setting_keep_awake": {
+    "message": "जागते रहना"
+  },
+  "setting_keep_awake_desc": {
+    "message": "स्लीपिंग से प्रदर्शन को रोकें (हमेशा प्रारंभ और रोक बार समान होने पर)"
+  },
+  "setting_start_time": {
+    "message": "शुरू करने का समय"
+  },
+  "setting_start_time_desc": {
+    "message": "स्क्रीनसेवर डिस्प्ले को अनुमति दें, इस समय से शुरू करें"
+  },
+  "setting_stop_time": {
+    "message": "बंद करने का समय"
+  },
+  "setting_stop_time_desc": {
+    "message": "इस समय के बाद स्क्रीनसेवर प्रदर्शन अस्वीकार करें"
+  },
+  "setting_suspend": {
+    "message": "सिस्टम को निलंबित करने की अनुमति दें"
+  },
+  "setting_suspend_desc": {
+    "message": "निष्क्रिय समय के दौरान कंप्यूटर सो सकता है"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Chromecast डिवाइस से कुछ पृष्ठभूमि फ़ोटो"
+  },
+  "setting_500editors": {
+    "message": "500 पीएक्स - संपादक का विकल्प"
+  },
+  "setting_500editors_desc": {
+    "message": "500 पीएक्स की पसंद तस्वीरें"
+  },
+  "setting_500popular": {
+    "message": "500px - लोकप्रिय"
+  },
+  "setting_500popular_desc": {
+    "message": "500 पीएक्स से लोकप्रिय फोटो"
+  },
+  "setting_500yest": {
+    "message": "500px - ताजा"
+  },
+  "setting_500yest_desc": {
+    "message": "500px से हाल ही की तस्वीरें, दैनिक अद्यतन"
+  },
+  "setting_flickr_int": {
+    "message": "फ़्लिकर - दिलचस्प"
+  },
+  "setting_flickr_int_desc": {
+    "message": "फ़्लिकर से दिलचस्प तस्वीरें, दैनिक अपडेट किया गया"
+  },
+  "setting_reddit_space": {
+    "message": "Reddit - space"
+  },
+  "setting_reddit_space_desc": {
+    "message": "लालदी से मुख्य रूप से आकाशीय फोटो, दैनिक अपडेट किया गया"
+  },
+  "setting_reddit_earth": {
+    "message": "Reddit - पृथ्वी"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "रेडमिट से मुख्य रूप से लैंडस्केप फोटो, दैनिक अपडेट किया गया"
+  },
+  "setting_reddit_animal": {
+    "message": "Reddit - जानवर"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Reddit से पशु फ़ोटो, दैनिक अपडेट किया गया"
+  },
+  "setting_mine": {
+    "message": "एक्सटेंशन डेवलपर"
+  },
+  "setting_mine_desc": {
+    "message": "उस व्यक्ति की तस्वीरें जो इसने लिखी हैं"
+  },
+  "setting_click_to_view": {
+    "message": "फ़्लिकर, 500 पिक्स और रेडडिट फोटो के लिए वेबसाइट देखने के लिए माउस क्लिक करें"
+  },
+  "setting_flickr_api": {
+    "message": "यह उत्पाद फ़्लिकर एपीआई का उपयोग करता है, लेकिन फ़्लिकर द्वारा इसकी पुष्टि या प्रमाणित नहीं है"
+  },
+  "tab_slideshow": {
+    "message": "स्लाइड शो नियंत्रण",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "प्रदर्शन नियंत्रण",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "फोटो स्रोत",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Google फ़ोटो एल्बम"
+  },
+  "google_shared_albums_note": {
+    "message": "नोट: साझा एल्बम संभवतः उपलब्ध नहीं हो सकते हैं अधिक जानकारी के लिए अक्सर पूछे जाने वाले प्रश्न देखें।"
+  },
+  "google_loading": {
+    "message": "एल्बम लोड हो रहा है"
+  },
+  "help_title": {
+    "message": "सहायता और फ़ीडबैक"
+  },
+  "help_section_feedback": {
+    "message": "फ़ीडबैक (अंग्रेज़ी केवल, कृपया)"
+  },
+  "help_question": {
+    "message": "प्रश्न पूछो"
+  },
+  "help_bug": {
+    "message": "रिपोर्ट बग"
+  },
+  "help_feature": {
+    "message": "अनुरोध सुविधा"
+  },
+  "help_feedback": {
+    "message": "अपनी राय बताएं"
+  },
+  "help_issue": {
+    "message": "GitHub जारी करें (खाते की आवश्यकता है)"
+  },
+  "help_documentation": {
+    "message": "प्रलेखन"
+  },
+  "help_faq": {
+    "message": "अक्सर पूछे जाने वाले प्रश्न"
+  },
+  "help_translations": {
+    "message": "अनुवाद के साथ सहायता प्रदान करें"
+  },
+  "help_release_notes": {
+    "message": "रिलीज नोट्स"
+  },
+  "help_licenses": {
+    "message": "ओपन सोर्स लाइसेंस"
+  },
+  "help_source_code": {
+    "message": "सोर्स कोड"
+  },
+  "err_request_failed": {
+    "message": "अनुरोध विफल रहा। पुन: प्रयास करने के लिए रीफ़्रेश करें चुनें।"
+  },
+  "err_storage_title": {
+    "message": "भंडारण सीमा पार हो गई"
+  },
+  "err_storage_desc": {
+    "message": "अन्य फोटो स्रोतों को अचयनित करें और फिर से प्रयास करें"
+  },
+  "err_status": {
+    "message": "स्थिति"
+  },
+  "err_network": {
+    "message": "नेटवर्क त्रुटि"
+  },
+  "err_photo_source_title": {
+    "message": "फ़ोटो स्रोत पुनर्प्राप्त करने में विफल"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

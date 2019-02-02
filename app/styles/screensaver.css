@@ -1,0 +1,88 @@
+/*
+ *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ */
+body {
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  font-weight: 400;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  cursor: none;
+}
+
+.fadeOut {
+  animation: fadeOut 1s 2s;
+  animation-fill-mode: both
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1.0
+  }
+  to {
+    opacity: 0.0
+  }
+}
+
+.vcr {
+  position: fixed;
+  width: 15vh;
+  height: 15vh;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.0;
+}
+
+.time {
+  font-size: 5.25vh;
+  font-weight: 200;
+  position: fixed;
+  right: 1vw;
+  bottom: 3.5vh;
+  padding: 0;
+  margin: 0;
+  color: white;
+  opacity: 1.0;
+}
+
+.author {
+  font-size: 2.5vh;
+  font-weight: 300;
+  position: fixed;
+  overflow: hidden;
+  right: 1vw;
+  bottom: 1vh;
+  padding: 0;
+  margin: 0;
+  color: white;
+  opacity: 1.0;
+}
+
+.location {
+  font-size: 2.5vh;
+  font-weight: 300;
+  position: fixed;
+  overflow: hidden;
+  left: 1vw;
+  bottom: 1vh;
+  padding: 0;
+  margin: 0;
+  color: white;
+  opacity: 1.0;
+}
+
+.noPhotos {
+  font-size: 5vh;
+  font-weight: 600;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(48, 63, 159, 1);
+  opacity: .8;
+}

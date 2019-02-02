@@ -1,0 +1,422 @@
+{
+  "chrome_extension_name": {
+    "message": "フォトスクリーンセーバー"
+  },
+  "chrome_extension_description": {
+    "message": "Googleフォトを含む複数の写真ソースを備えたスクリーンセーバー。"
+  },
+  "browser_action_title": {
+    "message": "フォトスクリーンセーバー - オプションをクリック"
+  },
+  "toggle_enabled": {
+    "message": "有効な状態を切り替える"
+  },
+  "screensaver": {
+    "message": "スクリーンセーバー"
+  },
+  "on": {
+    "message": "はオンです"
+  },
+  "off": {
+    "message": "オフです"
+  },
+  "disable": {
+    "message": "無効にする"
+  },
+  "enable": {
+    "message": "有効にする"
+  },
+  "help": {
+    "message": "助けて"
+  },
+  "no": {
+    "message": "いいえ"
+  },
+  "ok": {
+    "message": "[OK]",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "キャンセル",
+    "description": "All Caps"
+  },
+  "polymer": {
+    "message": "ポリマー",
+    "description": "All Caps"
+  },
+  "github": {
+    "message": "ギターで見る",
+    "description": "All Caps"
+  },
+  "w3": {
+    "message": "W3SCHOOLS",
+    "description": "All Caps"
+  },
+  "mdn": {
+    "message": "MDN",
+    "description": "All Caps"
+  },
+  "chromecast": {
+    "message": "CHROMECAST",
+    "description": "All Caps"
+  },
+  "picasa": {
+    "message": "ピカサ",
+    "description": "All Caps"
+  },
+  "material": {
+    "message": "マテリアルデザイン",
+    "description": "All Caps"
+  },
+  "chrome_ext": {
+    "message": "クロームエクステンション",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "注意："
+  },
+  "photo": {
+    "message": "写真"
+  },
+  "photos": {
+    "message": "写真"
+  },
+  "seconds": {
+    "message": "秒"
+  },
+  "minutes": {
+    "message": "分"
+  },
+  "hours": {
+    "message": "時間"
+  },
+  "days": {
+    "message": "日々"
+  },
+  "off_abbrev": {
+    "message": "オフ",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "メニュー"
+  },
+  "menu_settings": {
+    "message": "設定"
+  },
+  "menu_google": {
+    "message": "Googleフォトアルバムを選択"
+  },
+  "menu_preview": {
+    "message": "プレビュースクリーンセーバー"
+  },
+  "menu_help": {
+    "message": "ヘルプとフィードバック"
+  },
+  "menu_support": {
+    "message": "サポートを依頼する"
+  },
+  "menu_rate": {
+    "message": "内線番号を評価する"
+  },
+  "menu_pushy": {
+    "message": "Pushyクリップボード拡張を試してみてください"
+  },
+  "menu_letterbox": {
+    "message": "レターボックス"
+  },
+  "menu_zoom": {
+    "message": "ズーム（5月トリミング）"
+  },
+  "menu_frame": {
+    "message": "フレーム"
+  },
+  "menu_full": {
+    "message": "フル（歪むかもしれない）"
+  },
+  "menu_random": {
+    "message": "ランダム"
+  },
+  "menu_scale_up": {
+    "message": "拡大する"
+  },
+  "menu_fade": {
+    "message": "フェード"
+  },
+  "menu_slide_from_right": {
+    "message": "右からスライド"
+  },
+  "menu_slide_down": {
+    "message": "下にスライド"
+  },
+  "menu_spin_up": {
+    "message": "スピンアップ"
+  },
+  "menu_slide_up": {
+    "message": "上にスライドします"
+  },
+  "menu_slide_from_bottom": {
+    "message": "下からスライド"
+  },
+  "menu_slide_right": {
+    "message": "スライド右"
+  },
+  "menu_12_hour": {
+    "message": "12時間"
+  },
+  "menu_24_hour": {
+    "message": "24時間"
+  },
+  "tooltip_select": {
+    "message": "すべて選択"
+  },
+  "tooltip_deselect": {
+    "message": "すべての選択を解除"
+  },
+  "tooltip_restore": {
+    "message": "デフォルト設定に戻す"
+  },
+  "tooltip_refresh": {
+    "message": "リストを更新する"
+  },
+  "tooltip_keep_awake": {
+    "message": "スクリーンセーバーが無効になっていても、アウェイク機能を利用できるため、アプリを一般的なパワースケジューラとして使用できます。この状態では、アイコンに「PWR」と表示されます。"
+  },
+  "tooltip_settings_toggle": {
+    "message": "スクリーンセーバーを有効/無効にする"
+  },
+  "tooltip_google_toggle": {
+    "message": "アルバムの使用を有効/無効にする"
+  },
+  "setting_idle_time": {
+    "message": "待ち時間"
+  },
+  "setting_transition_time": {
+    "message": "写真の移行時間"
+  },
+  "setting_photo_sizing": {
+    "message": "写真表示モード"
+  },
+  "setting_photo_transition": {
+    "message": "写真のトランジション方法"
+  },
+  "setting_show_time": {
+    "message": "ショータイム"
+  },
+  "setting_shuffle": {
+    "message": "ランダム化"
+  },
+  "setting_shuffle_desc": {
+    "message": "写真をランダムに表示する"
+  },
+  "setting_skip": {
+    "message": "極端なアスペクト比の写真をスキップする"
+  },
+  "setting_skip_desc": {
+    "message": "特定の写真をズームモードとフルモードで表示しない"
+  },
+  "setting_photog": {
+    "message": "あなたが所有する写真の著者を表示する"
+  },
+  "setting_photog_desc": {
+    "message": "注：常にフレームモードで表示されます"
+  },
+  "setting_bg": {
+    "message": "バックグラウンド"
+  },
+  "setting_bg_desc": {
+    "message": "スクリーンセーバーの背景イメージを設定する"
+  },
+  "setting_bg_dialog_title": {
+    "message": "背景画像を選択"
+  },
+  "setting_all_displays": {
+    "message": "すべてのディスプレイ"
+  },
+  "setting_all_displays_desc": {
+    "message": "接続されているすべてのディスプレイにスクリーンセーバーを表示する"
+  },
+  "setting_full_screen": {
+    "message": "フルスクリーンのChromeウィンドウに表示しない"
+  },
+  "setting_full_screen_desc": {
+    "message": "あなたがビデオを見ている場合に便利です"
+  },
+  "setting_keep_awake": {
+    "message": "キープアウェイク"
+  },
+  "setting_keep_awake_desc": {
+    "message": "ディスプレイがスリープ状態にならないようにします（開始時間と停止時間が等しい場合は常にアクティブになります）"
+  },
+  "setting_start_time": {
+    "message": "始める時間"
+  },
+  "setting_start_time_desc": {
+    "message": "この時点からスクリーンセーバーの表示を許可する"
+  },
+  "setting_stop_time": {
+    "message": "停止する時間"
+  },
+  "setting_stop_time_desc": {
+    "message": "この時間後にスクリーンセーバーの表示を許可しない"
+  },
+  "setting_suspend": {
+    "message": "システムサスペンドを許可する"
+  },
+  "setting_suspend_desc": {
+    "message": "コンピュータが非アクティブな時間にスリープすることがある"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Chromecastデバイスの一部の背景写真"
+  },
+  "setting_500editors": {
+    "message": "500px  - 編集者の選択"
+  },
+  "setting_500editors_desc": {
+    "message": "500pxからの選択肢の写真"
+  },
+  "setting_500popular": {
+    "message": "500px  - 人気"
+  },
+  "setting_500popular_desc": {
+    "message": "500pxからの人気写真"
+  },
+  "setting_500yest": {
+    "message": "500px  - 新鮮"
+  },
+  "setting_500yest_desc": {
+    "message": "最近更新された500pxの写真"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr  - 面白い"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Flickrからの興味深い写真、毎日更新される"
+  },
+  "setting_reddit_space": {
+    "message": "reddit  - スペース"
+  },
+  "setting_reddit_space_desc": {
+    "message": "主にredditの天体写真で、毎日更新されています"
+  },
+  "setting_reddit_earth": {
+    "message": "reddit  - 地球"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "主にredditの風景写真で、日々更新されています"
+  },
+  "setting_reddit_animal": {
+    "message": "reddit  - 動物"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "redditの動物写真、日々更新されています"
+  },
+  "setting_mine": {
+    "message": "拡張開発者"
+  },
+  "setting_mine_desc": {
+    "message": "これを書いた男の写真"
+  },
+  "setting_click_to_view": {
+    "message": "マウスをクリックすると、Flickr、500px、redditの写真が表示されます。"
+  },
+  "setting_flickr_api": {
+    "message": "この製品はFlickr APIを使用していますが、Flickr"
+  },
+  "tab_slideshow": {
+    "message": "スライドショーコントロール",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "表示制御",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "写真のソース",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Googleフォトアルバム"
+  },
+  "google_shared_albums_note": {
+    "message": "注：共有アルバムは利用できない場合があります。詳細はFAQを参照してください。"
+  },
+  "google_loading": {
+    "message": "アルバムを読み込む"
+  },
+  "help_title": {
+    "message": "ヘルプ＆フィードバック"
+  },
+  "help_section_feedback": {
+    "message": "フィードバック（英語のみ、お願い）"
+  },
+  "help_question": {
+    "message": "質問する"
+  },
+  "help_bug": {
+    "message": "バグを報告する"
+  },
+  "help_feature": {
+    "message": "リクエスト機能"
+  },
+  "help_feedback": {
+    "message": "フィードバックを提供します"
+  },
+  "help_issue": {
+    "message": "GitHubの問題を提出する（アカウントが必要）"
+  },
+  "help_documentation": {
+    "message": "ドキュメンテーション"
+  },
+  "help_faq": {
+    "message": "よくある質問"
+  },
+  "help_translations": {
+    "message": "翻訳の支援を提供する"
+  },
+  "help_release_notes": {
+    "message": "リリースノート"
+  },
+  "help_licenses": {
+    "message": "オープンソースライセンス"
+  },
+  "help_source_code": {
+    "message": "ソースコード"
+  },
+  "err_request_failed": {
+    "message": "要求に失敗しました。リフレッシュを選択して再試行してください。"
+  },
+  "err_storage_title": {
+    "message": "保存容量の超過"
+  },
+  "err_storage_desc": {
+    "message": "他の写真ソースの選択を解除し、もう一度やり直してください。"
+  },
+  "err_status": {
+    "message": "状態"
+  },
+  "err_network": {
+    "message": "ネットワークエラー"
+  },
+  "err_photo_source_title": {
+    "message": "写真ソースの取得に失敗しました"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

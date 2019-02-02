@@ -1,0 +1,469 @@
+{
+  "chrome_extension_name": {
+    "message": "Photo Screen Saver"
+  },
+  "chrome_extension_description": {
+    "message": "Een screensaver met meerdere fotobronnen, inclusief je Google Foto's."
+  },
+  "browser_action_title": {
+    "message": "Photo Screen Saver - klik voor opties"
+  },
+  "toggle_enabled": {
+    "message": "Schakel de ingeschakelde toestand in"
+  },
+  "photo_from": {
+    "message": "Foto van",
+    "description": "use example: Photo from Google"
+  },
+  "screensaver": {
+    "message": "Screensaver"
+  },
+  "on": {
+    "message": "staat aan"
+  },
+  "off": {
+    "message": "is uit"
+  },
+  "disable": {
+    "message": "Schakel uit (Alt + Shift + Q)"
+  },
+  "enable": {
+    "message": "Inschakelen (Alt + Shift + Q)"
+  },
+  "display_now": {
+    "message": "Nu weergeven"
+  },
+  "ss_toggle_paused": {
+    "message": "Wissel aan pauze"
+  },
+  "ss_forward": {
+    "message": "Een foto doorsturen"
+  },
+  "ss_back": {
+    "message": "Terug een foto"
+  },
+  "help": {
+    "message": "Helpen"
+  },
+  "no": {
+    "message": "Nee"
+  },
+  "ok": {
+    "message": "OK",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "ANNULEER",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "Notitie:"
+  },
+  "photo": {
+    "message": "foto"
+  },
+  "photos": {
+    "message": "foto's"
+  },
+  "no_photos": {
+    "message": "Geen foto's"
+  },
+  "seconds": {
+    "message": "seconden"
+  },
+  "minutes": {
+    "message": "notulen"
+  },
+  "hours": {
+    "message": "uur"
+  },
+  "days": {
+    "message": "dagen"
+  },
+  "off_abbrev": {
+    "message": "UIT",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "Menu"
+  },
+  "menu_settings": {
+    "message": "instellingen"
+  },
+  "menu_google": {
+    "message": "Selecteer albums van Google Foto's"
+  },
+  "menu_preview": {
+    "message": "Voorbeeld screensaver"
+  },
+  "menu_error": {
+    "message": "Bekijk de laatste fout"
+  },
+  "menu_help": {
+    "message": "Hulp & feedback"
+  },
+  "menu_support": {
+    "message": "Vraag ondersteuning aan"
+  },
+  "menu_rate": {
+    "message": "Beoordeel de extensie"
+  },
+  "menu_pushy": {
+    "message": "Probeer de Pushy Clipboard extensie"
+  },
+  "menu_letterbox": {
+    "message": "brievenbus"
+  },
+  "menu_zoom": {
+    "message": "Zoom (mei gewas)"
+  },
+  "menu_frame": {
+    "message": "omlijsting"
+  },
+  "menu_full": {
+    "message": "Volledig (kan vervormen)"
+  },
+  "menu_random": {
+    "message": "toevallig"
+  },
+  "menu_scale_up": {
+    "message": "Vergroot"
+  },
+  "menu_fade": {
+    "message": "Vervagen"
+  },
+  "menu_slide_from_right": {
+    "message": "Schuif van rechtsaf"
+  },
+  "menu_slide_down": {
+    "message": "Naar beneden glijden"
+  },
+  "menu_spin_up": {
+    "message": "Spin up"
+  },
+  "menu_slide_up": {
+    "message": "Schuif omhoog"
+  },
+  "menu_slide_from_bottom": {
+    "message": "Schuif van onderaf"
+  },
+  "menu_slide_right": {
+    "message": "Schuif rechtsaf"
+  },
+  "menu_12_hour": {
+    "message": "12 uur"
+  },
+  "menu_24_hour": {
+    "message": "24 uur"
+  },
+  "tooltip_select": {
+    "message": "Selecteer alles"
+  },
+  "tooltip_deselect": {
+    "message": "Deselecteer alles"
+  },
+  "tooltip_restore": {
+    "message": "Standaard instellingen terugzetten"
+  },
+  "tooltip_refresh": {
+    "message": "Ververs lijst"
+  },
+  "tooltip_keep_awake": {
+    "message": "De wakker functies blijven beschikbaar, zelfs als de screensaver is uitgeschakeld, zodat u de app kunt gebruiken als algemene power scheduler. Het pictogram toont 'PWR' in deze toestand."
+  },
+  "tooltip_settings_toggle": {
+    "message": "Schakel de screensaver in / uit"
+  },
+  "tooltip_google_toggle": {
+    "message": "Schakel het gebruik van albums in / uit"
+  },
+  "tooltip_google_mode_albums": {
+    "message": "Overschakelen naar de fotomodus"
+  },
+  "tooltip_google_mode_photos": {
+    "message": "Overschakelen naar de albummodus"
+  },
+  "setting_background": {
+    "message": "Run Chrome op de achtergrond"
+  },
+  "setting_background_desc": {
+    "message": "Start Chrome op computer opstart en blijft draaien wanneer gesloten (aanbevolen)"
+  },
+  "setting_idle_time": {
+    "message": "Wacht tijd"
+  },
+  "setting_transition_time": {
+    "message": "Foto-overgangstijd"
+  },
+  "setting_photo_sizing": {
+    "message": "Foto weergave modus"
+  },
+  "setting_photo_transition": {
+    "message": "Foto overgangsmethode"
+  },
+  "setting_interactive": {
+    "message": "Interactieve modus"
+  },
+  "setting_interactive_desc": {
+    "message": "Toggle pauze (Alt + Shift + Space), Terug (Alt + Shift + LeftArrow), Doorsturen (Alt + Shift + RightArrow)"
+  },
+  "setting_show_time": {
+    "message": "Show Time"
+  },
+  "setting_large_time": {
+    "message": "Groot tijdslabel"
+  },
+  "setting_shuffle": {
+    "message": "willekeurig"
+  },
+  "setting_shuffle_desc": {
+    "message": "Presenteer foto's in willekeurige volgorde"
+  },
+  "setting_skip": {
+    "message": "Skip extreme foto ratio foto's"
+  },
+  "setting_skip_desc": {
+    "message": "Weergeven bepaalde foto's niet in Zoom en Full modes"
+  },
+  "setting_photog": {
+    "message": "Toon auteur voor foto's die je bezit"
+  },
+  "setting_full_res": {
+    "message": "Gebruik volledige resolutie voor foto's die u bezit"
+  },
+  "setting_full_res_desc": {
+    "message": "Deze bestanden kunnen zeer groot zijn en gedraaid worden"
+  },
+  "setting_location": {
+    "message": "Toon foto locatie, indien beschikbaar"
+  },
+  "setting_location_desc": {
+    "message": "Zal de geschatte locatie van Google Foto's niet worden weergegeven"
+  },
+  "setting_photo_clicks": {
+    "message": "Toon bron van foto op muisklik, indien beschikbaar"
+  },
+  "setting_bg": {
+    "message": "Achtergrond"
+  },
+  "setting_bg_desc": {
+    "message": "Stel de achtergrondafbeelding van de screensaver in"
+  },
+  "setting_bg_dialog_title": {
+    "message": "Selecteer achtergrondafbeelding"
+  },
+  "setting_all_displays": {
+    "message": "Alle displays"
+  },
+  "setting_all_displays_desc": {
+    "message": "Toon screensaver op alle aangesloten displays"
+  },
+  "setting_full_screen": {
+    "message": "Geef niet meer Chrome-vensters op fullscreen aan"
+  },
+  "setting_full_screen_desc": {
+    "message": "Nuttig als je video's kijkt"
+  },
+  "setting_keep_awake": {
+    "message": "Blijf wakker"
+  },
+  "setting_keep_awake_desc": {
+    "message": "Voorkom dat het scherm slapen (altijd actief als de start- en stoptijden gelijk zijn)"
+  },
+  "setting_start_time": {
+    "message": "Tijd om te beginnen"
+  },
+  "setting_start_time_desc": {
+    "message": "Laat screensaverweergave toe, begin vanaf dit moment"
+  },
+  "setting_stop_time": {
+    "message": "Tijd om te stoppen"
+  },
+  "setting_stop_time_desc": {
+    "message": "Laat de screensaverweergave na deze tijd niet uit"
+  },
+  "setting_suspend": {
+    "message": "Laat het systeem opschorten"
+  },
+  "setting_suspend_desc": {
+    "message": "De computer kan slapen tijdens inactieve tijd"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Sommige achtergrondfoto's van het Chromecast-apparaat"
+  },
+  "setting_500editors": {
+    "message": "500px - de keuze van de redactie"
+  },
+  "setting_500editors_desc": {
+    "message": "Keuze foto's van 500px"
+  },
+  "setting_500popular": {
+    "message": "500px - populair"
+  },
+  "setting_500popular_desc": {
+    "message": "Populaire foto's vanaf 500px"
+  },
+  "setting_500yest": {
+    "message": "500px - vers"
+  },
+  "setting_500yest_desc": {
+    "message": "Recente foto's van de 500px, dagelijks bijgewerkt"
+  },
+  "setting_flickr_int": {
+    "message": "Flickr - interessant"
+  },
+  "setting_flickr_int_desc": {
+    "message": "Interessante foto's van de Flickr, dagelijks bijgewerkt"
+  },
+  "setting_reddit_space": {
+    "message": "reddit - ruimte"
+  },
+  "setting_reddit_space_desc": {
+    "message": "Voornamelijk hemelse foto's van reddit, dagelijks bijgewerkt"
+  },
+  "setting_reddit_earth": {
+    "message": "reddit - aarde"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "Primaire landschapfoto's van reddit, dagelijks bijgewerkt"
+  },
+  "setting_reddit_animal": {
+    "message": "reddit - dier"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Animal foto's van reddit, dagelijks bijgewerkt"
+  },
+  "setting_mine": {
+    "message": "Extensie ontwikkelaar"
+  },
+  "setting_mine_desc": {
+    "message": "Foto's van de man die dit heeft geschreven"
+  },
+  "setting_click_to_view": {
+    "message": "Klik op de muis om de foto te bekijken"
+  },
+  "setting_flickr_api": {
+    "message": "Dit product maakt gebruik van de Flickr API, maar wordt niet onderschreven of gecertificeerd door Flickr"
+  },
+  "tab_slideshow": {
+    "message": "SLIDE SHOW CONTROLS",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "DISPLAY BEDIENINGEN",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "FOTO BRONNEN",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "Google Fotoalbums"
+  },
+  "google_title_photos": {
+    "message": "Google Foto's"
+  },
+  "google_shared_albums_note": {
+    "message": "Opmerking: Gedeelde albums zijn mogelijk niet beschikbaar. Zie de FAQ voor meer info."
+  },
+  "google_loading": {
+    "message": "Albums laden"
+  },
+  "last_error_viewer_title": {
+    "message": "Laatste foutviewer"
+  },
+  "help_title": {
+    "message": "Hulp & feedback"
+  },
+  "help_section_feedback": {
+    "message": "Feedback (alleen Engels, alstublieft)"
+  },
+  "help_question": {
+    "message": "Stel een vraag"
+  },
+  "help_bug": {
+    "message": "Meld bug aan"
+  },
+  "help_feature": {
+    "message": "Aanvraag functie"
+  },
+  "help_feedback": {
+    "message": "Geef feedback"
+  },
+  "help_issue": {
+    "message": "Verzend GitHub probleem (vereist account)"
+  },
+  "help_documentation": {
+    "message": "Documentatie"
+  },
+  "help_faq": {
+    "message": "Veel Gestelde Vragen"
+  },
+  "help_translations": {
+    "message": "Bied hulp bij vertalingen aan"
+  },
+  "help_release_notes": {
+    "message": "Release notities"
+  },
+  "help_contributors": {
+    "message": "medewerkers"
+  },
+  "help_licenses": {
+    "message": "Open source licenties"
+  },
+  "help_source_code": {
+    "message": "Broncode"
+  },
+  "err_load_album_list": {
+    "message": "De lijst met Google Fotoalbums kon niet worden opgehaald"
+  },
+  "err_show_ss": {
+    "message": "Kan screensaver niet weergeven"
+  },
+  "err_optional_permissions": {
+    "message": "Kan een facultatieve toestemming niet wijzigen"
+  },
+  "err_request_failed": {
+    "message": "Verzoek mislukt. Selecteer vernieuw om opnieuw te proberen."
+  },
+  "err_storage_title": {
+    "message": "Overschreden opslaglimieten overschreden"
+  },
+  "err_storage_desc": {
+    "message": "Deselecteer andere fotobronnen en probeer het opnieuw."
+  },
+  "err_status": {
+    "message": "staat"
+  },
+  "err_network": {
+    "message": "Netwerkfout"
+  },
+  "err_photo_source_title": {
+    "message": "Fout bij het ophalen van de foto bron"
+  },
+  "err_auth_picasa": {
+    "message": "Gebruiker heeft Picasa niet geautoriseerd."
+  },
+  "err_no_albums": {
+    "message": "Geen albums gevonden"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

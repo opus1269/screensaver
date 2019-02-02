@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: sources/photo_source_reddit.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.Alarm.html">app.Alarm</a></li><li><a href="app.Data.html">app.Data</a></li><li><a href="app.GA.html">app.GA</a></li><li><a href="app.Geo.html">app.Geo</a></li><li><a href="app.Msg.html">app.Msg</a></li><li><a href="app.Permissions.html">app.Permissions</a></li><li><a href="app.PhotoSources.html">app.PhotoSources</a></li><li><a href="app.Screensaver.html">app.Screensaver</a></li><li><a href="app.SSBuilder.html">app.SSBuilder</a></li><li><a href="app.SSControl.html">app.SSControl</a></li><li><a href="app.SSEvents.html">app.SSEvents</a></li><li><a href="app.SSFinder.html">app.SSFinder</a></li><li><a href="app.SSHistory.html">app.SSHistory</a></li><li><a href="app.SSPhotos.html">app.SSPhotos</a></li><li><a href="app.SSRunner.html">app.SSRunner</a></li><li><a href="app.SSTime.html">app.SSTime</a></li><li><a href="app.SSViews.html">app.SSViews</a></li><li><a href="app.Utils.html">app.Utils</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.Auth.html">Chrome.Auth</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ContextMenus.html">ContextMenus</a></li><li><a href="Options.html">Options</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.Px500Source.html">app.Px500Source</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#_checkPermissions">_checkPermissions</a></li><li><a href="global.html#_chromeBackgroundTapped">_chromeBackgroundTapped</a></li><li><a href="global.html#_computeAlbumIconDisabled">_computeAlbumIconDisabled</a></li><li><a href="global.html#_computeHidden">_computeHidden</a></li><li><a href="global.html#_computeLargeTimeDisabled">_computeLargeTimeDisabled</a></li><li><a href="global.html#_computeMailToUrl">_computeMailToUrl</a></li><li><a href="global.html#_computeMenuHidden">_computeMenuHidden</a></li><li><a href="global.html#_computeModeIcon">_computeModeIcon</a></li><li><a href="global.html#_computeModeTooltip">_computeModeTooltip</a></li><li><a href="global.html#_computePhotoLabel">_computePhotoLabel</a></li><li><a href="global.html#_computePhotoSizingMenu">_computePhotoSizingMenu</a></li><li><a href="global.html#_computePhotoTransitionMenu">_computePhotoTransitionMenu</a></li><li><a href="global.html#_computeStack">_computeStack</a></li><li><a href="global.html#_computeTimeFormatMenu">_computeTimeFormatMenu</a></li><li><a href="global.html#_computeTitle">_computeTitle</a></li><li><a href="global.html#_computeTransitionTimeUnits">_computeTransitionTimeUnits</a></li><li><a href="global.html#_computeVersion">_computeVersion</a></li><li><a href="global.html#_computeWaitTimeUnits">_computeWaitTimeUnits</a></li><li><a href="global.html#_deselectAllTapped">_deselectAllTapped</a></li><li><a href="global.html#_initIsAlbumMode">_initIsAlbumMode</a></li><li><a href="global.html#_initPermPicasa">_initPermPicasa</a></li><li><a href="global.html#_initUseGoogleAlbums">_initUseGoogleAlbums</a></li><li><a href="global.html#_initUseGooglePhotos">_initUseGooglePhotos</a></li><li><a href="global.html#_onAlbumSelectChanged">_onAlbumSelectChanged</a></li><li><a href="global.html#_onDeselectAllTapped">_onDeselectAllTapped</a></li><li><a href="global.html#_onEmailTapped">_onEmailTapped</a></li><li><a href="global.html#_onModeTapped">_onModeTapped</a></li><li><a href="global.html#_onRefreshTapped">_onRefreshTapped</a></li><li><a href="global.html#_onRemoveTapped">_onRemoveTapped</a></li><li><a href="global.html#_onSelectAllTapped">_onSelectAllTapped</a></li><li><a href="global.html#_onUseGoogleChanged">_onUseGoogleChanged</a></li><li><a href="global.html#_restoreDefaultsTapped">_restoreDefaultsTapped</a></li><li><a href="global.html#_selectAlbums">_selectAlbums</a></li><li><a href="global.html#_selectAllTapped">_selectAllTapped</a></li><li><a href="global.html#_setPhotoSourceChecked">_setPhotoSourceChecked</a></li><li><a href="global.html#_setPhotoSourcesChecked">_setPhotoSourcesChecked</a></li><li><a href="global.html#_setUseKeys">_setUseKeys</a></li><li><a href="global.html#_showStorageErrorDialog">_showStorageErrorDialog</a></li><li><a href="global.html#_uncheckAll">_uncheckAll</a></li><li><a href="global.html#deselectPhotoSource">deselectPhotoSource</a></li><li><a href="global.html#loadAlbumList">loadAlbumList</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: sources/photo_source_reddit.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ */
+(function() {
+  'use strict';
+  window.app = window.app || {};
+
+  new ExceptionHandler();
+
+  /**
+   * Extension's redirect uri
+   * @type {string}
+   * @const
+   * @private
+   * @memberOf app.RedditSource
+   */
+  const _REDIRECT_URI =
+      `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
+
+  /**
+   * Reddit rest API authorization key
+   * @type {string}
+   * @const
+   * @private
+   * @memberOf app.RedditSource
+   */
+  const _KEY = 'bATkDOUNW_tOlg';
+
+  /**
+   * Max photos to return
+   * @type {int}
+   * @const
+   * @default
+   * @private
+   * @memberOf app.RedditSource
+   */
+  const _MAX_PHOTOS = 100;
+
+  /**
+   * Min size of photo to use
+   * @type {int}
+   * @const
+   * @default
+   * @private
+   * @memberOf app.RedditSource
+   */
+  const _MIN_SIZE = 750;
+
+  /**
+   * Max size of photo to use
+   * @type {int}
+   * @const
+   * @default
+   * @private
+   * @memberOf app.RedditSource
+   */
+  const _MAX_SIZE = 3500;
+
+  /**
+   * Expose reddit API
+   * @type {Function}
+   * @private
+   * @memberOf app.RedditSource
+   */
+  let _snoocore;
+
+  /**
+   * A potential source of photos from reddit
+   * @alias app.RedditSource
+   */
+  app.RedditSource = class extends app.PhotoSource {
+
+    /**
+     * Create a new photo source
+     * @param {string} useKey - The key for if the source is selected
+     * @param {string} photosKey - The key for the collection of photos
+     * @param {string} type - A descriptor of the photo source
+     * @param {string} desc - A human readable description of the source
+     * @param {boolean} isDaily - Should the source be updated daily
+     * @param {boolean} isArray - Is the source an Array of photo Arrays
+     * @param {?Object} [loadArg=null] - optional arg for load function
+     * @constructor
+     */
+    constructor(useKey, photosKey, type, desc, isDaily, isArray,
+                loadArg = null) {
+      super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
+    }
+
+    /**
+     * Parse the size from the submission title.
+     * this is the old way reddit did it
+     * @param {string} title - submission title
+     * @returns {{width: int, height: int}} Photo size
+     * @private
+     */
+    static _getSize(title) {
+      const ret = {width: -1, height: -1};
+      const regex = /\[(\d*)\D*(\d*)\]/;
+      const res = title.match(regex);
+      if (res) {
+        ret.width = parseInt(res[1], 10);
+        ret.height = parseInt(res[2], 10);
+      }
+      return ret;
+    }
+
+    /**
+     * Build the list of photos for one page of items
+     * @param {Array} children - Array of objects from reddit
+     * @returns {app.PhotoSource.Photo[]} Array of photos
+     * @private
+     */
+    static _processChildren(children) {
+      const photos = [];
+      let url;
+      let width = 1;
+      let height = 1;
+
+      for (const child of children) {
+        const data = child.data;
+        if (!data.over_18) {
+          // skip NSFW
+          if (data.preview &amp;&amp; data.preview.images) {
+            // new way. has full size image and array of reduced
+            // resolutions
+            let item = data.preview.images[0];
+            url = item.source.url;
+            width = parseInt(item.source.width, 10);
+            height = parseInt(item.source.height, 10);
+            if (Math.max(width, height) > _MAX_SIZE) {
+              // too big. get the largest reduced resolution image
+              item = item.resolutions[item.resolutions.length - 1];
+              url = item.url.replace(/&amp;amp;/g, '&amp;');
+              width = parseInt(item.width, 10);
+              height = parseInt(item.height, 10);
+            }
+          } else if (data.title) {
+            // old way of specifying images - parse size from title
+            const size = app.RedditSource._getSize(data.title);
+            url = data.url;
+            width = size.width;
+            height = size.height;
+          }
+        }
+
+        const asp = width / height;
+        const author = data.author;
+        if (asp &amp;&amp; !isNaN(asp) &amp;&amp; (Math.max(width, height) >= _MIN_SIZE) &amp;&amp;
+            (Math.max(width, height) &lt;= _MAX_SIZE)) {
+          app.PhotoSource.addPhoto(photos, url, author, asp, data.url);
+        }
+      }
+      return photos;
+    }
+
+    /**
+     * Fetch the photos for this source
+     * @returns {Promise&lt;app.PhotoSource.Photo[]>} Array of photos
+     */
+    fetchPhotos() {
+      let photos = [];
+      if (!_snoocore) {
+        return Promise.reject(new Error('Snoocore library failed to load'));
+      }
+      
+      return _snoocore(`${this._loadArg}hot`).listing({
+        limit: _MAX_PHOTOS,
+      }).then((slice) => {
+        photos =
+            photos.concat(app.RedditSource._processChildren(slice.children));
+        return slice.next();
+      }).then((slice) => {
+        photos =
+            photos.concat(app.RedditSource._processChildren(slice.children));
+        return Promise.resolve(photos);
+      }).catch((err) => {
+        let msg = err.message;
+        if (msg) {
+          // extract first sentence
+          const idx = msg.indexOf('.');
+          if (idx !== -1) {
+            msg = msg.substring(0, idx + 1);
+          }
+        } else {
+          msg = 'Unknown Error';
+        }
+        return Promise.reject(new Error(msg));
+      });
+    }
+  };
+
+  /**
+   * Event: called when document and resources are loaded
+   * @private
+   * @memberOf Background
+   */
+  function _onLoad() {
+    try {
+      const Snoocore = window.Snoocore;
+      if (typeof Snoocore !== 'undefined') {
+        _snoocore = new Snoocore({
+          userAgent: 'photo-screen-saver',
+          throttle: 0,
+          oauth: {
+            type: 'implicit',
+            key: _KEY,
+            redirectUri: _REDIRECT_URI,
+            scope: ['read'],
+          },
+        });
+      }
+    } catch (ex) {
+      Chrome.GA.exception(ex, 'Snoocore library failed to load', false);
+      _snoocore = null;
+    }
+  }
+
+  // listen for document and resources loaded
+  window.addEventListener('load', _onLoad);
+})(window);
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on January 31st 2019, 3:56:17 am
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

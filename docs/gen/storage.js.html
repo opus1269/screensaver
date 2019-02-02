@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: storage.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.Alarm.html">app.Alarm</a></li><li><a href="app.Data.html">app.Data</a></li><li><a href="app.GA.html">app.GA</a></li><li><a href="app.Geo.html">app.Geo</a></li><li><a href="app.Msg.html">app.Msg</a></li><li><a href="app.Permissions.html">app.Permissions</a></li><li><a href="app.PhotoSources.html">app.PhotoSources</a></li><li><a href="app.Screensaver.html">app.Screensaver</a></li><li><a href="app.SSBuilder.html">app.SSBuilder</a></li><li><a href="app.SSControl.html">app.SSControl</a></li><li><a href="app.SSEvents.html">app.SSEvents</a></li><li><a href="app.SSFinder.html">app.SSFinder</a></li><li><a href="app.SSHistory.html">app.SSHistory</a></li><li><a href="app.SSPhotos.html">app.SSPhotos</a></li><li><a href="app.SSRunner.html">app.SSRunner</a></li><li><a href="app.SSTime.html">app.SSTime</a></li><li><a href="app.SSViews.html">app.SSViews</a></li><li><a href="app.Utils.html">app.Utils</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ContextMenus.html">ContextMenus</a></li><li><a href="Options.html">Options</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.Px500Source.html">app.Px500Source</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#_checkPermissions">_checkPermissions</a></li><li><a href="global.html#_chromeBackgroundTapped">_chromeBackgroundTapped</a></li><li><a href="global.html#_computeAlbumIconDisabled">_computeAlbumIconDisabled</a></li><li><a href="global.html#_computeHidden">_computeHidden</a></li><li><a href="global.html#_computeLargeTimeDisabled">_computeLargeTimeDisabled</a></li><li><a href="global.html#_computeMailToUrl">_computeMailToUrl</a></li><li><a href="global.html#_computeMenuHidden">_computeMenuHidden</a></li><li><a href="global.html#_computeModeIcon">_computeModeIcon</a></li><li><a href="global.html#_computeModeTooltip">_computeModeTooltip</a></li><li><a href="global.html#_computePhotoLabel">_computePhotoLabel</a></li><li><a href="global.html#_computePhotoSizingMenu">_computePhotoSizingMenu</a></li><li><a href="global.html#_computePhotoTransitionMenu">_computePhotoTransitionMenu</a></li><li><a href="global.html#_computeStack">_computeStack</a></li><li><a href="global.html#_computeTimeFormatMenu">_computeTimeFormatMenu</a></li><li><a href="global.html#_computeTitle">_computeTitle</a></li><li><a href="global.html#_computeTransitionTimeUnits">_computeTransitionTimeUnits</a></li><li><a href="global.html#_computeVersion">_computeVersion</a></li><li><a href="global.html#_computeWaitTimeUnits">_computeWaitTimeUnits</a></li><li><a href="global.html#_deselectAllTapped">_deselectAllTapped</a></li><li><a href="global.html#_init">_init</a></li><li><a href="global.html#_initIsAlbumMode">_initIsAlbumMode</a></li><li><a href="global.html#_initPermPicasa">_initPermPicasa</a></li><li><a href="global.html#_initUseGoogleAlbums">_initUseGoogleAlbums</a></li><li><a href="global.html#_initUseGooglePhotos">_initUseGooglePhotos</a></li><li><a href="global.html#_onAlbumSelectChanged">_onAlbumSelectChanged</a></li><li><a href="global.html#_onDeselectAllTapped">_onDeselectAllTapped</a></li><li><a href="global.html#_onEmailTapped">_onEmailTapped</a></li><li><a href="global.html#_onItemSelected">_onItemSelected</a></li><li><a href="global.html#_onModeTapped">_onModeTapped</a></li><li><a href="global.html#_onRefreshTapped">_onRefreshTapped</a></li><li><a href="global.html#_onRemoveTapped">_onRemoveTapped</a></li><li><a href="global.html#_onSelectAllTapped">_onSelectAllTapped</a></li><li><a href="global.html#_onUseGoogleChanged">_onUseGoogleChanged</a></li><li><a href="global.html#_restoreDefaultsTapped">_restoreDefaultsTapped</a></li><li><a href="global.html#_selectAlbums">_selectAlbums</a></li><li><a href="global.html#_selectAllTapped">_selectAllTapped</a></li><li><a href="global.html#_setPhotoSourceChecked">_setPhotoSourceChecked</a></li><li><a href="global.html#_setPhotoSourcesChecked">_setPhotoSourcesChecked</a></li><li><a href="global.html#_setUseKeys">_setUseKeys</a></li><li><a href="global.html#_showStorageErrorDialog">_showStorageErrorDialog</a></li><li><a href="global.html#_uncheckAll">_uncheckAll</a></li><li><a href="global.html#deselectPhotoSource">deselectPhotoSource</a></li><li><a href="global.html#loadAlbumList">loadAlbumList</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: storage.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ * Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
+ * Licensed under Apache 2.0
+ * https://opensource.org/licenses/Apache-2.0
+ * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
+ */
+window.Chrome = window.Chrome || {};
+
+/**
+ * Manage items in localStorage
+ * @namespace
+ */
+Chrome.Storage = (function() {
+  'use strict';
+
+  new ExceptionHandler();
+
+  const chromep = new ChromePromise();
+
+  return {
+    /**
+     * Get a JSON parsed value from localStorage
+     * @param {!string} key - key to get value for
+     * @param {?Object} [def=null] - return value if key not found
+     * @returns {?Object} JSON object, null if key does not exist
+     * @memberOf Chrome.Storage
+     */
+    get: function(key, def = null) {
+      let value = def;
+      let item = localStorage.getItem(key);
+      if (item !== null) {
+        value = Chrome.JSONUtils.parse(item);
+      }
+      return value;
+    },
+
+    /**
+     * Get integer value from localStorage
+     * @param {!string} key - key to get value for
+     * @param {?int} [def=null] - optional value to return, if NaN
+     * @returns {int} value as integer, NaN on error
+     * @memberOf Chrome.Storage
+     */
+    getInt: function(key, def = null) {
+      let item = localStorage.getItem(key);
+      let value = parseInt(item, 10);
+      if (Number.isNaN(value)) {
+        value = (def === null) ? value : def;
+        if (def === null) {
+          Chrome.GA.error(`NaN value for: ${key} equals ${item}`,
+              'Storage.getInt');
+        }
+      }
+      return value;
+    },
+
+    /**
+     * Get boolean value from localStorage
+     * @param {!string} key - key to get value for
+     * @param {?boolean} [def=null] - return value if key not found
+     * @returns {?boolean} value as boolean, null if key does not exist
+     * @memberOf Chrome.Storage
+     */
+    getBool: function(key, def = null) {
+      return Chrome.Storage.get(key, def);
+    },
+
+    /**
+     * JSON stringify and save a value to localStorage
+     * @param {!string} key - key to set value for
+     * @param {?Object} [value=null] - new value, if null remove item
+     * @memberOf Chrome.Storage
+     */
+    set: function(key, value = null) {
+      let val = value;
+      if (value === null) {
+        localStorage.removeItem(key);
+      } else {
+        val = JSON.stringify(value);
+        localStorage.setItem(key, val);
+      }
+    },
+
+    /**
+     * Save a value to localStorage only if there is enough room
+     * @param {!string} key - localStorage Key
+     * @param {Object} value - value to save
+     * @param {string} [keyBool] - key to a boolean value
+     *                 that is true if the primary key has non-empty value
+     * @returns {boolean} true if value was set successfully
+     * @memberOf Chrome.Storage
+     */
+    safeSet: function(key, value, keyBool) {
+      let ret = true;
+      const oldValue = Chrome.Storage.get(key);
+      try {
+        Chrome.Storage.set(key, value);
+      } catch (e) {
+        ret = false;
+        if (oldValue) {
+          // revert to old value
+          Chrome.Storage.set(key, oldValue);
+        }
+        if (keyBool) {
+          // revert to old value
+          if (oldValue &amp;&amp; oldValue.length) {
+            Chrome.Storage.set(keyBool, true);
+          } else {
+            Chrome.Storage.set(keyBool, false);
+          }
+        }
+        // notify listeners
+        Chrome.Msg.send(Chrome.Msg.STORAGE_EXCEEDED).catch(() => {
+        });
+      }
+      return ret;
+    },
+
+    /**
+     * An error that can be persisted
+     * Usage: const err = new LastError(message, title)
+     * @param {?string} [message=''] - the message
+     * @param {?string} [title='An error occurred'] - the title
+     * @property {string} name - Error name
+     * @property {string} stack - stack trace
+     * @memberOf Chrome.Storage
+     */
+    LastError: function(message = '', title = 'An error occurred') {
+      this.name = 'LastError';
+      this.message = message;
+      this.title = title;
+      this.stack = (new Error).stack;
+      Chrome.Storage.LastError.prototype = Object.create(Error.prototype);
+      Chrome.Storage.LastError.prototype.constructor =
+          Chrome.Storage.LastError;
+    },
+
+    /**
+     * Get the LastError from chrome.storage.local
+     * @returns {Promise&lt;Chrome.Msg.LastError>} last error
+     * @memberOf Chrome.Storage
+     */
+    getLastError: function() {
+      return chromep.storage.local.get('lastError').then((values) => {
+        if (values.lastError) {
+          return Promise.resolve(values.lastError);
+        }
+        return new Chrome.Storage.LastError();
+      });
+    },
+
+    /**
+     * Save the LastError to chrome.storage.local
+     * @see https://developer.chrome.com/apps/storage
+     * @param {Chrome.Storage.LastError} error - the LastError
+     * @returns {Promise&lt;void>} void
+     * @memberOf Chrome.Storage
+     */
+    setLastError: function(error) {
+      // Save it using the Chrome storage API.
+      return chromep.storage.local.set({'lastError': error});
+    },
+
+    /**
+     * Set the LastError to an empty message in chrome.storage.local
+     * @returns {Promise&lt;void>} void
+     * @memberOf Chrome.Storage
+     */
+    clearLastError: function() {
+      return Chrome.Storage.setLastError(new Chrome.Storage.LastError());
+    },
+  };
+})();
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on November 8th 2017, 2:25:10 am
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

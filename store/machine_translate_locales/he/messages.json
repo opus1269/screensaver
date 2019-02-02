@@ -1,0 +1,422 @@
+{
+  "chrome_extension_name": {
+    "message": "שומר מסך תמונה"
+  },
+  "chrome_extension_description": {
+    "message": "שומר מסך עם מקורות תמונה מרובים, כולל אלבומי Google שלך."
+  },
+  "browser_action_title": {
+    "message": "תמונה שומר מסך - לחץ על אפשרויות"
+  },
+  "toggle_enabled": {
+    "message": "מצב מופעלת מופעלת"
+  },
+  "screensaver": {
+    "message": "שומר מסך"
+  },
+  "on": {
+    "message": "הוא פועל"
+  },
+  "off": {
+    "message": "כבוי"
+  },
+  "disable": {
+    "message": "השבת"
+  },
+  "enable": {
+    "message": "לְאַפשֵׁר"
+  },
+  "help": {
+    "message": "עֶזרָה"
+  },
+  "no": {
+    "message": "לא"
+  },
+  "ok": {
+    "message": "בסדר",
+    "description": "All Caps"
+  },
+  "cancel": {
+    "message": "לְבַטֵל",
+    "description": "All Caps"
+  },
+  "polymer": {
+    "message": "פּוֹלִימֵר",
+    "description": "All Caps"
+  },
+  "github": {
+    "message": "צפה בגיתוב",
+    "description": "All Caps"
+  },
+  "w3": {
+    "message": "W3SCHOOLS",
+    "description": "All Caps"
+  },
+  "mdn": {
+    "message": "MDN",
+    "description": "All Caps"
+  },
+  "chromecast": {
+    "message": "כרומקסט",
+    "description": "All Caps"
+  },
+  "picasa": {
+    "message": "PICASA",
+    "description": "All Caps"
+  },
+  "material": {
+    "message": "עיצוב חומר",
+    "description": "All Caps"
+  },
+  "chrome_ext": {
+    "message": "הרחבת כרום",
+    "description": "All Caps"
+  },
+  "note": {
+    "message": "הערה:"
+  },
+  "photo": {
+    "message": "תמונה"
+  },
+  "photos": {
+    "message": "תמונות"
+  },
+  "seconds": {
+    "message": "שניות"
+  },
+  "minutes": {
+    "message": "דקות"
+  },
+  "hours": {
+    "message": "שעות"
+  },
+  "days": {
+    "message": "ימים"
+  },
+  "off_abbrev": {
+    "message": "כבוי",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
+  },
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "menu": {
+    "message": "תַפרִיט"
+  },
+  "menu_settings": {
+    "message": "הגדרות"
+  },
+  "menu_google": {
+    "message": "בחר אלבומי אלבומי Google"
+  },
+  "menu_preview": {
+    "message": "שומר מסך תצוגה מקדימה"
+  },
+  "menu_help": {
+    "message": "עזרה ומשוב"
+  },
+  "menu_support": {
+    "message": "בקש תמיכה"
+  },
+  "menu_rate": {
+    "message": "דרג את התוסף"
+  },
+  "menu_pushy": {
+    "message": "נסה את סיומת לוח דחוס"
+  },
+  "menu_letterbox": {
+    "message": "תיבת דואר"
+  },
+  "menu_zoom": {
+    "message": "זום (חיתוך במאי)"
+  },
+  "menu_frame": {
+    "message": "מִסגֶרֶת"
+  },
+  "menu_full": {
+    "message": "מלא (מאי לעוות)"
+  },
+  "menu_random": {
+    "message": "אַקרַאִי"
+  },
+  "menu_scale_up": {
+    "message": "קנה מידה"
+  },
+  "menu_fade": {
+    "message": "לִדעוֹך"
+  },
+  "menu_slide_from_right": {
+    "message": "החלק ימינה"
+  },
+  "menu_slide_down": {
+    "message": "החלק מטה"
+  },
+  "menu_spin_up": {
+    "message": "ספין"
+  },
+  "menu_slide_up": {
+    "message": "החלק למעלה"
+  },
+  "menu_slide_from_bottom": {
+    "message": "החלק מלמטה"
+  },
+  "menu_slide_right": {
+    "message": "החלק ימינה"
+  },
+  "menu_12_hour": {
+    "message": "12 שעות"
+  },
+  "menu_24_hour": {
+    "message": "24 שעות"
+  },
+  "tooltip_select": {
+    "message": "בחר הכל"
+  },
+  "tooltip_deselect": {
+    "message": "הסר סימון מהכל"
+  },
+  "tooltip_restore": {
+    "message": "שחזר הגדרות ברירת מחדל"
+  },
+  "tooltip_refresh": {
+    "message": "רשימת רענון"
+  },
+  "tooltip_keep_awake": {
+    "message": "התכונות 'שמור שמור' זמינות גם אם שומר המסך מושבת, כך שתוכל להשתמש באפליקציה כתזמון כוח כללי. הסמל יוצג 'PWR' במצב זה."
+  },
+  "tooltip_settings_toggle": {
+    "message": "הפעל / השבת את שומר המסך"
+  },
+  "tooltip_google_toggle": {
+    "message": "הפעלה / השבתה של שימוש באלבומים"
+  },
+  "setting_idle_time": {
+    "message": "זמן המתנה"
+  },
+  "setting_transition_time": {
+    "message": "זמן מעבר צילום"
+  },
+  "setting_photo_sizing": {
+    "message": "מצב תצוגת תמונות"
+  },
+  "setting_photo_transition": {
+    "message": "שיטת מעבר תמונה"
+  },
+  "setting_show_time": {
+    "message": "הצג זמן"
+  },
+  "setting_shuffle": {
+    "message": "אקראי"
+  },
+  "setting_shuffle_desc": {
+    "message": "הצג תמונות בסדר אקראי"
+  },
+  "setting_skip": {
+    "message": "דלג על תמונות יחס גובה קיצוני"
+  },
+  "setting_skip_desc": {
+    "message": "אל תציג תמונות מסוימות במצב זום ומצב מלא"
+  },
+  "setting_photog": {
+    "message": "הצג מחבר לתמונות שבבעלותך"
+  },
+  "setting_photog_desc": {
+    "message": "הערה: תמיד מוצג במצב פריימים"
+  },
+  "setting_bg": {
+    "message": "רקע כללי"
+  },
+  "setting_bg_desc": {
+    "message": "הגדר את תמונת הרקע של שומר המסך"
+  },
+  "setting_bg_dialog_title": {
+    "message": "בחר תמונת רקע"
+  },
+  "setting_all_displays": {
+    "message": "כל התצוגות"
+  },
+  "setting_all_displays_desc": {
+    "message": "הצג שומר מסך בכל הצגים המחוברים"
+  },
+  "setting_full_screen": {
+    "message": "אל תציג את חלונות Chrome מלאים"
+  },
+  "setting_full_screen_desc": {
+    "message": "שימושי אם אתה צופה בסרטונים"
+  },
+  "setting_keep_awake": {
+    "message": "הישאר ער"
+  },
+  "setting_keep_awake_desc": {
+    "message": "מניעת תצוגה משינה (פעילה תמיד אם זמני ההתחלה והעיצוב שווים)"
+  },
+  "setting_start_time": {
+    "message": "הגיע הזמן להתחיל"
+  },
+  "setting_start_time_desc": {
+    "message": "אפשר להציג את שומר המסך, החל מהרגע הזה"
+  },
+  "setting_stop_time": {
+    "message": "הגיע הזמן לעצור"
+  },
+  "setting_stop_time_desc": {
+    "message": "לאחר מכן, הצג שומר מסך לא מאפשר"
+  },
+  "setting_suspend": {
+    "message": "אפשר להשהות את המערכת"
+  },
+  "setting_suspend_desc": {
+    "message": "המחשב עשוי להירדם במהלך זמן לא פעיל"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "תמונות רקע מסוימות מהמכשיר Chromecast"
+  },
+  "setting_500editors": {
+    "message": "500px - בחירת העורכים"
+  },
+  "setting_500editors_desc": {
+    "message": "בחירת תמונות מ 500px"
+  },
+  "setting_500popular": {
+    "message": "500px - פופולרי"
+  },
+  "setting_500popular_desc": {
+    "message": "תמונות פופולריות מ 500px"
+  },
+  "setting_500yest": {
+    "message": "500px - טרי"
+  },
+  "setting_500yest_desc": {
+    "message": "תמונות אחרונות מ 500px, מתעדכן מדי יום"
+  },
+  "setting_flickr_int": {
+    "message": "פליקר - מעניין"
+  },
+  "setting_flickr_int_desc": {
+    "message": "תמונות מעניינות מהפליקר, מתעדכנות מדי יום"
+  },
+  "setting_reddit_space": {
+    "message": "Reddit - רווח"
+  },
+  "setting_reddit_space_desc": {
+    "message": "בעיקר תמונות שמימיות מ reddit, מתעדכן מדי יום"
+  },
+  "setting_reddit_earth": {
+    "message": "Reddit - אדמה"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "בעיקר הנוף תמונות reddit, מתעדכן מדי יום"
+  },
+  "setting_reddit_animal": {
+    "message": "Reddit - בעל חיים"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "תמונות חיות מ reddit, מתעדכן מדי יום"
+  },
+  "setting_mine": {
+    "message": "מפתח הרחבה"
+  },
+  "setting_mine_desc": {
+    "message": "תמונות של הבחור שכתב את זה"
+  },
+  "setting_click_to_view": {
+    "message": "לחץ על העכבר כדי להציג את האתר עבור תמונות Flickr, 500px ו- reddit"
+  },
+  "setting_flickr_api": {
+    "message": "מוצר זה משתמש בממשק ה- API של Flickr אך אינו מאושר או מאושר על ידי Flickr"
+  },
+  "tab_slideshow": {
+    "message": "SLIDE הצג פקדים",
+    "description": "All Caps"
+  },
+  "tab_display": {
+    "message": "פקדי תצוגה",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "מקורות צילום",
+    "description": "All Caps"
+  },
+  "google_title": {
+    "message": "אלבומי Google Photos"
+  },
+  "google_shared_albums_note": {
+    "message": "הערה: ייתכן שאלבומים משותפים אינם זמינים. עיין בשאלות הנפוצות לקבלת מידע נוסף."
+  },
+  "google_loading": {
+    "message": "טוען אלבומים"
+  },
+  "help_title": {
+    "message": "עזרה ומשוב"
+  },
+  "help_section_feedback": {
+    "message": "משוב (אנגלית בלבד, בבקשה)"
+  },
+  "help_question": {
+    "message": "שאל שאלה"
+  },
+  "help_bug": {
+    "message": "דווח על באג"
+  },
+  "help_feature": {
+    "message": "מאפיין הבקשה"
+  },
+  "help_feedback": {
+    "message": "ספק משוב"
+  },
+  "help_issue": {
+    "message": "שלח בעיה של GitHub (דורש חשבון)"
+  },
+  "help_documentation": {
+    "message": "תיעוד"
+  },
+  "help_faq": {
+    "message": "שאלות נפוצות"
+  },
+  "help_translations": {
+    "message": "הצעת עזרה עם תרגומים"
+  },
+  "help_release_notes": {
+    "message": "מכתבי שחרור"
+  },
+  "help_licenses": {
+    "message": "רישיונות קוד פתוח"
+  },
+  "help_source_code": {
+    "message": "קוד מקור"
+  },
+  "err_request_failed": {
+    "message": "בקשה נכשלה. בחר רענון כדי לנסות שוב."
+  },
+  "err_storage_title": {
+    "message": "חריגה ממגבלות האחסון"
+  },
+  "err_storage_desc": {
+    "message": "בטל את הסימון של מקורות תמונה אחרים ונסה שוב."
+  },
+  "err_status": {
+    "message": "סטָטוּס"
+  },
+  "err_network": {
+    "message": "בעיה ברשת"
+  },
+  "err_photo_source_title": {
+    "message": "אחזור מקור התמונה נכשל"
+  },
+  "time_format": {
+    "message": "12",
+    "description": "Set to 12 for AM/PM format or 24"
+  },
+  "translationInfo": {
+    "message": "Google Translate API",
+    "description": "Add your name and contact info, if you want"
+  }
+}

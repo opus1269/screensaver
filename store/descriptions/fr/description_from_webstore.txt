@@ -1,0 +1,37 @@
+Cette extension est un écran de veille qui affiche un diaporama de photos provenant de différentes sources. Les sources de photos prises en charge sont les suivantes :
+
+* Albums photo Google
+      Remarque : les albums partagés ne sont pas pris en charge
+* Quelques photos de fond d’écran utilisées par Chromecast
+* Plusieurs sources de 500px
+* Plusieurs sources de reddit
+* Certaines photos de Flickr
+
+Remarque : les photos stockées sur le système de fichiers local ne sont pas prises en charge.
+
+Pour configurer le diaporama, de nombreuses options sont proposées :
+
+* Temps d’inactivité après lequel l’écran de veille apparaît
+* Interval entre chaque photo
+* Mode d’affichage des photos (cadré, écran entier...)
+* Animations de transition des photos (fondu, agrandissement...)
+* Un planificateur permet de contrôler l'activation de l’écran de veille, l’écran et l’ordinateur
+* Ne pas afficher sur les fenêtres Chrome en plein écran (YouTube, Netflix...)
+* Afficher sur tous les écrans
+* Temps d’affichage
+
+Cette extension fonctionne très bien sur toutes les plateformes, mais elle peut être particulièrement utile sur votre Chromebook.
+
+Merci de nous donner une note si vous l'appréciez.
+
+Cette application est open source et sans publicité.
+Code source:
+https://github.com/opus1269/photo-screen-saver
+
+* Déclaration de confidentialité
+
+Ce programme ne stocke ou ne transmet en aucun cas vos données.
+
+L'authentification avec l'API Picasa utilisée pour accéder à vos photos Google est réalisée avec les protocoles OAUTH2 et https.
+
+https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md

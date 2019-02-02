@@ -1,0 +1,19 @@
+{
+  "ignore": [
+    "**/node_modules/**",
+    "**/**-min-**",
+    "**/**-min.**",
+    "**/**.min.**",
+    "bower_components/**",
+    "**/app/bower_components/**",
+    "**/docs/**",
+    "**/docs/gen/scripts/**",
+    "**/app/lib/**"
+  ],
+  "test": [
+    "**/test/**",
+    "**/tests/**",
+    "**/spec/**",
+    "**/specs/**"
+  ]
+}

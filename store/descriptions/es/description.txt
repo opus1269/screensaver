@@ -1,0 +1,37 @@
+Esta extensión muestra un salvapantalla compuesto por una presentación de diapositivas de fotos de múltiples fuentes. Las fuentes fotográficas compatibles incluyen:
+
+* Tus álbumes de fotos de Google
+      Nota: Los álbumes compartidos no son compatibles
+* Algunas fotos de fondo utilizadas por Chromecast
+* Varias fuentes de 500px
+* Varias fuentes de reddit
+* Fotos interesantes de Flickr
+
+Nota: Las fotos del sistema de archivos local no son compatibles.
+
+Hay muchas opciones disponibles para controlar la apariencia de la presentación, incluyendo:
+
+* Tiempo de espera después de que la máquina se vuelva inactiva para mostrar el salvapantallas
+* Entre intervalo de tiempo de foto
+* Modo de visualización de fotografías (por ejemplo, descolorarse, pantalla de relleno)
+* Animaciones de transición de fotos (por ejemplo, atenuación, ampliación)
+* Un planificador para controlar cuando el salvapantallas, la pantalla y el ordenador deben permanecer encendidos
+* No mostrar en pantalla completa las ventanas de Chrome (por ejemplo, YouTube, Netflix)
+* Mostrar en todas las pantallas
+* Tiempo de visualización
+
+Funciona muy bien en todas las plataformas, pero puede ser especialmente útil para tu Chromebook.
+
+Califique esto si lo encuentra de valor. Gracias.
+
+Es de código abierto y sin publicidad.
+Código fuente:
+https://github.com/opus1269/photo-screen-saver
+
+* Declaracion de privacidad
+
+Este programa no almacena ni transmite ningún dato de usuario sensible o personal.
+
+La autenticación con la API de Picasa, que se utiliza para acceder a Google Fotos, se realiza con OAUTH2 y https.
+
+https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md

@@ -1,0 +1,37 @@
+Diese Erweiterung zeigt einen Bildschirmschoner, bestehend aus einer Diashow von Fotos aus verschiedenen Quellen. Unterstützte Bildquellen sind:
+
+* Ihre Google Fotos Alben
+      Hinweis: Gemeinsame Alben werden nicht unterstützt
+* Einige Hintergrundfotos verwendet von Chrome
+* Mehrere Quellen von 500px
+* Mehrere Quellen von reddit
+* Interessante Fotos von Flickr
+
+Hinweis: Fotos aus dem lokalen Dateisystem werden nicht unterstützt.
+
+Viele Optionen stehen zur Verfügung, um das Aussehen der Diashow zu bestimmen, einschließlich:
+
+* Wartezeit, nachdem die Maschine im Leerlauf ist, um Bildschirmschoner anzuzeigen
+* Zwischen Foto-Zeitintervall
+* Fotoanzeigemodus - (z. B. Rahmen, Füllbildschirm)
+* Fotoübergangsanimationen - (z.B. verblassen, skalieren)
+* Ein Scheduler, der kontrolliert, wann der Bildschirmschoner, die Anzeige und der Computer eingeschaltet bleiben sollen
+* Nicht über Vollbildschirm-Chrome-Fenster anzeigen (z. B. YouTube, Netflix)
+* Anzeigen auf allen Displays
+* Anzeigezeit
+
+Funktioniert auf allen Plattformen, kann aber besonders nützlich für Ihr Chromebook sein.
+
+Bitte bewerten Sie diese Option, wenn Sie sie als wertvoll erachten. Vielen Dank.
+
+Es ist Open-Source und ohne Werbung.
+Quellcode:
+https://github.com/opus1269/photo-screen-saver
+
+* Datenschutzerklärung
+
+Dieses Programm speichert oder überträgt keine sensiblen oder personenbezogenen Nutzerdaten.
+
+Die Authentifizierung mit der Picasa-API, die für den Zugriff auf Ihre Google Fotos verwendet wird, erfolgt mit OAUTH2 und https.
+
+https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md

@@ -1,0 +1,37 @@
+Cette extension affiche un économiseur d'écran composé d'un diaporama de photos provenant de plusieurs sources. Les sources de photos prises en charge incluent:
+
+* Vos albums Google Photos
+      Remarque: les albums partagés ne sont pas pris en charge
+* Quelques photos d'arrière-plan utilisées par Chromecast
+* Plusieurs sources depuis 500px
+* Plusieurs sources de Reddit
+Photos intéressantes de Flickr
+
+Remarque: Les photos du système de fichiers local ne sont pas prises en charge.
+
+De nombreuses options sont disponibles pour contrôler l'apparence du diaporama, y ​​compris:
+
+* Temps d'attente après la mise en veille de l'appareil pour afficher l'économiseur d'écran
+* Entre l'intervalle de temps de photo
+* Mode d'affichage de la photo - (par exemple, image, écran de remplissage)
+* Animations de transition photo - (par ex., Fondu, mise à l'échelle)
+* Un planificateur à contrôler lorsque l'économiseur d'écran, l'écran et l'ordinateur devraient rester activés
+* Ne pas afficher sur l'écran complet Chrome Windows (par exemple, YouTube, Netflix)
+* Afficher sur tous les écrans
+* Temps d'affichage
+
+Fonctionne bien sur toutes les plates-formes mais peut être particulièrement utile pour votre Chromebook.
+
+Notez ceci si vous le trouvez de valeur. Je vous remercie.
+
+Il est open source et sans publicité.
+Code source:
+Https://github.com/opus1269/photo-screen-saver
+
+* Déclaration de confidentialité
+
+Ce programme ne stocke ni ne transmet aucune donnée utilisateur sensible ou personnelle.
+
+L'authentification avec l'API Picasa, utilisée pour accéder à vos Photos Google, est effectuée avec OAUTH2 et https.
+
+Https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md
