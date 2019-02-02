@@ -12,7 +12,7 @@
 
 <link rel="import" href="../../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
 <script type="text/javascript"
@@ -77,12 +77,12 @@
                       disabled$="[[disabled]]"
                       on-change="_onSliderValueChanged"></paper-slider>
         <paper-dropdown-menu disabled$="[[disabled]]" noink no-label-float>
-          <paper-menu id="menu" class="dropdown-content"
+          <paper-listbox id="menu" slot="dropdown-content"
                       selected="{{value.unit}}" on-iron-select="_onUnitChanged">
             <template is="dom-repeat" as="unit" items="[[units]]">
               <paper-item>[[unit.name]]</paper-item>
             </template>
-          </paper-menu>
+          </paper-listbox>
         </paper-dropdown-menu>
         <array-selector id="selector" items="[[units]]"
                         selected="{{unit}}"></array-selector>
