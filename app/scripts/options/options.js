@@ -275,9 +275,7 @@
    */
   function _showScreensaverPreview(index, prevRoute) {
     // reselect previous page - need to delay so tap event is done
-    t.async(function() {
-      t.$.mainMenu.select(prevRoute);
-    }, 500);
+    setTimeout(()=> t.$.mainMenu.select(prevRoute), 500);
     Chrome.Msg.send(app.Msg.SS_SHOW).catch(() => {});
   }
 
