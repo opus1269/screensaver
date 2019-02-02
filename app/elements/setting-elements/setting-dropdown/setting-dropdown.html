@@ -11,7 +11,7 @@
 <link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 
 <script type="text/javascript" src="../../../bower_components/chrome-extension-utils/scripts/exception_handler.js"></script>
@@ -50,11 +50,11 @@
     <paper-item class="center horizontal layout" tabindex="-1">
       <div class="setting-label flex">{{label}}</div>
       <paper-dropdown-menu disabled$="[[disabled]]" noink no-label-float>
-        <paper-menu class="dropdown-content" on-tap="_onItemSelected" selected="{{value}}">
+        <paper-listbox slot="dropdown-content" on-tap="_onItemSelected" selected="{{value}}">
           <template id="t" is="dom-repeat" items="[[items]]">
             <paper-item>[[item]]</paper-item>
           </template>
-        </paper-menu>
+        </paper-listbox>
       </paper-dropdown-menu>
     </paper-item>
     <hr hidden$="[[noseparator]]"/>
