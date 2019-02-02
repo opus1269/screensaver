@@ -239,7 +239,7 @@
      * @memberOf SettingBackground
      */
     _onOK: function() {
-      const el = document.getElementById(this.selected);
+      const el = this.shadowRoot.getElementById(this.selected);
       this.set('value', 'background:' + el.style.background);
       Chrome.GA.event(Chrome.GA.EVENT.BUTTON,
           `SettingBackground.OK: ${this.selected}`);
