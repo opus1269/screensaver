@@ -16,150 +16,146 @@
 
   <link rel="stylesheet" href="../styles/options.css">
 
-  <!-- All script and element imports - will be vulcanized -->
+  <!-- All script and element imports - will be vulcanized must be last line in head -->
   <link rel="import" href="options_imports.html">
 
-  <!-- For iron-flex-layout -->
-  <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-
-  <!-- For shared styles, shared-styles.html import in elements.html -->
-  <style is="custom-style" include="shared-styles"></style>
 </head>
 
 <body unresolved class="fullbleed layout vertical">
-<template is="dom-bind" id="t">
-  <style is="custom-style">
-    paper-menu paper-item {
-      --paper-item-selected: {
-        color: var(--dark-primary-color);
-        background-color: var(--selected-color);
-        text-rendering: optimizeLegibility;
-      };
-      --paper-item-focused: {
-        background-color: transparent;
-      };
-      --paper-item-focused-before: {
-        background-color: transparent;
-      };
-    }
+<dom-bind id="t">
+  <template>
+    
+    <custom-style>
+      <style include="iron-flex iron-flex-alignment shared-styles">
+        paper-menu paper-item {
+          --paper-item-selected: {
+            color: var(--dark-primary-color);
+            background-color: var(--selected-color);
+            text-rendering: optimizeLegibility;
+          };
+          --paper-item-focused: {
+            background-color: transparent;
+          };
+          --paper-item-focused-before: {
+            background-color: transparent;
+          };
+        }
 
-    #mainToolbar .middle-container {
-      height: 100%;
-      margin-left: 48px;
-    }
+        #mainToolbar .middle-container {
+          height: 100%;
+          margin-left: 48px;
+        }
 
-    #mainToolbar .middle {
-      @apply --paper-font-headline;
-      padding-bottom: 0;
-    }
+        #mainToolbar .middle {
+          @apply --paper-font-headline;
+          padding-bottom: 0;
+        }
 
-    #drawerToolbar {
-      color: var(--secondary-text-color);
-      background-color: var(--drawer-menu-color);
-      border-bottom: var(--drawer-toolbar-border-color);
-    }
+        #drawerToolbar {
+          color: var(--secondary-text-color);
+          background-color: var(--drawer-menu-color);
+          border-bottom: var(--drawer-toolbar-border-color);
+        }
 
-    #drawerToolbar .menu-name {
-      @apply --paper-font-title;
-    }
+        #drawerToolbar .menu-name {
+          @apply --paper-font-title;
+        }
 
-    #drawer.paper-drawer-panel > [drawer] {
-      border-right: 1px solid rgba(0, 0, 0, 0.14);
-    }
+        #drawer.paper-drawer-panel > [drawer] {
+          border-right: 1px solid rgba(0, 0, 0, 0.14);
+        }
 
-    #mainPages neon-animatable {
-      padding: 0 0;
-    }
+        #mainPages neon-animatable {
+          padding: 0 0;
+        }
 
-    /* Height of the main scroll area */
-    #mainContainer {
-      height: 1000px;
-    }
-  </style>
+        /* Height of the main scroll area */
+        #mainContainer {
+          height: 1000px;
+        }
+      </style>
+    </custom-style>
 
-  <paper-drawer-panel id="paperDrawerPanel" responsive-width="800px"
-                      drawer-width="350px">
-    <paper-material elevation="2" drawer fixed>
-      <!-- Drawer Scroll Header Panel -->
-      <paper-scroll-header-panel>
-        <!-- Drawer Toolbar -->
-        <paper-toolbar id="drawerToolbar">
-          <span class="menu-name">{{_computeMenu()}}</span>
-        </paper-toolbar>
-        <!-- Drawer Content -->
-        <paper-menu class="list" id="mainMenu" attr-for-selected="id"
-                    selected="[[route]]">
-          <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
-            <hr hidden$="[[!item.divider]]"/>
-            <paper-item id="[[item.route]]"
-                        class="center horizontal layout"
-                        on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
-              <iron-icon icon="[[item.icon]]"></iron-icon>
-              <span>[[item.label]]</span>
-            </paper-item>
-          </template>
-        </paper-menu>
-      </paper-scroll-header-panel>
-    </paper-material>
-
-    <!-- Main Scroll Header Panel -->
-    <paper-scroll-header-panel id="scrollPanel" main fixed>
-      <!-- Main Toolbar -->
-      <paper-material class="paper-header" elevation="2">
-        <paper-toolbar id="mainToolbar">
-          <paper-icon-button id="paperToggle" icon="myicons:menu"
-                             paper-drawer-toggle>
-          </paper-icon-button>
-          <span class="flex"></span>
-          <!-- Application name -->
-          <div class="middle middle-container center horizontal layout">
-            <div>
-              {{_computeTitle()}}
-            </div>
-          </div>
-        </paper-toolbar>
+    <paper-drawer-panel id="paperDrawerPanel" responsive-width="800px"
+                        drawer-width="350px">
+      <paper-material elevation="2" slot="drawer" fixed>
+        <!-- Drawer Scroll Header Panel -->
+        <paper-scroll-header-panel>
+          <!-- Drawer Toolbar -->
+          <paper-toolbar id="drawerToolbar" slot="header">
+            <span class="menu-name" slot="top">{{_computeMenu()}}</span>
+          </paper-toolbar>
+          <!-- Drawer Content -->
+          <paper-listbox id="mainMenu" slot="content" attr-for-selected="id"
+                         selected="[[route]]">
+            <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
+              <hr hidden$="[[!item.divider]]"/>
+              <paper-item id="[[item.route]]"
+                          class="center horizontal layout"
+                          on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
+                <iron-icon icon="[[item.icon]]"></iron-icon>
+                <span>[[item.label]]</span>
+              </paper-item>
+            </template>
+          </paper-listbox>
+        </paper-scroll-header-panel>
       </paper-material>
 
-      <!-- Main Content -->
-      <div id="mainContainer">
+      <!-- Main Scroll Header Panel -->
+      <paper-scroll-header-panel id="scrollPanel" slot="main" fixed>
+        <!-- Main Toolbar -->
+        <paper-material class="paper-header" slot="header" elevation="2">
+          <paper-toolbar id="mainToolbar">
+            <paper-icon-button id="paperToggle" slot="top" 
+                               icon="myicons:menu" paper-drawer-toggle></paper-icon-button>
+            <!-- Application name -->
+            <div class="middle middle-container center horizontal layout" slot="top">
+              <div>{{_computeTitle()}}</div>
+            </div>
+          </paper-toolbar>
+        </paper-material>
 
-        <!-- Error dialog -->
-        <paper-dialog id="errorDialog" modal
-                      entry-animation="scale-up-animation"
-                      exit-animation="fade-out-animation">
-          <h2 id="dialogTitle">[[dialogTitle]]</h2>
-          <paper-dialog-scrollable>
-            <p id="dialogText">[[dialogText]]</p>
-          </paper-dialog-scrollable>
-          <div class="buttons">
-            <paper-button dialog-dismiss>OK</paper-button>
-          </div>
-        </paper-dialog>
+        <!-- Main Content -->
+        <div id="mainContainer" slot="content">
 
-        <neon-animated-pages id="mainPages"
-                             attr-for-selected="data-route"
-                             selected="{{route}}"
-                             entry-animation="fade-in-animation"
-                             exit-animation="fade-out-animation">
-          <neon-animatable data-route="page-settings">
-            <section>
-              <settings-page id="settingsPage"></settings-page>
-            </section>
-          </neon-animatable>
-          <neon-animatable data-route="page-google-photos">
-            <section id="googlePhotosInsertion"></section>
-          </neon-animatable>
-          <neon-animatable data-route="page-error">
-            <section id="errorInsertion"></section>
-          </neon-animatable>
-          <neon-animatable data-route="page-help">
-            <section id="helpInsertion"></section>
-          </neon-animatable>
-        </neon-animated-pages>
-      </div>
-    </paper-scroll-header-panel>
-  </paper-drawer-panel>
-</template>
+          <!-- Error dialog -->
+          <paper-dialog id="errorDialog" modal
+                        entry-animation="scale-up-animation"
+                        exit-animation="fade-out-animation">
+            <h2 id="dialogTitle">[[dialogTitle]]</h2>
+            <paper-dialog-scrollable>
+              <p id="dialogText">[[dialogText]]</p>
+            </paper-dialog-scrollable>
+            <div class="buttons">
+              <paper-button dialog-dismiss>OK</paper-button>
+            </div>
+          </paper-dialog>
+
+          <neon-animated-pages id="mainPages"
+                               attr-for-selected="data-route"
+                               selected="{{route}}"
+                               entry-animation="fade-in-animation"
+                               exit-animation="fade-out-animation">
+            <neon-animatable data-route="page-settings">
+              <section>
+                <settings-page id="settingsPage"></settings-page>
+              </section>
+            </neon-animatable>
+            <neon-animatable data-route="page-google-photos">
+              <section id="googlePhotosInsertion"></section>
+            </neon-animatable>
+            <neon-animatable data-route="page-error">
+              <section id="errorInsertion"></section>
+            </neon-animatable>
+            <neon-animatable data-route="page-help">
+              <section id="helpInsertion"></section>
+            </neon-animatable>
+          </neon-animated-pages>
+        </div>
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+  </template>
+</dom-bind>
 
 <script src="../scripts/options/options.js"></script>
 

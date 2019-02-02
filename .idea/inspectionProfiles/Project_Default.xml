@@ -76,7 +76,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="65">
+          <list size="68">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -142,6 +142,9 @@
             <item index="62" class="java.lang.String" itemvalue="confirm-dialog" />
             <item index="63" class="java.lang.String" itemvalue="backup-row" />
             <item index="64" class="java.lang.String" itemvalue="slot" />
+            <item index="65" class="java.lang.String" itemvalue="custom-style" />
+            <item index="66" class="java.lang.String" itemvalue="array-selector" />
+            <item index="67" class="java.lang.String" itemvalue="dom-bind" />
           </list>
         </value>
       </option>
