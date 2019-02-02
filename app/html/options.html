@@ -41,17 +41,14 @@
           };
         }
 
-        #mainToolbar .middle-container {
+        #mainToolbar .app-name {
           height: 100%;
           margin-left: 48px;
-        }
-
-        #mainToolbar .middle {
           @apply --paper-font-headline;
           padding-bottom: 0;
         }
 
-        #drawerToolbar {
+         #drawerToolbar {
           color: var(--secondary-text-color);
           background-color: var(--drawer-menu-color);
           border-bottom: var(--drawer-toolbar-border-color);
@@ -109,7 +106,7 @@
             <paper-icon-button id="paperToggle" slot="top" 
                                icon="myicons:menu" paper-drawer-toggle></paper-icon-button>
             <!-- Application name -->
-            <div class="middle middle-container center horizontal layout" slot="top">
+            <div class="app-name center horizontal layout" slot="top">
               <div>{{_computeTitle()}}</div>
             </div>
           </paper-toolbar>
