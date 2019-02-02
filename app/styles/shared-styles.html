@@ -10,7 +10,7 @@
 	<template>
 		<style>
 			.page-title {
-				@apply(--paper-font-display2);
+				@apply --paper-font-display2;
 			}
 
 			@media (max-width: 600px) {
@@ -20,7 +20,7 @@
 			}
 
 			.page-toolbar {
-				 @apply(--paper-font-title);
+				 @apply --paper-font-title;
 				 background-color: var(--primary-color);
 				 margin-bottom: 8px;
 			 }
@@ -53,8 +53,8 @@
 			paper-button {
 				margin-top: 8px;
 				margin-bottom: 16px;
-				@apply(--layout-center);
-				@apply(--layout-horizontal);
+				@apply --layout-center;
+				@apply --layout-horizontal;
 		 	}
 
 			paper-button[raised] {
