@@ -14,8 +14,9 @@
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
@@ -42,65 +43,70 @@
         display: block;
         position: relative;
       }
+      
+      #topToolbar {
+        padding: 10px 10px 10px 24px;
+      }
 
-      :host paper-toolbar {
-        --paper-toolbar-height: 50px;
+      :host app-toolbar {
+        height: 100px;
       }
 
     </style>
 
     <paper-material elevation="1" class="page-container">
       <paper-material elevation="1">
-        <paper-toolbar class="page-toolbar medium-tall">
-          <iron-label for="settingsToggle" slot="top" class="center horizontal layout flex">
-            <div class="flex">{{localize('screensaver')}}
-              <span hidden$="[[!enabled]]">{{localize('on')}}</span>
-              <span hidden$="[[enabled]]">{{localize('off')}}</span>
-            </div>
-          </iron-label>
-          <paper-icon-button
-              id="select"
-              slot="top"
-              icon="myicons:check-box"
-              on-tap="_selectAllTapped"
-              hidden$="[[menuHidden]]"
-              disabled$="[[!enabled]]"></paper-icon-button>
-          <paper-tooltip slot="top" for="select" position="left" offset="0">
-            {{localize('tooltip_select')}}
-          </paper-tooltip>
-          <paper-icon-button
-              id="deselect"
-              slot="top"
-              icon="myicons:check-box-outline-blank"
-              on-tap="_deselectAllTapped"
-              hidden$="[[menuHidden]]"
-              disabled$="[[!enabled]]"></paper-icon-button>
-          <paper-tooltip slot="top" for="deselect" position="left" offset="0">
-            {{localize('tooltip_deselect')}}
-          </paper-tooltip>
-          <paper-icon-button
-              id="restore"
-              slot="top"
-              icon="myicons:settings-backup-restore"
-              on-tap="_restoreDefaultsTapped"
-              disabled$="[[!enabled]]"></paper-icon-button>
-          <paper-tooltip slot="top" for="restore" position="left" offset="0">
-            {{localize('tooltip_restore')}}
-          </paper-tooltip>
-          <paper-toggle-button
-              id="settingsToggle"
-              slot="top"
-              checked="{{enabled}}"></paper-toggle-button>
-          <paper-tooltip slot="top" for="settingsToggle" position="left" offset="0">
-            {{localize('tooltip_settings_toggle')}}
-          </paper-tooltip>
-          <iron-localstorage name="enabled" value="{{enabled}}"></iron-localstorage>
-          <paper-tabs selected="{{selectedTab}}" slot="middle" class="fit">
+        <app-toolbar class="page-toolbar">
+          <div id="topToolbar" top-item class="horizontal layout flex">
+            <iron-label for="settingsToggle" class="center horizontal layout flex">
+              <div class="flex">{{localize('screensaver')}}
+                <span hidden$="[[!enabled]]">{{localize('on')}}</span>
+                <span hidden$="[[enabled]]">{{localize('off')}}</span>
+              </div>
+            </iron-label>
+            <paper-icon-button
+                id="select"
+                icon="myicons:check-box"
+                on-tap="_selectAllTapped"
+                hidden$="[[menuHidden]]"
+                disabled$="[[!enabled]]"></paper-icon-button>
+            <paper-tooltip for="select" position="left" offset="0">
+              {{localize('tooltip_select')}}
+            </paper-tooltip>
+            <paper-icon-button
+                id="deselect"
+                icon="myicons:check-box-outline-blank"
+                on-tap="_deselectAllTapped"
+                hidden$="[[menuHidden]]"
+                disabled$="[[!enabled]]"></paper-icon-button>
+            <paper-tooltip for="deselect" position="left" offset="0">
+              {{localize('tooltip_deselect')}}
+            </paper-tooltip>
+            <paper-icon-button
+                id="restore"
+                icon="myicons:settings-backup-restore"
+                on-tap="_restoreDefaultsTapped"
+                disabled$="[[!enabled]]"></paper-icon-button>
+            <paper-tooltip for="restore" position="left" offset="0">
+              {{localize('tooltip_restore')}}
+            </paper-tooltip>
+            <paper-toggle-button
+                id="settingsToggle"
+                checked="{{enabled}}"></paper-toggle-button>
+            <paper-tooltip for="settingsToggle" position="left" offset="0">
+              {{localize('tooltip_settings_toggle')}}
+            </paper-tooltip>
+          </div>
+          
+         <paper-tabs selected="{{selectedTab}}" bottom-item class="fit">
             <paper-tab>{{localize('tab_slideshow')}}</paper-tab>
             <paper-tab>{{localize('tab_display')}}</paper-tab>
             <paper-tab>{{localize('tab_sources')}}</paper-tab>
           </paper-tabs>
-        </paper-toolbar>
+          
+        </app-toolbar>
+        <iron-localstorage name="enabled" value="{{enabled}}"></iron-localstorage>
+
       </paper-material>
 
       <div class="page-content">
@@ -392,7 +398,7 @@
       });
     },
 
-  /**
+    /**
      * Computed property: Set menu icons visibility
      * @param {int} selectedTab - the current tab
      * @returns {boolean} true if menu should be visible

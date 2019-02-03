@@ -10,8 +10,10 @@
 
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
@@ -64,7 +66,7 @@
     <paper-material elevation="1" class="page-content">
       <!-- Tool bar -->
       <paper-material elevation="1">
-        <paper-toolbar class="page-toolbar">
+        <app-toolbar class="page-toolbar">
           <span class="space"></span>
           <div class="middle middle-container center horizontal layout flex">
             <div class="flex">[[_computeTitle(lastError)]]</div>
@@ -85,7 +87,7 @@
               Delete the error
             </paper-tooltip>
           </div>
-        </paper-toolbar>
+        </app-toolbar>
       </paper-material>
       <!-- Content -->
       <div class="body-content horizontal layout">

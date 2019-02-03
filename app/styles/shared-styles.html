@@ -20,7 +20,7 @@
 			}
 
 			.page-toolbar {
-				 @apply --paper-font-title;
+				 /*@apply --paper-font-title;*/
 				 background-color: var(--primary-color);
 				 margin-bottom: 8px;
 			 }
@@ -34,6 +34,11 @@
 			.page-content {
 				margin-top: 16px;
 				margin-bottom: 16px;
+			}
+
+			app-toolbar {
+				color: var(--text-primary-color);
+				background-color: var(--dark-primary-color);
 			}
 
 			paper-material {
@@ -65,7 +70,7 @@
 				margin-right: 8px;
 			}
 
-			paper-toolbar  paper-toggle-button {
+			app-toolbar  paper-toggle-button {
 				padding-left: 8px;
 				--paper-toggle-button-checked-button-color: white;
 				--paper-toggle-button-checked-bar-color: white;

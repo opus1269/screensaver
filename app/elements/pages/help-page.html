@@ -11,8 +11,9 @@
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
 
 <link rel="import" href="../setting-elements/setting-link/setting-link.html">
 
@@ -47,9 +48,9 @@
 
     <paper-material elevation="1" class="page-container">
       <paper-material elevation="1">
-        <paper-toolbar class="page-toolbar">
+        <app-toolbar class="page-toolbar">
           <div>{{localize('help_title')}}</div>
-        </paper-toolbar>
+        </app-toolbar>
       </paper-material>
       <div class="page-content">
         <setting-link section-title="{{localize('help_section_feedback')}}"

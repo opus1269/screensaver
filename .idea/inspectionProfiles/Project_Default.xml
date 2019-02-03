@@ -76,7 +76,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="68">
+          <list size="73">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -145,6 +145,11 @@
             <item index="65" class="java.lang.String" itemvalue="custom-style" />
             <item index="66" class="java.lang.String" itemvalue="array-selector" />
             <item index="67" class="java.lang.String" itemvalue="dom-bind" />
+            <item index="68" class="java.lang.String" itemvalue="app-drawer-layout" />
+            <item index="69" class="java.lang.String" itemvalue="app-drawer" />
+            <item index="70" class="java.lang.String" itemvalue="app-toolbar" />
+            <item index="71" class="java.lang.String" itemvalue="app-header-layout" />
+            <item index="72" class="java.lang.String" itemvalue="app-header" />
           </list>
         </value>
       </option>

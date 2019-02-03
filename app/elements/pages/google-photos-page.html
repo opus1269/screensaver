@@ -14,6 +14,8 @@
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
@@ -21,7 +23,6 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
-<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
@@ -110,7 +111,7 @@
 
     <paper-material elevation="1" class="page-container">
       <paper-material elevation="1">
-        <paper-toolbar class="page-toolbar">
+        <app-toolbar class="page-toolbar">
           <div class="flex">[[_computeTitle(isAlbumMode)]]</div>
           <!--<paper-icon-button-->
               <!--id="mode"-->
@@ -153,7 +154,7 @@
           </paper-tooltip>
           <iron-localstorage name="useGoogle" value="{{useGoogle}}">
           </iron-localstorage>
-        </paper-toolbar>
+        </app-toolbar>
       </paper-material>
 
       <div class="page-content">

@@ -173,7 +173,6 @@
     if (!t.pages[idx].obj) {
       // some pages are just pages
       t.route = t.pages[idx].route;
-      _scrollPageToTop();
     } else if (typeof t.pages[idx].obj === 'string') {
       // some pages are url links
       t.$.mainMenu.select(prevRoute);
@@ -231,7 +230,6 @@
       t.gPhotosPage.loadAlbumList();
     }
     t.route = t.pages[index].route;
-    _scrollPageToTop();
   }
 
   /**
@@ -248,7 +246,6 @@
       Polymer.dom(t.$.errorInsertion).appendChild(el);
     }
     t.route = t.pages[index].route;
-    _scrollPageToTop();
   }
 
   /**
@@ -265,7 +262,6 @@
       Polymer.dom(t.$.helpInsertion).appendChild(el);
     }
     t.route = t.pages[index].route;
-    _scrollPageToTop();
   }
 
   // noinspection JSUnusedLocalSymbols
@@ -279,14 +275,6 @@
     // reselect previous page - need to delay so tap event is done
     setTimeout(()=> t.$.mainMenu.select(prevRoute), 500);
     Chrome.Msg.send(app.Msg.SS_SHOW).catch(() => {});
-  }
-
-  /**
-   * Scroll page to top
-   * @memberOf Options
-   */
-  function _scrollPageToTop() {
-    t.$.scrollPanel.scrollToTop(true);
   }
 
   /**
