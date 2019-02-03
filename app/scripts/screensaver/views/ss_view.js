@@ -74,6 +74,18 @@
     }
 
     /**
+     * Call notifyPath after set because dirty checking doesn't always work
+     * @param {Object} model - model to change
+     * @param {string} prop - property name
+     * @param {Object} value - property value
+     * @private
+     */
+    static _dirtySet(model, prop, value) {
+      model.set(prop, value);
+      model.notifyPath(prop);
+    }
+
+    /**
      * Determine if a photo would look bad zoomed or stretched on the screen
      * @param {number} asp - an aspect ratio
      * @returns {boolean} true if a photo aspect ratio differs substantially
@@ -98,7 +110,7 @@
 
       if ((!asp || isNaN(asp)) ||
           (skip && ((photoSizing === 1) || (photoSizing === 3)) &&
-          app.SSView._isBadAspect(asp))) {
+              app.SSView._isBadAspect(asp))) {
         // ignore photos that don't have aspect ratio
         // or would look bad with cropped or stretched sizing options
         ret = true;
@@ -186,7 +198,7 @@
      */
     _setUrl() {
       this.url = this.photo.getUrl();
-      this.model.set('view.url', this.url);
+      SSView._dirtySet(this.model, 'view.url', this.url);
     }
 
     /**
@@ -194,7 +206,7 @@
      */
     _setAuthorLabel() {
       this.authorLabel = '';
-      this.model.set('view.authorLabel', this.authorLabel);
+      SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
       this._super500px();
 
       const type = this.photo.getType();
@@ -218,7 +230,7 @@
         // no photographer name
         this.authorLabel = `${Chrome.Locale.localize('photo_from')} ${newType}`;
       }
-      this.model.set('view.authorLabel', this.authorLabel);
+      SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
       this._super500px();
     }
 
@@ -227,7 +239,7 @@
      */
     _setLocationLabel() {
       this.locationLabel = '';
-      this.model.set('view.locationLabel', this.locationLabel);
+      SSView._dirtySet(this.model, 'view.locationLabel', this.locationLabel);
 
       if (app.SSView._showLocation() && this._hasLocation()) {
         const point = this.photo.getPoint();
@@ -235,7 +247,8 @@
           if (location && this.model) {
             location = location.replace('Unnamed Road, ', '');
             this.locationLabel = location;
-            this.model.set('view.locationLabel', this.locationLabel);
+            SSView._dirtySet(this.model, 'view.locationLabel',
+                this.locationLabel);
           }
           return Promise.resolve();
         }).catch((err) => {
