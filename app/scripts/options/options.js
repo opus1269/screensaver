@@ -157,11 +157,13 @@
    * @memberOf Options
    */
   t._onNavMenuItemTapped = function(event) {
-    // Close drawer after menu item is selected if it is narrow
-    const drawerPanel = document.querySelector('#paperDrawerPanel');
-    if (drawerPanel && drawerPanel.narrow) {
-      drawerPanel.closeDrawer();
+    // Close drawer after menu item is selected if it is in narrow layout
+    const appDrawerLayout = document.querySelector('#appDrawerLayout');
+    const appDrawer = document.querySelector('#appDrawer');
+    if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
+      appDrawer.close();
     }
+    
     const idx = _getPageIdx(event.currentTarget.id);
 
     Chrome.GA.event(Chrome.GA.EVENT.MENU, t.pages[idx].route);

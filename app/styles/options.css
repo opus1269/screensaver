@@ -11,6 +11,7 @@ body {
   min-width: 600px;
   min-height: 700px;
   overflow: hidden;
+  margin: 0 0;
 }
 
 /* Scrollbars */

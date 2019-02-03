@@ -24,10 +24,42 @@
 <body unresolved class="fullbleed layout vertical">
 <dom-bind id="t">
   <template>
-    
+
     <custom-style>
       <style include="iron-flex iron-flex-alignment shared-styles">
-        paper-menu paper-item {
+
+        html {
+          --app-drawer-width: 350px;
+        }
+
+        /*app-toolbar {*/
+        /*background-color: var(--dark-primary-color);*/
+        /*}*/
+
+        app-drawer-layout:not([narrow]) [drawer-toggle] {
+          display: none;
+        }
+
+        app-drawer {
+          --app-drawer-content-container: {
+            border-right: var(--drawer-toolbar-border-color);
+          }
+        }
+
+        .main-toolbar {
+          color: var(--text-primary-color);
+          background-color: var(--dark-primary-color);
+          @apply --paper-font-headline;
+        }
+
+        .menu-name {
+          @apply --paper-font-title;
+          color: var(--dark-primary-color);
+          background-color: var(--drawer-menu-color);
+          border-bottom: var(--drawer-toolbar-border-color);
+        }
+
+        paper-listbox paper-item {
           --paper-item-selected: {
             color: var(--dark-primary-color);
             background-color: var(--selected-color);
@@ -41,79 +73,84 @@
           };
         }
 
-        #mainToolbar .app-name {
-          height: 100%;
-          margin-left: 48px;
-          @apply --paper-font-headline;
-          padding-bottom: 0;
-        }
+        /*#mainToolbar .app-name {*/
+        /*height: 100%;*/
+        /*margin-left: 48px;*/
+        /*@apply --paper-font-headline;*/
+        /*padding-bottom: 0;*/
+        /*}*/
 
-         #drawerToolbar {
-          color: var(--secondary-text-color);
-          background-color: var(--drawer-menu-color);
-          border-bottom: var(--drawer-toolbar-border-color);
-        }
+        /*#drawerToolbar {*/
+        /*color: var(--secondary-text-color);*/
+        /*background-color: var(--drawer-menu-color);*/
+        /*border-bottom: var(--drawer-toolbar-border-color);*/
+        /*}*/
 
-        #drawerToolbar .menu-name {
-          @apply --paper-font-title;
-        }
-
-        #drawer.paper-drawer-panel > [drawer] {
-          border-right: 1px solid rgba(0, 0, 0, 0.14);
-        }
+        /*#drawer.paper-drawer-panel > [drawer] {*/
+        /*border-right: 1px solid rgba(0, 0, 0, 0.14);*/
+        /*}*/
 
         #mainPages neon-animatable {
+          padding: 0 0;
+        }
+
+        /* Height of the menu scroll area */
+        #mainMenu {
+          height: 1000px;
+          overflow: auto;
           padding: 0 0;
         }
 
         /* Height of the main scroll area */
         #mainContainer {
           height: 1000px;
+          overflow: auto;
+          padding: 0 0;
         }
       </style>
     </custom-style>
 
-    <paper-drawer-panel id="paperDrawerPanel" responsive-width="800px"
-                        drawer-width="350px">
-      <paper-material elevation="2" slot="drawer" fixed>
-        <!-- Drawer Scroll Header Panel -->
-        <paper-scroll-header-panel>
-          <!-- Drawer Toolbar -->
-          <paper-toolbar id="drawerToolbar" slot="header">
-            <span class="menu-name" slot="top">{{_computeMenu()}}</span>
-          </paper-toolbar>
-          <!-- Drawer Content -->
-          <paper-listbox id="mainMenu" slot="content" attr-for-selected="id"
-                         selected="[[route]]">
-            <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
-              <hr hidden$="[[!item.divider]]"/>
-              <paper-item id="[[item.route]]"
-                          class="center horizontal layout"
-                          on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
-                <iron-icon icon="[[item.icon]]"></iron-icon>
-                <span>[[item.label]]</span>
-              </paper-item>
-            </template>
-          </paper-listbox>
-        </paper-scroll-header-panel>
-      </paper-material>
+    <app-drawer-layout fullbleed id="appDrawerLayout" responsive-width="800px">
 
-      <!-- Main Scroll Header Panel -->
-      <paper-scroll-header-panel id="scrollPanel" slot="main" fixed>
-        <!-- Main Toolbar -->
-        <paper-material class="paper-header" slot="header" elevation="2">
-          <paper-toolbar id="mainToolbar">
-            <paper-icon-button id="paperToggle" slot="top" 
-                               icon="myicons:menu" paper-drawer-toggle></paper-icon-button>
-            <!-- Application name -->
-            <div class="app-name center horizontal layout" slot="top">
+      <!-- Drawer Content -->
+      <app-drawer id="appDrawer" slot="drawer">
+        <!-- Menu Title -->
+        <app-toolbar class="menu-name">
+          <div>{{_computeMenu()}}</div>
+        </app-toolbar>
+
+        <!-- Menu Items -->
+        <paper-listbox id="mainMenu" attr-for-selected="id"
+                       selected="[[route]]">
+          <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
+            <hr hidden$="[[!item.divider]]"/>
+            <paper-item id="[[item.route]]"
+                        class="center horizontal layout"
+                        on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
+              <iron-icon icon="[[item.icon]]"></iron-icon>
+              <span>[[item.label]]</span>
+            </paper-item>
+          </template>
+        </paper-listbox>
+
+      </app-drawer>
+
+      <app-header-layout fullbleed has-scrolling-region>
+
+        <app-header fixed slot="header">
+
+          <!-- App Toolbar -->
+          <app-toolbar class="main-toolbar">
+            <paper-icon-button icon="myicons:menu" drawer-toggle></paper-icon-button>
+            <div class="app-name center horizontal layout">
               <div>{{_computeTitle()}}</div>
             </div>
-          </paper-toolbar>
-        </paper-material>
+          </app-toolbar>
 
-        <!-- Main Content -->
-        <div id="mainContainer" slot="content">
+        </app-header>
+
+        <!--Main Contents-->
+        <div id="mainContainer">
 
           <!-- Error dialog -->
           <paper-dialog id="errorDialog" modal
@@ -128,6 +165,7 @@
             </div>
           </paper-dialog>
 
+          <!-- Options Tabbed Pages -->
           <neon-animated-pages id="mainPages"
                                attr-for-selected="data-route"
                                selected="{{route}}"
@@ -149,8 +187,88 @@
             </neon-animatable>
           </neon-animated-pages>
         </div>
-      </paper-scroll-header-panel>
-    </paper-drawer-panel>
+
+      </app-header-layout>
+
+    </app-drawer-layout>
+    <!--<paper-drawer-panel id="paperDrawerPanel" responsive-width="800px"-->
+    <!--drawer-width="350px">-->
+    <!--<paper-material elevation="2" slot="drawer" fixed>-->
+    <!--&lt;!&ndash; Drawer Scroll Header Panel &ndash;&gt;-->
+    <!--<paper-scroll-header-panel>-->
+    <!--&lt;!&ndash; Drawer Toolbar &ndash;&gt;-->
+    <!--<paper-toolbar id="drawerToolbar" slot="header">-->
+    <!--<span class="menu-name" slot="top">{{_computeMenu()}}</span>-->
+    <!--</paper-toolbar>-->
+    <!--&lt;!&ndash; Drawer Content &ndash;&gt;-->
+    <!--<paper-listbox id="mainMenu" slot="content" attr-for-selected="id"-->
+    <!--selected="[[route]]">-->
+    <!--<template is="dom-repeat" id="menuTemplate" items="[[pages]]">-->
+    <!--<hr hidden$="[[!item.divider]]"/>-->
+    <!--<paper-item id="[[item.route]]"-->
+    <!--class="center horizontal layout"-->
+    <!--on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">-->
+    <!--<iron-icon icon="[[item.icon]]"></iron-icon>-->
+    <!--<span>[[item.label]]</span>-->
+    <!--</paper-item>-->
+    <!--</template>-->
+    <!--</paper-listbox>-->
+    <!--</paper-scroll-header-panel>-->
+    <!--</paper-material>-->
+
+    <!--&lt;!&ndash; Main Scroll Header Panel &ndash;&gt;-->
+    <!--<paper-scroll-header-panel id="scrollPanel" slot="main" fixed>-->
+    <!--&lt;!&ndash; Main Toolbar &ndash;&gt;-->
+    <!--<paper-material class="paper-header" slot="header" elevation="2">-->
+    <!--<paper-toolbar id="mainToolbar">-->
+    <!--<paper-icon-button id="paperToggle" slot="top" -->
+    <!--icon="myicons:menu" paper-drawer-toggle></paper-icon-button>-->
+    <!--&lt;!&ndash; Application name &ndash;&gt;-->
+    <!--<div class="app-name center horizontal layout" slot="top">-->
+    <!--<div>{{_computeTitle()}}</div>-->
+    <!--</div>-->
+    <!--</paper-toolbar>-->
+    <!--</paper-material>-->
+
+    <!--&lt;!&ndash; Main Content &ndash;&gt;-->
+    <!--<div id="mainContainer" slot="content">-->
+
+    <!--&lt;!&ndash; Error dialog &ndash;&gt;-->
+    <!--<paper-dialog id="errorDialog" modal-->
+    <!--entry-animation="scale-up-animation"-->
+    <!--exit-animation="fade-out-animation">-->
+    <!--<h2 id="dialogTitle">[[dialogTitle]]</h2>-->
+    <!--<paper-dialog-scrollable>-->
+    <!--<p id="dialogText">[[dialogText]]</p>-->
+    <!--</paper-dialog-scrollable>-->
+    <!--<div class="buttons">-->
+    <!--<paper-button dialog-dismiss>OK</paper-button>-->
+    <!--</div>-->
+    <!--</paper-dialog>-->
+
+    <!--<neon-animated-pages id="mainPages"-->
+    <!--attr-for-selected="data-route"-->
+    <!--selected="{{route}}"-->
+    <!--entry-animation="fade-in-animation"-->
+    <!--exit-animation="fade-out-animation">-->
+    <!--<neon-animatable data-route="page-settings">-->
+    <!--<section>-->
+    <!--<settings-page id="settingsPage"></settings-page>-->
+    <!--</section>-->
+    <!--</neon-animatable>-->
+    <!--<neon-animatable data-route="page-google-photos">-->
+    <!--<section id="googlePhotosInsertion"></section>-->
+    <!--</neon-animatable>-->
+    <!--<neon-animatable data-route="page-error">-->
+    <!--<section id="errorInsertion"></section>-->
+    <!--</neon-animatable>-->
+    <!--<neon-animatable data-route="page-help">-->
+    <!--<section id="helpInsertion"></section>-->
+    <!--</neon-animatable>-->
+    <!--</neon-animated-pages>-->
+    <!--</div>-->
+    <!--</paper-scroll-header-panel>-->
+    <!--</paper-drawer-panel>-->
   </template>
 </dom-bind>
 
