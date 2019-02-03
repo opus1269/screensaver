@@ -50,28 +50,6 @@ app.Screensaver = (function() {
   t.timeLabel = '';
 
   /**
-   * Event: Template Bound, bindings have resolved and content has been
-   * stamped to the page
-   * @private
-   * @memberOf app.Screensaver
-   */
-  function _onDomChange() {
-    // set selected background image
-    document.body.style.background =
-        Chrome.Storage.get('background').substring(11);
-
-    Chrome.GA.page('/screensaver.html');
-
-    // register event listeners
-    app.SSEvents.initialize();
-
-    _setZoom();
-    _setupPhotoTransitions();
-
-    app.Screensaver.launch();
-  }
-
-  /**
    * Process settings related to between photo transitions
    * @private
    * @memberOf app.Screensaver
@@ -107,23 +85,45 @@ app.Screensaver = (function() {
     }
   }
 
-  // listen for dom-change
-  t.addEventListener('dom-change', _onDomChange);
+  /**
+   * Launch the slide show
+   * @param {int} [delay=2000] - delay before start
+   * @private
+   * @memberOf app.Screensaver
+   */
+  function _launch(delay = 2000) {
+    const hasPhotos = app.SSBuilder.build();
+    if (hasPhotos) {
+      // kick off the slide show if there are photos selected
+      app.SSRunner.start(1000);
+    }
+  }
+
+  /**
+   * Event: Document and resources loaded
+   * @memberOf app.Screensaver
+   */
+  function _onLoad() {
+    // set selected background image
+    document.body.style.background =
+        Chrome.Storage.get('background').substring(11);
+
+    Chrome.GA.page('/screensaver.html');
+
+    // register event listeners
+    app.SSEvents.initialize();
+
+    _setZoom();
+    _setupPhotoTransitions();
+
+    // start screensaver
+    _launch();
+  }
+
+  // listen for documents and resources loaded
+  window.addEventListener('load', _onLoad);
 
   return {
-    /**
-     * Launch the slide show
-     * @param {int} [delay=2000] - delay before start
-     * @memberOf app.Screensaver
-     */
-    launch: function(delay = 2000) {
-      const hasPhotos = app.SSBuilder.build();
-      if (hasPhotos) {
-        // kick off the slide show if there are photos selected
-        app.SSRunner.start(delay);
-      }
-    },
-
     /**
      * Create the {@link app.SSViews} that will be animated
      * @memberOf app.Screensaver

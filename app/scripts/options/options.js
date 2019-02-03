@@ -124,11 +124,10 @@
   t.route = 'page-settings';
 
   /**
-   * Event Listener for template bound event to know when bindings
-   * have resolved and content has been stamped to the page
+   * Event: Document and resources loaded
    * @memberOf Options
    */
-  t.addEventListener('dom-change', function() {
+  function _onLoad() {
     Chrome.GA.page('/options.html');
 
     // listen for chrome messages
@@ -136,7 +135,7 @@
 
     // initialize lastError enabled state
     _setErrorMenuState();
-    
+
     // listen for changes to chrome.storage
     chrome.storage.onChanged.addListener(function(changes) {
       for (const key in changes) {
@@ -148,8 +147,8 @@
         }
       }
     });
-  });
-
+  }
+  
   /**
    * Event: navigation menu selected
    * Route to proper page
@@ -335,4 +334,8 @@
     }
     return false;
   }
+
+  // listen for documents and resources loaded
+  window.addEventListener('load', _onLoad);
+
 })();
