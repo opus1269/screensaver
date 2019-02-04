@@ -77,15 +77,13 @@
                       disabled$="[[disabled]]"
                       on-change="_onSliderValueChanged"></paper-slider>
         <paper-dropdown-menu disabled$="[[disabled]]" noink no-label-float>
-          <paper-listbox id="menu" slot="dropdown-content"
-                      selected="{{value.unit}}" on-iron-select="_onUnitChanged">
-            <template is="dom-repeat" as="unit" items="[[units]]">
+          <paper-listbox id="menu" slot="dropdown-content" selected="{{unitIdx}}"
+                         on-tap="_onUnitMenuSelected">
+            <template id="t" is="dom-repeat" as="unit" items="[[units]]">
               <paper-item>[[unit.name]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
-        <array-selector id="selector" items="[[units]]"
-                        selected="{{unit}}"></array-selector>
       </div>
     </div>
     <iron-localstorage name="{{name}}" value="{{value}}"
@@ -139,7 +137,30 @@
       },
 
       /**
-       * Array of unit labels
+       * Object containing current unit object
+       * @memberOf SettingSlider
+       */
+      unit: {
+        type: Object,
+        notify: true,
+        value: function() {
+          return {'name': 'unknown', 'min': 1, 'max': 10, 'step': 1, 'mult': 1};
+        },
+      },
+
+      /**
+       * Current unit array index
+       * @memberOf SettingSlider
+       */
+      unitIdx: {
+        type: Number,
+        notify: true,
+        value: 0,
+        observer: '_unitIdxChanged',
+      },
+
+      /**
+       * Array of unit objects
        * @memberOf SettingSlider
        */
       units: {
@@ -178,6 +199,23 @@
     },
 
     /**
+     * Observer: Unit changed
+     * @param {number} newValue
+     * @param {number} oldValue
+     * @private
+     * @memberOf SettingSlider
+     */
+    _unitIdxChanged: function(newValue, oldValue) {
+      if (newValue !== undefined) {
+        this.set('value.unit', newValue);
+        this._setBase();
+        if (this.units !== undefined) {
+          this.set('unit', this.units[newValue]);
+        }
+      }
+    },
+
+    /**
      * Event: User changed slider value
      * @private
      * @memberOf SettingSlider
@@ -188,17 +226,16 @@
     },
 
     /**
-     * Event: Display unit was changed
+     * Event: unit menu item tapped
+     * @param {Event} ev - tap event
      * @private
      * @memberOf SettingSlider
      */
-    _onUnitChanged: function() {
-      if (this.$.selector.selectedItem) {
-        // skip logging of initial selection
+    _onUnitMenuSelected: function(ev) {
+      const model = this.$.t.modelForElement(ev.target);
+      if (model) {
         Chrome.GA.event(Chrome.GA.EVENT.SLIDER_UNITS, this.name);
       }
-      this.$.selector.select(this.units[this.value.unit]);
-      this._setBase();
     },
 
     /**
@@ -207,7 +244,7 @@
      * @memberOf SettingSlider
      */
     _setBase: function() {
-      this.set('value.base', this.unit.mult * this.value.display);
+      this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
     },
 
     /**
