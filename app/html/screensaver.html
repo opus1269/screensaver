@@ -49,8 +49,31 @@
   <script src="../scripts/screensaver/views/ss_view_full.js"></script>
   <script src="../scripts/screensaver/ss_views.js"></script>
 
-  <!-- All script and element imports - will be vulcanized must be last line in head -->
-  <link rel="import" href="screensaver_imports.html">
+  <!-- All element imports -->
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
+  <link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
+  <!-- Theme -->
+  <link rel="import" href="../styles/app-theme.html">
+  <link rel="import" href="../styles/shared-styles.html">
+
+  <link rel="import" href="../bower_components/font-roboto/roboto.html">
+
+  <!-- Iron elements -->
+  <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+  <link rel="import" href="../bower_components/iron-image/iron-image.html">
+
+  <!-- Neon elements -->
+  <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+  <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+  <link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+
+  <!-- My elements -->
+  <link rel="import" href="../elements/setting-elements/localize-behavior/localize-behavior.html">
+  <link rel="import" href="../elements/slide-animatable/slide-animatable.html">
+  <link rel="import" href="../elements/animations/spin-up-animation/spin-up-animation.html">
+  <link rel="import" href="../elements/animations/spin-down-animation/spin-down-animation.html">
 
 </head>
 
