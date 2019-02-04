@@ -41,7 +41,65 @@
   <script src="../scripts/options/permissions.js"></script>
 
   <!-- All element imports - will be vulcanized must be last line in head -->
-  <link rel="import" href="../elements/elements.html">
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
+  <link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
+  <!-- Theme -->
+  <link rel="import" href="../styles/app-theme.html">
+  <link rel="import" href="../styles/shared-styles.html">
+
+  <link rel="import" href="../bower_components/font-roboto/roboto.html">
+
+  <!-- Iron elements -->
+  <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+  <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+  <link rel="import" href="../bower_components/iron-image/iron-image.html">
+
+  <!-- Paper elements -->
+  <link rel="import" href="../bower_components/paper-styles/typography.html">
+  <link rel="import" href="../bower_components/paper-styles/color.html">
+  <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+  <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+  <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="../bower_components/paper-button/paper-button.html">
+  <link rel="import" href="../bower_components/paper-item/paper-item.html">
+  <link rel="import" href="../bower_components/paper-material/paper-material.html">
+  <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+
+  <!-- Neon elements -->
+  <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+  <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
+  <link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+
+  <!-- App Layout -->
+  <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+  <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+  <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+  <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+  <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+  <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+  <!-- App Storage -->
+  <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+
+  <!-- My elements -->
+  <link rel="import" href="../elements/setting-elements/localize-behavior/localize-behavior.html">
+  <link rel="import" href="../elements/setting-elements/setting-dropdown/setting-dropdown.html">
+  <link rel="import" href="../elements/setting-elements/setting-toggle/setting-toggle.html">
+  <link rel="import" href="../elements/setting-elements/setting-slider/setting-slider.html">
+  <link rel="import" href="../elements/setting-elements/setting-link/setting-link.html">
+  <link rel="import" href="../elements/setting-elements/setting-background/setting-background.html">
+  <link rel="import" href="../elements/setting-elements/setting-time/setting-time.html">
+  <link rel="import" href="../elements/setting-elements/setting-text/setting-text.html">
+  <link rel="import" href="../elements/my_icons.html">
+  <link rel="import" href="../elements/slide-animatable/slide-animatable.html">
+  <link rel="import" href="../elements/animations/spin-up-animation/spin-up-animation.html">
+  <link rel="import" href="../elements/animations/spin-down-animation/spin-down-animation.html">
+  <link rel="import" href="../elements/pages/settings-page/settings-page.html">
+  <link rel="import" href="../elements/pages/error-page/error-page.html">
+  <link rel="import" href="../elements/pages/help-page/help-page.html">
+  <link rel="import" href="../elements/pages/google-photos-page/google-photos-page.html">
 
 </head>
 
