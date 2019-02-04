@@ -1,7 +1,7 @@
 {
   "name": "setting-toggle",
   "version": "1.0.0",
-  "license": "https://github.com/opus1269/screensaver/blob/master/LICENSE.md",
+  "license": "https://spdx.org/licenses/BSD-3-Clause-Clear.html",
   "main": "setting-toggle.html",
   "private": true,
   "dependencies": {
