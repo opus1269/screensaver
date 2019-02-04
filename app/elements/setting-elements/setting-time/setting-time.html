@@ -8,7 +8,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item-body.html">
@@ -76,8 +76,11 @@
       <div class="setting-label" tabindex="0" disabled$="[[disabled]]">[[timeLabel]]</div>
     </paper-item>
     <hr hidden$="[[noseparator]]"/>
-    <iron-localstorage id="store" name="{{name}}" value="{{value}}"
-                       on-iron-localstorage-load-empty="_init"></iron-localstorage>
+    
+    <app-localstorage-document
+        key="[[name]]" data="{{value}}" storage="window.localStorage">
+    </app-localstorage-document>
+    
   </template>
 </dom-module>
 
@@ -252,15 +255,6 @@
      */
     _setTimeLabel: function(value) {
       this.set('timeLabel', this._formatTime(value));
-    },
-
-    /**
-     * Initialize value if it is not in localstorage
-     * @private
-     * @memberOf SettingTime
-     */
-    _init: function() {
-      this.set('value', '00:00');
     },
 
   });

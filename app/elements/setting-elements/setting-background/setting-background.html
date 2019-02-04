@@ -12,7 +12,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/iron-selector/iron-selector.html">
 
@@ -24,7 +24,7 @@
 
 <link rel="import" href="../localize-behavior/localize-behavior.html">
 
-<script type="text/javascript"
+<script type="text/javascript" 
         src="../../../bower_components/chrome-extension-utils/scripts/exception_handler.js"></script>
 
 <dom-module id="setting-background">
@@ -119,8 +119,10 @@
       <paper-ripple center></paper-ripple>
     </paper-item>
     <hr hidden$="[[noseparator]]"/>
-    <iron-localstorage name="{{name}}" value="{{value}}"
-                       on-iron-localstorage-load-empty="_init"></iron-localstorage>
+
+    <app-localstorage-document
+        key="[[name]]" data="{{value}}" storage="window.localStorage">
+    </app-localstorage-document>
 
   </template>
 </dom-module>
@@ -216,16 +218,6 @@
         type: String,
         value: '',
       },
-    },
-
-    /**
-     * Initialize value if it is not in localstorage
-     * @private
-     * @memberOf SettingBackground
-     */
-    _init: function() {
-      this.set('value',
-          'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)');
     },
 
     /**

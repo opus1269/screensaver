@@ -8,7 +8,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/iron-label/iron-label.html">
 
@@ -67,7 +67,10 @@
       </paper-item>
     </iron-label>
     <hr hidden$="[[noseparator]]"/>
-    <iron-localstorage name="{{name}}" value="{{checked}}" on-iron-localstorage-load-empty="_init"></iron-localstorage>
+    
+    <app-localstorage-document 
+        key="[[name]]" data="{{checked}}" storage="window.localStorage">
+    </app-localstorage-document>
 
   </template>
 </dom-module>
@@ -168,14 +171,6 @@
     _onChange: function() {
       Chrome.GA.event(Chrome.GA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
     },
-
-    /**
-     * Initialize value if it is not in localStorage
-     * @private
-     * @memberOf SettingToggle
-     */
-    _init: function() {
-      this.set('checked', 'false');
-    },
+    
   });
 </script>

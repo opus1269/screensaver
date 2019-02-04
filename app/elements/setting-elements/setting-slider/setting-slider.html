@@ -8,7 +8,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
@@ -86,9 +86,11 @@
         </paper-dropdown-menu>
       </div>
     </div>
-    <iron-localstorage name="{{name}}" value="{{value}}"
-                       on-iron-localstorage-load-empty="_initValue"></iron-localstorage>
     <hr hidden$="[[noseparator]]"/>
+    
+    <app-localstorage-document
+        key="[[name]]" data="{{value}}" storage="window.localStorage">
+    </app-localstorage-document>
 
   </template>
 </dom-module>

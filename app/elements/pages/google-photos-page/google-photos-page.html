@@ -9,7 +9,7 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../../bower_components/iron-label/iron-label.html">
 <link rel="import" href="../../../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
@@ -152,8 +152,9 @@
           <paper-tooltip for="googlePhotosToggle" position="left" offset="0">
             {{localize('tooltip_google_toggle')}}
           </paper-tooltip>
-          <iron-localstorage name="useGoogle" value="{{useGoogle}}">
-          </iron-localstorage>
+          <app-localstorage-document
+              key="useGoogle" data="{{useGoogle}}" storage="window.localStorage">
+          </app-localstorage-document>
         </app-toolbar>
       </paper-material>
 
@@ -217,19 +218,22 @@
         </template>
 
       </div>
-      <iron-localstorage name="permPicasa" value="{{permPicasa}}"
-                         on-iron-localstorage-load-empty="_initPermPicasa">
-      </iron-localstorage>
-      <iron-localstorage name="isAlbumMode" value="{{isAlbumMode}}"
-                         on-iron-localstorage-load-empty="_initIsAlbumMode">
-      </iron-localstorage>
-      <iron-localstorage name="useGoogleAlbums" value="{{useGoogleAlbums}}"
-                         on-iron-localstorage-load-empty="_initUseGoogleAlbums">
-      </iron-localstorage>
-      <iron-localstorage name="useGooglePhotos" value="{{useGooglePhotos}}"
-                         on-iron-localstorage-load-empty="_initUseGooglePhotos">
-      </iron-localstorage>
+      
+      <app-localstorage-document
+          key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+      </app-localstorage-document>
+      <app-localstorage-document
+          key="isAlbumMode" data="{{isAlbumMode}}" storage="window.localStorage">
+      </app-localstorage-document>
+      <app-localstorage-document
+          key="useGoogleAlbums" data="{{useGoogleAlbums}}" storage="window.localStorage">
+      </app-localstorage-document>
+      <app-localstorage-document
+          key="useGooglePhotos" data="{{useGooglePhotos}}" storage="window.localStorage">
+      </app-localstorage-document>
+      
       <slot></slot>
+      
     </paper-material>
   </template>
 </dom-module>

@@ -8,7 +8,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
@@ -58,8 +58,10 @@
       </paper-dropdown-menu>
     </paper-item>
     <hr hidden$="[[noseparator]]"/>
-    <iron-localstorage name="{{name}}" value="{{value}}"
-                       on-iron-localstorage-load-empty="_init"></iron-localstorage>
+
+    <app-localstorage-document
+        key="[[name]]" data="{{value}}" storage="window.localStorage">
+    </app-localstorage-document>
 
   </template>
 </dom-module>
@@ -158,13 +160,5 @@
       }
     },
 
-    /**
-     * Initialize value if it is not in localstorage
-     * @private
-     * @memberOf SettingDropdown
-     */
-    _init: function() {
-      this.set('value', '0');
-    },
   });
 </script>

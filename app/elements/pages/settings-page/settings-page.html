@@ -9,7 +9,7 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../../bower_components/iron-label/iron-label.html">
-<link rel="import" href="../../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
@@ -105,7 +105,9 @@
           </paper-tabs>
           
         </app-toolbar>
-        <iron-localstorage name="enabled" value="{{enabled}}"></iron-localstorage>
+        <app-localstorage-document
+            key="enabled" data="{{enabled}}" storage="window.localStorage">
+        </app-localstorage-document>
 
       </paper-material>
 
