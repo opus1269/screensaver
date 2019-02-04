@@ -7,7 +7,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#1.9 - 2",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#1 - 2",
-    "iron-local-storage": "PolymerElements/iron-local-storage#1 - 2",
+    "app-storage": "PolymerElements/app-storage#1 - 2",
     "iron-label": "PolymerElements/iron-label#1 - 2",
     "paper-behaviors": "PolymerElements/paper-behaviors#1 - 2",
     "paper-styles": "PolymerElements/paper-styles#1 - 2",
