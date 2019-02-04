@@ -4,6 +4,10 @@
   ~ https://opensource.org/licenses/Apache-2.0
   ~ https://github.com/opus1269/setting-elements/blob/master/LICENSE.md
   -->
+
+<!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
+<link rel="import" href="../../../bower_components/neon-animation/web-animations.html">
+
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../../bower_components/paper-styles/color.html">
@@ -71,7 +75,7 @@
       }
     </style>
 
-    <paper-dialog id="dialog" modal entry-animation="scale-up-animation"
+    <paper-dialog id="dialog" model entry-animation="scale-up-animation"
                   exit-animation="fade-out-animation">
       <h2>{{localize('setting_bg_dialog_title')}}</h2>
       <iron-selector class="container horizontal layout wrap"
