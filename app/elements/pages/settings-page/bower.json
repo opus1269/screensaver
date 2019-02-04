@@ -1,8 +1,8 @@
 {
-  "name": "ettings-page",
+  "name": "settings-page",
   "version": "1.0.0",
   "license": "https://github.com/opus1269/screensaver/blob/master/license.txt",
-  "main": "ettings-page.html",
+  "main": "settings-page.html",
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#1.9 - 2",
