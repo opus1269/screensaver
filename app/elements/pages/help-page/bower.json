@@ -2,7 +2,7 @@
   "name": "help-page",
   "version": "1.0.0",
   "license": "https://github.com/opus1269/screensaver/blob/master/license.txt",
-  "main": "help-page",
+  "main": "help-page.html",
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#1.9 - 2",
