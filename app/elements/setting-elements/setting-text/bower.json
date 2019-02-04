@@ -1,3 +1,23 @@
 {
-  "name": "setting-text"
+  "name": "setting-text",
+  "version": "1.0.0",
+  "license": "https://github.com/opus1269/screensaver/blob/master/license.txt",
+  "main": "setting-text.html",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.9 - 2",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#1 - 2",
+    "app-storage": "PolymerElements/app-storage#1 - 2",
+    "paper-behaviors": "PolymerElements/paper-behaviors#1 - 2",
+    "paper-styles": "PolymerElements/paper-styles#1 - 2",
+    "paper-input": "PolymerElements/paper-input#1 - 2",
+    "paper-item": "PolymerElements/paper-item#1 - 2"
+  },
+  "devDependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "ignore": [],
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  }
 }
