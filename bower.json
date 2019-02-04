@@ -4,6 +4,7 @@
     "Michael A. Updike <igreilly1269@gmail.com>"
   ],
   "description": "Photo Screen Saver implemented with Polymer",
+  "main": "app/html/options.html",
   "license": "BSD 3-Clause",
   "private": true,
   "ignore": [
