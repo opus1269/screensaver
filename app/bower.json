@@ -4,7 +4,6 @@
     "Michael A. Updike <igreilly1269@gmail.com>"
   ],
   "description": "Photo Screen Saver implemented with Polymer",
-  "main": "html/background.html",
   "license": "Appache",
   "private": true,
   "ignore": [
