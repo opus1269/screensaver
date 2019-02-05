@@ -6,5 +6,7 @@
   ],
   "lint": {
     "rules": ["polymer-1"]
-  }
+  },
+  "moduleResolution": "none",
+  "npm": false
 }
