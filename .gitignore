@@ -1,4 +1,5 @@
 /node_modules
+/build
 /dev
 /dist
 /app/bower_components
