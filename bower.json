@@ -42,6 +42,7 @@
     "app-layout": "PolymerElements/app-layout#^3.0.0",
     "app-storage": "PolymerElements/app-storage#^3.0.0",
     "neon-animation": "PolymerElements/neon-animation#^3.0.0",
+    "web-animations-js": "web-animations/web-animations-js#^2.0.0",
     "paper-time-picker": "bendavis78/paper-time-picker#^1.0.0",
     "chrome-extension-utils": "opus1269/chrome-extension-utils#^4.0.0"
   }
