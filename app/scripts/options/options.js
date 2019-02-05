@@ -224,7 +224,7 @@
       t.pages[index].ready = true;
       t.gPhotosPage =
           new app.GooglePhotosPage('gPhotosPage');
-      Polymer.dom(t.$.googlePhotosInsertion).appendChild(t.gPhotosPage);
+      t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
     } else if (Chrome.Storage.getBool('isAlbumMode')) {
       t.gPhotosPage.loadAlbumList();
     }
@@ -242,7 +242,7 @@
       // insert the page the first time
       t.pages[index].ready = true;
       const el = new app.ErrorPageFactory();
-      Polymer.dom(t.$.errorInsertion).appendChild(el);
+      t.$.errorInsertion.appendChild(el);
     }
     t.route = t.pages[index].route;
   }
@@ -258,7 +258,7 @@
       // insert the page the first time
       t.pages[index].ready = true;
       const el = new app.HelpPageFactory();
-      Polymer.dom(t.$.helpInsertion).appendChild(el);
+      t.$.helpInsertion.appendChild(el);
     }
     t.route = t.pages[index].route;
   }
