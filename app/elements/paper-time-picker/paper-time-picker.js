@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
 
 [Material Design Pickers](http://www.google.com/design/spec/components/pickers.html)

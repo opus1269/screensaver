@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
 @element paper-clock-selector
 @blurb Only intended for use by paper-time-picker

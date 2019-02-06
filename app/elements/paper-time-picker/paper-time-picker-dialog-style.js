@@ -1,3 +1,4 @@
+/* eslint-disable */
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<custom-style>
