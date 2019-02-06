@@ -16,32 +16,7 @@ import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-// noinspection ThisExpressionReferencesGlobalObjectJS
-(function(window, factory) {
-  window.ExceptionHandler = factory(window);
-}(window, function(window) {
-
-  return ExceptionHandler;
-
-  /**
-   * Log Exceptions with analytics. Include: new ExceptionHandler()<br />
-   * at top of every js file
-   * @constructor
-   * @alias ExceptionHandler
-   */
-  function ExceptionHandler() {
-    if (typeof window.onerror === 'object') {
-      // global error handler
-      window.onerror = function(message, url, line, col, errObject) {
-        if (Chrome && Chrome.Log && errObject) {
-          Chrome.Log.exception(errObject, null, true);
-        }
-      };
-    }
-  }
-}));
-
-new ExceptionHandler();
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element to select an item from a list

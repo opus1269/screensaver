@@ -32,7 +32,7 @@ import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '../../../styles/shared-styles.js';
 
-new ExceptionHandler();
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 window.app = window.app || {};
 app.GooglePhotosPage = Polymer({

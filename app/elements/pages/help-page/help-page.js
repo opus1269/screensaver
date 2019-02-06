@@ -17,9 +17,9 @@ import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '../../../styles/shared-styles.js';
 
-(function(window) {
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-  new ExceptionHandler();
+(function(window) {
 
   window.app = window.app || {};
   app.HelpPageFactory = Polymer({

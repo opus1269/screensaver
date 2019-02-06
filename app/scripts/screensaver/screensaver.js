@@ -13,8 +13,6 @@ window.app = window.app || {};
 app.Screensaver = (function() {
   'use strict';
 
-  new ExceptionHandler();
-
   /**
    * Main auto-binding template
    * @typedef {Element} app.Screensaver.Template

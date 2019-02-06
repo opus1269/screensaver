@@ -36,6 +36,7 @@ module.exports = {
     'Snoocore': true,
     'ChromePromise': true,
     'ExceptionHandler': true,
+    'ExHandler': true,
     'ga': true,
   },
 

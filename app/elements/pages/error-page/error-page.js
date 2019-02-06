@@ -4,7 +4,7 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-legacy.js';
+import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@polymer/paper-styles/typography.js';
@@ -25,9 +25,9 @@ import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '../../../styles/shared-styles.js';
 
-(function(window) {
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-  new ExceptionHandler();
+(function(window) {
 
   window.app = window.app || {};
   app.ErrorPageFactory = Polymer({

@@ -10,6 +10,8 @@ import { NeonAnimationBehavior } from
       '@polymer/neon-animation/neon-animation-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 /*
  `<spin-up-animation>` animates the scale transform of an element from 0 to 1
  and the rotate from 0 to 1 turn
@@ -24,8 +26,6 @@ import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
  }
  ```
  */
-
-new ExceptionHandler();
 
 Polymer({
   is: 'spin-up-animation',
