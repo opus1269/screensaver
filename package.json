@@ -77,6 +77,7 @@
     "gulp-vulcanize": "^6.1.0",
     "gulp-watch": "^4.3.11",
     "gulp-zip": "^4.0.0",
+    "polymer-build": "^3.1.1",
     "run-sequence": "^2.2.0",
     "uglify-es": "^3.3.10",
     "vulcanize": "^1.16.0"
