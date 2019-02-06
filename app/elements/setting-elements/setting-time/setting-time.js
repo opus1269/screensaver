@@ -15,7 +15,6 @@ import '@polymer/paper-item/paper-item-body.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-button/paper-button.js';
-import '../../paper-time-picker/paper-time-picker.js';
 import '../localize-behavior/localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
@@ -77,16 +76,16 @@ Polymer({
     </style>
 
 
-    <paper-dialog id="dialog" class="paper-time-picker-dialog">
-      <paper-time-picker id="timePicker" time="[[value]]"></paper-time-picker>
-      <div class="buttons">
-        <paper-button dialog-dismiss="">{{localize('cancel')}}
-        </paper-button>
-        <paper-button dialog-confirm="" on-tap="_onTimeSelected">
-          {{localize('ok')}}
-        </paper-button>
-      </div>
-    </paper-dialog>
+    <!--<paper-dialog id="dialog" class="paper-time-picker-dialog">-->
+      <!--<paper-time-picker id="timePicker" time="[[value]]"></paper-time-picker>-->
+      <!--<div class="buttons">-->
+        <!--<paper-button dialog-dismiss="">{{localize('cancel')}}-->
+        <!--</paper-button>-->
+        <!--<paper-button dialog-confirm="" on-tap="_onTimeSelected">-->
+          <!--{{localize('ok')}}-->
+        <!--</paper-button>-->
+      <!--</div>-->
+    <!--</paper-dialog>-->
 
     <div class="section-title setting-label" tabindex="-1" hidden\$="[[!sectionTitle]]">
       {{sectionTitle}}
