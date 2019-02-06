@@ -45,8 +45,22 @@ app.GooglePhotosPage = Polymer({
         position: relative;
       }
 
+      /* Scrollbars */
+      ::-webkit-scrollbar {
+        background: transparent;
+        width: 8px;
+      }
+      
+      ::-webkit-scrollbar-button {
+        background: transparent;
+        height: 0;
+      }
+      
       ::-webkit-scrollbar-thumb {
-        background: rgba(63, 81, 181, 1);
+        background: rgba(48, 63, 159, 1);
+        -webkit-border-radius: 8px;
+        border-radius: 4px;
+        cursor: pointer;
       }
 
       .page-toolbar {
