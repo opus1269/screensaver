@@ -4,6 +4,7 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
+/* eslint-disable */
 // noinspection ThisExpressionReferencesGlobalObjectJS
 (function(window, factory) {
   window.ExceptionHandler = factory(window);
