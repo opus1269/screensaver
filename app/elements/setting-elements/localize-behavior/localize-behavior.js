@@ -4,9 +4,9 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-legacy.js';
+import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /*
  * Copyright (c) 2016-2017, Michael A. Updike All rights reserved.

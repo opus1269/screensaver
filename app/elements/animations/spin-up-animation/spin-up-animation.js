@@ -4,13 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-legacy.js';
+import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
-import { NeonAnimationBehavior } from
-      '@polymer/neon-animation/neon-animation-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import {NeonAnimationBehavior} from
+      '/node_modules/@polymer/neon-animation/neon-animation-behavior.js';
+import {Polymer} from
+      '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /*
  `<spin-up-animation>` animates the scale transform of an element from 0 to 1
@@ -39,12 +40,12 @@ Polymer({
 
     if (config.transformOrigin) {
       this.setPrefixedProperty(node, 'transformOrigin',
-        config.transformOrigin);
+          config.transformOrigin);
     }
 
     this._effect = new KeyframeEffect(node, [
-      { 'transform': 'scale(0) rotate(0)' },
-      { 'transform': 'scale(1) rotate(1.0turn)' },
+      {'transform': 'scale(0) rotate(0)'},
+      {'transform': 'scale(1) rotate(1.0turn)'},
     ], this.timingFromConfig(config));
 
     return this._effect;

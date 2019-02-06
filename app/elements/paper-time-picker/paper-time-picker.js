@@ -41,9 +41,9 @@ If you include this element as part of `paper-dialog`, use the class
 import './paper-clock-selector.js';
 
 import './paper-time-picker-dialog-style.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import { IronResizableBehavior } from '/node_modules/@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 const $_documentContainer = document.createElement('template');
 
 $_documentContainer.innerHTML = `<custom-style>

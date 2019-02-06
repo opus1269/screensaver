@@ -4,35 +4,35 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-legacy.js';
+import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '@polymer/iron-label/iron-label.js';
-import '@polymer/iron-image/iron-image.js';
-import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '@polymer/paper-styles/typography.js';
-import '@polymer/paper-styles/color.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '@polymer/paper-material/paper-material.js';
-import '@polymer/paper-ripple/paper-ripple.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-item/paper-item-body.js';
-import '@polymer/paper-spinner/paper-spinner.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-checkbox/paper-checkbox.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
-import '../../my_icons.js';
-import { Locale } from
-      '../../setting-elements/localize-behavior/localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import '../../../styles/shared-styles.js';
+import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '/node_modules/@polymer/iron-label/iron-label.js';
+import '/node_modules/@polymer/iron-image/iron-image.js';
+import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '/node_modules/@polymer/paper-styles/typography.js';
+import '/node_modules/@polymer/paper-styles/color.js';
+import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '/node_modules/@polymer/paper-material/paper-material.js';
+import '/node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '/node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '/node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '/node_modules/@polymer/paper-button/paper-button.js';
+import '/node_modules/@polymer/paper-item/paper-item.js';
+import '/node_modules/@polymer/paper-item/paper-item-body.js';
+import '/node_modules/@polymer/paper-spinner/paper-spinner.js';
+import '/node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
+import '/elements/my_icons.js';
+import {Locale} from
+      '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '/styles/shared-styles.js';
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 window.app = window.app || {};
 app.GooglePhotosPage = Polymer({
@@ -397,9 +397,9 @@ app.GooglePhotosPage = Polymer({
     for (let i = 0; i < this.albums.length; i++) {
       const album = this.albums[i];
       if (!album.checked) {
-        this.selections.push({ id: album.id, photos: album.photos });
+        this.selections.push({id: album.id, photos: album.photos});
         const set = Chrome.Storage.safeSet('albumSelections', this.selections,
-                'useGoogleAlbums');
+            'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
           this.selections.pop();
@@ -437,7 +437,7 @@ app.GooglePhotosPage = Polymer({
 
     if (album.checked) {
       // add new
-      this.selections.push({ id: album.id, photos: album.photos });
+      this.selections.push({id: album.id, photos: album.photos});
     } else {
       // delete old
       const index = this.selections.findIndex((e) => {

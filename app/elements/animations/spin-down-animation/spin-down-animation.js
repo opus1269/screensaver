@@ -6,9 +6,9 @@
  */
 import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
-import { NeonAnimationBehavior } from
+import {NeonAnimationBehavior} from
       '/node_modules/@polymer/neon-animation/neon-animation-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -41,8 +41,8 @@ Polymer({
     }
 
     this._effect = new KeyframeEffect(node, [
-      { 'transform': 'scale(1) rotate(1.0turn)' },
-      { 'transform': 'scale(0) rotate(0)' },
+      {'transform': 'scale(1) rotate(1.0turn)'},
+      {'transform': 'scale(0) rotate(0)'},
     ], this.timingFromConfig(config));
 
     return this._effect;

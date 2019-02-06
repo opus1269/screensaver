@@ -47,6 +47,7 @@ module.exports = {
       'error', {
         'code': 80,
         'tabWidth': 2,
+        'ignoreStrings': true,
         'ignoreTemplateLiterals': true,
       }],
     'eqeqeq': ['error', 'always'],

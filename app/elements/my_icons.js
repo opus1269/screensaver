@@ -4,8 +4,8 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
-import '@polymer/iron-icon/iron-icon.js';
-import '@polymer/iron-iconset-svg/iron-iconset-svg.js';
+import '/node_modules/@polymer/iron-icon/iron-icon.js';
+import '/node_modules/@polymer/iron-iconset-svg/iron-iconset-svg.js';
 
 // eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');

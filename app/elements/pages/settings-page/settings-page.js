@@ -4,33 +4,33 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-legacy.js';
+import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/iron-label/iron-label.js';
-import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '@polymer/paper-styles/typography.js';
-import '@polymer/paper-styles/color.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '@polymer/paper-material/paper-material.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
-import '../../setting-elements/setting-toggle/setting-toggle.js';
-import '../../setting-elements/setting-slider/setting-slider.js';
-import '../../setting-elements/setting-dropdown/setting-dropdown.js';
-import '../../setting-elements/setting-background/setting-background.js';
-import '../../setting-elements/setting-time/setting-time.js';
+import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '/node_modules/@polymer/iron-pages/iron-pages.js';
+import '/node_modules/@polymer/iron-label/iron-label.js';
+import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '/node_modules/@polymer/paper-styles/typography.js';
+import '/node_modules/@polymer/paper-styles/color.js';
+import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '/node_modules/@polymer/paper-material/paper-material.js';
+import '/node_modules/@polymer/paper-tabs/paper-tab.js';
+import '/node_modules/@polymer/paper-tabs/paper-tabs.js';
+import '/node_modules/@polymer/paper-item/paper-item.js';
+import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '/node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
+import '/elements/setting-elements/setting-toggle/setting-toggle.js';
+import '/elements/setting-elements/setting-slider/setting-slider.js';
+import '/elements/setting-elements/setting-dropdown/setting-dropdown.js';
+import '/elements/setting-elements/setting-background/setting-background.js';
+import '/elements/setting-elements/setting-time/setting-time.js';
 import { Locale } from
-      '../../setting-elements/localize-behavior/localize-behavior.js';
-import '../../my_icons.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import '../../../styles/shared-styles.js';
+      '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import '/elements/my_icons.js';
+import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '/styles/shared-styles.js';
 
 new ExceptionHandler();
 

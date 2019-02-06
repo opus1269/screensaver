@@ -4,22 +4,22 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-legacy.js';
-import '@polymer/paper-styles/typography.js';
-import '@polymer/paper-styles/color.js';
-import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '@polymer/iron-selector/iron-selector.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-item/paper-item-body.js';
-import '@polymer/paper-ripple/paper-ripple.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/paper-button/paper-button.js';
-import '../localize-behavior/localize-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '/node_modules/@polymer/paper-styles/typography.js';
+import '/node_modules/@polymer/paper-styles/color.js';
+import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '/node_modules/@polymer/iron-selector/iron-selector.js';
+import '/node_modules/@polymer/paper-item/paper-item.js';
+import '/node_modules/@polymer/paper-item/paper-item-body.js';
+import '/node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '/node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '/node_modules/@polymer/paper-button/paper-button.js';
+import '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element to select an HTML element background style
