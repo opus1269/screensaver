@@ -23,7 +23,7 @@
     // send message to the option tab to focus it.
     Chrome.Msg.send(Chrome.Msg.HIGHLIGHT).catch(() => {
       // no one listening, create it
-      chrome.tabs.create({url: '../app/html/options.html'});
+      chrome.tabs.create({url: '/html/options.html'});
     });
   }
 

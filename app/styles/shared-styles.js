@@ -4,6 +4,8 @@
  * https://opensource.org/licenses/Apache-2.0
  * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
  */
+import '@polymer/polymer/polymer-element.js';
+
 // eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');
 

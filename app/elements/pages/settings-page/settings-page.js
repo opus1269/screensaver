@@ -35,9 +35,7 @@ new ExceptionHandler();
 
 Polymer({
   _template: html`
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <style>
+    <style include="iron-flex iron-flex-alignment shared-styles">
       :host {
         display: block;
         position: relative;
