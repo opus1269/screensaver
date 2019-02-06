@@ -41,7 +41,7 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
 
       app-toolbar {
         color: var(--text-primary-color);
-        background-color: var(--dark-primary-color);
+        background-color: var(--primary-color);
       }
 
       paper-material {
