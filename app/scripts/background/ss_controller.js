@@ -24,7 +24,7 @@ app.SSControl = (function() {
    * @private
    * @memberOf app.SSControl
    */
-  const _SS_URL = '/html/screensaver.html';
+  const _SS_URL = 'app/html/screensaver.html';
 
   /**
    * Error showing Screensaver

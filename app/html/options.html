@@ -40,66 +40,76 @@
   <script src="../scripts/sources/photo_source_google.js"></script>
   <script src="../scripts/options/permissions.js"></script>
 
-  <!-- All element imports - will be vulcanized must be last line in head -->
-  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-  <!-- Ensure Web Animations polyfill is loaded since neon-animation 2.0 doesn't import it -->
-  <link rel="import" href="../bower_components/neon-animation/web-animations.html">
+  <!-- import polyfills -->
+  <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
+  <!-- Ensure Web Animations polyfill is loaded since neon-animation 3.0 doesn't import it -->
+  <!--<script src="../../node_modules/web-animations-js/web-animations.min.js"></script>-->
+  <script src="../../node_modules/web-animations-js/web-animations-next.min.js"></script>
   <!-- Theme -->
-  <link rel="import" href="../styles/app-theme.html">
-  <link rel="import" href="../styles/shared-styles.html">
+  <script type="module" src="../styles/app-theme.js"></script>
+  <script type="module" src="../styles/shared-styles.js"></script>
 
-  <link rel="import" href="../bower_components/font-roboto/roboto.html">
+  <!--<link rel="import" href="../../node_modules/@polymer/font-roboto/roboto.html">-->
+  <script type="module" src="../../node_modules/@polymer/polymer/lib/elements/dom-bind.js"></script>
+  <script type="module" src="../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js"></script>
 
   <!-- Iron elements -->
-  <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
-  <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-  <link rel="import" href="../bower_components/iron-image/iron-image.html">
+  <script type="module" src="../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
+  <script type="module" src="../../node_modules/@polymer/iron-icon/iron-icon.js"></script>
+  <script type="module" src="../../node_modules/@polymer/iron-image/iron-image.js"></script>
 
   <!-- Paper elements -->
-  <link rel="import" href="../bower_components/paper-styles/typography.html">
-  <link rel="import" href="../bower_components/paper-styles/color.html">
-  <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-  <link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-  <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="../bower_components/paper-button/paper-button.html">
-  <link rel="import" href="../bower_components/paper-item/paper-item.html">
-  <link rel="import" href="../bower_components/paper-material/paper-material.html">
-  <link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+  <script type="module" src="../../node_modules/@polymer/paper-styles/typography.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-styles/color.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-dialog/paper-dialog.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-icon-button/paper-icon-button.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-button/paper-button.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-item/paper-item.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-material/paper-material.js"></script>
+  <script type="module" src="../../node_modules/@polymer/paper-listbox/paper-listbox.js"></script>
 
   <!-- Neon elements -->
-  <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
-  <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
-  <link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+  <script type="module" src="../../node_modules/@polymer/neon-animation/neon-animated-pages.js"></script>
+  <script type="module" src="../../node_modules/@polymer/neon-animation/neon-animations.js"></script>
+  <script type="module" src="../../node_modules/@polymer/neon-animation/neon-animatable.js"></script>
 
   <!-- App Layout -->
-  <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-  <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-  <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-  <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-  <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-  <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+  <script type="module" src="../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js"></script>
+  <script type="module" src="../../node_modules/@polymer/app-layout/app-drawer/app-drawer.js"></script>
+  <script type="module" src="../../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js"></script>
+  <script type="module" src="../../node_modules/@polymer/app-layout/app-header/app-header.js"></script>
+  <script type="module" src="../../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js"></script>
+  <script type="module" src="../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js"></script>
 
   <!-- App Storage -->
-  <link rel="import" href="../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
+  <script type="module" src="../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js"></script>
 
   <!-- My elements -->
-  <link rel="import" href="../elements/setting-elements/localize-behavior/localize-behavior.html">
-  <link rel="import" href="../elements/setting-elements/setting-dropdown/setting-dropdown.html">
-  <link rel="import" href="../elements/setting-elements/setting-toggle/setting-toggle.html">
-  <link rel="import" href="../elements/setting-elements/setting-slider/setting-slider.html">
-  <link rel="import" href="../elements/setting-elements/setting-link/setting-link.html">
-  <link rel="import" href="../elements/setting-elements/setting-background/setting-background.html">
-  <link rel="import" href="../elements/setting-elements/setting-time/setting-time.html">
-  <link rel="import" href="../elements/setting-elements/setting-text/setting-text.html">
-  <link rel="import" href="../elements/my_icons.html">
-  <link rel="import" href="../elements/slide-animatable/slide-animatable.html">
-  <link rel="import" href="../elements/animations/spin-up-animation/spin-up-animation.html">
-  <link rel="import" href="../elements/animations/spin-down-animation/spin-down-animation.html">
-  <link rel="import" href="../elements/pages/settings-page/settings-page.html">
-  <link rel="import" href="../elements/pages/error-page/error-page.html">
-  <link rel="import" href="../elements/pages/help-page/help-page.html">
-  <link rel="import" href="../elements/pages/google-photos-page/google-photos-page.html">
+  <script type="module" src="../elements/pages/settings-page/settings-page.js"></script>
+  <script type="module" src="../elements/pages/error-page/error-page.js"></script>
+  <script type="module" src="../elements/pages/help-page/help-page.js"></script>
+  <script type="module" src="../elements/pages/google-photos-page/google-photos-page.js"></script>
+
+
+  <script type="module" src="../elements/setting-elements/localize-behavior/localize-behavior.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-dropdown/setting-dropdown.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-toggle/setting-toggle.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-slider/setting-slider.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-link/setting-link.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-background/setting-background.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-time/setting-time.js"></script>
+  <script type="module" src="../elements/setting-elements/setting-text/setting-text.js"></script>
+  <script type="module" src="../elements/my_icons.js"></script>
+  <script type="module" src="../elements/slide-animatable/slide-animatable.js"></script>
+  <script type="module" src="../elements/animations/spin-up-animation/spin-up-animation.js"></script>
+  <script type="module" src="../elements/animations/spin-down-animation/spin-down-animation.js"></script>
+  <script type="module" src="../elements/pages/settings-page/settings-page.js"></script>
+  <script type="module" src="../elements/pages/error-page/error-page.js"></script>
+  <script type="module" src="../elements/pages/help-page/help-page.js"></script>
+  <script type="module" src="../elements/pages/google-photos-page/google-photos-page.js"></script>
+
 
 </head>
 
@@ -209,7 +219,7 @@
         <div id="mainContainer">
 
           <!-- Error dialog -->
-          <paper-dialog id="errorDialog" modal
+          <paper-dialog id="errorDialog"
                         entry-animation="scale-up-animation"
                         exit-animation="fade-out-animation">
             <h2 id="dialogTitle">[[dialogTitle]]</h2>

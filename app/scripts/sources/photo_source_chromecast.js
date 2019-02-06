@@ -37,7 +37,7 @@
      * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
      */
     fetchPhotos() {
-      const url = '/assets/chromecast.json';
+      const url = '/app/assets/chromecast.json';
       return Chrome.Http.doGet(url).then((photos) => {
         photos = photos || [];
         for (const photo of photos) {

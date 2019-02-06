@@ -36,10 +36,10 @@
     }
   },
   "icons": {
-    "16": "/images/icon_16.png",
-    "32": "/images/icon_32.png",
-    "48": "/images/icon_48.png",
-    "128": "/images/icon_128.png"
+    "16": "/app/images/icon_16.png",
+    "32": "/app/images/icon_32.png",
+    "48": "/app/images/icon_48.png",
+    "128": "/app/images/icon_128.png"
   },
   "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApzCjUT1c1Q2dzYdhKWE6NgNRnjSWRJ2KT8ISNzUcLGcdPKyaqvoUHK+ZmXyNk7gwEMIbvGVo9p90gC0nMVNbCXvqF/xbkXggKCoJs5to6xcQ+Yh1tbJOtM4YY8CY6Og2QXRe4Zz9T0WmGxvzhtBBx5L/QIVdxixdVjIJlyPEi9hnEavmt4TnhSV9t6AV4jcEtfuPeA3c42001Cs/7PxFSTKJE5wxhHfICzwlUmEphU/lmTsW0oDDspxxZAyXVuklP+XHHbcjeyiM9jENhwBniRkVB++N3zXJRHjhYjgUxfHu+gcfjTRkOGnW8sj9B+GR9Wiv6dmGiv+4bSYirxzt+wIDAQAB",
@@ -64,13 +64,13 @@
   ],
   "background": {
     "persistent": false,
-    "page": "html/background.html"
+    "page": "app/html/background.html"
   },
   "browser_action": {
     "default_title": "__MSG_browser_action_title__",
-    "16": "/images/icon_16.png",
-    "24": "/images/icon_24.png",
-    "32": "/images/icon_32.png"
+    "16": "/app/images/icon_16.png",
+    "24": "/app/images/icon_24.png",
+    "32": "/app/images/icon_32.png"
   },
-  "options_page": "/html/options.html"
+  "options_page": "app/html/options.html"
 }

@@ -40,6 +40,7 @@ app.Screensaver = (function() {
    * @memberOf app.Screensaver
    */
   const t = document.querySelector('#t');
+  console.log('t ' + t);
   t.sizingType = null;
   t.screenWidth = screen.width;
   t.screenHeight = screen.height;
