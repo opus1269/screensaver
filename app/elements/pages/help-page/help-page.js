@@ -15,6 +15,7 @@ import '../../setting-elements/setting-link/setting-link.js';
 import '../../setting-elements/localize-behavior/localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import '../../../styles/shared-styles.js';
 
 (function(window) {
 

@@ -30,6 +30,7 @@ import { Locale } from
 import '../../my_icons.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import '../../../styles/shared-styles.js';
 
 new ExceptionHandler();
 
