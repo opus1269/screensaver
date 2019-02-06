@@ -15,6 +15,11 @@ module.exports = {
     'promise',
   ],
 
+  'parserOptions': {
+    'ecmaVersion': 6,
+    'sourceType': 'module',
+  },
+
   'globals': {
     'app': true,
     'Chrome': true,
@@ -35,8 +40,14 @@ module.exports = {
   },
 
   'rules': {
+    'object-curly-spacing': 'off',
     'linebreak-style': ['off', 'windows'],
-    'max-len': ['warn', 80],
+    'max-len': [
+      'error', {
+        'code': 80,
+        'tabWidth': 2,
+        'ignoreTemplateLiterals': true,
+      }],
     'eqeqeq': ['error', 'always'],
     'no-var': 'warn',
     'no-console': ['warn', {'allow': ['error']}],
