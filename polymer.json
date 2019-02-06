@@ -1,19 +1,18 @@
 {
-  "entrypoint": "app/html/background.html",
-  "shell": "app/html/background.html",
+  "entrypoint": "app/html/options.html",
+  "shell": "app/html/options.html",
   "sources": [
     "app/_locales/**/*",
     "app/assets/**/*",
     "app/elements/**/*",
     "app/html/**/*",
     "app/lib/**/*",
-    "app/scripts/**/*",
     "app/styles/**/*",
     "app/images/**/*",
     "app/manifest.json"
-    
   ],
   "extraDependencies": [
+    "app/scripts/**/*.js",
     "node_modules/@webcomponents/webcomponentsjs/*.js",
     "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
@@ -26,50 +25,34 @@
         "modules"
       ],
       "js": {
-        "minify": true
+        "minify": false
       },
       "css": {
-        "minify": true
+        "minify": false
       },
       "html": {
-        "minify": true
+        "minify": false
       },
       "bundle": true,
-      "addServiceWorker": true
+      "addServiceWorker": false
     },
     {
-      "name": "es6-bundled",
+      "name": "esm-dev",
       "browserCapabilities": [
-        "es2015"
+        "es2015",
+        "modules"
       ],
       "js": {
-        "minify": true,
-        "transformModulesToAmd": true
+        "minify": false
       },
       "css": {
-        "minify": true
+        "minify": false
       },
       "html": {
-        "minify": true
+        "minify": false
       },
-      "bundle": true,
-      "addServiceWorker": true
-    },
-    {
-      "name": "es5-bundled",
-      "js": {
-        "minify": true,
-        "compile": true,
-        "transformModulesToAmd": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "bundle": true,
-      "addServiceWorker": true
+      "bundle": false,
+      "addServiceWorker": false
     }
   ],
   "moduleResolution": "node",
