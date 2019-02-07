@@ -22,8 +22,6 @@ window.Chrome = window.Chrome || {};
  */
 export const Locale = (function() {
 
-  new ExceptionHandler();
-
   return {
     /**
      * Get the i18n string
