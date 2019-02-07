@@ -10,8 +10,9 @@
 const base = {
   app: 'screensaver',
   src: 'app/',
-  dist: 'dist/',
-  dev: 'dev/',
+  build: 'app/build',
+  dist: 'app/build/prod/',
+  dev: 'app/build/dev/',
   store: 'store/',
   docs: 'docs/',
   tmp_docs: '../tmp_jsdoc_photoscreensaver/',
