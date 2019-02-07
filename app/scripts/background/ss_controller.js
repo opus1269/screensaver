@@ -4,16 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Controller for the screen saver
- * @namespace
+ * @namespace SSControl
  */
-app.SSControl = (function() {
-  'use strict';
-
-  new ExceptionHandler();
 
   const chromep = new ChromePromise();
 
@@ -22,7 +18,7 @@ app.SSControl = (function() {
    * @type {string}
    * @const
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   const _SS_URL = '/html/screensaver.html';
 
@@ -31,9 +27,49 @@ app.SSControl = (function() {
    * @type {string}
    * @const
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   const _ERR_SHOW = Chrome.Locale.localize('err_show_ss');
+
+/**
+ * Determine if the screen saver can be displayed
+ * @returns {boolean} true, if can display
+ * @memberOf SSControl
+ */
+export function isActive() {
+  const enabled = Chrome.Storage.getBool('enabled');
+  const keepAwake = Chrome.Storage.getBool('keepAwake');
+  const aStart = Chrome.Storage.get('activeStart');
+  const aStop = Chrome.Storage.get('activeStop');
+  const inRange = Chrome.Time.isInRange(aStart, aStop);
+
+  // do not display if screen saver is not enabled or
+  // keepAwake scheduler is enabled and is in the inactive range
+  return !(!enabled || (keepAwake && !inRange));
+}
+
+/**
+   * Display the screen saver(s)
+   * !Important: Always request screensaver through this call
+   * @param {boolean} single - if true, only show on one display
+   * @memberOf SSControl
+   */
+  export function display(single) {
+    if (!single && Chrome.Storage.getBool('allDisplays')) {
+      _openOnAllDisplays();
+    } else {
+      _open(null);
+    }
+  }
+
+  /**
+   * Close all the screen saver windows
+   * @memberOf SSControl
+   */
+  export function close() {
+    // send message to the screen savers to close themselves
+    Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
+  }
 
   /**
    * Determine if there is a full screen chrome window running on a display
@@ -41,7 +77,7 @@ app.SSControl = (function() {
    * @returns {Promise<boolean>} true if there is a full screen
    * window on the display
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   function _hasFullscreen(display) {
     if (Chrome.Storage.getBool('chromeFullscreen')) {
@@ -68,7 +104,7 @@ app.SSControl = (function() {
    * Determine if the screen saver is currently showing
    * @returns {Promise<boolean>} true if showing
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   function _isShowing() {
     // send message to the screensaver to see if he is around
@@ -84,7 +120,7 @@ app.SSControl = (function() {
    * Open a screen saver window on the given display
    * @param {Object} display - a connected display
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   function _open(display) {
     // window creation options
@@ -125,7 +161,7 @@ app.SSControl = (function() {
   /**
    * Open a screensaver on every display
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   function _openOnAllDisplays() {
     chromep.system.display.getInfo().then((displayArr) => {
@@ -136,7 +172,7 @@ app.SSControl = (function() {
           _open(display);
         }
       }
-      return Promise.resolve();
+      return null;
     }).catch((err) => {
       Chrome.Log.error(err.message, 'SSControl._openOnAllDisplays', _ERR_SHOW);
     });
@@ -151,15 +187,15 @@ app.SSControl = (function() {
    * @see https://developer.chrome.com/extensions/idle#event-onStateChanged
    * @param {string} state - current state of computer
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   function _onIdleStateChanged(state) {
     _isShowing().then((isShowing) => {
       if (state === 'idle') {
-        if (app.Alarm.isActive() && !isShowing) {
-          app.SSControl.display(false);
+        if (isActive() && !isShowing) {
+          display(false);
         }
-        return Promise.resolve();
+        return null;
       } else {
         // eslint-disable-next-line promise/no-nesting
         return Chrome.Utils.isWindows().then((isTrue) => {
@@ -167,9 +203,9 @@ app.SSControl = (function() {
             // Windows 10 Creators triggers an 'active' state
             // when the window is created, so we have to skip closing here.
             // Wouldn't need this at all if ChromeOS handled keyboard right
-            app.SSControl.close();
+            close();
           }
-          return Promise.resolve();
+          return null;
         });
       }
     }).catch((err) => {
@@ -187,12 +223,12 @@ app.SSControl = (function() {
    * @param {Function} [response] - function to call once after processing
    * @returns {boolean} true if asynchronous
    * @private
-   * @memberOf app.SSControl
+   * @memberOf SSControl
    */
   function _onChromeMessage(request, sender, response) {
     if (request.message === app.Msg.SS_SHOW.message) {
       // preview the screensaver
-      app.SSControl.display(true);
+      display(true);
     }
     return false;
   }
@@ -202,29 +238,3 @@ app.SSControl = (function() {
 
   // listen for chrome messages
   Chrome.Msg.listen(_onChromeMessage);
-
-  return {
-    /**
-     * Display the screen saver(s)
-     * !Important: Always request screensaver through this call
-     * @param {boolean} single - if true, only show on one display
-     * @memberOf app.SSControl
-     */
-    display: function(single) {
-      if (!single && Chrome.Storage.getBool('allDisplays')) {
-        _openOnAllDisplays();
-      } else {
-        _open(null);
-      }
-    },
-
-    /**
-     * Close all the screen saver windows
-     * @memberOf app.SSControl
-     */
-    close: function() {
-      // send message to the screen savers to close themselves
-      Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
-    },
-  };
-})();

@@ -4,6 +4,10 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
  */
+import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
+
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 window.app = window.app || {};
 
 /**
@@ -11,9 +15,6 @@ window.app = window.app || {};
  * @namespace
  */
 app.Data = (function() {
-  'use strict';
-
-  new ExceptionHandler();
 
   const chromep = new ChromePromise();
 
@@ -141,7 +142,7 @@ app.Data = (function() {
     // update context menu text
     const label = Chrome.Storage.getBool('enabled') ? Chrome.Locale.localize(
         'disable') : Chrome.Locale.localize('enable');
-    app.Alarm.updateBadgeText();
+    updateBadgeText();
     chromep.contextMenus.update('ENABLE_MENU', {
       title: label,
     }).catch(() => {});
@@ -155,8 +156,8 @@ app.Data = (function() {
   function _processKeepAwake() {
     Chrome.Storage.getBool('keepAwake') ? chrome.power.requestKeepAwake(
         'display') : chrome.power.releaseKeepAwake();
-    app.Alarm.updateRepeatingAlarms();
-    app.Alarm.updateBadgeText();
+    updateRepeatingAlarms();
+    updateBadgeText();
   }
 
   /**
