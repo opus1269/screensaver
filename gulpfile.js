@@ -6,13 +6,17 @@
  */
 'use strict';
 
+// change working directory to app
+// eslint-disable-next-line no-undef
+process.chdir('app');
+
 // paths and files
 const base = {
   app: 'screensaver',
-  src: 'app/',
-  build: 'app/build',
-  dist: 'app/build/prod/',
-  dev: 'app/build/dev/',
+  src: './',
+  build: './build',
+  dist: './build/prod/',
+  dev: './build/dev/',
   store: 'store/',
   docs: 'docs/',
   tmp_docs: '../tmp_jsdoc_photoscreensaver/',
@@ -35,7 +39,7 @@ const files = {
   scripts: `${path.scripts}**/*.js`,
   html: `${path.html}**/*.html`,
   styles: `${path.styles}**/*.*`,
-  elements: `${path.elements}**/*.html`,
+  elements: `${path.elements}**/*.js`,
   images: `${path.images}*.*`,
   assets: `${path.assets}*.*`,
   lib: `${path.lib}**/*.*`,
