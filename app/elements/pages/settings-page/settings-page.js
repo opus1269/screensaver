@@ -214,7 +214,8 @@ Polymer({
    * @private
    */
   _chromeBackgroundTapped() {
-    const isSet = !Chrome.Storage.get('allowBackground');
+    // this used to not be updated yet in Polymer 1
+    const isSet = Chrome.Storage.get('allowBackground');
     const perm = app.Permissions.BACKGROUND;
     const isAllowed = app.Permissions.isAllowed(perm);
     const errTitle = Locale.localize('err_optional_permissions');
