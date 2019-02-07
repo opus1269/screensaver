@@ -11,10 +11,9 @@ window.app = window.app || {};
  *  @namespace
  */
 app.Permissions = (function() {
-  'use strict';
-
+  
   new ExceptionHandler();
-
+  
   const chromep = new ChromePromise();
 
   /**
@@ -57,7 +56,7 @@ app.Permissions = (function() {
   const PICASA = {
     name: 'permPicasa',
     permissions: [],
-    origins: ['https://picasaweb.google.com/'],
+    origins: ['https://photoslibrary.googleapis.com/'],
   };
 
   /**
