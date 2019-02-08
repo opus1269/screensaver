@@ -24,6 +24,7 @@ Chrome.Http = (function() {
    * @property {?string} [token=null] - auth token
    * @property {boolean} [backoff=true] - if true, do exponential back-off
    * @property {int} [maxRetries=_MAX_ATTEMPTS] - max retries
+   * @property {json} [body=null] - body of request
    * @memberOf Chrome.Http
    */
 
@@ -236,6 +237,9 @@ Chrome.Http = (function() {
       if (conf.isAuth) {
         conf.token = authToken;
         opts.headers.set(_AUTH_HEADER, `${_BEARER} ${conf.token}`);
+      }
+      if (conf.body) {
+        opts.body = JSON.stringify(conf.body);
       }
       return fetch(url, opts);
     }).then((response) => {
