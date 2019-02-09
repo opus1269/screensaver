@@ -423,7 +423,7 @@
     "message": "Código fuente"
   },
   "err_request_failed": {
-    "message": "Solicitud fallida. Selecciona refrescar para intentarlo de nuevo."
+    "message": "Solicitud fallida"
   },
   "err_storage_title": {
     "message": "Límites de almacenamiento excedidos"

@@ -423,7 +423,7 @@
     "message": "Codice sorgente"
   },
   "err_request_failed": {
-    "message": "Richiesta fallita. Selezionare aggiorna per riprovare."
+    "message": "Richiesta fallita"
   },
   "err_storage_title": {
     "message": "Limite di archiviazione superato"

@@ -438,7 +438,7 @@
     "message": "Failed to modify an optional permission"
   },
   "err_request_failed": {
-    "message": "Request failed. Select refresh to try again."
+    "message": "Request failed"
   },
   "err_storage_title": {
     "message": "Exceeded storage limits"

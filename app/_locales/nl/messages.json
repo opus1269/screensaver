@@ -423,7 +423,7 @@
     "message": "Broncode"
   },
   "err_request_failed": {
-    "message": "Verzoek mislukt. Selecteer Vernieuw om het opnieuw te proberen."
+    "message": "Verzoek mislukt"
   },
   "err_storage_title": {
     "message": "Opslagbeperkingen zijn overtreden"

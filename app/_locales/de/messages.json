@@ -423,7 +423,7 @@
     "message": "Quellcode"
   },
   "err_request_failed": {
-    "message": "Anfrage fehlgeschlagen. Wählen Sie 'Neu Laden' und versuchen Sie es erneut."
+    "message": "Anfrage fehlgeschlagen"
   },
   "err_storage_title": {
     "message": "Speicherbegrenzungen überschritten"
