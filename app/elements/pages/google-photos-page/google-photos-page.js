@@ -123,6 +123,7 @@ app.GooglePhotosPage = Polymer({
       .list-item[disabled] .setting-label {
         color: var(--disabled-text-color);
       }
+      
     </style>
 
     <paper-material elevation="1" class="page-container">
@@ -298,11 +299,12 @@ app.GooglePhotosPage = Polymer({
   },
 
   /**
-   * Query Picasa for the list of the users albums
+   * Query Google Photos for the list of the users albums
+   * @returns {Promise<null>}
    */
   loadAlbumList: function() {
     const ERR_TITLE = Locale.localize('err_load_album_list');
-    this._checkPermissions().then((allowed) => {
+    return this._checkPermissions().then((allowed) => {
       if (!allowed) {
         const err = new Error(Locale.localize('err_auth_picasa'));
         return Promise.reject(err);
@@ -333,7 +335,33 @@ app.GooglePhotosPage = Polymer({
           Locale.localize('err_request_failed');
       this.$.dialogText.innerHTML = err.message;
       this.$.errorDialog.open();
+      return Promise.reject(err);
     });
+  },
+
+  /**
+   * Query Google Photos for the contents of an album
+   * @param {string} albumId album to load
+   * @returns {app.GoogleSource.Album} Album
+   */
+  _loadAlbum: async function(albumId) {
+    const ERR_TITLE = Locale.localize('err_load_album');
+    let album;
+    try {
+      this.set('waitForLoad', true);
+      album = await app.GoogleSource.loadAlbum(albumId);
+      this.set('waitForLoad', false);
+      return album;
+    } catch (err) {
+      this.set('waitForLoad', false);
+      Chrome.Log.error(err.message,
+          'GooglePhotosPage.loadAlbum', ERR_TITLE);
+      this.$.dialogTitle.innerHTML =
+          Locale.localize('err_request_failed');
+      this.$.dialogText.innerHTML = err.message;
+      this.$.errorDialog.open();
+    }
+    return album;
   },
 
   /**
@@ -389,30 +417,6 @@ app.GooglePhotosPage = Polymer({
   },
 
   /**
-   * Event: Handle tap on select all albums icon
-   * @private
-   */
-  _onSelectAllTapped: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'selectAllGoogleAlbums');
-    for (let i = 0; i < this.albums.length; i++) {
-      const album = this.albums[i];
-      if (!album.checked) {
-        this.selections.push({id: album.id, photos: album.photos});
-        const set = Chrome.Storage.safeSet('albumSelections', this.selections,
-            'useGoogleAlbums');
-        if (!set) {
-          // exceeded storage limits
-          this.selections.pop();
-          this._showStorageErrorDialog(
-              'GooglePhotosPage._onSelectAllTapped');
-          break;
-        }
-        this.set('albums.' + i + '.checked', true);
-      }
-    }
-  },
-
-  /**
    * Event: Handle tap on deselect all albums icon
    * @private
    */
@@ -424,12 +428,40 @@ app.GooglePhotosPage = Polymer({
   },
 
   /**
+   * Event: Handle tap on select all albums icon
+   * @private
+   */
+  _onSelectAllTapped: async function() {
+    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'selectAllGoogleAlbums');
+    for (let i = 0; i < this.albums.length; i++) {
+      const album = this.albums[i];
+      if (!album.checked) {
+        const newAlbum = await this._loadAlbum(album.id);
+        if (newAlbum) {
+          this.selections.push({id: album.id, photos: newAlbum.photos});
+          const set = Chrome.Storage.safeSet('albumSelections', this.selections,
+              'useGoogleAlbums');
+          if (!set) {
+            // exceeded storage limits
+            this.selections.pop();
+            this._showStorageErrorDialog(
+                'GooglePhotosPage._onSelectAllTapped');
+            break;
+          }
+          this.set('albums.' + i + '.checked', true);
+          this.set('albums.' + i + '.ct', newAlbum.ct);
+        }
+      }
+    }
+  },
+
+  /**
    * Event: Album checkbox state changed
    * @param {Event} event - tap event
    * @param {app.GoogleSource.Album} event.model.album - the album
    * @private
    */
-  _onAlbumSelectChanged: function(event) {
+  _onAlbumSelectChanged: async function(event) {
     const album = event.model.album;
 
     Chrome.GA.event(Chrome.GA.EVENT.CHECK,
@@ -437,7 +469,23 @@ app.GooglePhotosPage = Polymer({
 
     if (album.checked) {
       // add new
-      this.selections.push({id: album.id, photos: album.photos});
+      const newAlbum = await this._loadAlbum(album.id);
+      if (newAlbum) {
+        this.selections.push({id: album.id, photos: newAlbum.photos});
+        const set = Chrome.Storage.safeSet('albumSelections', this.selections,
+            'useGoogleAlbums');
+        if (!set) {
+          // exceeded storage limits
+          this.selections.pop();
+          this.set('albums.' + album.index + '.checked', false);
+          this._showStorageErrorDialog(
+              'GooglePhotosPage._onAlbumSelectChanged');
+        }
+        this.set('albums.' + album.index + '.ct', newAlbum.ct);
+      } else {
+        // failed to load photos
+        this.set('albums.' + album.index + '.checked', false);
+      }
     } else {
       // delete old
       const index = this.selections.findIndex((e) => {
@@ -446,17 +494,17 @@ app.GooglePhotosPage = Polymer({
       if (index !== -1) {
         this.selections.splice(index, 1);
       }
+      const set = Chrome.Storage.safeSet('albumSelections', this.selections,
+          'useGoogleAlbums');
+      if (!set) {
+        // exceeded storage limits
+        this.selections.pop();
+        this.set('albums.' + album.index + '.checked', false);
+        this._showStorageErrorDialog(
+            'GooglePhotosPage._onAlbumSelectChanged');
+      }
     }
 
-    const set = Chrome.Storage.safeSet('albumSelections', this.selections,
-        'useGoogleAlbums');
-    if (!set) {
-      // exceeded storage limits
-      this.selections.pop();
-      this.set('albums.' + album.index + '.checked', false);
-      this._showStorageErrorDialog(
-          'GooglePhotosPage._onAlbumSelectChanged');
-    }
   },
 
   /**
