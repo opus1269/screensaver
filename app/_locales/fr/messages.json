@@ -378,7 +378,7 @@
     "message": "Remarque: les albums partagés ne sont peut-être pas disponibles. Consultez notre FAQ pour obtenir plus d'informations."
   },
   "google_loading": {
-    "message": "Chargement des albums"
+    "message": "Chargement..."
   },
   "help_title": {
     "message": "Aide et questions"
@@ -451,6 +451,9 @@
   },
   "err_load_album_list": {
     "message": "Impossible de récupérer la liste des albums photo Google"
+  },
+  "err_load_album": {
+    "message": "Impossible de récupérer des albums photo Google"
   },
   "err_show_ss": {
     "message": "Échec de l'affichage de l'économiseur d'écran"

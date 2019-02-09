@@ -378,7 +378,7 @@
     "message": "Hinweis: Gemeinsame Alben nicht verfügbar. Siehe FAQ für weitere Informationen."
   },
   "google_loading": {
-    "message": "Alben Laden"
+    "message": "Laden..."
   },
   "help_title": {
     "message": "Hilfe & Feedback"
@@ -451,6 +451,9 @@
   },
   "err_load_album_list": {
     "message": "Fehler beim Abrufen der Liste der Google Foto-Alben"
+  },
+  "err_load_album": {
+    "message": "Fehler beim Abrufen der Google Foto-Alben"
   },
   "err_show_ss": {
     "message": "Fehler beim Anzeigen des Bildschirmschoners"

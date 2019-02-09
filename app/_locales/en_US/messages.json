@@ -378,7 +378,7 @@
     "message": "Note: Shared albums may not be available.  See the FAQ for more info."
   },
   "google_loading": {
-    "message": "Loading Albums"
+    "message": "Loading..."
   },
   "last_error_viewer_title": {
     "message": "Last error viewer"
@@ -427,6 +427,9 @@
   },
   "err_load_album_list": {
     "message": "Failed to retrieve list of Google Photo albums"
+  },
+  "err_load_album": {
+    "message": "Failed to retrieve Google Photo album"
   },
   "err_show_ss": {
     "message": "Failed to display screensaver"

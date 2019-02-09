@@ -378,7 +378,7 @@
     "message": "Opmerking: Gedeelde albums zijn misschien niet beschikbaar. Zie de Veelgestelde Vragen voor meer informatie."
   },
   "google_loading": {
-    "message": "Albums aan het laden"
+    "message": "laden..."
   },
   "help_title": {
     "message": "Hulp en feedback"
@@ -451,6 +451,9 @@
   },
   "err_load_album_list": {
     "message": "De lijst met Google Fotoalbums kon niet worden opgehaald"
+  },
+  "err_load_album": {
+    "message": "De Google Fotoalbums kon niet worden opgehaald"
   },
   "err_show_ss": {
     "message": "Kan screensaver niet weergeven"

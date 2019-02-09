@@ -378,7 +378,7 @@
     "message": "Nota: Los álbumes compartidos pueden no estar disponibles. Consulte las preguntas frecuentes para obtener más información."
   },
   "google_loading": {
-    "message": "Cargando álbumes"
+    "message": "Cargando..."
   },
   "help_title": {
     "message": "Ayuda y comentarios"
@@ -451,6 +451,9 @@
   },
   "err_load_album_list": {
     "message": "Error al recuperar la lista de álbumes de fotos de Google"
+  },
+  "err_load_album": {
+    "message": "Error al recuperar de álbumes de fotos de Google"
   },
   "err_show_ss": {
     "message": "Error al mostrar el protector de pantalla"
