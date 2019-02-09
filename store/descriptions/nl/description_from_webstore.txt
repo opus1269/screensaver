@@ -3,7 +3,6 @@ Deze extensie toont een screensaver bestaande uit een slideshow van foto's uit m
 * Uw Google Fotoalbums
       Opmerking: gedeelde albums worden niet ondersteund
 * Enkele achtergrondfoto's gebruikt door Chromecast
-* Verschillende bronnen van 500px
 * Verschillende bronnen van Reddit
 * Interessante foto's van Flickr
 
@@ -26,12 +25,12 @@ Beoordeel dit als u het nuttig vindt. Hartelijk dank.
 
 Het is open source en zonder advertenties.
 Broncode:
-https://github.com/opus1269/photo-screen-saver
+https://github.com/opus1269/screensaver
 
 * Privacyverklaring
 
 Dit programma slaat gevoelige of persoonlijke gebruikersgegevens niet op, noch worden deze overgedragen.
 
-Verificatie met de Picasa-API die wordt gebruikt om toegang tot uw Google foto's te krijgen, wordt uitgevoerd met OAuth2 en https.
+Verificatie met de Google-API die wordt gebruikt om toegang tot uw Google foto's te krijgen, wordt uitgevoerd met OAuth2 en https.
 
-https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md
+https://github.com/opus1269/screensaver/blob/master/PRIVACY.md

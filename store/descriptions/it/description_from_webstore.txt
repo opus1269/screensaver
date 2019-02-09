@@ -3,7 +3,6 @@ Questa estensione mostra un salvaschermo composto da una presentazione di foto p
 * I vostri album di foto  Google
       Nota:gli album condivisi non sono supportati
 * Alcune foto di sfondo utilizzate da Chromecast
-* Diverse fonti da 500px
 * Diverse fonti da reddit
 * Foto interessanti da Flickr
 
@@ -26,12 +25,12 @@ Se apprezzate questa applicazione datele un voto. Grazie.
 
 È open source e senza pubblicità.
 Codice sorgente:
-https://github.com/opus1269/photo-screen-saver
+https://github.com/opus1269/screensaver
 
 * Informativa sulla Privacy
 
 Questo programma non memorizza o trasmette nessun dato personale o sensibile degli utenti.
 
-L'autenticazione con l'API di Picasa, utilizzata per accedere a Google Foto viene eseguita con OAuth2 e https.
+L'autenticazione con l'API di Google, utilizzata per accedere a Google Foto viene eseguita con OAuth2 e https.
 
-https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md
+https://github.com/opus1269/screensaver/blob/master/PRIVACY.md

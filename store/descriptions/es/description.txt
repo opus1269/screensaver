@@ -3,7 +3,6 @@ Esta extensión muestra un salvapantalla compuesto por una presentación de diap
 * Tus álbumes de fotos de Google
       Nota: Los álbumes compartidos no son compatibles
 * Algunas fotos de fondo utilizadas por Chromecast
-* Varias fuentes de 500px
 * Varias fuentes de reddit
 * Fotos interesantes de Flickr
 
@@ -26,12 +25,12 @@ Califique esto si lo encuentra de valor. Gracias.
 
 Es de código abierto y sin publicidad.
 Código fuente:
-https://github.com/opus1269/photo-screen-saver
+https://github.com/opus1269/screensaver
 
 * Declaracion de privacidad
 
 Este programa no almacena ni transmite ningún dato de usuario sensible o personal.
 
-La autenticación con la API de Picasa, que se utiliza para acceder a Google Fotos, se realiza con OAUTH2 y https.
+La autenticación con la API de Google, que se utiliza para acceder a Google Fotos, se realiza con OAUTH2 y https.
 
-https://github.com/opus1269/photo-screen-saver/blob/master/PRIVACY.md
+https://github.com/opus1269/screensaver/blob/master/PRIVACY.md

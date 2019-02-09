@@ -4,7 +4,6 @@ This extension displays a screensaver composed of a slide show of photos from mu
 
 * Your Google Photos - Note: Shared Albums are not supported
 * Some background photos used by Chromecast
-* Several streams from 500px
 * Several sources from reddit
 * Interesting photos from Flickr
 

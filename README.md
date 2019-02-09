@@ -4,7 +4,6 @@ This extension displays a screensaver composed of a slide show of photos from mu
 
 * Your Google Photos - Note: Shared Albums are not supported
 * Some background photos used by Chromecast
-* Several streams from 500px
 * Several sources from reddit
 * Interesting photos from Flickr
 
@@ -25,7 +24,7 @@ Works great on all platforms but may be especially useful for your Chromebook.
 
 It is free and advertising free.
 
-It is implemented using Vanilla JavaScript and [Polymer 1](https://www.polymer-project.org/1.0/start/).
+It is implemented using Vanilla JavaScript and [Polymer 3](https://polymer-library.polymer-project.org/3.0/docs/devguide/feature-overview).
 
 <br />
 
@@ -33,7 +32,7 @@ It is implemented using Vanilla JavaScript and [Polymer 1](https://www.polymer-p
 
 <br />
 
-[GitHub Pages](https://opus1269.github.io/photo-screen-saver/)
+[GitHub Pages](https://opus1269.github.io/screensaver/)
 
 <br /><br />
 

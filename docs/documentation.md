@@ -8,9 +8,9 @@
 
 # For Developers
 
-### [View On GitHub](https://github.com/opus1269/photo-screen-saver)
+### [View On GitHub](https://github.com/opus1269/screensaver)
 
 ### [Code Documentation](gen/index.html)
 
-#### It is implemented using vanilla JavaScript and [Polymer 1](https://www.polymer-project.org/1.0/start/).
+#### It is implemented using vanilla JavaScript and [Polymer 3](https://polymer-library.polymer-project.org/3.0/docs/devguide/feature-overview).
 
