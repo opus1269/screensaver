@@ -197,7 +197,7 @@ gulp.task('prodTest', (cb) => {
 // Generate JSDoc
 gulp.task('docs', (cb) => {
   const config = require('./jsdoc.json');
-  const README = 'README.md';
+  const README = '../README.md';
   gulp.src([
     README,
     files.scripts,
