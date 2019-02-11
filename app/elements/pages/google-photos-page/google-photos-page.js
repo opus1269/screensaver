@@ -646,36 +646,4 @@ app.GooglePhotosPage = Polymer({
     }
     return ret;
   },
-
-  /**
-   * Initialize value if it is not in localStorage
-   * @private
-   */
-  _initPermPicasa: function() {
-    this.set('permPicasa', 'notSet');
-  },
-
-  /**
-   * Initialize value if it is not in localStorage
-   * @private
-   */
-  _initIsAlbumMode: function() {
-    this.set('isAlbumMode', true);
-  },
-
-  /**
-   * Initialize value if it is not in localStorage
-   * @private
-   */
-  _initUseGoogleAlbums: function() {
-    this.set('useGoogleAlbums', true);
-  },
-
-  /**
-   * Initialize value if it is not in localStorage
-   * @private
-   */
-  _initUseGooglePhotos: function() {
-    this.set('useGooglePhotos', true);
-  },
 });
