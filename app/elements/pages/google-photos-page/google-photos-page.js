@@ -424,7 +424,7 @@ app.GooglePhotosPage = Polymer({
     Chrome.GA.event(Chrome.GA.EVENT.ICON, 'deselectAllGoogleAlbums');
     this._uncheckAll();
     this.selections.splice(0, this.selections.length);
-    Chrome.Storage.set('albumSelections', null);
+    Chrome.Storage.set('albumSelections', []);
   },
 
   /**
