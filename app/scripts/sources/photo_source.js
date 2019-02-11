@@ -233,7 +233,12 @@
           return Promise.reject(err);
         });
       } else {
-        localStorage.removeItem(this._photosKey);
+        // hack so we don't delete album selections when Google Photos
+        // page is disabled
+        const useGoogle = Chrome.Storage.get('useGoogle');
+        if (!((this._photosKey === 'albumSelections') && !useGoogle)) {
+          localStorage.removeItem(this._photosKey);
+        }
         return Promise.resolve();
       }
     }

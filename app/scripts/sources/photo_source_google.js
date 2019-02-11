@@ -285,14 +285,13 @@
     }
 
     /**
-     * Update the current photo url's
+     * Update the current photo url's. Google expires them after 1 hour
      */
     static async updatePhotos() {
       // max items in getBatch call
       const MAX_QUERIES = 50;
-      const vals = Chrome.Storage.get('albumSelections');
-      const albums = vals || [];
-      if (!albums || (albums.length === 0)) {
+      const albums = Chrome.Storage.get('albumSelections', []);
+      if (!this._updateAlbums() || (albums.length === 0)) {
         return;
       }
       let newAlbums = [];
@@ -356,9 +355,34 @@
         newAlbums.push(newAlbum);
       }
       
-      // Save the updated albums
-      Chrome.Storage.set('albumSelections', newAlbums);
+      // Try to save the updated albums
+      const set = Chrome.Storage.safeSet('albumSelections', newAlbums, null);
+      if (!set) {
+        Chrome.Log.error('Failed to update Google Photo urls',
+            'app.GoogleSource.updatePhotos');
+      }
+    }
 
+    /**
+     * Return true if we should be updating the albums
+     * @returns {boolean} true if we should use Google Photos albums
+     */
+    static _updateAlbums() {
+      const enabled = Chrome.Storage.get('enabled');
+      const useGoogle = Chrome.Storage.get('useGoogle');
+      const useGoogleAlbums = Chrome.Storage.get('useGoogleAlbums');
+      return enabled && useGoogle && useGoogleAlbums;
+    }
+
+    /**
+     * Return true if we should be fetching the albums
+     * @returns {boolean} true if we should use Google Photos albums
+     */
+    _fetchAlbums() {
+      const enabled = Chrome.Storage.get('enabled');
+      const useGoogle = Chrome.Storage.get('useGoogle');
+      const useGoogleAlbums = Chrome.Storage.get('useGoogleAlbums');
+      return enabled && useGoogle && useGoogleAlbums;
     }
 
     /**
@@ -366,11 +390,13 @@
      * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
      */
     _fetchAlbumPhotos() {
-      const vals = Chrome.Storage.get('albumSelections');
+      const albums = Chrome.Storage.get('albumSelections', []);
+      if (!this._fetchAlbums() || (albums.length === 0)) {
+        return Promise.resolve([]);
+      }
 
       // series of API calls to get each album
       const promises = [];
-      const albums = vals || [];
       for (const album of albums) {
         promises.push(app.GoogleSource.loadAlbum(album.id, false));
       }
