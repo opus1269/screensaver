@@ -143,10 +143,13 @@
             url = this._ex;
           }
           break;
-        default:
-          if (this._type !== 'Google User') {
-            url = this._url;
+        case 'Google User':
+          if (this._ex && this._ex.url) {
+            url = this._ex.url;
           }
+          break;
+        default:
+          url = this._url;
           break;
       }
       if (url !== null) {
