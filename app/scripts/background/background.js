@@ -49,6 +49,8 @@ function _onInstalled(details) {
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481
         return;
       }
+      // show info on the update
+      chrome.tabs.create({url: '/html/update.html'});
     }
     // extension updated
     app.Data.update();
