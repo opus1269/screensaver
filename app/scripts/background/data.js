@@ -26,7 +26,7 @@ app.Data = (function() {
    * @private
    * @memberOf app.Data
    */
-  const _DATA_VERSION = 17;
+  const _DATA_VERSION = 18;
 
   /**
    * A number and associated units
@@ -267,6 +267,19 @@ app.Data = (function() {
       }
 
       if (!Number.isNaN(oldVersion)) {
+        if (oldVersion < 18) {
+          // 500px no longer supported
+          Chrome.Storage.set('useEditors500px', false);
+          Chrome.Storage.set('usePopular500px', false);
+          Chrome.Storage.set('useYesterday500px', false);
+          Chrome.Storage.set('editors500pxImages', null);
+          Chrome.Storage.set('popular500pxImages', null);
+          Chrome.Storage.set('yesterday500pxImages', null);
+          
+          // Google Photos API not compatible with Picasa API album id's
+          Chrome.Storage.set('albumSelections', []);
+        }
+
         if (oldVersion < 14) {
           // background used to be a required permission
           // installed extensions before the change will keep
