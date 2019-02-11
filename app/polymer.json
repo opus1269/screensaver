@@ -16,7 +16,8 @@
   ],
   "fragments": [
     "html/background.html",
-    "html/screensaver.html"
+    "html/screensaver.html",
+    "html/update.html"
   ],
   "builds": [
     {
