@@ -129,9 +129,9 @@
      * @param {string} author - The photographer
      * @param {number} asp - The aspect ratio of the photo
      * @param {Object} [ex] - Additional information about the photo
-     * @param {string} [point] - 'lat lon'
+     * @param {string} [point=''] - 'lat lon'
      */
-    static addPhoto(photos, url, author, asp, ex, point) {
+    static addPhoto(photos, url, author, asp, ex, point='') {
       /** @type {app.PhotoSource.Photo} */
       const photo = {
         url: url,
@@ -141,7 +141,7 @@
       if (ex) {
         photo.ex = ex;
       }
-      if (point) {
+      if (point && !Chrome.Utils.isWhiteSpace(point)) {
         photo.point = point;
       }
       photos.push(photo);

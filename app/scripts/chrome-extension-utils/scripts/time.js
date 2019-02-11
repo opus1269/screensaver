@@ -30,6 +30,24 @@
     }
 
     /**
+     * Minutes in hour
+     * @returns {int} value
+     * @static
+     */
+    static get MIN_IN_HOUR() {
+      return 60;
+    }
+
+    /**
+     * Milliseconds in hour
+     * @returns {int} value
+     * @static
+     */
+    static get MSEC_IN_HOUR() {
+      return Chrome.Time.MIN_IN_HOUR * 60 * 1000;
+    }
+
+    /**
      * Minutes in day
      * @returns {int} value
      * @static
