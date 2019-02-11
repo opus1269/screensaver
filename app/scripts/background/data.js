@@ -244,7 +244,7 @@ app.Data = (function() {
       Chrome.Storage.clearLastError().catch((err) => {
         Chrome.GA.error(err.message, 'Data.initialize');
       });
-      
+
       // set time format based on locale
       Chrome.Storage.set('showTime', _getTimeFormat());
 
@@ -275,7 +275,17 @@ app.Data = (function() {
           Chrome.Storage.set('editors500pxImages', null);
           Chrome.Storage.set('popular500pxImages', null);
           Chrome.Storage.set('yesterday500pxImages', null);
-          
+
+          // Need new permission for Google Photos API
+          Chrome.Storage.set('permPicasa', 'notSet');
+
+          // Remove cached Auth token
+          Chrome.Auth.removeCachedToken(false, null, null).catch((err) => {
+            Chrome.Log.error(err.message, 'app.Data.update');
+            // nice to remove but not critical
+            return null;
+          });
+
           // Google Photos API not compatible with Picasa API album id's
           Chrome.Storage.set('albumSelections', []);
         }
@@ -370,7 +380,7 @@ app.Data = (function() {
         // individual change
         if (app.PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
           // photo source change
-          const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key; 
+          const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
           app.PhotoSources.process(useKey).catch((err) => {
             // send message on processing error
             const msg = app.Msg.PHOTO_SOURCE_FAILED;
@@ -380,7 +390,7 @@ app.Data = (function() {
           }).catch(() => {});
         } else {
           const fn = STATE_MAP[key];
-          if (typeof(fn) !== 'undefined') {
+          if (typeof (fn) !== 'undefined') {
             fn();
           }
         }
