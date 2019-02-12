@@ -88,7 +88,7 @@ function _onMenuClicked(info) {
     Chrome.GA.event(Chrome.GA.EVENT.MENU, `${info.menuItemId}`);
     display();
   } else if (info.menuItemId === _ENABLE_MENU) {
-    const isEnabled = Chrome.Storage.get('enabled');
+    const isEnabled = Chrome.Storage.getBool('enabled');
     Chrome.GA.event(Chrome.GA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
     _toggleEnabled();
   }

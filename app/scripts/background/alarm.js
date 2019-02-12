@@ -42,8 +42,8 @@ const _ALARMS = {
  */
 export function updateRepeatingAlarms() {
   const keepAwake = Chrome.Storage.getBool('keepAwake');
-  const aStart = Chrome.Storage.getBool('activeStart');
-  const aStop = Chrome.Storage.getBool('activeStop');
+  const aStart = Chrome.Storage.get('activeStart', '00:00');
+  const aStop = Chrome.Storage.get('activeStop', '00:00');
 
   // create keep awake active period scheduling alarms
   if (keepAwake && (aStart !== aStop)) {

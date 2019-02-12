@@ -10,11 +10,9 @@ import '/node_modules/@polymer/paper-styles/typography.js';
 import '/node_modules/@polymer/paper-styles/color.js';
 import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '/node_modules/@polymer/paper-input/paper-input.js';
 import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';
-import '/node_modules/@polymer/paper-ripple/paper-ripple.js';
-import '/node_modules/@polymer/paper-dialog/paper-dialog.js';
-import '/node_modules/@polymer/paper-button/paper-button.js';
 import '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
@@ -51,22 +49,11 @@ Polymer({
     </style>
 
 
-    <!--<paper-dialog id="dialog" class="paper-time-picker-dialog">-->
-      <!--<paper-time-picker id="timePicker" time="[[value]]"></paper-time-picker>-->
-      <!--<div class="buttons">-->
-        <!--<paper-button dialog-dismiss="">{{localize('cancel')}}-->
-        <!--</paper-button>-->
-        <!--<paper-button dialog-confirm="" on-tap="_onTimeSelected">-->
-          <!--{{localize('ok')}}-->
-        <!--</paper-button>-->
-      <!--</div>-->
-    <!--</paper-dialog>-->
-
     <div class="section-title setting-label" tabindex="-1" hidden\$="[[!sectionTitle]]">
       {{sectionTitle}}
     </div>
 
-    <paper-item class="center horizontal layout" tabindex="-1" on-tap="_onTap">
+    <paper-item class="center horizontal layout" tabindex="-1">
       <paper-item-body class="flex" two-line="">
         <div class="setting-label" hidden\$="[[!mainLabel]]">
           {{mainLabel}}
@@ -74,9 +61,9 @@ Polymer({
         <div class="setting-label" secondary="" hidden\$="[[!secondaryLabel]]">
           {{secondaryLabel}}
         </div>
-        <paper-ripple center=""></paper-ripple>
       </paper-item-body>
-      <div class="setting-label" tabindex="0" disabled\$="[[disabled]]">[[timeLabel]]</div>
+      <paper-input type="time" min="0:00" max="24:00" required
+       class="setting-label" tabindex="-1" value={{value}} disabled\$="[[disabled]]"></paper-input>
     </paper-item>
     <hr hidden\$="[[noseparator]]">
     
@@ -101,33 +88,12 @@ Polymer({
     },
 
     /**
-     * Time value '00:00' format
+     * Time value '00:00' 24 hr format
      * @memberOf SettingTime
      */
     value: {
       type: String,
       value: '00:00',
-      observer: '_valueChanged',
-    },
-
-    /**
-     * Time display label
-     * @memberOf SettingTime
-     */
-    timeLabel: {
-      type: String,
-      value: '12:00 AM',
-    },
-
-    /**
-     * Display format 12/24 hr
-     * @memberOf SettingTime
-     */
-    format: {
-      type: Number,
-      value: 1,
-      notify: true,
-      observer: '_formatChanged',
     },
 
     /**
@@ -176,74 +142,4 @@ Polymer({
     },
   },
 
-  /**
-   * Event: Show dialog on tap
-   * @private
-   * @memberOf SettingTime
-   */
-  _onTap: function() {
-    if (!this.disabled) {
-      this.$.dialog.open();
-    }
-  },
-
-  /**
-   * Event: Set time on tap of OK button
-   * @private
-   * @memberOf SettingTime
-   */
-  _onTimeSelected: function() {
-    const picker = this.$.timePicker;
-    const hour = ('0' + picker.hour).substr(-2);
-    const min = ('0' + picker.minute).substr(-2);
-    const value = `${hour}:${min}`;
-    this.set('value', value);
-    Chrome.GA.event(Chrome.GA.EVENT.BUTTON, `SettingTime.OK: ${this.name}`);
-  },
-
-  /**
-   * Observer: Value changed
-   * @param {string} newValue - value we changed to
-   * @private
-   * @memberOf SettingTime
-   */
-  _valueChanged: function(newValue) {
-    this._setTimeLabel(newValue);
-  },
-
-  /**
-   * Observer: Global Time format changed
-   * @private
-   * @memberOf SettingTime
-   */
-  _formatChanged: function() {
-    this._setTimeLabel(this.get('value'));
-  },
-
-  /**
-   * Get the time suitable for display
-   * @param {string} timeString - format '00:00'
-   * @returns {string} formatted time
-   * @private
-   * @memberOf SettingTime
-   */
-  _formatTime: function(timeString) {
-    let ret = '12:00 AM';
-    if (timeString) {
-      ret = Chrome.Time.getStringFull(timeString, this.format);
-    } else {
-      Chrome.Log.error('timeString is null', 'setting-time._formatTime');
-    }
-    return ret;
-  },
-
-  /**
-   * Set the time display label
-   * @param {string} value - time in '00:00' format
-   * @private
-   * @memberOf SettingTime
-   */
-  _setTimeLabel: function(value) {
-    this.set('timeLabel', this._formatTime(value));
-  },
 });
