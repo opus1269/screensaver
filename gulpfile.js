@@ -169,7 +169,7 @@ function build() {
           // Uncomment these lines to add a few more example optimizations to
           // your source files, but these are not included by default. For
           // installation, see the require statements at the beginning.
-          // .pipe(If(/\.js$/, uglify())) // Install gulp-uglify to use
+          // .pipe(If(/\.js$/, minify(minifyOpts)))
           // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
           // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
           // to use
@@ -219,8 +219,6 @@ function build() {
     });
   });
 }
-
-gulp.task('buildProd', build);
 
 // Default - watch for changes in development
 gulp.task('default', ['incrementalBuild']);
@@ -275,23 +273,14 @@ gulp.task('dev', (cb) => {
 gulp.task('prod', (cb) => {
   isProd = true;
   isProdTest = false;
-  runSequence('clean', 'html', [
+  runSequence('_poly_build', [
     'manifest',
-    'scripts',
-    'styles',
-    'vulcanize_options',
-    'vulcanize_screensaver',
-    'vulcanize_background',
-    'images',
-    'assets',
-    'lib',
-    'locales',
     'docs',
   ], 'prod_delete', 'zip', cb);
 });
 
 // Production test build
-gulp.task('prodTest', (cb) => {
+gulp.task('_poly_build',, (cb) => {
   isProd = true;
   isProdTest = true;
   runSequence('clean', 'html', [
@@ -310,16 +299,18 @@ gulp.task('prodTest', (cb) => {
 
 // Generate JSDoc
 gulp.task('docs', (cb) => {
+
+  // change working directory to app
+  // eslint-disable-next-line no-undef
+  process.chdir('app');
+
   const config = require('./jsdoc.json');
   const README = '../README.md';
   gulp.src([
     README,
     files.scripts,
-    files.bowerScripts,
     files.elements,
-    files.bowerElements,
   ], {read: true}).
-      pipe(If('*.html', plugins.crisper(crisperOpts))).
       pipe(gulp.dest(base.tmp_docs)).
       pipe(plugins.jsdoc3(config, cb));
 });
@@ -429,7 +420,6 @@ gulp.task('elements', () => {
       pipe(plugins.eslint()).
       pipe(plugins.eslint.formatEach()).
       pipe(plugins.eslint.failAfterError()).
-      pipe(If('*.html', plugins.crisper(crisperOpts))).
       pipe(gulp.dest(base.dev));
 });
 
@@ -527,3 +517,8 @@ gulp.task('zip', () => {
           'store-test.zip')).
       pipe(!isProdTest ? gulp.dest(base.store) : gulp.dest(base.dist));
 });
+
+// run polymer build with gulp, basically
+gulp.task('_poly_build', build);
+
+

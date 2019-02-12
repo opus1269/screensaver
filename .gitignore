@@ -7,6 +7,9 @@
 *.db
 *.lock
 
+# used in building our dos
+**/tmp_jsdoc_photoscreensaver
+
 # jekyll
 _site/
 .sass-cache/
