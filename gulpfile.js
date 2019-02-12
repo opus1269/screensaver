@@ -55,7 +55,7 @@ const watchOpts = {
 };
 const minifyOpts = {
   output: {
-    beautify: true,
+    beautify: false,
     comments: '/Copyright/',
   },
 };
@@ -147,7 +147,7 @@ function build() {
           // Uncomment these lines to add a few more example optimizations to
           // your source files, but these are not included by default. For
           // installation, see the require statements at the beginning.
-          // .pipe(If(/\.js$/, minify(minifyOpts)))
+          .pipe(If(/\.js$/, minify(minifyOpts)))
           // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
           // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
           // to use
@@ -175,7 +175,8 @@ function build() {
       // load them.
       buildStream = buildStream.pipe(polymerProject.bundler({
         inlineScripts: false,
-        sourcemaps: true,
+        inlineCss: true,
+        sourcemaps: false,
         stripComments: true,
       }));
 
@@ -334,13 +335,11 @@ gulp.task('scripts', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(isProd ? util.noop() : plugins.replace('const _DEBUG = false',
-          'const _DEBUG = true')).
+      pipe(plugins.replace('const _DEBUG = false', 'const _DEBUG = true')).
       pipe(plugins.eslint()).
       pipe(plugins.eslint.formatEach()).
       pipe(plugins.eslint.failAfterError()).
-      pipe(isProd ? minify(minifyOpts).on('error', util.log) : util.noop()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // html
@@ -350,8 +349,7 @@ gulp.task('html', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? plugins.minifyHtml() : util.noop()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // elements
@@ -373,8 +371,7 @@ gulp.task('styles', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(If('*.css', isProd ? plugins.cleanCss() : util.noop())).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // images
@@ -384,8 +381,7 @@ gulp.task('images', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(plugins.imagemin({progressive: true, interlaced: true})).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // assets
@@ -395,7 +391,7 @@ gulp.task('assets', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // lib
@@ -405,7 +401,7 @@ gulp.task('lib', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // locales
@@ -415,7 +411,7 @@ gulp.task('locales', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // compress for the Chrome Web Store
