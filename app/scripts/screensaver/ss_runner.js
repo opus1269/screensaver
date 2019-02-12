@@ -145,7 +145,7 @@ app.SSRunner = (function() {
       if (transTime) {
         app.SSRunner.setWaitTime(transTime.base * 1000);
       }
-      _VARS.interactive = Chrome.Storage.get('interactive');
+      _VARS.interactive = Chrome.Storage.getBool('interactive');
 
       app.SSHistory.initialize();
 

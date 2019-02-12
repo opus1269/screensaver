@@ -235,7 +235,7 @@
       } else {
         // hack so we don't delete album selections when Google Photos
         // page is disabled
-        const useGoogle = Chrome.Storage.get('useGoogle');
+        const useGoogle = Chrome.Storage.getBool('useGoogle');
         if (!((this._photosKey === 'albumSelections') && !useGoogle)) {
           localStorage.removeItem(this._photosKey);
         }

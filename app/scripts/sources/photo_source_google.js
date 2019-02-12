@@ -368,9 +368,9 @@
      * @returns {boolean} true if we should use Google Photos albums
      */
     static _updateAlbums() {
-      const enabled = Chrome.Storage.get('enabled');
-      const useGoogle = Chrome.Storage.get('useGoogle');
-      const useGoogleAlbums = Chrome.Storage.get('useGoogleAlbums');
+      const enabled = Chrome.Storage.getBool('enabled');
+      const useGoogle = Chrome.Storage.getBool('useGoogle');
+      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
       return enabled && useGoogle && useGoogleAlbums;
     }
 
@@ -379,9 +379,9 @@
      * @returns {boolean} true if we should use Google Photos albums
      */
     _fetchAlbums() {
-      const enabled = Chrome.Storage.get('enabled');
-      const useGoogle = Chrome.Storage.get('useGoogle');
-      const useGoogleAlbums = Chrome.Storage.get('useGoogleAlbums');
+      const enabled = Chrome.Storage.getBool('enabled');
+      const useGoogle = Chrome.Storage.getBool('useGoogle');
+      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
       return enabled && useGoogle && useGoogleAlbums;
     }
 
