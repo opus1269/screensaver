@@ -1,43 +1,49 @@
 {
-  "entrypoint": "app/html/options.html",
-  "shell": "app/html/options.html",
+  "root": "./app",
+  "entrypoint": "html/options.html",
+  "shell": "html/options.html",
   "sources": [
-    "app/_locales/**/*",
-    "app/assets/**/*",
-    "app/elements/**/*",
-    "app/html/**/*",
-    "app/lib/**/*",
-    "app/styles/**/*",
-    "app/images/**/*",
-    "app/manifest.json"
+    "scripts/**/*.js",
+    "elements/**/*.js",
+    "html/**/*",
+    "styles/**/*",
+    "images/**/*"
   ],
   "extraDependencies": [
-    "app/scripts/**/*.js",
-    "node_modules/@webcomponents/webcomponentsjs/*.js",
-    "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
-    "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
+    "manifest.json",
+    "_locales/**/*",
+    "assets/**/*",
+    "lib/**/*"
+  ],
+  "fragments": [
+    "html/background.html",
+    "html/screensaver.html",
+    "html/update.html"
   ],
   "builds": [
     {
-      "name": "esm-bundled",
+      "name": "prodTest",
       "browserCapabilities": [
         "es2015",
         "modules"
       ],
       "js": {
-        "minify": false
+        "minify": true,
+        "transformModulesToAmd": false
       },
       "css": {
-        "minify": false
+        "minify": true
       },
       "html": {
-        "minify": false
+        "minify": true
       },
-      "bundle": true,
+      "bundle": {
+        "inlineScripts": false
+      },
       "addServiceWorker": false
     },
     {
-      "name": "esm-dev",
+      "name": "dev",
       "browserCapabilities": [
         "es2015",
         "modules"

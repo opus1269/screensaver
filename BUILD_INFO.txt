@@ -1,0 +1,6 @@
+Run 'polymer build' from the project directory command line to:
+
+build development and production test builds
+
+You need to run this at a minimum whenever you update your npm dependencies
+You can run it whenever you want for a clean start

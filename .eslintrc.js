@@ -47,6 +47,7 @@ module.exports = {
       'error', {
         'code': 80,
         'tabWidth': 2,
+        'ignoreComments': true,
         'ignoreStrings': true,
         'ignoreTemplateLiterals': true,
       }],

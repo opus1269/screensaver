@@ -5,18 +5,15 @@
  *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
  */
 'use strict';
-
-// change working directory to app
-// eslint-disable-next-line no-undef
-process.chdir('app');
+/* eslint no-console: 0 */
 
 // paths and files
 const base = {
   app: 'screensaver',
   src: './',
-  build: './build',
+  build: '../build',
   dist: './build/prod/',
-  dev: './build/dev/',
+  dev: '../build/dev/app',
   store: 'store/',
   docs: 'docs/',
   tmp_docs: '../tmp_jsdoc_photoscreensaver/',
@@ -62,7 +59,7 @@ const files = {
   ],
 };
 files.js = [files.scripts, files.bowerScripts, `${base.src}*.js`];
-files.lintdevjs = '*.js';
+files.lintdevjs = '*.js, ../gulpfile.js';
 
 // command options
 const watchOpts = {
@@ -99,10 +96,20 @@ const If = require('gulp-if');
 const util = require('gulp-util');
 const watch = require('gulp-watch');
 const plumber = require('gulp-plumber');
+
 // for ECMA6
 const uglifyjs = require('uglify-es');
 const composer = require('gulp-uglify/composer');
 const minify = composer(uglifyjs, console);
+
+// for polymer
+// see:
+// https://github.com/PolymerElements/generator-polymer-init-custom-build/blob/master/generators/app/gulpfile.js
+const mergeStream = require('merge-stream');
+const polymerBuild = require('polymer-build');
+const polymerJson = require('./polymer.json');
+const polymerProject = new polymerBuild.PolymerProject(polymerJson);
+const buildDirectory = 'build/prod';
 
 // load the rest
 const plugins = require('gulp-load-plugins')({
@@ -118,11 +125,113 @@ gulp.Gulp.prototype._runTask = function(task) {
   this.__runTask(task);
 };
 
+// Waits for the given ReadableStream
+function waitFor(stream) {
+  return new Promise((resolve, reject) => {
+    stream.on('end', resolve);
+    stream.on('error', reject);
+  });
+}
+
+// To build production version
+function build() {
+  return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
+
+    // change working directory to app
+    // eslint-disable-next-line no-undef
+    // process.chdir('app');
+    
+    // Lets create some inline code splitters in case you need them later in
+    // your build.
+    let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
+    let dependenciesStreamSplitter = new polymerBuild.HtmlSplitter();
+
+    // Okay, so first thing we do is clear the build directory
+    console.log(`Deleting ${buildDirectory} directory...`);
+    del([buildDirectory]).then(() => {
+
+      // Let's start by getting your source files. These are all the files
+      // in your `src/` directory, or those that match your polymer.json
+      // "sources"  property if you provided one.
+      let sourcesStream = polymerProject.sources()
+
+      // If you want to optimize, minify, compile, or otherwise process
+      // any of your source code for production, you can do so here before
+      // merging your sources and dependencies together.
+          .pipe(If(/\.(png|gif|jpg|svg)$/, plugins.imagemin()))
+
+          // The `sourcesStreamSplitter` created above can be added here to
+          // pull any inline styles and scripts out of their HTML files and
+          // into seperate CSS and JS files in the build stream. Just be sure
+          // to rejoin those files with the `.rejoin()` method when you're done.
+          .pipe(sourcesStreamSplitter.split())
+
+          // Uncomment these lines to add a few more example optimizations to
+          // your source files, but these are not included by default. For
+          // installation, see the require statements at the beginning.
+          // .pipe(If(/\.js$/, uglify())) // Install gulp-uglify to use
+          // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
+          // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
+          // to use
+
+          // Remember, you need to rejoin any split inline code when you're
+          // done.
+          .pipe(sourcesStreamSplitter.rejoin());
+
+      // Similarly, you can get your dependencies separately and perform
+      // any dependency-only optimizations here as well.
+      let dependenciesStream = polymerProject.dependencies().
+          pipe(dependenciesStreamSplitter.split())
+          // Add any dependency optimizations here.
+          .pipe(dependenciesStreamSplitter.rejoin());
+
+      // Okay, now let's merge your sources & dependencies together into a
+      // single build stream.
+      let buildStream = mergeStream(sourcesStream, dependenciesStream).
+          once('data', () => {
+            console.log('Analyzing build dependencies...');
+          });
+
+      // If you want bundling, pass the stream to polymerProject.bundler.
+      // This will bundle dependencies into your fragments so you can lazy
+      // load them.
+      buildStream = buildStream.pipe(polymerProject.bundler({
+        inlineScripts: false,
+        sourcemaps: true,
+        stripComments: true,
+      }));
+
+      // Now let's generate the HTTP/2 Push Manifest
+      // buildStream = buildStream.pipe(polymerProject.addPushManifest());
+
+      // Okay, time to pipe to the build directory
+      buildStream = buildStream.pipe(gulp.dest(buildDirectory));
+
+      // waitFor the buildStream to complete
+      return waitFor(buildStream);
+    }).then(() => {
+      // You did it!
+      console.log('Build complete!');
+      resolve();
+      return null;
+    }).catch((err) => {
+      console.log('prod build failed\n' + err);
+    });
+  });
+}
+
+gulp.task('buildProd', build);
+
 // Default - watch for changes in development
 gulp.task('default', ['incrementalBuild']);
 
 // Incremental Development build
 gulp.task('incrementalBuild', (cb) => {
+  
+  // change working directory to app
+  // eslint-disable-next-line no-undef
+  process.chdir('app');
+
   isWatch = true;
   runSequence('lint', [
     'bower',
@@ -141,6 +250,11 @@ gulp.task('incrementalBuild', (cb) => {
 
 // Development build
 gulp.task('dev', (cb) => {
+  
+  // change working directory to app
+  // eslint-disable-next-line no-undef
+  process.chdir('app');
+
   isProd = false;
   isProdTest = false;
   runSequence('clean', [
