@@ -111,14 +111,10 @@ function waitFor(stream) {
   });
 }
 
-// To build production version
-function build() {
+// Runs equivalent of 'polymer build'
+function buildPolymer() {
   return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
 
-    // change working directory to app
-    // eslint-disable-next-line no-undef
-    // process.chdir('app');
-    
     // Lets create some inline code splitters in case you need them later in
     // your build.
     let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
@@ -147,7 +143,7 @@ function build() {
           // Uncomment these lines to add a few more example optimizations to
           // your source files, but these are not included by default. For
           // installation, see the require statements at the beginning.
-          .pipe(If(/\.js$/, minify(minifyOpts)))
+          // .pipe(If(/\.js$/, minify(minifyOpts)))
           // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
           // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
           // to use
@@ -175,13 +171,12 @@ function build() {
       // load them.
       buildStream = buildStream.pipe(polymerProject.bundler({
         inlineScripts: false,
-        inlineCss: true,
-        sourcemaps: false,
-        stripComments: true,
       }));
-
-      // Now let's generate the HTTP/2 Push Manifest
-      // buildStream = buildStream.pipe(polymerProject.addPushManifest());
+      
+      // now lets minify for production
+      if (isProd || isProdTest) {
+        buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
+      }
 
       // Okay, time to pipe to the build directory
       buildStream = buildStream.pipe(gulp.dest(buildDirectory));
@@ -194,7 +189,7 @@ function build() {
       resolve();
       return null;
     }).catch((err) => {
-      console.log('prod build failed\n' + err);
+      console.log('buildPolymer\n' + err);
     });
   });
 }
@@ -431,6 +426,6 @@ gulp.task('_zip', () => {
 });
 
 // run polymer build with gulp, basically
-gulp.task('_poly_build', build);
+gulp.task('_poly_build', buildPolymer);
 
 
