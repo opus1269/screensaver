@@ -26,8 +26,7 @@ import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '/elements/my_icons.js';
-import {Locale} from
-      '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import { LocalizeBehavior, Locale } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '/styles/shared-styles.js';
@@ -234,7 +233,7 @@ app.GooglePhotosPage = Polymer({
   is: 'google-photos-page',
 
   behaviors: [
-    Chrome.LocalizeBehavior,
+    LocalizeBehavior,
   ],
 
   properties: {

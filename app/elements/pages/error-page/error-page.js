@@ -19,7 +19,7 @@ import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';
 import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
-import { Locale } from
+import { LocalizeBehavior, Locale } from 
       '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
@@ -101,7 +101,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     is: 'error-page',
 
     behaviors: [
-      Chrome.LocalizeBehavior,
+      LocalizeBehavior,
     ],
 
     properties: {

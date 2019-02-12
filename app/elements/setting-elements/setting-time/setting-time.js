@@ -13,7 +13,7 @@ import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-doc
 import '/node_modules/@polymer/paper-input/paper-input.js';
 import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';
-import '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import { LocalizeBehavior } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
@@ -74,7 +74,7 @@ Polymer({
   is: 'setting-time',
 
   behaviors: [
-    Chrome.LocalizeBehavior,
+    LocalizeBehavior,
   ],
 
   properties: {

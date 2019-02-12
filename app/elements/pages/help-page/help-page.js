@@ -12,7 +12,7 @@ import '/node_modules/@polymer/paper-styles/color.js';
 import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '/node_modules/@polymer/paper-material/paper-material.js';
 import '/elements/setting-elements/setting-link/setting-link.js';
-import '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import { LocalizeBehavior } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '/styles/shared-styles.js';
@@ -76,7 +76,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     is: 'help-page',
 
     behaviors: [
-      Chrome.LocalizeBehavior,
+      LocalizeBehavior,
     ],
 
     properties: {

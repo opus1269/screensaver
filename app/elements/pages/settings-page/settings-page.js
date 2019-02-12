@@ -25,7 +25,7 @@ import '/elements/setting-elements/setting-slider/setting-slider.js';
 import '/elements/setting-elements/setting-dropdown/setting-dropdown.js';
 import '/elements/setting-elements/setting-background/setting-background.js';
 import '/elements/setting-elements/setting-time/setting-time.js';
-import { Locale } from
+import {LocalizeBehavior, Locale } from
       '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import '/elements/my_icons.js';
 import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -145,7 +145,7 @@ Polymer({
   is: 'settings-page',
 
   behaviors: [
-    Chrome.LocalizeBehavior,
+    LocalizeBehavior,
   ],
 
   properties: {

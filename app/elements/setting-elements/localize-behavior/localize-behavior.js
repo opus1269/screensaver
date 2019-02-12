@@ -8,13 +8,28 @@ import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/*
- * Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
- * Licensed under Apache 2.0
- * https://opensource.org/licenses/Apache-2.0
- * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
+/**
+ * Behavior for internationalizing strings
+ * @namespace
+ * @polymerBehavior LocalizeBehavior
  */
-window.Chrome = window.Chrome || {};
+export const LocalizeBehavior = {
+
+  properties: {
+    /**
+     * Get a string
+     */
+    localize: {
+      type: Function,
+      value: function() {
+        return function() {
+          const messageName = arguments[0];
+          return Locale.localize(messageName);
+        };
+      },
+    },
+  },
+};
 
 /**
  * Locale methods
@@ -44,25 +59,3 @@ export const Locale = (function() {
   };
 })();
 
-window.Chrome = window.Chrome || {};
-/**
- * Behavior for internationalizing strings
- * @polymerBehavior Chrome.LocalizeBehavior
- */
-Chrome.LocalizeBehavior = {
-
-  properties: {
-    /**
-     * Get a string
-     */
-    localize: {
-      type: Function,
-      value: function() {
-        return function() {
-          const messageName = arguments[0];
-          return Locale.localize(messageName);
-        };
-      },
-    },
-  },
-};
