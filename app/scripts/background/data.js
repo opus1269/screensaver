@@ -130,7 +130,7 @@ app.Data = (function() {
     'albumSelections': [],
     'useGooglePhotos': false,
     'gPhotosNeedsUpdate': true,
-    'gPhotosMaxAlbums': 5,
+    'gPhotosMaxAlbums': 25,
 
   };
 
