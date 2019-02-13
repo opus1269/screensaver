@@ -78,7 +78,8 @@ app.Data = (function() {
    * @property {boolean} useGoogle - use this photo source
    * @property {boolean} useGoogleAlbums - use this photo source
    * @property {Array} albumSelections - user's selected Google Photos albums
-   * @property {boolean} useGooglePhotos - use this photo source
+   * @property {boolean} gPhotosNeedsUpdate - are the photo links stale
+   * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
    */
 
   /**
@@ -128,6 +129,9 @@ app.Data = (function() {
     'useGoogleAlbums': true,
     'albumSelections': [],
     'useGooglePhotos': false,
+    'gPhotosNeedsUpdate': true,
+    'gPhotosMaxAlbums': 5,
+
   };
 
   /**

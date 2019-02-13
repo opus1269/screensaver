@@ -441,7 +441,7 @@
     "message": "Impossibile recuperare la fonte della foto"
   },
   "err_auth_picasa": {
-    "message": "L'utente non ha autorizzato Picasa."
+    "message": "L'utente non ha autorizzato Google."
   },
   "err_no_albums": {
     "message": "Nessun album trovato"
@@ -460,6 +460,9 @@
   },
   "err_optional_permissions": {
     "message": "Impossibile modificare un'autorizzazione facoltativa"
+  },
+  "err_max_albums": {
+    "message": "È stato raggiunto il numero massimo di selezioni di album."
   },
   "time_format": {
     "message": "24",

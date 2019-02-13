@@ -461,6 +461,9 @@
   "err_optional_permissions": {
     "message": "Impossible de modifier une autorisation facultative"
   },
+  "err_max_albums": {
+    "message": "Le nombre maximum de sélections d'albums a été atteint."
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

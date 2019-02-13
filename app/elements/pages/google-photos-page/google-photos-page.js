@@ -137,10 +137,10 @@ app.GooglePhotosPage = Polymer({
           <paper-tooltip for="mode" position="left" offset="0">
             [[_computeModeTooltip(isAlbumMode)]]
           </paper-tooltip>
-          <paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
-          <paper-tooltip for="select" position="left" offset="0">
-            {{localize('tooltip_select')}}
-          </paper-tooltip>
+          <!--<paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>-->
+          <!--<paper-tooltip for="select" position="left" offset="0">-->
+            <!--{{localize('tooltip_select')}}-->
+          <!--</paper-tooltip>-->
           <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_onDeselectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
           <paper-tooltip for="deselect" position="left" offset="0">
             {{localize('tooltip_deselect')}}
@@ -469,6 +469,17 @@ app.GooglePhotosPage = Polymer({
 
     if (album.checked) {
       // add new
+      const maxCt = Chrome.Storage.getInt('gPhotosMaxAlbums', 5);
+      if (this.selections.length === maxCt) {
+        this.set('albums.' + album.index + '.checked', false);
+        Chrome.Log.error('Tried to select more than max albums',
+            'GooglePhotosPage._onAlbumSelectChanged', null);
+        this.$.dialogTitle.innerHTML =
+            Locale.localize('err_request_failed');
+        this.$.dialogText.innerHTML = Locale.localize('err_max_albums');
+        this.$.errorDialog.open();
+        return;
+      }
       const newAlbum = await this._loadAlbum(album.id);
       if (newAlbum) {
         this.selections.push({id: album.id, photos: newAlbum.photos});

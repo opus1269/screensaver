@@ -456,10 +456,13 @@
     "message": "Failed to retrieve photo source"
   },
   "err_auth_picasa": {
-    "message": "User did not authorize Picasa."
+    "message": "User did not authorize Google."
   },
   "err_no_albums": {
     "message": "No albums found"
+  },
+  "err_max_albums": {
+    "message": "The maximum number of album selections has been reached."
   },
   "time_format": {
     "message": "12",

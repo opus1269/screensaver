@@ -441,7 +441,7 @@
     "message": "Kon fotobron niet ophalen"
   },
   "err_auth_picasa": {
-    "message": "Gebruiker heeft Picasa niet geautoriseerd."
+    "message": "Gebruiker heeft Google niet geautoriseerd."
   },
   "err_no_albums": {
     "message": "Geen albums gevonden"
@@ -460,6 +460,9 @@
   },
   "err_optional_permissions": {
     "message": "Kan een facultatieve toestemming niet wijzigen"
+  },
+  "err_max_albums": {
+    "message": "Het maximale aantal albumselecties is bereikt."
   },
   "time_format": {
     "message": "24",
