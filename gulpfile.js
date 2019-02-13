@@ -11,7 +11,6 @@
 const base = {
   app: 'screensaver',
   src: './',
-  build: './build',
   dist: '../build/prod/app',
   dev: '../build/dev/app',
   store: 'store/',
@@ -38,12 +37,6 @@ const files = {
   assets: `${path.assets}*.*`,
   lib: `${path.lib}**/*.*`,
   locales: `${path.locales}**/*.*`,
-  prodDelete: [
-    `${base.dist}app/scripts/**/*.js`,
-    `!${base.dist}app/scripts/background/background.js`,
-    `!${base.dist}app/scripts/options/options.js`,
-    `!${base.dist}app/scripts/screensaver/screensaver.js`,
-  ],
 };
 files.js = [files.scripts, files.elements, `${base.src}*.js`];
 files.lintdevjs = '*.js, ../gulpfile.js';
@@ -166,16 +159,18 @@ function buildPolymer() {
             console.log('Analyzing build dependencies...');
           });
 
-      // If you want bundling, pass the stream to polymerProject.bundler.
-      // This will bundle dependencies into your fragments so you can lazy
-      // load them.
-      buildStream = buildStream.pipe(polymerProject.bundler({
-        inlineScripts: false,
-      }));
-      
-      // now lets minify for production
       if (isProd || isProdTest) {
+        
+        // If you want bundling, pass the stream to polymerProject.bundler.
+        // This will bundle dependencies into your fragments so you can lazy
+        // load them.
+        buildStream = buildStream.pipe(polymerProject.bundler({
+          inlineScripts: false,
+        }));
+
+        // now lets minify for production
         buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
+        
       }
 
       // Okay, time to pipe to the build directory
@@ -199,7 +194,7 @@ gulp.task('default', ['incrementalBuild']);
 
 // Incremental Development build
 gulp.task('incrementalBuild', (cb) => {
-  
+
   // change working directory to app
   // eslint-disable-next-line no-undef
   process.chdir('app');
@@ -219,27 +214,14 @@ gulp.task('incrementalBuild', (cb) => {
   ], cb);
 });
 
-// Development build
-gulp.task('dev', (cb) => {
-  
-  // change working directory to app
-  // eslint-disable-next-line no-undef
-  process.chdir('app');
-
-  isProd = false;
-  isProdTest = false;
-  runSequence('clean', [
-    'manifest',
-    'html',
-    'scripts',
-    'styles',
-    'elements',
-    'images',
-    'assets',
-    'lib',
-    'locales',
-  ], cb);
-});
+// Development build - why don't you work?
+// gulp.task('dev', (cb) => {
+//
+//   isProd = false;
+//   isProdTest = false;
+//   buildDirectory = 'build/dev';
+//   runSequence('_poly_build', cb);
+// });
 
 // Production build
 gulp.task('prod', (cb) => {
@@ -252,7 +234,7 @@ gulp.task('prod', (cb) => {
   ], '_zip', cb);
 });
 
-// Production test build
+// Production test build Only diff is it does not have key removed
 gulp.task('prodTest', (cb) => {
   isProd = true;
   isProdTest = true;
@@ -282,18 +264,16 @@ gulp.task('docs', (cb) => {
       pipe(plugins.jsdoc3(config, cb));
 });
 
-// clean output directories
-gulp.task('clean', () => {
-  return del(isProd ? base.dist : base.dev);
-});
-
-// clean output directories
-gulp.task('clean_all', () => {
-  return del([base.dist, base.dev]);
-});
-
 // manifest.json
 gulp.task('manifest', () => {
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+
   const input = files.manifest;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -419,10 +399,12 @@ gulp.task('_zip', () => {
   } catch (err) {
     console.log('no need to change directory');
   }
- 
+
   return gulp.src(`../${buildDirectory}/app/**`).
-      pipe(!isProdTest ? plugins.zip('store.zip') : plugins.zip('store-test.zip')).
-      pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(`../${buildDirectory}`));
+      pipe(!isProdTest ? plugins.zip('store.zip') : plugins.zip(
+          'store-test.zip')).
+      pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(
+          `../${buildDirectory}`));
 });
 
 // run polymer build with gulp, basically

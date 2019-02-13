@@ -20,28 +20,14 @@
     "html/screensaver.html",
     "html/update.html"
   ],
+  "moduleResolution": "node",
+  "npm": true,
+  "lint": {
+    "rules": [
+      "polymer-3"
+    ]
+  },
   "builds": [
-    {
-      "name": "prodTest",
-      "browserCapabilities": [
-        "es2015",
-        "modules"
-      ],
-      "js": {
-        "minify": true,
-        "transformModulesToAmd": false
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "bundle": {
-        "inlineScripts": false
-      },
-      "addServiceWorker": false
-    },
     {
       "name": "dev",
       "browserCapabilities": [
@@ -49,7 +35,8 @@
         "modules"
       ],
       "js": {
-        "minify": false
+        "minify": false,
+        "transformModulesToAmd": false
       },
       "css": {
         "minify": false
@@ -60,12 +47,5 @@
       "bundle": false,
       "addServiceWorker": false
     }
-  ],
-  "moduleResolution": "node",
-  "npm": true,
-  "lint": {
-    "rules": [
-      "polymer-3"
-    ]
-  }
+  ]
 }
