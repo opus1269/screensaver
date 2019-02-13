@@ -319,9 +319,10 @@ app.GooglePhotosPage = Polymer({
       });
       // update the currently selected albums from the web
       // eslint-disable-next-line promise/no-nesting
-      app.PhotoSources.process('useGoogleAlbums').catch((err) => {
-        Chrome.GA.error(err.message, 'GooglePhotosPage.loadAlbumList');
-      });
+      // TODO do we need this?
+      // app.PhotoSources.process('useGoogleAlbums').catch((err) => {
+      //   Chrome.GA.error(err.message, 'GooglePhotosPage.loadAlbumList');
+      // });
       // set selected state on albums
       this._selectAlbums();
       this.set('waitForLoad', false);
@@ -540,6 +541,8 @@ app.GooglePhotosPage = Polymer({
       for (let j = 0; j < this.selections.length; j++) {
         if (this.albums[i].id === this.selections[j].id) {
           this.set('albums.' + i + '.checked', true);
+          // update photo count
+          this.set('albums.' + i + '.ct', this.selections[j].photos.length);
           break;
         }
       }
