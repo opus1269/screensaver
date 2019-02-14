@@ -461,7 +461,7 @@
      * Return true if we should be fetching the albums
      * @returns {boolean} true if we should use Google Photos albums
      */
-    _fetchAlbums() {
+    static _fetchAlbums() {
       const enabled = Chrome.Storage.getBool('enabled');
       const useGoogle = Chrome.Storage.getBool('useGoogle');
       const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
@@ -472,7 +472,7 @@
      * Fetch the photos for the selected albums
      * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
      */
-    _fetchAlbumPhotos() {
+    static _fetchAlbumPhotos() {
       const albums = Chrome.Storage.get('albumSelections', []);
       if (!this._fetchAlbums() || (albums.length === 0)) {
         return Promise.resolve([]);
@@ -503,11 +503,19 @@
     }
 
     /**
+     * Reload the albums we are using
+     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     */
+    static reloadSelectedAlbums() {
+      return this._fetchAlbumPhotos();
+    }
+
+    /**
      * Fetch the photos for this source
      * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
      */
     fetchPhotos() {
-      return this._fetchAlbumPhotos();
+      return app.GoogleSource._fetchAlbumPhotos();
     }
   };
 })();

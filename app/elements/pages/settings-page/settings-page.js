@@ -78,7 +78,7 @@ Polymer({
             <paper-tooltip for="restore" position="left" offset="0">
               {{localize('tooltip_restore')}}
             </paper-tooltip>
-            <paper-toggle-button id="settingsToggle" checked="{{enabled}}"></paper-toggle-button>
+            <paper-toggle-button id="settingsToggle" on-change="_onEnabledChanged", checked="{{enabled}}"></paper-toggle-button>
             <paper-tooltip for="settingsToggle" position="left" offset="0">
               {{localize('tooltip_settings_toggle')}}
             </paper-tooltip>
@@ -255,6 +255,23 @@ Polymer({
     useNames.forEach((useName) => {
       this._setPhotoSourceChecked(useName, state);
     });
+  },
+
+  /**
+   * Event: Change enabled state of screensaver
+   * @private
+   * @memberOf SettingsPage
+   */
+  _onEnabledChanged: function() {
+    const enabled = this.$.settingsToggle.checked;
+    Chrome.GA.event(Chrome.GA.EVENT.TOGGLE,
+        `screensaverEnabled: ${enabled}`);
+    if (enabled) {
+      // Switching to enabled, reload the Google Photo albums
+      app.GoogleSource.reloadSelectedAlbums().catch((err) => {
+        Chrome.Log.error(err.message, 'SettingsPage._onEnabledChanged');
+      });
+    }
   },
 
   /**

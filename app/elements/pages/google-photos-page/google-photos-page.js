@@ -604,6 +604,12 @@ app.GooglePhotosPage = Polymer({
     this._setUseKeys(useGoogle, this.isAlbumMode);
     Chrome.GA.event(Chrome.GA.EVENT.TOGGLE,
         `useGoogle: ${useGoogle}`);
+    if (useGoogle) {
+      // Switching to enabled, reload the Google Photo albums
+      app.GoogleSource.reloadSelectedAlbums().catch((err) => {
+        Chrome.Log.error(err.message, 'GooglePhotosPage._onUseGoogleChanged');
+      });
+    }
   },
 
   /**
