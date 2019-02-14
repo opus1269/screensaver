@@ -71,7 +71,7 @@ app.Utils = (function() {
      * @memberOf app.Utils
      */
     getGithubPath: function() {
-      return 'https://github.com/opus1269/photo-screen-saver/';
+      return 'https://github.com/opus1269/screensaver/';
     },
 
     /**
@@ -80,7 +80,7 @@ app.Utils = (function() {
      * @memberOf app.Utils
      */
     getGithubPagesPath: function() {
-      return 'https://opus1269.github.io/photo-screen-saver/';
+      return 'https://opus1269.github.io/screensaver/';
     },
   };
 })();
