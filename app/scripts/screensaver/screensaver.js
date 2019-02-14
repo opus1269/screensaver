@@ -98,6 +98,36 @@ app.Screensaver = (function() {
   }
 
   /**
+   * Event: Error state changed for a photo view
+   * @param {Event} ev - the event object
+   * @param {Object} ev.model - template model
+   * @memberOf app.Screensaver
+   */
+  t._onErrorChanged = async function(ev) {
+    const isError = ev.detail.value;
+    
+    if (isError) {
+      // url failed to load
+      const model = ev.model;
+      const index = model.index;
+      const view = t._views[index];
+      const photo = view.photo;
+      const type = photo.getType();
+      if ('Google User' === type) {
+        // Google API url may have expired, try to refresh it
+        const ex = photo.getEx();
+        const id = ex.id;
+        const newPhoto = await app.GoogleSource.loadPhoto(id, false);
+        if (newPhoto) {
+          // update url and make it available to the screensaver again
+          photo.markGood();
+          t.set(`_view.${index}.url`, newPhoto.url);
+        }
+      }
+    }
+  };
+
+  /**
    * Event: Document and resources loaded
    * @memberOf app.Screensaver
    */

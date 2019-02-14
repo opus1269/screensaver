@@ -122,7 +122,7 @@
       let ret = '';
       if (mediaItem && mediaItem.contributorInfo &&
           mediaItem.contributorInfo.displayName) {
-       ret = mediaItem.contributorInfo.displayName;
+        ret = mediaItem.contributorInfo.displayName;
       }
       return ret;
     }
@@ -140,6 +140,41 @@
     // }
 
     /**
+     * Get a photo from a mediaItem
+     * @param {Object} mediaItem - objects from Google Photos API call
+     * @returns {app.PhotoSource.Photo} Photo null if error
+     * @private
+     */
+    static _processPhoto(mediaItem) {
+      let photo = null;
+      if (mediaItem && mediaItem.mediaMetadata) {
+        if (this._isImage(mediaItem)) {
+          const mediaMetadata = mediaItem.mediaMetadata;
+          const size = this._getImageSize(mediaMetadata);
+          const width = size.width;
+          const height = size.height;
+
+          photo = {};
+          photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
+          photo.asp = width / height;
+          photo.author = this._getAuthor(mediaItem);
+          // unique photo id and url to it in Google Photos
+          photo.ex = {
+            'id': mediaItem.id,
+            'url': mediaItem.productUrl,
+          };
+          photo.point = null;
+          // let point;
+          // if (app.GoogleSource._hasGeo(entry)) {
+          //   point = entry.georss$where.gml$Point.gml$pos.$t;
+          // }
+        }
+      }
+
+      return photo;
+    }
+
+    /**
      * Extract the photos into an Array
      * @param {Object} mediaItems - objects from Google Photos API call
      * @returns {app.PhotoSource.Photo[]} Array of photos
@@ -151,27 +186,41 @@
         return photos;
       }
       for (const mediaItem of mediaItems) {
-        if (this._isImage(mediaItem)) {
-          const mediaMetadata = mediaItem.mediaMetadata;
-          const size = this._getImageSize(mediaMetadata);
-          const width = size.width;
-          const height = size.height;
-          const url = `${mediaItem.baseUrl}=w${width}-h${height}`;
-          const asp = width / height;
-          const author = this._getAuthor(mediaItem);
-          // unique photo id and url to it in Google Photos
-          const ex = {
-            'id': mediaItem.id,
-            'url': mediaItem.productUrl,
-          };
-          // let point;
-          // if (app.GoogleSource._hasGeo(entry)) {
-          //   point = entry.georss$where.gml$Point.gml$pos.$t;
-          // }
-          this.addPhoto(photos, url, author, asp, ex, '');
+        const photo = this._processPhoto(mediaItem);
+        if (photo) {
+          this.addPhoto(photos, photo.url, photo.author, photo.asp,
+              photo.ex, photo.point);
         }
       }
       return photos;
+    }
+
+    /**
+     * Retrieve a Google Photo
+     * @param {string} id -  Unique Photo ID
+     * @param {boolean} interactive=true - interactive mode for permissions
+     * @returns {app.PhotoSource.Photo} Photo, null on error
+     */
+    static async loadPhoto(id, interactive = false) {
+      const url = `${_URL_BASE}mediaItems/${id}`;
+
+      const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+      conf.isAuth = true;
+      conf.retryToken = true;
+      conf.interactive = interactive;
+
+      let photo = null;
+
+      try {
+        const mediaItem = await Chrome.Http.doGet(url, conf);
+        if (mediaItem) {
+          return this._processPhoto(mediaItem);
+        }
+      } catch (err) {
+        Chrome.Log.error(err.message, 'app.GoogleSource.loadPhoto');
+      }
+
+      return photo;
     }
 
     /**
@@ -180,7 +229,7 @@
      * @param {boolean} interactive=true -  interactive mode for permissions
      * @returns {app.GoogleSource.Album} Album
      */
-    static async loadAlbum(albumId, interactive=true) {
+    static async loadAlbum(albumId, interactive = true) {
       const url = `${_URL_BASE}mediaItems:search`;
       const body = {
         'pageSize': '100',
@@ -339,22 +388,29 @@
             const newPhotos = this._processPhotos(mediaItems);
             newAlbum.photos = newAlbum.photos.concat(newPhotos);
           } catch (err) {
-            Chrome.Log.error(err.message, 'app.GoogleSource.updatePhotos');
-            return;
+            const statusMsg = `${Chrome.Locale.localize('err_status')}: 429`;
+            if (err.message.includes(statusMsg)) {
+              // Hit Google photos quota
+    // Chrome.Log.error(err.message, 'app.GoogleSource.updatePhotos',
+    //     Chrome.Locale.localize('err_google_quota'));
+              return;
+            } else {
+              Chrome.Log.error(err.message, 'app.GoogleSource.updatePhotos');
+            }
           }
-          
+
           if (stop === photos.length) {
             done = true;
           } else {
             start = stop;
             stop = Math.min(stop + MAX_QUERIES, photos.length);
           }
-          
+
         } while (!done);
-        
+
         newAlbums.push(newAlbum);
       }
-      
+
       // Try to save the updated albums
       const set = Chrome.Storage.safeSet('albumSelections', newAlbums, null);
       if (!set) {

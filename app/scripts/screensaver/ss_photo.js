@@ -75,6 +75,13 @@
     }
 
     /**
+     * Mark photo good
+     */
+    markGood() {
+      this._isBad = false;
+    }
+
+    /**
      * Get photo url
      * @returns {string} url
      */
@@ -112,6 +119,14 @@
      */
     getPoint() {
       return this._point;
+    }
+
+    /**
+     * Get extra information
+     * @returns {?Object} extra object
+     */
+    getEx() {
+      return this._ex;
     }
 
     /**
