@@ -23,6 +23,44 @@ app.GA = (function() {
   const _TRACKING_ID = 'UA-61314754-1';
 
   /**
+   * Event types
+   * @type {{}}
+   * @property {Chrome.GA.Event} LOAD_ALBUM_LIST - album list
+   * @property {Chrome.GA.Event} LOAD_ALBUM - album
+   * @property {Chrome.GA.Event} LOAD_PHOTO - photo
+   * @property {Chrome.GA.Event} UPDATE_PHOTOS - update baseUrl of all photos
+   * @const
+   * @memberOf app.GA
+   */
+  const EVENT = {
+    LOAD_ALBUM_LIST: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'loadAlbumList',
+      eventLabel: '',
+    },
+    LOAD_ALBUM: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'loadAlbum',
+      eventLabel: '',
+    },
+    LOAD_PHOTO: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'loadPhoto',
+      eventLabel: '',
+    },
+    FETCH_ALBUMS: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'fetchAlbums',
+      eventLabel: '',
+    },
+    UPDATE_PHOTOS: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'updatePhotos',
+      eventLabel: '',
+    },
+  };
+
+  /**
    * Event: called when document and resources are loaded<br />
    * Initialize Google Analytics
    * @private
@@ -36,6 +74,11 @@ app.GA = (function() {
 
   // listen for document and resources loaded
   window.addEventListener('load', _onLoad);
+
+  return {
+    EVENT: EVENT,
+  };
+
 })();
 
 

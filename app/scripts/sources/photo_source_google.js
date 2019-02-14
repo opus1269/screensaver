@@ -234,6 +234,9 @@
       let photo = null;
 
       try {
+
+        Chrome.GA.event(app.GA.EVENT.LOAD_PHOTO);
+
         const mediaItem = await Chrome.Http.doGet(url, conf);
         if (mediaItem) {
           return this._processPhoto(mediaItem, '');
@@ -273,6 +276,9 @@
       const album = {};
       let photos = [];
       try {
+        
+        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM);
+        
         // Loop while there is a nextPageToken to load more items.
         do {
           const response = await Chrome.Http.doPost(url, conf);
@@ -326,6 +332,9 @@
       conf.retryToken = true;
       conf.interactive = true;
       try {
+        
+        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM_LIST);
+        
         // Loop while there is a nextPageToken to load more items.
         do {
           const response = await Chrome.Http.doGet(url, conf);
@@ -360,6 +369,7 @@
           ct++;
         }
       }
+      
       return albums;
     }
 
@@ -379,6 +389,8 @@
       conf.isAuth = true;
       conf.retryToken = true;
       conf.interactive = false;
+
+      Chrome.GA.event(app.GA.EVENT.UPDATE_PHOTOS);
 
       // get all the photo ids for each album and update them
       for (const album of albums) {
@@ -472,12 +484,14 @@
      * Fetch the albums for the selected albums
      * @returns {Promise<app.GoogleSource.SelectedAlbum[]>} Array of albums
      */
-    static _fetchAlbumPhotos() {
+    static _fetchAlbums() {
       const albums = Chrome.Storage.get('albumSelections', []);
       if (!this._isFetchAlbums() || (albums.length === 0)) {
         // no need to change - save on api calls
         return Promise.resolve(albums);
       }
+
+      Chrome.GA.event(app.GA.EVENT.FETCH_ALBUMS);
 
       // series of API calls to get each album
       const promises = [];
@@ -508,7 +522,7 @@
      * @returns {Promise<app.GoogleSource.SelectedAlbum[]>} Array of albums
      */
     fetchPhotos() {
-      return app.GoogleSource._fetchAlbumPhotos();
+      return app.GoogleSource._fetchAlbums();
     }
   };
 })();
