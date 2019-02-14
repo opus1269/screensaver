@@ -121,10 +121,10 @@
         if (max > MAX_SIZE) {
           if (ret.width === max) {
             ret.width = MAX_SIZE;
-            ret.height = ret.height * (MAX_SIZE / max);
+            ret.height = Math.round(ret.height * (MAX_SIZE / max));
           } else {
             ret.height = MAX_SIZE;
-            ret.width = ret.width * (MAX_SIZE / max);
+            ret.width = Math.round(ret.width * (MAX_SIZE / max));
           }
         }
       }
