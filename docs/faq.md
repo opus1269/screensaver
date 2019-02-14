@@ -91,11 +91,11 @@
 
 ### Google Photos
 
-* **Why does the dialog asking for Picasa permissions say it can change my data?**
+* **Why does the dialog asking for Google permissions say it can change my data?**
 
-    The extension will never change any of your data.
-    The API that Google provides for interacting with your Google Photos
-    does not have a read only scope. The extension only reads data.
+    The extension will never change any of your data. It only has the
+    ability to read albums and photos.
+    
 
   ***
 
@@ -117,13 +117,8 @@
     select the album, click on **Sharing Options** and unset the **Share**
     option.
 
-    Also, the extension can only retrieve a maximum of 1000 albums.
-
   ***
 
-* **Why aren't all my photos showing?**
-
-    The extension can only retrieve a maximum of 1000 photos per album.
   
   ***
 
