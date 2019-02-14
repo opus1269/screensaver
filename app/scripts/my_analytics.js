@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 window.app = window.app || {};
 
@@ -31,7 +31,7 @@ app.GA = (function() {
   function _onLoad() {
     // initialize analytics
     Chrome.GA.initialize(_TRACKING_ID, 'Photo Screensaver',
-        'photo-screen-saver', Chrome.Utils.getVersion());
+        'screensaver', Chrome.Utils.getVersion());
   }
 
   // listen for document and resources loaded

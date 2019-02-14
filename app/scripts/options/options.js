@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 (function() {
   'use strict';
@@ -35,7 +35,7 @@
    * @memberOf Options
    */
   const EXT_URI =
-      'https://chrome.google.com/webstore/detail/photo-screen-saver/' +
+      'https://chrome.google.com/webstore/detail/screensaver/' +
       chrome.runtime.id + '/';
 
   /**
@@ -92,7 +92,7 @@
     {
       label: Chrome.Locale.localize('help_faq'), route: 'page-faq',
       icon: 'myicons:help',
-      obj: 'https://opus1269.github.io/photo-screen-saver/faq.html',
+      obj: 'https://opus1269.github.io/screensaver/faq.html',
       ready: true, divider: false,
     },
     {
