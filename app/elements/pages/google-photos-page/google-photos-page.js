@@ -329,11 +329,18 @@ app.GooglePhotosPage = Polymer({
       return Promise.resolve();
     }).catch((err) => {
       this.set('waitForLoad', false);
-      Chrome.Log.error(err.message,
-          'GooglePhotosPage.loadAlbumList', ERR_TITLE);
+      let dialogText = 'unknown';
+      if (app.GoogleSource.isQuotaError(err, 'GooglePhotosPage.loadAlbumList')) {
+        // Hit Google photos quota
+        dialogText = Chrome.Locale.localize('err_google_quota');
+      } else {
+        dialogText = err.message;
+        Chrome.Log.error(err.message,
+            'GooglePhotosPage.loadAlbumList', ERR_TITLE);
+      }
       this.$.dialogTitle.innerHTML =
           Locale.localize('err_request_failed');
-      this.$.dialogText.innerHTML = err.message;
+      this.$.dialogText.innerHTML = dialogText;
       this.$.errorDialog.open();
       return Promise.reject(err);
     });
@@ -354,11 +361,19 @@ app.GooglePhotosPage = Polymer({
       return album;
     } catch (err) {
       this.set('waitForLoad', false);
-      Chrome.Log.error(err.message,
-          'GooglePhotosPage.loadAlbum', ERR_TITLE);
+      let dialogText = 'unknown';
+      if (app.GoogleSource.isQuotaError(err,
+          'GooglePhotosPage.loadAlbum')) {
+        // Hit Google photos quota
+        dialogText = Chrome.Locale.localize('err_google_quota');
+      } else {
+        dialogText = err.message;
+        Chrome.Log.error(err.message,
+            'GooglePhotosPage.loadAlbum', ERR_TITLE);
+      }
       this.$.dialogTitle.innerHTML =
           Locale.localize('err_request_failed');
-      this.$.dialogText.innerHTML = err.message;
+      this.$.dialogText.innerHTML = dialogText;
       this.$.errorDialog.open();
     }
     return album;

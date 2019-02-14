@@ -74,6 +74,24 @@
       super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
     }
 
+    /**
+     * Is the error due to the Google Photos API quota? Also logs it if true
+     * @param {Error} err - info on image
+     * @param {string} caller - calling method
+     * @returns {boolean} true if 429 error
+     */
+    static isQuotaError(err, caller) {
+      let ret = false;
+      const statusMsg = `${Chrome.Locale.localize('err_status')}: 429`;
+      if (err.message.includes(statusMsg)) {
+        // Hit Google photos quota
+        Chrome.Log.error(err.message, caller,
+            Chrome.Locale.localize('err_google_quota'));
+        ret = true;
+      }
+      return ret;
+    }
+
     /** Determine if a mediaEntry is an image
      * @param {Object} mediaEntry - Picasa media object
      * @returns {boolean} true if entry is a photo
@@ -142,7 +160,7 @@
     /**
      * Get a photo from a mediaItem
      * @param {Object} mediaItem - objects from Google Photos API call
-     * @returns {app.PhotoSource.Photo} Photo null if error
+     * @returns {app.PhotoSource.Photo} Photo, null if error
      * @private
      */
     static _processPhoto(mediaItem) {
@@ -217,7 +235,11 @@
           return this._processPhoto(mediaItem);
         }
       } catch (err) {
-        Chrome.Log.error(err.message, 'app.GoogleSource.loadPhoto');
+        if (this.isQuotaError(err, 'GoogleSource.loadPhoto')) {
+          // Hit Google photos quota
+        } else {
+          Chrome.Log.error(err.message, 'GoogleSource.loadPhoto');
+        }
       }
 
       return photo;
@@ -227,6 +249,7 @@
      * Retrieve a Google Photos album
      * @param {string} albumId -  Unique Album ID
      * @param {boolean} interactive=true -  interactive mode for permissions
+     * @throws 
      * @returns {app.GoogleSource.Album} Album
      */
     static async loadAlbum(albumId, interactive = true) {
@@ -268,13 +291,15 @@
 
         return album;
       } catch (err) {
-        const statusMsg = `${Chrome.Locale.localize('err_status')}: 404`;
-        if (err.message.includes(statusMsg)) {
-          // album was probably deleted
-          return null;
-        } else {
-          throw err;
-        }
+        // const statusMsg = `${Chrome.Locale.localize('err_status')}: 404`;
+        // if (err.message.includes(statusMsg)) {
+        //   // Bad request error, album was probably deleted
+        //   console.log(err, err.message);
+        //   return null;
+        // } else {
+        //   throw err;
+        // }
+        throw err;
       }
     }
 
@@ -388,15 +413,12 @@
             const newPhotos = this._processPhotos(mediaItems);
             newAlbum.photos = newAlbum.photos.concat(newPhotos);
           } catch (err) {
-            const statusMsg = `${Chrome.Locale.localize('err_status')}: 429`;
-            if (err.message.includes(statusMsg)) {
+            if (this.isQuotaError(err, 'GoogleSource.updatePhotos')) {
               // Hit Google photos quota
-    // Chrome.Log.error(err.message, 'app.GoogleSource.updatePhotos',
-    //     Chrome.Locale.localize('err_google_quota'));
-              return;
             } else {
-              Chrome.Log.error(err.message, 'app.GoogleSource.updatePhotos');
+              Chrome.Log.error(err.message, 'GoogleSource.updatePhotos');
             }
+            return;
           }
 
           if (stop === photos.length) {
@@ -414,8 +436,8 @@
       // Try to save the updated albums
       const set = Chrome.Storage.safeSet('albumSelections', newAlbums, null);
       if (!set) {
-        Chrome.Log.error('Failed to update Google Photo urls',
-            'app.GoogleSource.updatePhotos');
+        Chrome.Log.error('Exceed storage limits',
+            'GoogleSource.updatePhotos');
       }
     }
 
