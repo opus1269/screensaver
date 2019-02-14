@@ -33,7 +33,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
   /**
    * Polymer element for the Error Page
-   * @namespace ErrorPage
+   * @namespace app.ErrorPage
    */
   app.ErrorPageFactory = Polymer({
     _template: html`
@@ -113,7 +113,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
       
       /**
        * The LastError Object to display
-       * @memberOf ErrorPage
+       * @memberOf app.ErrorPage
        */
       lastError: {
         type: Object,
@@ -126,7 +126,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
     /**
      * Element is ready
-     * @memberOf ErrorPage
+     * @memberOf app.ErrorPage
      */
     ready: function() {
       Chrome.Storage.getLastError().then((lastError) => {
@@ -152,7 +152,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     /**
      * Event: Email support
      * @private
-     * @memberOf ErrorPage
+     * @memberOf app.ErrorPage
      */
     _onEmailTapped: function() {
       let body = app.Utils.getEmailBody();
@@ -169,7 +169,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     /**
      * Event: Remove the error
      * @private
-     * @memberOf ErrorPage
+     * @memberOf app.ErrorPage
      */
     _onRemoveTapped: function() {
       Chrome.Storage.clearLastError();
@@ -181,7 +181,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
      * @param {Chrome.Storage.LastError} lastError - the error
      * @returns {string} stack trace
      * @private
-     * @memberOf ErrorPage
+     * @memberOf app.ErrorPage
      */
     _computeStack: function(lastError) {
       let ret = '';
@@ -196,7 +196,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
      * @param {Chrome.Storage.LastError} lastError - the error
      * @returns {string} page title
      * @private
-     * @memberOf ErrorPage
+     * @memberOf app.ErrorPage
      */
     _computeTitle: function(lastError) {
       let ret = Locale.localize('last_error_viewer_title');

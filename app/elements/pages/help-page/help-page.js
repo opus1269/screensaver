@@ -25,7 +25,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
   /**
    * Polymer element for the Help and Feedback Page
-   * @namespace HelpPage
+   * @namespace app.HelpPage
    */
   
   app.HelpPageFactory = Polymer({
@@ -89,7 +89,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
       /**
        * Path to our Github repo
-       * @memberOf HelpPage
+       * @memberOf app.HelpPage
        */
       githubPath: {
         type: String,
@@ -101,7 +101,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
       /**
        * Path to our Web Site
-       * @memberOf HelpPage
+       * @memberOf app.HelpPage
        */
       githubPagesPath: {
         type: String,
@@ -117,7 +117,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
      * @param {string} subject - email subject
      * @returns {string} url
      * @private
-     * @memberOf HelpPage
+     * @memberOf app.HelpPage
      */
     _computeMailToUrl: function(subject) {
       return app.Utils.getEmailUrl(subject, app.Utils.getEmailBody());
@@ -127,7 +127,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
      * computed binding: Get the extension version
      * @returns {string} Version of the extension
      * @private
-     * @memberOf HelpPage
+     * @memberOf app.HelpPage
      */
     _computeVersion: function() {
       const text = Chrome.Utils.getVersion();
