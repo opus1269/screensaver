@@ -304,7 +304,7 @@
     }
 
     /**
-     * Retrieve the users list of albums, including the photos in each
+     * Retrieve the user's list of albums
      * @returns {app.GoogleSource.Album[]} Array of albums
      */
     static async loadAlbumList() {
