@@ -370,7 +370,7 @@
       // max items in getBatch call
       const MAX_QUERIES = 50;
       const albums = Chrome.Storage.get('albumSelections', []);
-      if (!this._updateAlbums() || (albums.length === 0)) {
+      if (!this._isUpdateAlbums() || (albums.length === 0)) {
         return;
       }
       let newAlbums = [];
@@ -450,7 +450,7 @@
      * Return true if we should be updating the albums
      * @returns {boolean} true if we should use Google Photos albums
      */
-    static _updateAlbums() {
+    static _isUpdateAlbums() {
       const enabled = Chrome.Storage.getBool('enabled');
       const useGoogle = Chrome.Storage.getBool('useGoogle');
       const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
@@ -461,7 +461,7 @@
      * Return true if we should be fetching the albums
      * @returns {boolean} true if we should use Google Photos albums
      */
-    static _fetchAlbums() {
+    static _isFetchAlbums() {
       const enabled = Chrome.Storage.getBool('enabled');
       const useGoogle = Chrome.Storage.getBool('useGoogle');
       const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
@@ -469,13 +469,14 @@
     }
 
     /**
-     * Fetch the photos for the selected albums
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * Fetch the albums for the selected albums
+     * @returns {Promise<app.GoogleSource.SelectedAlbum[]>} Array of albums
      */
     static _fetchAlbumPhotos() {
       const albums = Chrome.Storage.get('albumSelections', []);
-      if (!this._fetchAlbums() || (albums.length === 0)) {
-        return Promise.resolve([]);
+      if (!this._isFetchAlbums() || (albums.length === 0)) {
+        // no need to change - save on api calls
+        return Promise.resolve(albums);
       }
 
       // series of API calls to get each album
@@ -503,16 +504,8 @@
     }
 
     /**
-     * Reload the albums we are using
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
-     */
-    static reloadSelectedAlbums() {
-      return this._fetchAlbumPhotos();
-    }
-
-    /**
-     * Fetch the photos for this source
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * Fetch the albums for this source
+     * @returns {Promise<app.GoogleSource.SelectedAlbum[]>} Array of albums
      */
     fetchPhotos() {
       return app.GoogleSource._fetchAlbumPhotos();

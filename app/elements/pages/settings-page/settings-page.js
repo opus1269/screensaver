@@ -268,7 +268,7 @@ Polymer({
         `screensaverEnabled: ${enabled}`);
     if (enabled) {
       // Switching to enabled, reload the Google Photo albums
-      app.GoogleSource.reloadSelectedAlbums().catch((err) => {
+      app.PhotoSources.process('useGoogleAlbums').catch((err) => {
         Chrome.Log.error(err.message, 'SettingsPage._onEnabledChanged');
       });
     }

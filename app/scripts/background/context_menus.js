@@ -29,7 +29,7 @@ function _toggleEnabled() {
   app.Data.processState('enabled');
   if (!oldState) {
     // Switching to enabled, reload the Google Photo albums
-    app.GoogleSource.reloadSelectedAlbums().catch((err) => {
+    app.PhotoSources.process('useGoogleAlbums').catch((err) => {
       Chrome.Log.error(err.message, 'ContextMenus._toggleEnabled');
     });
   }
