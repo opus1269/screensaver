@@ -18,7 +18,7 @@
   "fragments": [
     "html/background.html",
     "html/screensaver.html",
-    "html/update.html"
+    "html/update3.html"
   ],
   "moduleResolution": "node",
   "npm": true,
