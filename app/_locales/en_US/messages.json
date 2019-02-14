@@ -234,7 +234,7 @@
     "message": "Do not display certain photos in Zoom and Full modes"
   },
   "setting_photog": {
-    "message": "Show author for photos you own"
+    "message": "Show album name for your photos"
   },
   "setting_full_res": {
     "message": "Use full resolution for photos you own"

@@ -234,7 +234,7 @@
     "message": "Ne pas afficher certaines photos en mode Zoom ou Plein écran"
   },
   "setting_photog": {
-    "message": "Afficher l'auteur des photos que vous possédez"
+    "message": "Afficher le nom de l'album pour vos photos"
   },
   "setting_full_res": {
     "message": "Utilisez la résolution complète pour les photos que vous possédez"

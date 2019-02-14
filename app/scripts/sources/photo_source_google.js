@@ -28,6 +28,7 @@
    * A Selected Google Photo Album
    * @typedef {Object} app.GoogleSource.SelectedAlbum
    * @property {string} id - Google album Id
+   * @property {string} name - Google album name
    * @property {app.PhotoSource.Photo[]} photos - Array of photos
    * @memberOf app.GoogleSource
    */
@@ -131,19 +132,19 @@
       return ret;
     }
 
-    /** Get the author of the photo
-     * @param {Object} mediaItem - info on image
-     * @returns {string} Author name '' if noe
-     * @private
-     */
-    static _getAuthor(mediaItem) {
-      let ret = '';
-      if (mediaItem && mediaItem.contributorInfo &&
-          mediaItem.contributorInfo.displayName) {
-        ret = mediaItem.contributorInfo.displayName;
-      }
-      return ret;
-    }
+    // /** Get the author of the photo
+    //  * @param {Object} mediaItem - info on image
+    //  * @returns {string} Author name '' if noe
+    //  * @private
+    //  */
+    // static _getAuthor(mediaItem) {
+    //   let ret = '';
+    //   if (mediaItem && mediaItem.contributorInfo &&
+    //       mediaItem.contributorInfo.displayName) {
+    //     ret = mediaItem.contributorInfo.displayName;
+    //   }
+    //   return ret;
+    // }
 
     // /** Determine if a Picasa entry has Geo position
     //  * @param {Object} entry - Picasa media object
@@ -159,11 +160,12 @@
 
     /**
      * Get a photo from a mediaItem
-     * @param {Object} mediaItem - objects from Google Photos API call
+     * @param {Object} mediaItem - object from Google Photos API call
+     * @param {string} albumName - Album name
      * @returns {app.PhotoSource.Photo} Photo, null if error
      * @private
      */
-    static _processPhoto(mediaItem) {
+    static _processPhoto(mediaItem, albumName) {
       let photo = null;
       if (mediaItem && mediaItem.mediaMetadata) {
         if (this._isImage(mediaItem)) {
@@ -175,8 +177,9 @@
           photo = {};
           photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
           photo.asp = width / height;
-          photo.author = this._getAuthor(mediaItem);
-          // unique photo id and url to it in Google Photos
+          // use album name instead
+          photo.author = albumName;
+          // unique photo id and url to photo in Google Photos
           photo.ex = {
             'id': mediaItem.id,
             'url': mediaItem.productUrl,
@@ -195,16 +198,17 @@
     /**
      * Extract the photos into an Array
      * @param {Object} mediaItems - objects from Google Photos API call
+     * @param {string} albumName - Album name
      * @returns {app.PhotoSource.Photo[]} Array of photos
      * @private
      */
-    static _processPhotos(mediaItems) {
+    static _processPhotos(mediaItems, albumName) {
       const photos = [];
       if (!mediaItems) {
         return photos;
       }
       for (const mediaItem of mediaItems) {
-        const photo = this._processPhoto(mediaItem);
+        const photo = this._processPhoto(mediaItem, albumName);
         if (photo) {
           this.addPhoto(photos, photo.url, photo.author, photo.asp,
               photo.ex, photo.point);
@@ -232,7 +236,7 @@
       try {
         const mediaItem = await Chrome.Http.doGet(url, conf);
         if (mediaItem) {
-          return this._processPhoto(mediaItem);
+          return this._processPhoto(mediaItem, '');
         }
       } catch (err) {
         if (this.isQuotaError(err, 'GoogleSource.loadPhoto')) {
@@ -247,17 +251,18 @@
 
     /**
      * Retrieve a Google Photos album
-     * @param {string} albumId -  Unique Album ID
+     * @param {string} id -  Unique Album ID
+     * @param {string} name -  Album name
      * @param {boolean} interactive=true -  interactive mode for permissions
      * @throws Will throw an error if the album failed to load.
      * @returns {app.GoogleSource.Album} Album
      */
-    static async loadAlbum(albumId, interactive = true) {
+    static async loadAlbum(id, name, interactive = true) {
       const url = `${_URL_BASE}mediaItems:search`;
       const body = {
         'pageSize': '100',
       };
-      body.albumId = albumId;
+      body.albumId = id;
 
       const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
       conf.isAuth = true;
@@ -275,15 +280,15 @@
           conf.body.pageToken = nextPageToken;
           const mediaItems = response.mediaItems;
           if (mediaItems) {
-            photos = photos.concat(this._processPhotos(mediaItems));
+            photos = photos.concat(this._processPhotos(mediaItems, name));
           }
         } while (nextPageToken);
 
         /** @type {app.GoogleSource.Album} */
         album.index = 0;
         album.uid = 'album' + 0;
-        album.name = '';
-        album.id = albumId;
+        album.name = name;
+        album.id = id;
         album.thumb = '';
         album.checked = true;
         album.photos = photos;
@@ -410,7 +415,7 @@
                 mediaItems.push(mediaItemResult.mediaItem);
               }
             }
-            const newPhotos = this._processPhotos(mediaItems);
+            const newPhotos = this._processPhotos(mediaItems, album.name);
             newAlbum.photos = newAlbum.photos.concat(newPhotos);
           } catch (err) {
             if (this.isQuotaError(err, 'GoogleSource.updatePhotos')) {
@@ -476,7 +481,7 @@
       // series of API calls to get each album
       const promises = [];
       for (const album of albums) {
-        promises.push(app.GoogleSource.loadAlbum(album.id, false));
+        promises.push(app.GoogleSource.loadAlbum(album.id, album.name, false));
       }
 
       // Collate the albums
@@ -488,6 +493,7 @@
           if (photos && photos.length) {
             selAlbums.push({
               id: album.id,
+              name: album.name,
               photos: photos,
             });
           }
