@@ -127,7 +127,7 @@
             // new way. has full size image and array of reduced
             // resolutions
             let item = data.preview.images[0];
-            url = item.source.url;
+            url = item.source.url.replace(/&amp;/g, '&');
             width = parseInt(item.source.width, 10);
             height = parseInt(item.source.height, 10);
             if (Math.max(width, height) > _MAX_SIZE) {
