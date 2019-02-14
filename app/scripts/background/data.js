@@ -356,9 +356,11 @@ app.Data = (function() {
     /**
      * Process changes to localStorage items
      * @param {string} [key='all'] - the item that changed
+     * @param {boolean} [isStartup='all'] - are we calling on extension
+     * startup?
      * @memberOf app.Data
      */
-    processState: function(key = 'all') {
+    processState: function(key = 'all', isStartup = false) {
       // Map processing functions to localStorage values
       const STATE_MAP = {
         'enabled': _processEnabled,
@@ -375,7 +377,11 @@ app.Data = (function() {
           fn();
         });
         // process photo SOURCES
-        app.PhotoSources.processAll();
+        if (!isStartup) {
+          // don't process photos on startup, mainly to save on 
+          // Google Photo's API calls
+          app.PhotoSources.processAll();
+        }
         // set os, if not already
         if (!Chrome.Storage.get('os')) {
           _setOS().catch(() => {});
