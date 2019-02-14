@@ -44,13 +44,16 @@ function _onInstalled(details) {
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!app.Utils.DEBUG) {
-      if (Chrome.Utils.getVersion() === details.previousVersion) {
+      const version = Chrome.Utils.getVersion();
+      if (version === details.previousVersion) {
         // spurious update: 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481
         return;
       }
-      // show info on the update
-      chrome.tabs.create({url: '/html/update.html'});
+      if (version === '3.0.0') {
+        // show info on the update when moving to version 3.0.0
+        chrome.tabs.create({url: '/html/update3.html'});
+      }
     }
     // extension updated
     app.Data.update();
