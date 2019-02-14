@@ -464,6 +464,9 @@
   "err_max_albums": {
     "message": "È stato raggiunto il numero massimo di selezioni di album."
   },
+  "err_google_quota": {
+    "message": "Ha superato il limite giornaliero dell'API di Google Foto."
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

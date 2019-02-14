@@ -464,6 +464,9 @@
   "err_max_albums": {
     "message": "Het maximale aantal albumselecties is bereikt."
   },
+  "err_google_quota": {
+    "message": "De dagelijkse limiet van de Google Foto's-API overschreden."
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
