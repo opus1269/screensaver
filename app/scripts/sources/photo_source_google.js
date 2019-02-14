@@ -249,7 +249,7 @@
      * Retrieve a Google Photos album
      * @param {string} albumId -  Unique Album ID
      * @param {boolean} interactive=true -  interactive mode for permissions
-     * @throws 
+     * @throws Will throw an error if the album failed to load.
      * @returns {app.GoogleSource.Album} Album
      */
     static async loadAlbum(albumId, interactive = true) {

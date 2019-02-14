@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Source: screensaver/ss_photo_finder.js</title>
+	<title>Documentation Namespace: Locale</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,112 +67,390 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: screensaver/ss_photo_finder.js</h1>
-    
+	<h1 class="page-title">Namespace: Locale</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
- *  Licensed under the BSD-3-Clause
- *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
- */
-window.app = window.app || {};
 
-/**
- * Find a photo that is ready for slideshow
- * @namespace
- */
-app.SSFinder = (function() {
-  'use strict';
+<header>
+    
+        <h2>
+        Locale
+        </h2>
+        
+    
+</header>
 
-  new ExceptionHandler();
 
-  /**
-   * Transition time in milliseconds
-   * @type {int}
-   * @private
-   * @memberOf app.SSFinder
-   */
-  let _transTime = 30000;
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Locale methods</p></div>
+        
 
-  /**
-   * Add the next photo from the master array
-   * @param {int} idx - index into {@link app.SSViews}
-   * @private
-   * @memberOf app.SSFinder
-   */
-  function _replacePhoto(idx) {
-    if (app.SSViews.isSelectedIndex(idx)) {
-      return;
-    }
+        
+<dl class="details">
+    
 
-    const viewLength = app.SSViews.getCount();
-    const photoLen = app.SSPhotos.getCount();
-    if (photoLen &lt;= viewLength) {
-      return;
-    }
+	
 
-    const photo = app.SSPhotos.getNextUsable();
-    if (photo) {
-      const view = app.SSViews.get(idx);
-      view.setPhoto(photo);
-    }
-  }
+	
 
-  return {
-    /**
-     * Initialize the photo finder
-     * @memberOf app.SSFinder
-     */
-    initialize: function() {
-      const transTime = Chrome.Storage.get('transitionTime');
-      if (transTime) {
-        _transTime = transTime.base * 1000;
-      }
-    },
+	
 
-    /**
-     * Get the next photo to display
-     * @param {int} idx - index into {@link app.SSViews}
-     * @returns {int} next - index into {@link app.SSViews}
-     * to display, -1 if none are ready
-     * @memberOf app.SSFinder
-     */
-    getNext: function(idx) {
-      let ret = app.SSViews.findLoadedPhoto(idx);
-      if (ret === -1) {
-        // no photos ready, wait a little, try again
-        app.SSRunner.setWaitTime(500);
-      } else {
-        // photo found, set the waitTime back to transition time
-        app.SSRunner.setWaitTime(_transTime);
-      }
-      return ret;
-    },
+    
 
-    /**
-     * Add the next photo from the master array
-     * @param {int} idx - {@link app.SSViews} index to replace
-     * @memberOf app.SSFinder
-     */
-    replacePhoto: function(idx) {
-      if (idx >= 0) {
-        _replacePhoto(idx);
-      }
-    },
-  };
-})();
-</pre>
-    </article>
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="setting-elements_localize-behavior_localize-behavior.js.html">setting-elements/localize-behavior/localize-behavior.js</a>,
+				 <a href="setting-elements_localize-behavior_localize-behavior.js.html#sunlight-1-line-39">line 39</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://developer.chrome.com/extensions/i18n">https://developer.chrome.com/extensions/i18n</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".getLocale"><span class="type-signature">&lt;static> </span>getLocale<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the current locale</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="setting-elements_localize-behavior_localize-behavior.js.html">setting-elements/localize-behavior/localize-behavior.js</a>,
+				 <a href="setting-elements_localize-behavior_localize-behavior.js.html#sunlight-1-line-57">line 57</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>current locale e.g. en_US</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".localize"><span class="type-signature">&lt;static> </span>localize<span class="signature">(messageName)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the i18n string</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>messageName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>key in messages.json</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="setting-elements_localize-behavior_localize-behavior.js.html">setting-elements/localize-behavior/localize-behavior.js</a>,
+				 <a href="setting-elements_localize-behavior_localize-behavior.js.html#sunlight-1-line-48">line 48</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>internationalized string</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -182,6 +460,10 @@ app.SSFinder = (function() {
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>
@@ -214,7 +496,7 @@ app.SSFinder = (function() {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on February 14th 2019, 3:48:04 am
+		on February 14th 2019, 3:48:05 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

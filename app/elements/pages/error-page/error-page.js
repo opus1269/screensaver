@@ -30,6 +30,11 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 (function(window) {
 
   window.app = window.app || {};
+
+  /**
+   * Polymer element for the Error Page
+   * @namespace ErrorPage
+   */
   app.ErrorPageFactory = Polymer({
     _template: html`
     <style include="iron-flex iron-flex-alignment"></style>
@@ -105,6 +110,11 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     ],
 
     properties: {
+      
+      /**
+       * The LastError Object to display
+       * @memberOf ErrorPage
+       */
       lastError: {
         type: Object,
         value: function() {
@@ -114,6 +124,10 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
       },
     },
 
+    /**
+     * Element is ready
+     * @memberOf ErrorPage
+     */
     ready: function() {
       Chrome.Storage.getLastError().then((lastError) => {
         this.set('lastError', lastError);
@@ -138,6 +152,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     /**
      * Event: Email support
      * @private
+     * @memberOf ErrorPage
      */
     _onEmailTapped: function() {
       let body = app.Utils.getEmailBody();
@@ -154,6 +169,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     /**
      * Event: Remove the error
      * @private
+     * @memberOf ErrorPage
      */
     _onRemoveTapped: function() {
       Chrome.Storage.clearLastError();
@@ -165,6 +181,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
      * @param {Chrome.Storage.LastError} lastError - the error
      * @returns {string} stack trace
      * @private
+     * @memberOf ErrorPage
      */
     _computeStack: function(lastError) {
       let ret = '';
@@ -179,6 +196,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
      * @param {Chrome.Storage.LastError} lastError - the error
      * @returns {string} page title
      * @private
+     * @memberOf ErrorPage
      */
     _computeTitle: function(lastError) {
       let ret = Locale.localize('last_error_viewer_title');
