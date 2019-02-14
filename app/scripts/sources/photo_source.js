@@ -165,7 +165,7 @@
     /**
      * Fetch the photos for this source - override
      * @abstract
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * @returns {Promise<Object>} could be array of photos or albums
      */
     fetchPhotos() {
     }
@@ -245,7 +245,7 @@
 
     /**
      * Save the photos to localStorage in a safe manner
-     * @param {app.PhotoSource.Photo[]} photos
+     * @param {Object} photos - could be array of photos or albums
      * - {@link app.PhotoSource.Photo} Array
      * @returns {?string} non-null on error
      * @private
