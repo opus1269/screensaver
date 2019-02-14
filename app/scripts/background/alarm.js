@@ -185,7 +185,9 @@ function _onAlarm(alarm) {
       break;
     case _ALARMS.UPDATE_GOOGLE_PHOTOS:
       // Update the urls for the Google Photos
-      app.GoogleSource.updatePhotos().catch((err) => {});
+      app.GoogleSource.updatePhotos().catch((err) => {
+        Chrome.Log.error(err.message, 'alarm._onAlarm');
+      });
       break;
     case _ALARMS.BADGE_TEXT:
       // set the icons text
