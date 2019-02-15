@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 window.app = window.app || {};
 
@@ -135,12 +135,20 @@ app.PhotoSources = (function() {
     /**
      * Process all the selected photo sources.
      * This normally requires a https call and may fail for various reasons
+     * @param {boolean} doGoogle=false - update user's Google Photos too
      * @memberOf app.PhotoSources
      */
-    processAll: function() {
+    processAll: function(doGoogle = false) {
       const sources = _getSelectedSources();
       for (const source of sources) {
-        source.process().catch(() => {});
+        let skip = false;
+        const type = source.getType();
+        if ('Google User' === type) {
+          skip = !doGoogle;
+        }
+        if (!skip) {
+          source.process().catch(() => {});
+        }
       }
     },
 

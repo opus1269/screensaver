@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 (function() {
   'use strict';
@@ -196,7 +196,7 @@
     /**
      * Set the url
      */
-    _setUrl() {
+    setUrl() {
       this.url = this.photo.getUrl();
       SSView._dirtySet(this.model, 'view.url', this.url);
     }
@@ -286,7 +286,7 @@
      */
     setPhoto(photo) {
       this.photo = photo;
-      this._setUrl();
+      this.setUrl();
       this._setAuthorLabel(false);
       this._setLocationLabel();
     }

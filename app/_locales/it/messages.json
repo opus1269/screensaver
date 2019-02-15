@@ -234,7 +234,7 @@
     "message": "Non visualizzare alcune foto in modalità zoom o completa"
   },
   "setting_photog": {
-    "message": "Visualizza l'autore  per le foto che possiedi"
+    "message": "Mostra il nome dell'album per le tue foto"
   },
   "setting_full_res": {
     "message": "Utilizza piena risoluzione per le foto che possiedi"
@@ -378,7 +378,7 @@
     "message": "Nota: gli album condivisi potrebbero non essere disponibili. Consultare le FAQ per ulteriori informazioni."
   },
   "google_loading": {
-    "message": "Caricamento degli Album"
+    "message": "Caricamento..."
   },
   "help_title": {
     "message": "Guida e commenti"
@@ -423,7 +423,7 @@
     "message": "Codice sorgente"
   },
   "err_request_failed": {
-    "message": "Richiesta fallita. Selezionare aggiorna per riprovare."
+    "message": "Richiesta fallita"
   },
   "err_storage_title": {
     "message": "Limite di archiviazione superato"
@@ -441,7 +441,7 @@
     "message": "Impossibile recuperare la fonte della foto"
   },
   "err_auth_picasa": {
-    "message": "L'utente non ha autorizzato Picasa."
+    "message": "L'utente non ha autorizzato Google."
   },
   "err_no_albums": {
     "message": "Nessun album trovato"
@@ -452,11 +452,20 @@
   "err_load_album_list": {
     "message": "Impossibile recuperare l'elenco degli album di foto di Google"
   },
+  "err_load_album": {
+    "message": "Impossibile recuperare album di foto di Google"
+  },
   "err_show_ss": {
     "message": "Impossibile visualizzare il salvaschermo"
   },
   "err_optional_permissions": {
     "message": "Impossibile modificare un'autorizzazione facoltativa"
+  },
+  "err_max_albums": {
+    "message": "È stato raggiunto il numero massimo di selezioni di album."
+  },
+  "err_google_quota": {
+    "message": "Ha superato il limite giornaliero dell'API di Google Foto."
   },
   "time_format": {
     "message": "24",

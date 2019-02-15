@@ -5,13 +5,14 @@
  *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
  */
 'use strict';
+/* eslint no-console: 0 */
 
 // paths and files
 const base = {
   app: 'screensaver',
-  src: 'app/',
-  dist: 'dist/',
-  dev: 'dev/',
+  src: './',
+  dist: '../build/prod/app',
+  dev: '../build/dev/app',
   store: 'store/',
   docs: 'docs/',
   tmp_docs: '../tmp_jsdoc_photoscreensaver/',
@@ -25,39 +26,20 @@ const path = {
   assets: `${base.src}assets/`,
   lib: `${base.src}lib/`,
   locales: `${base.src}_locales/`,
-  bower: `${base.src}bower_components/`,
-  bowerScripts: `${base.src}bower_components/chrome-extension-utils/`,
-  bowerElements: `${base.src}bower_components/setting-elements/`,
 };
 const files = {
   manifest: `${base.src}manifest.json`,
   scripts: `${path.scripts}**/*.js`,
   html: `${path.html}**/*.html`,
   styles: `${path.styles}**/*.*`,
-  elements: `${path.elements}**/*.html`,
+  elements: `${path.elements}**/*.js`,
   images: `${path.images}*.*`,
   assets: `${path.assets}*.*`,
   lib: `${path.lib}**/*.*`,
   locales: `${path.locales}**/*.*`,
-  bower: [
-    `${path.bower}**/*`,
-    `!${path.bowerScripts}**/*`,
-    `!${path.bower}**/test/*`,
-    `!${path.bower}**/demo/*`,
-    `!${path.bower}jquery/**`,
-  ],
-  bowerScripts: `${path.bowerScripts}**/*.js`,
-  bowerElements: `${path.bowerElements}**/*.html`,
-  prodDelete: [
-    `${base.dist}app/bower_components/`,
-    `${base.dist}app/scripts/**/*.js`,
-    `!${base.dist}app/scripts/background/background.js`,
-    `!${base.dist}app/scripts/options/options.js`,
-    `!${base.dist}app/scripts/screensaver/screensaver.js`,
-  ],
 };
-files.js = [files.scripts, files.bowerScripts, `${base.src}*.js`];
-files.lintdevjs = '*.js';
+files.js = [files.scripts, files.elements, `${base.src}*.js`];
+files.lintdevjs = '*.js, ../gulpfile.js';
 
 // command options
 const watchOpts = {
@@ -66,18 +48,9 @@ const watchOpts = {
 };
 const minifyOpts = {
   output: {
-    beautify: true,
+    beautify: false,
     comments: '/Copyright/',
   },
-};
-const crisperOpts = {
-  scriptInHead: false,
-};
-const vulcanizeOpts = {
-  stripComments: true,
-  inlineCss: true,
-  inlineScripts: true,
-  excludes: [`${path.lib}Snoocore-browser.min.js`],
 };
 
 // flag for watching
@@ -94,10 +67,20 @@ const If = require('gulp-if');
 const util = require('gulp-util');
 const watch = require('gulp-watch');
 const plumber = require('gulp-plumber');
+
 // for ECMA6
 const uglifyjs = require('uglify-es');
 const composer = require('gulp-uglify/composer');
 const minify = composer(uglifyjs, console);
+
+// for polymer
+// see:
+// https://github.com/PolymerElements/generator-polymer-init-custom-build/blob/master/generators/app/gulpfile.js
+const mergeStream = require('merge-stream');
+const polymerBuild = require('polymer-build');
+const polymerJson = require('./polymer.json');
+const polymerProject = new polymerBuild.PolymerProject(polymerJson);
+let buildDirectory = 'build/prod';
 
 // load the rest
 const plugins = require('gulp-load-plugins')({
@@ -113,14 +96,111 @@ gulp.Gulp.prototype._runTask = function(task) {
   this.__runTask(task);
 };
 
+// Waits for the given ReadableStream
+function waitFor(stream) {
+  return new Promise((resolve, reject) => {
+    stream.on('end', resolve);
+    stream.on('error', reject);
+  });
+}
+
+// Runs equivalent of 'polymer build'
+function buildPolymer() {
+  return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
+
+    // Lets create some inline code splitters in case you need them later in
+    // your build.
+    let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
+    let dependenciesStreamSplitter = new polymerBuild.HtmlSplitter();
+
+    // Okay, so first thing we do is clear the build directory
+    console.log(`Deleting ${buildDirectory} directory...`);
+    del([buildDirectory]).then(() => {
+
+      // Let's start by getting your source files. These are all the files
+      // in your `src/` directory, or those that match your polymer.json
+      // "sources"  property if you provided one.
+      let sourcesStream = polymerProject.sources()
+
+      // If you want to optimize, minify, compile, or otherwise process
+      // any of your source code for production, you can do so here before
+      // merging your sources and dependencies together.
+          .pipe(If(/\.(png|gif|jpg|svg)$/, plugins.imagemin()))
+
+          // The `sourcesStreamSplitter` created above can be added here to
+          // pull any inline styles and scripts out of their HTML files and
+          // into seperate CSS and JS files in the build stream. Just be sure
+          // to rejoin those files with the `.rejoin()` method when you're done.
+          .pipe(sourcesStreamSplitter.split())
+
+          // Uncomment these lines to add a few more example optimizations to
+          // your source files, but these are not included by default. For
+          // installation, see the require statements at the beginning.
+          // .pipe(If(/\.js$/, minify(minifyOpts)))
+          // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
+          // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
+          // to use
+
+          // Remember, you need to rejoin any split inline code when you're
+          // done.
+          .pipe(sourcesStreamSplitter.rejoin());
+
+      // Similarly, you can get your dependencies separately and perform
+      // any dependency-only optimizations here as well.
+      let dependenciesStream = polymerProject.dependencies().
+          pipe(dependenciesStreamSplitter.split())
+          // Add any dependency optimizations here.
+          .pipe(dependenciesStreamSplitter.rejoin());
+
+      // Okay, now let's merge your sources & dependencies together into a
+      // single build stream.
+      let buildStream = mergeStream(sourcesStream, dependenciesStream).
+          once('data', () => {
+            console.log('Analyzing build dependencies...');
+          });
+
+      if (isProd || isProdTest) {
+        
+        // If you want bundling, pass the stream to polymerProject.bundler.
+        // This will bundle dependencies into your fragments so you can lazy
+        // load them.
+        buildStream = buildStream.pipe(polymerProject.bundler({
+          inlineScripts: false,
+        }));
+
+        // now lets minify for production
+        buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
+        
+      }
+
+      // Okay, time to pipe to the build directory
+      buildStream = buildStream.pipe(gulp.dest(buildDirectory));
+
+      // waitFor the buildStream to complete
+      return waitFor(buildStream);
+    }).then(() => {
+      // You did it!
+      console.log('Build complete!');
+      resolve();
+      return null;
+    }).catch((err) => {
+      console.log('buildPolymer\n' + err);
+    });
+  });
+}
+
 // Default - watch for changes in development
 gulp.task('default', ['incrementalBuild']);
 
 // Incremental Development build
 gulp.task('incrementalBuild', (cb) => {
+
+  // change working directory to app
+  // eslint-disable-next-line no-undef
+  process.chdir('app');
+
   isWatch = true;
   runSequence('lint', [
-    'bower',
     'manifest',
     'html',
     'lintdevjs',
@@ -134,106 +214,66 @@ gulp.task('incrementalBuild', (cb) => {
   ], cb);
 });
 
-// Development build
-gulp.task('dev', (cb) => {
-  isProd = false;
-  isProdTest = false;
-  runSequence('clean', [
-    'bower',
-    'manifest',
-    'html',
-    'scripts',
-    'styles',
-    'elements',
-    'images',
-    'assets',
-    'lib',
-    'locales',
-  ], cb);
-});
+// Development build - why don't you work?
+// gulp.task('dev', (cb) => {
+//
+//   isProd = false;
+//   isProdTest = false;
+//   buildDirectory = 'build/dev';
+//   runSequence('_poly_build', cb);
+// });
 
 // Production build
 gulp.task('prod', (cb) => {
   isProd = true;
   isProdTest = false;
-  runSequence('clean', 'html', [
+  buildDirectory = 'build/prod';
+  runSequence('_poly_build', [
     'manifest',
-    'scripts',
-    'styles',
-    'vulcanize_options',
-    'vulcanize_screensaver',
-    'vulcanize_background',
-    'images',
-    'assets',
-    'lib',
-    'locales',
     'docs',
-  ], 'prod_delete', 'zip', cb);
+  ], '_zip', cb);
 });
 
-// Production test build
+// Production test build Only diff is it does not have key removed
 gulp.task('prodTest', (cb) => {
   isProd = true;
   isProdTest = true;
-  runSequence('clean', 'html', [
-    'manifest',
-    'scripts',
-    'styles',
-    'vulcanize_options',
-    'vulcanize_screensaver',
-    'vulcanize_background',
-    'images',
-    'assets',
-    'lib',
-    'locales',
-  ], 'prod_delete', 'zip', cb);
+  buildDirectory = 'build/prodTest';
+  runSequence('_poly_build', '_zip', cb);
 });
 
 // Generate JSDoc
 gulp.task('docs', (cb) => {
+
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+
   const config = require('./jsdoc.json');
-  const README = 'README.md';
+  const README = '../README.md';
   gulp.src([
     README,
     files.scripts,
-    files.bowerScripts,
     files.elements,
-    files.bowerElements,
   ], {read: true}).
-      pipe(If('*.html', plugins.crisper(crisperOpts))).
       pipe(gulp.dest(base.tmp_docs)).
       pipe(plugins.jsdoc3(config, cb));
 });
 
-// polylint elements
-gulp.task('polylint', () => {
-  const input = files.elements;
-  const opts = {
-    verbose: true,
-    name: currentTaskName,
-  };
-  return gulp.src(input).
-      pipe(isWatch ? watch(input, opts) : util.noop()).
-      pipe(plugins.polylint({noRecursion: true})).
-      pipe(plugins.polylint.reporter(plugins.polylint.reporter.stylishlike)).
-      pipe(plugins.polylint.reporter.fail({
-        buffer: false,
-        ignoreWarnings: false,
-      }));
-});
-
-// clean output directories
-gulp.task('clean', () => {
-  return del(isProd ? base.dist : base.dev);
-});
-
-// clean output directories
-gulp.task('clean_all', () => {
-  return del([base.dist, base.dev]);
-});
-
 // manifest.json
 gulp.task('manifest', () => {
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+
   const input = files.manifest;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -241,17 +281,6 @@ gulp.task('manifest', () => {
       pipe(plumber()).
       pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : util.noop()).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
-});
-
-// prep bower files
-gulp.task('bower', () => {
-  const input = files.bower;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plumber()).
-      pipe(If('*.html', plugins.crisper(crisperOpts))).
-      pipe(gulp.dest(base.dev));
 });
 
 // lint development js files
@@ -281,13 +310,11 @@ gulp.task('scripts', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(isProd ? util.noop() : plugins.replace('const _DEBUG = false',
-          'const _DEBUG = true')).
+      pipe(plugins.replace('const _DEBUG = false', 'const _DEBUG = true')).
       pipe(plugins.eslint()).
       pipe(plugins.eslint.formatEach()).
       pipe(plugins.eslint.failAfterError()).
-      pipe(isProd ? minify(minifyOpts).on('error', util.log) : util.noop()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // html
@@ -297,8 +324,7 @@ gulp.task('html', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? plugins.minifyHtml() : util.noop()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // elements
@@ -310,7 +336,6 @@ gulp.task('elements', () => {
       pipe(plugins.eslint()).
       pipe(plugins.eslint.formatEach()).
       pipe(plugins.eslint.failAfterError()).
-      pipe(If('*.html', plugins.crisper(crisperOpts))).
       pipe(gulp.dest(base.dev));
 });
 
@@ -321,8 +346,7 @@ gulp.task('styles', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(If('*.css', isProd ? plugins.cleanCss() : util.noop())).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // images
@@ -332,8 +356,7 @@ gulp.task('images', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(plugins.imagemin({progressive: true, interlaced: true})).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // assets
@@ -343,7 +366,7 @@ gulp.task('assets', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // lib
@@ -353,7 +376,7 @@ gulp.task('lib', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+      pipe(gulp.dest(base.dev));
 });
 
 // locales
@@ -363,48 +386,28 @@ gulp.task('locales', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
-});
-
-// vulcanize options_imports.html for production
-gulp.task('vulcanize_options', () => {
-  return gulp.src(`${path.html}options_imports.html`, {base: '.'}).
-      pipe(plugins.vulcanize(vulcanizeOpts)).
-      pipe(plugins.crisper(crisperOpts)).
-      pipe(If('*.html', plugins.minifyInline())).
-      pipe(If('*.js', minify(minifyOpts).on('error', util.log))).
-      pipe(gulp.dest(base.dist));
-});
-
-// vulcanize background_imports.html for production
-gulp.task('vulcanize_background', () => {
-  return gulp.src(`${path.html}background_imports.html`, {base: '.'}).
-      pipe(plugins.vulcanize(vulcanizeOpts)).
-      pipe(plugins.crisper(crisperOpts)).
-      pipe(If('*.html', plugins.minifyInline())).
-      pipe(If('*.js', minify(minifyOpts).on('error', util.log))).
-      pipe(gulp.dest(base.dist));
-});
-
-// vulcanize screensaver_imports.html for production
-gulp.task('vulcanize_screensaver', () => {
-  return gulp.src(`${path.html}screensaver_imports.html`, {base: '.'}).
-      pipe(plugins.vulcanize(vulcanizeOpts)).
-      pipe(plugins.crisper(crisperOpts)).
-      pipe(If('*.html', plugins.minifyInline())).
-      pipe(If('*.js', minify(minifyOpts).on('error', util.log))).
-      pipe(gulp.dest(base.dist));
-});
-
-// delete unneeded files
-gulp.task('prod_delete', () => {
-  return del(files.prodDelete);
+      pipe(gulp.dest(base.dev));
 });
 
 // compress for the Chrome Web Store
-gulp.task('zip', () => {
-  return gulp.src(`${base.dist}${base.src}**`).
+gulp.task('_zip', () => {
+
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+
+  return gulp.src(`../${buildDirectory}/app/**`).
       pipe(!isProdTest ? plugins.zip('store.zip') : plugins.zip(
           'store-test.zip')).
-      pipe(!isProdTest ? gulp.dest(base.store) : gulp.dest(base.dist));
+      pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(
+          `../${buildDirectory}`));
 });
+
+// run polymer build with gulp, basically
+gulp.task('_poly_build', buildPolymer);
+
+

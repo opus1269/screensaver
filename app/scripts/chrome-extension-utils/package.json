@@ -1,0 +1,33 @@
+{
+  "name": "chrome-extension-utils",
+  "version": "1.0.0",
+  "description": "Utilities for Chrome Extensions",
+  "main": "background.js",
+  "scripts": {
+    "update_savedev": "npm update --save-dev",
+    "prune": "npm prune",
+    "delete_all": "rmdir node_modules /s /q"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opus1269/chrome-extension-utils.git"
+  },
+  "author": "Michael Updike <igreilly1269@gmail.com>",
+  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/opus1269/chrome-extension-utils/issues"
+  },
+  "homepage": "https://github.com/opus1269/chrome-extension-utils",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^4.7.1",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-promise": "^3.0.0",
+    "gulp": "^3.0.0",
+    "gulp-changed": "^3.0.0",
+    "gulp-eslint": "^4.0.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-util": "^3.0.8"
+  },
+  "false": {}
+}

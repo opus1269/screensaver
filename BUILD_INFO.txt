@@ -1,0 +1,13 @@
+For Development:
+
+Run 'polymer build' from the project directory command line to:
+
+* Create the development build (can't get gulp to build it right)
+
+You need to run this at a minimum whenever you update your npm dependencies
+You can run it whenever you want for a clean start
+
+
+For Production:
+
+run prod gulp task

@@ -1,7 +1,7 @@
 Photo Screen Saver Contributors
 ===============================
 
-* **[Mike Updike](https://github.com/opus12)**
+* **[Mike Updike](https://github.com/opus1269)**
 
   * Main developer
 

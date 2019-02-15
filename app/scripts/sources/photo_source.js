@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 (function() {
   'use strict';
@@ -56,8 +56,6 @@
       this._isDaily = isDaily;
       this._isArray = isArray;
       this._loadArg = loadArg;
-
-      // set the user facing description
     }
 
     /**
@@ -71,12 +69,12 @@
         case app.PhotoSources.UseKey.ALBUMS_GOOGLE:
           return new app.GoogleSource(useKey, 'albumSelections', 'Google User',
               Chrome.Locale.localize('google_title_photos'),
-              true, true, true);
+              true, true, null);
         case app.PhotoSources.UseKey.PHOTOS_GOOGLE:
           // not implemented yet
           return new app.GoogleSource(useKey, 'googleImages', 'Google User',
               'NOT IMPLEMENTED',
-              true, false, false);
+              true, false, null);
         case app.PhotoSources.UseKey.CHROMECAST:
           return new app.CCSource(useKey, 'ccImages', 'Google',
               Chrome.Locale.localize('setting_chromecast'),
@@ -97,11 +95,11 @@
           return new app.FlickrSource(useKey, 'flickrInterestingImages',
               'flickr',
               Chrome.Locale.localize('setting_flickr_int'),
-              true, false, false);
+              true, false, null);
         case app.PhotoSources.UseKey.AUTHOR:
           return new app.FlickrSource(useKey, 'authorImages', 'flickr',
               Chrome.Locale.localize('setting_mine'),
-              false, false, true);
+              false, false, null);
         case app.PhotoSources.UseKey.SPACE_RED:
           return new app.RedditSource(useKey, 'spaceRedditImages', 'reddit',
               Chrome.Locale.localize('setting_reddit_space'),
@@ -115,7 +113,6 @@
               Chrome.Locale.localize('setting_reddit_animal'),
               true, false, 'r/animalporn/');
         default:
-          // TODO title
           Chrome.Log.error(`Bad PhotoSource type: ${useKey}`,
               'SSView.createView');
           return null;
@@ -129,9 +126,9 @@
      * @param {string} author - The photographer
      * @param {number} asp - The aspect ratio of the photo
      * @param {Object} [ex] - Additional information about the photo
-     * @param {string} [point] - 'lat lon'
+     * @param {string} [point=''] - 'lat lon'
      */
-    static addPhoto(photos, url, author, asp, ex, point) {
+    static addPhoto(photos, url, author, asp, ex, point='') {
       /** @type {app.PhotoSource.Photo} */
       const photo = {
         url: url,
@@ -141,7 +138,7 @@
       if (ex) {
         photo.ex = ex;
       }
-      if (point) {
+      if (point && !Chrome.Utils.isWhiteSpace(point)) {
         photo.point = point;
       }
       photos.push(photo);
@@ -165,9 +162,17 @@
     /**
      * Fetch the photos for this source - override
      * @abstract
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * @returns {Promise<Object>} could be array of photos or albums
      */
     fetchPhotos() {
+    }
+
+    /**
+     * Get if the source type
+     * @returns {string} the source type
+     */
+    getType() {
+      return this._type;
     }
 
     /**
@@ -233,14 +238,19 @@
           return Promise.reject(err);
         });
       } else {
-        localStorage.removeItem(this._photosKey);
+        // hack so we don't delete album selections when Google Photos
+        // page is disabled
+        const useGoogle = Chrome.Storage.getBool('useGoogle');
+        if (!((this._photosKey === 'albumSelections') && !useGoogle)) {
+          localStorage.removeItem(this._photosKey);
+        }
         return Promise.resolve();
       }
     }
 
     /**
      * Save the photos to localStorage in a safe manner
-     * @param {app.PhotoSource.Photo[]} photos
+     * @param {Object} photos - could be array of photos or albums
      * - {@link app.PhotoSource.Photo} Array
      * @returns {?string} non-null on error
      * @private

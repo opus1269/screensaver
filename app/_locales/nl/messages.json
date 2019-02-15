@@ -234,7 +234,7 @@
     "message": "Toon geen bepaalde foto's in zoom en volledige modus"
   },
   "setting_photog": {
-    "message": "Toon de auteur voor de foto's die u bezit"
+    "message": "Toon de albumnaam voor uw foto's"
   },
   "setting_full_res": {
     "message": "Gebruik volledige resolutie voor foto's die u bezit"
@@ -378,7 +378,7 @@
     "message": "Opmerking: Gedeelde albums zijn misschien niet beschikbaar. Zie de Veelgestelde Vragen voor meer informatie."
   },
   "google_loading": {
-    "message": "Albums aan het laden"
+    "message": "laden..."
   },
   "help_title": {
     "message": "Hulp en feedback"
@@ -423,7 +423,7 @@
     "message": "Broncode"
   },
   "err_request_failed": {
-    "message": "Verzoek mislukt. Selecteer Vernieuw om het opnieuw te proberen."
+    "message": "Verzoek mislukt"
   },
   "err_storage_title": {
     "message": "Opslagbeperkingen zijn overtreden"
@@ -441,7 +441,7 @@
     "message": "Kon fotobron niet ophalen"
   },
   "err_auth_picasa": {
-    "message": "Gebruiker heeft Picasa niet geautoriseerd."
+    "message": "Gebruiker heeft Google niet geautoriseerd."
   },
   "err_no_albums": {
     "message": "Geen albums gevonden"
@@ -452,11 +452,20 @@
   "err_load_album_list": {
     "message": "De lijst met Google Fotoalbums kon niet worden opgehaald"
   },
+  "err_load_album": {
+    "message": "De Google Fotoalbums kon niet worden opgehaald"
+  },
   "err_show_ss": {
     "message": "Kan screensaver niet weergeven"
   },
   "err_optional_permissions": {
     "message": "Kan een facultatieve toestemming niet wijzigen"
+  },
+  "err_max_albums": {
+    "message": "Het maximale aantal albumselecties is bereikt."
+  },
+  "err_google_quota": {
+    "message": "De dagelijkse limiet van de Google Foto's-API overschreden."
   },
   "time_format": {
     "message": "24",

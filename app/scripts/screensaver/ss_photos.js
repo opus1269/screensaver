@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 window.app = window.app || {};
 
@@ -112,6 +112,19 @@ app.SSPhotos = (function() {
     },
 
     /**
+     * Update a Photos url
+     * @param {int} index - index into _photos
+     * @param {string} url - new url
+     * @memberOf app.SSPhotos
+     */
+    updatePhotoUrl: function(index, url) {
+      if (index > _photos.length - 1) {
+        return;
+      }
+      _photos[index].setUrl(url);
+    },
+
+    /**
      * Set current index into {@link _photos}
      * @param {int} idx - The index
      * @memberOf app.SSPhotos
@@ -126,7 +139,7 @@ app.SSPhotos = (function() {
      * @memberOf app.SSPhotos
      */
     incCurrentIndex: function() {
-     return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
+      return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
     },
 
     /**

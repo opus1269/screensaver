@@ -234,7 +234,7 @@
     "message": "No mostrar ciertas fotos en los modos Zoom y Completo"
   },
   "setting_photog": {
-    "message": "Mostrar el nombre de las fotos que posee"
+    "message": "Muestra el nombre del álbum para tus fotos."
   },
   "setting_full_res": {
     "message": "Utilice la resolución completa para las fotos que posee"
@@ -378,7 +378,7 @@
     "message": "Nota: Los álbumes compartidos pueden no estar disponibles. Consulte las preguntas frecuentes para obtener más información."
   },
   "google_loading": {
-    "message": "Cargando álbumes"
+    "message": "Cargando..."
   },
   "help_title": {
     "message": "Ayuda y comentarios"
@@ -423,7 +423,7 @@
     "message": "Código fuente"
   },
   "err_request_failed": {
-    "message": "Solicitud fallida. Selecciona refrescar para intentarlo de nuevo."
+    "message": "Solicitud fallida"
   },
   "err_storage_title": {
     "message": "Límites de almacenamiento excedidos"
@@ -441,7 +441,7 @@
     "message": "Error al recuperar el origen de la foto"
   },
   "err_auth_picasa": {
-    "message": "Usuario no autoriza a Picasa."
+    "message": "Usuario no autoriza a Google."
   },
   "err_no_albums": {
     "message": "No hay álbumes encontrados"
@@ -452,11 +452,20 @@
   "err_load_album_list": {
     "message": "Error al recuperar la lista de álbumes de fotos de Google"
   },
+  "err_load_album": {
+    "message": "Error al recuperar de álbumes de fotos de Google"
+  },
   "err_show_ss": {
     "message": "Error al mostrar el protector de pantalla"
   },
   "err_optional_permissions": {
     "message": "Error al modificar un permiso opcional"
+  },
+  "err_max_albums": {
+    "message": "Se ha alcanzado el número máximo de selecciones de álbumes."
+  },
+  "err_google_quota": {
+    "message": "Superó el límite diario de la API de Google Photos."
   },
   "time_format": {
     "message": "24",

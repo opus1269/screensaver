@@ -15,6 +15,11 @@ module.exports = {
     'promise',
   ],
 
+  'parserOptions': {
+    'ecmaVersion': 2017,
+    'sourceType': 'module',
+  },
+
   'globals': {
     'app': true,
     'Chrome': true,
@@ -31,12 +36,21 @@ module.exports = {
     'Snoocore': true,
     'ChromePromise': true,
     'ExceptionHandler': true,
+    'ExHandler': true,
     'ga': true,
   },
 
   'rules': {
+    'object-curly-spacing': 'off',
     'linebreak-style': ['off', 'windows'],
-    'max-len': ['warn', 80],
+    'max-len': [
+      'error', {
+        'code': 80,
+        'tabWidth': 2,
+        'ignoreComments': true,
+        'ignoreStrings': true,
+        'ignoreTemplateLiterals': true,
+      }],
     'eqeqeq': ['error', 'always'],
     'no-var': 'warn',
     'no-console': ['warn', {'allow': ['error']}],

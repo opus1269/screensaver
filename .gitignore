@@ -1,10 +1,14 @@
-/node_modules
+**/node_modules
+**/build
 /dev
 /dist
 /app/bower_components
 .tmp
 *.db
 *.lock
+
+# used in building our dos
+**/tmp_jsdoc_photoscreensaver
 
 # jekyll
 _site/

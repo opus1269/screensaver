@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <!--
-  ~  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+  ~  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
   ~  Licensed under the BSD-3-Clause
   ~  https://opensource.org/licenses/BSD-3-Clause
-  ~  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+  ~  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
   -->
 
+<!--suppress HtmlUnknownTarget -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Background Page</title>
 
-  <!-- All imports here - will be vulcanized -->
-  <link rel="import" href="background_imports.html">
+  <script src="/lib/Snoocore-browser.min.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/chrome-promise.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/exception_handler.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/analytics.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/log.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/json.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/storage.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/locales.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/utils.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/msg.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/time.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/http.js"></script>
+  <script src="/scripts/chrome-extension-utils/scripts/auth.js"></script>
+  <script src="/scripts/my_analytics.js"></script>
+  <script src="/scripts/my_msg.js"></script>
+  <script src="/scripts/my_utils.js"></script>
+  <script src="/scripts/sources/photo_sources.js"></script>
+  <script src="/scripts/sources/photo_source.js"></script>
+  <script src="/scripts/sources/photo_source_chromecast.js"></script>
+  <script src="/scripts/sources/photo_source_reddit.js"></script>
+  <script src="/scripts/sources/photo_source_flickr.js"></script>
+  <script src="/scripts/sources/photo_source_500px.js"></script>
+  <script src="/scripts/sources/photo_source_google.js"></script>
+  
+  <script type="module" src="/scripts/background/context_menus.js"></script>
+  <script type="module" src="/scripts/background/alarm.js"></script>
+  <script type="module" src="/scripts/background/data.js"></script>
+  <script type="module" src="/scripts/background/ss_controller.js"></script>
 
 </head>
 <body>
-<script src="../scripts/background/background.js"></script>
+<script type="module" src="/scripts/background/background.js"></script>
 </body>
-</html>

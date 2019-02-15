@@ -1,10 +1,51 @@
 {
-  "entrypoint": "app/html/options.html",
-  "shell": "app/html/options.html",
+  "root": "./app",
+  "entrypoint": "html/options.html",
+  "shell": "html/options.html",
   "sources": [
-    "app/elements/setting-toggle/*"
+    "scripts/**/*.js",
+    "elements/**/*.js",
+    "html/**/*",
+    "styles/**/*",
+    "images/**/*"
   ],
+  "extraDependencies": [
+    "manifest.json",
+    "_locales/**/*",
+    "assets/**/*",
+    "lib/**/*"
+  ],
+  "fragments": [
+    "html/background.html",
+    "html/screensaver.html",
+    "html/update3.html"
+  ],
+  "moduleResolution": "node",
+  "npm": true,
   "lint": {
-    "rules": ["polymer-1"]
-  }
+    "rules": [
+      "polymer-3"
+    ]
+  },
+  "builds": [
+    {
+      "name": "dev",
+      "browserCapabilities": [
+        "es2015",
+        "modules"
+      ],
+      "js": {
+        "minify": false,
+        "transformModulesToAmd": false
+      },
+      "css": {
+        "minify": false
+      },
+      "html": {
+        "minify": false
+      },
+      "bundle": false,
+      "addServiceWorker": false
+    }
+  ]
 }

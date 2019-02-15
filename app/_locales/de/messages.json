@@ -234,7 +234,7 @@
     "message": "Bestimmte Fotos in Zoom- und Voll-Modi nicht anzeigen"
   },
   "setting_photog": {
-    "message": "Autor für Fotos, die Sie besitzen, anzeigen"
+    "message": "Zeige den Namen des Albums für deine Fotos"
   },
   "setting_full_res": {
     "message": "Verwenden Sie die volle Auflösung für Fotos, die Sie besitzen"
@@ -378,7 +378,7 @@
     "message": "Hinweis: Gemeinsame Alben nicht verfügbar. Siehe FAQ für weitere Informationen."
   },
   "google_loading": {
-    "message": "Alben Laden"
+    "message": "Laden..."
   },
   "help_title": {
     "message": "Hilfe & Feedback"
@@ -423,7 +423,7 @@
     "message": "Quellcode"
   },
   "err_request_failed": {
-    "message": "Anfrage fehlgeschlagen. Wählen Sie 'Neu Laden' und versuchen Sie es erneut."
+    "message": "Anfrage fehlgeschlagen"
   },
   "err_storage_title": {
     "message": "Speicherbegrenzungen überschritten"
@@ -441,7 +441,7 @@
     "message": "Das Abrufen der Fotoquelle ist fehlgeschlagen"
   },
   "err_auth_picasa": {
-    "message": "Benutzer hat Picasa night genehmigt."
+    "message": "Benutzer hat Google night genehmigt."
   },
   "err_no_albums": {
     "message": "Keine Alben gefunden"
@@ -452,11 +452,20 @@
   "err_load_album_list": {
     "message": "Fehler beim Abrufen der Liste der Google Foto-Alben"
   },
+  "err_load_album": {
+    "message": "Fehler beim Abrufen der Google Foto-Alben"
+  },
   "err_show_ss": {
     "message": "Fehler beim Anzeigen des Bildschirmschoners"
   },
   "err_optional_permissions": {
     "message": "Fehler beim Ändern einer optionalen Berechtigung"
+  },
+  "err_max_albums": {
+    "message": "Die maximale Anzahl der Albumauswahl wurde erreicht."
+  },
+  "err_google_quota": {
+    "message": "Das tägliche Google Photos-API-Limit wurde überschritten."
   },
   "time_format": {
     "message": "24",

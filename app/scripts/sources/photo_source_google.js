@@ -1,11 +1,11 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 (function() {
-  'use strict';
   window.app = window.app || {};
 
   new ExceptionHandler();
@@ -28,30 +28,21 @@
    * A Selected Google Photo Album
    * @typedef {Object} app.GoogleSource.SelectedAlbum
    * @property {string} id - Google album Id
+   * @property {string} name - Google album name
    * @property {app.PhotoSource.Photo[]} photos - Array of photos
    * @memberOf app.GoogleSource
    */
 
   /**
-   * Path to Picasa API
+   * Path to Google Photos API
    * @type {string}
    * @const
    * @default
    * @private
    * @memberOf app.GoogleSource
    */
-  const _URL_BASE = 'https://picasaweb.google.com/data/feed/api/user/';
+  const _URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
 
-  /**
-   * Picasa API extension good through 3/15/2019
-   * @type {string}
-   * @const
-   * @default
-   * @private
-   * @memberOf app.GoogleSource
-   */
-  const _EXT_QUERY = '&deprecation-extension=true';
-  
   /**
    * Query for list of albums
    * @type {string}
@@ -60,23 +51,7 @@
    * @private
    * @memberOf app.GoogleSource
    */
-  const _ALBUMS_QUERY = '?max-results=2000&access=all&kind=album' +
-      '&fields=entry(gphoto:albumType,gphoto:id)&v=2&alt=json' +
-      _EXT_QUERY;
-
-  /**
-   * Query an album for its photos
-   * @type {string}
-   * @const
-   * @default
-   * @private
-   * @memberOf app.GoogleSource
-   */
-  const _ALBUM_QUERY = '&thumbsize=72' +
-      '&fields=title,gphoto:id,entry(media:group/media:content,' +
-      'media:group/media:credit,media:group/media:thumbnail,georss:where)' +
-      '&v=2&alt=json' +
-      _EXT_QUERY;
+  const _ALBUMS_QUERY = '?pageSize=50';
 
   /**
    * A potential source of photos from Google
@@ -100,222 +75,486 @@
       super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
     }
 
-    /** Determine if a Picasa entry is an image
-     * @param {Object} entry - Picasa media object
+    /**
+     * Is the error due to the Google Photos API quota? Also logs it if true
+     * @param {Error} err - info on image
+     * @param {string} caller - calling method
+     * @returns {boolean} true if 429 error
+     */
+    static isQuotaError(err, caller) {
+      let ret = false;
+      const statusMsg = `${Chrome.Locale.localize('err_status')}: 429`;
+      if (err.message.includes(statusMsg)) {
+        // Hit Google photos quota
+        Chrome.Log.error(err.message, caller,
+            Chrome.Locale.localize('err_google_quota'));
+        ret = true;
+      }
+      return ret;
+    }
+
+    /** Determine if a mediaEntry is an image
+     * @param {Object} mediaEntry - Picasa media object
      * @returns {boolean} true if entry is a photo
      * @private
      */
-    static _isImage(entry) {
-      const content = entry.media$group.media$content;
-      for (let i = 0; i < content.length; i++) {
-        if (content[i].medium !== 'image') {
-          return false;
+    static _isImage(mediaEntry) {
+      return mediaEntry &&
+          mediaEntry.mimeType &&
+          mediaEntry.mimeType.startsWith('image/') &&
+          mediaEntry.mediaMetadata &&
+          mediaEntry.mediaMetadata.width &&
+          mediaEntry.mediaMetadata.height;
+    }
+
+    /** Get the image size to retrieve
+     * @param {Object} mediaMetadata - info on image
+     * @returns {{width: int, height: int}} image size
+     * @private
+     */
+    static _getImageSize(mediaMetadata) {
+      const MAX_SIZE = 1600;
+      const ret = {};
+      ret.width = parseInt(mediaMetadata.width);
+      ret.height = parseInt(mediaMetadata.height);
+      if (!Chrome.Storage.getBool('fullResGoogle')) {
+        const max = Math.max(MAX_SIZE, ret.width, ret.height);
+        if (max > MAX_SIZE) {
+          if (ret.width === max) {
+            ret.width = MAX_SIZE;
+            ret.height = Math.round(ret.height * (MAX_SIZE / max));
+          } else {
+            ret.height = MAX_SIZE;
+            ret.width = Math.round(ret.width * (MAX_SIZE / max));
+          }
         }
       }
-      return true;
-    }
-
-    /** Get max image size to retrieve
-     * @returns {string} image size description
-     * @private
-     */
-    static _getMaxImageSize() {
-      let ret = '1600';
-      if (Chrome.Storage.getBool('fullResGoogle')) {
-        ret = 'd';
-      }
       return ret;
     }
 
-    /** Determine if a Picasa entry has Geo position
-     * @param {Object} entry - Picasa media object
-     * @returns {boolean} true if entry has Geo position
-     * @private
-     */
-    static _hasGeo(entry) {
-      return !!(entry.georss$where &&
-      entry.georss$where.gml$Point &&
-      entry.georss$where.gml$Point.gml$pos &&
-      entry.georss$where.gml$Point.gml$pos.$t);
-    }
+    // /** Get the author of the photo
+    //  * @param {Object} mediaItem - info on image
+    //  * @returns {string} Author name '' if noe
+    //  * @private
+    //  */
+    // static _getAuthor(mediaItem) {
+    //   let ret = '';
+    //   if (mediaItem && mediaItem.contributorInfo &&
+    //       mediaItem.contributorInfo.displayName) {
+    //     ret = mediaItem.contributorInfo.displayName;
+    //   }
+    //   return ret;
+    // }
 
-    /** Get the thumbnail url if it exists
-     * @param {Array} entry - Picasa media object
-     * @returns {?string} url or null
+    // /** Determine if a Picasa entry has Geo position
+    //  * @param {Object} entry - Picasa media object
+    //  * @returns {boolean} true if entry has Geo position
+    //  * @private
+    //  */
+    // static _hasGeo(entry) {
+    //   return !!(entry.georss$where &&
+    //       entry.georss$where.gml$Point &&
+    //       entry.georss$where.gml$Point.gml$pos &&
+    //       entry.georss$where.gml$Point.gml$pos.$t);
+    // }
+
+    /**
+     * Get a photo from a mediaItem
+     * @param {Object} mediaItem - object from Google Photos API call
+     * @param {string} albumName - Album name
+     * @returns {app.PhotoSource.Photo} Photo, null if error
      * @private
      */
-    static _getThumbnail(entry) {
-      let ret = null;
-      if (entry.length &&
-          entry[0].media$group &&
-          entry[0].media$group.media$thumbnail[0]) {
-        ret = entry[0].media$group.media$thumbnail[0].url;
+    static _processPhoto(mediaItem, albumName) {
+      let photo = null;
+      if (mediaItem && mediaItem.mediaMetadata) {
+        if (this._isImage(mediaItem)) {
+          const mediaMetadata = mediaItem.mediaMetadata;
+          const size = this._getImageSize(mediaMetadata);
+          const width = size.width;
+          const height = size.height;
+
+          photo = {};
+          photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
+          photo.asp = width / height;
+          // use album name instead
+          photo.author = albumName;
+          // unique photo id and url to photo in Google Photos
+          photo.ex = {
+            'id': mediaItem.id,
+            'url': mediaItem.productUrl,
+          };
+          photo.point = null;
+          // let point;
+          // if (app.GoogleSource._hasGeo(entry)) {
+          //   point = entry.georss$where.gml$Point.gml$pos.$t;
+          // }
+        }
       }
-      return ret;
+
+      return photo;
     }
 
     /**
-     * Extract the Picasa photos into an Array
-     * @param {Object} root - root object from Picasa API call
+     * Extract the photos into an Array
+     * @param {Object} mediaItems - objects from Google Photos API call
+     * @param {string} albumName - Album name
      * @returns {app.PhotoSource.Photo[]} Array of photos
      * @private
      */
-    static _processPhotos(root) {
+    static _processPhotos(mediaItems, albumName) {
       const photos = [];
-      if (root) {
-        const feed = root.feed;
-        const entries = feed.entry || [];
-        for (const entry of entries) {
-          if (app.GoogleSource._isImage(entry)) {
-            const url = entry.media$group.media$content[0].url;
-            const width = entry.media$group.media$content[0].width;
-            const height = entry.media$group.media$content[0].height;
-            const asp = width / height;
-            const author = entry.media$group.media$credit[0].$t;
-            let point;
-            if (app.GoogleSource._hasGeo(entry)) {
-              point = entry.georss$where.gml$Point.gml$pos.$t;
-            }
-            app.PhotoSource.addPhoto(photos, url, author, asp, {},
-                point);
-          }
+      if (!mediaItems) {
+        return photos;
+      }
+      for (const mediaItem of mediaItems) {
+        const photo = this._processPhoto(mediaItem, albumName);
+        if (photo) {
+          this.addPhoto(photos, photo.url, photo.author, photo.asp,
+              photo.ex, photo.point);
         }
       }
       return photos;
     }
 
     /**
-     * Retrieve a Google Photos album
-     * @param {string} albumId - Picasa album ID
-     * @param {string} [userId='default'] - userId for non-authenticated request
-     * @returns {Promise<Object>} Root object from Picasa call null if not found
-     * @private
+     * Retrieve a Google Photo
+     * @param {string} id -  Unique Photo ID
+     * @param {boolean} interactive=true - interactive mode for permissions
+     * @returns {app.PhotoSource.Photo} Photo, null on error
      */
-    static _loadAlbum(albumId, userId = 'default') {
-      const imageMax = app.GoogleSource._getMaxImageSize();
-      const queryParams = `?imgmax=${imageMax}${_ALBUM_QUERY}`;
-      const url = `${_URL_BASE}${userId}/albumid/${albumId}/${queryParams}`;
-      if (userId === 'default') {
-        const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
-        conf.isAuth = true;
-        return Chrome.Http.doGet(url, conf).catch((err) => {
-          const statusMsg = `${Chrome.Locale.localize('err_status')}: 404`;
-          if (err.message.includes(statusMsg)) {
-            // album was probably deleted
-            return Promise.resolve(null);
-          } else {
-            return Promise.reject(err);
+    static async loadPhoto(id, interactive = false) {
+      const url = `${_URL_BASE}mediaItems/${id}`;
+
+      const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+      conf.isAuth = true;
+      conf.retryToken = true;
+      conf.interactive = interactive;
+
+      let photo = null;
+
+      try {
+
+        Chrome.GA.event(app.GA.EVENT.LOAD_PHOTO);
+
+        const mediaItem = await Chrome.Http.doGet(url, conf);
+        if (mediaItem) {
+          return this._processPhoto(mediaItem, '');
+        }
+      } catch (err) {
+        if (this.isQuotaError(err, 'GoogleSource.loadPhoto')) {
+          // Hit Google photos quota
+        } else {
+          Chrome.Log.error(err.message, 'GoogleSource.loadPhoto');
+        }
+      }
+
+      return photo;
+    }
+
+    /**
+     * Retrieve a Google Photos album
+     * @param {string} id -  Unique Album ID
+     * @param {string} name -  Album name
+     * @param {boolean} interactive=true - interactive mode for permissions
+     * @throws Will throw an error if the album failed to load.
+     * @returns {app.GoogleSource.Album} Album
+     */
+    static async loadAlbum(id, name, interactive = true) {
+      // max photos to load
+      const MAX_PHOTOS = 500;
+      const url = `${_URL_BASE}mediaItems:search`;
+      const body = {
+        'pageSize': '100',
+      };
+      body.albumId = id;
+
+      const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+      conf.isAuth = true;
+      conf.retryToken = true;
+      conf.interactive = interactive;
+      conf.body = body;
+      let nextPageToken;
+      const album = {};
+      let photos = [];
+      try {
+
+        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM);
+
+        // Loop while there is a nextPageToken to load more items and we
+        // haven't loaded greater than MAX_PHOTOS.
+        let numPhotos = 0;
+        do {
+          const response = await Chrome.Http.doPost(url, conf);
+          nextPageToken = response.nextPageToken;
+          conf.body.pageToken = nextPageToken;
+          const mediaItems = response.mediaItems;
+          if (mediaItems) {
+            const newPhotos = this._processPhotos(mediaItems, name);
+            photos = photos.concat(newPhotos);
+            numPhotos+= newPhotos.length;
           }
-        });
-      } else {
-        return Chrome.Http.doGet(url);
+          if (numPhotos >= MAX_PHOTOS) {
+            Chrome.GA.event(app.GA.EVENT.PHOTOS_LIMITED);
+          }
+        } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
+
+        /** @type {app.GoogleSource.Album} */
+        album.index = 0;
+        album.uid = 'album' + 0;
+        album.name = name;
+        album.id = id;
+        album.thumb = '';
+        album.checked = true;
+        album.photos = photos;
+        album.ct = photos.length;
+
+        return album;
+      } catch (err) {
+        // const statusMsg = `${Chrome.Locale.localize('err_status')}: 404`;
+        // if (err.message.includes(statusMsg)) {
+        //   // Bad request error, album was probably deleted
+        //   console.log(err, err.message);
+        //   return null;
+        // } else {
+        //   throw err;
+        // }
+        throw err;
       }
     }
 
     /**
-     * Retrieve the users list of albums, including the photos in each
-     * @returns {Promise<app.GoogleSource.Album[]>} Array of albums
+     * Retrieve the user's list of albums
+     * @returns {app.GoogleSource.Album[]} Array of albums
      */
-    static loadAlbumList() {
-      const url = `${_URL_BASE}default/${_ALBUMS_QUERY}`;
+    static async loadAlbumList() {
+      let nextPageToken;
+      let gAlbums = [];
+      let albums = [];
+      let ct = 0;
+      const baseUrl = `${_URL_BASE}albums/${_ALBUMS_QUERY}`;
+      let url = baseUrl;
 
       // get list of albums
       const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
       conf.isAuth = true;
       conf.retryToken = true;
       conf.interactive = true;
-      return Chrome.Http.doGet(url, conf).then((root) => {
-        if (!root || !root.feed || !root.feed.entry) {
-          const err = new Error(Chrome.Locale.localize('err_no_albums'));
-          return Promise.reject(err);
-        }
-        const feed = root.feed;
-        const entries = feed.entry || [];
-        const promises = [];
-        for (const entry of entries) {
-          // series of API calls to get each album
-          if (!entry.gphoto$albumType) {
-            // skip special albums (e.g. Google+ posts, backups)
-            const albumId = entry.gphoto$id.$t;
-            promises.push(app.GoogleSource._loadAlbum(albumId));
-          }
-        }
+      try {
 
-        // Collate the albums
-        return Promise.all(promises);
-      }).then((vals) => {
-        /** @type {app.GoogleSource.Album[]} */
-        let albums = [];
-        let ct = 0;
-        const values = vals || [];
-        for (const value of values) {
-          if (value !== null) {
-            const feed = value.feed;
-            if (feed && feed.entry) {
-              const thumb = app.GoogleSource._getThumbnail(feed.entry);
-              const photos = app.GoogleSource._processPhotos(value);
-              if (photos && photos.length) {
-                /** @type {app.GoogleSource.Album} */
-                const album = {};
-                album.index = ct;
-                album.uid = 'album' + ct;
-                album.name = feed.title.$t;
-                album.id = feed.gphoto$id.$t;
-                album.ct = photos.length;
-                album.thumb = thumb;
-                album.checked = false;
-                album.photos = photos;
-                albums.push(album);
-                ct++;
-              }
-            }
+        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM_LIST);
+
+        // Loop while there is a nextPageToken to load more items.
+        do {
+          const response = await Chrome.Http.doGet(url, conf);
+          if (!response || !response.albums || (response.albums.length === 0)) {
+            throw new Error(Chrome.Locale.localize('err_no_albums'));
           }
+          nextPageToken = response.nextPageToken;
+          url = `${baseUrl}&pageToken=${nextPageToken}`;
+          gAlbums = gAlbums.concat(response.albums);
+        } while (nextPageToken);
+      } catch (err) {
+        throw err;
+      }
+
+      // Create the array of app.GoogleSource.Album
+      for (const gAlbum of gAlbums) {
+        if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
+          const thumb = `${gAlbum.coverPhotoBaseUrl}=w76-h76`;
+          /** @type {app.GoogleSource.Album} */
+          const album = {};
+
+          album.index = ct;
+          album.uid = 'album' + ct;
+          album.name = gAlbum.title;
+          album.id = gAlbum.id;
+          album.ct = gAlbum.mediaItemsCount;
+          album.thumb = thumb;
+          album.checked = false;
+          album.photos = [];
+          albums.push(album);
+
+          ct++;
         }
-        return Promise.resolve(albums);
-      });
+      }
+
+      return albums;
     }
 
     /**
-     * Fetch the photos for the selected albums
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * Update the current photo url's. Google expires them after 1 hour
      */
-    static _fetchAlbumPhotos() {
-      let vals = Chrome.Storage.get('albumSelections');
+    static async updatePhotos() {
+      // max items in getBatch call
+      const MAX_QUERIES = 50;
+      const albums = Chrome.Storage.get('albumSelections', []);
+      if (!this._isUpdateAlbums() || (albums.length === 0)) {
+        return;
+      }
+      let newAlbums = [];
 
+      const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+      conf.isAuth = true;
+      conf.retryToken = true;
+      conf.interactive = false;
+
+      Chrome.GA.event(app.GA.EVENT.UPDATE_PHOTOS);
+
+      // get all the photo ids for each album and update them
+      for (const album of albums) {
+        const photos = album.photos;
+        const newAlbum = Chrome.JSONUtils.shallowCopy(album);
+        newAlbum.photos = [];
+        let done = false;
+        let start = 0;
+        let stop = Math.min(MAX_QUERIES, photos.length);
+        // get the photos for an album in batches of MAX_QUERIES
+        do {
+          let url = `${_URL_BASE}mediaItems:batchGet`;
+          let query = '?mediaItemIds=';
+          let first = true;
+          let photo;
+          for (let i = start; i < stop; i++) {
+            photo = photos[i];
+            if (first) {
+              query = query.concat(`${photo.ex.id}`);
+              first = false;
+            } else {
+              query = query.concat(`&mediaItemIds=${photo.ex.id}`);
+            }
+          }
+          url = url.concat(query);
+
+          try {
+            // get the new mediaItemResults
+            const response = await Chrome.Http.doGet(url, conf);
+            const mediaItems = [];
+            // convert to array of media items
+            for (const mediaItemResult of response.mediaItemResults) {
+              if (!mediaItemResult.status) {
+                mediaItems.push(mediaItemResult.mediaItem);
+              }
+            }
+            const newPhotos = this._processPhotos(mediaItems, album.name);
+            newAlbum.photos = newAlbum.photos.concat(newPhotos);
+          } catch (err) {
+            if (this.isQuotaError(err, 'GoogleSource.updatePhotos')) {
+              // Hit Google photos quota
+            } else {
+              Chrome.Log.error(err.message, 'GoogleSource.updatePhotos');
+            }
+            return;
+          }
+
+          if (stop === photos.length) {
+            done = true;
+          } else {
+            start = stop;
+            stop = Math.min(stop + MAX_QUERIES, photos.length);
+          }
+
+        } while (!done);
+
+        newAlbums.push(newAlbum);
+      }
+
+      // Try to save the updated albums
+      const set = Chrome.Storage.safeSet('albumSelections', newAlbums, null);
+      if (!set) {
+        Chrome.Log.error('Exceed storage limits',
+            'GoogleSource.updatePhotos');
+      }
+    }
+
+    /**
+     * Return true if we should be updating the baseUrl's in albums
+     * trying to minimize Google Photos API usage
+     * @returns {boolean} true if we should use Google Photos albums
+     */
+    static _isUpdateAlbums() {
+      /* only update photos if all are true:
+       screensaver is not showing
+       inside of keep awake time
+       screensaver is enabled
+       using google albums   
+       */
+      const notShowing = !Chrome.Storage.getBool('isShowing', true);
+      const awake = Chrome.Storage.getBool('isAwake', true);
+      const enabled = Chrome.Storage.getBool('enabled', true);
+      const useGoogle = Chrome.Storage.getBool('useGoogle', true);
+      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
+      const ret =
+          notShowing && awake && enabled && useGoogle && useGoogleAlbums;
+      
+      // set this so we know if we are behind on updates
+      Chrome.Storage.set('gPhotosNeedsUpdate', !ret);
+      
+      return ret;
+    }
+
+    /**
+     * Return true if we should be fetching the albums
+     * trying to minimize Google Photos API usage
+     * @returns {boolean} true if we should use Google Photos albums
+     */
+    static _isFetchAlbums() {
+      /* only fetch new albumSelections if all are true:
+       screensaver is enabled
+       using google albums   
+       */
+      const enabled = Chrome.Storage.getBool('enabled', true);
+      const useGoogle = Chrome.Storage.getBool('useGoogle', true);
+      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
+      return enabled && useGoogle && useGoogleAlbums;
+    }
+
+    /**
+     * Fetch the albums for the selected albums
+     * @returns {Promise<app.GoogleSource.SelectedAlbum[]>} Array of albums
+     */
+    static _fetchAlbums() {
+      const albums = Chrome.Storage.get('albumSelections', []);
+      if (!this._isFetchAlbums() || (albums.length === 0)) {
+        // no need to change - save on api calls
+        return Promise.resolve(albums);
+      }
+
+      Chrome.GA.event(app.GA.EVENT.FETCH_ALBUMS);
+
+      // don't need update for a while
+      Chrome.Storage.set('gPhotosNeedsUpdate', false);
+      
       // series of API calls to get each album
       const promises = [];
-      const albums = vals || [];
       for (const album of albums) {
-        promises.push(app.GoogleSource._loadAlbum(album.id));
+        promises.push(app.GoogleSource.loadAlbum(album.id, album.name, false));
       }
 
       // Collate the albums
-      return Promise.all(promises).then((vals) => {
+      return Promise.all(promises).then((albums) => {
         /** @type {app.GoogleSource.SelectedAlbum[]} */
-        const albums = [];
-        const values = vals || [];
-        for (const value of values) {
-          if (value) {
-            const feed = value.feed;
-            const photos = app.GoogleSource._processPhotos(value);
-            if (photos && photos.length) {
-              albums.push({
-                id: feed.gphoto$id.$t,
-                photos: photos,
-              });
-            }
+        const selAlbums = [];
+        for (const album of albums) {
+          const photos = album.photos;
+          if (photos && photos.length) {
+            selAlbums.push({
+              id: album.id,
+              name: album.name,
+              photos: photos,
+            });
           }
         }
-        return Promise.resolve(albums);
+        return Promise.resolve(selAlbums);
       });
     }
 
     /**
-     * Fetch the photos for this source
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * Fetch the albums for this source
+     * @returns {Promise<app.GoogleSource.SelectedAlbum[]>} Array of albums
      */
     fetchPhotos() {
-      return app.GoogleSource._fetchAlbumPhotos();
+      return app.GoogleSource._fetchAlbums();
     }
   };
 })();

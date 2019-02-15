@@ -234,7 +234,7 @@
     "message": "Ne pas afficher certaines photos en mode Zoom ou Plein écran"
   },
   "setting_photog": {
-    "message": "Afficher l'auteur des photos que vous possédez"
+    "message": "Afficher le nom de l'album pour vos photos"
   },
   "setting_full_res": {
     "message": "Utilisez la résolution complète pour les photos que vous possédez"
@@ -378,7 +378,7 @@
     "message": "Remarque: les albums partagés ne sont peut-être pas disponibles. Consultez notre FAQ pour obtenir plus d'informations."
   },
   "google_loading": {
-    "message": "Chargement des albums"
+    "message": "Chargement..."
   },
   "help_title": {
     "message": "Aide et questions"
@@ -423,7 +423,7 @@
     "message": "Code source"
   },
   "err_request_failed": {
-    "message": "La demande a échoué. Appuyer sur Actualiser pour réessayer."
+    "message": "La demande a échoué"
   },
   "err_storage_title": {
     "message": "Limites de stockage atteintes"
@@ -452,11 +452,20 @@
   "err_load_album_list": {
     "message": "Impossible de récupérer la liste des albums photo Google"
   },
+  "err_load_album": {
+    "message": "Impossible de récupérer des albums photo Google"
+  },
   "err_show_ss": {
     "message": "Échec de l'affichage de l'économiseur d'écran"
   },
   "err_optional_permissions": {
     "message": "Impossible de modifier une autorisation facultative"
+  },
+  "err_max_albums": {
+    "message": "Le nombre maximum de sélections d'albums a été atteint."
+  },
+  "err_google_quota": {
+    "message": "Dépasse la limite quotidienne de l'API Google Photos."
   },
   "time_format": {
     "message": "24",

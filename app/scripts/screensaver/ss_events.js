@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 window.app = window.app || {};
 
@@ -30,9 +30,10 @@ app.SSEvents = (function() {
    * @memberOf app.SSEvents
    */
   function _close() {
+    Chrome.Storage.set('isShowing', false);
     // send message to other screen savers to close themselves
     Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
-    setTimeout(function() {
+    setTimeout(() => {
       // delay a little to process events
       window.close();
     }, 750);
@@ -151,26 +152,29 @@ app.SSEvents = (function() {
     _close();
   }
 
-  return {
-    /**
-     * Add the event listeners
-     * @memberOf app.SSEvents
-     */
-    initialize: function() {
-      // listen for chrome messages
-      Chrome.Msg.listen(_onMessage);
+  /**
+   * Event: called when document and resources are loaded
+   * @private
+   * @memberOf app.SSEvents
+   */
+  function _onLoad() {
+    // listen for chrome messages
+    Chrome.Msg.listen(_onMessage);
 
-      // listen for key events
-      window.addEventListener('keydown', _onKey, false);
+    // listen for key events
+    window.addEventListener('keydown', _onKey, false);
 
-      // listen for mousemove events
-      window.addEventListener('mousemove', _onMouseMove, false);
+    // listen for mousemove events
+    window.addEventListener('mousemove', _onMouseMove, false);
 
-      // listen for mouse click events
-      window.addEventListener('click', _onMouseClick, false);
+    // listen for mouse click events
+    window.addEventListener('click', _onMouseClick, false);
 
-      // listen for special keyboard commands
-      chrome.commands.onCommand.addListener(_onKeyCommand);
-    },
-  };
+    // listen for special keyboard commands
+    chrome.commands.onCommand.addListener(_onKeyCommand);
+  }
+
+  // listen for document and resources loaded
+  window.addEventListener('load', _onLoad);
+
 })();

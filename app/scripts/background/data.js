@@ -1,9 +1,13 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
+
+import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 window.app = window.app || {};
 
 /**
@@ -11,9 +15,6 @@ window.app = window.app || {};
  * @namespace
  */
 app.Data = (function() {
-  'use strict';
-
-  new ExceptionHandler();
 
   const chromep = new ChromePromise();
 
@@ -25,7 +26,7 @@ app.Data = (function() {
    * @private
    * @memberOf app.Data
    */
-  const _DATA_VERSION = 17;
+  const _DATA_VERSION = 18;
 
   /**
    * A number and associated units
@@ -77,7 +78,10 @@ app.Data = (function() {
    * @property {boolean} useGoogle - use this photo source
    * @property {boolean} useGoogleAlbums - use this photo source
    * @property {Array} albumSelections - user's selected Google Photos albums
-   * @property {boolean} useGooglePhotos - use this photo source
+   * @property {boolean} gPhotosNeedsUpdate - are the photo links stale
+   * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
+   * @property {boolean} isAwake - true if screensaver can be displayed
+   * @property {boolean} isShowing - true if screensaver is showing
    */
 
   /**
@@ -127,6 +131,10 @@ app.Data = (function() {
     'useGoogleAlbums': true,
     'albumSelections': [],
     'useGooglePhotos': false,
+    'gPhotosNeedsUpdate': false,
+    'gPhotosMaxAlbums': 10,
+    'isAwake': true,
+    'isShowing': false,
   };
 
   /**
@@ -141,7 +149,7 @@ app.Data = (function() {
     // update context menu text
     const label = Chrome.Storage.getBool('enabled') ? Chrome.Locale.localize(
         'disable') : Chrome.Locale.localize('enable');
-    app.Alarm.updateBadgeText();
+    updateBadgeText();
     chromep.contextMenus.update('ENABLE_MENU', {
       title: label,
     }).catch(() => {});
@@ -153,10 +161,15 @@ app.Data = (function() {
    * @memberOf app.Data
    */
   function _processKeepAwake() {
-    Chrome.Storage.getBool('keepAwake') ? chrome.power.requestKeepAwake(
+    const keepAwake = Chrome.Storage.getBool('keepAwake', true);
+    keepAwake ? chrome.power.requestKeepAwake(
         'display') : chrome.power.releaseKeepAwake();
-    app.Alarm.updateRepeatingAlarms();
-    app.Alarm.updateBadgeText();
+    if (!keepAwake) {
+      // always on
+      Chrome.Storage.set('isAwake', true);
+    }
+    updateRepeatingAlarms();
+    updateBadgeText();
   }
 
   /**
@@ -165,7 +178,12 @@ app.Data = (function() {
    * @memberOf app.Data
    */
   function _processIdleTime() {
-    chrome.idle.setDetectionInterval(app.Data.getIdleSeconds());
+    const idleTime = app.Data.getIdleSeconds();
+    if (idleTime) {
+      chrome.idle.setDetectionInterval(idleTime);
+    } else {
+      Chrome.Log.Error('idleTime is null', 'Data._processIdleTime');
+    }
   }
 
   /**
@@ -243,7 +261,7 @@ app.Data = (function() {
       Chrome.Storage.clearLastError().catch((err) => {
         Chrome.GA.error(err.message, 'Data.initialize');
       });
-      
+
       // set time format based on locale
       Chrome.Storage.set('showTime', _getTimeFormat());
 
@@ -266,6 +284,29 @@ app.Data = (function() {
       }
 
       if (!Number.isNaN(oldVersion)) {
+        if (oldVersion < 18) {
+          // 500px no longer supported
+          Chrome.Storage.set('useEditors500px', false);
+          Chrome.Storage.set('usePopular500px', false);
+          Chrome.Storage.set('useYesterday500px', false);
+          Chrome.Storage.set('editors500pxImages', null);
+          Chrome.Storage.set('popular500pxImages', null);
+          Chrome.Storage.set('yesterday500pxImages', null);
+
+          // Need new permission for Google Photos API
+          Chrome.Storage.set('permPicasa', 'notSet');
+
+          // Remove cached Auth token
+          Chrome.Auth.removeCachedToken(false, null, null).catch((err) => {
+            Chrome.Log.error(err.message, 'app.Data.update');
+            // nice to remove but not critical
+            return null;
+          });
+
+          // Google Photos API not compatible with Picasa API album id's
+          Chrome.Storage.set('albumSelections', []);
+        }
+
         if (oldVersion < 14) {
           // background used to be a required permission
           // installed extensions before the change will keep
@@ -328,9 +369,10 @@ app.Data = (function() {
     /**
      * Process changes to localStorage items
      * @param {string} [key='all'] - the item that changed
+     * @param {boolean} [doGoogle=false] - update Google Photos?
      * @memberOf app.Data
      */
-    processState: function(key = 'all') {
+    processState: function(key = 'all', doGoogle = false) {
       // Map processing functions to localStorage values
       const STATE_MAP = {
         'enabled': _processEnabled,
@@ -346,8 +388,11 @@ app.Data = (function() {
           const fn = STATE_MAP[ky];
           fn();
         });
+        
         // process photo SOURCES
-        app.PhotoSources.processAll();
+        app.PhotoSources.processAll(doGoogle);
+        Chrome.Storage.set('isShowing', false);
+        
         // set os, if not already
         if (!Chrome.Storage.get('os')) {
           _setOS().catch(() => {});
@@ -356,7 +401,7 @@ app.Data = (function() {
         // individual change
         if (app.PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
           // photo source change
-          const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key; 
+          const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
           app.PhotoSources.process(useKey).catch((err) => {
             // send message on processing error
             const msg = app.Msg.PHOTO_SOURCE_FAILED;
@@ -366,7 +411,7 @@ app.Data = (function() {
           }).catch(() => {});
         } else {
           const fn = STATE_MAP[key];
-          if (typeof(fn) !== 'undefined') {
+          if (typeof (fn) !== 'undefined') {
             fn();
           }
         }
@@ -379,7 +424,8 @@ app.Data = (function() {
      * @memberOf app.Utils
      */
     getIdleSeconds: function() {
-      const idle = Chrome.Storage.get('idleTime');
+      const idle = Chrome.Storage.get('idleTime',
+          {'base': 5, 'display': 5, 'unit': 0});
       return idle.base * 60;
     },
 

@@ -4,7 +4,7 @@
     "dictionaries": ["jsdoc", "closure"]
   },
   "opts": {
-    "destination": "./docs/gen",
+    "destination": "../docs/gen",
     "access": "all",
     "recurse": true
   },

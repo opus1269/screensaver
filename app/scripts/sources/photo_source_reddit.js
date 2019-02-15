@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 (function() {
   'use strict';
@@ -127,7 +127,7 @@
             // new way. has full size image and array of reduced
             // resolutions
             let item = data.preview.images[0];
-            url = item.source.url;
+            url = item.source.url.replace(/&amp;/g, '&');
             width = parseInt(item.source.width, 10);
             height = parseInt(item.source.height, 10);
             if (Math.max(width, height) > _MAX_SIZE) {
@@ -202,7 +202,7 @@
       const Snoocore = window.Snoocore;
       if (typeof Snoocore !== 'undefined') {
         _snoocore = new Snoocore({
-          userAgent: 'photo-screen-saver',
+          userAgent: 'screensaver',
           throttle: 0,
           oauth: {
             type: 'implicit',

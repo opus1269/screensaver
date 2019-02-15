@@ -234,7 +234,7 @@
     "message": "Do not display certain photos in Zoom and Full modes"
   },
   "setting_photog": {
-    "message": "Show author for photos you own"
+    "message": "Show album name for your photos"
   },
   "setting_full_res": {
     "message": "Use full resolution for photos you own"
@@ -378,7 +378,7 @@
     "message": "Note: Shared albums may not be available.  See the FAQ for more info."
   },
   "google_loading": {
-    "message": "Loading Albums"
+    "message": "Loading..."
   },
   "last_error_viewer_title": {
     "message": "Last error viewer"
@@ -428,6 +428,9 @@
   "err_load_album_list": {
     "message": "Failed to retrieve list of Google Photo albums"
   },
+  "err_load_album": {
+    "message": "Failed to retrieve Google Photo album"
+  },
   "err_show_ss": {
     "message": "Failed to display screensaver"
   },
@@ -435,7 +438,7 @@
     "message": "Failed to modify an optional permission"
   },
   "err_request_failed": {
-    "message": "Request failed. Select refresh to try again."
+    "message": "Request failed"
   },
   "err_storage_title": {
     "message": "Exceeded storage limits"
@@ -453,10 +456,16 @@
     "message": "Failed to retrieve photo source"
   },
   "err_auth_picasa": {
-    "message": "User did not authorize Picasa."
+    "message": "User did not authorize Google."
   },
   "err_no_albums": {
     "message": "No albums found"
+  },
+  "err_max_albums": {
+    "message": "The maximum number of album selections has been reached."
+  },
+  "err_google_quota": {
+    "message": "Exceeded the daily Google Photos API limit."
   },
   "time_format": {
     "message": "12",

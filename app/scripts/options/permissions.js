@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 window.app = window.app || {};
 
@@ -11,10 +11,9 @@ window.app = window.app || {};
  *  @namespace
  */
 app.Permissions = (function() {
-  'use strict';
-
+  
   new ExceptionHandler();
-
+  
   const chromep = new ChromePromise();
 
   /**
@@ -57,7 +56,7 @@ app.Permissions = (function() {
   const PICASA = {
     name: 'permPicasa',
     permissions: [],
-    origins: ['https://picasaweb.google.com/'],
+    origins: ['https://photoslibrary.googleapis.com/'],
   };
 
   /**

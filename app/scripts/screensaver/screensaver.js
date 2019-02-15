@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 window.app = window.app || {};
 
@@ -12,8 +12,6 @@ window.app = window.app || {};
  */
 app.Screensaver = (function() {
   'use strict';
-
-  new ExceptionHandler();
 
   /**
    * Main auto-binding template
@@ -100,6 +98,36 @@ app.Screensaver = (function() {
   }
 
   /**
+   * Event: Error state changed for a photo view
+   * @param {Event} ev - the event object
+   * @param {Object} ev.model - template model
+   * @memberOf app.Screensaver
+   */
+  t._onErrorChanged = async function(ev) {
+    const isError = ev.detail.value;
+    
+    if (isError) {
+      // url failed to load
+      const model = ev.model;
+      const index = model.index;
+      const view = t._views[index];
+      const photo = view.photo;
+      const type = photo.getType();
+      if ('Google User' === type) {
+        // Google API url may have expired, try to refresh it
+        const ex = photo.getEx();
+        const id = ex.id;
+        const newPhoto = await app.GoogleSource.loadPhoto(id, false);
+        if (newPhoto) {
+          // update url and make it available to the screensaver again
+          app.SSPhotos.updatePhotoUrl(photo.getId(), newPhoto.url);
+          view.setUrl(newPhoto.url);
+        }
+      }
+    }
+  };
+
+  /**
    * Event: Document and resources loaded
    * @memberOf app.Screensaver
    */
@@ -110,10 +138,7 @@ app.Screensaver = (function() {
 
     Chrome.GA.page('/screensaver.html');
 
-    // register event listeners
-    app.SSEvents.initialize();
-
-    _setZoom();
+     _setZoom();
     _setupPhotoTransitions();
 
     // start screensaver
