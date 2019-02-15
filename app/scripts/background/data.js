@@ -80,6 +80,8 @@ app.Data = (function() {
    * @property {Array} albumSelections - user's selected Google Photos albums
    * @property {boolean} gPhotosNeedsUpdate - are the photo links stale
    * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
+   * @property {boolean} isAwake - true if screensaver can be displayed
+   * @property {boolean} isShowing - true if screensaver is showing
    */
 
   /**
@@ -131,7 +133,8 @@ app.Data = (function() {
     'useGooglePhotos': false,
     'gPhotosNeedsUpdate': true,
     'gPhotosMaxAlbums': 25,
-
+    'isAwake': true,
+    'isShowing': false,
   };
 
   /**
@@ -381,6 +384,8 @@ app.Data = (function() {
           // don't process photos on startup, mainly to save on 
           // Google Photo's API calls
           app.PhotoSources.processAll();
+        } else {
+          Chrome.Storage.set('isShowing', false);
         }
         // set os, if not already
         if (!Chrome.Storage.get('os')) {

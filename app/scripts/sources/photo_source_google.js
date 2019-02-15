@@ -276,9 +276,9 @@
       const album = {};
       let photos = [];
       try {
-        
+
         Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM);
-        
+
         // Loop while there is a nextPageToken to load more items.
         do {
           const response = await Chrome.Http.doPost(url, conf);
@@ -332,9 +332,9 @@
       conf.retryToken = true;
       conf.interactive = true;
       try {
-        
+
         Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM_LIST);
-        
+
         // Loop while there is a nextPageToken to load more items.
         do {
           const response = await Chrome.Http.doGet(url, conf);
@@ -369,7 +369,7 @@
           ct++;
         }
       }
-      
+
       return albums;
     }
 
@@ -459,24 +459,38 @@
     }
 
     /**
-     * Return true if we should be updating the albums
+     * Return true if we should be updating the baseUrl's in albums
+     * trying to minimize Google Photos API usage
      * @returns {boolean} true if we should use Google Photos albums
      */
     static _isUpdateAlbums() {
-      const enabled = Chrome.Storage.getBool('enabled');
-      const useGoogle = Chrome.Storage.getBool('useGoogle');
-      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
-      return enabled && useGoogle && useGoogleAlbums;
+      /* only update photos if all are true:
+       screensaver is not showing
+       inside of keep awake time
+       screensaver is enabled
+       using google albums   
+       */
+      const notShowing = !Chrome.Storage.getBool('isShowing', true);
+      const awake = Chrome.Storage.getBool('isAwake', true);
+      const enabled = Chrome.Storage.getBool('enabled', true);
+      const useGoogle = Chrome.Storage.getBool('useGoogle', true);
+      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
+      return notShowing && awake && enabled && useGoogle && useGoogleAlbums;
     }
 
     /**
      * Return true if we should be fetching the albums
+     * trying to minimize Google Photos API usage
      * @returns {boolean} true if we should use Google Photos albums
      */
     static _isFetchAlbums() {
-      const enabled = Chrome.Storage.getBool('enabled');
-      const useGoogle = Chrome.Storage.getBool('useGoogle');
-      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums');
+      /* only fetch new albumSelections if all are true:
+       screensaver is enabled
+       using google albums   
+       */
+      const enabled = Chrome.Storage.getBool('enabled', true);
+      const useGoogle = Chrome.Storage.getBool('useGoogle', true);
+      const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
       return enabled && useGoogle && useGoogleAlbums;
     }
 

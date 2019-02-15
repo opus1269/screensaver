@@ -115,6 +115,7 @@ export function updateBadgeText() {
  * @memberOf Alarm
  */
 function _setActiveState() {
+  Chrome.Storage.set('isAwake', true);
   if (Chrome.Storage.getBool('keepAwake')) {
     chrome.power.requestKeepAwake('display');
   }
@@ -137,6 +138,7 @@ function _setActiveState() {
  * @memberOf Alarm
  */
 function _setInactiveState() {
+  Chrome.Storage.set('isAwake', false);
   if (Chrome.Storage.getBool('allowSuspend')) {
     chrome.power.releaseKeepAwake();
   } else {

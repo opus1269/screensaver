@@ -41,6 +41,7 @@ function _onInstalled(details) {
     // initial install
     Chrome.GA.event(Chrome.GA.EVENT.INSTALLED, Chrome.Utils.getVersion());
     app.Data.initialize();
+    Chrome.Storage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!app.Utils.DEBUG) {
@@ -57,6 +58,7 @@ function _onInstalled(details) {
     }
     // extension updated
     app.Data.update();
+    Chrome.Storage.set('isShowing', false);
   }
 }
 

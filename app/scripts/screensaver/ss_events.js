@@ -30,6 +30,7 @@ app.SSEvents = (function() {
    * @memberOf app.SSEvents
    */
   function _close() {
+    Chrome.Storage.set('isShowing', false);
     // send message to other screen savers to close themselves
     Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
     setTimeout(function() {
