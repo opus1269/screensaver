@@ -235,8 +235,19 @@ function _onChromeMessage(request, sender, response) {
   return false;
 }
 
-// listen for changes to the idle state of the computer
-chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
+/**
+ * Event: called when document and resources are loaded
+ * @private
+ * @memberOf SSControl
+ */
+function _onLoad() {
+  // listen for changes to the idle state of the computer
+  chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
+  
+  
+  // listen for chrome messages
+  Chrome.Msg.listen(_onChromeMessage);
+}
 
-// listen for chrome messages
-Chrome.Msg.listen(_onChromeMessage);
+// listen for document and resources loaded
+window.addEventListener('load', _onLoad);
