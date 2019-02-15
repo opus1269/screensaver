@@ -69,7 +69,7 @@
         case app.PhotoSources.UseKey.ALBUMS_GOOGLE:
           return new app.GoogleSource(useKey, 'albumSelections', 'Google User',
               Chrome.Locale.localize('google_title_photos'),
-              false, true, null);
+              true, true, null);
         case app.PhotoSources.UseKey.PHOTOS_GOOGLE:
           // not implemented yet
           return new app.GoogleSource(useKey, 'googleImages', 'Google User',
