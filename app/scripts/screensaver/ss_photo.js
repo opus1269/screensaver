@@ -74,19 +74,21 @@
       this._isBad = true;
     }
 
-    /**
-     * Mark photo good
-     */
-    markGood() {
-      this._isBad = false;
-    }
-
-    /**
+     /**
      * Get photo url
      * @returns {string} url
      */
     getUrl() {
       return this._url;
+    }
+
+    /**
+     * Set the url
+     * @param {string} url - url to photo
+     */
+    setUrl(url) {
+      this._url = url;
+      this._isBad = false;
     }
 
     /**

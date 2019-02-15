@@ -112,6 +112,19 @@ app.SSPhotos = (function() {
     },
 
     /**
+     * Update a Photos url
+     * @param {int} index - index into _photos
+     * @param {string} url - new url
+     * @memberOf app.SSPhotos
+     */
+    updatePhotoUrl: function(index, url) {
+      if (index > _photos.length - 1) {
+        return;
+      }
+      _photos[index].setUrl(url);
+    },
+
+    /**
      * Set current index into {@link _photos}
      * @param {int} idx - The index
      * @memberOf app.SSPhotos
@@ -126,7 +139,7 @@ app.SSPhotos = (function() {
      * @memberOf app.SSPhotos
      */
     incCurrentIndex: function() {
-     return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
+      return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
     },
 
     /**

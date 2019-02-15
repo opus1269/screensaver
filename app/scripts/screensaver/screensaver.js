@@ -120,8 +120,8 @@ app.Screensaver = (function() {
         const newPhoto = await app.GoogleSource.loadPhoto(id, false);
         if (newPhoto) {
           // update url and make it available to the screensaver again
-          photo.markGood();
-          t.set(`_view.${index}.url`, newPhoto.url);
+          app.SSPhotos.updatePhotoUrl(photo.getId(), newPhoto.url);
+          view.setUrl(newPhoto.url);
         }
       }
     }
