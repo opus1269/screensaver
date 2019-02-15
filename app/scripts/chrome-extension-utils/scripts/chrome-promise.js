@@ -1,3 +1,5 @@
+/* eslint-disable */
+// noinspection ThisExpressionReferencesGlobalObjectJS
 /**
  * chrome-promise 2.0.2
  * https://github.com/tfoxy/chrome-promise
@@ -6,31 +8,59 @@
  * Released under the MIT license
  * Simplified by Mike Updike 2017
  */
-/* eslint-disable */
-// noinspection ThisExpressionReferencesGlobalObjectJS
 
 (function(root, factory) {
-  // Browser globals (root is window)
-  root.ChromePromise = factory(root);
-}(this, function(root) {
+  if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory(this || root);
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define([], factory.bind(null, this || root));
+  } else {
+    // Browser globals (root is window)
+    root.ChromePromise = factory(root);
+    var script = document.currentScript;
+    if (script) {
+      var name = script.dataset.instance;
+      if (name) {
+        root[name] = new root.ChromePromise();
+      }
+    }
+  }
+}(typeof self !== 'undefined' ? self : this, function(root) {
   'use strict';
-  const slice = Array.prototype.slice;
-  const hasOwnProperty = Object.prototype.hasOwnProperty;
+  var slice = Array.prototype.slice,
+      hasOwnProperty = Object.prototype.hasOwnProperty;
+
+  // Temporary hacky fix to make TypeScript `import` work
+  ChromePromise.default = ChromePromise;
 
   return ChromePromise;
 
+  ////////////////
+
   function ChromePromise(options) {
     options = options || {};
-    const chrome = options.chrome || root.chrome;
-    const Promise = options.Promise || root.Promise;
-    const runtime = chrome.runtime;
+    var chrome = options.chrome || root.chrome;
+    var Promise = options.Promise || root.Promise;
+    var runtime = chrome.runtime;
+    var self = this;
+    if (!self) throw new Error('ChromePromise must be called with new keyword');
 
-    fillProperties(chrome, this);
+    fillProperties(chrome, self);
+
+    if (chrome.permissions) {
+      chrome.permissions.onAdded.addListener(permissionsAddedListener);
+    }
+
+    ////////////////
 
     function setPromiseFunction(fn, thisArg) {
 
       return function() {
-        const args = slice.call(arguments);
+        var args = slice.call(arguments);
 
         return new Promise(function(resolve, reject) {
           args.push(callback);
@@ -38,8 +68,8 @@
           fn.apply(thisArg, args);
 
           function callback() {
-            const err = runtime.lastError;
-            const results = slice.call(arguments);
+            var err = runtime.lastError;
+            var results = slice.call(arguments);
             if (err) {
               reject(err);
             } else {
@@ -62,10 +92,20 @@
     }
 
     function fillProperties(source, target) {
-      for (let key in source) {
+      for (var key in source) {
         if (hasOwnProperty.call(source, key)) {
-          const val = source[key];
-          const type = typeof val;
+          var val;
+          // Sometime around Chrome v71, certain deprecated methods on the
+          // extension APIs started using proxies to throw an error if the
+          // deprecated methods were accessed, regardless of whether they
+          // were invoked or not.  That would cause this code to throw, even
+          // if no one was actually invoking that method.
+          try {
+            val = source[key];
+          } catch (err) {
+            continue;
+          }
+          var type = typeof val;
 
           if (type === 'object' && !(val instanceof ChromePromise)) {
             target[key] = {};
@@ -76,6 +116,19 @@
             target[key] = val;
           }
         }
+      }
+    }
+
+    function permissionsAddedListener(perms) {
+      if (perms.permissions && perms.permissions.length) {
+        var approvedPerms = {};
+        perms.permissions.forEach(function(permission) {
+          var api = /^[^.]+/.exec(permission);
+          if (api in chrome) {
+            approvedPerms[api] = chrome[api];
+          }
+        });
+        fillProperties(approvedPerms, self);
       }
     }
   }
