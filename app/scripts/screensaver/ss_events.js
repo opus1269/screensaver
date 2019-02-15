@@ -33,7 +33,7 @@ app.SSEvents = (function() {
     Chrome.Storage.set('isShowing', false);
     // send message to other screen savers to close themselves
     Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
-    setTimeout(function() {
+    setTimeout(() => {
       // delay a little to process events
       window.close();
     }, 750);
@@ -152,26 +152,29 @@ app.SSEvents = (function() {
     _close();
   }
 
-  return {
-    /**
-     * Add the event listeners
-     * @memberOf app.SSEvents
-     */
-    initialize: function() {
-      // listen for chrome messages
-      Chrome.Msg.listen(_onMessage);
+  /**
+   * Event: called when document and resources are loaded
+   * @private
+   * @memberOf app.SSEvents
+   */
+  function _onLoad() {
+    // listen for chrome messages
+    Chrome.Msg.listen(_onMessage);
 
-      // listen for key events
-      window.addEventListener('keydown', _onKey, false);
+    // listen for key events
+    window.addEventListener('keydown', _onKey, false);
 
-      // listen for mousemove events
-      window.addEventListener('mousemove', _onMouseMove, false);
+    // listen for mousemove events
+    window.addEventListener('mousemove', _onMouseMove, false);
 
-      // listen for mouse click events
-      window.addEventListener('click', _onMouseClick, false);
+    // listen for mouse click events
+    window.addEventListener('click', _onMouseClick, false);
 
-      // listen for special keyboard commands
-      chrome.commands.onCommand.addListener(_onKeyCommand);
-    },
-  };
+    // listen for special keyboard commands
+    chrome.commands.onCommand.addListener(_onKeyCommand);
+  }
+
+  // listen for document and resources loaded
+  window.addEventListener('load', _onLoad);
+
 })();

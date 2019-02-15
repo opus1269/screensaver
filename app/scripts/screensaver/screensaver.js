@@ -138,10 +138,7 @@ app.Screensaver = (function() {
 
     Chrome.GA.page('/screensaver.html');
 
-    // register event listeners
-    app.SSEvents.initialize();
-
-    _setZoom();
+     _setZoom();
     _setupPhotoTransitions();
 
     // start screensaver
