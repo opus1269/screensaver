@@ -23,6 +23,8 @@ const chromep = new ChromePromise();
  * @property {string} DEACTIVATE - screen saver is not activate
  * @property {string} UPDATE_PHOTOS - photo sources should be updated
  * @property {string} UPDATE_GOOGLE_PHOTOS - Google Photo url's need update
+ * @property {string} CHECK_UPDATE_GOOGLE_PHOTOS 
+ *  - check if Google Photo url's are behind on updates
  * @property {string} BADGE_TEXT - icon's Badge text should be set
  * @const
  * @private
@@ -33,6 +35,7 @@ const _ALARMS = {
   'DEACTIVATE': 'DEACTIVATE',
   'UPDATE_PHOTOS': 'UPDATE_PHOTOS',
   'UPDATE_GOOGLE_PHOTOS': 'UPDATE_GOOGLE_PHOTOS',
+  'CHECK_UPDATE_GOOGLE_PHOTOS': 'CHECK_UPDATE_GOOGLE_PHOTOS',
   'BADGE_TEXT': 'BADGE_TEXT',
 };
 
@@ -63,6 +66,8 @@ export function updateRepeatingAlarms() {
     // then set inactive state
     if (!Chrome.Time.isInRange(aStart, aStop)) {
       _setInactiveState();
+    } else {
+      Chrome.Storage.set('isAwake', true);
     }
   } else {
     chrome.alarms.clear(_ALARMS.ACTIVATE);
@@ -95,6 +100,20 @@ export function updateRepeatingAlarms() {
   }).catch((err) => {
     Chrome.Log.error(err.message,
         'chromep.alarms.get(_ALARMS.UPDATE_GOOGLE_PHOTOS)');
+  });
+
+  // Add 4 minute alarm to update Google Photos Sources if it may need it
+  chromep.alarms.get(_ALARMS.CHECK_UPDATE_GOOGLE_PHOTOS).then((alarm) => {
+    if (!alarm) {
+      chrome.alarms.create(_ALARMS.CHECK_UPDATE_GOOGLE_PHOTOS, {
+        when: Date.now() + Chrome.Time.MSEC_IN_HOUR / 15.0,
+        periodInMinutes: Chrome.Time.MIN_IN_HOUR / 15,
+      });
+    }
+    return null;
+  }).catch((err) => {
+    Chrome.Log.error(err.message,
+        'chromep.alarms.get(_ALARMS.CHECK_UPDATE_GOOGLE_PHOTOS)');
   });
 }
 
@@ -172,6 +191,8 @@ function _setBadgeText() {
  * @memberOf Alarm
  */
 function _onAlarm(alarm) {
+  let needsUpdate;
+
   switch (alarm.name) {
     case _ALARMS.ACTIVATE:
       // entering active time range of keep awake
@@ -190,6 +211,17 @@ function _onAlarm(alarm) {
       app.GoogleSource.updatePhotos().catch((err) => {
         Chrome.Log.error(err.message, 'alarm._onAlarm');
       });
+      break;
+    case _ALARMS.CHECK_UPDATE_GOOGLE_PHOTOS:
+      needsUpdate = Chrome.Storage.getBool('gPhotosNeedsUpdate');
+      if (needsUpdate) {
+        // Maybe update the baseUrls for the Google Photos
+        // This will usually do nothing, but will update the baseUrls
+        // occasionally, when they haven't been in a while
+        app.GoogleSource.updatePhotos().catch((err) => {
+          Chrome.Log.error(err.message, 'alarm._onAlarm');
+        });
+      }
       break;
     case _ALARMS.BADGE_TEXT:
       // set the icons text

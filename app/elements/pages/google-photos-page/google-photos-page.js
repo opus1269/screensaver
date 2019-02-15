@@ -545,6 +545,7 @@ app.GooglePhotosPage = Polymer({
       // add new
       const maxCt = Chrome.Storage.getInt('gPhotosMaxAlbums', 5);
       if (this.selections.length === maxCt) {
+        Chrome.GA.event(app.GA.EVENT.ALBUMS_LIMITED);
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);

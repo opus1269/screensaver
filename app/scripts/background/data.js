@@ -131,8 +131,8 @@ app.Data = (function() {
     'useGoogleAlbums': true,
     'albumSelections': [],
     'useGooglePhotos': false,
-    'gPhotosNeedsUpdate': true,
-    'gPhotosMaxAlbums': 25,
+    'gPhotosNeedsUpdate': false,
+    'gPhotosMaxAlbums': 10,
     'isAwake': true,
     'isShowing': false,
   };
@@ -161,8 +161,13 @@ app.Data = (function() {
    * @memberOf app.Data
    */
   function _processKeepAwake() {
-    Chrome.Storage.getBool('keepAwake') ? chrome.power.requestKeepAwake(
+    const keepAwake = Chrome.Storage.getBool('keepAwake', true);
+    keepAwake ? chrome.power.requestKeepAwake(
         'display') : chrome.power.releaseKeepAwake();
+    if (!keepAwake) {
+      // always on
+      Chrome.Storage.set('isAwake', true);
+    }
     updateRepeatingAlarms();
     updateBadgeText();
   }

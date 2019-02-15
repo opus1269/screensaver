@@ -256,11 +256,13 @@
      * Retrieve a Google Photos album
      * @param {string} id -  Unique Album ID
      * @param {string} name -  Album name
-     * @param {boolean} interactive=true -  interactive mode for permissions
+     * @param {boolean} interactive=true - interactive mode for permissions
      * @throws Will throw an error if the album failed to load.
      * @returns {app.GoogleSource.Album} Album
      */
     static async loadAlbum(id, name, interactive = true) {
+      // max photos to load
+      const MAX_PHOTOS = 500;
       const url = `${_URL_BASE}mediaItems:search`;
       const body = {
         'pageSize': '100',
@@ -279,16 +281,23 @@
 
         Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM);
 
-        // Loop while there is a nextPageToken to load more items.
+        // Loop while there is a nextPageToken to load more items and we
+        // haven't loaded greater than MAX_PHOTOS.
+        let numPhotos = 0;
         do {
           const response = await Chrome.Http.doPost(url, conf);
           nextPageToken = response.nextPageToken;
           conf.body.pageToken = nextPageToken;
           const mediaItems = response.mediaItems;
           if (mediaItems) {
-            photos = photos.concat(this._processPhotos(mediaItems, name));
+            const newPhotos = this._processPhotos(mediaItems, name);
+            photos = photos.concat(newPhotos);
+            numPhotos+= newPhotos.length;
           }
-        } while (nextPageToken);
+          if (numPhotos >= MAX_PHOTOS) {
+            Chrome.GA.event(app.GA.EVENT.PHOTOS_LIMITED);
+          }
+        } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
 
         /** @type {app.GoogleSource.Album} */
         album.index = 0;
@@ -475,7 +484,13 @@
       const enabled = Chrome.Storage.getBool('enabled', true);
       const useGoogle = Chrome.Storage.getBool('useGoogle', true);
       const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
-      return notShowing && awake && enabled && useGoogle && useGoogleAlbums;
+      const ret =
+          notShowing && awake && enabled && useGoogle && useGoogleAlbums;
+      
+      // set this so we know if we are behind on updates
+      Chrome.Storage.set('gPhotosNeedsUpdate', !ret);
+      
+      return ret;
     }
 
     /**
@@ -507,6 +522,9 @@
 
       Chrome.GA.event(app.GA.EVENT.FETCH_ALBUMS);
 
+      // don't need update for a while
+      Chrome.Storage.set('gPhotosNeedsUpdate', false);
+      
       // series of API calls to get each album
       const promises = [];
       for (const album of albums) {

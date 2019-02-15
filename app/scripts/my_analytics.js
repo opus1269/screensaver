@@ -29,6 +29,8 @@ app.GA = (function() {
    * @property {Chrome.GA.Event} LOAD_ALBUM - album
    * @property {Chrome.GA.Event} LOAD_PHOTO - photo
    * @property {Chrome.GA.Event} UPDATE_PHOTOS - update baseUrl of all photos
+   * @property {Chrome.GA.Event} PHOTOS_LIMITED - did not load all photos in album
+   * @property {Chrome.GA.Event} ALBUMS_LIMITED - limited photo selections
    * @const
    * @memberOf app.GA
    */
@@ -56,6 +58,16 @@ app.GA = (function() {
     UPDATE_PHOTOS: {
       eventCategory: 'googlePhotosAPI',
       eventAction: 'updatePhotos',
+      eventLabel: '',
+    },
+    PHOTOS_LIMITED: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'limitedAlbumPhotos',
+      eventLabel: '',
+    },
+    ALBUMS_LIMITED: {
+      eventCategory: 'googlePhotosAPI',
+      eventAction: 'limitedAlbums',
       eventLabel: '',
     },
   };
