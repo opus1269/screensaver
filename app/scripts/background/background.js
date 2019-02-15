@@ -71,7 +71,7 @@ function _onInstalled(details) {
  */
 function _onStartup() {
   Chrome.GA.page('/background.html');
-  app.Data.processState('all', true);
+  app.Data.processState();
 }
 
 /**

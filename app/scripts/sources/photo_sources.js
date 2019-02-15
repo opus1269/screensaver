@@ -135,12 +135,20 @@ app.PhotoSources = (function() {
     /**
      * Process all the selected photo sources.
      * This normally requires a https call and may fail for various reasons
+     * @param {boolean} doGoogle=false - update user's Google Photos too
      * @memberOf app.PhotoSources
      */
-    processAll: function() {
+    processAll: function(doGoogle = false) {
       const sources = _getSelectedSources();
       for (const source of sources) {
-        source.process().catch(() => {});
+        let skip = false;
+        const type = source.getType();
+        if ('Google User' === type) {
+          skip = !doGoogle;
+        }
+        if (!skip) {
+          source.process().catch(() => {});
+        }
       }
     },
 

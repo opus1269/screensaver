@@ -56,8 +56,6 @@
       this._isDaily = isDaily;
       this._isArray = isArray;
       this._loadArg = loadArg;
-
-      // set the user facing description
     }
 
     /**
@@ -71,12 +69,12 @@
         case app.PhotoSources.UseKey.ALBUMS_GOOGLE:
           return new app.GoogleSource(useKey, 'albumSelections', 'Google User',
               Chrome.Locale.localize('google_title_photos'),
-              true, true, true);
+              false, true, null);
         case app.PhotoSources.UseKey.PHOTOS_GOOGLE:
           // not implemented yet
           return new app.GoogleSource(useKey, 'googleImages', 'Google User',
               'NOT IMPLEMENTED',
-              true, false, false);
+              true, false, null);
         case app.PhotoSources.UseKey.CHROMECAST:
           return new app.CCSource(useKey, 'ccImages', 'Google',
               Chrome.Locale.localize('setting_chromecast'),
@@ -97,11 +95,11 @@
           return new app.FlickrSource(useKey, 'flickrInterestingImages',
               'flickr',
               Chrome.Locale.localize('setting_flickr_int'),
-              true, false, false);
+              true, false, null);
         case app.PhotoSources.UseKey.AUTHOR:
           return new app.FlickrSource(useKey, 'authorImages', 'flickr',
               Chrome.Locale.localize('setting_mine'),
-              false, false, true);
+              false, false, null);
         case app.PhotoSources.UseKey.SPACE_RED:
           return new app.RedditSource(useKey, 'spaceRedditImages', 'reddit',
               Chrome.Locale.localize('setting_reddit_space'),
@@ -115,7 +113,6 @@
               Chrome.Locale.localize('setting_reddit_animal'),
               true, false, 'r/animalporn/');
         default:
-          // TODO title
           Chrome.Log.error(`Bad PhotoSource type: ${useKey}`,
               'SSView.createView');
           return null;
@@ -168,6 +165,14 @@
      * @returns {Promise<Object>} could be array of photos or albums
      */
     fetchPhotos() {
+    }
+
+    /**
+     * Get if the source type
+     * @returns {string} the source type
+     */
+    getType() {
+      return this._type;
     }
 
     /**
