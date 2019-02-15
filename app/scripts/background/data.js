@@ -178,7 +178,12 @@ app.Data = (function() {
    * @memberOf app.Data
    */
   function _processIdleTime() {
-    chrome.idle.setDetectionInterval(app.Data.getIdleSeconds());
+    const idleTime = app.Data.getIdleSeconds();
+    if (idleTime) {
+      chrome.idle.setDetectionInterval(idleTime);
+    } else {
+      Chrome.Log.Error('idleTime is null', 'Data._processIdleTime');
+    }
   }
 
   /**
@@ -419,7 +424,8 @@ app.Data = (function() {
      * @memberOf app.Utils
      */
     getIdleSeconds: function() {
-      const idle = Chrome.Storage.get('idleTime');
+      const idle = Chrome.Storage.get('idleTime',
+          {'base': 5, 'display': 5, 'unit': 0});
       return idle.base * 60;
     },
 
