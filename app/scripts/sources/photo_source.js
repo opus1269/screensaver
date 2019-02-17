@@ -95,11 +95,11 @@
           return new app.FlickrSource(useKey, 'flickrInterestingImages',
               'flickr',
               Chrome.Locale.localize('setting_flickr_int'),
-              true, false, null);
+              true, false, false);
         case app.PhotoSources.UseKey.AUTHOR:
           return new app.FlickrSource(useKey, 'authorImages', 'flickr',
               Chrome.Locale.localize('setting_mine'),
-              false, false, null);
+              false, false, true);
         case app.PhotoSources.UseKey.SPACE_RED:
           return new app.RedditSource(useKey, 'spaceRedditImages', 'reddit',
               Chrome.Locale.localize('setting_reddit_space'),
