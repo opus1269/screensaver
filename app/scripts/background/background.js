@@ -45,14 +45,19 @@ function _onInstalled(details) {
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!app.Utils.DEBUG) {
+      const oldVer = details.previousVersion;
       const version = Chrome.Utils.getVersion();
-      if (version === details.previousVersion) {
+      if (version === oldVer) {
         // spurious update: 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481
         return;
       }
+      // TODO clean this up
       if (version === '3.0.0') {
         // show info on the update when moving to version 3.0.0
+        chrome.tabs.create({url: '/html/update3.html'});
+      } else if ((version === '3.0.1') && (oldVer !== '3.0.0')) {
+        // also show for updates from 2.x.x to 3.0.1
         chrome.tabs.create({url: '/html/update3.html'});
       }
     }
