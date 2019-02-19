@@ -61,6 +61,7 @@ let isProd = false;
 let isProdTest = false;
 
 const gulp = require('gulp');
+const exec = require('child_process').exec;
 const del = require('del');
 const runSequence = require('run-sequence');
 const If = require('gulp-if');
@@ -214,14 +215,17 @@ gulp.task('incrementalBuild', (cb) => {
   ], cb);
 });
 
-// Development build - why don't you work?
-// gulp.task('dev', (cb) => {
-//
-//   isProd = false;
-//   isProdTest = false;
-//   buildDirectory = 'build/dev';
-//   runSequence('_poly_build', cb);
-// });
+// Development build
+gulp.task('dev', (cb) => {
+
+  console.log('running polymer build...');
+  // just run polymer build
+  exec('polymer build', (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
 
 // Production build
 gulp.task('prod', (cb) => {
