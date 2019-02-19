@@ -29,7 +29,6 @@
     "gulp": "^3.9.1",
     "gulp-changed": "^3.1.1",
     "gulp-clean-css": "^3.9.0",
-    "gulp-crisper": "^1.1.0",
     "gulp-debug": "^3.1.0",
     "gulp-eslint": "^4.0.0",
     "gulp-html-extract": "^0.3.0",
@@ -46,14 +45,12 @@
     "gulp-strip-line": "0.0.1",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
-    "gulp-vulcanize": "^6.1.0",
     "gulp-watch": "^4.3.11",
     "gulp-zip": "^4.0.0",
     "polymer-build": "^3.1.1",
     "merge-stream": "^1.0.1",
     "run-sequence": "^2.2.0",
-    "uglify-es": "^3.3.10",
-    "vulcanize": "^1.16.0"
+    "uglify-es": "^3.3.10"
   },
   "false": {}
 }
