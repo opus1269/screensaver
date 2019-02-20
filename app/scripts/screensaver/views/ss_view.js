@@ -170,20 +170,6 @@
     }
 
     /**
-     * Add superscript to the label for 500px photos
-     * @private
-     */
-    _super500px() {
-      const type = this.photo.getType();
-      const authorText = this.authorLabel;
-      const sup = this.author.querySelector('#sup');
-      sup.textContent = '';
-      if (!Chrome.Utils.isWhiteSpace(authorText) && (type === '500')) {
-        sup.textContent = 'px';
-      }
-    }
-
-    /**
      * Set the style for the time label
      */
     _setTimeStyle() {
@@ -207,7 +193,6 @@
     _setAuthorLabel() {
       this.authorLabel = '';
       SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
-      this._super500px();
 
       const type = this.photo.getType();
       const photographer = this.photo.getPhotographer();
@@ -231,7 +216,6 @@
         this.authorLabel = `${Chrome.Locale.localize('photo_from')} ${newType}`;
       }
       SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
-      this._super500px();
     }
 
     /**

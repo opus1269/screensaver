@@ -141,12 +141,6 @@
       let url = null;
 
       switch (this._type) {
-        case '500':
-          // parse photo id
-          regex = /(\/[^/]*){4}/;
-          id = this._url.match(regex);
-          url = `http://500px.com/photo${id[1]}`;
-          break;
         case 'flickr':
           if (this._ex) {
             // parse photo id

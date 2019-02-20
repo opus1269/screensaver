@@ -79,18 +79,6 @@
           return new app.CCSource(useKey, 'ccImages', 'Google',
               Chrome.Locale.localize('setting_chromecast'),
               false, false, null);
-        case app.PhotoSources.UseKey.ED_500:
-          return new app.Px500Source(useKey, 'editors500pxImages', '500',
-              Chrome.Locale.localize('setting_500editors'),
-              true, false, 'editors');
-        case app.PhotoSources.UseKey.POP_500:
-          return new app.Px500Source(useKey, 'popular500pxImages', '500',
-              Chrome.Locale.localize('setting_500popular'),
-              true, false, 'popular');
-        case app.PhotoSources.UseKey.YEST_500:
-          return new app.Px500Source(useKey, 'yesterday500pxImages', '500',
-              Chrome.Locale.localize('setting_500yest'),
-              true, false, 'fresh_yesterday');
         case app.PhotoSources.UseKey.INT_FLICKR:
           return new app.FlickrSource(useKey, 'flickrInterestingImages',
               'flickr',

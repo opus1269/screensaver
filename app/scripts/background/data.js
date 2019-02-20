@@ -26,7 +26,7 @@ app.Data = (function() {
    * @private
    * @memberOf app.Data
    */
-  const _DATA_VERSION = 18;
+  const _DATA_VERSION = 19;
 
   /**
    * A number and associated units
@@ -66,9 +66,6 @@ app.Data = (function() {
    * @property {boolean} useSpaceReddit - use this photo source
    * @property {boolean} useEarthReddit - use this photo source
    * @property {boolean} useAnimalReddit - use this photo source
-   * @property {boolean} useEditors500px - use this photo source
-   * @property {boolean} usePopular500px - use this photo source
-   * @property {boolean} useYesterday500px - use this photo source
    * @property {boolean} useInterestingFlickr - use this photo source
    * @property {boolean} useChromecast - use this photo source
    * @property {boolean} useAuthors - use this photo source
@@ -121,9 +118,6 @@ app.Data = (function() {
     'useSpaceReddit': false,
     'useEarthReddit': false,
     'useAnimalReddit': false,
-    'useEditors500px': false,
-    'usePopular500px': false,
-    'useYesterday500px': false,
     'useInterestingFlickr': false,
     'useChromecast': true,
     'useAuthors': false,
@@ -284,15 +278,39 @@ app.Data = (function() {
       }
 
       if (!Number.isNaN(oldVersion)) {
-        if (oldVersion < 18) {
-          // 500px no longer supported
-          Chrome.Storage.set('useEditors500px', false);
-          Chrome.Storage.set('usePopular500px', false);
-          Chrome.Storage.set('useYesterday500px', false);
-          Chrome.Storage.set('editors500pxImages', null);
-          Chrome.Storage.set('popular500pxImages', null);
-          Chrome.Storage.set('yesterday500pxImages', null);
 
+        if (oldVersion < 8) {
+          // change setting-slider values due to adding units
+          _convertSliderValue('transitionTime');
+          _convertSliderValue('idleTime');
+        }
+
+        if (oldVersion < 10) {
+          // was setting this without quotes before
+          const oldOS = localStorage.getItem('os');
+          if (oldOS) {
+            Chrome.Storage.set('os', oldOS);
+          }
+        }
+
+        if (oldVersion < 12) {
+          // picasa used to be a required permission
+          // installed extensions before the change will keep
+          // this permission on update.
+          // https://stackoverflow.com/a/38278824/4468645
+          Chrome.Storage.set('permPicasa', 'allowed');
+        }
+
+        if (oldVersion < 14) {
+          // background used to be a required permission
+          // installed extensions before the change will keep
+          // this permission on update.
+          // https://stackoverflow.com/a/38278824/4468645
+          Chrome.Storage.set('permBackground', 'allowed');
+          Chrome.Storage.set('allowBackground', true);
+        }
+
+        if (oldVersion < 18) {
           // Need new permission for Google Photos API
           Chrome.Storage.set('permPicasa', 'notSet');
 
@@ -305,37 +323,16 @@ app.Data = (function() {
           // Google Photos API not compatible with Picasa API album id's
           Chrome.Storage.set('albumSelections', []);
         }
+      }
 
-        if (oldVersion < 14) {
-          // background used to be a required permission
-          // installed extensions before the change will keep
-          // this permission on update.
-          // https://stackoverflow.com/a/38278824/4468645
-          Chrome.Storage.set('permBackground', 'allowed');
-          Chrome.Storage.set('allowBackground', true);
-        }
-
-        if (oldVersion < 12) {
-          // picasa used to be a required permission
-          // installed extensions before the change will keep
-          // this permission on update.
-          // https://stackoverflow.com/a/38278824/4468645
-          Chrome.Storage.set('permPicasa', 'allowed');
-        }
-
-        if (oldVersion < 10) {
-          // was setting this without quotes before
-          const oldOS = localStorage.getItem('os');
-          if (oldOS) {
-            Chrome.Storage.set('os', oldOS);
-          }
-        }
-
-        if (oldVersion < 8) {
-          // change setting-slider values due to adding units
-          _convertSliderValue('transitionTime');
-          _convertSliderValue('idleTime');
-        }
+      if (oldVersion < 19) {
+        // remove all traces of 500px
+        Chrome.Storage.set('useEditors500px', null);
+        Chrome.Storage.set('usePopular500px', null);
+        Chrome.Storage.set('useYesterday500px', null);
+        Chrome.Storage.set('editors500pxImages', null);
+        Chrome.Storage.set('popular500pxImages', null);
+        Chrome.Storage.set('yesterday500pxImages', null);
       }
 
       _addDefaults();
@@ -387,11 +384,11 @@ app.Data = (function() {
           const fn = STATE_MAP[ky];
           fn();
         });
-        
+
         // process photo SOURCES
         app.PhotoSources.processAll(doGoogle);
         Chrome.Storage.set('isShowing', false);
-        
+
         // set os, if not already
         if (!Chrome.Storage.get('os')) {
           _setOS().catch(() => {});
