@@ -346,13 +346,19 @@
 
         // Loop while there is a nextPageToken to load more items.
         do {
-          const response = await Chrome.Http.doGet(url, conf);
-          if (!response || !response.albums || (response.albums.length === 0)) {
-            throw new Error(Chrome.Locale.localize('err_no_albums'));
-          }
+          let response = await Chrome.Http.doGet(url, conf);
+          response = response || {};
           nextPageToken = response.nextPageToken;
+          if (!response.albums || (response.albums.length === 0)) {
+            if ((gAlbums.length === 0) && !nextPageToken) {
+              // no albums
+              throw new Error(Chrome.Locale.localize('err_no_albums'));
+            }
+          }
           url = `${baseUrl}&pageToken=${nextPageToken}`;
-          gAlbums = gAlbums.concat(response.albums);
+          if (response.albums && (response.albums.length > 0)) {
+            gAlbums = gAlbums.concat(response.albums);
+          }
         } while (nextPageToken);
       } catch (err) {
         throw err;
