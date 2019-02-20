@@ -298,7 +298,6 @@ app.Data = (function() {
 
           // Remove cached Auth token
           Chrome.Auth.removeCachedToken(false, null, null).catch((err) => {
-            Chrome.Log.error(err.message, 'app.Data.update');
             // nice to remove but not critical
             return null;
           });
