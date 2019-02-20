@@ -53,11 +53,12 @@ function _onInstalled(details) {
         return;
       }
       // TODO clean this up
-      if (version === '3.0.0') {
-        // show info on the update when moving to version 3.0.0
-        chrome.tabs.create({url: '/html/update3.html'});
-      } else if ((version === '3.0.1') && (oldVer !== '3.0.0')) {
-        // also show for updates from 2.x.x to 3.0.1
+      let showThreeInfo = false;
+      if (oldVer && !oldVer.startsWith('3')) {
+        showThreeInfo = true;
+      }
+      if (showThreeInfo) {
+        // show info on the update when moving from a now 3.x.x version
         chrome.tabs.create({url: '/html/update3.html'});
       }
     }
