@@ -90,6 +90,46 @@
     }
 
     /**
+     * Wait for snoocore library
+     * @see  https://stackoverflow.com/a/30506051/4468645
+     * @returns {Promise} resolves when snoocore library loads
+     * @memberOf app.RedditSource
+     */
+    static _waitForLib() {
+      const WAIT_MILLIS = 100;
+      const MAX_WAIT_COUNT = 100; // 10 secs max
+      let ct = 0;
+      return new Promise(function(resolve, reject) {
+        (function waiter() {
+          if (ct === MAX_WAIT_COUNT) {
+            reject(new Error('snoocore library timed out'));
+          } else if (_snoocore) {
+            // already have our instance
+            return resolve();
+          } else if (window.Snoocore) {
+            // library loaded, get our instance
+            const Snoocore = window.Snoocore;
+            _snoocore = new Snoocore({
+              userAgent: 'screensaver',
+              throttle: 0,
+              oauth: {
+                type: 'implicit',
+                key: _KEY,
+                redirectUri: _REDIRECT_URI,
+                scope: ['read'],
+              },
+            });
+            return resolve();
+          } else {
+            // wait then check again
+            ct++;
+          }
+          setTimeout(waiter, WAIT_MILLIS);
+        })();
+      });
+    }
+
+    /**
      * Parse the size from the submission title.
      * this is the old way reddit did it
      * @param {string} title - submission title
@@ -162,12 +202,13 @@
      */
     fetchPhotos() {
       let photos = [];
-      if (!_snoocore) {
-        return Promise.reject(new Error('Snoocore library failed to load'));
-      }
-      
-      return _snoocore(`${this._loadArg}hot`).listing({
-        limit: _MAX_PHOTOS,
+
+      // wait for library to initialize
+      return app.RedditSource._waitForLib().then(() => {
+        // web request to get photos
+        return _snoocore(`${this._loadArg}hot`).listing({
+          limit: _MAX_PHOTOS,
+        });
       }).then((slice) => {
         photos =
             photos.concat(app.RedditSource._processChildren(slice.children));
@@ -192,32 +233,4 @@
     }
   };
 
-  /**
-   * Event: called when document and resources are loaded
-   * @private
-   * @memberOf Background
-   */
-  function _onLoad() {
-    try {
-      const Snoocore = window.Snoocore;
-      if (typeof Snoocore !== 'undefined') {
-        _snoocore = new Snoocore({
-          userAgent: 'screensaver',
-          throttle: 0,
-          oauth: {
-            type: 'implicit',
-            key: _KEY,
-            redirectUri: _REDIRECT_URI,
-            scope: ['read'],
-          },
-        });
-      }
-    } catch (ex) {
-      Chrome.GA.exception(ex, 'Snoocore library failed to load', false);
-      _snoocore = null;
-    }
-  }
-
-  // listen for document and resources loaded
-  window.addEventListener('load', _onLoad);
 })(window);
