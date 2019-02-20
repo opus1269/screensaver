@@ -52,7 +52,7 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
 
       paper-dialog {
         min-width: 25vw;
-        max-width: 75vw;
+        max-width: 50vw;
       }
 
       paper-toggle-button {
