@@ -59,11 +59,10 @@ app.Screensaver = (function() {
   /**
    * Number of calls to getMediaItem made
    * @type {int}
-   * @const
    * @private
    * @memberOf app.Screensaver
    */
-  let gphotoCt = 0;
+  let _gPhotoCt = 0;
 
   /**
    * Process settings related to between photo transitions
@@ -133,8 +132,8 @@ app.Screensaver = (function() {
       const type = photo.getType();
       if ('Google User' === type) {
         // Google API url may have expired, try to refresh it
-        gphotoCt++;
-        if (gphotoCt >= _MAX_GPHOTO_UPDATES) {
+        _gPhotoCt++;
+        if (_gPhotoCt >= _MAX_GPHOTO_UPDATES) {
           // limit number of calls to loadPhoto
           return;
         }
