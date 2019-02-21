@@ -54,7 +54,7 @@ app.Screensaver = (function() {
    * @private
    * @memberOf app.Screensaver
    */
-  const _MAX_GPHOTO_UPDATES = 25;
+  const _MAX_GPHOTO_UPDATES = 10;
 
   /**
    * Number of calls to getMediaItem made
