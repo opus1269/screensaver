@@ -48,6 +48,24 @@ app.Screensaver = (function() {
   t.timeLabel = '';
 
   /**
+   * Max number of calls to getMediaItem during a session
+   * @type {int}
+   * @const
+   * @private
+   * @memberOf app.Screensaver
+   */
+  const _MAX_GPHOTO_UPDATES = 25;
+
+  /**
+   * Number of calls to getMediaItem made
+   * @type {int}
+   * @const
+   * @private
+   * @memberOf app.Screensaver
+   */
+  let gphotoCt = 0;
+
+  /**
    * Process settings related to between photo transitions
    * @private
    * @memberOf app.Screensaver
@@ -115,6 +133,11 @@ app.Screensaver = (function() {
       const type = photo.getType();
       if ('Google User' === type) {
         // Google API url may have expired, try to refresh it
+        gphotoCt++;
+        if (gphotoCt >= _MAX_GPHOTO_UPDATES) {
+          // limit number of calls to loadPhoto
+          return;
+        }
         const ex = photo.getEx();
         const id = ex.id;
         const newPhoto = await app.GoogleSource.loadPhoto(id, false);
