@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.Px500Source.html">app.Px500Source</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li><li><a href="ExHandler.html">ExHandler</a></li>
+					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li><li><a href="ExHandler.html">ExHandler</a></li>
 				</ul>
 			</li>
 			
@@ -105,7 +105,7 @@ app.Data = (function() {
    * @private
    * @memberOf app.Data
    */
-  const _DATA_VERSION = 18;
+  const _DATA_VERSION = 19;
 
   /**
    * A number and associated units
@@ -145,9 +145,6 @@ app.Data = (function() {
    * @property {boolean} useSpaceReddit - use this photo source
    * @property {boolean} useEarthReddit - use this photo source
    * @property {boolean} useAnimalReddit - use this photo source
-   * @property {boolean} useEditors500px - use this photo source
-   * @property {boolean} usePopular500px - use this photo source
-   * @property {boolean} useYesterday500px - use this photo source
    * @property {boolean} useInterestingFlickr - use this photo source
    * @property {boolean} useChromecast - use this photo source
    * @property {boolean} useAuthors - use this photo source
@@ -200,9 +197,6 @@ app.Data = (function() {
     'useSpaceReddit': false,
     'useEarthReddit': false,
     'useAnimalReddit': false,
-    'useEditors500px': false,
-    'usePopular500px': false,
-    'useYesterday500px': false,
     'useInterestingFlickr': false,
     'useChromecast': true,
     'useAuthors': false,
@@ -363,15 +357,39 @@ app.Data = (function() {
       }
 
       if (!Number.isNaN(oldVersion)) {
-        if (oldVersion &lt; 18) {
-          // 500px no longer supported
-          Chrome.Storage.set('useEditors500px', false);
-          Chrome.Storage.set('usePopular500px', false);
-          Chrome.Storage.set('useYesterday500px', false);
-          Chrome.Storage.set('editors500pxImages', null);
-          Chrome.Storage.set('popular500pxImages', null);
-          Chrome.Storage.set('yesterday500pxImages', null);
 
+        if (oldVersion &lt; 8) {
+          // change setting-slider values due to adding units
+          _convertSliderValue('transitionTime');
+          _convertSliderValue('idleTime');
+        }
+
+        if (oldVersion &lt; 10) {
+          // was setting this without quotes before
+          const oldOS = localStorage.getItem('os');
+          if (oldOS) {
+            Chrome.Storage.set('os', oldOS);
+          }
+        }
+
+        if (oldVersion &lt; 12) {
+          // picasa used to be a required permission
+          // installed extensions before the change will keep
+          // this permission on update.
+          // https://stackoverflow.com/a/38278824/4468645
+          Chrome.Storage.set('permPicasa', 'allowed');
+        }
+
+        if (oldVersion &lt; 14) {
+          // background used to be a required permission
+          // installed extensions before the change will keep
+          // this permission on update.
+          // https://stackoverflow.com/a/38278824/4468645
+          Chrome.Storage.set('permBackground', 'allowed');
+          Chrome.Storage.set('allowBackground', true);
+        }
+
+        if (oldVersion &lt; 18) {
           // Need new permission for Google Photos API
           Chrome.Storage.set('permPicasa', 'notSet');
 
@@ -384,37 +402,16 @@ app.Data = (function() {
           // Google Photos API not compatible with Picasa API album id's
           Chrome.Storage.set('albumSelections', []);
         }
+      }
 
-        if (oldVersion &lt; 14) {
-          // background used to be a required permission
-          // installed extensions before the change will keep
-          // this permission on update.
-          // https://stackoverflow.com/a/38278824/4468645
-          Chrome.Storage.set('permBackground', 'allowed');
-          Chrome.Storage.set('allowBackground', true);
-        }
-
-        if (oldVersion &lt; 12) {
-          // picasa used to be a required permission
-          // installed extensions before the change will keep
-          // this permission on update.
-          // https://stackoverflow.com/a/38278824/4468645
-          Chrome.Storage.set('permPicasa', 'allowed');
-        }
-
-        if (oldVersion &lt; 10) {
-          // was setting this without quotes before
-          const oldOS = localStorage.getItem('os');
-          if (oldOS) {
-            Chrome.Storage.set('os', oldOS);
-          }
-        }
-
-        if (oldVersion &lt; 8) {
-          // change setting-slider values due to adding units
-          _convertSliderValue('transitionTime');
-          _convertSliderValue('idleTime');
-        }
+      if (oldVersion &lt; 19) {
+        // remove all traces of 500px
+        Chrome.Storage.set('useEditors500px', null);
+        Chrome.Storage.set('usePopular500px', null);
+        Chrome.Storage.set('useYesterday500px', null);
+        Chrome.Storage.set('editors500pxImages', null);
+        Chrome.Storage.set('popular500pxImages', null);
+        Chrome.Storage.set('yesterday500pxImages', null);
       }
 
       _addDefaults();
@@ -466,11 +463,11 @@ app.Data = (function() {
           const fn = STATE_MAP[ky];
           fn();
         });
-        
+
         // process photo SOURCES
         app.PhotoSources.processAll(doGoogle);
         Chrome.Storage.set('isShowing', false);
-        
+
         // set os, if not already
         if (!Chrome.Storage.get('os')) {
           _setOS().catch(() => {});
@@ -554,7 +551,7 @@ app.Data = (function() {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on February 19th 2019, 9:28:48 pm
+		on February 22nd 2019, 3:29:05 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

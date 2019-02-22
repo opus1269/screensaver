@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.Px500Source.html">app.Px500Source</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li><li><a href="ExHandler.html">ExHandler</a></li>
+					<li><a href="app.CCSource.html">app.CCSource</a></li><li><a href="app.FlickrSource.html">app.FlickrSource</a></li><li><a href="app.GoogleSource.html">app.GoogleSource</a></li><li><a href="app.PhotoSource.html">app.PhotoSource</a></li><li><a href="app.RedditSource.html">app.RedditSource</a></li><li><a href="app.SSPhoto.html">app.SSPhoto</a></li><li><a href="app.SSView.html">app.SSView</a></li><li><a href="app.SSViewFrame.html">app.SSViewFrame</a></li><li><a href="app.SSViewFull.html">app.SSViewFull</a></li><li><a href="app.SSViewLetterbox.html">app.SSViewLetterbox</a></li><li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li><li><a href="ExHandler.html">ExHandler</a></li>
 				</ul>
 			</li>
 			
@@ -126,6 +126,32 @@ app.Screensaver = (function() {
   t.noPhotosLabel = '';
   t.timeLabel = '';
 
+  // TODO increase this up to 24 - one day
+  /**
+   * Max number of calls to updatePhotos during a session
+   * @type {int}
+   * @const
+   * @private
+   * @memberOf app.Screensaver
+   */
+  const _MAX_GPHOTO_UPDATES = 4;
+
+  /**
+   * Number of calls to getMediaItem made
+   * @type {int}
+   * @private
+   * @memberOf app.Screensaver
+   */
+  let _gPhotoCt = 0;
+
+  /**
+   * Is the screensaver updating the google photos
+   * @type {boolean}
+   * @private
+   * @memberOf app.Screensaver
+   */
+  let _isUpdating = false;
+
   /**
    * Process settings related to between photo transitions
    * @private
@@ -185,7 +211,14 @@ app.Screensaver = (function() {
   t._onErrorChanged = async function(ev) {
     const isError = ev.detail.value;
     
+    if (_isUpdating) {
+      // another error event is already handling this
+      return;
+    }
+    
     if (isError) {
+      _isUpdating = true;
+      
       // url failed to load
       const model = ev.model;
       const index = model.index;
@@ -193,15 +226,56 @@ app.Screensaver = (function() {
       const photo = view.photo;
       const type = photo.getType();
       if ('Google User' === type) {
-        // Google API url may have expired, try to refresh it
-        const ex = photo.getEx();
-        const id = ex.id;
-        const newPhoto = await app.GoogleSource.loadPhoto(id, false);
-        if (newPhoto) {
-          // update url and make it available to the screensaver again
-          app.SSPhotos.updatePhotoUrl(photo.getId(), newPhoto.url);
-          view.setUrl(newPhoto.url);
+        // Google baseUrl may have expired, try to update all photos
+
+        // limit number of calls to updatePhotos
+        _gPhotoCt++;
+        if (_gPhotoCt >= _MAX_GPHOTO_UPDATES) {
+          _isUpdating = false;
+          return;
         }
+
+        // create new source
+        const source =
+            app.PhotoSource.createSource(app.PhotoSources.UseKey.ALBUMS_GOOGLE);
+
+        // try to update the photos
+        const updated = await app.GoogleSource.updatePhotos(true);
+        if (!updated) {
+          Chrome.Log.error('Failed to update urls.',
+              'Screensaver._onErrorChanged');
+          // major problem, give up for this session
+          _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
+          _isUpdating = true;
+          return;
+        }
+
+        // get the new photos
+        const newPhotos = source.getPhotos();
+        
+        // update all Google Photos urls
+        app.SSPhotos.updateGooglePhotoUrls(newPhotos);
+        
+        // update any views with google photos
+        for (let i = 0; i &lt; t._views.length; i++) {
+          const view = t._views[i];
+          const photo = view.photo;
+          const type = photo.getType();
+          if (type === 'Google User') {
+            const index = newPhotos.photos.findIndex((e) => {
+              return e.ex.id === photo.getEx().id;
+            });
+            if (index >= 0) {
+              view.setUrl(newPhotos.photos[index].url);
+            } else {
+              // didn't get this id on update mark photo bad
+              view.markPhotoBad();
+            }
+          }
+        }
+
+        _isUpdating = false;
+
       }
     }
   };
@@ -334,7 +408,7 @@ app.Screensaver = (function() {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on February 19th 2019, 9:28:48 pm
+		on February 22nd 2019, 3:29:05 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
