@@ -102,12 +102,12 @@ export function updateRepeatingAlarms() {
         'chromep.alarms.get(_ALARMS.UPDATE_GOOGLE_PHOTOS)');
   });
 
-  // Add 2 minute alarm to update Google Photos Sources if it may need it
+  // Add 1 minute alarm to update Google Photos Sources if it may need it
   chromep.alarms.get(_ALARMS.CHECK_UPDATE_GOOGLE_PHOTOS).then((alarm) => {
     if (!alarm) {
       chrome.alarms.create(_ALARMS.CHECK_UPDATE_GOOGLE_PHOTOS, {
-        when: Date.now() + Chrome.Time.MSEC_IN_HOUR / 30.0,
-        periodInMinutes: Chrome.Time.MIN_IN_HOUR / 30,
+        when: Date.now() + Chrome.Time.MSEC_IN_MIN,
+        periodInMinutes: 1,
       });
     }
     return null;
