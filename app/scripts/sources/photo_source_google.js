@@ -311,15 +311,7 @@
 
         return album;
       } catch (err) {
-        // const statusMsg = `${Chrome.Locale.localize('err_status')}: 404`;
-        // if (err.message.includes(statusMsg)) {
-        //   // Bad request error, album was probably deleted
-        //   console.log(err, err.message);
-        //   return null;
-        // } else {
-        //   throw err;
-        // }
-        throw err;
+         throw err;
       }
     }
 
@@ -390,23 +382,26 @@
 
     /**
      * Update the current photo url's. Google expires them after 1 hour
+     * @param {boolean} force=false if true force update
+     * @returns {Promise<boolean>} true if updated
      */
-    static async updatePhotos() {
+    static async updatePhotos(force=false) {
+      let ret = false;
       // max items in getBatch call
       const MAX_QUERIES = 50;
       const albums = Chrome.Storage.get('albumSelections', []);
-      if (!this._isUpdateAlbums() || (albums.length === 0)) {
-        return;
+      
+      if (!force && (!this._isUpdateAlbums() || (albums.length === 0))) {
+        return ret;
       }
+      
       let newAlbums = [];
 
       const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
       conf.isAuth = true;
       conf.retryToken = true;
       conf.interactive = false;
-
-      Chrome.GA.event(app.GA.EVENT.UPDATE_PHOTOS);
-
+      
       // get all the photo ids for each album and update them
       for (const album of albums) {
         const photos = album.photos;
@@ -438,6 +433,7 @@
             const mediaItems = [];
             // convert to array of media items
             for (const mediaItemResult of response.mediaItemResults) {
+              // some may have failed to updated
               if (!mediaItemResult.status) {
                 mediaItems.push(mediaItemResult.mediaItem);
               }
@@ -450,7 +446,7 @@
             } else {
               Chrome.Log.error(err.message, 'GoogleSource.updatePhotos');
             }
-            return;
+            return ret;
           }
 
           if (stop === photos.length) {
@@ -470,7 +466,14 @@
       if (!set) {
         Chrome.Log.error('Exceed storage limits',
             'GoogleSource.updatePhotos');
+      } else {
+        // success
+        ret = true;
+        Chrome.GA.event(app.GA.EVENT.UPDATE_PHOTOS);
+        Chrome.Storage.set('gPhotosNeedsUpdate', false);
       }
+      
+      return ret;
     }
 
     /**
@@ -493,8 +496,10 @@
       const ret =
           notShowing && awake && enabled && useGoogle && useGoogleAlbums;
       
-      // set this so we know if we are behind on updates
-      Chrome.Storage.set('gPhotosNeedsUpdate', !ret);
+      if (!ret) {
+        // set this so we know if we are behind on updates
+        Chrome.Storage.set('gPhotosNeedsUpdate', true);
+      }
       
       return ret;
     }

@@ -181,10 +181,20 @@
 
     /**
      * Set the url
+     * @param {?string} url to use if not null
      */
-    setUrl() {
-      this.url = this.photo.getUrl();
+    setUrl(url = null) {
+      this.url = url || this.photo.getUrl();
       SSView._dirtySet(this.model, 'view.url', this.url);
+    }
+
+    /**
+     * Flag the photo in this view to bad
+     */
+    markPhotoBad() {
+      if (this.photo) {
+        this.photo.markBad();
+      }
     }
 
     /**
@@ -282,7 +292,7 @@
     render() {}
 
     /**
-     * Determine if a photo failed to load (usually 404 error)
+     * Determine if a photo failed to load (usually 404 or 403 error)
      * @returns {boolean} true if image load failed
      */
     isError() {

@@ -112,16 +112,30 @@ app.SSPhotos = (function() {
     },
 
     /**
-     * Update a Photos url
-     * @param {int} index - index into _photos
-     * @param {string} url - new url
+     * Update the urls of the given photos
+     * @param {app.PhotoSource.Photos} sourcePhotos
      * @memberOf app.SSPhotos
      */
-    updatePhotoUrl: function(index, url) {
-      if (index > _photos.length - 1) {
-        return;
+    updateGooglePhotoUrls: function(sourcePhotos) {
+      const photos = sourcePhotos.photos || [];
+      for (let i = _photos.length - 1; i >= 0; i--) {
+        if (_photos[i].getType() !== sourcePhotos.type) {
+          // only this type of photo
+          continue;
+        }
+        const index = photos.findIndex((e) => {
+          return e.ex.id === _photos[i].getEx().id;
+        });
+        if (index >= 0) {
+          _photos[i].setUrl(photos[index].url);
+        } else {
+          // photo no longer around delete it
+          _photos.splice(i, 1);
+        }
+        
+        // make sure _curIdx is in range
+        _curIdx = Math.min(_curIdx, _photos.length - 1);
       }
-      _photos[index].setUrl(url);
     },
 
     /**

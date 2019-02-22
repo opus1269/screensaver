@@ -30,6 +30,15 @@
     }
 
     /**
+     * Milliseconds in minute
+     * @returns {int} value
+     * @static
+     */
+    static get MSEC_IN_MIN() {
+      return 60 * 1000;
+    }
+
+    /**
      * Minutes in hour
      * @returns {int} value
      * @static

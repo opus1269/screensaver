@@ -47,14 +47,15 @@ app.Screensaver = (function() {
   t.noPhotosLabel = '';
   t.timeLabel = '';
 
+  // TODO increase this up to 24 - one day
   /**
-   * Max number of calls to getMediaItem during a session
+   * Max number of calls to updatePhotos during a session
    * @type {int}
    * @const
    * @private
    * @memberOf app.Screensaver
    */
-  const _MAX_GPHOTO_UPDATES = 10;
+  const _MAX_GPHOTO_UPDATES = 4;
 
   /**
    * Number of calls to getMediaItem made
@@ -63,6 +64,14 @@ app.Screensaver = (function() {
    * @memberOf app.Screensaver
    */
   let _gPhotoCt = 0;
+
+  /**
+   * Is the screensaver updating the google photos
+   * @type {boolean}
+   * @private
+   * @memberOf app.Screensaver
+   */
+  let _isUpdating = false;
 
   /**
    * Process settings related to between photo transitions
@@ -123,7 +132,14 @@ app.Screensaver = (function() {
   t._onErrorChanged = async function(ev) {
     const isError = ev.detail.value;
     
+    if (_isUpdating) {
+      // another error event is already handling this
+      return;
+    }
+    
     if (isError) {
+      _isUpdating = true;
+      
       // url failed to load
       const model = ev.model;
       const index = model.index;
@@ -131,20 +147,56 @@ app.Screensaver = (function() {
       const photo = view.photo;
       const type = photo.getType();
       if ('Google User' === type) {
-        // Google API url may have expired, try to refresh it
+        // Google baseUrl may have expired, try to update all photos
+
+        // limit number of calls to updatePhotos
         _gPhotoCt++;
         if (_gPhotoCt >= _MAX_GPHOTO_UPDATES) {
-          // limit number of calls to loadPhoto
+          _isUpdating = false;
           return;
         }
-        const ex = photo.getEx();
-        const id = ex.id;
-        const newPhoto = await app.GoogleSource.loadPhoto(id, false);
-        if (newPhoto) {
-          // update url and make it available to the screensaver again
-          app.SSPhotos.updatePhotoUrl(photo.getId(), newPhoto.url);
-          view.setUrl(newPhoto.url);
+
+        // create new source
+        const source =
+            app.PhotoSource.createSource(app.PhotoSources.UseKey.ALBUMS_GOOGLE);
+
+        // try to update the photos
+        const updated = await app.GoogleSource.updatePhotos(true);
+        if (!updated) {
+          Chrome.Log.error('Failed to update urls.',
+              'Screensaver._onErrorChanged');
+          // major problem, give up for this session
+          _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
+          _isUpdating = true;
+          return;
         }
+
+        // get the new photos
+        const newPhotos = source.getPhotos();
+        
+        // update all Google Photos urls
+        app.SSPhotos.updateGooglePhotoUrls(newPhotos);
+        
+        // update any views with google photos
+        for (let i = 0; i < t._views.length; i++) {
+          const view = t._views[i];
+          const photo = view.photo;
+          const type = photo.getType();
+          if (type === 'Google User') {
+            const index = newPhotos.photos.findIndex((e) => {
+              return e.ex.id === photo.getEx().id;
+            });
+            if (index >= 0) {
+              view.setUrl(newPhotos.photos[index].url);
+            } else {
+              // didn't get this id on update mark photo bad
+              view.markPhotoBad();
+            }
+          }
+        }
+
+        _isUpdating = false;
+
       }
     }
   };
