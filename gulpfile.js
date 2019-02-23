@@ -48,7 +48,7 @@ const watchOpts = {
 };
 const minifyOpts = {
   output: {
-    beautify: false,
+    beautify: true,
     comments: '/Copyright/',
   },
 };
