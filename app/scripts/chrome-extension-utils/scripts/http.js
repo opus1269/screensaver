@@ -215,14 +215,15 @@ Chrome.Http = (function() {
    */
   function _retryToken(url, opts, conf, attempt) {
     Chrome.GA.error('Refreshed auth token.', 'Http._retryToken');
-    return Chrome.Auth.removeCachedToken(conf.token).then(() => {
+    return Chrome.Auth.removeCachedToken(
+        conf.interactive, conf.token, null).then(() => {
       conf.token = null;
       conf.retryToken = false;
       return _fetch(url, opts, conf, attempt);
     });
   }
-
-  /**
+  
+    /**
    * Perform fetch, optionally using authorization and exponential back-off
    * @param {string} url - server request
    * @param {Object} opts - fetch options
