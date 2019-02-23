@@ -47,7 +47,6 @@ app.Screensaver = (function() {
   t.noPhotosLabel = '';
   t.timeLabel = '';
 
-  // TODO increase this up to 24 - one day
   /**
    * Max number of calls to updatePhotos during a session
    * @type {int}
@@ -55,7 +54,7 @@ app.Screensaver = (function() {
    * @private
    * @memberOf app.Screensaver
    */
-  const _MAX_GPHOTO_UPDATES = 4;
+  const _MAX_GPHOTO_UPDATES = 168; // up to one week
 
   /**
    * Number of calls to getMediaItem made
