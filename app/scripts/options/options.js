@@ -279,6 +279,15 @@
   };
 
   /**
+   * Computed Binding: Info message for permission
+   * @returns {string}
+   * @memberOf Options
+   */
+  t._computePermissionsMessage2 = function() {
+    return Chrome.Locale.localize('permission_message2');
+  };
+
+  /**
    * Computed Binding: Determine content script permission status string
    * @param {string} permissions - current setting
    * @returns {string}

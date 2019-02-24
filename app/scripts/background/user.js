@@ -70,8 +70,8 @@ app.User = (function() {
       }
     } else {
       // TODO new sign in from Chrome
+      Chrome.Storage.set('albumSelections', []);
       Chrome.Storage.set('uid', account.id);
-      Chrome.Storage.set('permPicasa', 'denied');
     }
   }
 
