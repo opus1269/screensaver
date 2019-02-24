@@ -136,7 +136,14 @@
    * @type {string}
    * @memberOf Options
    */
-  t.permissions = Chrome.Storage.get('permPicasa');
+  t.permission = Chrome.Storage.get('permPicasa');
+
+  /**
+   * Chrome sign in state
+   * @type {boolean}
+   * @memberOf Options
+   */
+  t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
 
   /**
    * Event: Document and resources loaded
@@ -167,8 +174,9 @@
     // listen for changes to localStorage
     window.addEventListener('storage', (ev) => {
       if (ev.key === 'permPicasa') {
-        t.permissions = Chrome.Storage.get('permPicasa');
         _setGooglePhotosMenuState();
+      } else if (ev.key === 'signedInToChrome') {
+        t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
       }
     }, false);
 
@@ -213,7 +221,7 @@
    */
   t._onAcceptPermissionsClicked = function() {
     Chrome.Msg.send(app.Msg.SIGN_IN).then(() => {
-      t.permissions = Chrome.Storage.get('permPicasa');
+      t.permission = Chrome.Storage.get('permPicasa');
       return null;
     }).catch((err) => {
       Chrome.Log.error(err.message, 'Options._onAcceptPermissionsClicked');
@@ -221,12 +229,12 @@
   };
 
   /**
-   * Event: Clicked on deny permissions dialog button
+   * Event: Clicked on deny permission dialog button
    * @memberOf Options
    */
   t._onDenyPermissionsClicked = function() {
     Chrome.Msg.send(app.Msg.SIGN_OUT).then(() => {
-      t.permissions = Chrome.Storage.get('permPicasa');
+      t.permission = Chrome.Storage.get('permPicasa');
       return null;
     }).catch((err) => {
       Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
@@ -316,6 +324,13 @@
    * @memberOf Options
    */
   function _showGooglePhotosPage(index) {
+    if (!t.signedInToChrome) {
+      // Display Error Dialog if not signed in to Chrome
+      t.dialogTitle = Chrome.Locale.localize('err_chrome_signin_title');
+      t.dialogText = Chrome.Locale.localize('err_chrome_signin');
+      t.$.errorDialog.open();
+      return;
+    }
     if (!t.pages[index].ready) {
       // create the page the first time
       t.pages[index].ready = true;
@@ -387,12 +402,12 @@
    */
   function _setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
-    t.permissions = Chrome.Storage.get('permPicasa', 'notSet');
+    t.permission = Chrome.Storage.get('permPicasa', 'notSet');
     const idx = _getPageIdx('page-google-photos');
     const el = document.getElementById(t.pages[idx].route);
     if (!el) {
       Chrome.GA.error('no element found', 'Options._setGooglePhotosMenuState');
-    } else if (t.permissions !== 'allowed') {
+    } else if (t.permission !== 'allowed') {
       el.setAttribute('disabled', 'true');
     } else {
       el.removeAttribute('disabled');

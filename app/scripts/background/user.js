@@ -15,20 +15,6 @@ app.User = (function() {
 
   new ExceptionHandler();
 
-  const chromep = new ChromePromise();
-
-  /**
-   * Persist info on current Browser user (may be no-one)
-   * @returns {Promise<user>} identity of user
-   * @memberOf app.User
-   */
-  function _setInfo() {
-    return chromep.identity.getProfileUserInfo().then((user) => {
-      Chrome.Storage.set('uid', user.id);
-      return user;
-    });
-  }
-
   /**
    * Remove access to Google Photos
    * @returns {Promise<void>} void
@@ -43,6 +29,7 @@ app.User = (function() {
       // eslint-disable-next-line promise/no-nesting
       Chrome.Auth.removeCachedToken(false, null, null).catch((err) => {
         // nice to remove but not critical
+        console.log(err);
         return null;
       });
       return null;
@@ -58,20 +45,14 @@ app.User = (function() {
    * @memberOf app.User
    */
   function _onSignInChanged(account, signedIn) {
-    const uid = Chrome.Storage.get('uid');
+    Chrome.Storage.set('signedInToChrome', signedIn);
     if (!signedIn) {
-      if (account.id === uid) {
-        // our user signed out of Chrome with id we were using
-        Chrome.GA.event(app.GA.EVENT.CHROME_SIGN_OUT);
-
-        _signOut().catch((err) => {
-          Chrome.Log.error(err.message, 'User._onSignInChanged');
-        });
-      }
-    } else {
-      // TODO new sign in from Chrome
+      Chrome.GA.event(app.GA.EVENT.CHROME_SIGN_OUT);
       Chrome.Storage.set('albumSelections', []);
-      Chrome.Storage.set('uid', account.id);
+      const type = Chrome.Storage.getBool('permPicasa');
+      if (type === 'allowed') {
+        Chrome.Log.error(Chrome.Locale.localize('err_chrome_signout'));
+      }
     }
   }
 
@@ -103,7 +84,7 @@ app.User = (function() {
       if (!granted) {
         return _removeAccess();
       } else {
-        return _setInfo();
+        return null;
       }
     }).then(() => {
       return null;

@@ -79,7 +79,7 @@ app.Data = (function() {
    * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
    * @property {boolean} isAwake - true if screensaver can be displayed
    * @property {boolean} isShowing - true if screensaver is showing
-   * @property {string} uid - user's unique id
+   * @property {boolean} signedInToChrome - state of Chrome signin
    */
 
   /**
@@ -130,7 +130,7 @@ app.Data = (function() {
     'gPhotosMaxAlbums': 10,
     'isAwake': true,
     'isShowing': false,
-    'uid': '',
+    'signedInToChrome': true,
   };
 
   /**

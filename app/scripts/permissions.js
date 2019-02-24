@@ -55,7 +55,7 @@ app.Permissions = (function() {
    */
   const PICASA = {
     name: 'permPicasa',
-    permissions: ['identity.email'],
+    permissions: [],
     origins: ['https://photoslibrary.googleapis.com/'],
   };
 

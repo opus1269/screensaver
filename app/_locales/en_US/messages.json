@@ -468,7 +468,13 @@
     "message": "Exceeded the daily Google Photos API limit."
   },
   "err_chrome_signout": {
-    "message": "You have signed out of Chrome with the account that accesses your Google Photos.  Your photos will no longer be available."
+    "message": "You are signed out of Chrome. Your Google Photos will not be available."
+  },
+  "err_chrome_signin_title": {
+    "message": "Not signed in to Chrome"
+  },
+  "err_chrome_signin": {
+    "message": "Please sign in to Chrome with the account that has your Google Photos."
   },
   "menu_permission": {
     "message": "Manage access to Google Photos"

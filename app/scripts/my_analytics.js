@@ -25,7 +25,7 @@ app.GA = (function() {
   /**
    * Event types
    * @type {{}}
-   * @property {Chrome.GA.Event} CHROME_SIGN_OUT - Chrome signed out of our act.
+   * @property {Chrome.GA.Event} CHROME_SIGN_OUT - Chrome sign out
    * @property {Chrome.GA.Event} LOAD_ALBUM_LIST - album list
    * @property {Chrome.GA.Event} LOAD_ALBUM - album
    * @property {Chrome.GA.Event} LOAD_PHOTO - photo
