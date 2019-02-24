@@ -29,6 +29,7 @@
   <script src="/scripts/chrome-extension-utils/scripts/time.js"></script>
   <script src="/scripts/chrome-extension-utils/scripts/http.js"></script>
   <script src="/scripts/chrome-extension-utils/scripts/auth.js"></script>
+  <script src="/scripts/permissions.js"></script>
   <script src="/scripts/my_analytics.js"></script>
   <script src="/scripts/my_msg.js"></script>
   <script src="/scripts/my_utils.js"></script>
@@ -38,7 +39,6 @@
   <script src="/scripts/sources/photo_source_reddit.js"></script>
   <script src="/scripts/sources/photo_source_flickr.js"></script>
   <script src="/scripts/sources/photo_source_google.js"></script>
-  <script src="/scripts/options/permissions.js"></script>
 
   <!-- Theme -->
   <script type="module" src="/styles/shared-styles.js"></script>
@@ -231,10 +231,15 @@
           overflow: auto;
           padding: 0 0;
         }
+
+        .permText {
+          padding-bottom: 16px;
+        }
+
       </style>
     </custom-style>
 
-    <app-drawer-layout fullbleed id="appDrawerLayout" responsive-width="800px">
+    <app-drawer-layout fullbleed id="appDrawerLayout" responsive-width="1200px">
 
       <!-- Drawer Content -->
       <app-drawer id="appDrawer" slot="drawer">
@@ -288,6 +293,32 @@
             </paper-dialog-scrollable>
             <div class="buttons">
               <paper-button dialog-dismiss>OK</paper-button>
+            </div>
+          </paper-dialog>
+
+          <!-- permissions dialog -->
+          <paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
+                        exit-animation="fade-out-animation">
+            <h2>[[_computePermDialogTitle()]]</h2>
+            <paper-dialog-scrollable>
+              <div>
+
+                <paper-item class="permText">
+                  [[_computePermissionsMessage()]]
+                </paper-item>
+
+
+                <paper-item class="permText">
+                  [[_computePermissionsMessage1()]]
+                </paper-item>
+
+                <b>[[_computePermissionsStatus(permissions)]]</b>
+              </div>
+            </paper-dialog-scrollable>
+            <div class="buttons">
+              <paper-button dialog-dismiss>CANCEL</paper-button>
+              <paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">DENY</paper-button>
+              <paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">ALLOW</paper-button>
             </div>
           </paper-dialog>
 

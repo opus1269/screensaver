@@ -483,18 +483,21 @@
      */
     static _isUpdateAlbums() {
       /* only update photos if all are true:
+       api is authorized
        screensaver is not showing
        inside of keep awake time
        screensaver is enabled
+       using google photos   
        using google albums   
        */
+      const auth = Chrome.Storage.get('permPicasa', 'notSet') === 'allowed';
       const notShowing = !Chrome.Storage.getBool('isShowing', true);
       const awake = Chrome.Storage.getBool('isAwake', true);
       const enabled = Chrome.Storage.getBool('enabled', true);
       const useGoogle = Chrome.Storage.getBool('useGoogle', true);
       const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
-      const ret =
-          notShowing && awake && enabled && useGoogle && useGoogleAlbums;
+      const ret = auth && notShowing && awake && enabled &&
+          useGoogle && useGoogleAlbums;
       
       if (!ret) {
         // set this so we know if we are behind on updates
@@ -511,13 +514,16 @@
      */
     static _isFetchAlbums() {
       /* only fetch new albumSelections if all are true:
+       api is authorized
        screensaver is enabled
+       using google photos   
        using google albums   
        */
+      const auth = Chrome.Storage.get('permPicasa', 'notSet') === 'allowed';
       const enabled = Chrome.Storage.getBool('enabled', true);
       const useGoogle = Chrome.Storage.getBool('useGoogle', true);
       const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
-      return enabled && useGoogle && useGoogleAlbums;
+      return auth && enabled && useGoogle && useGoogleAlbums;
     }
 
     /**

@@ -467,6 +467,21 @@
   "err_google_quota": {
     "message": "Exceeded the daily Google Photos API limit."
   },
+  "err_chrome_signout": {
+    "message": "You have signed out of Chrome with the account that accesses your Google Photos.  Your photos will no longer be available."
+  },
+  "menu_permission": {
+    "message": "Manage access to Google Photos"
+  },
+  "permission_message": {
+    "message": "The extension has an optional permission that allows access to your Google Photos account.  If you click on ALLOW another dialog will be displayed asking you to allow or deny this permission, if you have not already done so."
+  },
+  "permission_message1": {
+    "message": "In addition, you must remain signed in to Chrome with the same account you authorized. If you sign out of Chrome or sign in as another user, you will need to reauthorize."
+  },
+  "permission_status": {
+    "message": "Current Status:"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

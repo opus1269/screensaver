@@ -70,19 +70,27 @@
       icon: 'myicons:settings', obj: null, ready: true, divider: false,
     },
     {
-      label: Chrome.Locale.localize('menu_google'),
-      route: 'page-google-photos', icon: 'myicons:cloud',
-      obj: _showGooglePhotosPage, ready: false, divider: false,
-    },
-    {
       label: Chrome.Locale.localize('menu_preview'), route: 'page-preview',
       icon: 'myicons:pageview', obj: _showScreensaverPreview, ready: true,
       divider: false,
     },
     {
+      label: Chrome.Locale.localize('menu_google'),
+      route: 'page-google-photos', icon: 'myicons:cloud',
+      obj: _showGooglePhotosPage, ready: false, divider: true,
+    },
+    {
+      label: Chrome.Locale.localize('menu_permission'),
+      route: 'page-permission',
+      icon: 'myicons:perm-data-setting',
+      obj: _showPermissionsDialog,
+      ready: true,
+      divider: false,
+    },
+    {
       label: Chrome.Locale.localize('menu_error'), route: 'page-error',
       icon: 'myicons:error', obj: _showErrorPage,
-      ready: false, disabled: false, divider: false,
+      ready: false, disabled: false, divider: true,
     },
     {
       label: Chrome.Locale.localize('menu_help'), route: 'page-help',
@@ -124,6 +132,13 @@
   t.route = 'page-settings';
 
   /**
+   * Google Photos permission
+   * @type {string}
+   * @memberOf Options
+   */
+  t.permissions = Chrome.Storage.get('permPicasa');
+
+  /**
    * Event: Document and resources loaded
    * @memberOf Options
    */
@@ -133,8 +148,9 @@
     // listen for chrome messages
     Chrome.Msg.listen(_onMessage);
 
-    // initialize lastError enabled state
+    // initialize menu enabled states
     _setErrorMenuState();
+    _setGooglePhotosMenuState();
 
     // listen for changes to chrome.storage
     chrome.storage.onChanged.addListener(function(changes) {
@@ -147,6 +163,15 @@
         }
       }
     });
+
+    // listen for changes to localStorage
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === 'permPicasa') {
+        t.permissions = Chrome.Storage.get('permPicasa');
+        _setGooglePhotosMenuState();
+      }
+    }, false);
+
   }
   
   /**
@@ -183,6 +208,32 @@
   };
 
   /**
+   * Event: Clicked on accept permissions dialog button
+   * @memberOf Options
+   */
+  t._onAcceptPermissionsClicked = function() {
+    Chrome.Msg.send(app.Msg.SIGN_IN).then(() => {
+      t.permissions = Chrome.Storage.get('permPicasa');
+      return null;
+    }).catch((err) => {
+      Chrome.Log.error(err.message, 'Options._onAcceptPermissionsClicked');
+    });
+  };
+
+  /**
+   * Event: Clicked on deny permissions dialog button
+   * @memberOf Options
+   */
+  t._onDenyPermissionsClicked = function() {
+    Chrome.Msg.send(app.Msg.SIGN_OUT).then(() => {
+      t.permissions = Chrome.Storage.get('permPicasa');
+      return null;
+    }).catch((err) => {
+      Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
+    });
+  };
+
+  /**
    * Computed property: Page title
    * @returns {string} i18n title
    * @memberOf Options
@@ -198,6 +249,43 @@
    */
   t._computeMenu = function() {
     return Chrome.Locale.localize('menu');
+  };
+
+  /**
+   * Computed property: Permissions dialog title
+   * @returns {string} i18n title
+   * @memberOf Options
+   */
+  t._computePermDialogTitle = function() {
+    return Chrome.Locale.localize('menu_permission');
+  };
+
+  /**
+   * Computed Binding: Info message for permission
+   * @returns {string}
+   * @memberOf Options
+   */
+  t._computePermissionsMessage = function() {
+    return Chrome.Locale.localize('permission_message');
+  };
+
+  /**
+   * Computed Binding: Info message for permission
+   * @returns {string}
+   * @memberOf Options
+   */
+  t._computePermissionsMessage1 = function() {
+    return Chrome.Locale.localize('permission_message1');
+  };
+
+  /**
+   * Computed Binding: Determine content script permission status string
+   * @param {string} permissions - current setting
+   * @returns {string}
+   * @memberOf Options
+   */
+  t._computePermissionsStatus = function(permissions) {
+    return `${Chrome.Locale.localize('permission_status')} ${permissions}`;
   };
 
   /**
@@ -226,7 +314,7 @@
           new app.GooglePhotosPage('gPhotosPage');
       t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
     } else if (Chrome.Storage.getBool('isAlbumMode')) {
-      t.gPhotosPage.loadAlbumList();
+      t.gPhotosPage.loadAlbumList().catch((err) => {});
     }
     t.route = t.pages[index].route;
   }
@@ -274,6 +362,32 @@
     // reselect previous page - need to delay so tap event is done
     setTimeout(()=> t.$.mainMenu.select(prevRoute), 500);
     Chrome.Msg.send(app.Msg.SS_SHOW).catch(() => {});
+  }
+
+  /**
+   * Show the permissions dialog
+   * @memberOf Options
+   */
+  function _showPermissionsDialog() {
+    t.$.permissionsDialog.open();
+  }
+
+  /**
+   * Set enabled state of Google Photos menu item
+   * @memberOf Options
+   */
+  function _setGooglePhotosMenuState() {
+    // disable google-page if user hasn't allowed
+    t.permissions = Chrome.Storage.get('permPicasa', 'notSet');
+    const idx = _getPageIdx('page-google-photos');
+    const el = document.getElementById(t.pages[idx].route);
+    if (!el) {
+      Chrome.GA.error('no element found', 'Options._setGooglePhotosMenuState');
+    } else if (t.permissions !== 'allowed') {
+      el.setAttribute('disabled', 'true');
+    } else {
+      el.removeAttribute('disabled');
+    }
   }
 
   /**

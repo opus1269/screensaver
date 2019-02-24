@@ -23,6 +23,8 @@ app.Msg = (function() {
    * @property {Chrome.Msg.Message} SS_CLOSE - close screensaver
    * @property {Chrome.Msg.Message} SS_IS_SHOWING - is a screensaver showing
    * @property {Chrome.Msg.Message} PHOTO_SOURCE_FAILED - failed to web load
+   * @property {Chrome.Msg.Message} SIGN_IN - {@link app.User} sign in
+   * @property {Chrome.Msg.Message} SIGN_OUT - {@link app.User} sign out
    * @const
    * @memberOf app.Msg
    */
@@ -41,6 +43,12 @@ app.Msg = (function() {
       key: '',
       error: '',
     },
+    SIGN_IN: {
+      message: 'signIn',
+    },
+    SIGN_OUT: {
+      message: 'signOut',
+    },
   };
 
   return {
@@ -48,6 +56,7 @@ app.Msg = (function() {
     SS_CLOSE: _MSG.SS_CLOSE,
     SS_IS_SHOWING: _MSG.SS_IS_SHOWING,
     PHOTO_SOURCE_FAILED: _MSG.PHOTO_SOURCE_FAILED,
-
+    SIGN_IN: _MSG.SIGN_IN,
+    SIGN_OUT: _MSG.SIGN_OUT,
   };
 })();

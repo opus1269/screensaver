@@ -26,7 +26,10 @@ import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '/elements/my_icons.js';
-import { LocalizeBehavior, Locale } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import {
+  LocalizeBehavior,
+  Locale,
+} from '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '/styles/shared-styles.js';
@@ -340,7 +343,7 @@ app.GooglePhotosPage = Polymer({
    */
   ready: function() {
     if (Chrome.Storage.getBool('isAlbumMode')) {
-      this.loadAlbumList();
+      this.loadAlbumList().catch((err) => {});
     }
   },
 
@@ -351,8 +354,8 @@ app.GooglePhotosPage = Polymer({
    */
   loadAlbumList: function() {
     const ERR_TITLE = Locale.localize('err_load_album_list');
-    return this._checkPermissions().then((allowed) => {
-      if (!allowed) {
+    return Chrome.Msg.send(app.Msg.SIGN_IN).then((response) => {
+      if (response.message === 'error') {
         const err = new Error(Locale.localize('err_auth_picasa'));
         return Promise.reject(err);
       }
@@ -378,7 +381,8 @@ app.GooglePhotosPage = Polymer({
     }).catch((err) => {
       this.set('waitForLoad', false);
       let dialogText = 'unknown';
-      if (app.GoogleSource.isQuotaError(err, 'GooglePhotosPage.loadAlbumList')) {
+      if (app.GoogleSource.isQuotaError(err,
+          'GooglePhotosPage.loadAlbumList')) {
         // Hit Google photos quota
         dialogText = Chrome.Locale.localize('err_google_quota');
       } else {
@@ -430,22 +434,6 @@ app.GooglePhotosPage = Polymer({
   },
 
   /**
-   * Try to get permissions, if not already authorized - may block
-   * @returns {Promise<boolean>} true if we have permissions
-   * @private
-   * @memberOf app.GooglePhotosPage
-   */
-  _checkPermissions: function() {
-    if (app.Permissions.isAllowed(app.Permissions.PICASA)) {
-      return Promise.resolve(true);
-    } else {
-      return app.Permissions.request(app.Permissions.PICASA).then((granted) => {
-        return Promise.resolve(granted);
-      });
-    }
-  },
-
-  /**
    * Set keys for photo sources
    * @param {boolean} useGoogle - Google Photos use enabled
    * @param {boolean} isAlbumMode - Are we in album mode
@@ -468,7 +456,7 @@ app.GooglePhotosPage = Polymer({
     this.set('isAlbumMode', !this.isAlbumMode);
     this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
     if (this.isAlbumMode) {
-      this.loadAlbumList();
+      this.loadAlbumList().catch((err) => {});
     } else {
       this.albums.splice(0, this.albums.length);
       this.selections.splice(0, this.selections.length);
@@ -482,7 +470,7 @@ app.GooglePhotosPage = Polymer({
    */
   _onRefreshTapped: function() {
     Chrome.GA.event(Chrome.GA.EVENT.ICON, 'refreshGoogleAlbums');
-    this.loadAlbumList();
+    this.loadAlbumList().catch((err) => {});
   },
 
   /**

@@ -11,9 +11,9 @@ window.app = window.app || {};
  *  @namespace
  */
 app.Permissions = (function() {
-  
+
   new ExceptionHandler();
-  
+
   const chromep = new ChromePromise();
 
   /**
@@ -55,7 +55,7 @@ app.Permissions = (function() {
    */
   const PICASA = {
     name: 'permPicasa',
-    permissions: [],
+    permissions: ['identity.email'],
     origins: ['https://photoslibrary.googleapis.com/'],
   };
 
@@ -79,12 +79,13 @@ app.Permissions = (function() {
    * @memberOf app.Permissions
    */
   function _setState(type, value) {
+    Chrome.Storage.set(type.name, value);
     // send message to store value so items that are bound
     // to it will get storage event
-    const msg = Chrome.JSONUtils.shallowCopy(Chrome.Msg.STORE);
-    msg.key = type.name;
-    msg.value = value;
-    Chrome.Msg.send(msg).catch(() => {});
+    // const msg = Chrome.JSONUtils.shallowCopy(Chrome.Msg.STORE);
+    // msg.key = type.name;
+    // msg.value = value;
+    // Chrome.Msg.send(msg).catch(() => {});
   }
 
   /**
@@ -131,6 +132,16 @@ app.Permissions = (function() {
      */
     isAllowed: function(type) {
       return Chrome.Storage.get(type.name) === _STATE.allowed;
+    },
+
+    /**
+     * Has the explicitly denied the permission
+     * @param {app.Permissions.Type} type - permission type
+     * @returns {boolean} true if allowed
+     * @memberOf app.Permissions
+     */
+    isDenied: function(type) {
+      return Chrome.Storage.get(type.name) === _STATE.denied;
     },
 
     /**
@@ -183,5 +194,30 @@ app.Permissions = (function() {
         return Promise.resolve(removed);
       });
     },
+    
+    /**
+     * Remove and deny the optional permissions
+     * @param {app.Permissions.Type} type - permission type
+     * @returns {Promise<boolean>} true if removed
+     * @memberOf app.Permissions
+     */
+    deny: function(type) {
+      return _contains(type).then((contains) => {
+        if (contains) {
+          // try to remove permission
+          return chromep.permissions.remove({
+            permissions: type.permissions,
+            origins: type.origins,
+          });
+        } else {
+          return Promise.resolve(false);
+        }
+      }).then((remove) => {
+        // set to denied regardless of whether it was removed
+        _setState(type, _STATE.denied);
+        return Promise.resolve(true);
+      });
+    },
+    
   };
 })();

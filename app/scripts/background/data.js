@@ -26,7 +26,7 @@ app.Data = (function() {
    * @private
    * @memberOf app.Data
    */
-  const _DATA_VERSION = 19;
+  const _DATA_VERSION = 20;
 
   /**
    * A number and associated units
@@ -79,6 +79,7 @@ app.Data = (function() {
    * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
    * @property {boolean} isAwake - true if screensaver can be displayed
    * @property {boolean} isShowing - true if screensaver is showing
+   * @property {string} uid - user's unique id
    */
 
   /**
@@ -129,6 +130,7 @@ app.Data = (function() {
     'gPhotosMaxAlbums': 10,
     'isAwake': true,
     'isShowing': false,
+    'uid': '',
   };
 
   /**
@@ -333,6 +335,11 @@ app.Data = (function() {
         Chrome.Storage.set('editors500pxImages', null);
         Chrome.Storage.set('popular500pxImages', null);
         Chrome.Storage.set('yesterday500pxImages', null);
+      }
+
+      if (oldVersion < 20) {
+        // TODO new handling of signouts
+        // can we figure out if people are unauthorized?
       }
 
       _addDefaults();
