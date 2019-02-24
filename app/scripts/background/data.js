@@ -338,8 +338,8 @@ app.Data = (function() {
       }
 
       if (oldVersion < 20) {
-        // TODO new handling of signouts
-        // can we figure out if people are unauthorized?
+        // can't really know for sure for existing users
+        Chrome.Storage.set('signedInToChrome', true);
       }
 
       _addDefaults();

@@ -483,7 +483,7 @@
     "message": "The extension has an optional permission that allows access to your Google Photos account.  If you click on ALLOW another dialog will be displayed asking you to allow or deny this permission, if you have not already done so."
   },
   "permission_message1": {
-    "message": "In addition, you must remain signed in to Chrome with the same account you authorized. If you sign out of Chrome or sign in as another user, your current album selections will be removed and you will need to reauthorize."
+    "message": "In addition, you must be signed in to Chrome. If you sign out of Chrome or sign in as another user, your current album selections will be removed and you will need to reauthorize."
   },
   "permission_message2": {
     "message": "To completely revoke access, go to https://myaccount.google.com/permissions, click on the Photo Screen Saver app, and select REMOVE ACCESS. This usually requires a few minutes to take effect."
