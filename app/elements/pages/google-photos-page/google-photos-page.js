@@ -354,8 +354,11 @@ app.GooglePhotosPage = Polymer({
    */
   loadAlbumList: function() {
     const ERR_TITLE = Locale.localize('err_load_album_list');
-    return Chrome.Msg.send(app.Msg.SIGN_IN).then((response) => {
-      if (response.message === 'error') {
+    const type = app.Permissions.PICASA;
+    return app.Permissions.request(type).then((granted) => {
+      if (!granted) {
+        // eslint-disable-next-line promise/no-nesting
+        app.Permissions.removeGooglePhotos().catch(() => {});
         const err = new Error(Locale.localize('err_auth_picasa'));
         return Promise.reject(err);
       }

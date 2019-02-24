@@ -79,13 +79,12 @@ app.Permissions = (function() {
    * @memberOf app.Permissions
    */
   function _setState(type, value) {
-    Chrome.Storage.set(type.name, value);
     // send message to store value so items that are bound
     // to it will get storage event
-    // const msg = Chrome.JSONUtils.shallowCopy(Chrome.Msg.STORE);
-    // msg.key = type.name;
-    // msg.value = value;
-    // Chrome.Msg.send(msg).catch(() => {});
+    const msg = Chrome.JSONUtils.shallowCopy(Chrome.Msg.STORE);
+    msg.key = type.name;
+    msg.value = value;
+    Chrome.Msg.send(msg).catch(() => {});
   }
 
   /**
@@ -194,7 +193,7 @@ app.Permissions = (function() {
         return Promise.resolve(removed);
       });
     },
-    
+
     /**
      * Remove and deny the optional permissions
      * @param {app.Permissions.Type} type - permission type
@@ -212,12 +211,32 @@ app.Permissions = (function() {
         } else {
           return Promise.resolve(false);
         }
-      }).then((remove) => {
+      }).then(() => {
         // set to denied regardless of whether it was removed
         _setState(type, _STATE.denied);
         return Promise.resolve(true);
       });
     },
-    
+
+    /**
+     * Remove, deny, and clear photo selections for Google Photos
+     * @returns {Promise<void>}
+     * @memberOf app.Permissions
+     */
+    removeGooglePhotos: function() {
+      return app.Permissions.deny(app.Permissions.PICASA).then(() => {
+        // remove selected albums
+        Chrome.Storage.set('albumSelections', []);
+
+        // remove cached Auth token
+        // eslint-disable-next-line promise/no-nesting
+        Chrome.Auth.removeCachedToken(false, null, null).catch(() => {
+          // nice to remove but not critical
+          return null;
+        });
+        return null;
+      });
+    },
+
   };
 })();

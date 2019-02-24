@@ -95,7 +95,7 @@
     {
       label: Chrome.Locale.localize('menu_help'), route: 'page-help',
       icon: 'myicons:help', obj: _showHelpPage, ready: false,
-      divider: true,
+      divider: false,
     },
     {
       label: Chrome.Locale.localize('help_faq'), route: 'page-faq',
@@ -220,9 +220,13 @@
    * @memberOf Options
    */
   t._onAcceptPermissionsClicked = function() {
-    Chrome.Msg.send(app.Msg.SIGN_IN).then(() => {
-      t.permission = Chrome.Storage.get('permPicasa');
-      return null;
+    const type = app.Permissions.PICASA;
+    app.Permissions.request(type).then((granted) => {
+      if (!granted) {
+        return app.Permissions.removeGooglePhotos();
+      } else {
+        return null;
+      }
     }).catch((err) => {
       Chrome.Log.error(err.message, 'Options._onAcceptPermissionsClicked');
     });
@@ -233,10 +237,7 @@
    * @memberOf Options
    */
   t._onDenyPermissionsClicked = function() {
-    Chrome.Msg.send(app.Msg.SIGN_OUT).then(() => {
-      t.permission = Chrome.Storage.get('permPicasa');
-      return null;
-    }).catch((err) => {
+    app.Permissions.removeGooglePhotos().catch((err) => {
       Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
     });
   };
