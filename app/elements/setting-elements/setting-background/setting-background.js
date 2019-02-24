@@ -50,7 +50,7 @@ Polymer({
       }
 
       :host .container {
-        width: 640px;
+        width: 440px;
       }
 
       :host .background {

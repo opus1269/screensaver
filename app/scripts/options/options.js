@@ -4,27 +4,28 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-(function() {
-  'use strict';
+window.app = window.app || {};
 
-  /**
-   * Extension's Options page
-   * @namespace Options
-   */
+/**
+ * Extension's Options page
+ * @namespace
+ */
+app.Options = (function() {
+  'use strict';
 
   new ExceptionHandler();
 
   /**
    * Manage an html page that is inserted on demand<br />
    * May also be a url link to external site
-   * @typedef {{}} Options.Page
+   * @typedef {{}} app.Options.Page
    * @property {string} label - label for Nav menu
    * @property {string} route - element name route to page
    * @property {string} icon - icon for Nav Menu
    * @property {?Object|Function} obj - something to be done when selected
    * @property {boolean} ready - true if html is inserted
    * @property {boolean} divider - true for divider before item
-   * @memberOf Options
+   * @memberOf app.Options
    */
 
   /**
@@ -32,7 +33,7 @@
    * @type {string}
    * @const
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   const EXT_URI =
       'https://chrome.google.com/webstore/detail/screensaver/' +
@@ -44,7 +45,7 @@
    * @const
    * @default
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   const PUSHY_URI =
       'https://chrome.google.com/webstore/detail/pushy-clipboard/' +
@@ -55,14 +56,14 @@
    * @type {Object}
    * @const
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   const t = document.querySelector('#t');
 
   /**
    * Array of pages
-   * @type {Options.Page[]}
-   * @memberOf Options
+   * @type {app.Options.Page[]}
+   * @memberOf app.Options
    */
   t.pages = [
     {
@@ -125,29 +126,29 @@
   t.dialogText = '';
 
   /**
-   * Current {@link Options.Page}
+   * Current {@link app.Options.Page}
    * @type {string}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t.route = 'page-settings';
 
   /**
    * Google Photos permission
    * @type {string}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t.permission = Chrome.Storage.get('permPicasa');
 
   /**
    * Chrome sign in state
    * @type {boolean}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
 
   /**
    * Event: Document and resources loaded
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _onLoad() {
     Chrome.GA.page('/options.html');
@@ -181,12 +182,12 @@
     }, false);
 
   }
-  
+
   /**
    * Event: navigation menu selected
    * Route to proper page
    * @param {Event} event - ClickEvent
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._onNavMenuItemTapped = function(event) {
     // Close drawer after menu item is selected if it is in narrow layout
@@ -195,7 +196,7 @@
     if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
       appDrawer.close();
     }
-    
+
     const idx = _getPageIdx(event.currentTarget.id);
 
     Chrome.GA.event(Chrome.GA.EVENT.MENU, t.pages[idx].route);
@@ -217,7 +218,7 @@
 
   /**
    * Event: Clicked on accept permissions dialog button
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._onAcceptPermissionsClicked = function() {
     const type = app.Permissions.PICASA;
@@ -234,7 +235,7 @@
 
   /**
    * Event: Clicked on deny permission dialog button
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._onDenyPermissionsClicked = function() {
     app.Permissions.removeGooglePhotos().catch((err) => {
@@ -245,7 +246,7 @@
   /**
    * Computed property: Page title
    * @returns {string} i18n title
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computeTitle = function() {
     return Chrome.Locale.localize('chrome_extension_name');
@@ -254,7 +255,7 @@
   /**
    * Computed property: Menu label
    * @returns {string} i18n label
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computeMenu = function() {
     return Chrome.Locale.localize('menu');
@@ -263,7 +264,7 @@
   /**
    * Computed property: Permissions dialog title
    * @returns {string} i18n title
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computePermDialogTitle = function() {
     return Chrome.Locale.localize('menu_permission');
@@ -272,7 +273,7 @@
   /**
    * Computed Binding: Info message for permission
    * @returns {string}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computePermissionsMessage = function() {
     return Chrome.Locale.localize('permission_message');
@@ -281,7 +282,7 @@
   /**
    * Computed Binding: Info message for permission
    * @returns {string}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computePermissionsMessage1 = function() {
     return Chrome.Locale.localize('permission_message1');
@@ -290,7 +291,7 @@
   /**
    * Computed Binding: Info message for permission
    * @returns {string}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computePermissionsMessage2 = function() {
     return Chrome.Locale.localize('permission_message2');
@@ -300,18 +301,18 @@
    * Computed Binding: Determine content script permission status string
    * @param {string} permissions - current setting
    * @returns {string}
-   * @memberOf Options
+   * @memberOf app.Options
    */
   t._computePermissionsStatus = function(permissions) {
     return `${Chrome.Locale.localize('permission_status')} ${permissions}`;
   };
 
   /**
-   * Get the index into the {@link Options.pages} array
-   * @param {string} name - {@link Options.page} route
+   * Get the index into the {@link app.Options.pages} array
+   * @param {string} name - {@link app.Options.page} route
    * @returns {int} index into array
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _getPageIdx(name) {
     return t.pages.map(function(e) {
@@ -321,8 +322,8 @@
 
   /**
    * Show the Google Photos page
-   * @param {int} index - index into [t.pages]{@link Options.t.pages}
-   * @memberOf Options
+   * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
+   * @memberOf app.Options
    */
   function _showGooglePhotosPage(index) {
     if (!t.signedInToChrome) {
@@ -346,9 +347,9 @@
 
   /**
    * Show the error viewer page
-   * @param {int} index - index into {@link Options.pages}
+   * @param {int} index - index into {@link app.Options.pages}
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _showErrorPage(index) {
     if (!t.pages[index].ready) {
@@ -362,9 +363,9 @@
 
   /**
    * Show the help page
-   * @param {int} index - index into [t.pages]{@link Options.t.pages}
+   * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _showHelpPage(index) {
     if (!t.pages[index].ready) {
@@ -379,19 +380,19 @@
   // noinspection JSUnusedLocalSymbols
   /**
    * Display a preview of the screen saver
-   * @param {int} index - index into [t.pages]{@link Options.t.pages}
+   * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
    * @param {string} prevRoute - last page selected
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _showScreensaverPreview(index, prevRoute) {
     // reselect previous page - need to delay so tap event is done
-    setTimeout(()=> t.$.mainMenu.select(prevRoute), 500);
+    setTimeout(() => t.$.mainMenu.select(prevRoute), 500);
     Chrome.Msg.send(app.Msg.SS_SHOW).catch(() => {});
   }
 
   /**
    * Show the permissions dialog
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _showPermissionsDialog() {
     t.$.permissionsDialog.open();
@@ -399,7 +400,7 @@
 
   /**
    * Set enabled state of Google Photos menu item
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
@@ -417,7 +418,7 @@
 
   /**
    * Set enabled state of Error Viewer menu item
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _setErrorMenuState() {
     // disable error-page if no lastError
@@ -445,7 +446,7 @@
    * @param {Function} [response] - function to call once after processing
    * @returns {boolean} true if asynchronous
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _onMessage(request, sender, response) {
     if (request.message === Chrome.Msg.HIGHLIGHT.message) {
@@ -477,4 +478,19 @@
   // listen for documents and resources loaded
   window.addEventListener('load', _onLoad);
 
+  return {
+    /**
+     * Display an error dialog
+     * @param {string} title - dialog title
+     * @param {string} text - dialog text
+     * @memberOf app.Options
+     */
+    showErrorDialog: function(title, text) {
+      // Display Error Dialog if not signed in to Chrome
+      t.dialogTitle = title;
+      t.dialogText = text;
+      t.$.errorDialog.open();
+    },
+    
+  };
 })();

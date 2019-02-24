@@ -13,7 +13,6 @@ import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '/node_modules/@polymer/paper-material/paper-material.js';
 import '/node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
 import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
-import '/node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '/node_modules/@polymer/paper-button/paper-button.js';
 import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';

@@ -15,8 +15,6 @@ import '/node_modules/@polymer/paper-styles/color.js';
 import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '/node_modules/@polymer/paper-material/paper-material.js';
 import '/node_modules/@polymer/paper-ripple/paper-ripple.js';
-import '/node_modules/@polymer/paper-dialog/paper-dialog.js';
-import '/node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '/node_modules/@polymer/paper-button/paper-button.js';
 import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';
@@ -168,17 +166,6 @@ app.GooglePhotosPage = Polymer({
       </paper-material>
 
       <div class="page-content">
-
-        <!-- Error dialog -->
-        <paper-dialog id="errorDialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
-          <h2 id="dialogTitle"></h2>
-          <paper-dialog-scrollable>
-            <p id="dialogText"></p>
-          </paper-dialog-scrollable>
-          <div class="buttons">
-            <paper-button dialog-dismiss="">{{localize('ok')}}</paper-button>
-          </div>
-        </paper-dialog>
 
         <div class="waiter" hidden\$="[[!waitForLoad]]">
           <div class="horizontal center-justified layout">
@@ -393,10 +380,8 @@ app.GooglePhotosPage = Polymer({
         Chrome.Log.error(err.message,
             'GooglePhotosPage.loadAlbumList', ERR_TITLE);
       }
-      this.$.dialogTitle.innerHTML =
-          Locale.localize('err_request_failed');
-      this.$.dialogText.innerHTML = dialogText;
-      this.$.errorDialog.open();
+      window.app.Options.showErrorDialog(Locale.localize('err_request_failed'),
+          dialogText);
       return Promise.reject(err);
     });
   },
@@ -428,10 +413,8 @@ app.GooglePhotosPage = Polymer({
         Chrome.Log.error(err.message,
             'GooglePhotosPage.loadAlbum', ERR_TITLE);
       }
-      this.$.dialogTitle.innerHTML =
-          Locale.localize('err_request_failed');
-      this.$.dialogText.innerHTML = dialogText;
-      this.$.errorDialog.open();
+      app.Options.showErrorDialog(Locale.localize('err_request_failed'),
+          dialogText);
     }
     return album;
   },
@@ -540,10 +523,9 @@ app.GooglePhotosPage = Polymer({
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
-        this.$.dialogTitle.innerHTML =
-            Locale.localize('err_request_failed');
-        this.$.dialogText.innerHTML = Locale.localize('err_max_albums');
-        this.$.errorDialog.open();
+        app.Options.showErrorDialog(Locale.localize('err_request_failed'),
+            Locale.localize('err_max_albums'));
+
         return;
       }
       const newAlbum = await this._loadAlbum(album.id, album.name);
@@ -613,9 +595,7 @@ app.GooglePhotosPage = Polymer({
   _showStorageErrorDialog: function(method) {
     const ERR_TITLE = Locale.localize('err_storage_title');
     Chrome.Log.error('safeSet failed', method, ERR_TITLE);
-    this.$.dialogTitle.innerHTML = ERR_TITLE;
-    this.$.dialogText.innerHTML = Locale.localize('err_storage_desc');
-    this.$.errorDialog.open();
+    app.Options.showErrorDialog(ERR_TITLE, Locale.localize('err_storage_desc'));
   },
 
   /**
