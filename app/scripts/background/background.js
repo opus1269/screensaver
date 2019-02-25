@@ -78,6 +78,7 @@ function _onInstalled(details) {
 function _onStartup() {
   Chrome.GA.page('/background.html');
   app.Data.processState();
+  Chrome.Storage.set('isShowing', false);
 }
 
 /**
