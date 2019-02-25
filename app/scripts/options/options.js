@@ -63,6 +63,7 @@ app.Options = (function() {
   /**
    * Array of pages
    * @type {app.Options.Page[]}
+   * @private
    * @memberOf app.Options
    */
   t.pages = [
@@ -128,6 +129,7 @@ app.Options = (function() {
   /**
    * Current {@link app.Options.Page}
    * @type {string}
+   * @private
    * @memberOf app.Options
    */
   t.route = 'page-settings';
@@ -135,6 +137,7 @@ app.Options = (function() {
   /**
    * Google Photos permission
    * @type {string}
+   * @private
    * @memberOf app.Options
    */
   t.permission = Chrome.Storage.get('permPicasa');
@@ -142,12 +145,14 @@ app.Options = (function() {
   /**
    * Chrome sign in state
    * @type {boolean}
+   * @private
    * @memberOf app.Options
    */
   t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
 
   /**
    * Event: Document and resources loaded
+   * @private
    * @memberOf app.Options
    */
   function _onLoad() {
@@ -187,6 +192,7 @@ app.Options = (function() {
    * Event: navigation menu selected
    * Route to proper page
    * @param {Event} event - ClickEvent
+   * @private
    * @memberOf app.Options
    */
   t._onNavMenuItemTapped = function(event) {
@@ -218,6 +224,7 @@ app.Options = (function() {
 
   /**
    * Event: Clicked on accept permissions dialog button
+   * @private
    * @memberOf app.Options
    */
   t._onAcceptPermissionsClicked = function() {
@@ -235,6 +242,7 @@ app.Options = (function() {
 
   /**
    * Event: Clicked on deny permission dialog button
+   * @private
    * @memberOf app.Options
    */
   t._onDenyPermissionsClicked = function() {
@@ -246,6 +254,7 @@ app.Options = (function() {
   /**
    * Computed property: Page title
    * @returns {string} i18n title
+   * @private
    * @memberOf app.Options
    */
   t._computeTitle = function() {
@@ -255,6 +264,7 @@ app.Options = (function() {
   /**
    * Computed property: Menu label
    * @returns {string} i18n label
+   * @private
    * @memberOf app.Options
    */
   t._computeMenu = function() {
@@ -264,6 +274,7 @@ app.Options = (function() {
   /**
    * Computed property: Permissions dialog title
    * @returns {string} i18n title
+   * @private
    * @memberOf app.Options
    */
   t._computePermDialogTitle = function() {
@@ -273,6 +284,7 @@ app.Options = (function() {
   /**
    * Computed Binding: Info message for permission
    * @returns {string}
+   * @private
    * @memberOf app.Options
    */
   t._computePermissionsMessage = function() {
@@ -282,6 +294,7 @@ app.Options = (function() {
   /**
    * Computed Binding: Info message for permission
    * @returns {string}
+   * @private
    * @memberOf app.Options
    */
   t._computePermissionsMessage1 = function() {
@@ -291,6 +304,7 @@ app.Options = (function() {
   /**
    * Computed Binding: Info message for permission
    * @returns {string}
+   * @private
    * @memberOf app.Options
    */
   t._computePermissionsMessage2 = function() {
@@ -301,6 +315,7 @@ app.Options = (function() {
    * Computed Binding: Determine content script permission status string
    * @param {string} permissions - current setting
    * @returns {string}
+   * @private
    * @memberOf app.Options
    */
   t._computePermissionsStatus = function(permissions) {
@@ -323,6 +338,7 @@ app.Options = (function() {
   /**
    * Show the Google Photos page
    * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
+   * @private
    * @memberOf app.Options
    */
   function _showGooglePhotosPage(index) {
@@ -382,6 +398,7 @@ app.Options = (function() {
    * Display a preview of the screen saver
    * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
    * @param {string} prevRoute - last page selected
+   * @private
    * @memberOf app.Options
    */
   function _showScreensaverPreview(index, prevRoute) {
@@ -392,6 +409,7 @@ app.Options = (function() {
 
   /**
    * Show the permissions dialog
+   * @private
    * @memberOf app.Options
    */
   function _showPermissionsDialog() {
@@ -400,6 +418,7 @@ app.Options = (function() {
 
   /**
    * Set enabled state of Google Photos menu item
+   * @private
    * @memberOf app.Options
    */
   function _setGooglePhotosMenuState() {
@@ -418,6 +437,7 @@ app.Options = (function() {
 
   /**
    * Set enabled state of Error Viewer menu item
+   * @private
    * @memberOf app.Options
    */
   function _setErrorMenuState() {
