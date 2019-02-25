@@ -374,7 +374,7 @@ Polymer({
    */
   _computeTransitionTimeUnits: function() {
     return [
-      this._getUnit('seconds', 4, 60, 1, 1),
+      this._getUnit('seconds', 10, 60, 1, 1),
       this._getUnit('minutes', 1, 60, 1, 60),
       this._getUnit('hours', 1, 24, 1, 3600),
       this._getUnit('days', 1, 365, 1, 86400),

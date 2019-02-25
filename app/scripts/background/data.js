@@ -340,6 +340,15 @@ app.Data = (function() {
       if (oldVersion < 20) {
         // can't really know for sure for existing users
         Chrome.Storage.set('signedInToChrome', true);
+        
+        // change minimum transition time
+        const trans = Chrome.Storage.get('transitionTime',
+            {'base': 30, 'display': 30, 'unit': 0});
+        if ((trans.unit === 0)) {
+          trans.base = Math.max(10, trans.base);
+          trans.display = trans.base;
+          Chrome.Storage.set('transitionTime', trans);
+        }
       }
 
       _addDefaults();
