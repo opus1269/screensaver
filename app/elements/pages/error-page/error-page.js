@@ -18,10 +18,10 @@ import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';
 import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
-import { LocalizeBehavior, Locale } from 
+import {LocalizeBehavior} from
       '/elements/setting-elements/localize-behavior/localize-behavior.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '/styles/shared-styles.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -45,40 +45,43 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
         position: relative;
       }
 
-      .page-content {
-        width: 100%;
+      .page-container {
+        max-width: 1000px;
         height: 100%;
-        margin: 0;
-        padding: 0;
+        margin-bottom: 16px;
       }
 
-      .page-toolbar {
-        margin-bottom: 0;
-      }
-
-      .body-content {
-        padding-top: 0;
-      }
-
-      #errorViewer {
-        height: 82vh;
-        @apply --paper-font-subhead;
+       #errorViewer {
+        min-height: 75vh;
         white-space: pre-wrap;
         overflow: hidden;
-        overflow-y: scroll;
-        padding: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        margin: 0;
+      }
+      
+      .error-title {
+        @apply --paper-font-title;
+        padding: 0;
+        margin: 0;
+      }
+
+      .error-text {
+        @apply --paper-font-subhead;
+        padding: 0;
         margin: 0;
       }
 
     </style>
 
-    <paper-material elevation="1" class="page-content">
+    <paper-material elevation="1" class="page-container">
+    
       <!-- Tool bar -->
       <paper-material elevation="1">
         <app-toolbar class="page-toolbar">
           <span class="space"></span>
           <div class="middle middle-container center horizontal layout flex">
-            <div class="flex">[[_computeTitle(lastError)]]</div>
+            <div class="flex">{{localize('last_error_viewer_title')}}</div>
             <paper-icon-button id="email" icon="myicons:mail" on-tap="_onEmailTapped" disabled\$="[[!lastError.message]]">
             </paper-icon-button>
             <paper-tooltip for="email" position="left" offset="0">
@@ -92,11 +95,13 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
           </div>
         </app-toolbar>
       </paper-material>
+      
       <!-- Content -->
-      <div class="body-content horizontal layout">
+      <div class="page-content">
         <div id="errorViewer">
-          <div class="error-text">[[lastError.message]]</div>
-          <div class="error-text">[[_computeStack(lastError)]]</div>
+          <paper-item class="error-title">[[_computeTitle(lastError)]]</paper-item>
+          <paper-item class="error-text">[[lastError.message]]</paper-item>
+          <paper-item class="error-text">[[_computeStack(lastError)]]</paper-item>
         </div>
       </div>
     </paper-material>
@@ -109,7 +114,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     ],
 
     properties: {
-      
+
       /**
        * The LastError Object to display
        * @memberOf app.ErrorPage
@@ -162,7 +167,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
       const url = app.Utils.getEmailUrl('Last Error', body);
       Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError email');
-      chrome.tabs.create({ url: url });
+      chrome.tabs.create({url: url});
     },
 
     /**
@@ -178,31 +183,25 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     /**
      * Computed Binding
      * @param {Chrome.Storage.LastError} lastError - the error
+     * @param {Chrome.Storage.LastError} lastError.stack - stack trace
      * @returns {string} stack trace
      * @private
      * @memberOf app.ErrorPage
      */
     _computeStack: function(lastError) {
-      let ret = '';
-      if (lastError.message) {
-        ret += lastError.stack;
-      }
-      return ret;
+      return lastError.message ? lastError.stack : '';
     },
 
     /**
      * Computed Binding
      * @param {Chrome.Storage.LastError} lastError - the error
+     * @param {Chrome.Storage.LastError} lastError.title - message title
      * @returns {string} page title
      * @private
      * @memberOf app.ErrorPage
      */
     _computeTitle: function(lastError) {
-      let ret = Locale.localize('last_error_viewer_title');
-      if (lastError.message) {
-        ret += ` - ${lastError.title}`;
-      }
-      return ret;
+      return lastError.message ? lastError.title : '';
     },
   });
 })(window);
