@@ -12,6 +12,26 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
+ * Determine if Chrome is signed in
+ * @see https://developer.chrome.com/apps/identity#event-onSignInChanged
+ * @returns {Promise<boolean>} true if signed in to Chrome
+ * @memberOf User
+ */
+export function isSignedInToChrome() {
+  const chromep = new ChromePromise();
+  let ret = true;
+  // try to get a token and check failure message
+  return chromep.identity.getAuthToken({interactive: false}).then((token) => {
+    return Promise.resolve(ret);
+  }).catch((err) => {
+    if (err.message.match(/not signed in/)) {
+      ret = false;
+    }
+    return Promise.resolve(ret);
+  });
+}
+
+/**
  * Event: Fired when signin state changes for an act. on the user's profile.
  * @see https://developer.chrome.com/apps/identity#event-onSignInChanged
  * @param {Object} account - chrome AccountInfo

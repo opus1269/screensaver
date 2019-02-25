@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
+import {isSignedInToChrome} from './user.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -253,6 +254,12 @@ app.Data = (function() {
       // set operating system
       _setOS().catch(() => {});
 
+      // set signin state
+      isSignedInToChrome().then((signedIn) => {
+        Chrome.Storage.set('signedInToChrome', signedIn);
+        return null;
+      }).catch(() => {});
+
       // and the last error
       Chrome.Storage.clearLastError().catch((err) => {
         Chrome.GA.error(err.message, 'Data.initialize');
@@ -338,9 +345,12 @@ app.Data = (function() {
       }
 
       if (oldVersion < 20) {
-        // can't really know for sure for existing users
-        Chrome.Storage.set('signedInToChrome', true);
-        
+        // set signin state
+        isSignedInToChrome().then((signedIn) => {
+          Chrome.Storage.set('signedInToChrome', signedIn);
+          return null;
+        }).catch(() => {});
+
         // change minimum transition time
         const trans = Chrome.Storage.get('transitionTime',
             {'base': 30, 'display': 30, 'unit': 0});
