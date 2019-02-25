@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Alarm.html">Alarm</a></li><li><a href="app.Data.html">app.Data</a></li><li><a href="app.ErrorPage.html">app.ErrorPage</a></li><li><a href="app.GA.html">app.GA</a></li><li><a href="app.Geo.html">app.Geo</a></li><li><a href="app.GooglePhotosPage.html">app.GooglePhotosPage</a></li><li><a href="app.HelpPage.html">app.HelpPage</a></li><li><a href="app.Msg.html">app.Msg</a></li><li><a href="app.Permissions.html">app.Permissions</a></li><li><a href="app.PhotoSources.html">app.PhotoSources</a></li><li><a href="app.Screensaver.html">app.Screensaver</a></li><li><a href="app.SSBuilder.html">app.SSBuilder</a></li><li><a href="app.SSEvents.html">app.SSEvents</a></li><li><a href="app.SSFinder.html">app.SSFinder</a></li><li><a href="app.SSHistory.html">app.SSHistory</a></li><li><a href="app.SSPhotos.html">app.SSPhotos</a></li><li><a href="app.SSRunner.html">app.SSRunner</a></li><li><a href="app.SSTime.html">app.SSTime</a></li><li><a href="app.SSViews.html">app.SSViews</a></li><li><a href="app.Utils.html">app.Utils</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.Auth.html">Chrome.Auth</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ContextMenus.html">ContextMenus</a></li><li><a href="Locale.html">Locale</a></li><li><a href="LocalizeBehavior.html">LocalizeBehavior</a></li><li><a href="Options.html">Options</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingsPage.html">SettingsPage</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li><li><a href="SSControl.html">SSControl</a></li>
+					<li><a href="Alarm.html">Alarm</a></li><li><a href="app.Data.html">app.Data</a></li><li><a href="app.ErrorPage.html">app.ErrorPage</a></li><li><a href="app.GA.html">app.GA</a></li><li><a href="app.Geo.html">app.Geo</a></li><li><a href="app.GooglePhotosPage.html">app.GooglePhotosPage</a></li><li><a href="app.HelpPage.html">app.HelpPage</a></li><li><a href="app.Msg.html">app.Msg</a></li><li><a href="app.Options.html">app.Options</a></li><li><a href="app.Permissions.html">app.Permissions</a></li><li><a href="app.PhotoSources.html">app.PhotoSources</a></li><li><a href="app.Screensaver.html">app.Screensaver</a></li><li><a href="app.SSBuilder.html">app.SSBuilder</a></li><li><a href="app.SSEvents.html">app.SSEvents</a></li><li><a href="app.SSFinder.html">app.SSFinder</a></li><li><a href="app.SSHistory.html">app.SSHistory</a></li><li><a href="app.SSPhotos.html">app.SSPhotos</a></li><li><a href="app.SSRunner.html">app.SSRunner</a></li><li><a href="app.SSTime.html">app.SSTime</a></li><li><a href="app.SSViews.html">app.SSViews</a></li><li><a href="app.Utils.html">app.Utils</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.Auth.html">Chrome.Auth</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ContextMenus.html">ContextMenus</a></li><li><a href="Locale.html">Locale</a></li><li><a href="LocalizeBehavior.html">LocalizeBehavior</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingsPage.html">SettingsPage</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li><li><a href="SSControl.html">SSControl</a></li><li><a href="User.html">User</a></li>
 				</ul>
 			</li>
 			
@@ -83,27 +83,28 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-(function() {
-  'use strict';
+window.app = window.app || {};
 
-  /**
-   * Extension's Options page
-   * @namespace Options
-   */
+/**
+ * Extension's Options page
+ * @namespace
+ */
+app.Options = (function() {
+  'use strict';
 
   new ExceptionHandler();
 
   /**
    * Manage an html page that is inserted on demand&lt;br />
    * May also be a url link to external site
-   * @typedef {{}} Options.Page
+   * @typedef {{}} app.Options.Page
    * @property {string} label - label for Nav menu
    * @property {string} route - element name route to page
    * @property {string} icon - icon for Nav Menu
    * @property {?Object|Function} obj - something to be done when selected
    * @property {boolean} ready - true if html is inserted
    * @property {boolean} divider - true for divider before item
-   * @memberOf Options
+   * @memberOf app.Options
    */
 
   /**
@@ -111,7 +112,7 @@
    * @type {string}
    * @const
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   const EXT_URI =
       'https://chrome.google.com/webstore/detail/screensaver/' +
@@ -123,7 +124,7 @@
    * @const
    * @default
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   const PUSHY_URI =
       'https://chrome.google.com/webstore/detail/pushy-clipboard/' +
@@ -134,14 +135,15 @@
    * @type {Object}
    * @const
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   const t = document.querySelector('#t');
 
   /**
    * Array of pages
-   * @type {Options.Page[]}
-   * @memberOf Options
+   * @type {app.Options.Page[]}
+   * @private
+   * @memberOf app.Options
    */
   t.pages = [
     {
@@ -149,24 +151,32 @@
       icon: 'myicons:settings', obj: null, ready: true, divider: false,
     },
     {
-      label: Chrome.Locale.localize('menu_google'),
-      route: 'page-google-photos', icon: 'myicons:cloud',
-      obj: _showGooglePhotosPage, ready: false, divider: false,
-    },
-    {
       label: Chrome.Locale.localize('menu_preview'), route: 'page-preview',
       icon: 'myicons:pageview', obj: _showScreensaverPreview, ready: true,
       divider: false,
     },
     {
+      label: Chrome.Locale.localize('menu_google'),
+      route: 'page-google-photos', icon: 'myicons:cloud',
+      obj: _showGooglePhotosPage, ready: false, divider: true,
+    },
+    {
+      label: Chrome.Locale.localize('menu_permission'),
+      route: 'page-permission',
+      icon: 'myicons:perm-data-setting',
+      obj: _showPermissionsDialog,
+      ready: true,
+      divider: false,
+    },
+    {
       label: Chrome.Locale.localize('menu_error'), route: 'page-error',
       icon: 'myicons:error', obj: _showErrorPage,
-      ready: false, disabled: false, divider: false,
+      ready: false, disabled: false, divider: true,
     },
     {
       label: Chrome.Locale.localize('menu_help'), route: 'page-help',
       icon: 'myicons:help', obj: _showHelpPage, ready: false,
-      divider: true,
+      divider: false,
     },
     {
       label: Chrome.Locale.localize('help_faq'), route: 'page-faq',
@@ -196,15 +206,33 @@
   t.dialogText = '';
 
   /**
-   * Current {@link Options.Page}
+   * Current {@link app.Options.Page}
    * @type {string}
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   t.route = 'page-settings';
 
   /**
+   * Google Photos permission
+   * @type {string}
+   * @private
+   * @memberOf app.Options
+   */
+  t.permission = Chrome.Storage.get('permPicasa');
+
+  /**
+   * Chrome sign in state
+   * @type {boolean}
+   * @private
+   * @memberOf app.Options
+   */
+  t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
+
+  /**
    * Event: Document and resources loaded
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   function _onLoad() {
     Chrome.GA.page('/options.html');
@@ -212,8 +240,9 @@
     // listen for chrome messages
     Chrome.Msg.listen(_onMessage);
 
-    // initialize lastError enabled state
+    // initialize menu enabled states
     _setErrorMenuState();
+    _setGooglePhotosMenuState();
 
     // listen for changes to chrome.storage
     chrome.storage.onChanged.addListener(function(changes) {
@@ -226,13 +255,24 @@
         }
       }
     });
+
+    // listen for changes to localStorage
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === 'permPicasa') {
+        _setGooglePhotosMenuState();
+      } else if (ev.key === 'signedInToChrome') {
+        t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
+      }
+    }, false);
+
   }
-  
+
   /**
    * Event: navigation menu selected
    * Route to proper page
    * @param {Event} event - ClickEvent
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   t._onNavMenuItemTapped = function(event) {
     // Close drawer after menu item is selected if it is in narrow layout
@@ -241,7 +281,7 @@
     if (appDrawer &amp;&amp; appDrawerLayout &amp;&amp; appDrawerLayout.narrow) {
       appDrawer.close();
     }
-    
+
     const idx = _getPageIdx(event.currentTarget.id);
 
     Chrome.GA.event(Chrome.GA.EVENT.MENU, t.pages[idx].route);
@@ -262,9 +302,39 @@
   };
 
   /**
+   * Event: Clicked on accept permissions dialog button
+   * @private
+   * @memberOf app.Options
+   */
+  t._onAcceptPermissionsClicked = function() {
+    const type = app.Permissions.PICASA;
+    app.Permissions.request(type).then((granted) => {
+      if (!granted) {
+        return app.Permissions.removeGooglePhotos();
+      } else {
+        return null;
+      }
+    }).catch((err) => {
+      Chrome.Log.error(err.message, 'Options._onAcceptPermissionsClicked');
+    });
+  };
+
+  /**
+   * Event: Clicked on deny permission dialog button
+   * @private
+   * @memberOf app.Options
+   */
+  t._onDenyPermissionsClicked = function() {
+    app.Permissions.removeGooglePhotos().catch((err) => {
+      Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
+    });
+  };
+
+  /**
    * Computed property: Page title
    * @returns {string} i18n title
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   t._computeTitle = function() {
     return Chrome.Locale.localize('chrome_extension_name');
@@ -273,18 +343,70 @@
   /**
    * Computed property: Menu label
    * @returns {string} i18n label
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   t._computeMenu = function() {
     return Chrome.Locale.localize('menu');
   };
 
   /**
-   * Get the index into the {@link Options.pages} array
-   * @param {string} name - {@link Options.page} route
+   * Computed property: Permissions dialog title
+   * @returns {string} i18n title
+   * @private
+   * @memberOf app.Options
+   */
+  t._computePermDialogTitle = function() {
+    return Chrome.Locale.localize('menu_permission');
+  };
+
+  /**
+   * Computed Binding: Info message for permission
+   * @returns {string}
+   * @private
+   * @memberOf app.Options
+   */
+  t._computePermissionsMessage = function() {
+    return Chrome.Locale.localize('permission_message');
+  };
+
+  /**
+   * Computed Binding: Info message for permission
+   * @returns {string}
+   * @private
+   * @memberOf app.Options
+   */
+  t._computePermissionsMessage1 = function() {
+    return Chrome.Locale.localize('permission_message1');
+  };
+
+  /**
+   * Computed Binding: Info message for permission
+   * @returns {string}
+   * @private
+   * @memberOf app.Options
+   */
+  t._computePermissionsMessage2 = function() {
+    return Chrome.Locale.localize('permission_message2');
+  };
+
+  /**
+   * Computed Binding: Determine content script permission status string
+   * @param {string} permission - current setting
+   * @returns {string}
+   * @private
+   * @memberOf app.Options
+   */
+  t._computePermissionsStatus = function(permission) {
+    return `${Chrome.Locale.localize('permission_status')} ${Chrome.Locale.localize(permission)}`;
+  };
+
+  /**
+   * Get the index into the {@link app.Options.pages} array
+   * @param {string} name - {@link app.Options.page} route
    * @returns {int} index into array
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _getPageIdx(name) {
     return t.pages.map(function(e) {
@@ -294,10 +416,18 @@
 
   /**
    * Show the Google Photos page
-   * @param {int} index - index into [t.pages]{@link Options.t.pages}
-   * @memberOf Options
+   * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
+   * @private
+   * @memberOf app.Options
    */
   function _showGooglePhotosPage(index) {
+    if (!t.signedInToChrome) {
+      // Display Error Dialog if not signed in to Chrome
+      t.dialogTitle = Chrome.Locale.localize('err_chrome_signin_title');
+      t.dialogText = Chrome.Locale.localize('err_chrome_signin');
+      t.$.errorDialog.open();
+      return;
+    }
     if (!t.pages[index].ready) {
       // create the page the first time
       t.pages[index].ready = true;
@@ -305,16 +435,16 @@
           new app.GooglePhotosPage('gPhotosPage');
       t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
     } else if (Chrome.Storage.getBool('isAlbumMode')) {
-      t.gPhotosPage.loadAlbumList();
+      t.gPhotosPage.loadAlbumList().catch((err) => {});
     }
     t.route = t.pages[index].route;
   }
 
   /**
    * Show the error viewer page
-   * @param {int} index - index into {@link Options.pages}
+   * @param {int} index - index into {@link app.Options.pages}
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _showErrorPage(index) {
     if (!t.pages[index].ready) {
@@ -328,9 +458,9 @@
 
   /**
    * Show the help page
-   * @param {int} index - index into [t.pages]{@link Options.t.pages}
+   * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _showHelpPage(index) {
     if (!t.pages[index].ready) {
@@ -345,19 +475,49 @@
   // noinspection JSUnusedLocalSymbols
   /**
    * Display a preview of the screen saver
-   * @param {int} index - index into [t.pages]{@link Options.t.pages}
+   * @param {int} index - index into [t.pages]{@link app.Options.t.pages}
    * @param {string} prevRoute - last page selected
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   function _showScreensaverPreview(index, prevRoute) {
     // reselect previous page - need to delay so tap event is done
-    setTimeout(()=> t.$.mainMenu.select(prevRoute), 500);
+    setTimeout(() => t.$.mainMenu.select(prevRoute), 500);
     Chrome.Msg.send(app.Msg.SS_SHOW).catch(() => {});
   }
 
   /**
+   * Show the permissions dialog
+   * @private
+   * @memberOf app.Options
+   */
+  function _showPermissionsDialog() {
+    t.$.permissionsDialog.open();
+  }
+
+  /**
+   * Set enabled state of Google Photos menu item
+   * @private
+   * @memberOf app.Options
+   */
+  function _setGooglePhotosMenuState() {
+    // disable google-page if user hasn't allowed
+    t.permission = Chrome.Storage.get('permPicasa', 'notSet');
+    const idx = _getPageIdx('page-google-photos');
+    const el = document.getElementById(t.pages[idx].route);
+    if (!el) {
+      Chrome.GA.error('no element found', 'Options._setGooglePhotosMenuState');
+    } else if (t.permission !== 'allowed') {
+      el.setAttribute('disabled', 'true');
+    } else {
+      el.removeAttribute('disabled');
+    }
+  }
+
+  /**
    * Set enabled state of Error Viewer menu item
-   * @memberOf Options
+   * @private
+   * @memberOf app.Options
    */
   function _setErrorMenuState() {
     // disable error-page if no lastError
@@ -385,7 +545,7 @@
    * @param {Function} [response] - function to call once after processing
    * @returns {boolean} true if asynchronous
    * @private
-   * @memberOf Options
+   * @memberOf app.Options
    */
   function _onMessage(request, sender, response) {
     if (request.message === Chrome.Msg.HIGHLIGHT.message) {
@@ -417,6 +577,21 @@
   // listen for documents and resources loaded
   window.addEventListener('load', _onLoad);
 
+  return {
+    /**
+     * Display an error dialog
+     * @param {string} title - dialog title
+     * @param {string} text - dialog text
+     * @memberOf app.Options
+     */
+    showErrorDialog: function(title, text) {
+      // Display Error Dialog if not signed in to Chrome
+      t.dialogTitle = title;
+      t.dialogText = text;
+      t.$.errorDialog.open();
+    },
+    
+  };
 })();
 </pre>
     </article>
@@ -463,7 +638,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on February 22nd 2019, 3:29:05 pm
+		on February 25th 2019, 5:13:00 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
