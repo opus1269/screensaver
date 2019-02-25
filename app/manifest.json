@@ -60,7 +60,6 @@
   ],
   "optional_permissions": [
     "background",
-    "identity.email",
     "https://photoslibrary.googleapis.com/"
   ],
   "background": {
