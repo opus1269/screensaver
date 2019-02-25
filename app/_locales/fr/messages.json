@@ -467,6 +467,39 @@
   "err_google_quota": {
     "message": "Dépasse la limite quotidienne de l'API Google Photos."
   },
+  "err_chrome_signout": {
+    "message": "Vous êtes déconnecté de Chrome. Vos photos Google ne seront pas disponibles."
+  },
+  "err_chrome_signin_title": {
+    "message": "Pas connecté à Chrome"
+  },
+  "err_chrome_signin": {
+    "message": "Veuillez vous connecter à Chrome avec le compte qui contient vos photos Google."
+  },
+  "menu_permission": {
+    "message": "Gérer l'accès à Google Photos"
+  },
+  "permission_message": {
+    "message": "L'extension dispose d'une autorisation facultative permettant d'accéder à votre compte Google Photos. Si vous cliquez sur Autoriser, une autre boîte de dialogue s'affiche vous demandant d'autoriser ou de refuser cette autorisation, si ce n'est déjà fait."
+  },
+  "permission_message1": {
+    "message": "En outre, vous devez être connecté à Chrome. Si vous vous déconnectez de Chrome ou que vous vous connectez en tant qu'autre utilisateur, vos sélections d'album actuelles seront supprimées et vous devrez procéder à une nouvelle autorisation."
+  },
+  "permission_message2": {
+    "message": "Pour annuler complètement l'accès, accédez à la page https://myaccount.google.com/permissions, cliquez sur l'application Photo Screen Saver et sélectionnez REMOVE ACCESS. Cela nécessite généralement quelques minutes pour prendre effet."
+  },
+  "permission_status": {
+    "message": "Statut actuel:"
+  },
+  "allowed": {
+    "message": "Permis"
+  },
+  "denied": {
+    "message": "Refusé"
+  },
+  "notSet": {
+    "message": "Pas encore défini"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

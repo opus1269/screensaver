@@ -313,13 +313,13 @@ app.Options = (function() {
 
   /**
    * Computed Binding: Determine content script permission status string
-   * @param {string} permissions - current setting
+   * @param {string} permission - current setting
    * @returns {string}
    * @private
    * @memberOf app.Options
    */
-  t._computePermissionsStatus = function(permissions) {
-    return `${Chrome.Locale.localize('permission_status')} ${permissions}`;
+  t._computePermissionsStatus = function(permission) {
+    return `${Chrome.Locale.localize('permission_status')} ${Chrome.Locale.localize(permission)}`;
   };
 
   /**

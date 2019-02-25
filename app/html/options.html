@@ -92,7 +92,7 @@
   <script type="module" src="/elements/pages/error-page/error-page.js"></script>
   <script type="module" src="/elements/pages/help-page/help-page.js"></script>
   <script type="module" src="/elements/pages/google-photos-page/google-photos-page.js"></script>
-  
+
   <script type="module" src="/elements/setting-elements/localize-behavior/localize-behavior.js"></script>
   <script type="module" src="/elements/setting-elements/setting-dropdown/setting-dropdown.js"></script>
   <script type="module" src="/elements/setting-elements/setting-toggle/setting-toggle.js"></script>
@@ -109,7 +109,7 @@
   <script type="module" src="/elements/pages/error-page/error-page.js"></script>
   <script type="module" src="/elements/pages/help-page/help-page.js"></script>
   <script type="module" src="/elements/pages/google-photos-page/google-photos-page.js"></script>
-  
+
   <script type="module" src="/scripts/chrome-extension-utils/scripts/ex_handler.js"></script>
 
 </head>
@@ -120,7 +120,7 @@
 
     <custom-style>
       <style include="iron-flex iron-flex-alignment shared-styles">
-        
+
         /* Application theme */
         html {
           --primary-color: var(--paper-indigo-500);
@@ -236,6 +236,12 @@
           padding-bottom: 16px;
         }
 
+        .status {
+          padding-top: 8px;
+          /*noinspection CssUnresolvedCustomPropertySet*/
+          @apply --paper-font-title;
+        }
+
       </style>
     </custom-style>
 
@@ -272,7 +278,10 @@
             [[_computePermissionsMessage2()]]
           </paper-item>
 
-          <b>[[_computePermissionsStatus(permission)]]</b>
+          <paper-item class="status">
+            [[_computePermissionsStatus(permission)]]
+          </paper-item>
+          
         </div>
       </paper-dialog-scrollable>
       <div class="buttons">

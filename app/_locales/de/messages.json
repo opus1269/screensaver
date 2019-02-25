@@ -467,6 +467,39 @@
   "err_google_quota": {
     "message": "Das tägliche Google Photos-API-Limit wurde überschritten."
   },
+  "err_chrome_signout": {
+    "message": "Sie sind von Chrome abgemeldet. Ihre Google-Fotos sind nicht verfügbar."
+  },
+  "err_chrome_signin_title": {
+    "message": "Nicht bei Chrome angemeldet"
+  },
+  "err_chrome_signin": {
+    "message": "Melden Sie sich in Chrome mit dem Konto an, das über Ihre Google Fotos verfügt."
+  },
+  "menu_permission": {
+    "message": "Verwalten Sie den Zugriff auf Google Fotos"
+  },
+  "permission_message": {
+    "message": "Die Erweiterung verfügt über eine optionale Berechtigung, mit der Sie auf Ihr Google Photos-Konto zugreifen können. Wenn Sie auf ALLOW klicken, wird ein weiteres Dialogfeld angezeigt, in dem Sie aufgefordert werden, diese Berechtigung zuzulassen oder zu verweigern, falls Sie dies noch nicht getan haben."
+  },
+  "permission_message1": {
+    "message": "Darüber hinaus müssen Sie bei Chrome angemeldet sein. Wenn Sie sich bei Chrome abmelden oder sich als anderer Benutzer anmelden, werden Ihre aktuellen Album-Auswahlmöglichkeiten entfernt und Sie müssen eine erneute Autorisierung durchführen."
+  },
+  "permission_message2": {
+    "message": "Um den Zugriff vollständig zu widerrufen, rufen Sie https://myaccount.google.com/permissions auf, klicken Sie auf die App Photo Screen Saver und wählen Sie REMOVE ACCESS aus. Dies dauert normalerweise einige Minuten, um wirksam zu werden."
+  },
+  "permission_status": {
+    "message": "Aktueller Status:"
+  },
+  "allowed": {
+    "message": "Dürfen"
+  },
+  "denied": {
+    "message": "Verweigert"
+  },
+  "notSet": {
+    "message": "Nicht eingestellt"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

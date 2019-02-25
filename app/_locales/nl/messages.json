@@ -467,6 +467,39 @@
   "err_google_quota": {
     "message": "De dagelijkse limiet van de Google Foto's-API overschreden."
   },
+  "err_chrome_signout": {
+    "message": "U bent uitgelogd bij Chrome. Uw Google-foto's zijn niet beschikbaar."
+  },
+  "err_chrome_signin_title": {
+    "message": "Not signed in to Chrome"
+  },
+  "err_chrome_signin": {
+    "message": "Log in bij Chrome met het account dat uw Google Foto's bevat."
+  },
+  "menu_permission": {
+    "message": "Beheer de toegang tot Google Foto's"
+  },
+  "permission_message": {
+    "message": "De extensie heeft een optionele machtiging die toegang tot uw Google Photos-account toestaat. Als u op TOEGANG klikt, wordt er een ander dialoogvenster weergegeven waarin u wordt gevraagd deze toestemming toe te staan \u200B\u200Bof te weigeren, als u dat nog niet hebt gedaan."
+  },
+  "permission_message1": {
+    "message": "Bovendien moet u zijn ingelogd bij Chrome. Als u uitlogt bij Chrome of als een andere gebruiker aanmeldt, worden uw huidige albumselecties verwijderd en moet u opnieuw autoriseren."
+  },
+  "permission_message2": {
+    "message": "Als u de toegang volledig wilt intrekken, gaat u naar https://myaccount.google.com/permissions, klikt u op de app Fotoschermbeveiliging en selecteert u TOEGANG VERWIJDEREN. Dit duurt meestal enkele minuten voordat het effect heeft."
+  },
+  "permission_status": {
+    "message": "Huidige status:"
+  },
+  "allowed": {
+    "message": "Toegestaan"
+  },
+  "denied": {
+    "message": "Denied"
+  },
+  "notSet": {
+    "message": "Niet ingesteld"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

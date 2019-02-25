@@ -491,6 +491,15 @@
   "permission_status": {
     "message": "Current Status:"
   },
+  "allowed": {
+    "message": "Allowed"
+  },
+  "denied": {
+    "message": "Denied"
+  },
+  "notSet": {
+    "message": "Not Set"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

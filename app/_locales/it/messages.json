@@ -467,6 +467,39 @@
   "err_google_quota": {
     "message": "Ha superato il limite giornaliero dell'API di Google Foto."
   },
+  "err_chrome_signout": {
+    "message": "Sei uscito da Chrome. Le tue foto di Google non saranno disponibili."
+  },
+  "err_chrome_signin_title": {
+    "message": "Non eseguito l'accesso a Chrome"
+  },
+  "err_chrome_signin": {
+    "message": "Accedi a Chrome con l'account con Google Foto."
+  },
+  "menu_permission": {
+    "message": "Gestisci l'accesso a Google Foto"
+  },
+  "permission_message": {
+    "message": "L'estensione ha un'autorizzazione opzionale che consente l'accesso al tuo account Google Foto. Se fai clic su PERMETTE verrà visualizzata un'altra finestra di dialogo che ti chiede di consentire o negare questa autorizzazione, se non lo hai già fatto."
+  },
+  "permission_message1": {
+    "message": "Inoltre, è necessario aver effettuato l'accesso a Chrome. Se esci da Chrome o accedi come un altro utente, le selezioni di album correnti verranno rimosse e sarà necessario eseguire nuovamente l'autorizzazione."
+  },
+  "permission_message2": {
+    "message": "Per revocare completamente l'accesso, vai su https://myaccount.google.com/permissions, fai clic sull'app Photo Screen Saver e seleziona RIMUOVI ACCESSO. Questo di solito richiede alcuni minuti per avere effetto."
+  },
+  "permission_status": {
+    "message": "Stato attuale:"
+  },
+  "allowed": {
+    "message": "Permesso"
+  },
+  "denied": {
+    "message": "Negato"
+  },
+  "notSet": {
+    "message": "Non impostato"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
