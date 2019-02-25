@@ -99,6 +99,16 @@
 
   ***
 
+* **Why can't I select all my albums and photos?**
+
+    There is a daily limit to the number of times the extension can
+    access Google Photos. To prevent exceeding this limit, the extension
+    limits the number of albums you can select and the number of photos
+    that are retrieved for each album.
+    
+
+  ***
+
 * **Why are some of my photos upside down or on their side?**
 
     If this is the case, you need to turn off the
@@ -120,8 +130,6 @@
   ***
 
   
-  ***
-
 * **I am signed in to Google Photos, but am getting an error when trying to load my Google Photos albums. Why is that??**
 
     You need to sign into the Chrome Browser as the user whose Google 
