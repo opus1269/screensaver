@@ -342,6 +342,7 @@ app.Options = (function() {
    * @memberOf app.Options
    */
   function _showGooglePhotosPage(index) {
+    t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
     if (!t.signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
       t.dialogTitle = Chrome.Locale.localize('err_chrome_signin_title');
