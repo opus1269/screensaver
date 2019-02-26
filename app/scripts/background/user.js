@@ -46,7 +46,8 @@ function _onSignInChanged(account, signedIn) {
     Chrome.Storage.set('albumSelections', []);
     const type = Chrome.Storage.getBool('permPicasa');
     if (type === 'allowed') {
-      Chrome.Log.error(Chrome.Locale.localize('err_chrome_signout'));
+      Chrome.Log.error(Chrome.Locale.localize('err_chrome_signout'),
+          'User._onSignInChanged');
     }
   }
 }
