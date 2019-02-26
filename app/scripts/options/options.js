@@ -228,6 +228,7 @@ app.Options = (function() {
    * @memberOf app.Options
    */
   t._onAcceptPermissionsClicked = function() {
+    Chrome.GA.event(Chrome.GA.EVENT.BUTTON, 'Permission.Allow');
     const type = app.Permissions.PICASA;
     app.Permissions.request(type).then((granted) => {
       if (!granted) {
@@ -246,6 +247,7 @@ app.Options = (function() {
    * @memberOf app.Options
    */
   t._onDenyPermissionsClicked = function() {
+    Chrome.GA.event(Chrome.GA.EVENT.BUTTON, 'Permission.Deny');
     app.Permissions.removeGooglePhotos().catch((err) => {
       Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
     });
