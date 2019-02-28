@@ -5,7 +5,7 @@
   ~  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
   -->
 <!doctype html>
-<!--suppress HtmlUnknownTarget -->
+<!--suppress HtmlUnknownTarget, CssUnresolvedCustomProperty -->
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -14,8 +14,6 @@
 
   <!-- !important -->
   <title>Photo Screen Saver Options Page</title>
-
-  <link rel="stylesheet" href="/styles/options.css">
 
   <script src="/scripts/chrome-extension-utils/scripts/chrome-promise.js"></script>
   <script src="/scripts/chrome-extension-utils/scripts/exception_handler.js"></script>
@@ -167,6 +165,34 @@
           --paper-checkbox-checked-color: var(--setting-item-color);;
 
           --app-drawer-width: 350px;
+        }
+
+        body {
+          font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          background: #FAFAFA;
+          color: #333333;
+          min-width: 600px;
+          min-height: 700px;
+          overflow: hidden;
+          margin: 0 0;
+        }
+
+        /* Scrollbars */
+        ::-webkit-scrollbar {
+          background: transparent;
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-button {
+          background: transparent;
+          height: 0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: rgba(48, 63, 159, 1);
+          -webkit-border-radius: 8px;
+          border-radius: 4px;
+          cursor: pointer;
         }
 
         /* General styles */

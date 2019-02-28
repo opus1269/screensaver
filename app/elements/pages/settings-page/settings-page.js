@@ -30,7 +30,7 @@ import {LocalizeBehavior, Locale } from
 import '/elements/my_icons.js';
 import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
-import '/styles/shared-styles.js';
+import '/elements/shared-styles.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 

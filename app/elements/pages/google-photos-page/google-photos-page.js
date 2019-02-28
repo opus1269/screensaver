@@ -30,7 +30,7 @@ import {
 } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
 import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
-import '/styles/shared-styles.js';
+import '/elements/shared-styles.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -43,7 +43,8 @@ window.app = window.app || {};
 
 app.GooglePhotosPage = Polymer({
   _template: html`
-    <style include="iron-flex iron-flex-alignment"></style>
+    <!--suppress CssUnresolvedCustomPropertySet -->
+<style include="iron-flex iron-flex-alignment"></style>
     <style include="shared-styles"></style>
     <style>
       :host {

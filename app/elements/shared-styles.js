@@ -9,7 +9,8 @@ import '/node_modules/@polymer/polymer/polymer-element.js';
 // eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');
 
-$_documentContainer.innerHTML = `<dom-module id="shared-styles">
+$_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
+<dom-module id="shared-styles">
   <template>
     <style>
       .page-title {

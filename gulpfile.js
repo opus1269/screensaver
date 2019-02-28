@@ -22,7 +22,6 @@ const path = {
   scripts: `${base.src}scripts/`,
   html: `${base.src}html/`,
   elements: `${base.src}elements/`,
-  styles: `${base.src}styles/`,
   images: `${base.src}images/`,
   assets: `${base.src}assets/`,
   lib: `${base.src}lib/`,
@@ -32,7 +31,6 @@ const files = {
   manifest: `${base.src}manifest.json`,
   scripts: `${path.scripts}**/*.js`,
   html: `${path.html}**/*.html`,
-  styles: `${path.styles}**/*.*`,
   elements: `${path.elements}**/*.js`,
   images: `${path.images}*.*`,
   assets: `${path.assets}*.*`,
@@ -131,7 +129,7 @@ function buildPolymer() {
 
           // The `sourcesStreamSplitter` created above can be added here to
           // pull any inline styles and scripts out of their HTML files and
-          // into seperate CSS and JS files in the build stream. Just be sure
+          // into separate CSS and JS files in the build stream. Just be sure
           // to rejoin those files with the `.rejoin()` method when you're done.
           .pipe(sourcesStreamSplitter.split())
 
@@ -207,7 +205,6 @@ gulp.task('incrementalBuild', (cb) => {
     '_html',
     'lintdevjs',
     '_scripts',
-    '_styles',
     '_images',
     '_assets',
     '_lib',
@@ -324,16 +321,6 @@ gulp.task('_scripts', () => {
 // html
 gulp.task('_html', () => {
   const input = files.html;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plumber()).
-      pipe(gulp.dest(base.dev));
-});
-
-// styles
-gulp.task('_styles', () => {
-  const input = files.styles;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).

@@ -11,8 +11,6 @@
   <meta charset="utf-8">
   <title>Photo Screen Saver Screensaver Page</title>
 
-  <link rel="stylesheet" href="/styles/screensaver.css">
-
   <script src="/scripts/chrome-extension-utils/scripts/chrome-promise.js"></script>
   <script src="/scripts/chrome-extension-utils/scripts/exception_handler.js"></script>
   <script src="/scripts/chrome-extension-utils/scripts/analytics.js"></script>
@@ -48,9 +46,6 @@
   <script src="/scripts/screensaver/views/ss_view_frame.js"></script>
   <script src="/scripts/screensaver/views/ss_view_full.js"></script>
   <script src="/scripts/screensaver/ss_views.js"></script>
-
-  <!-- Theme -->
-  <script type="module" src="/styles/shared-styles.js"></script>
 
   <!-- import polyfills-->
   <!--<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>-->
@@ -88,7 +83,92 @@
   <template>
 
     <custom-style>
-      <style include="iron-flex iron-flex-alignment iron-positioning shared-styles"></style>
+      <style include="iron-flex iron-flex-alignment iron-positioning">
+        body {
+          font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-size: 100%;
+          font-weight: 400;
+          height: 100vh;
+          margin: 0;
+          overflow: hidden;
+          cursor: none;
+        }
+
+        /* Added programmatically */
+        .fadeOut {
+          animation: fadeOut 1s 2s;
+          animation-fill-mode: both;
+        }
+
+        @keyframes fadeOut {
+          from {
+            opacity: 1.0;
+          }
+          to {
+            opacity: 0.0;
+          }
+        }
+
+        .vcr {
+          position: fixed;
+          width: 15vh;
+          height: 15vh;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          opacity: 0.0;
+        }
+
+        .time {
+          font-size: 5.25vh;
+          font-weight: 200;
+          position: fixed;
+          right: 1vw;
+          bottom: 3.5vh;
+          padding: 0;
+          margin: 0;
+          color: white;
+          opacity: 1.0;
+        }
+
+        .author {
+          font-size: 2.5vh;
+          font-weight: 300;
+          position: fixed;
+          overflow: hidden;
+          right: 1vw;
+          bottom: 1vh;
+          padding: 0;
+          margin: 0;
+          color: white;
+          opacity: 1.0;
+        }
+
+        .location {
+          font-size: 2.5vh;
+          font-weight: 300;
+          position: fixed;
+          overflow: hidden;
+          left: 1vw;
+          bottom: 1vh;
+          padding: 0;
+          margin: 0;
+          color: white;
+          opacity: 1.0;
+        }
+
+        .noPhotos {
+          font-size: 5vh;
+          font-weight: 600;
+          position: fixed;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          color: rgba(48, 63, 159, 1);
+          opacity: .8;
+        }
+        
+      </style>
     </custom-style>
 
     <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
