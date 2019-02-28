@@ -76,9 +76,12 @@ Polymer({
         {{label}}
       </paper-item>
       <div class="horizontal layout">
-        <paper-slider class="flex" editable="" value="{{value.display}}" min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled\$="[[disabled]]" on-change="_onSliderValueChanged"></paper-slider>
+        <paper-slider class="flex" editable="" value="{{value.display}}"
+         min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled\$="[[disabled]]"
+         on-change="_onSliderValueChanged"></paper-slider>
         <paper-dropdown-menu disabled\$="[[disabled]]" noink="" no-label-float="">
-          <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}" on-tap="_onUnitMenuSelected">
+          <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}"
+           on-tap="_onUnitMenuSelected">
             <template id="t" is="dom-repeat" as="unit" items="[[units]]">
               <paper-item>[[unit.name]]</paper-item>
             </template>
@@ -264,18 +267,5 @@ Polymer({
    */
   _setBase: function() {
     this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
-  },
-
-  /**
-   * Initialize value if it is not in localstorage
-   * @private
-   * @memberOf SettingSlider
-   */
-  _initValue: function() {
-    this.value = {
-      base: 10,
-      display: 10,
-      unit: 0,
-    };
   },
 });
