@@ -1,11 +1,12 @@
 /*
- *  Copyright (c) 2015-2017, Michael A. Updike All rights reserved.
+ *   Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/photo-screen-saver/blob/master/LICENSE.md
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 'use strict';
 /* eslint no-console: 0 */
+/* eslint require-jsdoc: 0 */
 
 // paths and files
 const base = {
@@ -39,7 +40,7 @@ const files = {
   locales: `${path.locales}**/*.*`,
 };
 files.js = [files.scripts, files.elements, `${base.src}*.js`];
-files.lintdevjs = '*.js, ../gulpfile.js';
+files.lintdevjs = ['../gulpfile.js'];
 
 // command options
 const watchOpts = {
@@ -202,16 +203,15 @@ gulp.task('incrementalBuild', (cb) => {
 
   isWatch = true;
   runSequence('lint', [
-    'manifest',
-    'html',
+    '_manifest',
+    '_html',
     'lintdevjs',
-    'scripts',
-    'styles',
-    'elements',
-    'images',
-    'assets',
-    'lib',
-    'locales',
+    '_scripts',
+    '_styles',
+    '_images',
+    '_assets',
+    '_lib',
+    '_locales',
   ], cb);
 });
 
@@ -233,7 +233,7 @@ gulp.task('prod', (cb) => {
   isProdTest = false;
   buildDirectory = 'build/prod';
   runSequence('_poly_build', [
-    'manifest',
+    '_manifest',
     'docs',
   ], '_zip', cb);
 });
@@ -268,25 +268,6 @@ gulp.task('docs', (cb) => {
       pipe(plugins.jsdoc3(config, cb));
 });
 
-// manifest.json
-gulp.task('manifest', () => {
-  // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
-
-  const input = files.manifest;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plumber()).
-      pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : util.noop()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
-});
-
 // lint development js files
 gulp.task('lintdevjs', () => {
   const input = files.lintdevjs;
@@ -308,8 +289,27 @@ gulp.task('lint', () => {
       pipe(plugins.eslint.failAfterError());
 });
 
+// manifest.json
+gulp.task('_manifest', () => {
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+
+  const input = files.manifest;
+  watchOpts.name = currentTaskName;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(plumber()).
+      pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : util.noop()).
+      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
+});
+
 // scripts
-gulp.task('scripts', () => {
+gulp.task('_scripts', () => {
   const input = files.js;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -322,7 +322,7 @@ gulp.task('scripts', () => {
 });
 
 // html
-gulp.task('html', () => {
+gulp.task('_html', () => {
   const input = files.html;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -331,20 +331,8 @@ gulp.task('html', () => {
       pipe(gulp.dest(base.dev));
 });
 
-// elements
-gulp.task('elements', () => {
-  const input = files.elements;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failAfterError()).
-      pipe(gulp.dest(base.dev));
-});
-
 // styles
-gulp.task('styles', () => {
+gulp.task('_styles', () => {
   const input = files.styles;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -354,7 +342,7 @@ gulp.task('styles', () => {
 });
 
 // images
-gulp.task('images', () => {
+gulp.task('_images', () => {
   const input = files.images;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -364,7 +352,7 @@ gulp.task('images', () => {
 });
 
 // assets
-gulp.task('assets', () => {
+gulp.task('_assets', () => {
   const input = files.assets;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -374,7 +362,7 @@ gulp.task('assets', () => {
 });
 
 // lib
-gulp.task('lib', () => {
+gulp.task('_lib', () => {
   const input = files.lib;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -384,7 +372,7 @@ gulp.task('lib', () => {
 });
 
 // locales
-gulp.task('locales', () => {
+gulp.task('_locales', () => {
   const input = files.locales;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
