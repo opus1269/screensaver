@@ -159,14 +159,16 @@ app.Screensaver = (function() {
         // Calculate an hours worth of photos max
         const transTime = app.SSRunner.getWaitTime();
         let nPhotos = Math.round(Chrome.Time.MSEC_IN_HOUR / transTime);
-        nPhotos = Math.max(nPhotos, 1);
+        // do at least 50, still one rpc. will help when displaying
+        // a lot for short times
+        nPhotos = Math.max(nPhotos, 50);
         
         if (_gPhotoCt === 1) {
           // limit to 50 on first call for quicker starts
-          nPhotos = 50;
+          nPhotos = Math.min(nPhotos, 50);
         } else {
           // limit to 300 on subsequent calls
-          nPhotos = 300;
+          nPhotos = Math.min(nPhotos, 300);
         }
 
         // get max of nPhotos Google Photo ids starting at this one
@@ -197,7 +199,7 @@ app.Screensaver = (function() {
         // TODO what if a photo is deleted -- how do we know to mark bad
         app.SSPhotos.updateGooglePhotoUrls(newPhotos);
         
-        // update any views with google photos
+        // update any views with the new google photos
         for (let i = 0; i < t._views.length; i++) {
           const view = t._views[i];
           const photo = view.photo;

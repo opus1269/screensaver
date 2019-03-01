@@ -152,9 +152,6 @@ app.SSPhotos = (function() {
         if (index >= 0) {
           _photos[i].setUrl(photos[index].url);
         }
-        
-        // make sure _curIdx is in range
-        _curIdx = Math.min(_curIdx, _photos.length - 1);
       }
     },
 

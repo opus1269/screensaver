@@ -487,6 +487,8 @@ app.GooglePhotosPage = Polymer({
           this.selections.push({
             id: album.id, name: newAlbum.name, photos: newAlbum.photos,
           });
+          Chrome.GA.event(app.GA.EVENT.SELECT_ALBUM,
+              `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
           const set = Chrome.Storage.safeSet('albumSelections', this.selections,
               'useGoogleAlbums');
           if (!set) {
@@ -518,9 +520,9 @@ app.GooglePhotosPage = Polymer({
 
     if (album.checked) {
       // add new
-      const maxCt = Chrome.Storage.getInt('gPhotosMaxAlbums', 5);
-      if (this.selections.length === maxCt) {
-        Chrome.GA.event(app.GA.EVENT.ALBUMS_LIMITED);
+      const maxCt = Chrome.Storage.getInt('gPhotosMaxAlbums', 10);
+      if (this.selections.length > maxCt) {
+        Chrome.GA.event(app.GA.EVENT.ALBUMS_LIMITED, `limit: ${maxCt}`);
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
@@ -534,6 +536,8 @@ app.GooglePhotosPage = Polymer({
         this.selections.push({
           id: album.id, name: newAlbum.name, photos: newAlbum.photos,
         });
+        Chrome.GA.event(app.GA.EVENT.SELECT_ALBUM,
+            `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
         const set = Chrome.Storage.safeSet('albumSelections', this.selections,
             'useGoogleAlbums');
         if (!set) {

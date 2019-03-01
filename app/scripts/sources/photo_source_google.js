@@ -360,8 +360,6 @@
       let photos = [];
       try {
 
-        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM);
-
         // Loop while there is a nextPageToken to load more items and we
         // haven't loaded greater than MAX_PHOTOS.
         let numPhotos = 0;
@@ -376,7 +374,8 @@
             numPhotos += newPhotos.length;
           }
           if (numPhotos >= MAX_PHOTOS) {
-            Chrome.GA.event(app.GA.EVENT.PHOTOS_LIMITED);
+            Chrome.GA.event(app.GA.EVENT.PHOTOS_LIMITED,
+                `nPhotos: ${MAX_PHOTOS}`);
           }
         } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
 
@@ -389,6 +388,8 @@
         album.checked = true;
         album.photos = photos;
         album.ct = photos.length;
+
+        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
         return album;
       } catch (err) {
@@ -414,8 +415,6 @@
       conf.retryToken = true;
       conf.interactive = true;
       try {
-
-        Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM_LIST);
 
         // Loop while there is a nextPageToken to load more items.
         do {
@@ -458,6 +457,9 @@
         }
       }
 
+      Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM_LIST,
+          `nAlbums: ${albums.length}`);
+
       return albums;
     }
 
@@ -468,7 +470,7 @@
      */
     static updateBaseUrls(photos) {
       let ret = true;
-      
+
       photos = photos || [];
       if (photos.length === 0) {
         return ret;
@@ -480,8 +482,9 @@
       }
 
       // loop of all the photos
+      let ct = 0;
       for (const photo of photos) {
-        
+
         // loop on all the albums
         for (const album of albums) {
           const aPhotos = album.photos;
@@ -489,7 +492,9 @@
             return e.ex.id === photo.ex.id;
           });
           if (index >= 0) {
+            // found it, update baseUrl
             aPhotos[index].url = photo.url;
+            ct++;
           }
         }
       }
@@ -502,7 +507,8 @@
             'GoogleSource.updateBaseUrls');
       } else {
         // success
-        Chrome.GA.event(app.GA.EVENT.UPDATE_BASE_URLS);
+        Chrome.GA.event(app.GA.EVENT.UPDATE_BASE_URLS,
+            `nUpdated: ${ct}`);
       }
 
       return ret;
@@ -623,17 +629,11 @@
     //   const awake = Chrome.Storage.getBool('isAwake', true);
     //   const enabled = Chrome.Storage.getBool('enabled', true);
     //   const useGoogle = Chrome.Storage.getBool('useGoogle', true);
-    //   const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
-    //   const ret = auth && notShowing && awake && enabled &&
-    //       useGoogle && useGoogleAlbums;
-    //
-    //   if (!ret) {
-    //     // set this so we know if we are behind on updates
-    //     Chrome.Storage.set('gPhotosNeedsUpdate', true);
-    //   }
-    //
-    //   return ret;
-    // }
+    //   const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums',
+    // true); const ret = auth && notShowing && awake && enabled && useGoogle
+    // && useGoogleAlbums;  if (!ret) { // set this so we know if we are behind
+    // on updates Chrome.Storage.set('gPhotosNeedsUpdate', true); }  return
+    // ret; }
 
     /**
      * Return true if we should be fetching the albums
@@ -665,8 +665,6 @@
         return Promise.resolve(albums);
       }
 
-      Chrome.GA.event(app.GA.EVENT.FETCH_ALBUMS);
-
       // don't need update for a while
       Chrome.Storage.set('gPhotosNeedsUpdate', false);
 
@@ -677,7 +675,9 @@
       }
 
       // Collate the albums
+      
       return Promise.all(promises).then((albums) => {
+        let ct = 0;
         /** @type {app.GoogleSource.SelectedAlbum[]} */
         const selAlbums = [];
         for (const album of albums) {
@@ -688,8 +688,13 @@
               name: album.name,
               photos: photos,
             });
+            ct = ct + photos.length;
           }
         }
+        
+        Chrome.GA.event(app.GA.EVENT.FETCH_ALBUMS,
+            `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
+
         return Promise.resolve(selAlbums);
       });
     }

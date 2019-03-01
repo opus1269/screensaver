@@ -243,8 +243,9 @@ Polymer({
    * @memberOf SettingSlider
    */
   _onSliderValueChanged: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.SLIDER_VALUE, this.name);
     this._setBase();
+    const label = `${this.name}: ${JSON.stringify(this.value)}`;
+    Chrome.GA.event(Chrome.GA.EVENT.SLIDER_VALUE, label);
   },
 
   /**
@@ -256,7 +257,8 @@ Polymer({
   _onUnitMenuSelected: function(ev) {
     const model = this.$.t.modelForElement(ev.target);
     if (model) {
-      Chrome.GA.event(Chrome.GA.EVENT.SLIDER_UNITS, this.name);
+      const label = `${this.name}: ${JSON.stringify(model.unit)}`;
+      Chrome.GA.event(Chrome.GA.EVENT.SLIDER_UNITS, label);
     }
   },
 
