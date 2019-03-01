@@ -34,6 +34,13 @@ import '/elements/shared-styles.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+/**
+ * Max albums to load
+ * @type {int}
+ * @memberOf app.GooglePhotosPage
+ */
+const _MAX_ALBUMS = 10;
+
 window.app = window.app || {};
 
 /**
@@ -42,6 +49,8 @@ window.app = window.app || {};
  */
 
 app.GooglePhotosPage = Polymer({
+  
+  
   _template: html`
     <!--suppress CssUnresolvedCustomPropertySet -->
 <style include="iron-flex iron-flex-alignment"></style>
@@ -520,9 +529,8 @@ app.GooglePhotosPage = Polymer({
 
     if (album.checked) {
       // add new
-      const maxCt = Chrome.Storage.getInt('gPhotosMaxAlbums', 10);
-      if (this.selections.length > maxCt) {
-        Chrome.GA.event(app.GA.EVENT.ALBUMS_LIMITED, `limit: ${maxCt}`);
+      if (this.selections.length === _MAX_ALBUMS) {
+        Chrome.GA.event(app.GA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
