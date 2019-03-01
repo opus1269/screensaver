@@ -169,6 +169,9 @@ app.SSRunner = (function() {
      */
     setWaitTime: function(waitTime) {
       _VARS.waitTime = waitTime;
+      // larger than 32 bit int is bad news
+      // see: https://stackoverflow.com/a/3468650/4468645
+      _VARS.waitTime = Math.min(2147483647, waitTime);
     },
 
     /**
