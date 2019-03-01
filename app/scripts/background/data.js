@@ -127,8 +127,8 @@ app.Data = (function() {
     'useGoogleAlbums': true,
     'albumSelections': [],
     'useGooglePhotos': false,
-    'gPhotosNeedsUpdate': false,
-    'gPhotosMaxAlbums': 10,
+    'gPhotosNeedsUpdate': false, // not used
+    'gPhotosMaxAlbums': 10, // not used
     'isAwake': true, // not used
     'isShowing': false, // not used
     'signedInToChrome': true,
