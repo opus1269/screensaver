@@ -93,7 +93,7 @@ function _onInstalled(details) {
 function _onMenuClicked(info) {
   if (info.menuItemId === _DISPLAY_MENU) {
     Chrome.GA.event(Chrome.GA.EVENT.MENU, `${info.menuItemId}`);
-    display();
+    display(false);
   } else if (info.menuItemId === _ENABLE_MENU) {
     const isEnabled = Chrome.Storage.getBool('enabled');
     Chrome.GA.event(Chrome.GA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
