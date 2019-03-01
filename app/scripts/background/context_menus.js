@@ -23,16 +23,10 @@ const _ENABLE_MENU = 'ENABLE_MENU';
  * @memberOf ContextMenus
  */
 function _toggleEnabled() {
-  const oldState = Chrome.Storage.getBool('enabled');
+  const oldState = Chrome.Storage.getBool('enabled', true);
   Chrome.Storage.set('enabled', !oldState);
   // storage changed event not fired on same page as the change
   app.Data.processState('enabled');
-  if (!oldState) {
-    // Switching to enabled, reload the Google Photo albums
-    app.PhotoSources.process('useGoogleAlbums').catch((err) => {
-      Chrome.Log.error(err.message, 'ContextMenus._toggleEnabled');
-    });
-  }
 }
 
 // noinspection JSUnusedLocalSymbols
