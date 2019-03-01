@@ -48,7 +48,7 @@ app.Screensaver = (function() {
   t.timeLabel = '';
 
   /**
-   * Max number of calls to updatePhotos during a session
+   * Max number of calls to loadPhotos during a session
    * @type {int}
    * @const
    * @private
@@ -137,43 +137,64 @@ app.Screensaver = (function() {
     }
     
     if (isError) {
+      // url failed to load
       _isUpdating = true;
       
-      // url failed to load
       const model = ev.model;
       const index = model.index;
       const view = t._views[index];
       const photo = view.photo;
       const type = photo.getType();
       if ('Google User' === type) {
-        // Google baseUrl may have expired, try to update all photos
+        // Google baseUrl may have expired, try to update some photos
 
-        // limit number of calls to updatePhotos
+        // limit number of calls to Google API per screensaver session
+        // in case something weird happens
         _gPhotoCt++;
         if (_gPhotoCt >= _MAX_GPHOTO_UPDATES) {
           _isUpdating = false;
           return;
         }
 
-        // create new source
-        const source =
-            app.PhotoSource.createSource(app.PhotoSources.UseKey.ALBUMS_GOOGLE);
-
-        // try to update the photos
-        const updated = await app.GoogleSource.updatePhotos(true);
-        if (!updated) {
-          Chrome.Log.error('Failed to update urls.',
-              'Screensaver._onErrorChanged');
-          // major problem, give up for this session
-          _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
-          _isUpdating = true;
-          return;
+        // Calculate an hours worth of photos max
+        const transTime = app.SSRunner.getWaitTime();
+        let nPhotos = Math.round(Chrome.Time.MSEC_IN_HOUR / transTime);
+        nPhotos = Math.max(nPhotos, 1);
+        
+        if (_gPhotoCt === 1) {
+          // limit to 50 on first call for quicker starts
+          nPhotos = 50;
+        } else {
+          // limit to 300 on subsequent calls
+          nPhotos = 300;
         }
 
-        // get the new photos
-        const newPhotos = source.getPhotos();
+        // get max of nPhotos Google Photo ids starting at this one
+        const photos = app.SSPhotos.getNextGooglePhotos(nPhotos, photo.getId());
+        const ids = [];
+        for (const photo of photos) {
+          // unique ids only - required for batchGet call
+          const id = photo.getEx().id;
+          if (ids.indexOf(id) === -1) {
+            ids.push(id);
+          }
+        }
+
+        let newPhotos = [];
+        try {
+          // load the new photos from Google Photos
+          newPhotos = await app.GoogleSource.loadPhotos(ids);
+        } catch (err) {
+            Chrome.Log.error('Failed to load new photos',
+                'Screensaver._onErrorChanged');
+            // major problem, give up for this session
+            _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
+            _isUpdating = true;
+            return;
+        }
         
-        // update all Google Photos urls
+        // update the Google Photos baseUrls for this screensaver session
+        // TODO what if a photo is deleted -- how do we know to mark bad
         app.SSPhotos.updateGooglePhotoUrls(newPhotos);
         
         // update any views with google photos
@@ -182,20 +203,27 @@ app.Screensaver = (function() {
           const photo = view.photo;
           const type = photo.getType();
           if (type === 'Google User') {
-            const index = newPhotos.photos.findIndex((e) => {
+            const index = newPhotos.findIndex((e) => {
               return e.ex.id === photo.getEx().id;
             });
             if (index >= 0) {
-              view.setUrl(newPhotos.photos[index].url);
-            } else {
-              // didn't get this id on update mark photo bad
-              view.markPhotoBad();
+              view.setUrl(newPhotos[index].url);
             }
           }
         }
 
-        _isUpdating = false;
+        // persist new baseUrls to albumSelections
+        const updated = app.GoogleSource.updateBaseUrls(newPhotos);
+        if (!updated) {
+          Chrome.Log.error('Failed to save baseUrl\'s',
+              'Screensaver._onErrorChanged');
+          // major problem, give up for this session
+          _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
+          _isUpdating = true;
+          return;
+        }
 
+        _isUpdating = false;
       }
     }
   };

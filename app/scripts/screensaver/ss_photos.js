@@ -112,25 +112,45 @@ app.SSPhotos = (function() {
     },
 
     /**
-     * Update the urls of the given photos
-     * @param {app.PhotoSource.Photos} sourcePhotos
+     * Get the next nun google photos
+     * @param {int} num - max number to get
+     * @param {int} idx - starting index
+     * @returns {Array<app.SSPhoto>} array of photos num long or less
      * @memberOf app.SSPhotos
      */
-    updateGooglePhotoUrls: function(sourcePhotos) {
-      const photos = sourcePhotos.photos || [];
+    getNextGooglePhotos: function(num, idx) {
+      const photos = [];
+      let ct = 0;
+      // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
+      for (let i=0; i < _photos.length; i++) {
+        const index = (i + idx) % _photos.length;
+        const photo = _photos[index];
+        if (ct >= num) {
+          break;
+        } else if (photo.getType() === 'Google User') {
+          photos.push(photo);
+          ct++;
+        }
+      }
+      return photos;
+    },
+
+    /**
+     * Update the urls of the given photos
+     * @param {app.PhotoSource.Photo[]} photos
+     * @memberOf app.SSPhotos
+     */
+    updateGooglePhotoUrls: function(photos) {
       for (let i = _photos.length - 1; i >= 0; i--) {
-        if (_photos[i].getType() !== sourcePhotos.type) {
-          // only this type of photo
+        if (_photos[i].getType() !== 'Google User') {
           continue;
         }
+
         const index = photos.findIndex((e) => {
           return e.ex.id === _photos[i].getEx().id;
         });
         if (index >= 0) {
           _photos[i].setUrl(photos[index].url);
-        } else {
-          // photo no longer around delete it
-          _photos.splice(i, 1);
         }
         
         // make sure _curIdx is in range
