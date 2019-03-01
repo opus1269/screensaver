@@ -115,7 +115,7 @@ function _onKeyCommand(cmd) {
     _toggleEnabled();
   } else if (cmd === 'show-screensaver') {
     Chrome.GA.event(Chrome.GA.EVENT.KEY_COMMAND, `${cmd}`);
-    display();
+    display(false);
   }
 }
 
