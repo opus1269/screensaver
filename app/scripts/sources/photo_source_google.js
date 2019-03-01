@@ -132,33 +132,7 @@
       }
       return ret;
     }
-
-    // /** Get the author of the photo
-    //  * @param {Object} mediaItem - info on image
-    //  * @returns {string} Author name '' if noe
-    //  * @private
-    //  */
-    // static _getAuthor(mediaItem) {
-    //   let ret = '';
-    //   if (mediaItem && mediaItem.contributorInfo &&
-    //       mediaItem.contributorInfo.displayName) {
-    //     ret = mediaItem.contributorInfo.displayName;
-    //   }
-    //   return ret;
-    // }
-
-    // /** Determine if a Picasa entry has Geo position
-    //  * @param {Object} entry - Picasa media object
-    //  * @returns {boolean} true if entry has Geo position
-    //  * @private
-    //  */
-    // static _hasGeo(entry) {
-    //   return !!(entry.georss$where &&
-    //       entry.georss$where.gml$Point &&
-    //       entry.georss$where.gml$Point.gml$pos &&
-    //       entry.georss$where.gml$Point.gml$pos.$t);
-    // }
-
+    
     /**
      * Get a photo from a mediaItem
      * @param {Object} mediaItem - object from Google Photos API call
@@ -217,41 +191,6 @@
       }
       return photos;
     }
-
-    // /**
-    //  * Retrieve a Google Photo
-    //  * @param {string} id -  Unique Photo ID
-    //  * @param {boolean} interactive=true - interactive mode for permissions
-    //  * @returns {app.PhotoSource.Photo} Photo, null on error
-    //  */
-    // static async loadPhoto(id, interactive = false) {
-    //   const url = `${_URL_BASE}mediaItems/${id}`;
-    //
-    //   const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
-    //   conf.isAuth = true;
-    //   conf.retryToken = true;
-    //   conf.interactive = interactive;
-    //
-    //   let photo = null;
-    //
-    //   try {
-    //
-    //     Chrome.GA.event(app.GA.EVENT.LOAD_PHOTO);
-    //
-    //     const mediaItem = await Chrome.Http.doGet(url, conf);
-    //     if (mediaItem) {
-    //       return this._processPhoto(mediaItem, '');
-    //     }
-    //   } catch (err) {
-    //     if (this.isQuotaError(err, 'GoogleSource.loadPhoto')) {
-    //       // Hit Google photos quota
-    //     } else {
-    //       Chrome.Log.error(err.message, 'GoogleSource.loadPhoto');
-    //     }
-    //   }
-    //
-    //   return photo;
-    // }
 
     /**
      * Load the given array of unique photo id's from Google Photos
@@ -356,7 +295,6 @@
       conf.interactive = interactive;
       conf.body = body;
       let nextPageToken;
-      const album = {};
       let photos = [];
       try {
 
@@ -380,6 +318,7 @@
         } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
 
         /** @type {app.GoogleSource.Album} */
+        const album = {};
         album.index = 0;
         album.uid = 'album' + 0;
         album.name = name;
@@ -439,16 +378,15 @@
       // Create the array of app.GoogleSource.Album
       for (const gAlbum of gAlbums) {
         if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
-          const thumb = `${gAlbum.coverPhotoBaseUrl}=w76-h76`;
+         
           /** @type {app.GoogleSource.Album} */
           const album = {};
-
           album.index = ct;
           album.uid = 'album' + ct;
           album.name = gAlbum.title;
           album.id = gAlbum.id;
           album.ct = gAlbum.mediaItemsCount;
-          album.thumb = thumb;
+          album.thumb = `${gAlbum.coverPhotoBaseUrl}=w76-h76`;
           album.checked = false;
           album.photos = [];
           albums.push(album);
@@ -513,128 +451,7 @@
 
       return ret;
     }
-
-    // /**
-    //  * Update the current photo url's. Google expires them after 1 hour
-    //  * @param {boolean} force=false if true force update
-    //  * @returns {Promise<boolean>} true if updated
-    //  */
-    // static async updatePhotos(force = false) {
-    //   let ret = false;
-    //   // max items in getBatch call
-    //   const MAX_QUERIES = 50;
-    //   const albums = Chrome.Storage.get('albumSelections', []);
-    //
-    //   if (!force && (!this._isUpdateAlbums() || (albums.length === 0))) {
-    //     return ret;
-    //   }
-    //
-    //   let newAlbums = [];
-    //
-    //   const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
-    //   conf.isAuth = true;
-    //   conf.retryToken = true;
-    //   conf.interactive = false;
-    //
-    //   // get all the photo ids for each album and update them
-    //   for (const album of albums) {
-    //     const photos = album.photos;
-    //     const newAlbum = Chrome.JSONUtils.shallowCopy(album);
-    //     newAlbum.photos = [];
-    //     let done = false;
-    //     let start = 0;
-    //     let stop = Math.min(MAX_QUERIES, photos.length);
-    //     // get the photos for an album in batches of MAX_QUERIES
-    //     do {
-    //       let url = `${_URL_BASE}mediaItems:batchGet`;
-    //       let query = '?mediaItemIds=';
-    //       let first = true;
-    //       let photo;
-    //       for (let i = start; i < stop; i++) {
-    //         photo = photos[i];
-    //         if (first) {
-    //           query = query.concat(`${photo.ex.id}`);
-    //           first = false;
-    //         } else {
-    //           query = query.concat(`&mediaItemIds=${photo.ex.id}`);
-    //         }
-    //       }
-    //       url = url.concat(query);
-    //
-    //       try {
-    //         // get the new mediaItemResults
-    //         const response = await Chrome.Http.doGet(url, conf);
-    //         const mediaItems = [];
-    //         // convert to array of media items
-    //         for (const mediaItemResult of response.mediaItemResults) {
-    //           // some may have failed to updated
-    //           if (!mediaItemResult.status) {
-    //             mediaItems.push(mediaItemResult.mediaItem);
-    //           }
-    //         }
-    //         const newPhotos = this._processPhotos(mediaItems, album.name);
-    //         newAlbum.photos = newAlbum.photos.concat(newPhotos);
-    //       } catch (err) {
-    //         if (this.isQuotaError(err, 'GoogleSource.updatePhotos')) {
-    //           // Hit Google photos quota
-    //         } else {
-    //           Chrome.Log.error(err.message, 'GoogleSource.updatePhotos');
-    //         }
-    //         return ret;
-    //       }
-    //
-    //       if (stop === photos.length) {
-    //         done = true;
-    //       } else {
-    //         start = stop;
-    //         stop = Math.min(stop + MAX_QUERIES, photos.length);
-    //       }
-    //
-    //     } while (!done);
-    //
-    //     newAlbums.push(newAlbum);
-    //   }
-    //
-    //   // Try to save the updated albums
-    //   const set = Chrome.Storage.safeSet('albumSelections', newAlbums, null);
-    //   if (!set) {
-    //     Chrome.Log.error('Exceed storage limits',
-    //         'GoogleSource.updatePhotos');
-    //   } else {
-    //     // success
-    //     ret = true;
-    //     Chrome.GA.event(app.GA.EVENT.UPDATE_PHOTOS);
-    //     Chrome.Storage.set('gPhotosNeedsUpdate', false);
-    //   }
-    //
-    //   return ret;
-    // }
-
-    // /**
-    //  * Return true if we should be updating the baseUrl's in albums
-    //  * trying to minimize Google Photos API usage
-    //  * @returns {boolean} true if we should use Google Photos albums
-    //  */
-    // static _isUpdateAlbums() {
-    //   /* only update photos if all are true:
-    //    api is authorized
-    //    screensaver is not showing
-    //    inside of keep awake time
-    //    screensaver is enabled
-    //    using google photos   
-    //    using google albums   
-    //    */
-    //   const auth = Chrome.Storage.get('permPicasa', 'notSet') === 'allowed';
-    //   const notShowing = !Chrome.Storage.getBool('isShowing', true);
-    //   const awake = Chrome.Storage.getBool('isAwake', true);
-    //   const enabled = Chrome.Storage.getBool('enabled', true);
-    //   const useGoogle = Chrome.Storage.getBool('useGoogle', true);
-    //   const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums',
-    // true); const ret = auth && notShowing && awake && enabled && useGoogle
-    // && useGoogleAlbums;  if (!ret) { // set this so we know if we are behind
-    // on updates Chrome.Storage.set('gPhotosNeedsUpdate', true); }  return
-    // ret; }
-
+    
     /**
      * Return true if we should be fetching the albums
      * trying to minimize Google Photos API usage
@@ -664,9 +481,6 @@
         // no need to change - save on api calls
         return Promise.resolve(albums);
       }
-
-      // don't need update for a while
-      Chrome.Storage.set('gPhotosNeedsUpdate', false);
 
       // series of API calls to get each album
       const promises = [];
