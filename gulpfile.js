@@ -216,10 +216,15 @@ gulp.task('incrementalBuild', (cb) => {
 gulp.task('dev', (cb) => {
 
   console.log('running polymer build...');
-  // just run polymer build
+  // run polymer build
   exec('polymer build', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
+    // change working directory to app
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+    // to set DEBUG status
+    runSequence('_scripts');
     cb(err);
   });
 });
@@ -311,6 +316,7 @@ gulp.task('_scripts', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(plumber()).
       pipe(plugins.replace('const _DEBUG = false', 'const _DEBUG = true')).
       pipe(plugins.eslint()).
       pipe(plugins.eslint.formatEach()).
