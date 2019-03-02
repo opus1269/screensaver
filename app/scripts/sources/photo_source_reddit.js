@@ -110,7 +110,7 @@
             // library loaded, get our instance
             const Snoocore = window.Snoocore;
             _snoocore = new Snoocore({
-              userAgent: 'screensaver',
+              userAgent: 'photo-screen-saver',
               throttle: 0,
               oauth: {
                 type: 'implicit',
