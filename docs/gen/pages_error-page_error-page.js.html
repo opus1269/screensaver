@@ -78,10 +78,10 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">/*
- * Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
- * Licensed under Apache 2.0
- * https://opensource.org/licenses/Apache-2.0
- * https://github.com/opus1269/chrome-extension-utils/blob/master/LICENSE.md
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '/node_modules/@polymer/polymer/polymer-legacy.js';
 
@@ -97,11 +97,11 @@ import '/node_modules/@polymer/paper-item/paper-item.js';
 import '/node_modules/@polymer/paper-item/paper-item-body.js';
 import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
-import { LocalizeBehavior, Locale } from 
+import {LocalizeBehavior} from
       '/elements/setting-elements/localize-behavior/localize-behavior.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
-import '/styles/shared-styles.js';
+import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '/elements/shared-styles.js';
 
 import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -115,7 +115,8 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
    */
   app.ErrorPageFactory = Polymer({
     _template: html`
-    &lt;style include="iron-flex iron-flex-alignment">&lt;/style>
+    &lt;!--suppress CssUnresolvedCustomPropertySet -->
+&lt;style include="iron-flex iron-flex-alignment">&lt;/style>
     &lt;style include="shared-styles">&lt;/style>
     &lt;style>
 
@@ -124,40 +125,43 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
         position: relative;
       }
 
-      .page-content {
-        width: 100%;
+      .page-container {
+        max-width: 1000px;
         height: 100%;
-        margin: 0;
-        padding: 0;
+        margin-bottom: 16px;
       }
 
-      .page-toolbar {
-        margin-bottom: 0;
-      }
-
-      .body-content {
-        padding-top: 0;
-      }
-
-      #errorViewer {
-        height: 82vh;
-        @apply --paper-font-subhead;
+       #errorViewer {
+        min-height: 75vh;
         white-space: pre-wrap;
         overflow: hidden;
-        overflow-y: scroll;
-        padding: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+        margin: 0;
+      }
+      
+      .error-title {
+        @apply --paper-font-title;
+        padding: 0;
+        margin: 0;
+      }
+
+      .error-text {
+        @apply --paper-font-subhead;
+        padding: 0;
         margin: 0;
       }
 
     &lt;/style>
 
-    &lt;paper-material elevation="1" class="page-content">
+    &lt;paper-material elevation="1" class="page-container">
+    
       &lt;!-- Tool bar -->
       &lt;paper-material elevation="1">
         &lt;app-toolbar class="page-toolbar">
           &lt;span class="space">&lt;/span>
           &lt;div class="middle middle-container center horizontal layout flex">
-            &lt;div class="flex">[[_computeTitle(lastError)]]&lt;/div>
+            &lt;div class="flex">{{localize('last_error_viewer_title')}}&lt;/div>
             &lt;paper-icon-button id="email" icon="myicons:mail" on-tap="_onEmailTapped" disabled\$="[[!lastError.message]]">
             &lt;/paper-icon-button>
             &lt;paper-tooltip for="email" position="left" offset="0">
@@ -171,11 +175,13 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
           &lt;/div>
         &lt;/app-toolbar>
       &lt;/paper-material>
+      
       &lt;!-- Content -->
-      &lt;div class="body-content horizontal layout">
+      &lt;div class="page-content">
         &lt;div id="errorViewer">
-          &lt;div class="error-text">[[lastError.message]]&lt;/div>
-          &lt;div class="error-text">[[_computeStack(lastError)]]&lt;/div>
+          &lt;paper-item class="error-title">[[_computeTitle(lastError)]]&lt;/paper-item>
+          &lt;paper-item class="error-text">[[lastError.message]]&lt;/paper-item>
+          &lt;paper-item class="error-text">[[_computeStack(lastError)]]&lt;/paper-item>
         &lt;/div>
       &lt;/div>
     &lt;/paper-material>
@@ -188,7 +194,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     ],
 
     properties: {
-      
+
       /**
        * The LastError Object to display
        * @memberOf app.ErrorPage
@@ -241,7 +247,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 
       const url = app.Utils.getEmailUrl('Last Error', body);
       Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError email');
-      chrome.tabs.create({ url: url });
+      chrome.tabs.create({url: url});
     },
 
     /**
@@ -257,31 +263,25 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     /**
      * Computed Binding
      * @param {Chrome.Storage.LastError} lastError - the error
+     * @param {Chrome.Storage.LastError} lastError.stack - stack trace
      * @returns {string} stack trace
      * @private
      * @memberOf app.ErrorPage
      */
     _computeStack: function(lastError) {
-      let ret = '';
-      if (lastError.message) {
-        ret += lastError.stack;
-      }
-      return ret;
+      return lastError.message ? lastError.stack : '';
     },
 
     /**
      * Computed Binding
      * @param {Chrome.Storage.LastError} lastError - the error
+     * @param {Chrome.Storage.LastError} lastError.title - message title
      * @returns {string} page title
      * @private
      * @memberOf app.ErrorPage
      */
     _computeTitle: function(lastError) {
-      let ret = Locale.localize('last_error_viewer_title');
-      if (lastError.message) {
-        ret += ` - ${lastError.title}`;
-      }
-      return ret;
+      return lastError.message ? lastError.title : '';
     },
   });
 })(window);
@@ -330,7 +330,7 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on February 25th 2019, 5:13:00 am
+		on March 1st 2019, 6:45:53 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
