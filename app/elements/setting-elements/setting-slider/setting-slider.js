@@ -4,20 +4,20 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '/node_modules/@polymer/paper-styles/typography.js';
-import '/node_modules/@polymer/paper-styles/color.js';
-import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '/node_modules/@polymer/paper-slider/paper-slider.js';
-import '/node_modules/@polymer/paper-item/paper-item.js';
-import '/node_modules/@polymer/paper-listbox/paper-listbox.js';
-import '/node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../node_modules/@polymer/paper-slider/paper-slider.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element to select a value with a slider

@@ -4,13 +4,13 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
 import {NeonAnimationBehavior} from
-      '/node_modules/@polymer/neon-animation/neon-animation-behavior.js';
-import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+      '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /*
  <spin-down-animation> animates the scale transform of an element from 1 to 0

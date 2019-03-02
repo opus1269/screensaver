@@ -6,7 +6,7 @@
  */
 import {isActive, close, display} from './ss_controller.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage alarms from the chrome.alarms API

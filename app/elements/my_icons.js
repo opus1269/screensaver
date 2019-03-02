@@ -4,8 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/iron-icon/iron-icon.js';
-import '/node_modules/@polymer/iron-iconset-svg/iron-iconset-svg.js';
+import '../node_modules/@polymer/iron-icon/iron-icon.js';
+import '../node_modules/@polymer/iron-iconset-svg/iron-iconset-svg.js';
 
 // eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');

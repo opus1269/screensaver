@@ -6,7 +6,7 @@
  */
 import {display} from './ss_controller.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage the Context Menus for the extension

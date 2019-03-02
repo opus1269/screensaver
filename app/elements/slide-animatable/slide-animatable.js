@@ -4,14 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../node_modules/@polymer/polymer/polymer-legacy.js';
 
 import { NeonAnimatableBehavior } from
-      '/node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+      '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
+import { Polymer } from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 Polymer({
   _template: html`

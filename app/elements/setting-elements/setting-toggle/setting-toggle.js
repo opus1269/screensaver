@@ -4,21 +4,21 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '/node_modules/@polymer/paper-styles/typography.js';
-import '/node_modules/@polymer/paper-styles/color.js';
-import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '/node_modules/@polymer/iron-label/iron-label.js';
-import '/node_modules/@polymer/paper-item/paper-item.js';
-import '/node_modules/@polymer/paper-item/paper-item-body.js';
-import '/node_modules/@polymer/paper-ripple/paper-ripple.js';
-import '/node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../node_modules/@polymer/iron-label/iron-label.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for a text entry

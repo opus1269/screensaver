@@ -7,7 +7,7 @@
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
 import {isSignedInToChrome} from './user.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 window.app = window.app || {};
 

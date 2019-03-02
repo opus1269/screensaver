@@ -4,9 +4,9 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Behavior for internationalizing strings

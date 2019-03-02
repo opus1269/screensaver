@@ -4,7 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage the current user
