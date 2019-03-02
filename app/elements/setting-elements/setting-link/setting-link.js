@@ -12,8 +12,8 @@ import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes
 import '../../../node_modules/@polymer/iron-icon/iron-icon.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
-import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
