@@ -4,40 +4,36 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '/node_modules/@polymer/paper-styles/typography.js';
-import '/node_modules/@polymer/paper-styles/color.js';
-import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '/node_modules/@polymer/paper-material/paper-material.js';
-import '/node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
-import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
-import '/node_modules/@polymer/paper-button/paper-button.js';
-import '/node_modules/@polymer/paper-item/paper-item.js';
-import '/node_modules/@polymer/paper-item/paper-item-body.js';
-import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
-import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../../node_modules/@polymer/paper-material/paper-material.js';
+import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
+import '../../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 import {LocalizeBehavior} from
-      '/elements/setting-elements/localize-behavior/localize-behavior.js';
-import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
-import '/elements/shared-styles.js';
+      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '../../../elements/shared-styles.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-(function(window) {
-
-  window.app = window.app || {};
-
-  /**
-   * Polymer element for the Error Page
-   * @namespace app.ErrorPage
-   */
-  app.ErrorPageFactory = Polymer({
-    _template: html`
+/**
+ * Polymer element for the Error Page
+ * @namespace
+ */
+export const ErrorPage = Polymer({
+  _template: html`
     <!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
     <style include="shared-styles"></style>
     <style>
 
@@ -108,101 +104,100 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     </paper-material>
 `,
 
-    is: 'error-page',
+  is: 'error-page',
 
-    behaviors: [
-      LocalizeBehavior,
-    ],
+  behaviors: [
+    LocalizeBehavior,
+  ],
 
-    properties: {
-
-      /**
-       * The LastError Object to display
-       * @memberOf app.ErrorPage
-       */
-      lastError: {
-        type: Object,
-        value: function() {
-          return new Chrome.Storage.LastError();
-        },
-        notify: true,
-      },
-    },
+  properties: {
 
     /**
-     * Element is ready
-     * @memberOf app.ErrorPage
+     * The LastError Object to display
+     * @memberOf ErrorPage
      */
-    ready: function() {
-      Chrome.Storage.getLastError().then((lastError) => {
-        this.set('lastError', lastError);
-        return Promise.resolve();
-      }).catch((err) => {
-        Chrome.GA.error(err.message, 'ErrorPage.ready');
-      });
-      chrome.storage.onChanged.addListener((changes) => {
-        // listen for changes to lastError
-        for (const key in changes) {
-          if (changes.hasOwnProperty(key)) {
-            if (key === 'lastError') {
-              const change = changes[key];
-              this.set('lastError', change.newValue);
-              break;
-            }
+    lastError: {
+      type: Object,
+      value: function() {
+        return new Chrome.Storage.LastError();
+      },
+      notify: true,
+    },
+  },
+
+  /**
+   * Element is ready
+   * @memberOf ErrorPage
+   */
+  ready: function() {
+    Chrome.Storage.getLastError().then((lastError) => {
+      this.set('lastError', lastError);
+      return null;
+    }).catch((err) => {
+      Chrome.GA.error(err.message, 'ErrorPage.ready');
+    });
+    chrome.storage.onChanged.addListener((changes) => {
+      // listen for changes to lastError
+      for (const key in changes) {
+        if (changes.hasOwnProperty(key)) {
+          if (key === 'lastError') {
+            const change = changes[key];
+            this.set('lastError', change.newValue);
+            break;
           }
         }
-      });
-    },
+      }
+    });
+  },
 
-    /**
-     * Event: Email support
-     * @private
-     * @memberOf app.ErrorPage
-     */
-    _onEmailTapped: function() {
-      let body = app.Utils.getEmailBody();
-      body = body + `${this.lastError.title}\n\n${this.lastError.message}\n\n` +
-          `${this.lastError.stack}`;
-      body = body + '\n\nPlease provide any additional info. ' +
-          'on what led to the error.\n\n';
+  /**
+   * Event: Email support
+   * @private
+   * @memberOf ErrorPage
+   */
+  _onEmailTapped: function() {
+    let body = app.Utils.getEmailBody();
+    body = body + `${this.lastError.title}\n\n${this.lastError.message}\n\n` +
+        `${this.lastError.stack}`;
+    body = body + '\n\nPlease provide any additional info. ' +
+        'on what led to the error.\n\n';
 
-      const url = app.Utils.getEmailUrl('Last Error', body);
-      Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError email');
-      chrome.tabs.create({url: url});
-    },
+    const url = app.Utils.getEmailUrl('Last Error', body);
+    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError email');
+    chrome.tabs.create({url: url});
+  },
 
-    /**
-     * Event: Remove the error
-     * @private
-     * @memberOf app.ErrorPage
-     */
-    _onRemoveTapped: function() {
-      Chrome.Storage.clearLastError();
-      Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError delete');
-    },
+  /**
+   * Event: Remove the error
+   * @private
+   * @memberOf ErrorPage
+   */
+  _onRemoveTapped: function() {
+    Chrome.Storage.clearLastError();
+    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError delete');
+  },
 
-    /**
-     * Computed Binding
-     * @param {Chrome.Storage.LastError} lastError - the error
-     * @param {Chrome.Storage.LastError} lastError.stack - stack trace
-     * @returns {string} stack trace
-     * @private
-     * @memberOf app.ErrorPage
-     */
-    _computeStack: function(lastError) {
-      return lastError.message ? lastError.stack : '';
-    },
+  /**
+   * Computed Binding
+   * @param {Chrome.Storage.LastError} lastError - the error
+   * @param {Chrome.Storage.LastError} lastError.stack - stack trace
+   * @returns {string} stack trace
+   * @private
+   * @memberOf ErrorPage
+   */
+  _computeStack: function(lastError) {
+    return lastError.message ? lastError.stack : '';
+  },
 
-    /**
-     * Computed Binding
-     * @param {Chrome.Storage.LastError} lastError - the error
-     * @param {Chrome.Storage.LastError} lastError.title - message title
-     * @returns {string} page title
-     * @private
-     * @memberOf app.ErrorPage
-     */
-    _computeTitle: function(lastError) {
-      return lastError.message ? lastError.title : '';
-    },
-  });
-})(window);
+  /**
+   * Computed Binding
+   * @param {Chrome.Storage.LastError} lastError - the error
+   * @param {Chrome.Storage.LastError} lastError.title - message title
+   * @returns {string} page title
+   * @private
+   * @memberOf ErrorPage
+   */
+  _computeTitle: function(lastError) {
+    return lastError.message ? lastError.title : '';
+  },
+});

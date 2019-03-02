@@ -4,34 +4,29 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '/node_modules/@polymer/paper-styles/typography.js';
-import '/node_modules/@polymer/paper-styles/color.js';
-import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '/node_modules/@polymer/paper-material/paper-material.js';
-import '/elements/setting-elements/setting-link/setting-link.js';
-import { LocalizeBehavior } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
-import '/elements/shared-styles.js';
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../../node_modules/@polymer/paper-material/paper-material.js';
+import '../../../elements/setting-elements/setting-link/setting-link.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '../../../elements/shared-styles.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-(function(window) {
-
-  window.app = window.app || {};
-
-  /**
-   * Polymer element for the Help and Feedback Page
-   * @namespace app.HelpPage
-   */
-  
-  app.HelpPageFactory = Polymer({
-    _template: html`
+/**
+ * Polymer element for the Help and Feedback Page
+ * @namespace
+ */
+export const HelpPage = Polymer({
+  _template: html`
     <!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
     <style include="shared-styles"></style>
     <style>
 
@@ -80,59 +75,58 @@ import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
     </paper-material>
 `,
 
-    is: 'help-page',
+  is: 'help-page',
 
-    behaviors: [
-      LocalizeBehavior,
-    ],
+  behaviors: [
+    LocalizeBehavior,
+  ],
 
-    properties: {
+  properties: {
 
-      /**
-       * Path to our Github repo
-       * @memberOf app.HelpPage
-       */
-      githubPath: {
-        type: String,
-        value: function() {
-          return app.Utils.getGithubPath();
-        },
-        readOnly: true,
+    /**
+     * Path to our Github repo
+     * @memberOf HelpPage
+     */
+    githubPath: {
+      type: String,
+      value: function() {
+        return app.Utils.getGithubPath();
       },
-
-      /**
-       * Path to our Web Site
-       * @memberOf app.HelpPage
-       */
-      githubPagesPath: {
-        type: String,
-        value: function() {
-          return app.Utils.getGithubPagesPath();
-        },
-        readOnly: true,
-      },
+      readOnly: true,
     },
 
     /**
-     * computed binding: Get a mailto url
-     * @param {string} subject - email subject
-     * @returns {string} url
-     * @private
-     * @memberOf app.HelpPage
+     * Path to our Web Site
+     * @memberOf HelpPage
      */
-    _computeMailToUrl: function(subject) {
-      return app.Utils.getEmailUrl(subject, app.Utils.getEmailBody());
+    githubPagesPath: {
+      type: String,
+      value: function() {
+        return app.Utils.getGithubPagesPath();
+      },
+      readOnly: true,
     },
+  },
 
-    /**
-     * computed binding: Get the extension version
-     * @returns {string} Version of the extension
-     * @private
-     * @memberOf app.HelpPage
-     */
-    _computeVersion: function() {
-      const text = Chrome.Utils.getVersion();
-      return encodeURIComponent(text);
-    },
-  });
-})(window);
+  /**
+   * computed binding: Get a mailto url
+   * @param {string} subject - email subject
+   * @returns {string} url
+   * @private
+   * @memberOf HelpPage
+   */
+  _computeMailToUrl: function(subject) {
+    return app.Utils.getEmailUrl(subject, app.Utils.getEmailBody());
+  },
+
+  /**
+   * computed binding: Get the extension version
+   * @returns {string} Version of the extension
+   * @private
+   * @memberOf HelpPage
+   */
+  _computeVersion: function() {
+    const text = Chrome.Utils.getVersion();
+    return encodeURIComponent(text);
+  },
+});

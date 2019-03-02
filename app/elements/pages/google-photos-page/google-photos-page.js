@@ -4,56 +4,53 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '/node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '/node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '/node_modules/@polymer/iron-label/iron-label.js';
-import '/node_modules/@polymer/iron-image/iron-image.js';
-import '/node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-import '/node_modules/@polymer/paper-styles/typography.js';
-import '/node_modules/@polymer/paper-styles/color.js';
-import '/node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '/node_modules/@polymer/paper-material/paper-material.js';
-import '/node_modules/@polymer/paper-ripple/paper-ripple.js';
-import '/node_modules/@polymer/paper-button/paper-button.js';
-import '/node_modules/@polymer/paper-item/paper-item.js';
-import '/node_modules/@polymer/paper-item/paper-item-body.js';
-import '/node_modules/@polymer/paper-spinner/paper-spinner.js';
-import '/node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
-import '/node_modules/@polymer/paper-icon-button/paper-icon-button.js';
-import '/node_modules/@polymer/paper-checkbox/paper-checkbox.js';
-import '/node_modules/@polymer/paper-tooltip/paper-tooltip.js';
-import '/elements/my_icons.js';
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/iron-label/iron-label.js';
+import '../../../node_modules/@polymer/iron-image/iron-image.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../../node_modules/@polymer/paper-material/paper-material.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
+import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
+import '../../../elements/my_icons.js';
 import {
   LocalizeBehavior,
   Locale,
-} from '/elements/setting-elements/localize-behavior/localize-behavior.js';
-import {Polymer} from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
-import '/elements/shared-styles.js';
+} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '../../../elements/shared-styles.js';
 
-import '/scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {showErrorDialog} from '../../../scripts/options/options.js';
+
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Max albums to load
  * @type {int}
- * @memberOf app.GooglePhotosPage
+ * @memberOf GooglePhotosPage
  */
 const _MAX_ALBUMS = 10;
 
-window.app = window.app || {};
-
 /**
- * Polymer element for the Error Page
- * @namespace app.GooglePhotosPage
+ * Polymer element for the Google Photos
+ * @namespace
  */
-
-app.GooglePhotosPage = Polymer({
-  
-  
+export const GooglePhotosPage = Polymer({
   _template: html`
     <!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
+    <style include="iron-flex iron-flex-alignment"></style>
     <style include="shared-styles"></style>
     <style>
       :host {
@@ -246,7 +243,7 @@ app.GooglePhotosPage = Polymer({
 
     /**
      * Select by albums or photos
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     isAlbumMode: {
       type: Boolean,
@@ -256,7 +253,7 @@ app.GooglePhotosPage = Polymer({
 
     /**
      * Should we use the album photos in the screensaver
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     useGoogleAlbums: {
       type: Boolean,
@@ -266,7 +263,7 @@ app.GooglePhotosPage = Polymer({
 
     /**
      * Should we use the google photos in the screensaver
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     useGooglePhotos: {
       type: Boolean,
@@ -277,7 +274,7 @@ app.GooglePhotosPage = Polymer({
     /**
      * The array of all albums
      * @type {app.GoogleSource.Album[]}
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     albums: {
       type: Array,
@@ -288,7 +285,7 @@ app.GooglePhotosPage = Polymer({
     /**
      * The array of selected albums
      * @type {app.GoogleSource.SelectedAlbum[]}
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     selections: {
       type: Array,
@@ -297,7 +294,7 @@ app.GooglePhotosPage = Polymer({
 
     /**
      * Flag to display the loading... UI
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     waitForLoad: {
       type: Boolean,
@@ -307,7 +304,7 @@ app.GooglePhotosPage = Polymer({
 
     /**
      * Status of the option permission for the Google Photos API
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     permPicasa: {
       type: String,
@@ -317,7 +314,7 @@ app.GooglePhotosPage = Polymer({
 
     /**
      * Flag to determine if main list should be hidden
-     * @memberOf app.GooglePhotosPage
+     * @memberOf GooglePhotosPage
      */
     isHidden: {
       type: Boolean,
@@ -326,17 +323,8 @@ app.GooglePhotosPage = Polymer({
   },
 
   /**
-   * To lazily create the page
-   * @param {string} id - Our element id
-   * @memberOf app.GooglePhotosPage
-   */
-  factoryImpl: function(id) {
-    this.setAttribute('id', id);
-  },
-
-  /**
    * Element is ready
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   ready: function() {
     if (Chrome.Storage.getBool('isAlbumMode')) {
@@ -347,7 +335,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Query Google Photos for the list of the users albums
    * @returns {Promise<null>}
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   loadAlbumList: function() {
     const ERR_TITLE = Locale.localize('err_load_album_list');
@@ -390,8 +378,7 @@ app.GooglePhotosPage = Polymer({
         Chrome.Log.error(err.message,
             'GooglePhotosPage.loadAlbumList', ERR_TITLE);
       }
-      window.app.Options.showErrorDialog(Locale.localize('err_request_failed'),
-          dialogText);
+      showErrorDialog(Locale.localize('err_request_failed'), dialogText);
       return Promise.reject(err);
     });
   },
@@ -401,7 +388,7 @@ app.GooglePhotosPage = Polymer({
    * @param {string} id album to load
    * @param {string} name album name
    * @returns {app.GoogleSource.Album} Album
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _loadAlbum: async function(id, name) {
     const ERR_TITLE = Locale.localize('err_load_album');
@@ -423,8 +410,7 @@ app.GooglePhotosPage = Polymer({
         Chrome.Log.error(err.message,
             'GooglePhotosPage.loadAlbum', ERR_TITLE);
       }
-      app.Options.showErrorDialog(Locale.localize('err_request_failed'),
-          dialogText);
+      showErrorDialog(Locale.localize('err_request_failed'), dialogText);
     }
     return album;
   },
@@ -434,7 +420,7 @@ app.GooglePhotosPage = Polymer({
    * @param {boolean} useGoogle - Google Photos use enabled
    * @param {boolean} isAlbumMode - Are we in album mode
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _setUseKeys: function(useGoogle, isAlbumMode) {
     const useAlbums = (useGoogle && isAlbumMode);
@@ -446,7 +432,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on mode icon
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _onModeTapped: function() {
     this.set('isAlbumMode', !this.isAlbumMode);
@@ -462,7 +448,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on refresh album list icon
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _onRefreshTapped: function() {
     Chrome.GA.event(Chrome.GA.EVENT.ICON, 'refreshGoogleAlbums');
@@ -472,7 +458,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on deselect all albums icon
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _onDeselectAllTapped: function() {
     Chrome.GA.event(Chrome.GA.EVENT.ICON, 'deselectAllGoogleAlbums');
@@ -484,7 +470,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on select all albums icon
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _onSelectAllTapped: async function() {
     Chrome.GA.event(Chrome.GA.EVENT.ICON, 'selectAllGoogleAlbums');
@@ -519,7 +505,7 @@ app.GooglePhotosPage = Polymer({
    * @param {Event} event - tap event
    * @param {app.GoogleSource.Album} event.model.album - the album
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _onAlbumSelectChanged: async function(event) {
     const album = event.model.album;
@@ -534,7 +520,7 @@ app.GooglePhotosPage = Polymer({
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
-        app.Options.showErrorDialog(Locale.localize('err_request_failed'),
+        showErrorDialog(Locale.localize('err_request_failed'),
             Locale.localize('err_max_albums'));
 
         return;
@@ -584,7 +570,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Event: checked state changed on main toggle changed
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _onUseGoogleChanged: function() {
     const useGoogle = this.$.googlePhotosToggle.checked;
@@ -603,18 +589,18 @@ app.GooglePhotosPage = Polymer({
    * Exceeded storage limits error
    * @param {string} method - function that caused error
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _showStorageErrorDialog: function(method) {
     const ERR_TITLE = Locale.localize('err_storage_title');
     Chrome.Log.error('safeSet failed', method, ERR_TITLE);
-    app.Options.showErrorDialog(ERR_TITLE, Locale.localize('err_storage_desc'));
+    showErrorDialog(ERR_TITLE, Locale.localize('err_storage_desc'));
   },
 
   /**
    * Set the checked state of the stored albums
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _selectAlbums: function() {
     this.set('selections', Chrome.Storage.get('albumSelections', []));
@@ -633,7 +619,7 @@ app.GooglePhotosPage = Polymer({
   /**
    * Uncheck all albums
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _uncheckAll: function() {
     this.albums.forEach((album, index) => {
@@ -649,7 +635,7 @@ app.GooglePhotosPage = Polymer({
    * @param {string} permPicasa - permission state
    * @returns {boolean} true if hidden
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _computeHidden: function(waitForLoad, permPicasa) {
     let ret = true;
@@ -664,7 +650,7 @@ app.GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} page title
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _computeTitle: function(isAlbumMode) {
     let ret = '';
@@ -681,7 +667,7 @@ app.GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} an icon
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _computeModeIcon: function(isAlbumMode) {
     let ret = '';
@@ -698,7 +684,7 @@ app.GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} page title
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _computeModeTooltip: function(isAlbumMode) {
     let ret = '';
@@ -716,7 +702,7 @@ app.GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {boolean} true if album icons should be disabled
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _computeAlbumIconDisabled(useGoogle, isAlbumMode) {
     return !(useGoogle && isAlbumMode);
@@ -727,7 +713,7 @@ app.GooglePhotosPage = Polymer({
    * @param {int} count - number of photos in album
    * @returns {string} i18n label
    * @private
-   * @memberOf app.GooglePhotosPage
+   * @memberOf GooglePhotosPage
    */
   _computePhotoLabel: function(count) {
     let ret = `${count} ${Locale.localize('photos')}`;
