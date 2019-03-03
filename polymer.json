@@ -3,14 +3,14 @@
   "entrypoint": "html/options.html",
   "shell": "html/options.html",
   "sources": [
-    "scripts/**/*.js",
     "elements/**/*.js",
-    "html/**/*",
-    "styles/**/*",
     "images/**/*"
   ],
   "extraDependencies": [
+    "node_modules/web-animations-js/web-animations-next.min.js",
     "manifest.json",
+    "scripts/**/*.js",
+    "html/**/*",
     "_locales/**/*",
     "assets/**/*",
     "lib/**/*"

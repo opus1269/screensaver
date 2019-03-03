@@ -32,6 +32,8 @@ import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polym
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
+import * as Permissions from '../../../scripts/options/permissions.js';
+
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -78,7 +80,7 @@ Polymer({
             <paper-tooltip for="restore" position="left" offset="0">
               {{localize('tooltip_restore')}}
             </paper-tooltip>
-            <paper-toggle-button id="settingsToggle" on-change="_onEnabledChanged", checked="{{enabled}}"></paper-toggle-button>
+            <paper-toggle-button id="settingsToggle" on-change="_onEnabledChanged" checked="{{enabled}}"></paper-toggle-button>
             <paper-tooltip for="settingsToggle" position="left" offset="0">
               {{localize('tooltip_settings_toggle')}}
             </paper-tooltip>
@@ -309,16 +311,16 @@ Polymer({
   _chromeBackgroundTapped() {
     // this used to not be updated yet in Polymer 1
     const isSet = Chrome.Storage.getBool('allowBackground');
-    const perm = app.Permissions.BACKGROUND;
-    const isAllowed = app.Permissions.isAllowed(perm);
+    const perm = Permissions.BACKGROUND;
+    const isAllowed = Permissions.isAllowed(perm);
     const errTitle = Locale.localize('err_optional_permissions');
     if (isSet && !isAllowed) {
-      app.Permissions.request(perm).catch((err) => {
+      Permissions.request(perm).catch((err) => {
         Chrome.Log.error(err.message,
             'settings-page._chromeBackgroundTapped', errTitle);
       });
     } else if (!isSet && isAllowed) {
-      app.Permissions.remove(perm).catch((err) => {
+      Permissions.remove(perm).catch((err) => {
         Chrome.Log.error(err.message,
             'settings-page._chromeBackgroundTapped', errTitle);
       });

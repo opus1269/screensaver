@@ -33,6 +33,7 @@ import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js
 import '../../../elements/shared-styles.js';
 
 import {showErrorDialog} from '../../../scripts/options/options.js';
+import * as Permissions from '../../../scripts/options/permissions.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -339,11 +340,11 @@ export const GooglePhotosPage = Polymer({
    */
   loadAlbumList: function() {
     const ERR_TITLE = Locale.localize('err_load_album_list');
-    const type = app.Permissions.PICASA;
-    return app.Permissions.request(type).then((granted) => {
+    const type = Permissions.PICASA;
+    return Permissions.request(type).then((granted) => {
       if (!granted) {
         // eslint-disable-next-line promise/no-nesting
-        app.Permissions.removeGooglePhotos().catch(() => {});
+        Permissions.removeGooglePhotos().catch(() => {});
         const err = new Error(Locale.localize('err_auth_picasa'));
         return Promise.reject(err);
       }

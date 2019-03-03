@@ -5,6 +5,12 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import '../../scripts/background/context_menus.js';
+import '../../scripts/background/alarm.js';
+import '../../scripts/background/data.js';
+import '../../scripts/background/ss_controller.js';
+import '../../scripts/background/user.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**

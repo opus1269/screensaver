@@ -5,11 +5,61 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../node_modules/@polymer/polymer/polymer-legacy.js';
+import '../../node_modules/@polymer/polymer/lib/elements/dom-bind.js';
+import '../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
+
+import '../../node_modules/@polymer/font-roboto/roboto.js';
+
+import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../node_modules/@polymer/iron-icon/iron-icon.js';
+import '../../node_modules/@polymer/iron-image/iron-image.js';
+
+import '../../node_modules/@polymer/paper-styles/typography.js';
+import '../../node_modules/@polymer/paper-styles/color.js';
+import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../node_modules/@polymer/paper-material/paper-material.js';
+import '../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+
+import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
+import '../../node_modules/@polymer/neon-animation/neon-animations.js';
+import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
+
+import '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
+import '../../node_modules/@polymer/app-layout/app-drawer/app-drawer.js';
+import '../../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
+import '../../node_modules/@polymer/app-layout/app-header/app-header.js';
+import '../../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
+import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
+import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
+import '../../elements/pages/settings-page/settings-page.js';
+import '../../elements/pages/error-page/error-page.js';
+import '../../elements/pages/help-page/help-page.js';
+import '../../elements/pages/google-photos-page/google-photos-page.js';
+
+import '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import '../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
+import '../../elements/setting-elements/setting-toggle/setting-toggle.js';
+import '../../elements/setting-elements/setting-slider/setting-slider.js';
+import '../../elements/setting-elements/setting-link/setting-link.js';
+import '../../elements/setting-elements/setting-background/setting-background.js';
+import '../../elements/setting-elements/setting-time/setting-time.js';
+import '../../elements/setting-elements/setting-text/setting-text.js';
+import '../../elements/animations/spin-up-animation/spin-up-animation.js';
+import '../../elements/animations/spin-down-animation/spin-down-animation.js';
+import '../../elements/slide-animatable/slide-animatable.js';
+import '../../elements/my_icons.js';
 
 import {GooglePhotosPage} from
       '../../elements/pages/google-photos-page/google-photos-page.js';
 import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
 import {HelpPage} from '../../elements/pages/help-page/help-page.js';
+import * as Permissions from './permissions.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -171,6 +221,7 @@ export function showErrorDialog(title, text) {
  * @memberOf Options
  */
 function _onLoad() {
+
   Chrome.GA.page('/options.html');
 
   // listen for chrome messages
@@ -245,10 +296,9 @@ t._onNavMenuItemTapped = function(event) {
  */
 t._onAcceptPermissionsClicked = function() {
   Chrome.GA.event(Chrome.GA.EVENT.BUTTON, 'Permission.Allow');
-  const type = app.Permissions.PICASA;
-  app.Permissions.request(type).then((granted) => {
+  Permissions.request(Permissions.PICASA).then((granted) => {
     if (!granted) {
-      return app.Permissions.removeGooglePhotos();
+      return Permissions.removeGooglePhotos();
     } else {
       return null;
     }
@@ -264,7 +314,7 @@ t._onAcceptPermissionsClicked = function() {
  */
 t._onDenyPermissionsClicked = function() {
   Chrome.GA.event(Chrome.GA.EVENT.BUTTON, 'Permission.Deny');
-  app.Permissions.removeGooglePhotos().catch((err) => {
+  Permissions.removeGooglePhotos().catch((err) => {
     Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
   });
 };

@@ -15,8 +15,6 @@
   <!-- important -->
   <title>Photo Screen Saver Options Page</title>
 
-  <script type="module" src="../scripts/options/options.js"></script>
-
   <script src="../scripts/chrome-extension-utils/scripts/chrome-promise.js"></script>
   <script src="../scripts/chrome-extension-utils/scripts/exception_handler.js"></script>
   <script src="../scripts/chrome-extension-utils/scripts/analytics.js"></script>
@@ -29,7 +27,6 @@
   <script src="../scripts/chrome-extension-utils/scripts/time.js"></script>
   <script src="../scripts/chrome-extension-utils/scripts/http.js"></script>
   <script src="../scripts/chrome-extension-utils/scripts/auth.js"></script>
-  <script src="../scripts/options/permissions.js"></script>
   <script src="../scripts/my_analytics.js"></script>
   <script src="../scripts/my_msg.js"></script>
   <script src="../scripts/my_utils.js"></script>
@@ -46,68 +43,7 @@
   <!-- Ensure Web Animations polyfill is loaded since neon-animation 3.0 doesn't import it -->
   <script src="../node_modules/web-animations-js/web-animations-next.min.js"></script>
 
-  <script type="module" src="../node_modules/@polymer/polymer/lib/elements/dom-bind.js"></script>
-  <script type="module" src="../node_modules/@polymer/polymer/lib/elements/dom-repeat.js"></script>
-
-  <!-- Font -->
-  <script type="module" src="../node_modules/@polymer/font-roboto/roboto.js"></script>
-
-  <!-- Iron elements -->
-  <script type="module" src="../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-  <script type="module" src="../node_modules/@polymer/iron-icon/iron-icon.js"></script>
-  <script type="module" src="../node_modules/@polymer/iron-image/iron-image.js"></script>
-
-  <!-- Paper elements -->
-  <script type="module" src="../node_modules/@polymer/paper-styles/typography.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-styles/color.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-dialog/paper-dialog.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-icon-button/paper-icon-button.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-button/paper-button.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-item/paper-item.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-material/paper-material.js"></script>
-  <script type="module" src="../node_modules/@polymer/paper-listbox/paper-listbox.js"></script>
-
-  <!-- Neon elements -->
-  <script type="module" src="../node_modules/@polymer/neon-animation/neon-animated-pages.js"></script>
-  <script type="module" src="../node_modules/@polymer/neon-animation/neon-animations.js"></script>
-  <script type="module" src="../node_modules/@polymer/neon-animation/neon-animatable.js"></script>
-
-  <!-- App Layout -->
-  <script type="module" src="../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js"></script>
-  <script type="module" src="../node_modules/@polymer/app-layout/app-drawer/app-drawer.js"></script>
-  <script type="module" src="../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js"></script>
-  <script type="module" src="../node_modules/@polymer/app-layout/app-header/app-header.js"></script>
-  <script type="module" src="../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js"></script>
-  <script type="module" src="../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js"></script>
-
-  <!-- App Storage -->
-  <script type="module" src="../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js"></script>
-
-  <!-- My elements -->
-  <script type="module" src="../elements/pages/settings-page/settings-page.js"></script>
-  <script type="module" src="../elements/pages/error-page/error-page.js"></script>
-  <script type="module" src="../elements/pages/help-page/help-page.js"></script>
-  <script type="module" src="../elements/pages/google-photos-page/google-photos-page.js"></script>
-
-  <script type="module" src="../elements/setting-elements/localize-behavior/localize-behavior.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-dropdown/setting-dropdown.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-toggle/setting-toggle.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-slider/setting-slider.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-link/setting-link.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-background/setting-background.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-time/setting-time.js"></script>
-  <script type="module" src="../elements/setting-elements/setting-text/setting-text.js"></script>
-  <script type="module" src="../elements/my_icons.js"></script>
-  <script type="module" src="../elements/slide-animatable/slide-animatable.js"></script>
-  <script type="module" src="../elements/animations/spin-up-animation/spin-up-animation.js"></script>
-  <script type="module" src="../elements/animations/spin-down-animation/spin-down-animation.js"></script>
-  <script type="module" src="../elements/pages/settings-page/settings-page.js"></script>
-  <script type="module" src="../elements/pages/error-page/error-page.js"></script>
-  <script type="module" src="../elements/pages/help-page/help-page.js"></script>
-  <script type="module" src="../elements/pages/google-photos-page/google-photos-page.js"></script>
-
-  <script type="module" src="../scripts/chrome-extension-utils/scripts/ex_handler.js"></script>
+  <script type="module" src="../scripts/options/options.js"></script>
 
 </head>
 
@@ -311,7 +247,7 @@
           <paper-item class="status">
             [[_computePermissionsStatus(permission)]]
           </paper-item>
-          
+
         </div>
       </paper-dialog-scrollable>
       <div class="buttons">
