@@ -2,6 +2,8 @@
   <dictionary name="mike">
     <words>
       <w>entrypoint</w>
+      <w>gphoto</w>
+      <w>latlng</w>
       <w>mult</w>
       <w>signout</w>
     </words>
