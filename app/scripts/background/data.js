@@ -6,6 +6,7 @@
  */
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
 import {isSignedInToChrome} from './user.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -412,7 +413,7 @@ app.Data = (function() {
         });
 
         // process photo SOURCES
-        app.PhotoSources.processAll(doGoogle);
+        PhotoSources.processAll(doGoogle);
         Chrome.Storage.set('isShowing', false);
 
         // set os, if not already
@@ -421,10 +422,10 @@ app.Data = (function() {
         }
       } else {
         // individual change
-        if (app.PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
+        if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
           // photo source change
           const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
-          app.PhotoSources.process(useKey).catch((err) => {
+          PhotoSources.process(useKey).catch((err) => {
             // send message on processing error
             const msg = app.Msg.PHOTO_SOURCE_FAILED;
             msg.key = useKey;

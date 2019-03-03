@@ -4,47 +4,44 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-(function() {
-  'use strict';
-  window.app = window.app || {};
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-  new ExceptionHandler();
+import PhotoSource from './photo_source.js';
+
+/**
+ * A potential source of photos from Chromecast
+ * @module CCSource
+ */
+export default class CCSource extends PhotoSource {
 
   /**
-   * A potential source of photos from Chromecast
-   * @alias app.CCSource
+   * Create a new photo source
+   * @param {string} useKey - The key for if the source is selected
+   * @param {string} photosKey - The key for the collection of photos
+   * @param {string} type - A descriptor of the photo source
+   * @param {string} desc - A human readable description of the source
+   * @param {boolean} isDaily - Should the source be updated daily
+   * @param {boolean} isArray - Is the source an Array of photo Arrays
+   * @param {?Object} [loadArg=null] - optional arg for load function
+   * @constructor
    */
-  app.CCSource = class extends app.PhotoSource {
+  constructor(useKey, photosKey, type, desc, isDaily, isArray,
+              loadArg = null) {
+    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
+  }
 
-    /**
-     * Create a new photo source
-     * @param {string} useKey - The key for if the source is selected
-     * @param {string} photosKey - The key for the collection of photos
-     * @param {string} type - A descriptor of the photo source
-     * @param {string} desc - A human readable description of the source
-     * @param {boolean} isDaily - Should the source be updated daily
-     * @param {boolean} isArray - Is the source an Array of photo Arrays
-     * @param {?Object} [loadArg=null] - optional arg for load function
-     * @constructor
-     */
-    constructor(useKey, photosKey, type, desc, isDaily, isArray,
-                loadArg = null) {
-      super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
-    }
-
-    /**
-     * Fetch the photos for this source
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
-     */
-    fetchPhotos() {
-      const url = '/assets/chromecast.json';
-      return Chrome.Http.doGet(url).then((photos) => {
-        photos = photos || [];
-        for (const photo of photos) {
-          photo.asp = 1.78;
-        }
-        return Promise.resolve(photos);
-      });
-    }
-  };
-})();
+  /**
+   * Fetch the photos for this source
+   * @returns {Promise<PhotoSource.Photo[]>} Array of photos
+   */
+  fetchPhotos() {
+    const url = '/assets/chromecast.json';
+    return Chrome.Http.doGet(url).then((photos) => {
+      photos = photos || [];
+      for (const photo of photos) {
+        photo.asp = 1.78;
+      }
+      return Promise.resolve(photos);
+    });
+  }
+}

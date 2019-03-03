@@ -9,6 +9,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as Screensaver from './screensaver.js';
 import * as SSFinder from './ss_photo_finder.js';
 import * as SSPhotos from './ss_photos.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 /**
  * Builder for a {@link Screensaver}
@@ -37,7 +38,7 @@ export function build() {
  * @private
  */
 function _loadPhotos() {
-  let sources = app.PhotoSources.getSelectedPhotos();
+  let sources = PhotoSources.getSelectedPhotos();
   sources = sources || [];
   for (const source of sources) {
     SSPhotos.addFromSource(source);

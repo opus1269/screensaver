@@ -33,6 +33,7 @@ import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.
 import '../../../elements/shared-styles.js';
 
 import * as Permissions from '../../../scripts/options/permissions.js';
+import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -205,7 +206,7 @@ Polymer({
   },
 
   /**
-   * Deselect the given {@link app.PhotoSource}
+   * Deselect the given {@link module:PhotoSource}
    * @param {string} useName - Name of <setting-toggle>
    * @memberOf SettingsPage
    */
@@ -232,7 +233,7 @@ Polymer({
   },
 
   /**
-   * Set checked state of a {@link app.PhotoSource}
+   * Set checked state of a {@link module:PhotoSource}
    * @param {string} useName - source name
    * @param {boolean} state - checked state
    * @private
@@ -247,13 +248,13 @@ Polymer({
   },
 
   /**
-   * Set checked state of all {@link app.PhotoSource} objects
+   * Set checked state of all {@link module:PhotoSource} objects
    * @param {boolean} state - checked state
    * @private
    * @memberOf SettingsPage
    */
   _setPhotoSourcesChecked: function(state) {
-    const useNames = app.PhotoSources.getUseKeys();
+    const useNames = PhotoSources.getUseKeys();
     useNames.forEach((useName) => {
       this._setPhotoSourceChecked(useName, state);
     });
@@ -270,14 +271,14 @@ Polymer({
         `screensaverEnabled: ${enabled}`);
     if (enabled) {
       // Switching to enabled, reload the Google Photo albums
-      app.PhotoSources.process('useGoogleAlbums').catch((err) => {
+      PhotoSources.process('useGoogleAlbums').catch((err) => {
         Chrome.Log.error(err.message, 'SettingsPage._onEnabledChanged');
       });
     }
   },
 
   /**
-   * Event: select all {@link app.PhotoSource} objects tapped
+   * Event: select all {@link module:PhotoSource} objects tapped
    * @private
    * @memberOf SettingsPage
    */
@@ -286,7 +287,7 @@ Polymer({
   },
 
   /**
-   * Event: deselect all {@link app.PhotoSource} objects tapped
+   * Event: deselect all {@link module:PhotoSource} objects tapped
    * @private
    * @memberOf SettingsPage
    */

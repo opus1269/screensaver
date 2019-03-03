@@ -34,6 +34,8 @@ import '../../../elements/shared-styles.js';
 
 import {showErrorDialog} from '../../../scripts/options/options.js';
 import * as Permissions from '../../../scripts/options/permissions.js';
+import GoogleSource from '../../../scripts/sources/photo_source_google.js';
+import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -256,7 +258,7 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * The array of all albums
-     * @type {app.GoogleSource.Album[]}
+     * @type {GoogleSource.Album[]}
      * @memberOf GooglePhotosPage
      */
     albums: {
@@ -267,7 +269,7 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * The array of selected albums
-     * @type {app.GoogleSource.SelectedAlbum[]}
+     * @type {GoogleSource.SelectedAlbum[]}
      * @memberOf GooglePhotosPage
      */
     selections: {
@@ -331,7 +333,7 @@ export const GooglePhotosPage = Polymer({
         return Promise.reject(err);
       }
       this.set('waitForLoad', true);
-      return app.GoogleSource.loadAlbumList();
+      return GoogleSource.loadAlbumList();
     }).then((albums) => {
       // get all the user's albums
       this.splice('albums', 0, this.albums.length);
@@ -342,7 +344,7 @@ export const GooglePhotosPage = Polymer({
       // update the currently selected albums from the web
       // eslint-disable-next-line promise/no-nesting
       // TODO do we need this?
-      // app.PhotoSources.process('useGoogleAlbums').catch((err) => {
+      // PhotoSources.process('useGoogleAlbums').catch((err) => {
       //   Chrome.GA.error(err.message, 'GooglePhotosPage.loadAlbumList');
       // });
       // set selected state on albums
@@ -352,7 +354,7 @@ export const GooglePhotosPage = Polymer({
     }).catch((err) => {
       this.set('waitForLoad', false);
       let dialogText = 'unknown';
-      if (app.GoogleSource.isQuotaError(err,
+      if (GoogleSource.isQuotaError(err,
           'GooglePhotosPage.loadAlbumList')) {
         // Hit Google photos quota
         dialogText = Chrome.Locale.localize('err_google_quota');
@@ -370,7 +372,7 @@ export const GooglePhotosPage = Polymer({
    * Query Google Photos for the contents of an album
    * @param {string} id album to load
    * @param {string} name album name
-   * @returns {app.GoogleSource.Album} Album
+   * @returns {GoogleSource.Album} Album
    * @memberOf GooglePhotosPage
    */
   _loadAlbum: async function(id, name) {
@@ -378,13 +380,13 @@ export const GooglePhotosPage = Polymer({
     let album;
     try {
       this.set('waitForLoad', true);
-      album = await app.GoogleSource.loadAlbum(id, name);
+      album = await GoogleSource.loadAlbum(id, name);
       this.set('waitForLoad', false);
       return album;
     } catch (err) {
       this.set('waitForLoad', false);
       let dialogText = 'unknown';
-      if (app.GoogleSource.isQuotaError(err,
+      if (GoogleSource.isQuotaError(err,
           'GooglePhotosPage.loadAlbum')) {
         // Hit Google photos quota
         dialogText = Chrome.Locale.localize('err_google_quota');
@@ -486,7 +488,7 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: Album checkbox state changed
    * @param {Event} event - tap event
-   * @param {app.GoogleSource.Album} event.model.album - the album
+   * @param {GoogleSource.Album} event.model.album - the album
    * @private
    * @memberOf GooglePhotosPage
    */
@@ -562,7 +564,7 @@ export const GooglePhotosPage = Polymer({
         `useGoogle: ${useGoogle}`);
     if (useGoogle) {
       // Switching to enabled, reload the Google Photo albums
-      app.PhotoSources.process('useGoogleAlbums').catch((err) => {
+      PhotoSources.process('useGoogleAlbums').catch((err) => {
         Chrome.Log.error(err.message, 'GooglePhotosPage._onUseGoogleChanged');
       });
     }

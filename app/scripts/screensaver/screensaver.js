@@ -28,6 +28,7 @@ import * as SSRunner from './ss_runner.js';
 import * as SSTime from './ss_time.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSViews from './ss_views.js';
+import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -253,7 +254,7 @@ t._onErrorChanged = async function(ev) {
       let newPhotos = [];
       try {
         // load the new photos from Google Photos
-        newPhotos = await app.GoogleSource.loadPhotos(ids);
+        newPhotos = await GoogleSource.loadPhotos(ids);
       } catch (err) {
         Chrome.Log.error('Failed to load new photos',
             'Screensaver._onErrorChanged');
@@ -283,7 +284,7 @@ t._onErrorChanged = async function(ev) {
       }
 
       // persist new baseUrls to albumSelections
-      const updated = app.GoogleSource.updateBaseUrls(newPhotos);
+      const updated = GoogleSource.updateBaseUrls(newPhotos);
       if (!updated) {
         Chrome.Log.error('Failed to save baseUrl\'s',
             'Screensaver._onErrorChanged');

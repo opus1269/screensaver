@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import {isActive, close, display} from './ss_controller.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -170,7 +171,7 @@ function _onAlarm(alarm) {
       break;
     case _ALARMS.UPDATE_PHOTOS:
       // get the latest for the live photo streams
-      app.PhotoSources.processDaily();
+      PhotoSources.processDaily();
       break;
     case _ALARMS.BADGE_TEXT:
       // set the icons text

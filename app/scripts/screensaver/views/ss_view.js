@@ -6,7 +6,8 @@
  */
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Geo from '../geo.js';
+// TODO add back
+// import * as Geo from '../geo.js';
 
 /**
  * Base class for other SSView classes

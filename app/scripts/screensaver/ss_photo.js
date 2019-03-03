@@ -11,7 +11,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {int} _id - Unique id
  * @property {string} _url - The url to the photo
  * @property {string} _photographer - The photographer
- * @property {string} _type - type of {@link app.PhotoSource}
+ * @property {string} _type - type of {@link module:PhotoSource}
  * @property {number} _aspectRatio - aspect ratio
  * @property {Object} _ex - additional information about the photo
  * @property {string} _point - geolocation 'lat lon'
@@ -23,8 +23,8 @@ export default class SSPhoto {
   /**
    * Create a new photo
    * @param {int} id - unique id
-   * @param {app.PhotoSource.Photo} source - source photo
-   * @param {string} sourceType - type of {@link app.PhotoSource}
+   * @param {module:PhotoSource.Photo} source - source photo
+   * @param {string} sourceType - type of {@link module:PhotoSource}
    * @constructor
    */
   constructor(id, source, sourceType) {

@@ -4,28 +4,30 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-(function() {
-  'use strict';
-  window.app = window.app || {};
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-  new ExceptionHandler();
+import PhotoSource from './photo_source.js';
 
-  /**
+/**
+ * A potential source of photos from reddit
+ * @module RedditSource
+ */
+
+/**
    * Extension's redirect uri
    * @type {string}
    * @const
    * @private
-   * @memberOf app.RedditSource
    */
   const _REDIRECT_URI =
       `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
 
-  /**
+  // noinspection SpellCheckingInspection
+/**
    * Reddit rest API authorization key
    * @type {string}
    * @const
    * @private
-   * @memberOf app.RedditSource
    */
   const _KEY = 'bATkDOUNW_tOlg';
 
@@ -35,7 +37,6 @@
    * @const
    * @default
    * @private
-   * @memberOf app.RedditSource
    */
   const _MAX_PHOTOS = 100;
 
@@ -45,7 +46,6 @@
    * @const
    * @default
    * @private
-   * @memberOf app.RedditSource
    */
   const _MIN_SIZE = 750;
 
@@ -55,7 +55,6 @@
    * @const
    * @default
    * @private
-   * @memberOf app.RedditSource
    */
   const _MAX_SIZE = 3500;
 
@@ -63,15 +62,14 @@
    * Expose reddit API
    * @type {Function}
    * @private
-   * @memberOf app.RedditSource
    */
   let _snoocore;
 
   /**
    * A potential source of photos from reddit
-   * @alias app.RedditSource
+   * @extends PhotoSource
    */
-  app.RedditSource = class extends app.PhotoSource {
+  export default class RedditSource extends PhotoSource {
 
     /**
      * Create a new photo source
@@ -93,7 +91,6 @@
      * Wait for snoocore library
      * @see  https://stackoverflow.com/a/30506051/4468645
      * @returns {Promise} resolves when snoocore library loads
-     * @memberOf app.RedditSource
      */
     static _waitForLib() {
       const WAIT_MILLIS = 100;
@@ -150,7 +147,7 @@
     /**
      * Build the list of photos for one page of items
      * @param {Array} children - Array of objects from reddit
-     * @returns {app.PhotoSource.Photo[]} Array of photos
+     * @returns {module:PhotoSource.Photo[]} Array of photos
      * @private
      */
     static _processChildren(children) {
@@ -174,12 +171,14 @@
               // too big. get the largest reduced resolution image
               item = item.resolutions[item.resolutions.length - 1];
               url = item.url.replace(/&amp;/g, '&');
+              // noinspection JSCheckFunctionSignatures
               width = parseInt(item.width, 10);
+              // noinspection JSCheckFunctionSignatures
               height = parseInt(item.height, 10);
             }
           } else if (data.title) {
             // old way of specifying images - parse size from title
-            const size = app.RedditSource._getSize(data.title);
+            const size = RedditSource._getSize(data.title);
             url = data.url;
             width = size.width;
             height = size.height;
@@ -190,7 +189,7 @@
         const author = data.author;
         if (asp && !isNaN(asp) && (Math.max(width, height) >= _MIN_SIZE) &&
             (Math.max(width, height) <= _MAX_SIZE)) {
-          app.PhotoSource.addPhoto(photos, url, author, asp, data.url);
+          PhotoSource.addPhoto(photos, url, author, asp, data.url);
         }
       }
       return photos;
@@ -198,24 +197,24 @@
 
     /**
      * Fetch the photos for this source
-     * @returns {Promise<app.PhotoSource.Photo[]>} Array of photos
+     * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
      */
     fetchPhotos() {
       let photos = [];
 
       // wait for library to initialize
-      return app.RedditSource._waitForLib().then(() => {
+      return RedditSource._waitForLib().then(() => {
         // web request to get photos
         return _snoocore(`${this._loadArg}hot`).listing({
           limit: _MAX_PHOTOS,
         });
       }).then((slice) => {
         photos =
-            photos.concat(app.RedditSource._processChildren(slice.children));
+            photos.concat(RedditSource._processChildren(slice.children));
         return slice.next();
       }).then((slice) => {
         photos =
-            photos.concat(app.RedditSource._processChildren(slice.children));
+            photos.concat(RedditSource._processChildren(slice.children));
         return Promise.resolve(photos);
       }).catch((err) => {
         let msg = err.message;
@@ -231,6 +230,5 @@
         return Promise.reject(new Error(msg));
       });
     }
-  };
+  }
 
-})(window);
