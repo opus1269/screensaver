@@ -13,8 +13,8 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
 import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 

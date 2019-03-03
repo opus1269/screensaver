@@ -16,8 +16,8 @@ import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
 import { LocalizeBehavior } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
-import { Polymer } from '/node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '/node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
