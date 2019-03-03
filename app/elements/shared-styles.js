@@ -23,6 +23,24 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
         }
       }
 
+      /* Scrollbars */
+      ::-webkit-scrollbar {
+        background: transparent;
+        width: 8px;
+      }
+      
+      ::-webkit-scrollbar-button {
+        background: transparent;
+        height: 0;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: rgba(48, 63, 159, 1);
+        -webkit-border-radius: 8px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
       .page-toolbar {
          /*@apply --paper-font-title;*/
          background-color: var(--primary-color);

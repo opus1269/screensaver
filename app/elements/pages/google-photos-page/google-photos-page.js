@@ -59,45 +59,27 @@ export const GooglePhotosPage = Polymer({
         position: relative;
       }
 
-      /* Scrollbars */
-      ::-webkit-scrollbar {
-        background: transparent;
-        width: 8px;
-      }
-      
-      ::-webkit-scrollbar-button {
-        background: transparent;
-        height: 0;
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background: rgba(48, 63, 159, 1);
-        -webkit-border-radius: 8px;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .page-toolbar {
+      :host .page-toolbar {
         margin: 0;
       }
 
-      .page-content {
+      :host .page-content {
         height: 800px;
         overflow: hidden;
         overflow-y: scroll;
         margin: 0;
       }
 
-      .waiter {
+      :host .waiter {
         margin: 40px auto;
       }
 
-      .waiter paper-item {
+      :host .waiter paper-item {
         @apply --paper-font-title;
         margin: 40px auto;
       }
 
-      .list-note {
+      :host .list-note {
         @apply --paper-font-title;
         border: 1px #CCCCCC;
         border-bottom-style: solid;
@@ -105,7 +87,7 @@ export const GooglePhotosPage = Polymer({
         white-space: normal;
       }
 
-      .list-item {
+      :host .list-item {
         position: relative;
         border: 1px #CCCCCC;
         border-bottom-style: solid;
@@ -113,28 +95,28 @@ export const GooglePhotosPage = Polymer({
         cursor: pointer;
       }
 
-      .list-item paper-item-body {
+      :host .list-item paper-item-body {
         padding-left: 10px;
       }
 
-      .list-item paper-item {
+      :host .list-item paper-item {
         padding-right: 0;
       }
 
-      .list-item iron-image {
+      :host .list-item iron-image {
         height: 72px;
         width: 72px;
       }
 
-      .list-item[disabled] iron-image {
+      :host .list-item[disabled] iron-image {
         opacity: .2;
       }
 
-      .list-item[disabled] {
+      :host .list-item[disabled] {
         pointer-events: none;
       }
 
-      .list-item[disabled] .setting-label {
+      :host .list-item[disabled] .setting-label {
         color: var(--disabled-text-color);
       }
       
