@@ -4,59 +4,54 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as Screensaver from './screensaver.js';
+import * as SSFinder from './ss_photo_finder.js';
+import * as SSPhotos from './ss_photos.js';
 
 /**
- * Builder for a {@link app.Screensaver}
- * @namespace
+ * Builder for a {@link Screensaver}
+ * @module SSBuilder
  */
-app.SSBuilder = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * Build everything related to a {@link Screensaver}
+ * @returns {boolean} true if there are photos for the show
+ */
+export function build() {
+  // load the photos for the slide show
+  const hasPhotos = _loadPhotos();
+  if (hasPhotos) {
+    // create the animated pages
+    Screensaver.createPages();
+    // initialize the photo finder
+    SSFinder.initialize();
+  }
+  return hasPhotos;
+}
 
-  /**
-   * Build the {@link app.SSPhotos} that will be displayed
-   * @returns {boolean} true if there is at least one photo
-   * @private
-   * @memberOf app.SSBuilder
-   */
-  function _loadPhotos() {
-    let sources = app.PhotoSources.getSelectedPhotos();
-    sources = sources || [];
-    for (const source of sources) {
-      app.SSPhotos.addFromSource(source);
-    }
-
-    if (!app.SSPhotos.getCount()) {
-      // No usable photos
-      app.Screensaver.setNoPhotos();
-      return false;
-    }
-
-    if (Chrome.Storage.getBool('shuffle')) {
-      // randomize the order
-      app.SSPhotos.shuffle();
-    }
-    return true;
+/**
+ * Build the {@link SSPhotos} that will be displayed
+ * @returns {boolean} true if there is at least one photo
+ * @private
+ */
+function _loadPhotos() {
+  let sources = app.PhotoSources.getSelectedPhotos();
+  sources = sources || [];
+  for (const source of sources) {
+    SSPhotos.addFromSource(source);
   }
 
-  return {
-    /**
-     * Build everything related to a {@link app.Screensaver}
-     * @returns {boolean} true if there are photos for the show
-     * @memberOf app.SSBuilder
-     */
-    build: function() {
-      // load the photos for the slide show
-      const hasPhotos = _loadPhotos();
-      if (hasPhotos) {
-        // create the animated pages
-        app.Screensaver.createPages();
-        // initialize the photo finder
-        app.SSFinder.initialize();
-      }
-      return hasPhotos;
-    },
-  };
-})();
+  if (!SSPhotos.getCount()) {
+    // No usable photos
+    Screensaver.setNoPhotos();
+    return false;
+  }
+
+  if (Chrome.Storage.getBool('shuffle')) {
+    // randomize the order
+    SSPhotos.shuffle();
+  }
+  return true;
+}

@@ -4,41 +4,35 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as Screensaver from './screensaver.js';
+import * as SSRunner from './ss_runner.js';
 
 /**
- * Time handling for an {@link app.Screensaver}
- * @namespace
+ * Time handling for an {@link Screensaver}
+ * @module SSTime
  */
-app.SSTime = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * Initialize the time display
+ */
+export function initialize() {
+  const showTime = Chrome.Storage.getInt('showTime', 0);
+  if (showTime > 0) {
+    // update current time once a minute
+    setInterval(setTime, 61 * 1000);
+  }
+}
 
-  return {
-    /**
-     * Initialize the time display
-     * @memberOf app.SSTime
-     */
-    initialize: function() {
-      const showTime = Chrome.Storage.getInt('showTime', 0);
-      if (showTime > 0) {
-        // update current time once a minute
-        setInterval(app.SSTime.setTime, 61 * 1000);
-      }
-    },
-
-    /**
-     * Set the time label
-     * @memberOf app.SSTime
-     */
-    setTime: function() {
-      let label = '';
-      const showTime = Chrome.Storage.getInt('showTime', 0);
-      if ((showTime !== 0) && app.SSRunner.isStarted()) {
-        label = Chrome.Time.getStringShort();
-      }
-      app.Screensaver.setTimeLabel(label);
-    },
-  };
-})();
+/**
+ * Set the time label
+ */
+export function setTime() {
+  let label = '';
+  const showTime = Chrome.Storage.getInt('showTime', 0);
+  if ((showTime !== 0) && SSRunner.isStarted()) {
+    label = Chrome.Time.getStringShort();
+  }
+  Screensaver.setTimeLabel(label);
+}

@@ -50,9 +50,6 @@ import '../../elements/setting-elements/setting-link/setting-link.js';
 import '../../elements/setting-elements/setting-background/setting-background.js';
 import '../../elements/setting-elements/setting-time/setting-time.js';
 import '../../elements/setting-elements/setting-text/setting-text.js';
-import '../../elements/animations/spin-up-animation/spin-up-animation.js';
-import '../../elements/animations/spin-down-animation/spin-down-animation.js';
-import '../../elements/slide-animatable/slide-animatable.js';
 import '../../elements/my_icons.js';
 
 import {GooglePhotosPage} from
@@ -426,7 +423,7 @@ function _showGooglePhotosPage(index) {
         new GooglePhotosPage('gPhotosPage');
     t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
   } else if (Chrome.Storage.getBool('isAlbumMode')) {
-    t.gPhotosPage.loadAlbumList().catch((err) => {});
+    t.gPhotosPage.loadAlbumList().catch(() => {});
   }
   t.route = t.pages[index].route;
 }

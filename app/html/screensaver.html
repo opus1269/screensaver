@@ -31,50 +31,15 @@
   <script src="../scripts/sources/photo_source_reddit.js"></script>
   <script src="../scripts/sources/photo_source_flickr.js"></script>
   <script src="../scripts/sources/photo_source_google.js"></script>
-  <script src="../scripts/screensaver/geo.js"></script>
-  <script src="../scripts/screensaver/ss_photo.js"></script>
-  <script src="../scripts/screensaver/ss_photos.js"></script>
-  <script src="../scripts/screensaver/ss_builder.js"></script>
-  <script src="../scripts/screensaver/ss_time.js"></script>
-  <script src="../scripts/screensaver/ss_events.js"></script>
-  <script src="../scripts/screensaver/ss_photo_finder.js"></script>
-  <script src="../scripts/screensaver/ss_runner.js"></script>
-  <script src="../scripts/screensaver/ss_history.js"></script>
-  <script src="../scripts/screensaver/views/ss_view.js"></script>
-  <script src="../scripts/screensaver/views/ss_view_letterbox.js"></script>
-  <script src="../scripts/screensaver/views/ss_view_frame.js"></script>
-  <script src="../scripts/screensaver/views/ss_view_full.js"></script>
-  <script src="../scripts/screensaver/ss_views.js"></script>
-
+  
   <!-- import polyfills-->
   <!--<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>-->
 
   <!-- Ensure Web Animations polyfill is loaded since neon-animation 3.0 doesn't import it -->
   <script src="../node_modules/web-animations-js/web-animations-next.min.js"></script>
-  
-  <script type="module" src="../node_modules/@polymer/polymer/lib/elements/dom-bind.js"></script>
-  <script type="module" src="../node_modules/@polymer/polymer/lib/elements/dom-repeat.js"></script>
 
-  <!-- Font -->
-  <script type="module" src="../node_modules/@polymer/font-roboto/roboto.js"></script>
-  
-  <!-- Iron elements -->
-  <script type="module" src="../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js"></script>
-  <script type="module" src="../node_modules/@polymer/iron-image/iron-image.js"></script>
+  <script type="module" src="../scripts/screensaver/screensaver.js"></script>
 
-  <!-- Neon elements -->
-  <script type="module" src="../node_modules/@polymer/neon-animation/neon-animated-pages.js"></script>
-  <script type="module" src="../node_modules/@polymer/neon-animation/neon-animations.js"></script>
-  <script type="module" src="../node_modules/@polymer/neon-animation/neon-animatable.js"></script>
-
-  <!-- My elements -->
-  <script type="module" src="../elements/setting-elements/localize-behavior/localize-behavior.js"></script>
-  <script type="module" src="../elements/slide-animatable/slide-animatable.js"></script>
-  <script type="module" src="../elements/animations/spin-up-animation/spin-up-animation.js"></script>
-  <script type="module" src="../elements/animations/spin-down-animation/spin-down-animation.js"></script>
-  
-  <script type="module" src="../scripts/chrome-extension-utils/scripts/ex_handler.js"></script>
-  
 </head>
 
 <body unresolved class="fullbleed vertical layout">
@@ -166,7 +131,7 @@
           color: rgba(48, 63, 159, 1);
           opacity: .8;
         }
-        
+
       </style>
     </custom-style>
 
@@ -199,8 +164,6 @@
                 hidden$="[[paused]]"></iron-image>
   </template>
 </dom-bind>
-
-<script src="../scripts/screensaver/screensaver.js"></script>
 
 </body>
 </html>

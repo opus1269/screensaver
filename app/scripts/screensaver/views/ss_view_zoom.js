@@ -9,16 +9,16 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import SSView from './ss_view.js';
 
 /**
- * Screensaver full view
+ * Screensaver Zoom view - may crop photo
  * @property {Element} image - paper-image
  * @property {Element} author - label
  * @property {Element} time - label
  * @property {Element} location - Geo location
  * @property {Object} model - template item model
  * @extends SSView
- * @module SSViewFull
+ * @module SSViewZoom
  */
-export default class SSViewFull extends SSView {
+export default class SSViewZoom extends SSView {
 
   /**
    * Create new SSViewFull
@@ -34,10 +34,5 @@ export default class SSViewFull extends SSView {
    */
   render() {
     super.render();
-
-    const img = this.image.$.img;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'fill';
   }
 }

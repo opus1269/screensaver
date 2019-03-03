@@ -4,185 +4,168 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import SSPhoto from './ss_photo.js';
+import SSView from './views/ss_view.js';
+import * as SSViews from './ss_views.js';
 
 /**
- * Collection of {@link app.SSPhoto} objects
- * @namespace
+ * Collection of {@link SSPhoto} objects
+ * @module SSPhotos
  */
-app.SSPhotos = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * The array of photos
+ * @type {Array<SSPhoto>}
+ * @const
+ * @private
+ */
+const _photos = [];
 
-  /**
-   * The array of photos
-   * @type {Array<app.SSPhoto>}
-   * @const
-   * @private
-   * @memberOf app.SSPhotos
-   */
-  const _photos = [];
+/**
+ * Current index into {@link _photos}
+ * @type {int}
+ * @private
+ */
+let _curIdx = 0;
 
-  /**
-   * Current index into {@link _photos}
-   * @type {int}
-   * @private
-   * @memberOf app.SSPhotos
-   */
-  let _curIdx = 0;
+/**
+ * Add the photos from an {@link app.PhotoSource.Photos}
+ * @param {app.PhotoSource.Photos} source - The {@link app.PhotoSource.Photos}
+ */
+export function addFromSource(source) {
+  const type = source.type;
+  const viewType = SSViews.getType();
+  let ct = 0;
+  for (const sourcePhoto of source.photos) {
+    if (!SSView.ignore(sourcePhoto.asp, viewType)) {
+      const photo = new SSPhoto(ct, sourcePhoto, type);
+      _photos.push(photo);
+      ct++;
+    }
+  }
+}
 
-  return {
-    /**
-     * Add the photos from an {@link app.PhotoSource.Photos}
-     * @param {app.PhotoSource.Photos} source
-     * - The {@link app.PhotoSource.Photos}
-     * @memberOf app.SSPhotos
-     */
-    addFromSource: function(source) {
-      const type = source.type;
-      const viewType = app.SSViews.getType();
-      let ct = 0;
-      for (const sourcePhoto of source.photos) {
-        if (!app.SSView.ignore(sourcePhoto.asp, viewType)) {
-          const photo = new app.SSPhoto(ct, sourcePhoto, type);
-          _photos.push(photo);
-          ct++;
-        }
-      }
-    },
+/**
+ * Get number of photos
+ * @returns {int} The number of photos
+ */
+export function getCount() {
+  return _photos.length;
+}
 
-    /**
-     * Get number of photos
-     * @returns {int} The number of photos
-     * @memberOf app.SSPhotos
-     */
-    getCount: function() {
-      return _photos.length;
-    },
+/**
+ * Do we have photos that aren't bad
+ * @returns {boolean} true if at least one photo is good
+ */
+export function hasUsable() {
+  return !_photos.every((photo) => {
+    return photo.isBad();
+  });
+}
 
-    /**
-     * Do we have photos that aren't bad
-     * @returns {boolean} true if at least one photo is good
-     * @memberOf app.SSPhotos
-     */
-    hasUsable: function() {
-      return !_photos.every((photo) => {
-        return photo.isBad();
-      });
-    },
+/**
+ * Get the {@link SSPhoto} at the given index
+ * @param {int} idx - The index
+ * @returns {SSPhoto} A {@link SSPhoto}
+ */
+export function get(idx) {
+  return _photos[idx];
+}
 
-    /**
-     * Get the {@link app.SSPhoto} at the given index
-     * @param {int} idx - The index
-     * @returns {app.SSPhoto} A {@link app.SSPhoto}
-     * @memberOf app.SSPhotos
-     */
-    get: function(idx) {
-      return _photos[idx];
-    },
+/**
+ * Get the next {@link SSPhoto} that is usable
+ * @returns {?SSPhoto} An {@link SSPhoto}
+ */
+export function getNextUsable() {
+  // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
+  for (let i = 0; i < _photos.length; i++) {
+    // find a url that is ok, AFAWK
+    const index = (i + _curIdx) % _photos.length;
+    const photo = _photos[index];
+    if (!photo.isBad() && !SSViews.hasPhoto(photo)) {
+      _curIdx = index;
+      incCurrentIndex();
+      return photo;
+    }
+  }
+  return null;
+}
 
-    /**
-     * Get the next {@link app.SSPhoto} that is usable
-     * @returns {?app.SSPhoto} An {@link app.SSPhoto}
-     * @memberOf app.SSPhotos
-     */
-    getNextUsable: function() {
-      // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
-      for (let i = 0; i < _photos.length; i++) {
-        // find a url that is ok, AFAWK
-        const index = (i + _curIdx) % _photos.length;
-        const photo = _photos[index];
-        if (!photo.isBad() && !app.SSViews.hasPhoto(photo)) {
-          _curIdx = index;
-          app.SSPhotos.incCurrentIndex();
-          return photo;
-        }
-      }
-      return null;
-    },
+/**
+ * Get current index into {@link _photos}
+ * @returns {int} index
+ */
+export function getCurrentIndex() {
+  return _curIdx;
+}
 
-    /**
-     * Get current index into {@link _photos}
-     * @returns {int} index
-     * @memberOf app.SSPhotos
-     */
-    getCurrentIndex: function() {
-      return _curIdx;
-    },
+/**
+ * Get the next nun google photos
+ * @param {int} num - max number to get
+ * @param {int} idx - starting index
+ * @returns {Array<SSPhoto>} array of photos num long or less
+ */
+export function getNextGooglePhotos(num, idx) {
+  const photos = [];
+  let ct = 0;
+  // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
+  for (let i = 0; i < _photos.length; i++) {
+    const index = (i + idx) % _photos.length;
+    const photo = _photos[index];
+    if (ct >= num) {
+      break;
+    } else if (photo.getType() === 'Google User') {
+      photos.push(photo);
+      ct++;
+    }
+  }
+  return photos;
+}
 
-    /**
-     * Get the next nun google photos
-     * @param {int} num - max number to get
-     * @param {int} idx - starting index
-     * @returns {Array<app.SSPhoto>} array of photos num long or less
-     * @memberOf app.SSPhotos
-     */
-    getNextGooglePhotos: function(num, idx) {
-      const photos = [];
-      let ct = 0;
-      // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
-      for (let i=0; i < _photos.length; i++) {
-        const index = (i + idx) % _photos.length;
-        const photo = _photos[index];
-        if (ct >= num) {
-          break;
-        } else if (photo.getType() === 'Google User') {
-          photos.push(photo);
-          ct++;
-        }
-      }
-      return photos;
-    },
+/**
+ * Update the urls of the given photos
+ * @param {app.PhotoSource.Photo[]} photos
+ */
+export function updateGooglePhotoUrls(photos) {
+  for (let i = _photos.length - 1; i >= 0; i--) {
+    if (_photos[i].getType() !== 'Google User') {
+      continue;
+    }
 
-    /**
-     * Update the urls of the given photos
-     * @param {app.PhotoSource.Photo[]} photos
-     * @memberOf app.SSPhotos
-     */
-    updateGooglePhotoUrls: function(photos) {
-      for (let i = _photos.length - 1; i >= 0; i--) {
-        if (_photos[i].getType() !== 'Google User') {
-          continue;
-        }
+    const index = photos.findIndex((e) => {
+      return e.ex.id === _photos[i].getEx().id;
+    });
+    if (index >= 0) {
+      _photos[i].setUrl(photos[index].url);
+    }
+  }
+}
 
-        const index = photos.findIndex((e) => {
-          return e.ex.id === _photos[i].getEx().id;
-        });
-        if (index >= 0) {
-          _photos[i].setUrl(photos[index].url);
-        }
-      }
-    },
+/**
+ * Set current index into {@link _photos}
+ * @param {int} idx - The index
+ */
+export function setCurrentIndex(idx) {
+  _curIdx = idx;
+}
 
-    /**
-     * Set current index into {@link _photos}
-     * @param {int} idx - The index
-     * @memberOf app.SSPhotos
-     */
-    setCurrentIndex: function(idx) {
-      _curIdx = idx;
-    },
+/**
+ * Increment current index into {@link _photos}
+ * @returns {int} new current index
+ */
+export function incCurrentIndex() {
+  return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
+}
 
-    /**
-     * Increment current index into {@link _photos}
-     * @returns {int} new current index
-     * @memberOf app.SSPhotos
-     */
-    incCurrentIndex: function() {
-      return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
-    },
-
-    /**
-     * Randomize the photos
-     * @memberOf app.SSPhotos
-     */
-    shuffle: function() {
-      Chrome.Utils.shuffleArray(_photos);
-      // renumber
-      _photos.forEach((photo, index) => {
-        photo.setId(index);
-      });
-    },
-  };
-})();
+/**
+ * Randomize the photos
+ */
+export function shuffle() {
+  Chrome.Utils.shuffleArray(_photos);
+  // renumber
+  _photos.forEach((photo, index) => {
+    photo.setId(index);
+  });
+}

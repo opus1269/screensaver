@@ -4,269 +4,253 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as Screensaver from './screensaver.js';
+import * as SSFinder from './ss_photo_finder.js';
+import * as SSViews from './ss_views.js';
+import * as SSHistory from './ss_history.js';
+import * as SSTime from './ss_time.js';
 
 /**
- * Control the running of a {@link app.Screensaver}
- * @namespace
+ * Control the running of a {@link Screensaver}
+ * @module SSRunner
  */
-app.SSRunner = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * Instance variables
+ * @type {Object}
+ * @property {boolean} started - true if slideshow started
+ * @property {int} replaceIdx - page to replace with next photo
+ * @property {int} lastSelected - last selected page
+ * @property {int} waitTime - wait time when looking for photo in milliSecs
+ * @property {boolean} interactive - is interaction allowed
+ * @property {boolean} paused - is screensaver paused
+ * @property {number} timeOutId - id of setTimeout
+ * @private
+ */
+const _VARS = {
+  started: false,
+  replaceIdx: -1,
+  lastSelected: -1,
+  waitTime: 30000,
+  interactive: false,
+  paused: false,
+  timeOutId: 0,
+};
 
-  /**
-   * Instance variables
-   * @type {Object}
-   * @property {boolean} started - true if slideshow started
-   * @property {int} replaceIdx - page to replace with next photo
-   * @property {int} lastSelected - last selected page
-   * @property {int} waitTime - wait time when looking for photo in milliSecs
-   * @property {boolean} interactive - is interaction allowed
-   * @property {boolean} paused - is screensaver paused
-   * @property {number} timeOutId - id of setTimeout
-   * @private
-   * @memberOf app.SSRunner
-   */
-  const _VARS = {
-    started: false,
-    replaceIdx: -1,
-    lastSelected: -1,
-    waitTime: 30000,
-    interactive: false,
-    paused: false,
-    timeOutId: 0,
-  };
-
-  /**
-   * Stop the animation
-   * @private
-   * @memberOf app.SSRunner
-   */
-  function _stop() {
-    window.clearTimeout(_VARS.timeOutId);
+/**
+ * Start the slideshow
+ * @param {int} [delay=2000] - delay before start
+ */
+export function start(delay = 2000) {
+  const transTime = Chrome.Storage.get('transitionTime');
+  if (transTime) {
+    setWaitTime(transTime.base * 1000);
   }
+  _VARS.interactive = Chrome.Storage.getBool('interactive');
 
-  /**
-   * Restart the slideshow
-   * @param {?int} [newIdx=null] optional idx to use for current idx
-   * @private
-   * @memberOf app.SSRunner
-   */
-  function _restart(newIdx = null) {
-    const transTime = Chrome.Storage.get('transitionTime');
-    if (transTime) {
-      app.SSRunner.setWaitTime(transTime.base * 1000);
-    }
-    _runShow(newIdx);
-  }
+  SSHistory.initialize();
 
-  /**
-   * Increment the slide show manually
-   * @param {?int} [newIdx=null] optional idx to use for current idx
-   * @private
-   * @memberOf app.SSRunner
-   */
-  function _step(newIdx = null) {
-    if (app.SSRunner.isPaused()) {
-      app.SSRunner.togglePaused(newIdx);
-      app.SSRunner.togglePaused();
-    } else {
+  // start slide show. slight delay at beginning so we have a smooth start
+  window.setTimeout(_runShow, delay);
+}
+
+/**
+ * Get wait time between _runShow calls
+ * @returns {int} current wait time
+ */
+export function getWaitTime() {
+  return _VARS.waitTime;
+}
+
+/**
+ * Set wait time between _runShow calls in milliSecs
+ * @param {int} waitTime - wait time for next attempt to get photo
+ */
+export function setWaitTime(waitTime) {
+  _VARS.waitTime = waitTime;
+  // larger than 32 bit int is bad news
+  // see: https://stackoverflow.com/a/3468650/4468645
+  _VARS.waitTime = Math.min(2147483647, waitTime);
+}
+
+/**
+ * Set last selected index
+ * @param {int} lastSelected - last index in {@link SSViews}
+ */
+export function setLastSelected(lastSelected) {
+  _VARS.lastSelected = lastSelected;
+}
+
+/**
+ * Set last selected index
+ * @param {int} idx - replace index in {@link SSViews}
+ */
+export function setReplaceIdx(idx) {
+  _VARS.replaceIdx = idx;
+}
+
+/**
+ * Has the first page run
+ * @returns {boolean} if animation has started
+ */
+export function isStarted() {
+  return _VARS.started;
+}
+
+/**
+ * Is interactive mode allowed
+ * @returns {boolean} true if allowed
+ */
+export function isInteractive() {
+  return _VARS.interactive;
+}
+
+/**
+ * Are we paused
+ * @returns {boolean} true if paused
+ */
+export function isPaused() {
+  return _VARS.paused;
+}
+
+/**
+ * Is the given idx a part of the current animation pair
+ * @param {int} idx - index into {@link SSViews}
+ * @returns {boolean} if selected or last selected
+ */
+export function isCurrentPair(idx) {
+  const selected = SSViews.getSelectedIndex();
+  return ((idx === selected) || (idx === _VARS.lastSelected));
+}
+
+/**
+ * Toggle paused state of the slideshow
+ * @param {?int} [newIdx=null] optional idx to use for current idx
+ */
+export function togglePaused(newIdx = null) {
+  if (_VARS.started) {
+    _VARS.paused = !_VARS.paused;
+    Screensaver.setPaused(_VARS.paused);
+    if (_VARS.paused) {
       _stop();
+    } else {
       _restart(newIdx);
     }
   }
+}
 
-  /**
-   * Self called at fixed time intervals to cycle through the photos
-   * @param {?int} [newIdx=null] override selected
-   * @private
-   * @memberOf app.SSRunner
-   */
-  function _runShow(newIdx = null) {
-    if (app.Screensaver.noPhotos()) {
-      // no usable photos to show
-      return;
+/**
+ * Forward one slide
+ */
+export function forward() {
+  if (_VARS.started) {
+    _step();
+  }
+}
+
+/**
+ * Backup one slide
+ */
+export function back() {
+  if (_VARS.started) {
+    const nextStep = SSHistory.back();
+    if (nextStep !== null) {
+      _step(nextStep);
     }
+  }
+}
 
-    const selected = app.SSViews.getSelectedIndex();
-    const viewLen = app.SSViews.getCount();
-    let curIdx = (newIdx === null) ? selected : newIdx;
-    curIdx = !app.SSRunner.isStarted() ? 0 : curIdx;
-    let nextIdx = (curIdx === viewLen - 1) ? 0 : curIdx + 1;
+/**
+ * Stop the animation
+ * @private
+ */
+function _stop() {
+  window.clearTimeout(_VARS.timeOutId);
+}
 
-    if (!app.SSRunner.isStarted()) {
-      // special case for first page. neon-animated-pages is configured
-      // to run the entry animation for the first selection
-      nextIdx = 0;
-    }
+/**
+ * Restart the slideshow
+ * @param {?int} [newIdx=null] optional idx to use for current idx
+ * @private
+ */
+function _restart(newIdx = null) {
+  const transTime = Chrome.Storage.get('transitionTime');
+  if (transTime) {
+    setWaitTime(transTime.base * 1000);
+  }
+  _runShow(newIdx);
+}
 
-    nextIdx = app.SSFinder.getNext(nextIdx);
-    if (nextIdx !== -1) {
-      // the next photo is ready
+/**
+ * Increment the slide show manually
+ * @param {?int} [newIdx=null] optional idx to use for current idx
+ * @private
+ */
+function _step(newIdx = null) {
+  if (isPaused()) {
+    togglePaused(newIdx);
+    togglePaused();
+  } else {
+    _stop();
+    _restart(newIdx);
+  }
+}
 
-      if (!app.SSRunner.isStarted()) {
-        _VARS.started = true;
-        app.SSTime.setTime();
-      }
-
-      // setup photo
-      const view = app.SSViews.get(nextIdx);
-      view.render();
-
-      // track the photo history
-      app.SSHistory.add(newIdx, nextIdx, _VARS.replaceIdx);
-
-      // update selected so the animation runs
-      _VARS.lastSelected = selected;
-      app.SSViews.setSelectedIndex(nextIdx);
-
-      if (newIdx === null) {
-        // load next photo from master array
-        app.SSFinder.replacePhoto(_VARS.replaceIdx);
-        _VARS.replaceIdx = _VARS.lastSelected;
-      }
-    }
-
-    // set the next timeout, then call ourselves - runs unless interrupted
-    _VARS.timeOutId = window.setTimeout(() => {
-      _runShow();
-    }, _VARS.waitTime);
+/**
+ * Self called at fixed time intervals to cycle through the photos
+ * @param {?int} [newIdx=null] override selected
+ * @private
+ */
+function _runShow(newIdx = null) {
+  if (Screensaver.noPhotos()) {
+    // no usable photos to show
+    return;
   }
 
-  return {
-    /**
-     * Start the slideshow
-     * @param {int} [delay=2000] - delay before start
-     * @memberOf app.SSRunner
-     */
-    start: function(delay = 2000) {
-      const transTime = Chrome.Storage.get('transitionTime');
-      if (transTime) {
-        app.SSRunner.setWaitTime(transTime.base * 1000);
-      }
-      _VARS.interactive = Chrome.Storage.getBool('interactive');
+  const selected = SSViews.getSelectedIndex();
+  const viewLen = SSViews.getCount();
+  let curIdx = (newIdx === null) ? selected : newIdx;
+  curIdx = !isStarted() ? 0 : curIdx;
+  let nextIdx = (curIdx === viewLen - 1) ? 0 : curIdx + 1;
 
-      app.SSHistory.initialize();
+  if (!isStarted()) {
+    // special case for first page. neon-animated-pages is configured
+    // to run the entry animation for the first selection
+    nextIdx = 0;
+  }
 
-      // start slide show. slight delay at beginning so we have a smooth start
-      window.setTimeout(_runShow, delay);
-    },
+  nextIdx = SSFinder.getNext(nextIdx);
+  if (nextIdx !== -1) {
+    // the next photo is ready
 
-    /**
-     * Get wait time between _runShow calls
-     * @returns {int} current wait time
-     * @memberOf app.SSRunner
-     */
-    getWaitTime: function() {
-      return _VARS.waitTime;
-    },
+    if (!isStarted()) {
+      _VARS.started = true;
+      SSTime.setTime();
+    }
 
-    /**
-     * Set wait time between _runShow calls in milliSecs
-     * @param {int} waitTime - wait time for next attempt to get photo
-     * @memberOf app.SSRunner
-     */
-    setWaitTime: function(waitTime) {
-      _VARS.waitTime = waitTime;
-      // larger than 32 bit int is bad news
-      // see: https://stackoverflow.com/a/3468650/4468645
-      _VARS.waitTime = Math.min(2147483647, waitTime);
-    },
+    // setup photo
+    const view = SSViews.get(nextIdx);
+    view.render();
 
-    /**
-     * Set last selected index
-     * @param {int} lastSelected - last index in {@link app.SSViews}
-     * @memberOf app.SSRunner
-     */
-    setLastSelected: function(lastSelected) {
-      _VARS.lastSelected = lastSelected;
-    },
+    // track the photo history
+    SSHistory.add(newIdx, nextIdx, _VARS.replaceIdx);
 
-    /**
-     * Set last selected index
-     * @param {int} idx - replace index in {@link app.SSViews}
-     * @memberOf app.SSRunner
-     */
-    setReplaceIdx: function(idx) {
-      _VARS.replaceIdx = idx;
-    },
+    // update selected so the animation runs
+    _VARS.lastSelected = selected;
+    SSViews.setSelectedIndex(nextIdx);
 
-    /**
-     * Has the first page run
-     * @returns {boolean} if animation has started
-     * @memberOf app.SSRunner
-     */
-    isStarted: function() {
-      return _VARS.started;
-    },
-    /**
-     * Is interactive mode allowed
-     * @returns {boolean} true if allowed
-     * @memberOf app.SSRunner
-     */
-    isInteractive: function() {
-      return _VARS.interactive;
-    },
+    if (newIdx === null) {
+      // load next photo from master array
+      SSFinder.replacePhoto(_VARS.replaceIdx);
+      _VARS.replaceIdx = _VARS.lastSelected;
+    }
+  }
 
-    /**
-     * Are we paused
-     * @returns {boolean} true if paused
-     * @memberOf app.SSRunner
-     */
-    isPaused: function() {
-      return _VARS.paused;
-    },
+  // set the next timeout, then call ourselves - runs unless interrupted
+  _VARS.timeOutId = window.setTimeout(() => {
+    _runShow();
+  }, _VARS.waitTime);
+}
 
-    /**
-     * Is the given idx a part of the current animation pair
-     * @param {int} idx - index into {@link app.SSViews}
-     * @returns {boolean} if selected or last selected
-     * @memberOf app.SSRunner
-     */
-    isCurrentPair: function(idx) {
-      const selected = app.SSViews.getSelectedIndex();
-      return ((idx === selected) || (idx === _VARS.lastSelected));
-    },
-
-    /**
-     * Toggle paused state of the slideshow
-     * @param {?int} [newIdx=null] optional idx to use for current idx
-     * @memberOf app.SSRunner
-     */
-    togglePaused: function(newIdx = null) {
-      if (_VARS.started) {
-        _VARS.paused = !_VARS.paused;
-        app.Screensaver.setPaused(_VARS.paused);
-        if (_VARS.paused) {
-          _stop();
-        } else {
-          _restart(newIdx);
-        }
-      }
-    },
-
-    /**
-     * Forward one slide
-     * @memberOf app.SSRunner
-     */
-    forward: function() {
-      if (_VARS.started) {
-        _step();
-      }
-    },
-
-    /**
-     * Backup one slide
-     * @memberOf app.SSRunner
-     */
-    back: function() {
-      if (_VARS.started) {
-        const nextStep = app.SSHistory.back();
-        if (nextStep !== null) {
-          _step(nextStep);
-        }
-      }
-    },
-  };
-})();
