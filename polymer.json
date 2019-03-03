@@ -4,12 +4,12 @@
   "shell": "html/options.html",
   "sources": [
     "elements/**/*.js",
+    "scripts/**/*.js",
     "images/**/*"
   ],
   "extraDependencies": [
     "node_modules/web-animations-js/web-animations-next.min.js",
     "manifest.json",
-    "scripts/**/*.js",
     "html/**/*",
     "_locales/**/*",
     "assets/**/*",
