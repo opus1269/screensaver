@@ -137,7 +137,6 @@
      * @param {number} lat - latitude
      * @param {number} lon - longitude
      * @returns {string} 'lat lon'
-     * @memberOf app.Geo
      */
     static createPoint(lat, lon) {
       if ((typeof lat === 'number') && (typeof lon === 'number')) {
