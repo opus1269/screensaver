@@ -35,18 +35,9 @@ export const HelpPage = Polymer({
         position: relative;
       }
 
-      hr {
+      :host hr {
         margin-left: 0;
         margin-right: 0;
-      }
-
-      .page-content {
-        margin-left: 10px;
-        margin-right: 10px;
-      }
-
-      .page-content p {
-        @apply --paper-font-subhead;
       }
 
     </style>

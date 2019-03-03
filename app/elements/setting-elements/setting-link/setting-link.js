@@ -42,13 +42,15 @@ Polymer({
         --paper-item-selected: {
           background: transparent;
         };
+        --paper-item-icon-width: 32px;
+        padding-left: 48px;
         padding-top: 4px;
         padding-bottom: 4px;
         cursor: pointer;
       }
 
       :host .divider {
-        margin-left: 72px;
+        margin-left: 48px;
         margin-right: 0;
       }
     </style>
@@ -59,7 +61,7 @@ Polymer({
 
     <paper-icon-item on-tap="_onLinkTapped" class="flex">
       <paper-ripple center=""></paper-ripple>
-      <iron-icon class="setting-link-icon" icon="[[icon]]" item-icon=""></iron-icon>
+      <iron-icon class="setting-link-icon" icon="[[icon]]" slot="item-icon"></iron-icon>
       <span class="setting-label">[[label]]</span>
     </paper-icon-item>
 
