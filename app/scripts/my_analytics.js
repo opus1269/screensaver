@@ -28,8 +28,6 @@ const _TRACKING_ID = 'UA-61314754-1';
  * @property {Chrome.GA.Event} LOAD_ALBUM - album
  * @property {Chrome.GA.Event} LOAD_PHOTO - photo
  * @property {Chrome.GA.Event} LOAD_PHOTOS - photos
- * @property {Chrome.GA.Event} UPDATE_BASE_URLS - update baseUrl of photos
- * @property {Chrome.GA.Event} UPDATE_PHOTOS - update baseUrl of all photos
  * @property {Chrome.GA.Event} PHOTOS_LIMITED - did not load all photos in album
  * @property {Chrome.GA.Event} ALBUMS_LIMITED - limited photo selections
  * @const
@@ -68,16 +66,6 @@ export const EVENT = {
   FETCH_ALBUMS: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'fetchAlbums',
-    eventLabel: '',
-  },
-  UPDATE_BASE_URLS: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'updateBaseUrls',
-    eventLabel: '',
-  },
-  UPDATE_PHOTOS: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'updatePhotos',
     eventLabel: '',
   },
   PHOTOS_LIMITED: {
