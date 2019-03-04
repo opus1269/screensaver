@@ -500,6 +500,9 @@
   "notSet": {
     "message": "Pas encore défini"
   },
+  "err_auth_revoked": {
+    "message": "Vous n'avez plus accès à vos photos Google. Veuillez les resélectionner."
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

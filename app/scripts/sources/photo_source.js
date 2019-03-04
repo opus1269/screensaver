@@ -168,7 +168,8 @@ export default class PhotoSource {
       }).catch((err) => {
         let title = Chrome.Locale.localize('err_photo_source_title');
         title += `: ${this._desc}`;
-        Chrome.Log.error(err.message, 'PhotoSource.process', title);
+        Chrome.Log.error(err.message, 'PhotoSource.process', title,
+            `source: ${this._useKey}`);
         return Promise.reject(err);
       });
     } else {

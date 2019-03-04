@@ -70,5 +70,42 @@ Chrome.Auth = (function() {
         });
       }
     },
+
+    /**
+     * Is a user signed in to Chrome
+     * @returns {Promise<boolean>} true if signed in
+     * @memberOf Chrome.Auth
+     */
+    isSignedIn: function() {
+      let ret = true;
+      // try to get a token and check failure message
+      return chromep.identity.getAuthToken({interactive: false}).then(() => {
+        return Promise.resolve(ret);
+      }).catch((err) => {
+        if (err.message.match(/not signed in/)) {
+          ret = false;
+        }
+        return Promise.resolve(ret);
+      });
+    },
+
+    /**
+     * Has our authorization been revoked (or not granted) for the default
+     * scopes
+     * @returns {Promise<boolean>} true if no valid token
+     * @memberOf Chrome.Auth
+     */
+    isRevoked: function() {
+      let ret = false;
+      // try to get a token and check failure message
+      return chromep.identity.getAuthToken({interactive: false}).then(() => {
+        return Promise.resolve(ret);
+      }).catch((err) => {
+        if (err.message.match(/OAuth2 not granted or revoked/)) {
+          ret = true;
+        }
+        return Promise.resolve(ret);
+      });
+    },
   };
 })();

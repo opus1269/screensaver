@@ -5,7 +5,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
-import {isSignedInToChrome} from './user.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
@@ -244,7 +243,7 @@ export function initialize() {
   _setOS().catch(() => {});
 
   // set signin state
-  isSignedInToChrome().then((signedIn) => {
+  Chrome.Auth.isSignedIn().then((signedIn) => {
     Chrome.Storage.set('signedInToChrome', signedIn);
     return null;
   }).catch(() => {});
@@ -334,7 +333,7 @@ export function update() {
 
   if (oldVersion < 20) {
     // set signin state
-    isSignedInToChrome().then((signedIn) => {
+    Chrome.Auth.isSignedIn().then((signedIn) => {
       Chrome.Storage.set('signedInToChrome', signedIn);
       return null;
     }).catch(() => {});

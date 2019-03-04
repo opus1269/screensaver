@@ -500,6 +500,9 @@
   "notSet": {
     "message": "Nicht eingestellt"
   },
+  "err_auth_revoked": {
+    "message": "Sie haben keinen Zugriff mehr auf Ihre Google Fotos. Bitte wählen Sie sie erneut aus."
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

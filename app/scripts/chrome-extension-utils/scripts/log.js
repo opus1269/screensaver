@@ -19,14 +19,16 @@ Chrome.Log = (function() {
      * @param {?string} [message='unknown'] - override label
      * @param {?string} [method='unknownMethod'] - override action
      * @param {?string} [title=null] - a title for the error
+     * @param {?string} [extra=null] - extra info. for analytics
      * @memberOf Chrome.Log
      */
     error: function(message = 'unknown', method = 'unknownMethod',
-                    title = null) {
+                    title = null, extra = null) {
       const theTitle = title ? title : 'An error occurred';
+      const gaMsg = extra ? `${message} ${extra}` : message;
       Chrome.Storage.setLastError(
           new Chrome.Storage.LastError(message, theTitle));
-      Chrome.GA.error(message, method);
+      Chrome.GA.error(gaMsg, method);
     },
 
     /**

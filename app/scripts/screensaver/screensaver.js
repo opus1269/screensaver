@@ -256,8 +256,6 @@ t._onErrorChanged = async function(ev) {
         // load the new photos from Google Photos
         newPhotos = await GoogleSource.loadPhotos(ids);
       } catch (err) {
-        Chrome.Log.error('Failed to load new photos',
-            'Screensaver._onErrorChanged');
         // major problem, give up for this session
         _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
         _isUpdating = true;
@@ -286,8 +284,6 @@ t._onErrorChanged = async function(ev) {
       // persist new baseUrls to albumSelections
       const updated = GoogleSource.updateBaseUrls(newPhotos);
       if (!updated) {
-        Chrome.Log.error('Failed to save baseUrl\'s',
-            'Screensaver._onErrorChanged');
         // major problem, give up for this session
         _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
         _isUpdating = true;
