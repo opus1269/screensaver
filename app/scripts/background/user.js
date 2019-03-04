@@ -9,15 +9,14 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 
 /**
- * Manage the current user
- * @namespace User
+ * Manage the Chrome sign-in state
+ * @module User
  */
 
 /**
  * Determine if Chrome is signed in
  * @see https://developer.chrome.com/apps/identity#event-onSignInChanged
  * @returns {Promise<boolean>} true if signed in to Chrome
- * @memberOf User
  */
 export function isSignedInToChrome() {
   const chromep = new ChromePromise();
@@ -39,7 +38,6 @@ export function isSignedInToChrome() {
  * @param {Object} account - chrome AccountInfo
  * @param {boolean} signedIn - true if signedIn
  * @private
- * @memberOf User
  */
 function _onSignInChanged(account, signedIn) {
   Chrome.Storage.set('signedInToChrome', signedIn);
@@ -55,16 +53,12 @@ function _onSignInChanged(account, signedIn) {
 }
 
 /**
- * Event: called when document and resources are loaded<br />
+ * Event: called when document and resources are loaded
  * @private
- * @memberOf User
  */
 function _onLoad() {
-  /**
-   * Listen for changes to Browser sign-in
-   */
+  // Listen for changes to Browser sign-in
   chrome.identity.onSignInChanged.addListener(_onSignInChanged);
-
 }
 
 // listen for documents and resources loaded
