@@ -20,7 +20,6 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {Chrome.Msg.Message} SS_IS_SHOWING - is a screensaver showing
  * @property {Chrome.Msg.Message} PHOTO_SOURCE_FAILED - failed to web load
  * @const
- * @memberOf app.Msg
  */
 const _MSG = {
   SS_SHOW: {
