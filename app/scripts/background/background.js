@@ -6,10 +6,8 @@
  */
 
 import '../../scripts/background/context_menus.js';
-import '../../scripts/background/alarm.js';
-import '../../scripts/background/data.js';
-import '../../scripts/background/ss_controller.js';
-import '../../scripts/background/user.js';
+
+import * as AppData from './data.js';
 
 import * as MyUtils from '../../scripts/my_utils.js';
 
@@ -48,7 +46,7 @@ function _onInstalled(details) {
   if (details.reason === 'install') {
     // initial install
     Chrome.GA.event(Chrome.GA.EVENT.INSTALLED, Chrome.Utils.getVersion());
-    app.Data.initialize();
+    AppData.initialize();
     Chrome.Storage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
@@ -71,7 +69,7 @@ function _onInstalled(details) {
       }
     }
     // extension updated
-    app.Data.update();
+    AppData.update();
     Chrome.Storage.set('isShowing', false);
   }
 }
@@ -85,7 +83,7 @@ function _onInstalled(details) {
  */
 function _onStartup() {
   Chrome.GA.page('/background.html');
-  app.Data.processState();
+  AppData.processState();
   Chrome.Storage.set('isShowing', false);
 }
 
@@ -108,7 +106,7 @@ function _onIconClicked() {
  * @memberOf Background
  */
 function _onStorageChanged(event) {
-  app.Data.processState(event.key);
+  AppData.processState(event.key);
 }
 
 // noinspection JSUnusedLocalSymbols
@@ -125,7 +123,7 @@ function _onStorageChanged(event) {
  */
 function _onChromeMessage(request, sender, response) {
   if (request.message === Chrome.Msg.RESTORE_DEFAULTS.message) {
-    app.Data.restoreDefaults();
+    AppData.restoreDefaults();
   } else if (request.message === Chrome.Msg.STORE.message) {
     Chrome.Storage.set(request.key, request.value);
   }

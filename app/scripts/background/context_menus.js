@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as AppData from './data.js';
 import {display} from './ss_controller.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -26,7 +27,7 @@ function _toggleEnabled() {
   const oldState = Chrome.Storage.getBool('enabled', true);
   Chrome.Storage.set('enabled', !oldState);
   // storage changed event not fired on same page as the change
-  app.Data.processState('enabled');
+  AppData.processState('enabled');
 }
 
 // noinspection JSUnusedLocalSymbols

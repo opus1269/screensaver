@@ -4,7 +4,9 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as AppData from './data.js';
 import {isActive, close, display} from './ss_controller.js';
+
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -106,7 +108,7 @@ function _setActiveState() {
   if (Chrome.Storage.getBool('keepAwake')) {
     chrome.power.requestKeepAwake('display');
   }
-  const interval = app.Data.getIdleSeconds();
+  const interval = AppData.getIdleSeconds();
   chromep.idle.queryState(interval).then((state) => {
     // display screensaver if enabled and the idle time criteria is met
     if (Chrome.Storage.getBool('enabled') && (state === 'idle')) {
