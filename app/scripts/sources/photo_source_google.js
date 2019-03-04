@@ -440,19 +440,17 @@ export default class GoogleSource extends PhotoSource {
     }
 
     // loop of all the photos
-    let ct = 0;
     for (const photo of photos) {
 
       // loop on all the albums
       for (const album of albums) {
-        const aPhotos = album.photos;
-        const index = aPhotos.findIndex((e) => {
+        const albumPhotos = album.photos;
+        const index = albumPhotos.findIndex((e) => {
           return e.ex.id === photo.ex.id;
         });
         if (index >= 0) {
           // found it, update baseUrl
-          aPhotos[index].url = photo.url;
-          ct++;
+          albumPhotos[index].url = photo.url;
         }
       }
     }
@@ -463,10 +461,6 @@ export default class GoogleSource extends PhotoSource {
       ret = false;
       Chrome.Log.error(Chrome.Locale.localize('err_storage_title'),
           'GoogleSource.updateBaseUrls');
-    } else {
-      // success
-      Chrome.GA.event(MyGA.EVENT.UPDATE_BASE_URLS,
-          `nUpdated: ${ct}`);
     }
 
     return ret;
