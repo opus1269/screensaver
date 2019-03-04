@@ -199,7 +199,11 @@ function _getTimeFormat() {
 function _setOS() {
   return chromep.runtime.getPlatformInfo().then((info) => {
     Chrome.Storage.set('os', info.os);
-    return Promise.resolve();
+    return null;
+  }).catch(() => {
+    // something went wrong - linux seems to fail this call sometimes
+    Chrome.Storage.set('os', 'unknown');
+    return null;
   });
 }
 

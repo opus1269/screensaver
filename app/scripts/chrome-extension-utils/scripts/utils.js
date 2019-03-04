@@ -25,6 +25,22 @@ Chrome.Utils = (function() {
    */
   const _DEBUG = false;
 
+  /**
+   * Determine if we are a given operating system
+   * @private
+   * @param {string} os - os short name
+   * @returns {Promise.<boolean>} true if the given os
+   * @memberOf Chrome.Utils
+   */
+  function _isOS(os) {
+    return chromep.runtime.getPlatformInfo().then((info) => {
+      return Promise.resolve((info.os === os));
+    }).catch(() => {
+      // something went wrong - linux seems to fail this call sometimes
+      return Promise.resolve(false);
+    });
+  }
+
   return {
     /**
      * True if development build
@@ -79,8 +95,8 @@ Chrome.Utils = (function() {
      * @memberOf Chrome.Utils
      */
     getPlatformOS: function() {
+      let output = 'Unknown';
       return chromep.runtime.getPlatformInfo().then((info) => {
-        let output = 'Unknown';
         const os = info.os;
         switch (os) {
           case 'win':
@@ -105,6 +121,9 @@ Chrome.Utils = (function() {
             break;
         }
         return Promise.resolve(output);
+      }).catch(() => {
+        // something went wrong - linux seems to fail this call sometimes
+        return Promise.resolve(output);
       });
     },
 
@@ -114,9 +133,7 @@ Chrome.Utils = (function() {
      * @memberOf Chrome.Utils
      */
     isWindows: function() {
-      return chromep.runtime.getPlatformInfo().then((info) => {
-        return Promise.resolve((info.os === 'win'));
-      });
+      return _isOS('win');
     },
 
     /**
@@ -125,9 +142,7 @@ Chrome.Utils = (function() {
      * @memberOf Chrome.Utils
      */
     isChromeOS: function() {
-      return chromep.runtime.getPlatformInfo().then((info) => {
-        return Promise.resolve((info.os === 'cros'));
-      });
+      return _isOS('cros');
     },
 
     /**
@@ -136,9 +151,7 @@ Chrome.Utils = (function() {
      * @memberOf Chrome.Utils
      */
     isMac: function() {
-      return chromep.runtime.getPlatformInfo().then((info) => {
-        return Promise.resolve((info.os === 'mac'));
-      });
+      return _isOS('mac');
     },
 
     /**
