@@ -12,7 +12,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Manage the Context Menus for the extension
  * @see https://developer.chrome.com/extensions/contextMenus
- * @namespace ContextMenus
+ * @module ContextMenus
  */
 
 const _DISPLAY_MENU = 'DISPLAY_MENU';
@@ -21,7 +21,6 @@ const _ENABLE_MENU = 'ENABLE_MENU';
 /**
  * Toggle enabled state of the screen saver
  * @private
- * @memberOf ContextMenus
  */
 function _toggleEnabled() {
   const oldState = Chrome.Storage.getBool('enabled', true);
@@ -38,7 +37,6 @@ function _toggleEnabled() {
  * @see https://developer.chrome.com/extensions/runtime#event-onInstalled
  * @param {Object} details - type of event
  * @private
- * @memberOf ContextMenus
  */
 function _onInstalled(details) {
   const chromep = new ChromePromise();
@@ -83,7 +81,6 @@ function _onInstalled(details) {
  * @param {Object} info - info. on the clicked menu
  * @param {Object} info.menuItemId - menu name
  * @private
- * @memberOf ContextMenus
  */
 function _onMenuClicked(info) {
   if (info.menuItemId === _DISPLAY_MENU) {
@@ -102,7 +99,6 @@ function _onMenuClicked(info) {
  * @see https://developer.chrome.com/extensions/commands#event-onCommand
  * @param {string} cmd - keyboard command
  * @private
- * @memberOf ContextMenus
  */
 function _onKeyCommand(cmd) {
   if (cmd === 'toggle-enabled') {
@@ -114,11 +110,20 @@ function _onKeyCommand(cmd) {
   }
 }
 
-// listen for install events
-chrome.runtime.onInstalled.addListener(_onInstalled);
+/**
+ * Event: called when document and resources are loaded<br />
+ * @private
+ */
+function _onLoad() {
+  // listen for install events
+  chrome.runtime.onInstalled.addListener(_onInstalled);
 
-// listen for clicks on context menus
-chrome.contextMenus.onClicked.addListener(_onMenuClicked);
+  // listen for clicks on context menus
+  chrome.contextMenus.onClicked.addListener(_onMenuClicked);
 
-// listen for special keyboard commands
-chrome.commands.onCommand.addListener(_onKeyCommand);
+  // listen for special keyboard commands
+  chrome.commands.onCommand.addListener(_onKeyCommand);
+}
+
+// listen for documents and resources loaded
+window.addEventListener('load', _onLoad);
