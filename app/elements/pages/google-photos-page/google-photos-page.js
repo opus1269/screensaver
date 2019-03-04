@@ -46,7 +46,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @type {int}
  * @memberOf GooglePhotosPage
  */
-const _MAX_ALBUMS = 10;
+const _MAX_ALBUMS = 20;
 
 /**
  * Polymer element for the Google Photos
