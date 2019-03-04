@@ -4,49 +4,42 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Wrapper for chrome messages
  * @see https://developer.chrome.com/extensions/messaging
- * @namespace
+ * @module MyMsg
  */
-app.Msg = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * Chrome Messages
+ * @type {{}}
+ * @property {Chrome.Msg.Message} SS_SHOW - show screensaver
+ * @property {Chrome.Msg.Message} SS_CLOSE - close screensaver
+ * @property {Chrome.Msg.Message} SS_IS_SHOWING - is a screensaver showing
+ * @property {Chrome.Msg.Message} PHOTO_SOURCE_FAILED - failed to web load
+ * @const
+ * @memberOf app.Msg
+ */
+const _MSG = {
+  SS_SHOW: {
+    message: 'showScreensaver',
+  },
+  SS_CLOSE: {
+    message: 'closeScreensaver',
+  },
+  SS_IS_SHOWING: {
+    message: 'isScreensaverShowing',
+  },
+  PHOTO_SOURCE_FAILED: {
+    message: 'photoSourceFailed',
+    key: '',
+    error: '',
+  },
+};
 
-  /**
-   * Chrome Messages
-   * @type {{}}
-   * @property {Chrome.Msg.Message} SS_SHOW - show screensaver
-   * @property {Chrome.Msg.Message} SS_CLOSE - close screensaver
-   * @property {Chrome.Msg.Message} SS_IS_SHOWING - is a screensaver showing
-   * @property {Chrome.Msg.Message} PHOTO_SOURCE_FAILED - failed to web load
-   * @const
-   * @memberOf app.Msg
-   */
-  const _MSG = {
-    SS_SHOW: {
-      message: 'showScreensaver',
-    },
-    SS_CLOSE: {
-      message: 'closeScreensaver',
-    },
-    SS_IS_SHOWING: {
-      message: 'isScreensaverShowing',
-    },
-    PHOTO_SOURCE_FAILED: {
-      message: 'photoSourceFailed',
-      key: '',
-      error: '',
-    },
-  };
-
-  return {
-    SS_SHOW: _MSG.SS_SHOW,
-    SS_CLOSE: _MSG.SS_CLOSE,
-    SS_IS_SHOWING: _MSG.SS_IS_SHOWING,
-    PHOTO_SOURCE_FAILED: _MSG.PHOTO_SOURCE_FAILED,
-  };
-})();
+export const SS_SHOW = _MSG.SS_SHOW;
+export const SS_CLOSE = _MSG.SS_CLOSE;
+export const SS_IS_SHOWING = _MSG.SS_IS_SHOWING;
+export const PHOTO_SOURCE_FAILED = _MSG.PHOTO_SOURCE_FAILED;

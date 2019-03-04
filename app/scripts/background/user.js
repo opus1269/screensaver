@@ -6,6 +6,8 @@
  */
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+import * as MyGA from '../../scripts/my_analytics.js';
+
 /**
  * Manage the current user
  * @namespace User
@@ -42,7 +44,7 @@ export function isSignedInToChrome() {
 function _onSignInChanged(account, signedIn) {
   Chrome.Storage.set('signedInToChrome', signedIn);
   if (!signedIn) {
-    Chrome.GA.event(app.GA.EVENT.CHROME_SIGN_OUT);
+    Chrome.GA.event(MyGA.EVENT.CHROME_SIGN_OUT);
     Chrome.Storage.set('albumSelections', []);
     const type = Chrome.Storage.getBool('permPicasa');
     if (type === 'allowed') {

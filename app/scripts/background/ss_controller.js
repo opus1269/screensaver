@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as MyMsg from '../../scripts/my_msg.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -70,7 +72,7 @@ export function display(single) {
 export function close() {
   Chrome.Storage.set('isShowing', false);
   // send message to the screen savers to close themselves
-  Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
+  Chrome.Msg.send(MyMsg.SS_CLOSE).catch(() => {});
 }
 
 /**
@@ -110,7 +112,7 @@ function _hasFullscreen(display) {
  */
 function _isShowing() {
   // send message to the screensaver to see if he is around
-  return Chrome.Msg.send(app.Msg.SS_IS_SHOWING).then(() => {
+  return Chrome.Msg.send(MyMsg.SS_IS_SHOWING).then(() => {
     return Promise.resolve(true);
   }).catch(() => {
     // no one listening
@@ -228,7 +230,7 @@ function _onIdleStateChanged(state) {
  * @memberOf SSControl
  */
 function _onChromeMessage(request, sender, response) {
-  if (request.message === app.Msg.SS_SHOW.message) {
+  if (request.message === MyMsg.SS_SHOW.message) {
     // preview the screensaver
     display(true);
   }

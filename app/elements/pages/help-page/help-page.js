@@ -17,6 +17,8 @@ import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
+import * as MyUtils from '../../../scripts/my_utils.js';
+
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -81,7 +83,7 @@ export const HelpPage = Polymer({
     githubPath: {
       type: String,
       value: function() {
-        return app.Utils.getGithubPath();
+        return MyUtils.getGithubPath();
       },
       readOnly: true,
     },
@@ -93,7 +95,7 @@ export const HelpPage = Polymer({
     githubPagesPath: {
       type: String,
       value: function() {
-        return app.Utils.getGithubPagesPath();
+        return MyUtils.getGithubPagesPath();
       },
       readOnly: true,
     },
@@ -107,7 +109,7 @@ export const HelpPage = Polymer({
    * @memberOf HelpPage
    */
   _computeMailToUrl: function(subject) {
-    return app.Utils.getEmailUrl(subject, app.Utils.getEmailBody());
+    return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
   },
 
   /**

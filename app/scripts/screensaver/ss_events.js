@@ -4,10 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
+
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Event handling for a {@link module:Screensaver}
@@ -29,7 +31,7 @@ const _MOUSE_START = {x: null, y: null};
 function _close() {
   Chrome.Storage.set('isShowing', false);
   // send message to other screen savers to close themselves
-  Chrome.Msg.send(app.Msg.SS_CLOSE).catch(() => {});
+  Chrome.Msg.send(MyMsg.SS_CLOSE).catch(() => {});
   setTimeout(() => {
     // delay a little to process events
     window.close();
@@ -70,9 +72,9 @@ function _onKeyCommand(cmd) {
  * @private
  */
 function _onMessage(request, sender, response) {
-  if (request.message === app.Msg.SS_CLOSE.message) {
+  if (request.message === MyMsg.SS_CLOSE.message) {
     _close();
-  } else if (request.message === app.Msg.SS_IS_SHOWING.message) {
+  } else if (request.message === MyMsg.SS_IS_SHOWING.message) {
     // let people know we are here
     response({message: 'OK'});
   }

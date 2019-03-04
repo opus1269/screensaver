@@ -24,6 +24,8 @@ import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
+import * as MyUtils from '../../../scripts/my_utils.js';
+
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -156,13 +158,13 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   _onEmailTapped: function() {
-    let body = app.Utils.getEmailBody();
+    let body = MyUtils.getEmailBody();
     body = body + `${this.lastError.title}\n\n${this.lastError.message}\n\n` +
         `${this.lastError.stack}`;
     body = body + '\n\nPlease provide any additional info. ' +
         'on what led to the error.\n\n';
 
-    const url = app.Utils.getEmailUrl('Last Error', body);
+    const url = MyUtils.getEmailUrl('Last Error', body);
     Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError email');
     chrome.tabs.create({url: url});
   },

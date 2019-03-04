@@ -11,6 +11,8 @@ import '../../scripts/background/data.js';
 import '../../scripts/background/ss_controller.js';
 import '../../scripts/background/user.js';
 
+import * as MyUtils from '../../scripts/my_utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -50,7 +52,7 @@ function _onInstalled(details) {
     Chrome.Storage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
-    if (!app.Utils.DEBUG) {
+    if (!MyUtils.DEBUG) {
       const oldVer = details.previousVersion;
       const version = Chrome.Utils.getVersion();
       if (version === oldVer) {

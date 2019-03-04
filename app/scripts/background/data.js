@@ -6,6 +6,8 @@
  */
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
 import {isSignedInToChrome} from './user.js';
+
+import * as MyMsg from '../../scripts/my_msg.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -427,7 +429,7 @@ app.Data = (function() {
           const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
           PhotoSources.process(useKey).catch((err) => {
             // send message on processing error
-            const msg = app.Msg.PHOTO_SOURCE_FAILED;
+            const msg = MyMsg.PHOTO_SOURCE_FAILED;
             msg.key = useKey;
             msg.error = err.message;
             return Chrome.Msg.send(msg);

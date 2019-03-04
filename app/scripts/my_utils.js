@@ -4,83 +4,69 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.app = window.app || {};
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Misc. utility methods
- * @namespace
+ * @module MyUtils
  */
-app.Utils = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * True if development build
+ * @type {boolean}
+ * @private
+ */
+const _DEBUG = false;
 
-  /**
-   * True if development build
-   * @type {boolean}
-   * @private
-   * @memberOf app.Utils
-   */
-  const _DEBUG = false;
-  
-  return {
-    /**
-     * True if development build
-     * @type {boolean}
-     * @memberOf app.Utils
-     */
-    DEBUG: _DEBUG,
-    
-    /**
-     * Get our email address
-     * @returns {string} email address
-     * @memberOf app.Utils
-     */
-    getEmail: function() {
-      return 'photoscreensaver@gmail.com';
-    },
+/**
+ * True if development build
+ * @type {boolean}
+ */
+export const DEBUG = _DEBUG;
 
-    /**
-     * Get body for an email with basic extension info
-     * @returns {string} text
-     * @memberOf app.Utils
-     */
-    getEmailBody: function() {
-      return `Extension version: ${Chrome.Utils.getVersion()}\n`
-          + `Chrome version: ${Chrome.Utils.getFullChromeVersion()}\n`
-          + `OS: ${Chrome.Storage.get('os')}\n\n\n`;
-    },
+/**
+ * Get our email address
+ * @returns {string} email address
+ */
+export function getEmail() {
+  return 'photoscreensaver@gmail.com';
+}
 
-    /**
-     * Get encoded url for an email
-     * @param {string} subject - email subject
-     * @param {string} body - email body
-     * @returns {string} encoded url
-     * @memberOf app.Utils
-     */
-    getEmailUrl: function(subject, body) {
-      const email = encodeURIComponent(app.Utils.getEmail());
-      const sub = encodeURIComponent(subject);
-      const bod = encodeURIComponent(body);
-      return `mailto:${email}?subject=${sub}&body=${bod}`;
-    },
+/**
+ * Get body for an email with basic extension info
+ * @returns {string} text
+ */
+export function getEmailBody() {
+  return `Extension version: ${Chrome.Utils.getVersion()}\n`
+      + `Chrome version: ${Chrome.Utils.getFullChromeVersion()}\n`
+      + `OS: ${Chrome.Storage.get('os')}\n\n\n`;
+}
 
-    /**
-     * Get our Github base path
-     * @returns {string} path
-     * @memberOf app.Utils
-     */
-    getGithubPath: function() {
-      return 'https://github.com/opus1269/screensaver/';
-    },
+/**
+ * Get encoded url for an email
+ * @param {string} subject - email subject
+ * @param {string} body - email body
+ * @returns {string} encoded url
+ */
+export function getEmailUrl(subject, body) {
+  const email = encodeURIComponent(getEmail());
+  const sub = encodeURIComponent(subject);
+  const bod = encodeURIComponent(body);
+  return `mailto:${email}?subject=${sub}&body=${bod}`;
+}
 
-    /**
-     * Get our Github pages base path
-     * @returns {string} path
-     * @memberOf app.Utils
-     */
-    getGithubPagesPath: function() {
-      return 'https://opus1269.github.io/screensaver/';
-    },
-  };
-})();
+/**
+ * Get our Github base path
+ * @returns {string} path
+ */
+export function getGithubPath() {
+  return 'https://github.com/opus1269/screensaver/';
+}
+
+/**
+ * Get our Github pages base path
+ * @returns {string} path
+ */
+export function getGithubPagesPath() {
+  return 'https://opus1269.github.io/screensaver/';
+}

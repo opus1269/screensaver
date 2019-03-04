@@ -52,6 +52,8 @@ import '../../elements/setting-elements/setting-time/setting-time.js';
 import '../../elements/setting-elements/setting-text/setting-text.js';
 import '../../elements/my_icons.js';
 
+import * as MyMsg from '../../scripts/my_msg.js';
+
 import {GooglePhotosPage} from
       '../../elements/pages/google-photos-page/google-photos-page.js';
 import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
@@ -471,7 +473,7 @@ function _showHelpPage(index) {
 function _showScreensaverPreview(index, prevRoute) {
   // reselect previous page - need to delay so tap event is done
   setTimeout(() => t.$.mainMenu.select(prevRoute), 500);
-  Chrome.Msg.send(app.Msg.SS_SHOW).catch(() => {});
+  Chrome.Msg.send(MyMsg.SS_SHOW).catch(() => {});
 }
 
 /**
@@ -553,7 +555,7 @@ function _onMessage(request, sender, response) {
     t.dialogTitle = Chrome.Locale.localize('err_storage_title');
     t.dialogText = Chrome.Locale.localize('err_storage_desc');
     t.$.errorDialog.open();
-  } else if (request.message === app.Msg.PHOTO_SOURCE_FAILED.message) {
+  } else if (request.message === MyMsg.PHOTO_SOURCE_FAILED.message) {
     // failed to load
     t.$.settingsPage.deselectPhotoSource(request.key);
     t.dialogTitle = Chrome.Locale.localize('err_photo_source_title');

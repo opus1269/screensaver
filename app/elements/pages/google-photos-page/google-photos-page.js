@@ -32,6 +32,8 @@ import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
+import * as MyGA from '../../../scripts/my_analytics.js';
+
 import {showErrorDialog} from '../../../scripts/options/options.js';
 import * as Permissions from '../../../scripts/options/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
@@ -324,8 +326,7 @@ export const GooglePhotosPage = Polymer({
    */
   loadAlbumList: function() {
     const ERR_TITLE = Locale.localize('err_load_album_list');
-    const type = Permissions.PICASA;
-    return Permissions.request(type).then((granted) => {
+    return Permissions.request(Permissions.PICASA).then((granted) => {
       if (!granted) {
         // eslint-disable-next-line promise/no-nesting
         Permissions.removeGooglePhotos().catch(() => {});
@@ -467,7 +468,7 @@ export const GooglePhotosPage = Polymer({
           this.selections.push({
             id: album.id, name: newAlbum.name, photos: newAlbum.photos,
           });
-          Chrome.GA.event(app.GA.EVENT.SELECT_ALBUM,
+          Chrome.GA.event(MyGA.EVENT.SELECT_ALBUM,
               `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
           const set = Chrome.Storage.safeSet('albumSelections', this.selections,
               'useGoogleAlbums');
@@ -501,7 +502,7 @@ export const GooglePhotosPage = Polymer({
     if (album.checked) {
       // add new
       if (this.selections.length === _MAX_ALBUMS) {
-        Chrome.GA.event(app.GA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
+        Chrome.GA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
@@ -515,7 +516,7 @@ export const GooglePhotosPage = Polymer({
         this.selections.push({
           id: album.id, name: newAlbum.name, photos: newAlbum.photos,
         });
-        Chrome.GA.event(app.GA.EVENT.SELECT_ALBUM,
+        Chrome.GA.event(MyGA.EVENT.SELECT_ALBUM,
             `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
         const set = Chrome.Storage.safeSet('albumSelections', this.selections,
             'useGoogleAlbums');

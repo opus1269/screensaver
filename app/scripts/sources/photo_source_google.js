@@ -6,6 +6,8 @@
  */
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+import * as MyGA from '../../scripts/my_analytics.js';
+
 import PhotoSource from './photo_source.js';
 
 /**
@@ -263,7 +265,7 @@ export default class GoogleSource extends PhotoSource {
 
     } while (!done);
 
-    Chrome.GA.event(app.GA.EVENT.LOAD_PHOTOS,
+    Chrome.GA.event(MyGA.EVENT.LOAD_PHOTOS,
         `nPhotos: ${photos.length}, nCalls: ${nCalls}`);
 
     return photos;
@@ -311,7 +313,7 @@ export default class GoogleSource extends PhotoSource {
           numPhotos += newPhotos.length;
         }
         if (numPhotos >= MAX_PHOTOS) {
-          Chrome.GA.event(app.GA.EVENT.PHOTOS_LIMITED,
+          Chrome.GA.event(MyGA.EVENT.PHOTOS_LIMITED,
               `nPhotos: ${MAX_PHOTOS}`);
         }
       } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
@@ -327,7 +329,7 @@ export default class GoogleSource extends PhotoSource {
       album.photos = photos;
       album.ct = photos.length;
 
-      Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
+      Chrome.GA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
       return album;
     } catch (err) {
@@ -394,7 +396,7 @@ export default class GoogleSource extends PhotoSource {
       }
     }
 
-    Chrome.GA.event(app.GA.EVENT.LOAD_ALBUM_LIST,
+    Chrome.GA.event(MyGA.EVENT.LOAD_ALBUM_LIST,
         `nAlbums: ${albums.length}`);
 
     return albums;
@@ -444,7 +446,7 @@ export default class GoogleSource extends PhotoSource {
           'GoogleSource.updateBaseUrls');
     } else {
       // success
-      Chrome.GA.event(app.GA.EVENT.UPDATE_BASE_URLS,
+      Chrome.GA.event(MyGA.EVENT.UPDATE_BASE_URLS,
           `nUpdated: ${ct}`);
     }
 
@@ -505,7 +507,7 @@ export default class GoogleSource extends PhotoSource {
         }
       }
 
-      Chrome.GA.event(app.GA.EVENT.FETCH_ALBUMS,
+      Chrome.GA.event(MyGA.EVENT.FETCH_ALBUMS,
           `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
 
       return Promise.resolve(selAlbums);
