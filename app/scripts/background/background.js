@@ -6,6 +6,7 @@
  */
 
 import '../../scripts/background/context_menus.js';
+import '../../scripts/background/user.js';
 
 import * as AppData from './data.js';
 
