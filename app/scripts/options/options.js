@@ -62,6 +62,8 @@ import * as Permissions from './permissions.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeUtils
@@ -308,7 +310,7 @@ t._onAcceptPermissionsClicked = function() {
       return null;
     }
   }).catch((err) => {
-    Chrome.Log.error(err.message, 'Options._onAcceptPermissionsClicked');
+    ChromeLog.error(err.message, 'Options._onAcceptPermissionsClicked');
   });
 };
 
@@ -320,7 +322,7 @@ t._onAcceptPermissionsClicked = function() {
 t._onDenyPermissionsClicked = function() {
   ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
   Permissions.removeGooglePhotos().catch((err) => {
-    Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
+    ChromeLog.error(err.message, 'Options._onDenyPermissionsClicked');
   });
 };
 
@@ -552,7 +554,7 @@ function _onMessage(request, sender, response) {
       chrome.tabs.update(t.id, {'highlighted': true});
       return null;
     }).catch((err) => {
-      Chrome.Log.error(err.message, 'chromep.tabs.getCurrent');
+      ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
     });
     response(JSON.stringify({message: 'OK'}));
   } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {

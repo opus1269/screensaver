@@ -41,6 +41,8 @@ import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -363,7 +365,7 @@ export const GooglePhotosPage = Polymer({
         dialogText = Chrome.Locale.localize('err_google_quota');
       } else {
         dialogText = err.message;
-        Chrome.Log.error(err.message,
+        ChromeLog.error(err.message,
             'GooglePhotosPage.loadAlbumList', ERR_TITLE);
       }
       showErrorDialog(Locale.localize('err_request_failed'), dialogText);
@@ -395,7 +397,7 @@ export const GooglePhotosPage = Polymer({
         dialogText = Chrome.Locale.localize('err_google_quota');
       } else {
         dialogText = err.message;
-        Chrome.Log.error(err.message,
+        ChromeLog.error(err.message,
             'GooglePhotosPage.loadAlbum', ERR_TITLE);
       }
       showErrorDialog(Locale.localize('err_request_failed'), dialogText);
@@ -506,7 +508,7 @@ export const GooglePhotosPage = Polymer({
       if (this.selections.length === _MAX_ALBUMS) {
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
-        Chrome.Log.error('Tried to select more than max albums',
+        ChromeLog.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
         showErrorDialog(Locale.localize('err_request_failed'),
             Locale.localize('err_max_albums'));
@@ -568,7 +570,7 @@ export const GooglePhotosPage = Polymer({
     if (useGoogle) {
       // Switching to enabled, reload the Google Photo albums
       PhotoSources.process('useGoogleAlbums').catch((err) => {
-        Chrome.Log.error(err.message, 'GooglePhotosPage._onUseGoogleChanged');
+        ChromeLog.error(err.message, 'GooglePhotosPage._onUseGoogleChanged');
       });
     }
   },
@@ -581,7 +583,7 @@ export const GooglePhotosPage = Polymer({
    */
   _showStorageErrorDialog: function(method) {
     const ERR_TITLE = Locale.localize('err_storage_title');
-    Chrome.Log.error('safeSet failed', method, ERR_TITLE);
+    ChromeLog.error('safeSet failed', method, ERR_TITLE);
     showErrorDialog(ERR_TITLE, Locale.localize('err_storage_desc'));
   },
 

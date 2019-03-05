@@ -24,7 +24,7 @@
       // global error handler
       window.onerror = function(message, url, line, col, errObject) {
         if (Chrome && Chrome.Log && errObject) {
-          Chrome.Log.exception(errObject, null, true);
+          ChromeLog.exception(errObject, null, true);
         }
       };
     }

@@ -32,6 +32,8 @@ import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -179,7 +181,7 @@ function _setZoom() {
       }
       return null;
     }).catch((err) => {
-      Chrome.Log.error(err.message, 'chromep.tabs.getZoom');
+      ChromeLog.error(err.message, 'chromep.tabs.getZoom');
     });
   }
 }

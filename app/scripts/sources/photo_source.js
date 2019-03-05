@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -170,7 +172,7 @@ export default class PhotoSource {
       }).catch((err) => {
         let title = Chrome.Locale.localize('err_photo_source_title');
         title += `: ${this._desc}`;
-        Chrome.Log.error(err.message, 'PhotoSource.process', title,
+        ChromeLog.error(err.message, 'PhotoSource.process', title,
             `source: ${this._useKey}`);
         return Promise.reject(err);
       });

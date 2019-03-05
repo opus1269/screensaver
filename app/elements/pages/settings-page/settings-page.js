@@ -37,6 +37,8 @@ import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -315,12 +317,12 @@ Polymer({
     const errTitle = Locale.localize('err_optional_permissions');
     if (isSet && !isAllowed) {
       Permissions.request(perm).catch((err) => {
-        Chrome.Log.error(err.message,
+        ChromeLog.error(err.message,
             'settings-page._chromeBackgroundTapped', errTitle);
       });
     } else if (!isSet && isAllowed) {
       Permissions.remove(perm).catch((err) => {
-        Chrome.Log.error(err.message,
+        ChromeLog.error(err.message,
             'settings-page._chromeBackgroundTapped', errTitle);
       });
     }

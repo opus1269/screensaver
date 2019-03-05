@@ -10,6 +10,8 @@ import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -93,7 +95,7 @@ export default class GoogleSource extends PhotoSource {
     const statusMsg = `${Chrome.Locale.localize('err_status')}: 429`;
     if (err.message.includes(statusMsg)) {
       // Hit Google photos quota
-      Chrome.Log.error(err.message, caller,
+      ChromeLog.error(err.message, caller,
           Chrome.Locale.localize('err_google_quota'));
       ret = true;
     }
@@ -112,7 +114,7 @@ export default class GoogleSource extends PhotoSource {
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
       Chrome.Storage.set('albumSelections', []);
-      Chrome.Log.error(err.message, caller,
+      ChromeLog.error(err.message, caller,
           Chrome.Locale.localize('err_auth_revoked'));
       ret = true;
     }
@@ -275,7 +277,7 @@ export default class GoogleSource extends PhotoSource {
         } else if (this.isAuthRevokedError(err, METHOD)) {
           // Oauth2 Access was revoked
         } else {
-          Chrome.Log.error(err.message, METHOD);
+          ChromeLog.error(err.message, METHOD);
         }
         throw err;
       }
@@ -465,7 +467,7 @@ export default class GoogleSource extends PhotoSource {
     const set = Chrome.Storage.safeSet('albumSelections', albums, null);
     if (!set) {
       ret = false;
-      Chrome.Log.error(Chrome.Locale.localize('err_storage_title'),
+      ChromeLog.error(Chrome.Locale.localize('err_storage_title'),
           'GoogleSource.updateBaseUrls');
     }
 
@@ -545,7 +547,7 @@ export default class GoogleSource extends PhotoSource {
       } else if (GoogleSource.isAuthRevokedError(err, METHOD)) {
         // Oauth2 Access was revoked
       } else {
-        Chrome.Log.error(err.message, METHOD);
+        ChromeLog.error(err.message, METHOD);
       }
       // handle error ourselves
       return Promise.resolve([]);

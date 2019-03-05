@@ -13,6 +13,8 @@ import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -180,7 +182,7 @@ function _processIdleTime() {
   if (idleTime) {
     chrome.idle.setDetectionInterval(idleTime);
   } else {
-    Chrome.Log.Error('idleTime is null', 'Data._processIdleTime');
+    ChromeLog.Error('idleTime is null', 'Data._processIdleTime');
   }
 }
 

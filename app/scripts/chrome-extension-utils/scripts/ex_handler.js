@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeLog from './log.js';
+
 /**
  * Replace global error handler for logging with Google Analytics.
  */
@@ -17,8 +19,8 @@ export class ExHandler {
     if (typeof window.onerror === 'object') {
       // global error handler
       window.onerror = function(message, url, line, col, errObject) {
-        if (Chrome && Chrome.Log && errObject) {
-          Chrome.Log.exception(errObject, null, true);
+        if (ChromeLog && errObject) {
+          ChromeLog.exception(errObject, null, true);
         }
       };
     }

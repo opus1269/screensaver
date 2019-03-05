@@ -9,6 +9,8 @@ import {display} from './ss_controller.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -51,7 +53,7 @@ function _onInstalled(details) {
     contexts: ['browser_action'],
   }).catch((err) => {
     if (!err.message.includes('duplicate id')) {
-      Chrome.Log.error(err.message, 'chromep.contextMenus.create');
+      ChromeLog.error(err.message, 'chromep.contextMenus.create');
     }
   });
 
@@ -62,7 +64,7 @@ function _onInstalled(details) {
     contexts: ['browser_action'],
   }).catch((err) => {
     if (!err.message.includes('duplicate id')) {
-      Chrome.Log.error(err.message, 'chromep.contextMenus.create');
+      ChromeLog.error(err.message, 'chromep.contextMenus.create');
     }
   });
 
@@ -72,7 +74,7 @@ function _onInstalled(details) {
     contexts: ['browser_action'],
   }).catch((err) => {
     if (!err.message.includes('duplicate id')) {
-      Chrome.Log.error(err.message, 'chromep.contextMenus.create');
+      ChromeLog.error(err.message, 'chromep.contextMenus.create');
     }
   });
 }

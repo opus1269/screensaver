@@ -6,6 +6,8 @@
  */
 import * as MyMsg from '../../scripts/my_msg.js';
 
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
@@ -168,7 +170,7 @@ function _open(display) {
     }
     return null;
   }).catch((err) => {
-    Chrome.Log.error(err.message, 'SSControl._open', _ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl._open', _ERR_SHOW);
   });
 }
 
@@ -188,7 +190,7 @@ function _openOnAllDisplays() {
     }
     return null;
   }).catch((err) => {
-    Chrome.Log.error(err.message, 'SSControl._openOnAllDisplays', _ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl._openOnAllDisplays', _ERR_SHOW);
   });
 }
 
@@ -226,7 +228,7 @@ function _onIdleStateChanged(state) {
     }
     return null;
   }).catch((err) => {
-    Chrome.Log.error(err.message, 'SSControl._isShowing', _ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl._isShowing', _ERR_SHOW);
   });
 }
 

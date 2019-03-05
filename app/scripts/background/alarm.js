@@ -9,6 +9,8 @@ import {isActive, close, display} from './ss_controller.js';
 
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -83,7 +85,7 @@ export function updateRepeatingAlarms() {
     }
     return null;
   }).catch((err) => {
-    Chrome.Log.error(err.message,
+    ChromeLog.error(err.message,
         'chromep.alarms.get(_ALARMS.UPDATE_PHOTOS)');
   });
 }
@@ -117,7 +119,7 @@ function _setActiveState() {
     }
     return null;
   }).catch((err) => {
-    Chrome.Log.error(err.message, 'Alarm._setActiveState');
+    ChromeLog.error(err.message, 'Alarm._setActiveState');
   });
   updateBadgeText();
 }
