@@ -28,6 +28,8 @@ import * as MyUtils from '../../../scripts/my_utils.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -123,7 +125,7 @@ export const ErrorPage = Polymer({
     lastError: {
       type: Object,
       value: function() {
-        return new Chrome.Storage.LastError();
+        return new ChromeStorage.LastError();
       },
       notify: true,
     },
@@ -134,7 +136,7 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   ready: function() {
-    Chrome.Storage.getLastError().then((lastError) => {
+    ChromeStorage.getLastError().then((lastError) => {
       this.set('lastError', lastError);
       return null;
     }).catch((err) => {
@@ -177,14 +179,15 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   _onRemoveTapped: function() {
-    Chrome.Storage.clearLastError();
+    ChromeStorage.clearLastError().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
   },
 
   /**
    * Computed Binding
-   * @param {Chrome.Storage.LastError} lastError - the error
-   * @param {Chrome.Storage.LastError} lastError.stack - stack trace
+   * @param {ChromeStorage.LastError} lastError - the error
+   * @param {ChromeStorage.LastError} lastError.message - message title
+   * @param {ChromeStorage.LastError} lastError.stack - stack trace
    * @returns {string} stack trace
    * @private
    * @memberOf ErrorPage
@@ -195,8 +198,9 @@ export const ErrorPage = Polymer({
 
   /**
    * Computed Binding
-   * @param {Chrome.Storage.LastError} lastError - the error
-   * @param {Chrome.Storage.LastError} lastError.title - message title
+   * @param {ChromeStorage.LastError} lastError - the error
+   * @param {ChromeStorage.LastError} lastError.title - message title
+   * @param {ChromeStorage.LastError} lastError.message - message title
    * @returns {string} page title
    * @private
    * @memberOf ErrorPage

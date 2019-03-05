@@ -13,6 +13,8 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -29,8 +31,8 @@ const _ENABLE_MENU = 'ENABLE_MENU';
  * @private
  */
 function _toggleEnabled() {
-  const oldState = Chrome.Storage.getBool('enabled', true);
-  Chrome.Storage.set('enabled', !oldState);
+  const oldState = ChromeStorage.getBool('enabled', true);
+  ChromeStorage.set('enabled', !oldState);
   // storage changed event not fired on same page as the change
   AppData.processState('enabled');
 }
@@ -93,7 +95,7 @@ function _onMenuClicked(info) {
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
     display(false);
   } else if (info.menuItemId === _ENABLE_MENU) {
-    const isEnabled = Chrome.Storage.getBool('enabled');
+    const isEnabled = ChromeStorage.getBool('enabled');
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
     _toggleEnabled();
   }

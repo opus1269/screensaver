@@ -10,6 +10,8 @@ import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -81,7 +83,7 @@ export const BACKGROUND = {
  * @memberOf Permissions
  */
 export function notSet(type) {
-  return Chrome.Storage.get(type.name) === _STATE.notSet;
+  return ChromeStorage.get(type.name) === _STATE.notSet;
 }
 
 /**
@@ -91,7 +93,7 @@ export function notSet(type) {
  * @memberOf Permissions
  */
 export function isAllowed(type) {
-  return Chrome.Storage.get(type.name) === _STATE.allowed;
+  return ChromeStorage.get(type.name) === _STATE.allowed;
 }
 
 /**
@@ -101,7 +103,7 @@ export function isAllowed(type) {
  * @memberOf Permissions
  */
 export function isDenied(type) {
-  return Chrome.Storage.get(type.name) === _STATE.denied;
+  return ChromeStorage.get(type.name) === _STATE.denied;
 }
 
 /**
@@ -187,7 +189,7 @@ export function deny(type) {
 export function removeGooglePhotos() {
   return deny(PICASA).then(() => {
     // remove selected albums
-    Chrome.Storage.set('albumSelections', []);
+    ChromeStorage.set('albumSelections', []);
 
     // remove cached Auth token
     // eslint-disable-next-line promise/no-nesting

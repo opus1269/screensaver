@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -19,7 +21,7 @@ import * as SSRunner from './ss_runner.js';
  * Initialize the time display
  */
 export function initialize() {
-  const showTime = Chrome.Storage.getInt('showTime', 0);
+  const showTime = ChromeStorage.getInt('showTime', 0);
   if (showTime > 0) {
     // update current time once a minute
     setInterval(setTime, 61 * 1000);
@@ -31,7 +33,7 @@ export function initialize() {
  */
 export function setTime() {
   let label = '';
-  const showTime = Chrome.Storage.getInt('showTime', 0);
+  const showTime = ChromeStorage.getInt('showTime', 0);
   if ((showTime !== 0) && SSRunner.isStarted()) {
     label = ChromeTime.getStringShort();
   }

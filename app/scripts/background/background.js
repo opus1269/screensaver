@@ -16,6 +16,8 @@ import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -54,7 +56,7 @@ function _onInstalled(details) {
     // initial install
     ChromeGA.event(ChromeGA.EVENT.INSTALLED, ChromeUtils.getVersion());
     AppData.initialize();
-    Chrome.Storage.set('isShowing', false);
+    ChromeStorage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!MyUtils.DEBUG) {
@@ -77,7 +79,7 @@ function _onInstalled(details) {
     }
     // extension updated
     AppData.update();
-    Chrome.Storage.set('isShowing', false);
+    ChromeStorage.set('isShowing', false);
   }
 }
 
@@ -91,7 +93,7 @@ function _onInstalled(details) {
 function _onStartup() {
   ChromeGA.page('/background.html');
   AppData.processState();
-  Chrome.Storage.set('isShowing', false);
+  ChromeStorage.set('isShowing', false);
 }
 
 /**
@@ -132,7 +134,7 @@ function _onChromeMessage(request, sender, response) {
   if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
     AppData.restoreDefaults();
   } else if (request.message === ChromeMsg.STORE.message) {
-    Chrome.Storage.set(request.key, request.value);
+    ChromeStorage.set(request.key, request.value);
   }
   return false;
 }

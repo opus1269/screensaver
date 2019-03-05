@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeStorage
+  from '../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
   from '../scripts/chrome-extension-utils/scripts/utils.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -41,7 +43,7 @@ export function getEmail() {
 export function getEmailBody() {
   return `Extension version: ${ChromeUtils.getVersion()}\n`
       + `Chrome version: ${ChromeUtils.getFullChromeVersion()}\n`
-      + `OS: ${Chrome.Storage.get('os')}\n\n\n`;
+      + `OS: ${ChromeStorage.get('os')}\n\n\n`;
 }
 
 /**

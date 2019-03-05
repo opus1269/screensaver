@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as Screensaver from './screensaver.js';
@@ -50,7 +52,7 @@ function _loadPhotos() {
     return false;
   }
 
-  if (Chrome.Storage.getBool('shuffle')) {
+  if (ChromeStorage.getBool('shuffle')) {
     // randomize the order
     SSPhotos.shuffle();
   }

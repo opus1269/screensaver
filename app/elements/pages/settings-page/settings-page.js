@@ -41,6 +41,8 @@ import * as ChromeLog
   from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -311,7 +313,7 @@ Polymer({
    */
   _chromeBackgroundTapped() {
     // this used to not be updated yet in Polymer 1
-    const isSet = Chrome.Storage.getBool('allowBackground');
+    const isSet = ChromeStorage.getBool('allowBackground');
     const perm = Permissions.BACKGROUND;
     const isAllowed = Permissions.isAllowed(perm);
     const errTitle = Locale.localize('err_optional_permissions');

@@ -6,6 +6,8 @@
  */
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as PhotoSourceFactory from './photo_source_factory.js';
@@ -27,7 +29,7 @@ function _getSelectedSources() {
   for (const key in UseKey) {
     if (UseKey.hasOwnProperty(key)) {
       const useKey = UseKey[key];
-      if (Chrome.Storage.getBool(useKey)) {
+      if (ChromeStorage.getBool(useKey)) {
         try {
           const source = PhotoSourceFactory.create(useKey);
           if (source) {

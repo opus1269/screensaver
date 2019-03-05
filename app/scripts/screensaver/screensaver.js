@@ -36,6 +36,8 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -159,7 +161,7 @@ export function setPaused(paused) {
  * @private
  */
 function _setupPhotoTransitions() {
-  let type = Chrome.Storage.getInt('photoTransition', 0);
+  let type = ChromeStorage.getInt('photoTransition', 0);
   if (type === 8) {
     // pick random transition
     type = ChromeUtils.getRandomInt(0, 7);
@@ -309,7 +311,7 @@ t._onErrorChanged = async function(ev) {
  */
 function _onLoad() {
   // set selected background image
-  document.body.style.background = Chrome.Storage.get('background',
+  document.body.style.background = ChromeStorage.get('background',
       'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
   ChromeGA.page('/screensaver.html');

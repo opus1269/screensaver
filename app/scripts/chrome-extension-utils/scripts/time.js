@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeLocale from './locales.js';
+import * as ChromeStorage from './storage.js';
 import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
@@ -80,7 +81,7 @@ export default class ChromeTime {
    */
   static _is24Hr(frmt = null) {
     let ret = false;
-    let format = Chrome.Storage.getInt('showTime', 0);
+    let format = ChromeStorage.getInt('showTime', 0);
     if (frmt !== null) {
       format = frmt;
     }

@@ -13,6 +13,8 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -47,9 +49,9 @@ const _ALARMS = {
  * @memberOf Alarm
  */
 export function updateRepeatingAlarms() {
-  const keepAwake = Chrome.Storage.getBool('keepAwake');
-  const aStart = Chrome.Storage.get('activeStart', '00:00');
-  const aStop = Chrome.Storage.get('activeStop', '00:00');
+  const keepAwake = ChromeStorage.getBool('keepAwake');
+  const aStart = ChromeStorage.get('activeStart', '00:00');
+  const aStop = ChromeStorage.get('activeStop', '00:00');
 
   // create keep awake active period scheduling alarms
   if (keepAwake && (aStart !== aStop)) {
@@ -70,7 +72,7 @@ export function updateRepeatingAlarms() {
     if (!ChromeTime.isInRange(aStart, aStop)) {
       _setInactiveState();
     } else {
-      Chrome.Storage.set('isAwake', true);
+      ChromeStorage.set('isAwake', true);
     }
   } else {
     chrome.alarms.clear(_ALARMS.ACTIVATE);
@@ -109,14 +111,14 @@ export function updateBadgeText() {
  * @memberOf Alarm
  */
 function _setActiveState() {
-  Chrome.Storage.set('isAwake', true);
-  if (Chrome.Storage.getBool('keepAwake')) {
+  ChromeStorage.set('isAwake', true);
+  if (ChromeStorage.getBool('keepAwake')) {
     chrome.power.requestKeepAwake('display');
   }
   const interval = AppData.getIdleSeconds();
   chromep.idle.queryState(interval).then((state) => {
     // display screensaver if enabled and the idle time criteria is met
-    if (Chrome.Storage.getBool('enabled') && (state === 'idle')) {
+    if (ChromeStorage.getBool('enabled') && (state === 'idle')) {
       display(false);
     }
     return null;
@@ -132,8 +134,8 @@ function _setActiveState() {
  * @memberOf Alarm
  */
 function _setInactiveState() {
-  Chrome.Storage.set('isAwake', false);
-  if (Chrome.Storage.getBool('allowSuspend')) {
+  ChromeStorage.set('isAwake', false);
+  if (ChromeStorage.getBool('allowSuspend')) {
     chrome.power.releaseKeepAwake();
   } else {
     chrome.power.requestKeepAwake('system');
@@ -149,10 +151,10 @@ function _setInactiveState() {
  */
 function _setBadgeText() {
   let text = '';
-  if (Chrome.Storage.getBool('enabled')) {
+  if (ChromeStorage.getBool('enabled')) {
     text = isActive() ? '' : ChromeLocale.localize('sleep_abbrev');
   } else {
-    text = Chrome.Storage.getBool('keepAwake') ? ChromeLocale.localize(
+    text = ChromeStorage.getBool('keepAwake') ? ChromeLocale.localize(
         'power_abbrev') : ChromeLocale.localize('off_abbrev');
   }
   chrome.browserAction.setBadgeText({text: text});

@@ -8,6 +8,8 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -135,14 +137,14 @@ export default class PhotoSource {
     if (this.use()) {
       let photos = [];
       if (this._isArray) {
-        let items = Chrome.Storage.get(this._photosKey);
+        let items = ChromeStorage.get(this._photosKey);
         // could be that items have not been retrieved yet
         items = items || [];
         for (const item of items) {
           photos = photos.concat(item.photos);
         }
       } else {
-        photos = Chrome.Storage.get(this._photosKey);
+        photos = ChromeStorage.get(this._photosKey);
         // could be that items have not been retrieved yet
         photos = photos || [];
       }
@@ -156,7 +158,7 @@ export default class PhotoSource {
    * @returns {boolean} true if selected
    */
   use() {
-    return Chrome.Storage.getBool(this._useKey);
+    return ChromeStorage.getBool(this._useKey);
   }
 
   /**
@@ -181,7 +183,7 @@ export default class PhotoSource {
     } else {
       // hack so we don't delete album selections when Google Photos
       // page is disabled
-      const useGoogle = Chrome.Storage.getBool('useGoogle');
+      const useGoogle = ChromeStorage.getBool('useGoogle');
       if (!((this._photosKey === 'albumSelections') && !useGoogle)) {
         localStorage.removeItem(this._photosKey);
       }
@@ -200,7 +202,7 @@ export default class PhotoSource {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {
-      const set = Chrome.Storage.safeSet(this._photosKey, photos, keyBool);
+      const set = ChromeStorage.safeSet(this._photosKey, photos, keyBool);
       if (!set) {
         ret = 'Exceeded storage capacity.';
       }

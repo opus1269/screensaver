@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as SSPhotos from './ss_photos.js';
@@ -26,7 +28,7 @@ let _transTime = 30000;
  * Initialize the photo finder
  */
 export function initialize() {
-  const transTime = Chrome.Storage.get('transitionTime');
+  const transTime = ChromeStorage.get('transitionTime');
   if (transTime) {
     _transTime = transTime.base * 1000;
   }

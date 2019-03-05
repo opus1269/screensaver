@@ -45,6 +45,8 @@ import * as ChromeLocale
   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -320,7 +322,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   ready: function() {
-    if (Chrome.Storage.getBool('isAlbumMode')) {
+    if (ChromeStorage.getBool('isAlbumMode')) {
       this.loadAlbumList().catch((err) => {});
     }
   },
@@ -456,7 +458,7 @@ export const GooglePhotosPage = Polymer({
     ChromeGA.event(ChromeGA.EVENT.ICON, 'deselectAllGoogleAlbums');
     this._uncheckAll();
     this.selections.splice(0, this.selections.length);
-    Chrome.Storage.set('albumSelections', []);
+    ChromeStorage.set('albumSelections', []);
   },
 
   /**
@@ -476,7 +478,7 @@ export const GooglePhotosPage = Polymer({
           });
           ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
               `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
-          const set = Chrome.Storage.safeSet('albumSelections', this.selections,
+          const set = ChromeStorage.safeSet('albumSelections', this.selections,
               'useGoogleAlbums');
           if (!set) {
             // exceeded storage limits
@@ -524,7 +526,7 @@ export const GooglePhotosPage = Polymer({
         });
         ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
             `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
-        const set = Chrome.Storage.safeSet('albumSelections', this.selections,
+        const set = ChromeStorage.safeSet('albumSelections', this.selections,
             'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
@@ -546,7 +548,7 @@ export const GooglePhotosPage = Polymer({
       if (index !== -1) {
         this.selections.splice(index, 1);
       }
-      const set = Chrome.Storage.safeSet('albumSelections', this.selections,
+      const set = ChromeStorage.safeSet('albumSelections', this.selections,
           'useGoogleAlbums');
       if (!set) {
         // exceeded storage limits
@@ -595,7 +597,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _selectAlbums: function() {
-    this.set('selections', Chrome.Storage.get('albumSelections', []));
+    this.set('selections', ChromeStorage.get('albumSelections', []));
     for (let i = 0; i < this.albums.length; i++) {
       for (let j = 0; j < this.selections.length; j++) {
         if (this.albums[i].id === this.selections[j].id) {

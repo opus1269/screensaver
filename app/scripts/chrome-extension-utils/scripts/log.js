@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeGA from './analytics.js';
+import * as ChromeStorage from './storage.js';
 import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
@@ -23,8 +24,8 @@ export function error(message = 'unknown', method = 'unknownMethod',
                       title = null, extra = null) {
   const theTitle = title ? title : 'An error occurred';
   const gaMsg = extra ? `${message} ${extra}` : message;
-  Chrome.Storage.setLastError(
-      new Chrome.Storage.LastError(message, theTitle));
+  ChromeStorage.setLastError(
+      new ChromeStorage.LastError(message, theTitle)).catch(() => {});
   ChromeGA.error(gaMsg, method);
 }
 
@@ -39,8 +40,8 @@ export function error(message = 'unknown', method = 'unknownMethod',
 export function exception(exception, message = null, fatal = false,
                           title = 'An exception was caught') {
   try {
-    Chrome.Storage.setLastError(
-        new Chrome.Storage.LastError(message, title));
+    ChromeStorage.setLastError(
+        new ChromeStorage.LastError(message, title)).catch(() => {});
     ChromeGA.exception(exception, message, fatal);
   } catch (err) {
     ChromeUtils.noop();

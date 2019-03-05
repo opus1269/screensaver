@@ -12,6 +12,8 @@ import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -48,10 +50,10 @@ const _ERR_SHOW = ChromeLocale.localize('err_show_ss');
  * @memberOf SSControl
  */
 export function isActive() {
-  const enabled = Chrome.Storage.getBool('enabled');
-  const keepAwake = Chrome.Storage.getBool('keepAwake');
-  const aStart = Chrome.Storage.get('activeStart');
-  const aStop = Chrome.Storage.get('activeStop');
+  const enabled = ChromeStorage.getBool('enabled');
+  const keepAwake = ChromeStorage.getBool('keepAwake');
+  const aStart = ChromeStorage.get('activeStart');
+  const aStop = ChromeStorage.get('activeStop');
   const inRange = ChromeTime.isInRange(aStart, aStop);
 
   // do not display if screen saver is not enabled or
@@ -66,8 +68,8 @@ export function isActive() {
  * @memberOf SSControl
  */
 export function display(single) {
-  Chrome.Storage.set('isShowing', true);
-  if (!single && Chrome.Storage.getBool('allDisplays')) {
+  ChromeStorage.set('isShowing', true);
+  if (!single && ChromeStorage.getBool('allDisplays')) {
     _openOnAllDisplays();
   } else {
     _open(null);
@@ -79,7 +81,7 @@ export function display(single) {
  * @memberOf SSControl
  */
 export function close() {
-  Chrome.Storage.set('isShowing', false);
+  ChromeStorage.set('isShowing', false);
   // send message to the screen savers to close themselves
   ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
 }
@@ -93,7 +95,7 @@ export function close() {
  * @memberOf SSControl
  */
 function _hasFullscreen(display) {
-  if (Chrome.Storage.getBool('chromeFullscreen')) {
+  if (ChromeStorage.getBool('chromeFullscreen')) {
     return chromep.windows.getAll({populate: false}).then((wins) => {
       let ret = false;
       const left = display ? display.bounds.left : 0;

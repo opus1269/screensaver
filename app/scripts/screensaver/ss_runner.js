@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as Screensaver from './screensaver.js';
@@ -44,11 +46,11 @@ const _VARS = {
  * @param {int} [delay=2000] - delay before start
  */
 export function start(delay = 2000) {
-  const transTime = Chrome.Storage.get('transitionTime');
+  const transTime = ChromeStorage.get('transitionTime');
   if (transTime) {
     setWaitTime(transTime.base * 1000);
   }
-  _VARS.interactive = Chrome.Storage.getBool('interactive');
+  _VARS.interactive = ChromeStorage.getBool('interactive');
 
   SSHistory.initialize();
 
@@ -176,7 +178,7 @@ function _stop() {
  * @private
  */
 function _restart(newIdx = null) {
-  const transTime = Chrome.Storage.get('transitionTime');
+  const transTime = ChromeStorage.get('transitionTime');
   if (transTime) {
     setWaitTime(transTime.base * 1000);
   }

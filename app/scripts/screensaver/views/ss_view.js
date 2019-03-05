@@ -9,6 +9,8 @@
 //   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
   from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -92,7 +94,7 @@ export default class SSView {
    */
   static ignore(asp, photoSizing) {
     let ret = false;
-    const skip = Chrome.Storage.getBool('skip');
+    const skip = ChromeStorage.getBool('skip');
 
     if ((!asp || isNaN(asp)) ||
         (skip && ((photoSizing === 1) || (photoSizing === 3)) &&
@@ -110,7 +112,7 @@ export default class SSView {
    * @static
    */
   static _showLocation() {
-    return Chrome.Storage.getBool('showLocation');
+    return ChromeStorage.getBool('showLocation');
   }
 
   /**
@@ -119,7 +121,7 @@ export default class SSView {
    * @static
    */
   static showTime() {
-    return Chrome.Storage.getBool('showTime');
+    return ChromeStorage.getBool('showTime');
   }
 
   /**
@@ -159,7 +161,7 @@ export default class SSView {
    * Set the style for the time label
    */
   _setTimeStyle() {
-    if (Chrome.Storage.getBool('largeTime')) {
+    if (ChromeStorage.getBool('largeTime')) {
       this.time.style.fontSize = '8.5vh';
       this.time.style.fontWeight = 300;
     }
@@ -195,7 +197,7 @@ export default class SSView {
     let newType = type;
     const idx = type.search('User');
 
-    if (!Chrome.Storage.getBool('showPhotog') && (idx !== -1)) {
+    if (!ChromeStorage.getBool('showPhotog') && (idx !== -1)) {
       // don't show label for user's own photos, if requested
       return;
     }

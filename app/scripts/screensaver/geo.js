@@ -8,6 +8,8 @@ import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -52,7 +54,7 @@ const _LOC_CACHE = {
  * @returns {Promise<string>} geolocation as string
  */
 export function get(point) {
-  if (!Chrome.Storage.getBool('showLocation')) {
+  if (!ChromeStorage.getBool('showLocation')) {
     return Promise.reject(new Error('showLocation is off'));
   } else if (ChromeUtils.isWhiteSpace(point)) {
     return Promise.reject(new Error('point is empty or null'));

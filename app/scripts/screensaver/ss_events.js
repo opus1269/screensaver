@@ -13,6 +13,8 @@ import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -33,7 +35,7 @@ const _MOUSE_START = {x: null, y: null};
  * @private
  */
 function _close() {
-  Chrome.Storage.set('isShowing', false);
+  ChromeStorage.set('isShowing', false);
   // send message to other screen savers to close themselves
   ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
   setTimeout(() => {
@@ -141,7 +143,7 @@ function _onMouseMove(ev) {
 function _onMouseClick() {
   if (SSRunner.isStarted()) {
     const idx = SSViews.getSelectedIndex();
-    const allowPhotoClicks = Chrome.Storage.getBool('allowPhotoClicks');
+    const allowPhotoClicks = ChromeStorage.getBool('allowPhotoClicks');
     if (allowPhotoClicks && (typeof (idx) !== 'undefined')) {
       const view = SSViews.get(idx);
       view.photo.showSource();

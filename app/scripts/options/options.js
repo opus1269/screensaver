@@ -68,6 +68,8 @@ import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -209,7 +211,7 @@ t.route = 'page-settings';
  * @private
  * @memberOf Options
  */
-t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
+t.signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
 /**
  * Display an error dialog
@@ -258,7 +260,7 @@ function _onLoad() {
     if (ev.key === 'permPicasa') {
       _setGooglePhotosMenuState();
     } else if (ev.key === 'signedInToChrome') {
-      t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
+      t.signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     }
   }, false);
 
@@ -420,7 +422,7 @@ function _getPageIdx(name) {
  * @memberOf Options
  */
 function _showGooglePhotosPage(index) {
-  t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
+  t.signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
   if (!t.signedInToChrome) {
     // Display Error Dialog if not signed in to Chrome
     t.dialogTitle = ChromeLocale.localize('err_chrome_signin_title');
@@ -434,7 +436,7 @@ function _showGooglePhotosPage(index) {
     t.gPhotosPage =
         new GooglePhotosPage('gPhotosPage');
     t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
-  } else if (Chrome.Storage.getBool('isAlbumMode')) {
+  } else if (ChromeStorage.getBool('isAlbumMode')) {
     t.gPhotosPage.loadAlbumList().catch(() => {});
   }
   t.route = t.pages[index].route;
@@ -492,7 +494,7 @@ function _showScreensaverPreview(index, prevRoute) {
  * @memberOf Options
  */
 function _showPermissionsDialog() {
-  t.permission = Chrome.Storage.get('permPicasa');
+  t.permission = ChromeStorage.get('permPicasa');
   t.$.permissionsDialog.open();
 }
 
@@ -503,7 +505,7 @@ function _showPermissionsDialog() {
  */
 function _setGooglePhotosMenuState() {
   // disable google-page if user hasn't allowed
-  t.permission = Chrome.Storage.get('permPicasa', 'notSet');
+  t.permission = ChromeStorage.get('permPicasa', 'notSet');
   const idx = _getPageIdx('page-google-photos');
   const el = document.getElementById(t.pages[idx].route);
   if (!el) {
@@ -522,7 +524,7 @@ function _setGooglePhotosMenuState() {
  */
 function _setErrorMenuState() {
   // disable error-page if no lastError
-  Chrome.Storage.getLastError().then((lastError) => {
+  ChromeStorage.getLastError().then((lastError) => {
     const idx = _getPageIdx('page-error');
     const el = document.getElementById(t.pages[idx].route);
     if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {

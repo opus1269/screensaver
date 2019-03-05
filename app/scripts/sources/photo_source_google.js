@@ -14,6 +14,8 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -115,7 +117,7 @@ export default class GoogleSource extends PhotoSource {
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
-      Chrome.Storage.set('albumSelections', []);
+      ChromeStorage.set('albumSelections', []);
       ChromeLog.error(err.message, caller,
           ChromeLocale.localize('err_auth_revoked'));
       ret = true;
@@ -148,7 +150,7 @@ export default class GoogleSource extends PhotoSource {
     const ret = {};
     ret.width = parseInt(mediaMetadata.width);
     ret.height = parseInt(mediaMetadata.height);
-    if (!Chrome.Storage.getBool('fullResGoogle')) {
+    if (!ChromeStorage.getBool('fullResGoogle')) {
       const max = Math.max(MAX_SIZE, ret.width, ret.height);
       if (max > MAX_SIZE) {
         if (ret.width === max) {
@@ -444,7 +446,7 @@ export default class GoogleSource extends PhotoSource {
       return ret;
     }
 
-    const albums = Chrome.Storage.get('albumSelections', []);
+    const albums = ChromeStorage.get('albumSelections', []);
     if (albums.length === 0) {
       return ret;
     }
@@ -466,7 +468,7 @@ export default class GoogleSource extends PhotoSource {
     }
 
     // Try to save the updated albums
-    const set = Chrome.Storage.safeSet('albumSelections', albums, null);
+    const set = ChromeStorage.safeSet('albumSelections', albums, null);
     if (!set) {
       ret = false;
       ChromeLog.error(ChromeLocale.localize('err_storage_title'),
@@ -488,10 +490,10 @@ export default class GoogleSource extends PhotoSource {
      using google photos   
      using google albums   
      */
-    const auth = Chrome.Storage.get('permPicasa', 'notSet') === 'allowed';
-    const enabled = Chrome.Storage.getBool('enabled', true);
-    const useGoogle = Chrome.Storage.getBool('useGoogle', true);
-    const useGoogleAlbums = Chrome.Storage.getBool('useGoogleAlbums', true);
+    const auth = ChromeStorage.get('permPicasa', 'notSet') === 'allowed';
+    const enabled = ChromeStorage.getBool('enabled', true);
+    const useGoogle = ChromeStorage.getBool('useGoogle', true);
+    const useGoogleAlbums = ChromeStorage.getBool('useGoogleAlbums', true);
     return auth && enabled && useGoogle && useGoogleAlbums;
   }
 
@@ -500,7 +502,7 @@ export default class GoogleSource extends PhotoSource {
    * @returns {Promise<module:GoogleSource.SelectedAlbum[]>} Array of albums
    */
   static _fetchAlbums() {
-    const albums = Chrome.Storage.get('albumSelections', []);
+    const albums = ChromeStorage.get('albumSelections', []);
     if (!this._isFetchAlbums() || (albums.length === 0)) {
       // no need to change - save on api calls
       return Promise.resolve(albums);

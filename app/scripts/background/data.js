@@ -19,6 +19,8 @@ import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -151,7 +153,7 @@ const _DEF_VALUES = {
  */
 function _processEnabled() {
   // update context menu text
-  const label = Chrome.Storage.getBool('enabled') ? ChromeLocale.localize(
+  const label = ChromeStorage.getBool('enabled') ? ChromeLocale.localize(
       'disable') : ChromeLocale.localize('enable');
   updateBadgeText();
   chromep.contextMenus.update('ENABLE_MENU', {
@@ -164,12 +166,12 @@ function _processEnabled() {
  * @private
  */
 function _processKeepAwake() {
-  const keepAwake = Chrome.Storage.getBool('keepAwake', true);
+  const keepAwake = ChromeStorage.getBool('keepAwake', true);
   keepAwake ? chrome.power.requestKeepAwake(
       'display') : chrome.power.releaseKeepAwake();
   if (!keepAwake) {
     // always on
-    Chrome.Storage.set('isAwake', true);
+    ChromeStorage.set('isAwake', true);
   }
   updateRepeatingAlarms();
   updateBadgeText();
@@ -184,7 +186,7 @@ function _processIdleTime() {
   if (idleTime) {
     chrome.idle.setDetectionInterval(idleTime);
   } else {
-    ChromeLog.Error('idleTime is null', 'Data._processIdleTime');
+    ChromeLog.error('idleTime is null', 'Data._processIdleTime');
   }
 }
 
@@ -209,11 +211,11 @@ function _getTimeFormat() {
  */
 function _setOS() {
   return chromep.runtime.getPlatformInfo().then((info) => {
-    Chrome.Storage.set('os', info.os);
+    ChromeStorage.set('os', info.os);
     return null;
   }).catch(() => {
     // something went wrong - linux seems to fail this call sometimes
-    Chrome.Storage.set('os', 'unknown');
+    ChromeStorage.set('os', 'unknown');
     return null;
   });
 }
@@ -225,8 +227,8 @@ function _setOS() {
  */
 function _addDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
-    if (Chrome.Storage.get(key) === null) {
-      Chrome.Storage.set(key, _DEF_VALUES[key]);
+    if (ChromeStorage.get(key) === null) {
+      ChromeStorage.set(key, _DEF_VALUES[key]);
     }
   });
 }
@@ -237,14 +239,14 @@ function _addDefaults() {
  * @private
  */
 function _convertSliderValue(key) {
-  const value = Chrome.Storage.get(key);
+  const value = ChromeStorage.get(key);
   if (value) {
     const newValue = {
       base: value,
       display: value,
       unit: 0,
     };
-    Chrome.Storage.set(key, newValue);
+    ChromeStorage.set(key, newValue);
   }
 }
 
@@ -259,17 +261,17 @@ export function initialize() {
 
   // set signin state
   ChromeAuth.isSignedIn().then((signedIn) => {
-    Chrome.Storage.set('signedInToChrome', signedIn);
+    ChromeStorage.set('signedInToChrome', signedIn);
     return null;
   }).catch(() => {});
 
   // and the last error
-  Chrome.Storage.clearLastError().catch((err) => {
+  ChromeStorage.clearLastError().catch((err) => {
     ChromeGA.error(err.message, 'Data.initialize');
   });
 
   // set time format based on locale
-  Chrome.Storage.set('showTime', _getTimeFormat());
+  ChromeStorage.set('showTime', _getTimeFormat());
 
   // update state
   processState();
@@ -281,11 +283,11 @@ export function initialize() {
 export function update() {
   // New items, changes, and removal of unused items can take place
   // here when the version changes
-  const oldVersion = Chrome.Storage.getInt('version');
+  const oldVersion = ChromeStorage.getInt('version');
 
   if (Number.isNaN(oldVersion) || (_DATA_VERSION > oldVersion)) {
     // update version number
-    Chrome.Storage.set('version', _DATA_VERSION);
+    ChromeStorage.set('version', _DATA_VERSION);
   }
 
   if (!Number.isNaN(oldVersion)) {
@@ -300,7 +302,7 @@ export function update() {
       // was setting this without quotes before
       const oldOS = localStorage.getItem('os');
       if (oldOS) {
-        Chrome.Storage.set('os', oldOS);
+        ChromeStorage.set('os', oldOS);
       }
     }
 
@@ -309,7 +311,7 @@ export function update() {
       // installed extensions before the change will keep
       // this permission on update.
       // https://stackoverflow.com/a/38278824/4468645
-      Chrome.Storage.set('permPicasa', 'allowed');
+      ChromeStorage.set('permPicasa', 'allowed');
     }
 
     if (oldVersion < 14) {
@@ -317,13 +319,13 @@ export function update() {
       // installed extensions before the change will keep
       // this permission on update.
       // https://stackoverflow.com/a/38278824/4468645
-      Chrome.Storage.set('permBackground', 'allowed');
-      Chrome.Storage.set('allowBackground', true);
+      ChromeStorage.set('permBackground', 'allowed');
+      ChromeStorage.set('allowBackground', true);
     }
 
     if (oldVersion < 18) {
       // Need new permission for Google Photos API
-      Chrome.Storage.set('permPicasa', 'notSet');
+      ChromeStorage.set('permPicasa', 'notSet');
 
       // Remove cached Auth token
       ChromeAuth.removeCachedToken(false, null, null).catch(() => {
@@ -332,34 +334,34 @@ export function update() {
       });
 
       // Google Photos API not compatible with Picasa API album id's
-      Chrome.Storage.set('albumSelections', []);
+      ChromeStorage.set('albumSelections', []);
     }
   }
 
   if (oldVersion < 19) {
     // remove all traces of 500px
-    Chrome.Storage.set('useEditors500px', null);
-    Chrome.Storage.set('usePopular500px', null);
-    Chrome.Storage.set('useYesterday500px', null);
-    Chrome.Storage.set('editors500pxImages', null);
-    Chrome.Storage.set('popular500pxImages', null);
-    Chrome.Storage.set('yesterday500pxImages', null);
+    ChromeStorage.set('useEditors500px', null);
+    ChromeStorage.set('usePopular500px', null);
+    ChromeStorage.set('useYesterday500px', null);
+    ChromeStorage.set('editors500pxImages', null);
+    ChromeStorage.set('popular500pxImages', null);
+    ChromeStorage.set('yesterday500pxImages', null);
   }
 
   if (oldVersion < 20) {
     // set signin state
     ChromeAuth.isSignedIn().then((signedIn) => {
-      Chrome.Storage.set('signedInToChrome', signedIn);
+      ChromeStorage.set('signedInToChrome', signedIn);
       return null;
     }).catch(() => {});
 
     // change minimum transition time
-    const trans = Chrome.Storage.get('transitionTime',
+    const trans = ChromeStorage.get('transitionTime',
         {'base': 30, 'display': 30, 'unit': 0});
     if ((trans.unit === 0)) {
       trans.base = Math.max(10, trans.base);
       trans.display = trans.base;
-      Chrome.Storage.set('transitionTime', trans);
+      ChromeStorage.set('transitionTime', trans);
     }
   }
 
@@ -378,12 +380,12 @@ export function restoreDefaults() {
         (key !== 'googlePhotosSelections') &&
         (key !== 'albumSelections')) {
       // skip Google photos settings
-      Chrome.Storage.set(key, _DEF_VALUES[key]);
+      ChromeStorage.set(key, _DEF_VALUES[key]);
     }
   });
 
   // restore default time format based on locale
-  Chrome.Storage.set('showTime', _getTimeFormat());
+  ChromeStorage.set('showTime', _getTimeFormat());
 
   // update state
   processState();
@@ -413,10 +415,10 @@ export function processState(key = 'all', doGoogle = false) {
 
     // process photo SOURCES
     PhotoSources.processAll(doGoogle);
-    Chrome.Storage.set('isShowing', false);
+    ChromeStorage.set('isShowing', false);
 
     // set os, if not already
-    if (!Chrome.Storage.get('os')) {
+    if (!ChromeStorage.get('os')) {
       _setOS().catch(() => {});
     }
   } else {
@@ -445,7 +447,7 @@ export function processState(key = 'all', doGoogle = false) {
  * @returns {int} idle time in seconds
  */
 export function getIdleSeconds() {
-  const idle = Chrome.Storage.get('idleTime',
+  const idle = ChromeStorage.get('idleTime',
       {'base': 5, 'display': 5, 'unit': 0});
   return idle.base * 60;
 }

@@ -10,6 +10,8 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -27,11 +29,11 @@ import * as MyGA from '../../scripts/my_analytics.js';
  * @private
  */
 function _onSignInChanged(account, signedIn) {
-  Chrome.Storage.set('signedInToChrome', signedIn);
+  ChromeStorage.set('signedInToChrome', signedIn);
   if (!signedIn) {
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
-    Chrome.Storage.set('albumSelections', []);
-    const type = Chrome.Storage.getBool('permPicasa');
+    ChromeStorage.set('albumSelections', []);
+    const type = ChromeStorage.get('permPicasa');
     if (type === 'allowed') {
       ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),
           'User._onSignInChanged');
