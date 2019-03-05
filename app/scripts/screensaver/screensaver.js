@@ -300,8 +300,8 @@ t._onErrorChanged = async function(ev) {
  */
 function _onLoad() {
   // set selected background image
-  document.body.style.background =
-      Chrome.Storage.get('background').substring(11);
+  document.body.style.background = Chrome.Storage.get('background',
+      'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
   Chrome.GA.page('/screensaver.html');
 
