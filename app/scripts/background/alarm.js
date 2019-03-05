@@ -9,6 +9,7 @@ import {isActive, close, display} from './ss_controller.js';
 
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -48,21 +49,21 @@ export function updateRepeatingAlarms() {
 
   // create keep awake active period scheduling alarms
   if (keepAwake && (aStart !== aStop)) {
-    const startDelayMin = Chrome.Time.getTimeDelta(aStart);
-    const stopDelayMin = Chrome.Time.getTimeDelta(aStop);
+    const startDelayMin = ChromeTime.getTimeDelta(aStart);
+    const stopDelayMin = ChromeTime.getTimeDelta(aStop);
 
     chrome.alarms.create(_ALARMS.ACTIVATE, {
       delayInMinutes: startDelayMin,
-      periodInMinutes: Chrome.Time.MIN_IN_DAY,
+      periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
     chrome.alarms.create(_ALARMS.DEACTIVATE, {
       delayInMinutes: stopDelayMin,
-      periodInMinutes: Chrome.Time.MIN_IN_DAY,
+      periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
 
     // if we are currently outside of the active range
     // then set inactive state
-    if (!Chrome.Time.isInRange(aStart, aStop)) {
+    if (!ChromeTime.isInRange(aStart, aStop)) {
       _setInactiveState();
     } else {
       Chrome.Storage.set('isAwake', true);
@@ -76,8 +77,8 @@ export function updateRepeatingAlarms() {
   chromep.alarms.get(_ALARMS.UPDATE_PHOTOS).then((alarm) => {
     if (!alarm) {
       chrome.alarms.create(_ALARMS.UPDATE_PHOTOS, {
-        when: Date.now() + Chrome.Time.MSEC_IN_DAY,
-        periodInMinutes: Chrome.Time.MIN_IN_DAY,
+        when: Date.now() + ChromeTime.MSEC_IN_DAY,
+        periodInMinutes: ChromeTime.MIN_IN_DAY,
       });
     }
     return null;

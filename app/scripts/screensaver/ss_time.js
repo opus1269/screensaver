@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as Screensaver from './screensaver.js';
@@ -32,7 +33,7 @@ export function setTime() {
   let label = '';
   const showTime = Chrome.Storage.getInt('showTime', 0);
   if ((showTime !== 0) && SSRunner.isStarted()) {
-    label = Chrome.Time.getStringShort();
+    label = ChromeTime.getStringShort();
   }
   Screensaver.setTimeLabel(label);
 }

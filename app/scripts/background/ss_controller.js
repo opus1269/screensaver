@@ -6,6 +6,7 @@
  */
 import * as MyMsg from '../../scripts/my_msg.js';
 
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -43,7 +44,7 @@ export function isActive() {
   const keepAwake = Chrome.Storage.getBool('keepAwake');
   const aStart = Chrome.Storage.get('activeStart');
   const aStop = Chrome.Storage.get('activeStop');
-  const inRange = Chrome.Time.isInRange(aStart, aStop);
+  const inRange = ChromeTime.isInRange(aStart, aStop);
 
   // do not display if screen saver is not enabled or
   // keepAwake scheduler is enabled and is in the inactive range
