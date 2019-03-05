@@ -30,6 +30,7 @@ import * as SSPhotos from './ss_photos.js';
 import * as SSViews from './ss_views.js';
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /** 
@@ -227,7 +228,7 @@ t._onErrorChanged = async function(ev) {
 
       // Calculate an hours worth of photos max
       const transTime = SSRunner.getWaitTime();
-      let nPhotos = Math.round(Chrome.Time.MSEC_IN_HOUR / transTime);
+      let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
       // do at least 50, still one rpc. will help when displaying
       // a lot for short times
       nPhotos = Math.max(nPhotos, 50);
