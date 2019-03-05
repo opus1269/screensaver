@@ -30,7 +30,7 @@ const chromep = new ChromePromise();
  * Get a JSON parsed value from localStorage
  * @param {!string} key - key to get value for
  * @param {?Object|string} [def=null] - optional default value if key not found
- * @returns {?Object|string|int|boolean|[]} JSON object or string, null if key
+ * @returns {?Object|string|int|boolean|Array} JSON object or string, null if key
  *     does not exist
  */
 export function get(key, def = null) {
