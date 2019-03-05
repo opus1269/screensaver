@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils
+  from '../scripts/chrome-extension-utils/scripts/utils.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -88,7 +90,7 @@ export const EVENT = {
 function _onLoad() {
   // initialize analytics
   Chrome.GA.initialize(_TRACKING_ID, 'Photo Screensaver',
-      'screensaver', Chrome.Utils.getVersion());
+      'screensaver', ChromeUtils.getVersion());
 }
 
 // listen for document and resources loaded

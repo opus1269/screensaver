@@ -60,6 +60,8 @@ import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
 import {HelpPage} from '../../elements/pages/help-page/help-page.js';
 import * as Permissions from './permissions.js';
 
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -515,7 +517,7 @@ function _setErrorMenuState() {
   Chrome.Storage.getLastError().then((lastError) => {
     const idx = _getPageIdx('page-error');
     const el = document.getElementById(t.pages[idx].route);
-    if (el && !Chrome.Utils.isWhiteSpace(lastError.message)) {
+    if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
       el.removeAttribute('disabled');
     } else if (el) {
       el.setAttribute('disabled', 'true');

@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -73,7 +75,7 @@ export default class PhotoSource {
     if (ex) {
       photo.ex = ex;
     }
-    if (point && !Chrome.Utils.isWhiteSpace(point)) {
+    if (point && !ChromeUtils.isWhiteSpace(point)) {
       photo.point = point;
     }
     photos.push(photo);
@@ -161,7 +163,7 @@ export default class PhotoSource {
     if (this.use()) {
       return this.fetchPhotos().then((photos) => {
         const errMess = this._savePhotos(photos);
-        if (!Chrome.Utils.isWhiteSpace(errMess)) {
+        if (!ChromeUtils.isWhiteSpace(errMess)) {
           return Promise.reject(new Error(errMess));
         }
         return Promise.resolve();

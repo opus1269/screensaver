@@ -31,6 +31,8 @@ import * as SSViews from './ss_views.js';
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /** 
@@ -154,7 +156,7 @@ function _setupPhotoTransitions() {
   let type = Chrome.Storage.getInt('photoTransition', 0);
   if (type === 8) {
     // pick random transition
-    type = Chrome.Utils.getRandomInt(0, 7);
+    type = ChromeUtils.getRandomInt(0, 7);
   }
   t.set('aniType', type);
 
@@ -166,7 +168,7 @@ function _setupPhotoTransitions() {
  * @private
  */
 function _setZoom() {
-  if (Chrome.Utils.getChromeVersion() >= 42) {
+  if (ChromeUtils.getChromeVersion() >= 42) {
     // override zoom factor to 1.0 - chrome 42 and later
     const chromep = new ChromePromise();
     chromep.tabs.getZoom().then((zoomFactor) => {

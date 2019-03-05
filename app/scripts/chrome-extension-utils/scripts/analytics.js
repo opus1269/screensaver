@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeJSON from './json.js';
+import * as ChromeUtils from './utils.js';
 
 window.Chrome = window.Chrome || {};
 
@@ -168,7 +169,7 @@ Chrome.GA = (function() {
      */
     page: function(page) {
       if (page) {
-        if (!Chrome.Utils.DEBUG) {
+        if (!ChromeUtils.DEBUG) {
           ga('send', 'pageview', page);
         }
       }
@@ -187,7 +188,7 @@ Chrome.GA = (function() {
         ev.hitType = 'event';
         ev.eventLabel = label ? label : ev.eventLabel;
         ev.eventAction = action ? action : ev.eventAction;
-        if (!Chrome.Utils.DEBUG) {
+        if (!ChromeUtils.DEBUG) {
           ga('send', ev);
         } else {
           // eslint-disable-next-line no-console
@@ -209,7 +210,7 @@ Chrome.GA = (function() {
         eventAction: action,
         eventLabel: `Err: ${label}`,
       };
-      if (!Chrome.Utils.DEBUG) {
+      if (!ChromeUtils.DEBUG) {
         ga('send', ev);
       } else {
         console.error(ev);
@@ -239,13 +240,13 @@ Chrome.GA = (function() {
           exDescription: msg,
           exFatal: fatal,
         };
-        if (!Chrome.Utils.DEBUG) {
+        if (!ChromeUtils.DEBUG) {
           ga('send', ex);
         } else {
           console.error(ex);
         }
       } catch (err) {
-        Chrome.Utils.noop();
+        ChromeUtils.noop();
       }
     },
   };

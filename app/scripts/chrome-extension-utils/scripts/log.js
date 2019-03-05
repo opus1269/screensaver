@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils from './utils.js';
+
 window.Chrome = window.Chrome || {};
 
 /**
@@ -47,7 +49,7 @@ Chrome.Log = (function() {
             new Chrome.Storage.LastError(message, title));
         Chrome.GA.exception(exception, message, fatal);
       } catch (err) {
-        Chrome.Utils.noop();
+        ChromeUtils.noop();
       }
     },
   };

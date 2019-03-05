@@ -12,6 +12,8 @@ import * as AppData from './data.js';
 
 import * as MyUtils from '../../scripts/my_utils.js';
 
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -46,14 +48,14 @@ function _showOptionsTab() {
 function _onInstalled(details) {
   if (details.reason === 'install') {
     // initial install
-    Chrome.GA.event(Chrome.GA.EVENT.INSTALLED, Chrome.Utils.getVersion());
+    Chrome.GA.event(Chrome.GA.EVENT.INSTALLED, ChromeUtils.getVersion());
     AppData.initialize();
     Chrome.Storage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!MyUtils.DEBUG) {
       const oldVer = details.previousVersion;
-      const version = Chrome.Utils.getVersion();
+      const version = ChromeUtils.getVersion();
       if (version === oldVer) {
         // spurious update: 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481

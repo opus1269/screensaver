@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
 /**
@@ -222,7 +223,7 @@ export default class ChromeTime {
     try {
       ret = date.toLocaleTimeString(languages, opts);
     } catch (err) {
-      Chrome.Utils.noop();
+      ChromeUtils.noop();
     }
     return ret;
   }

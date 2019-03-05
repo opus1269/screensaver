@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils
+  from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 // TODO add back
@@ -121,7 +123,7 @@ export default class SSView {
    */
   _hasAuthor() {
     const photographer = this.photo.getPhotographer();
-    return !Chrome.Utils.isWhiteSpace(photographer);
+    return !ChromeUtils.isWhiteSpace(photographer);
   }
 
   /**
@@ -129,7 +131,7 @@ export default class SSView {
    * @returns {boolean} true if author label is not empty
    */
   _hasAuthorLabel() {
-    return !Chrome.Utils.isWhiteSpace(this.authorLabel);
+    return !ChromeUtils.isWhiteSpace(this.authorLabel);
   }
 
   /**
@@ -145,7 +147,7 @@ export default class SSView {
    * @returns {boolean} true if location label is not empty
    */
   _hasLocationLabel() {
-    return !Chrome.Utils.isWhiteSpace(this.locationLabel);
+    return !ChromeUtils.isWhiteSpace(this.locationLabel);
   }
 
   /**

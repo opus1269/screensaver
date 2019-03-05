@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSPhoto from './ss_photo.js';
@@ -163,7 +165,7 @@ export function incCurrentIndex() {
  * Randomize the photos
  */
 export function shuffle() {
-  Chrome.Utils.shuffleArray(_photos);
+  ChromeUtils.shuffleArray(_photos);
   // renumber
   _photos.forEach((photo, index) => {
     photo.setId(index);

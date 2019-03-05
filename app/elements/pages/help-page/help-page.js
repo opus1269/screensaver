@@ -19,6 +19,8 @@ import '../../../elements/shared-styles.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
+import * as ChromeUtils
+  from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -119,7 +121,7 @@ export const HelpPage = Polymer({
    * @memberOf HelpPage
    */
   _computeVersion: function() {
-    const text = Chrome.Utils.getVersion();
+    const text = ChromeUtils.getVersion();
     return encodeURIComponent(text);
   },
 });

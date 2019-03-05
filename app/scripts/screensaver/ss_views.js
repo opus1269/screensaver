@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as Screensaver from './screensaver.js';
@@ -70,7 +72,7 @@ function _setViewType() {
   _type = Chrome.Storage.getInt('photoSizing', 0);
   if (_type === Type.RANDOM) {
     // pick random sizing
-    _type = Chrome.Utils.getRandomInt(0, 3);
+    _type = ChromeUtils.getRandomInt(0, 3);
   }
   /** @type {?string} */
   let type = 'contain';

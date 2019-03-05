@@ -7,6 +7,8 @@
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -139,7 +141,7 @@ function _open(display) {
       return null;
     }
 
-    if (Chrome.Utils.getChromeVersion() >= 44 && !display) {
+    if (ChromeUtils.getChromeVersion() >= 44 && !display) {
       // Chrome supports fullscreen option on create since version 44
       winOpts.state = 'fullscreen';
     } else {
@@ -210,7 +212,7 @@ function _onIdleStateChanged(state) {
       close();
     } else {
       // eslint-disable-next-line promise/no-nesting
-      return Chrome.Utils.isWindows().then((isTrue) => {
+      return ChromeUtils.isWindows().then((isTrue) => {
         if (!isTrue) {
           // Windows 10 Creators triggers an 'active' state
           // when the window is created, so we have to skip closing here.
