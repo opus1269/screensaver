@@ -6,6 +6,8 @@
  */
 import * as MyMsg from '../../scripts/my_msg.js';
 
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
@@ -38,7 +40,7 @@ const _SS_URL = '/html/screensaver.html';
  * @private
  * @memberOf SSControl
  */
-const _ERR_SHOW = Chrome.Locale.localize('err_show_ss');
+const _ERR_SHOW = ChromeLocale.localize('err_show_ss');
 
 /**
  * Determine if the screen saver can be displayed

@@ -9,6 +9,8 @@ import {isActive, close, display} from './ss_controller.js';
 
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
@@ -148,10 +150,10 @@ function _setInactiveState() {
 function _setBadgeText() {
   let text = '';
   if (Chrome.Storage.getBool('enabled')) {
-    text = isActive() ? '' : Chrome.Locale.localize('sleep_abbrev');
+    text = isActive() ? '' : ChromeLocale.localize('sleep_abbrev');
   } else {
-    text = Chrome.Storage.getBool('keepAwake') ? Chrome.Locale.localize(
-        'power_abbrev') : Chrome.Locale.localize('off_abbrev');
+    text = Chrome.Storage.getBool('keepAwake') ? ChromeLocale.localize(
+        'power_abbrev') : ChromeLocale.localize('off_abbrev');
   }
   chrome.browserAction.setBadgeText({text: text});
 }

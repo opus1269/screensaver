@@ -6,6 +6,8 @@
  */
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -31,7 +33,7 @@ function _onSignInChanged(account, signedIn) {
     Chrome.Storage.set('albumSelections', []);
     const type = Chrome.Storage.getBool('permPicasa');
     if (type === 'allowed') {
-      ChromeLog.error(Chrome.Locale.localize('err_chrome_signout'),
+      ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),
           'User._onSignInChanged');
     }
   }

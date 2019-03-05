@@ -13,6 +13,8 @@ import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
@@ -149,8 +151,8 @@ const _DEF_VALUES = {
  */
 function _processEnabled() {
   // update context menu text
-  const label = Chrome.Storage.getBool('enabled') ? Chrome.Locale.localize(
-      'disable') : Chrome.Locale.localize('enable');
+  const label = Chrome.Storage.getBool('enabled') ? ChromeLocale.localize(
+      'disable') : ChromeLocale.localize('enable');
   updateBadgeText();
   chromep.contextMenus.update('ENABLE_MENU', {
     title: label,
@@ -193,7 +195,7 @@ function _processIdleTime() {
  */
 function _getTimeFormat() {
   let ret = 2; // 24 hr
-  const format = Chrome.Locale.localize('time_format');
+  const format = ChromeLocale.localize('time_format');
   if (format && (format === '12')) {
     ret = 1;
   }

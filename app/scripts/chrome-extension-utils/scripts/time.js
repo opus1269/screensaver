@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeLocale from './locales.js';
 import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
@@ -83,7 +84,7 @@ export default class ChromeTime {
     if (frmt !== null) {
       format = frmt;
     }
-    const localeTime = Chrome.Locale.localize('time_format');
+    const localeTime = ChromeLocale.localize('time_format');
     if (format === 2) {
       // time display 24hr
       ret = true;

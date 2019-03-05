@@ -10,6 +10,8 @@ import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -92,11 +94,11 @@ export default class GoogleSource extends PhotoSource {
    */
   static isQuotaError(err, caller) {
     let ret = false;
-    const statusMsg = `${Chrome.Locale.localize('err_status')}: 429`;
+    const statusMsg = `${ChromeLocale.localize('err_status')}: 429`;
     if (err.message.includes(statusMsg)) {
       // Hit Google photos quota
       ChromeLog.error(err.message, caller,
-          Chrome.Locale.localize('err_google_quota'));
+          ChromeLocale.localize('err_google_quota'));
       ret = true;
     }
     return ret;
@@ -115,7 +117,7 @@ export default class GoogleSource extends PhotoSource {
       // We have lost authorization to Google Photos
       Chrome.Storage.set('albumSelections', []);
       ChromeLog.error(err.message, caller,
-          Chrome.Locale.localize('err_auth_revoked'));
+          ChromeLocale.localize('err_auth_revoked'));
       ret = true;
     }
     return ret;
@@ -391,7 +393,7 @@ export default class GoogleSource extends PhotoSource {
         if (!response.albums || (response.albums.length === 0)) {
           if ((gAlbums.length === 0) && !nextPageToken) {
             // no albums
-            throw new Error(Chrome.Locale.localize('err_no_albums'));
+            throw new Error(ChromeLocale.localize('err_no_albums'));
           }
         }
         url = `${baseUrl}&pageToken=${nextPageToken}`;
@@ -467,7 +469,7 @@ export default class GoogleSource extends PhotoSource {
     const set = Chrome.Storage.safeSet('albumSelections', albums, null);
     if (!set) {
       ret = false;
-      ChromeLog.error(Chrome.Locale.localize('err_storage_title'),
+      ChromeLog.error(ChromeLocale.localize('err_storage_title'),
           'GoogleSource.updateBaseUrls');
     }
 

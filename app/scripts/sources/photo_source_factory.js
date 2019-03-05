@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -28,7 +30,7 @@ export function create(useKey) {
   switch (useKey) {
     case PhotoSources.UseKey.ALBUMS_GOOGLE:
       return new GoogleSource(useKey, 'albumSelections', 'Google User',
-          Chrome.Locale.localize('google_title_photos'),
+          ChromeLocale.localize('google_title_photos'),
           true, true, null);
     case PhotoSources.UseKey.PHOTOS_GOOGLE:
       // not implemented yet
@@ -37,29 +39,29 @@ export function create(useKey) {
           true, false, null);
     case PhotoSources.UseKey.CHROMECAST:
       return new CCSource(useKey, 'ccImages', 'Google',
-          Chrome.Locale.localize('setting_chromecast'),
+          ChromeLocale.localize('setting_chromecast'),
           false, false, null);
     case PhotoSources.UseKey.INT_FLICKR:
       return new FlickrSource(useKey, 'flickrInterestingImages',
           'flickr',
-          Chrome.Locale.localize('setting_flickr_int'),
+          ChromeLocale.localize('setting_flickr_int'),
           true, false, false);
     case PhotoSources.UseKey.AUTHOR:
       // noinspection JSCheckFunctionSignatures
       return new FlickrSource(useKey, 'authorImages', 'flickr',
-          Chrome.Locale.localize('setting_mine'),
+          ChromeLocale.localize('setting_mine'),
           false, false, true);
     case PhotoSources.UseKey.SPACE_RED:
       return new RedditSource(useKey, 'spaceRedditImages', 'reddit',
-          Chrome.Locale.localize('setting_reddit_space'),
+          ChromeLocale.localize('setting_reddit_space'),
           true, false, 'r/spaceporn/');
     case PhotoSources.UseKey.EARTH_RED:
       return new RedditSource(useKey, 'earthRedditImages', 'reddit',
-          Chrome.Locale.localize('setting_reddit_earth'),
+          ChromeLocale.localize('setting_reddit_earth'),
           true, false, 'r/EarthPorn/');
     case PhotoSources.UseKey.ANIMAL_RED:
       return new RedditSource(useKey, 'animalRedditImages', 'reddit',
-          Chrome.Locale.localize('setting_reddit_animal'),
+          ChromeLocale.localize('setting_reddit_animal'),
           true, false, 'r/animalporn/');
     default:
       ChromeLog.error(`Bad PhotoSource type: ${useKey}`,

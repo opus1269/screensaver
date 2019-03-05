@@ -6,6 +6,7 @@
  */
 import * as ChromeAuth from './auth.js';
 import * as ChromeGA from './analytics.js';
+import * as ChromeLocale from './locales.js';
 import './ex_handler.js';
 
 /**
@@ -152,7 +153,7 @@ function _getError(response) {
   let msg = 'Unknown error.';
   if (response && response.status &&
       (typeof (response.statusText) !== 'undefined')) {
-    let statusMsg = Chrome.Locale.localize('err_status');
+    let statusMsg = ChromeLocale.localize('err_status');
     if ((typeof (statusMsg) === 'undefined') || (statusMsg === '')) {
       // in case localize is missing
       statusMsg = 'Status';
@@ -255,7 +256,7 @@ function _fetch(url, opts, conf, attempt) {
   }).catch((err) => {
     let msg = err.message;
     if (msg === 'Failed to fetch') {
-      msg = Chrome.Locale.localize('err_network');
+      msg = ChromeLocale.localize('err_network');
       if ((typeof (msg) === 'undefined') || (msg === '')) {
         // in case localize is missing
         msg = 'Network error';

@@ -32,6 +32,8 @@ import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
@@ -126,7 +128,7 @@ export function noPhotos() {
  */
 export function setNoPhotos() {
   t.set('noPhotos', true);
-  t.noPhotosLabel = Chrome.Locale.localize('no_photos');
+  t.noPhotosLabel = ChromeLocale.localize('no_photos');
 }
 
 /**

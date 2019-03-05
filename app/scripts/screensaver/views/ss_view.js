@@ -7,6 +7,8 @@
 // TODO add back
 // import * as ChromeGA
 //   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeUtils
   from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -207,7 +209,7 @@ export default class SSView {
       this.authorLabel = `${photographer} / ${newType}`;
     } else {
       // no photographer name
-      this.authorLabel = `${Chrome.Locale.localize('photo_from')} ${newType}`;
+      this.authorLabel = `${ChromeLocale.localize('photo_from')} ${newType}`;
     }
     SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
   }
@@ -231,7 +233,7 @@ export default class SSView {
     //     }
     //     return null;
     //   }).catch((err) => {
-    //     const networkErr = Chrome.Locale.localize('err_network');
+    //     const networkErr = ChromeLocale.localize('err_network');
     //     if (!err.message.includes(networkErr)) {
     //       ChromeGA.error(`${err.message}, point: ${point}`,
     //           'SSView._setLocationLabel');

@@ -4,36 +4,27 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.Chrome = window.Chrome || {};
+import './ex_handler.js';
 
 /**
- * Locale methods
+ * Internationalization methods
  * @see https://developer.chrome.com/extensions/i18n
- * @namespace
+ * @module ChromeLocale
  */
-Chrome.Locale = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * Get the i18n string
+ * @param {string} messageName - key in messages.json
+ * @returns {string} internationalized string
+ */
+export function localize(messageName) {
+  return chrome.i18n.getMessage(messageName);
+}
 
-  return {
-    /**
-     * Get the i18n string
-     * @param {string} messageName - key in messages.json
-     * @returns {string} internationalized string
-     * @memberOf Chrome.Locale
-     */
-    localize: function(messageName) {
-      return chrome.i18n.getMessage(messageName);
-    },
-
-    /**
-     * Get the current locale
-     * @returns {string} current locale e.g. en_US
-     * @memberOf Chrome.Locale
-     */
-    getLocale: function() {
-      return chrome.i18n.getMessage('@@ui_locale');
-    },
-  };
-})();
+/**
+ * Get the current locale
+ * @returns {string} current locale e.g. en_US
+ */
+export function getLocale() {
+  return chrome.i18n.getMessage('@@ui_locale');
+}

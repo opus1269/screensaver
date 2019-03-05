@@ -6,6 +6,8 @@
  */
 import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import PhotoSource from './photo_source.js';
@@ -71,7 +73,7 @@ export default class FlickrSource extends PhotoSource {
    */
   static _processPhotos(response) {
     if (!response.photos || !response.photos.photo) {
-      const err = new Error(Chrome.Locale.localize('err_photo_source_title'));
+      const err = new Error(ChromeLocale.localize('err_photo_source_title'));
       return Promise.reject(err);
     }
 

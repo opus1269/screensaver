@@ -62,6 +62,8 @@ import * as Permissions from './permissions.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
@@ -128,21 +130,21 @@ const t = document.querySelector('#t');
  */
 t.pages = [
   {
-    label: Chrome.Locale.localize('menu_settings'), route: 'page-settings',
+    label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
     icon: 'myicons:settings', obj: null, ready: true, divider: false,
   },
   {
-    label: Chrome.Locale.localize('menu_preview'), route: 'page-preview',
+    label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
     icon: 'myicons:pageview', obj: _showScreensaverPreview, ready: true,
     divider: false,
   },
   {
-    label: Chrome.Locale.localize('menu_google'),
+    label: ChromeLocale.localize('menu_google'),
     route: 'page-google-photos', icon: 'myicons:cloud',
     obj: _showGooglePhotosPage, ready: false, divider: true,
   },
   {
-    label: Chrome.Locale.localize('menu_permission'),
+    label: ChromeLocale.localize('menu_permission'),
     route: 'page-permission',
     icon: 'myicons:perm-data-setting',
     obj: _showPermissionsDialog,
@@ -150,33 +152,33 @@ t.pages = [
     divider: false,
   },
   {
-    label: Chrome.Locale.localize('menu_error'), route: 'page-error',
+    label: ChromeLocale.localize('menu_error'), route: 'page-error',
     icon: 'myicons:error', obj: _showErrorPage,
     ready: false, disabled: false, divider: true,
   },
   {
-    label: Chrome.Locale.localize('menu_help'), route: 'page-help',
+    label: ChromeLocale.localize('menu_help'), route: 'page-help',
     icon: 'myicons:help', obj: _showHelpPage, ready: false,
     divider: false,
   },
   {
-    label: Chrome.Locale.localize('help_faq'), route: 'page-faq',
+    label: ChromeLocale.localize('help_faq'), route: 'page-faq',
     icon: 'myicons:help',
     obj: 'https://opus1269.github.io/screensaver/faq.html',
     ready: true, divider: false,
   },
   {
-    label: Chrome.Locale.localize('menu_support'), route: 'page-support',
+    label: ChromeLocale.localize('menu_support'), route: 'page-support',
     icon: 'myicons:help', obj: `${EXT_URI}support`, ready: true,
     divider: false,
   },
   {
-    label: Chrome.Locale.localize('menu_rate'), route: 'page-rate',
+    label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
     icon: 'myicons:grade', obj: `${EXT_URI}reviews`, ready: true,
     divider: false,
   },
   {
-    label: Chrome.Locale.localize('menu_pushy'), route: 'page-pushy',
+    label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
     icon: 'myicons:extension', obj: PUSHY_URI, ready: true,
     divider: true,
   },
@@ -333,7 +335,7 @@ t._onDenyPermissionsClicked = function() {
  * @memberOf Options
  */
 t._computeTitle = function() {
-  return Chrome.Locale.localize('chrome_extension_name');
+  return ChromeLocale.localize('chrome_extension_name');
 };
 
 /**
@@ -343,7 +345,7 @@ t._computeTitle = function() {
  * @memberOf Options
  */
 t._computeMenu = function() {
-  return Chrome.Locale.localize('menu');
+  return ChromeLocale.localize('menu');
 };
 
 /**
@@ -353,7 +355,7 @@ t._computeMenu = function() {
  * @memberOf Options
  */
 t._computePermDialogTitle = function() {
-  return Chrome.Locale.localize('menu_permission');
+  return ChromeLocale.localize('menu_permission');
 };
 
 /**
@@ -363,7 +365,7 @@ t._computePermDialogTitle = function() {
  * @memberOf Options
  */
 t._computePermissionsMessage = function() {
-  return Chrome.Locale.localize('permission_message');
+  return ChromeLocale.localize('permission_message');
 };
 
 /**
@@ -373,7 +375,7 @@ t._computePermissionsMessage = function() {
  * @memberOf Options
  */
 t._computePermissionsMessage1 = function() {
-  return Chrome.Locale.localize('permission_message1');
+  return ChromeLocale.localize('permission_message1');
 };
 
 /**
@@ -383,7 +385,7 @@ t._computePermissionsMessage1 = function() {
  * @memberOf Options
  */
 t._computePermissionsMessage2 = function() {
-  return Chrome.Locale.localize('permission_message2');
+  return ChromeLocale.localize('permission_message2');
 };
 
 /**
@@ -394,8 +396,8 @@ t._computePermissionsMessage2 = function() {
  * @memberOf Options
  */
 t._computePermissionsStatus = function(permission) {
-  return `${Chrome.Locale.localize(
-      'permission_status')} ${Chrome.Locale.localize(permission)}`;
+  return `${ChromeLocale.localize(
+      'permission_status')} ${ChromeLocale.localize(permission)}`;
 };
 
 /**
@@ -421,8 +423,8 @@ function _showGooglePhotosPage(index) {
   t.signedInToChrome = Chrome.Storage.getBool('signedInToChrome', true);
   if (!t.signedInToChrome) {
     // Display Error Dialog if not signed in to Chrome
-    t.dialogTitle = Chrome.Locale.localize('err_chrome_signin_title');
-    t.dialogText = Chrome.Locale.localize('err_chrome_signin');
+    t.dialogTitle = ChromeLocale.localize('err_chrome_signin_title');
+    t.dialogText = ChromeLocale.localize('err_chrome_signin');
     t.$.errorDialog.open();
     return;
   }
@@ -560,13 +562,13 @@ function _onMessage(request, sender, response) {
   } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
     // Display Error Dialog if a save action exceeded the
     // localStorage limit
-    t.dialogTitle = Chrome.Locale.localize('err_storage_title');
-    t.dialogText = Chrome.Locale.localize('err_storage_desc');
+    t.dialogTitle = ChromeLocale.localize('err_storage_title');
+    t.dialogText = ChromeLocale.localize('err_storage_desc');
     t.$.errorDialog.open();
   } else if (request.message === MyMsg.PHOTO_SOURCE_FAILED.message) {
     // failed to load
     t.$.settingsPage.deselectPhotoSource(request.key);
-    t.dialogTitle = Chrome.Locale.localize('err_photo_source_title');
+    t.dialogTitle = ChromeLocale.localize('err_photo_source_title');
     t.dialogText = request.error;
     t.$.errorDialog.open();
   }

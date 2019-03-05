@@ -9,6 +9,8 @@ import {display} from './ss_controller.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -49,7 +51,7 @@ function _onInstalled(details) {
   chromep.contextMenus.create({
     type: 'normal',
     id: _DISPLAY_MENU,
-    title: Chrome.Locale.localize('display_now'),
+    title: ChromeLocale.localize('display_now'),
     contexts: ['browser_action'],
   }).catch((err) => {
     if (!err.message.includes('duplicate id')) {
@@ -60,7 +62,7 @@ function _onInstalled(details) {
   chromep.contextMenus.create({
     type: 'normal',
     id: _ENABLE_MENU,
-    title: Chrome.Locale.localize('disable'),
+    title: ChromeLocale.localize('disable'),
     contexts: ['browser_action'],
   }).catch((err) => {
     if (!err.message.includes('duplicate id')) {

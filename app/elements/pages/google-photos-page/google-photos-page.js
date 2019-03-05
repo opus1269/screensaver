@@ -41,6 +41,8 @@ import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -362,7 +364,7 @@ export const GooglePhotosPage = Polymer({
       if (GoogleSource.isQuotaError(err,
           'GooglePhotosPage.loadAlbumList')) {
         // Hit Google photos quota
-        dialogText = Chrome.Locale.localize('err_google_quota');
+        dialogText = ChromeLocale.localize('err_google_quota');
       } else {
         dialogText = err.message;
         ChromeLog.error(err.message,
@@ -394,7 +396,7 @@ export const GooglePhotosPage = Polymer({
       if (GoogleSource.isQuotaError(err,
           'GooglePhotosPage.loadAlbum')) {
         // Hit Google photos quota
-        dialogText = Chrome.Locale.localize('err_google_quota');
+        dialogText = ChromeLocale.localize('err_google_quota');
       } else {
         dialogText = err.message;
         ChromeLog.error(err.message,
