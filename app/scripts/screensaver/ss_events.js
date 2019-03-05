@@ -11,6 +11,8 @@ import * as SSRunner from './ss_runner.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -33,7 +35,7 @@ const _MOUSE_START = {x: null, y: null};
 function _close() {
   Chrome.Storage.set('isShowing', false);
   // send message to other screen savers to close themselves
-  Chrome.Msg.send(MyMsg.SS_CLOSE).catch(() => {});
+  ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
   setTimeout(() => {
     // delay a little to process events
     window.close();
@@ -67,7 +69,7 @@ function _onKeyCommand(cmd) {
  * Event: Fired when a message is sent from either an extension<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {Chrome.Msg.Message} request - details for the message
+ * @param {ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
@@ -154,7 +156,7 @@ function _onMouseClick() {
  */
 function _onLoad() {
   // listen for chrome messages
-  Chrome.Msg.listen(_onMessage);
+  ChromeMsg.listen(_onMessage);
 
   // listen for key events
   window.addEventListener('keydown', _onKey, false);

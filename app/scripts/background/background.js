@@ -14,6 +14,8 @@ import * as MyUtils from '../../scripts/my_utils.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -30,7 +32,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 function _showOptionsTab() {
   // send message to the option tab to focus it.
-  Chrome.Msg.send(Chrome.Msg.HIGHLIGHT).catch(() => {
+  ChromeMsg.send(ChromeMsg.HIGHLIGHT).catch(() => {
     // no one listening, create it
     chrome.tabs.create({url: '/html/options.html'});
   });
@@ -119,7 +121,7 @@ function _onStorageChanged(event) {
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {Chrome.Msg.Message} request - details for the message
+ * @param {ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
@@ -127,9 +129,9 @@ function _onStorageChanged(event) {
  * @memberOf Background
  */
 function _onChromeMessage(request, sender, response) {
-  if (request.message === Chrome.Msg.RESTORE_DEFAULTS.message) {
+  if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
     AppData.restoreDefaults();
-  } else if (request.message === Chrome.Msg.STORE.message) {
+  } else if (request.message === ChromeMsg.STORE.message) {
     Chrome.Storage.set(request.key, request.value);
   }
   return false;
@@ -154,7 +156,7 @@ function _onLoad() {
   addEventListener('storage', _onStorageChanged, false);
 
   // listen for chrome messages
-  Chrome.Msg.listen(_onChromeMessage);
+  ChromeMsg.listen(_onChromeMessage);
 }
 
 // listen for document and resources loaded

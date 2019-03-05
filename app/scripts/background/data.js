@@ -13,6 +13,8 @@ import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -423,7 +425,7 @@ export function processState(key = 'all', doGoogle = false) {
         const msg = MyMsg.PHOTO_SOURCE_FAILED;
         msg.key = useKey;
         msg.error = err.message;
-        return Chrome.Msg.send(msg);
+        return ChromeMsg.send(msg);
       }).catch(() => {});
     } else {
       const fn = STATE_MAP[key];

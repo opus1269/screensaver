@@ -8,6 +8,8 @@ import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -207,10 +209,10 @@ export function removeGooglePhotos() {
 function _setState(type, value) {
   // send message to store value so items that are bound
   // to it will get storage event
-  const msg = ChromeJSON.shallowCopy(Chrome.Msg.STORE);
+  const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
   msg.key = type.name;
   msg.value = value;
-  Chrome.Msg.send(msg).catch(() => {});
+  ChromeMsg.send(msg).catch(() => {});
 }
 
 /**

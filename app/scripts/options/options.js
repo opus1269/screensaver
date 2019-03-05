@@ -62,6 +62,8 @@ import * as Permissions from './permissions.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -228,7 +230,7 @@ function _onLoad() {
   ChromeGA.page('/options.html');
 
   // listen for chrome messages
-  Chrome.Msg.listen(_onMessage);
+  ChromeMsg.listen(_onMessage);
 
   // initialize menu enabled states
   _setErrorMenuState();
@@ -477,7 +479,7 @@ function _showHelpPage(index) {
 function _showScreensaverPreview(index, prevRoute) {
   // reselect previous page - need to delay so tap event is done
   setTimeout(() => t.$.mainMenu.select(prevRoute), 500);
-  Chrome.Msg.send(MyMsg.SS_SHOW).catch(() => {});
+  ChromeMsg.send(MyMsg.SS_SHOW).catch(() => {});
 }
 
 /**
@@ -535,7 +537,7 @@ function _setErrorMenuState() {
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {Chrome.Msg.Message} request - details for the message
+ * @param {ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
@@ -543,7 +545,7 @@ function _setErrorMenuState() {
  * @memberOf Options
  */
 function _onMessage(request, sender, response) {
-  if (request.message === Chrome.Msg.HIGHLIGHT.message) {
+  if (request.message === ChromeMsg.HIGHLIGHT.message) {
     // highlight ourselves and let the sender know we are here
     const chromep = new ChromePromise();
     chromep.tabs.getCurrent().then((t) => {
@@ -553,7 +555,7 @@ function _onMessage(request, sender, response) {
       Chrome.Log.error(err.message, 'chromep.tabs.getCurrent');
     });
     response(JSON.stringify({message: 'OK'}));
-  } else if (request.message === Chrome.Msg.STORAGE_EXCEEDED.message) {
+  } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
     // Display Error Dialog if a save action exceeded the
     // localStorage limit
     t.dialogTitle = Chrome.Locale.localize('err_storage_title');

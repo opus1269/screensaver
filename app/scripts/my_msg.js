@@ -15,10 +15,10 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Chrome Messages
  * @type {{}}
- * @property {Chrome.Msg.Message} SS_SHOW - show screensaver
- * @property {Chrome.Msg.Message} SS_CLOSE - close screensaver
- * @property {Chrome.Msg.Message} SS_IS_SHOWING - is a screensaver showing
- * @property {Chrome.Msg.Message} PHOTO_SOURCE_FAILED - failed to web load
+ * @property {module:ChromeMsg.Message} SS_SHOW - show screensaver
+ * @property {module:ChromeMsg.Message} SS_CLOSE - close screensaver
+ * @property {module:ChromeMsg.Message} SS_IS_SHOWING - is a screensaver showing
+ * @property {module:ChromeMsg.Message} PHOTO_SOURCE_FAILED - failed to web load
  * @const
  */
 const _MSG = {

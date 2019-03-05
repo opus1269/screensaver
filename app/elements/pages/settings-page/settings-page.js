@@ -37,6 +37,8 @@ import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg
+  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -297,7 +299,7 @@ Polymer({
    * @memberOf SettingsPage
    */
   _restoreDefaultsTapped: function() {
-    Chrome.Msg.send(Chrome.Msg.RESTORE_DEFAULTS).catch(() => {});
+    ChromeMsg.send(ChromeMsg.RESTORE_DEFAULTS).catch(() => {});
   },
 
   /**

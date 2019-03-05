@@ -6,6 +6,7 @@
  */
 import * as ChromeGA from './analytics.js';
 import * as ChromeJSON from './json.js';
+import * as ChromeMsg from './msg.js';
 
 window.Chrome = window.Chrome || {};
 
@@ -112,7 +113,7 @@ Chrome.Storage = (function() {
           }
         }
         // notify listeners
-        Chrome.Msg.send(Chrome.Msg.STORAGE_EXCEEDED).catch(() => {
+        ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {
         });
       }
       return ret;
@@ -139,7 +140,7 @@ Chrome.Storage = (function() {
 
     /**
      * Get the LastError from chrome.storage.local
-     * @returns {Promise<Chrome.Msg.LastError>} last error
+     * @returns {Promise<ChromeMsg.LastError>} last error
      * @memberOf Chrome.Storage
      */
     getLastError: function() {

@@ -6,6 +6,8 @@
  */
 import * as MyMsg from '../../scripts/my_msg.js';
 
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -75,7 +77,7 @@ export function display(single) {
 export function close() {
   Chrome.Storage.set('isShowing', false);
   // send message to the screen savers to close themselves
-  Chrome.Msg.send(MyMsg.SS_CLOSE).catch(() => {});
+  ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
 }
 
 /**
@@ -115,7 +117,7 @@ function _hasFullscreen(display) {
  */
 function _isShowing() {
   // send message to the screensaver to see if he is around
-  return Chrome.Msg.send(MyMsg.SS_IS_SHOWING).then(() => {
+  return ChromeMsg.send(MyMsg.SS_IS_SHOWING).then(() => {
     return Promise.resolve(true);
   }).catch(() => {
     // no one listening
@@ -233,7 +235,7 @@ function _onIdleStateChanged(state) {
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {Chrome.Msg.Message} request - details for the message
+ * @param {ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
@@ -259,7 +261,7 @@ function _onLoad() {
   
   
   // listen for chrome messages
-  Chrome.Msg.listen(_onChromeMessage);
+  ChromeMsg.listen(_onChromeMessage);
 }
 
 // listen for document and resources loaded
