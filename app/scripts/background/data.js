@@ -9,6 +9,8 @@ import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
+import * as ChromeAuth
+  from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -36,14 +38,15 @@ const _DATA_VERSION = 20;
  */
 
 /**
- * Values for items in localStorage
- * @typedef {Object} module:AppData.LocalStorage
+ * Values for app data in localStorage
+ * @typedef {Object} module:AppData._DEF_VALUES
  * @property {int} version - version of data
  * @property {boolean} enabled - is screensaver enabled
  * @property {string} permPicasa - optional permission for Picasa
  * @property {string} permBackground - optional permission to run in bg
  * @property {boolean} allowBackground - run Chrome in background
- * @property {module:AppData.UnitValue} idleTime - idle time to display screensaver
+ * @property {module:AppData.UnitValue} idleTime - idle time to display
+ *     screensaver
  * @property {module:AppData.UnitValue} transitionTime - time between photos
  * @property {boolean} skip - ignore extreme aspect ratio photos
  * @property {boolean} shuffle - randomize photo order
@@ -83,7 +86,7 @@ const _DATA_VERSION = 20;
 
 /**
  * Default values in localStorage
- * @type {module:AppData.LocalStorage}
+ * @type {module:AppData._DEF_VALUES}
  * @const
  * @private
  */
@@ -247,7 +250,7 @@ export function initialize() {
   _setOS().catch(() => {});
 
   // set signin state
-  Chrome.Auth.isSignedIn().then((signedIn) => {
+  ChromeAuth.isSignedIn().then((signedIn) => {
     Chrome.Storage.set('signedInToChrome', signedIn);
     return null;
   }).catch(() => {});
@@ -315,7 +318,7 @@ export function update() {
       Chrome.Storage.set('permPicasa', 'notSet');
 
       // Remove cached Auth token
-      Chrome.Auth.removeCachedToken(false, null, null).catch(() => {
+      ChromeAuth.removeCachedToken(false, null, null).catch(() => {
         // nice to remove but not critical
         return null;
       });
@@ -337,7 +340,7 @@ export function update() {
 
   if (oldVersion < 20) {
     // set signin state
-    Chrome.Auth.isSignedIn().then((signedIn) => {
+    ChromeAuth.isSignedIn().then((signedIn) => {
       Chrome.Storage.set('signedInToChrome', signedIn);
       return null;
     }).catch(() => {});

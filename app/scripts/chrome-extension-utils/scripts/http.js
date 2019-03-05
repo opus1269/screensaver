@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeAuth from './auth.js';
+
 window.Chrome = window.Chrome || {};
 
 /**
@@ -162,7 +164,7 @@ Chrome.Http = (function() {
    */
   function _getAuthToken(isAuth, interactive) {
     if (isAuth) {
-      return Chrome.Auth.getToken(interactive).then((token) => {
+      return ChromeAuth.getToken(interactive).then((token) => {
         return Promise.resolve(token);
       }).catch((err) => {
         if (interactive && (err.message.includes('revoked') ||
@@ -171,7 +173,7 @@ Chrome.Http = (function() {
           // Always returns Authorization page error
           // when first registering, Not sure why
           // Other message is if user revoked access to extension
-          return Chrome.Auth.getToken(false);
+          return ChromeAuth.getToken(false);
         } else {
           return Promise.reject(err);
         }
@@ -215,7 +217,7 @@ Chrome.Http = (function() {
    */
   function _retryToken(url, opts, conf, attempt) {
     Chrome.GA.error('Refreshed auth token.', 'Http._retryToken');
-    return Chrome.Auth.removeCachedToken(
+    return ChromeAuth.removeCachedToken(
         conf.interactive, conf.token, null).then(() => {
       conf.token = null;
       conf.retryToken = false;
@@ -282,7 +284,7 @@ Chrome.Http = (function() {
     /**
      * Perform GET request
      * @param {string} url - server request
-     * @param {Chrome.Http.Config} [conf=null] - configuration
+     * @param {?Chrome.Http.Config} [conf=null] - configuration
      * @returns {Promise.<JSON>} response from server
      * @memberOf Chrome.Http
      */
@@ -294,7 +296,7 @@ Chrome.Http = (function() {
     /**
      * Perform POST request
      * @param {string} url - server request
-     * @param {Chrome.Http.Config} [conf=null] - configuration
+     * @param {?Chrome.Http.Config} [conf=null] - configuration
      * @returns {Promise.<JSON>} response from server
      * @memberOf Chrome.Http
      */
