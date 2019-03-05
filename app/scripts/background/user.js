@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -23,7 +25,7 @@ import * as MyGA from '../../scripts/my_analytics.js';
 function _onSignInChanged(account, signedIn) {
   Chrome.Storage.set('signedInToChrome', signedIn);
   if (!signedIn) {
-    Chrome.GA.event(MyGA.EVENT.CHROME_SIGN_OUT);
+    ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
     Chrome.Storage.set('albumSelections', []);
     const type = Chrome.Storage.getBool('permPicasa');
     if (type === 'allowed') {

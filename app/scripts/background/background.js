@@ -12,6 +12,8 @@ import * as AppData from './data.js';
 
 import * as MyUtils from '../../scripts/my_utils.js';
 
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -48,7 +50,7 @@ function _showOptionsTab() {
 function _onInstalled(details) {
   if (details.reason === 'install') {
     // initial install
-    Chrome.GA.event(Chrome.GA.EVENT.INSTALLED, ChromeUtils.getVersion());
+    ChromeGA.event(ChromeGA.EVENT.INSTALLED, ChromeUtils.getVersion());
     AppData.initialize();
     Chrome.Storage.set('isShowing', false);
     _showOptionsTab();
@@ -85,7 +87,7 @@ function _onInstalled(details) {
  * @memberOf Background
  */
 function _onStartup() {
-  Chrome.GA.page('/background.html');
+  ChromeGA.page('/background.html');
   AppData.processState();
   Chrome.Storage.set('isShowing', false);
 }

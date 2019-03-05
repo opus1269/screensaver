@@ -60,6 +60,8 @@ import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
 import {HelpPage} from '../../elements/pages/help-page/help-page.js';
 import * as Permissions from './permissions.js';
 
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -223,7 +225,7 @@ export function showErrorDialog(title, text) {
  */
 function _onLoad() {
 
-  Chrome.GA.page('/options.html');
+  ChromeGA.page('/options.html');
 
   // listen for chrome messages
   Chrome.Msg.listen(_onMessage);
@@ -273,7 +275,7 @@ t._onNavMenuItemTapped = function(event) {
 
   const idx = _getPageIdx(event.currentTarget.id);
 
-  Chrome.GA.event(Chrome.GA.EVENT.MENU, t.pages[idx].route);
+  ChromeGA.event(ChromeGA.EVENT.MENU, t.pages[idx].route);
 
   const prevRoute = t.route;
 
@@ -296,7 +298,7 @@ t._onNavMenuItemTapped = function(event) {
  * @memberOf Options
  */
 t._onAcceptPermissionsClicked = function() {
-  Chrome.GA.event(Chrome.GA.EVENT.BUTTON, 'Permission.Allow');
+  ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
   Permissions.request(Permissions.PICASA).then((granted) => {
     if (!granted) {
       return Permissions.removeGooglePhotos();
@@ -314,7 +316,7 @@ t._onAcceptPermissionsClicked = function() {
  * @memberOf Options
  */
 t._onDenyPermissionsClicked = function() {
-  Chrome.GA.event(Chrome.GA.EVENT.BUTTON, 'Permission.Deny');
+  ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
   Permissions.removeGooglePhotos().catch((err) => {
     Chrome.Log.error(err.message, 'Options._onDenyPermissionsClicked');
   });
@@ -499,7 +501,7 @@ function _setGooglePhotosMenuState() {
   const idx = _getPageIdx('page-google-photos');
   const el = document.getElementById(t.pages[idx].route);
   if (!el) {
-    Chrome.GA.error('no element found', 'Options._setGooglePhotosMenuState');
+    ChromeGA.error('no element found', 'Options._setGooglePhotosMenuState');
   } else if (t.permission !== 'allowed') {
     el.setAttribute('disabled', 'true');
   } else {
@@ -524,7 +526,7 @@ function _setErrorMenuState() {
     }
     return null;
   }).catch((err) => {
-    Chrome.GA.error(err.message, 'Options._setErrorMenuState');
+    ChromeGA.error(err.message, 'Options._setErrorMenuState');
   });
 }
 

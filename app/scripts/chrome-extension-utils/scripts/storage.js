@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA from './analytics.js';
 import * as ChromeJSON from './json.js';
 
 window.Chrome = window.Chrome || {};
@@ -49,7 +50,7 @@ Chrome.Storage = (function() {
       if (Number.isNaN(value)) {
         value = (def === null) ? value : def;
         if (def === null) {
-          Chrome.GA.error(`NaN value for: ${key} equals ${item}`,
+          ChromeGA.error(`NaN value for: ${key} equals ${item}`,
               'Storage.getInt');
         }
       }

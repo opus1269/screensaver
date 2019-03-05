@@ -11,6 +11,8 @@ import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -257,7 +259,7 @@ export function initialize() {
 
   // and the last error
   Chrome.Storage.clearLastError().catch((err) => {
-    Chrome.GA.error(err.message, 'Data.initialize');
+    ChromeGA.error(err.message, 'Data.initialize');
   });
 
   // set time format based on locale

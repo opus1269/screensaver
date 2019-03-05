@@ -16,6 +16,8 @@ import '../../../node_modules/@polymer/paper-input/paper-input.js';
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -167,7 +169,7 @@ Polymer({
    * @memberOf SettingText
    */
   _onBlur: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.TEXT, this.name);
+    ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
     this.fire('setting-text-changed', { value: this.value });
   },
 
@@ -181,7 +183,7 @@ Polymer({
   _onKeyUp: function(event) {
     // check if 'Enter' was pressed
     if (event.keyCode === 13) {
-      Chrome.GA.event(Chrome.GA.EVENT.TEXT, this.name);
+      ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
       this.fire('setting-text-changed', { value: this.value });
     }
   },

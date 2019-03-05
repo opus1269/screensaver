@@ -9,6 +9,8 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
 
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -48,13 +50,13 @@ function _close() {
 function _onKeyCommand(cmd) {
   if (SSRunner.isInteractive()) {
     if (cmd === 'ss-toggle-paused') {
-      Chrome.GA.event(Chrome.GA.EVENT.KEY_COMMAND, `${cmd}`);
+      ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
       SSRunner.togglePaused();
     } else if (cmd === 'ss-forward') {
-      Chrome.GA.event(Chrome.GA.EVENT.KEY_COMMAND, `${cmd}`);
+      ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
       SSRunner.forward();
     } else if (cmd === 'ss-back') {
-      Chrome.GA.event(Chrome.GA.EVENT.KEY_COMMAND, `${cmd}`);
+      ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
       SSRunner.back();
     }
   }

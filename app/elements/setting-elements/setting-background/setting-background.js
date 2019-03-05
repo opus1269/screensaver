@@ -15,10 +15,12 @@ import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
-import { LocalizeBehavior } from '/elements/setting-elements/localize-behavior/localize-behavior.js';
+import { LocalizeBehavior } from '../localize-behavior/localize-behavior.js';
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -213,7 +215,7 @@ Polymer({
   _onOK: function() {
     const el = this.shadowRoot.getElementById(this.selected);
     this.set('value', 'background:' + el.style.background);
-    Chrome.GA.event(Chrome.GA.EVENT.BUTTON,
+    ChromeGA.event(ChromeGA.EVENT.BUTTON,
         `SettingBackground.OK: ${this.selected}`);
   },
 });

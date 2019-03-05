@@ -18,6 +18,8 @@ import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.j
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -149,7 +151,7 @@ Polymer({
    */
   setChecked: function(checked) {
     this.set('checked', checked);
-    Chrome.GA.event(Chrome.GA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
   },
 
   /**
@@ -158,6 +160,6 @@ Polymer({
    * @memberOf SettingToggle
    */
   _onChange: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
   },
 });

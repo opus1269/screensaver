@@ -39,6 +39,8 @@ import * as Permissions from '../../../scripts/options/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -346,7 +348,7 @@ export const GooglePhotosPage = Polymer({
       // eslint-disable-next-line promise/no-nesting
       // TODO do we need this?
       // PhotoSources.process('useGoogleAlbums').catch((err) => {
-      //   Chrome.GA.error(err.message, 'GooglePhotosPage.loadAlbumList');
+      //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
       // });
       // set selected state on albums
       this._selectAlbums();
@@ -437,7 +439,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _onRefreshTapped: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'refreshGoogleAlbums');
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'refreshGoogleAlbums');
     this.loadAlbumList().catch((err) => {});
   },
 
@@ -447,7 +449,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _onDeselectAllTapped: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'deselectAllGoogleAlbums');
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'deselectAllGoogleAlbums');
     this._uncheckAll();
     this.selections.splice(0, this.selections.length);
     Chrome.Storage.set('albumSelections', []);
@@ -459,7 +461,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _onSelectAllTapped: async function() {
-    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'selectAllGoogleAlbums');
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
     for (let i = 0; i < this.albums.length; i++) {
       const album = this.albums[i];
       if (!album.checked) {
@@ -468,7 +470,7 @@ export const GooglePhotosPage = Polymer({
           this.selections.push({
             id: album.id, name: newAlbum.name, photos: newAlbum.photos,
           });
-          Chrome.GA.event(MyGA.EVENT.SELECT_ALBUM,
+          ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
               `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
           const set = Chrome.Storage.safeSet('albumSelections', this.selections,
               'useGoogleAlbums');
@@ -496,13 +498,13 @@ export const GooglePhotosPage = Polymer({
   _onAlbumSelectChanged: async function(event) {
     const album = event.model.album;
 
-    Chrome.GA.event(Chrome.GA.EVENT.CHECK,
+    ChromeGA.event(ChromeGA.EVENT.CHECK,
         `selectGoogleAlbum: ${album.checked}`);
 
     if (album.checked) {
       // add new
       if (this.selections.length === _MAX_ALBUMS) {
-        Chrome.GA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
+        ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
         Chrome.Log.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
@@ -516,7 +518,7 @@ export const GooglePhotosPage = Polymer({
         this.selections.push({
           id: album.id, name: newAlbum.name, photos: newAlbum.photos,
         });
-        Chrome.GA.event(MyGA.EVENT.SELECT_ALBUM,
+        ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
             `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
         const set = Chrome.Storage.safeSet('albumSelections', this.selections,
             'useGoogleAlbums');
@@ -561,7 +563,7 @@ export const GooglePhotosPage = Polymer({
   _onUseGoogleChanged: function() {
     const useGoogle = this.$.googlePhotosToggle.checked;
     this._setUseKeys(useGoogle, this.isAlbumMode);
-    Chrome.GA.event(Chrome.GA.EVENT.TOGGLE,
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE,
         `useGoogle: ${useGoogle}`);
     if (useGoogle) {
       // Switching to enabled, reload the Google Photo albums

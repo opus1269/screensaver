@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA
+  from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils
   from '../scripts/chrome-extension-utils/scripts/utils.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -24,14 +26,14 @@ const _TRACKING_ID = 'UA-61314754-1';
 /**
  * Event types
  * @type {{}}
- * @property {Chrome.GA.Event} CHROME_SIGN_OUT - Chrome sign out
- * @property {Chrome.GA.Event} LOAD_ALBUM_LIST - album list
- * @property {Chrome.GA.Event} SELECT_ALBUM - user selected album
- * @property {Chrome.GA.Event} LOAD_ALBUM - album
- * @property {Chrome.GA.Event} LOAD_PHOTO - photo
- * @property {Chrome.GA.Event} LOAD_PHOTOS - photos
- * @property {Chrome.GA.Event} PHOTOS_LIMITED - did not load all photos in album
- * @property {Chrome.GA.Event} ALBUMS_LIMITED - limited photo selections
+ * @property {ChromeGA.Event} CHROME_SIGN_OUT - Chrome sign out
+ * @property {ChromeGA.Event} LOAD_ALBUM_LIST - album list
+ * @property {ChromeGA.Event} SELECT_ALBUM - user selected album
+ * @property {ChromeGA.Event} LOAD_ALBUM - album
+ * @property {ChromeGA.Event} LOAD_PHOTO - photo
+ * @property {ChromeGA.Event} LOAD_PHOTOS - photos
+ * @property {ChromeGA.Event} PHOTOS_LIMITED - did not load all photos in album
+ * @property {ChromeGA.Event} ALBUMS_LIMITED - limited photo selections
  * @const
  */
 export const EVENT = {
@@ -89,7 +91,7 @@ export const EVENT = {
  */
 function _onLoad() {
   // initialize analytics
-  Chrome.GA.initialize(_TRACKING_ID, 'Photo Screensaver',
+  ChromeGA.initialize(_TRACKING_ID, 'Photo Screensaver',
       'screensaver', ChromeUtils.getVersion());
 }
 

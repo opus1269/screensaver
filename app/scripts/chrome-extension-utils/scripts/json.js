@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA from './analytics.js';
 import './ex_handler.js';
 
 /**
@@ -21,7 +22,7 @@ export function parse(jsonString) {
   try {
     ret = JSON.parse(jsonString);
   } catch (err) {
-    Chrome.GA.exception(`Caught: JSONUtils.parse: ${err.message}`,
+    ChromeGA.exception(`Caught: JSONUtils.parse: ${err.message}`,
         err.stack, false);
   }
   return ret;

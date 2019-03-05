@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON
@@ -287,7 +289,7 @@ export default class GoogleSource extends PhotoSource {
 
     } while (!done);
 
-    Chrome.GA.event(MyGA.EVENT.LOAD_PHOTOS,
+    ChromeGA.event(MyGA.EVENT.LOAD_PHOTOS,
         `nPhotos: ${photos.length}, nCalls: ${nCalls}`);
 
     return photos;
@@ -335,7 +337,7 @@ export default class GoogleSource extends PhotoSource {
           numPhotos += newPhotos.length;
         }
         if (numPhotos >= MAX_PHOTOS) {
-          Chrome.GA.event(MyGA.EVENT.PHOTOS_LIMITED,
+          ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
               `nPhotos: ${MAX_PHOTOS}`);
         }
       } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
@@ -351,7 +353,7 @@ export default class GoogleSource extends PhotoSource {
       album.photos = photos;
       album.ct = photos.length;
 
-      Chrome.GA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
+      ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
       return album;
     } finally {
@@ -419,7 +421,7 @@ export default class GoogleSource extends PhotoSource {
       }
     }
 
-    Chrome.GA.event(MyGA.EVENT.LOAD_ALBUM_LIST,
+    ChromeGA.event(MyGA.EVENT.LOAD_ALBUM_LIST,
         `nAlbums: ${albums.length}`);
 
     return albums;
@@ -524,7 +526,7 @@ export default class GoogleSource extends PhotoSource {
         }
       }
 
-      Chrome.GA.event(MyGA.EVENT.FETCH_ALBUMS,
+      ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
           `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
 
       return Promise.resolve(selAlbums);

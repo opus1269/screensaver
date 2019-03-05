@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as PhotoSourceFactory from './photo_source_factory.js';
@@ -32,7 +34,7 @@ function _getSelectedSources() {
             ret.push(source);
           }
         } catch (ex) {
-          Chrome.GA.exception(ex, `${useKey} failed to load`, false);
+          ChromeGA.exception(ex, `${useKey} failed to load`, false);
         }
       }
     }
@@ -101,7 +103,7 @@ export function process(useKey) {
       return source.process();
     }
   } catch (ex) {
-    Chrome.GA.exception(ex, `${useKey} failed to load`, false);
+    ChromeGA.exception(ex, `${useKey} failed to load`, false);
     return Promise.reject(ex);
   }
 }

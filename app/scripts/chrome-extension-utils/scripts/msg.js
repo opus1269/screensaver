@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA from './analytics.js';
+
 window.Chrome = window.Chrome || {};
 
 /**
@@ -77,7 +79,7 @@ Chrome.Msg = (function() {
             !err.message.includes('port closed') &&
             !err.message.includes('Receiving end does not exist')) {
           const msg = `type: ${type.message}, ${err.message}`;
-          Chrome.GA.error(msg, 'Msg.send');
+          ChromeGA.error(msg, 'Msg.send');
         }
         return Promise.reject(err);
       });

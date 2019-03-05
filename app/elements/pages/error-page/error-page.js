@@ -26,6 +26,8 @@ import '../../../elements/shared-styles.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -136,7 +138,7 @@ export const ErrorPage = Polymer({
       this.set('lastError', lastError);
       return null;
     }).catch((err) => {
-      Chrome.GA.error(err.message, 'ErrorPage.ready');
+      ChromeGA.error(err.message, 'ErrorPage.ready');
     });
     chrome.storage.onChanged.addListener((changes) => {
       // listen for changes to lastError
@@ -165,7 +167,7 @@ export const ErrorPage = Polymer({
         'on what led to the error.\n\n';
 
     const url = MyUtils.getEmailUrl('Last Error', body);
-    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError email');
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
     chrome.tabs.create({url: url});
   },
 
@@ -176,7 +178,7 @@ export const ErrorPage = Polymer({
    */
   _onRemoveTapped: function() {
     Chrome.Storage.clearLastError();
-    Chrome.GA.event(Chrome.GA.EVENT.ICON, 'LastError delete');
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
   },
 
   /**

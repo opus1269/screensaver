@@ -7,6 +7,8 @@
 import * as AppData from './data.js';
 import {display} from './ss_controller.js';
 
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -84,11 +86,11 @@ function _onInstalled(details) {
  */
 function _onMenuClicked(info) {
   if (info.menuItemId === _DISPLAY_MENU) {
-    Chrome.GA.event(Chrome.GA.EVENT.MENU, `${info.menuItemId}`);
+    ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
     display(false);
   } else if (info.menuItemId === _ENABLE_MENU) {
     const isEnabled = Chrome.Storage.getBool('enabled');
-    Chrome.GA.event(Chrome.GA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
+    ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
     _toggleEnabled();
   }
 }
@@ -102,10 +104,10 @@ function _onMenuClicked(info) {
  */
 function _onKeyCommand(cmd) {
   if (cmd === 'toggle-enabled') {
-    Chrome.GA.event(Chrome.GA.EVENT.KEY_COMMAND, `${cmd}`);
+    ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
     _toggleEnabled();
   } else if (cmd === 'show-screensaver') {
-    Chrome.GA.event(Chrome.GA.EVENT.KEY_COMMAND, `${cmd}`);
+    ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
     display(false);
   }
 }

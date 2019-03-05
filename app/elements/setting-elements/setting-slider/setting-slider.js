@@ -17,6 +17,8 @@ import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.j
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -245,7 +247,7 @@ Polymer({
   _onSliderValueChanged: function() {
     this._setBase();
     const label = `${this.name}: ${JSON.stringify(this.value)}`;
-    Chrome.GA.event(Chrome.GA.EVENT.SLIDER_VALUE, label);
+    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
   },
 
   /**
@@ -258,7 +260,7 @@ Polymer({
     const model = this.$.t.modelForElement(ev.target);
     if (model) {
       const label = `${this.name}: ${JSON.stringify(model.unit)}`;
-      Chrome.GA.event(Chrome.GA.EVENT.SLIDER_UNITS, label);
+      ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
     }
   },
 

@@ -30,6 +30,8 @@ import * as SSPhotos from './ss_photos.js';
 import * as SSViews from './ss_views.js';
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -306,7 +308,7 @@ function _onLoad() {
   document.body.style.background = Chrome.Storage.get('background',
       'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
-  Chrome.GA.page('/screensaver.html');
+  ChromeGA.page('/screensaver.html');
 
   _setZoom();
   _setupPhotoTransitions();

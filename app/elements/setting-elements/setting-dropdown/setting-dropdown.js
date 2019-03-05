@@ -16,6 +16,8 @@ import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.j
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -148,7 +150,7 @@ Polymer({
   _onItemSelected: function(ev) {
     const model = this.$.t.modelForElement(ev.target);
     if (model) {
-      Chrome.GA.event(Chrome.GA.EVENT.MENU,
+      ChromeGA.event(ChromeGA.EVENT.MENU,
           `${this.name}: ${model.index}`);
     }
   },

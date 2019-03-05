@@ -4,6 +4,9 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+// TODO add back
+// import * as ChromeGA
+//   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils
   from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -230,7 +233,7 @@ export default class SSView {
     //   }).catch((err) => {
     //     const networkErr = Chrome.Locale.localize('err_network');
     //     if (!err.message.includes(networkErr)) {
-    //       Chrome.GA.error(`${err.message}, point: ${point}`,
+    //       ChromeGA.error(`${err.message}, point: ${point}`,
     //           'SSView._setLocationLabel');
     //     }
     //   });

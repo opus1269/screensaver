@@ -35,6 +35,8 @@ import '../../../elements/shared-styles.js';
 import * as Permissions from '../../../scripts/options/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -267,7 +269,7 @@ Polymer({
    */
   _onEnabledChanged: function() {
     const enabled = this.$.settingsToggle.checked;
-    Chrome.GA.event(Chrome.GA.EVENT.TOGGLE,
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE,
         `screensaverEnabled: ${enabled}`);
   },
 

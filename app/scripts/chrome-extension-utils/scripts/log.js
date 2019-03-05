@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA from './analytics.js';
 import * as ChromeUtils from './utils.js';
 
 window.Chrome = window.Chrome || {};
@@ -30,7 +31,7 @@ Chrome.Log = (function() {
       const gaMsg = extra ? `${message} ${extra}` : message;
       Chrome.Storage.setLastError(
           new Chrome.Storage.LastError(message, theTitle));
-      Chrome.GA.error(gaMsg, method);
+      ChromeGA.error(gaMsg, method);
     },
 
     /**
@@ -47,7 +48,7 @@ Chrome.Log = (function() {
       try {
         Chrome.Storage.setLastError(
             new Chrome.Storage.LastError(message, title));
-        Chrome.GA.exception(exception, message, fatal);
+        ChromeGA.exception(exception, message, fatal);
       } catch (err) {
         ChromeUtils.noop();
       }

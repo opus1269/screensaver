@@ -15,6 +15,8 @@ import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -141,7 +143,7 @@ Polymer({
    * @memberOf SettingLink
    */
   _onLinkTapped: function() {
-    Chrome.GA.event(Chrome.GA.EVENT.LINK, this.name);
+    ChromeGA.event(ChromeGA.EVENT.LINK, this.name);
     chrome.tabs.create({ url: this.url });
   },
 });

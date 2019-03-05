@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeAuth from './auth.js';
+import * as ChromeGA from './analytics.js';
 import './ex_handler.js';
 
 /**
@@ -221,7 +222,7 @@ function _retry(url, opts, conf, attempt) {
  * @private
  */
 function _retryToken(url, opts, conf, attempt) {
-  Chrome.GA.error('Refreshed auth token.', 'Http._retryToken');
+  ChromeGA.error('Refreshed auth token.', 'Http._retryToken');
   return ChromeAuth.removeCachedToken(
       conf.interactive, conf.token, null).then(() => {
     conf.token = null;
