@@ -130,7 +130,6 @@ function _open(display) {
   // window creation options
   const winOpts = {
     url: _SS_URL,
-    focused: true,
     type: 'popup',
   };
   _hasFullscreen(display).then((isTrue) => {
@@ -155,6 +154,12 @@ function _open(display) {
   }).then((win) => {
     if (win && (winOpts.state !== 'fullscreen')) {
       chrome.windows.update(win.id, {state: 'fullscreen'});
+    }
+    return win;
+  }).then((win) => {
+    // force focus
+    if (win) {
+      chrome.windows.update(win.id, {focused: true});
     }
     return null;
   }).catch((err) => {
@@ -184,7 +189,7 @@ function _openOnAllDisplays() {
 
 /**
  * Event: Fired when the system changes to an active, idle or locked state.
- * The event fires with "locked" if the screen is locked or the screensaver
+ * The event fires with "locked" if the screen is locked or the [built in] screensaver
  * activates, "idle" if the system is unlocked and the user has not
  * generated any input for a specified number of seconds, and "active"
  * when the user generates input on an idle system.
@@ -199,19 +204,22 @@ function _onIdleStateChanged(state) {
       if (isActive() && !isShowing) {
         display(false);
       }
-      return null;
+    } else if (state === 'locked') {
+      // close on screen lock
+      close();
     } else {
       // eslint-disable-next-line promise/no-nesting
       return Chrome.Utils.isWindows().then((isTrue) => {
         if (!isTrue) {
           // Windows 10 Creators triggers an 'active' state
           // when the window is created, so we have to skip closing here.
-          // Wouldn't need this at all if ChromeOS handled keyboard right
+          // Wouldn't need this at all if ChromeOS handled keyboard (or focus?) right
           close();
         }
         return null;
       });
     }
+    return null;
   }).catch((err) => {
     Chrome.Log.error(err.message, 'SSControl._isShowing', _ERR_SHOW);
   });
