@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeJSON from './json.js';
+
 window.Chrome = window.Chrome || {};
 
 /**
@@ -181,7 +183,7 @@ Chrome.GA = (function() {
      */
     event: function(event, label = null, action = null) {
       if (event) {
-        const ev = Chrome.JSONUtils.shallowCopy(event);
+        const ev = ChromeJSON.shallowCopy(event);
         ev.hitType = 'event';
         ev.eventLabel = label ? label : ev.eventLabel;
         ev.eventAction = action ? action : ev.eventAction;

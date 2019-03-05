@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeJSON
+  from '../../scripts/chrome-extension-utils/scripts/json.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -64,7 +66,7 @@ export function get(point) {
 
   // get from api - it will translate based on the browser language
   const url = `${_GEOCODE_API}?latlng=${pt}`;
-  const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+  const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
   conf.maxRetries = 2;
   return Chrome.Http.doGet(url, conf).then((response) => {
     let location = '';

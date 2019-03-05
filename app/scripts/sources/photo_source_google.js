@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeJSON
+  from '../../scripts/chrome-extension-utils/scripts/json.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -224,7 +226,7 @@ export default class GoogleSource extends PhotoSource {
       return photos;
     }
 
-    const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+    const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = false;
@@ -308,7 +310,7 @@ export default class GoogleSource extends PhotoSource {
     };
     body.albumId = id;
 
-    const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+    const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = interactive;
@@ -369,7 +371,7 @@ export default class GoogleSource extends PhotoSource {
     let url = baseUrl;
 
     // get list of albums
-    const conf = Chrome.JSONUtils.shallowCopy(Chrome.Http.conf);
+    const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = true;

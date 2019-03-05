@@ -4,48 +4,39 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-window.Chrome = window.Chrome || {};
+import './ex_handler.js';
 
 /**
  * JSON utilities
- * @namespace
+ * @module ChromeJSON
  */
-Chrome.JSONUtils = (function() {
-  'use strict';
 
-  new ExceptionHandler();
+/**
+ * Parse JSON, with exception handling
+ * @param {!string} jsonString - string to parse
+ * @returns {?Object} JSON Object, null on error
+ */
+export function parse(jsonString) {
+  let ret = null;
+  try {
+    ret = JSON.parse(jsonString);
+  } catch (err) {
+    Chrome.GA.exception(`Caught: JSONUtils.parse: ${err.message}`,
+        err.stack, false);
+  }
+  return ret;
+}
 
-  return {
-    /**
-     * Parse JSON, with exception handling
-     * @param {!string} jsonString - string to parse
-     * @returns {?JSON} JSON Object, null on error
-     * @memberOf Chrome.JSONUtils
-     */
-    parse: function(jsonString) {
-      let ret = null;
-      try {
-        ret = JSON.parse(jsonString);
-      } catch (err) {
-        Chrome.GA.exception(`Caught: JSONUtils.parse: ${err.message}`,
-            err.stack, false);
-      }
-      return ret;
-    },
-
-    /**
-     * Return shallow copy of Object
-     * @param {!Object} object - object to copy
-     * @returns {?JSON} JSON Object, null on error
-     * @memberOf Chrome.JSONUtils
-     */
-    shallowCopy: function(object) {
-      let ret = null;
-      const jsonString = JSON.stringify(object);
-      if (typeof(jsonString) !== 'undefined') {
-        ret = Chrome.JSONUtils.parse(jsonString);
-      }
-      return ret;
-    },
-  };
-})();
+/**
+ * Return shallow copy of Object
+ * @param {!Object} object - object to copy
+ * @returns {?Object} JSON Object, null on error
+ */
+export function shallowCopy(object) {
+  let ret = null;
+  const jsonString = JSON.stringify(object);
+  if (typeof (jsonString) !== 'undefined') {
+    ret = parse(jsonString);
+  }
+  return ret;
+}

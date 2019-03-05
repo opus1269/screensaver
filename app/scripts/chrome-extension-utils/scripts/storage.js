@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeJSON from './json.js';
+
 window.Chrome = window.Chrome || {};
 
 /**
@@ -29,7 +31,7 @@ Chrome.Storage = (function() {
       let value = def;
       let item = localStorage.getItem(key);
       if (item !== null) {
-        value = Chrome.JSONUtils.parse(item);
+        value = ChromeJSON.parse(item);
       }
       return value;
     },
