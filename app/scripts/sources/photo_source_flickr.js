@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeHttp
+  from '../../scripts/chrome-extension-utils/scripts/http.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import PhotoSource from './photo_source.js';
@@ -127,7 +129,7 @@ export default class FlickrSource extends PhotoSource {
           '&format=json&nojsoncallback=1';
     }
 
-    return Chrome.Http.doGet(url).then((response) => {
+    return ChromeHttp.doGet(url).then((response) => {
       if (response.stat !== 'ok') {
         return Promise.reject(new Error(response.message));
       }

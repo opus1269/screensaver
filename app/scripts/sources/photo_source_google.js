@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeHttp
+  from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -226,7 +228,7 @@ export default class GoogleSource extends PhotoSource {
       return photos;
     }
 
-    const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
+    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = false;
@@ -253,7 +255,7 @@ export default class GoogleSource extends PhotoSource {
 
       try {
         // get the new mediaItemResults
-        const response = await Chrome.Http.doGet(url, conf);
+        const response = await ChromeHttp.doGet(url, conf);
         nCalls++;
         const mediaItems = [];
         // convert to array of media items
@@ -310,7 +312,7 @@ export default class GoogleSource extends PhotoSource {
     };
     body.albumId = id;
 
-    const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
+    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = interactive;
@@ -323,7 +325,7 @@ export default class GoogleSource extends PhotoSource {
       // haven't loaded greater than MAX_PHOTOS.
       let numPhotos = 0;
       do {
-        const response = await Chrome.Http.doPost(url, conf);
+        const response = await ChromeHttp.doPost(url, conf);
         nextPageToken = response.nextPageToken;
         conf.body.pageToken = nextPageToken;
         const mediaItems = response.mediaItems;
@@ -371,7 +373,7 @@ export default class GoogleSource extends PhotoSource {
     let url = baseUrl;
 
     // get list of albums
-    const conf = ChromeJSON.shallowCopy(Chrome.Http.conf);
+    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = true;
@@ -379,7 +381,7 @@ export default class GoogleSource extends PhotoSource {
 
       // Loop while there is a nextPageToken to load more items.
       do {
-        let response = await Chrome.Http.doGet(url, conf);
+        let response = await ChromeHttp.doGet(url, conf);
         response = response || {};
         nextPageToken = response.nextPageToken;
         if (!response.albums || (response.albums.length === 0)) {

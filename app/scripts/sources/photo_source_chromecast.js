@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeHttp
+  from '../../scripts/chrome-extension-utils/scripts/http.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import PhotoSource from './photo_source.js';
@@ -36,7 +38,7 @@ export default class CCSource extends PhotoSource {
    */
   fetchPhotos() {
     const url = '/assets/chromecast.json';
-    return Chrome.Http.doGet(url).then((photos) => {
+    return ChromeHttp.doGet(url).then((photos) => {
       photos = photos || [];
       for (const photo of photos) {
         photo.asp = 1.78;
