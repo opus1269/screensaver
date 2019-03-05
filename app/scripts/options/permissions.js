@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeAuth
+  from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON
   from '../../scripts/chrome-extension-utils/scripts/json.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -187,7 +189,7 @@ export function removeGooglePhotos() {
 
     // remove cached Auth token
     // eslint-disable-next-line promise/no-nesting
-    Chrome.Auth.removeCachedToken(false, null, null).catch(() => {
+    ChromeAuth.removeCachedToken(false, null, null).catch(() => {
       // nice to remove but not critical
       return null;
     });
