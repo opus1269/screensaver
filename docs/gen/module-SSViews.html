@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Module: SSViews</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Alarm.html">Alarm</a></li><li><a href="Background.html">Background</a></li><li><a href="Chrome.Auth.html">Chrome.Auth</a></li><li><a href="Chrome.GA.html">Chrome.GA</a></li><li><a href="Chrome.Http.html">Chrome.Http</a></li><li><a href="Chrome.JSONUtils.html">Chrome.JSONUtils</a></li><li><a href="Chrome.Locale.html">Chrome.Locale</a></li><li><a href="Chrome.Log.html">Chrome.Log</a></li><li><a href="Chrome.Msg.html">Chrome.Msg</a></li><li><a href="Chrome.Storage.html">Chrome.Storage</a></li><li><a href="Chrome.Utils.html">Chrome.Utils</a></li><li><a href="ErrorPage.html">ErrorPage</a></li><li><a href="GooglePhotosPage.html">GooglePhotosPage</a></li><li><a href="HelpPage.html">HelpPage</a></li><li><a href="Locale.html">Locale</a></li><li><a href="LocalizeBehavior.html">LocalizeBehavior</a></li><li><a href="Options.html">Options</a></li><li><a href="Permissions.html">Permissions</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingLink.html">SettingLink</a></li><li><a href="SettingSlider.html">SettingSlider</a></li><li><a href="SettingsPage.html">SettingsPage</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SettingToggle.html">SettingToggle</a></li><li><a href="SSControl.html">SSControl</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-AppData.html">AppData</a></li><li><a href="module-CCSource.html">CCSource</a></li><li><a href="module-ContextMenus.html">ContextMenus</a></li><li><a href="module-FlickrSource.html">FlickrSource</a></li><li><a href="module-Geo.html">Geo</a></li><li><a href="module-GoogleSource.html">GoogleSource</a></li><li><a href="module-MyGA.html">MyGA</a></li><li><a href="module-MyMsg.html">MyMsg</a></li><li><a href="module-MyUtils.html">MyUtils</a></li><li><a href="module-PhotoSource.html">PhotoSource</a></li><li><a href="module-PhotoSourceFactory.html">PhotoSourceFactory</a></li><li><a href="module-PhotoSources.html">PhotoSources</a></li><li><a href="module-RedditSource.html">RedditSource</a></li><li><a href="module-Screensaver.html">Screensaver</a></li><li><a href="module-SSBuilder.html">SSBuilder</a></li><li><a href="module-SSEvents.html">SSEvents</a></li><li><a href="module-SSFinder.html">SSFinder</a></li><li><a href="module-SSHistory.html">SSHistory</a></li><li><a href="module-SSPhoto.html">SSPhoto</a></li><li><a href="module-SSPhotos.html">SSPhotos</a></li><li><a href="module-SSRunner.html">SSRunner</a></li><li><a href="module-SSTime.html">SSTime</a></li><li><a href="module-SSView.html">SSView</a></li><li><a href="module-SSViewFactory.html">SSViewFactory</a></li><li><a href="module-SSViewFrame.html">SSViewFrame</a></li><li><a href="module-SSViewFull.html">SSViewFull</a></li><li><a href="module-SSViewLetterbox.html">SSViewLetterbox</a></li><li><a href="module-SSViews.html">SSViews</a></li><li><a href="module-SSViewZoom.html">SSViewZoom</a></li><li><a href="module-User.html">User</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Chrome.Time.html">Chrome.Time</a></li><li><a href="ExceptionHandler.html">ExceptionHandler</a></li><li><a href="ExHandler.html">ExHandler</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	<h1 class="page-title">Module: SSViews</h1>
+<section>
+
+<header>
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Collection of <a href="module-SSView.html">module:SSView</a> objects</p></div>
+        
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-15">line 15</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<hr>
+<dt class="name" id=".Type">
+    <h4 id=".Type"><span class="type-signature">&lt;static, readonly> </span>Type<span class="type-signature"> :int</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Enum for view type</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">int</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-20">line 20</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="~_MAX_VIEWS">
+    <h4 id="~_MAX_VIEWS"><span class="type-signature">&lt;private, inner, constant> </span>_MAX_VIEWS<span class="type-signature"> :int</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Max number of views</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">int</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-41">line 41</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="~_pages">
+    <h4 id="~_pages"><span class="type-signature">&lt;private, inner> </span>_pages<span class="type-signature"> :Element|null</span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The neon-animated-pages</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">null</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-56">line 56</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="~_type">
+    <h4 id="~_type"><span class="type-signature">&lt;private, inner> </span>_type<span class="type-signature"> :<a href="module-SSViews.html#.Type">module:SSViews.Type</a></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The view type</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="module-SSViews.html#.Type">module:SSViews.Type</a></span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-63">line 63</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="~_views">
+    <h4 id="~_views"><span class="type-signature">&lt;private, inner, constant> </span>_views<span class="type-signature"> :Array.&lt;SSView></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The array of views</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Array.&lt;SSView></span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-49">line 49</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".create"><span class="type-signature">&lt;static> </span>create<span class="signature">(t)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Create the <a href="module-SSView.html">module:SSView</a> pages</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>t</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-Screensaver.html#.Template">module:Screensaver.Template</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-99">line 99</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".findLoadedPhoto"><span class="type-signature">&lt;static> </span>findLoadedPhoto<span class="signature">(idx)</span><span class="type-signature"> &rarr; {int}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Try to find a photo that has finished loading</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>index into _views</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-250">line 250</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>index into _views, -1 if none are loaded</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">int</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".get"><span class="type-signature">&lt;static> </span>get<span class="signature">(idx)</span><span class="type-signature"> &rarr; {SSView}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the SSView at the given index</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The index</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-151">line 151</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">SSView</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".getCount"><span class="type-signature">&lt;static> </span>getCount<span class="signature">()</span><span class="type-signature"> &rarr; {int}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get number of views</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-142">line 142</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">int</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".getSelectedIndex"><span class="type-signature">&lt;static> </span>getSelectedIndex<span class="signature">()</span><span class="type-signature"> &rarr; {int|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the selected index</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-159">line 159</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>The index</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">int</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".getType"><span class="type-signature">&lt;static> </span>getType<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="module-SSViews.html#.Type">module:SSViews.Type</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the type of view</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-131">line 131</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="module-SSViews.html#.Type">module:SSViews.Type</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".hasPhoto"><span class="type-signature">&lt;static> </span>hasPhoto<span class="signature">(photo)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Is the given SSPhoto in one of the _views</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>photo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">SSPhoto</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-193">line 193</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>true if in _views</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".hasUsable"><span class="type-signature">&lt;static> </span>hasUsable<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Do we have a view with a usable photo</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-208">line 208</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>true if at least one photo is valid</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".isSelectedIndex"><span class="type-signature">&lt;static> </span>isSelectedIndex<span class="signature">(idx)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Is the given idx the selected index</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>index into <a href="module-SSViews.html">module:SSViews</a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-180">line 180</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>true if selected</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".replaceAll"><span class="type-signature">&lt;static> </span>replaceAll<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Replace all views</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-227">line 227</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".setSelectedIndex"><span class="type-signature">&lt;static> </span>setSelectedIndex<span class="signature">(selected)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the selected index</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>selected</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-171">line 171</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="~_setViewType"><span class="type-signature">&lt;private, inner> </span>_setViewType<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Process settings related to the photo's appearance</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="screensaver_ss_views.js.html">screensaver/ss_views.js</a>,
+				 <a href="screensaver_ss_views.js.html#sunlight-1-line-69">line 69</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on March 4th 2019, 10:40:16 pm
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
