@@ -25,7 +25,7 @@ import '../../../elements/setting-elements/setting-slider/setting-slider.js';
 import '../../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
 import '../../../elements/setting-elements/setting-background/setting-background.js';
 import '../../../elements/setting-elements/setting-time/setting-time.js';
-import {LocalizeBehavior, Locale } from
+import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
 import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -37,6 +37,8 @@ import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
@@ -235,7 +237,7 @@ Polymer({
    */
   _getUnit: function(name, min, max, step, mult) {
     return {
-      'name': Locale.localize(name),
+      'name': ChromeLocale.localize(name),
       'min': min, 'max': max, 'step': step, 'mult': mult,
     };
   },
@@ -316,7 +318,7 @@ Polymer({
     const isSet = ChromeStorage.getBool('allowBackground');
     const perm = Permissions.BACKGROUND;
     const isAllowed = Permissions.isAllowed(perm);
-    const errTitle = Locale.localize('err_optional_permissions');
+    const errTitle = ChromeLocale.localize('err_optional_permissions');
     if (isSet && !isAllowed) {
       Permissions.request(perm).catch((err) => {
         ChromeLog.error(err.message,
@@ -394,11 +396,11 @@ Polymer({
    */
   _computePhotoSizingMenu: function() {
     return [
-      Locale.localize('menu_letterbox'),
-      Locale.localize('menu_zoom'),
-      Locale.localize('menu_frame'),
-      Locale.localize('menu_full'),
-      Locale.localize('menu_random'),
+      ChromeLocale.localize('menu_letterbox'),
+      ChromeLocale.localize('menu_zoom'),
+      ChromeLocale.localize('menu_frame'),
+      ChromeLocale.localize('menu_full'),
+      ChromeLocale.localize('menu_random'),
     ];
   },
 
@@ -410,15 +412,15 @@ Polymer({
    */
   _computePhotoTransitionMenu: function() {
     return [
-      Locale.localize('menu_scale_up'),
-      Locale.localize('menu_fade'),
-      Locale.localize('menu_slide_from_right'),
-      Locale.localize('menu_slide_down'),
-      Locale.localize('menu_spin_up'),
-      Locale.localize('menu_slide_up'),
-      Locale.localize('menu_slide_from_bottom'),
-      Locale.localize('menu_slide_right'),
-      Locale.localize('menu_random'),
+      ChromeLocale.localize('menu_scale_up'),
+      ChromeLocale.localize('menu_fade'),
+      ChromeLocale.localize('menu_slide_from_right'),
+      ChromeLocale.localize('menu_slide_down'),
+      ChromeLocale.localize('menu_spin_up'),
+      ChromeLocale.localize('menu_slide_up'),
+      ChromeLocale.localize('menu_slide_from_bottom'),
+      ChromeLocale.localize('menu_slide_right'),
+      ChromeLocale.localize('menu_random'),
     ];
   },
 
@@ -430,9 +432,9 @@ Polymer({
    */
   _computeTimeFormatMenu: function() {
     return [
-      Locale.localize('no'),
-      Locale.localize('menu_12_hour'),
-      Locale.localize('menu_24_hour'),
+      ChromeLocale.localize('no'),
+      ChromeLocale.localize('menu_12_hour'),
+      ChromeLocale.localize('menu_24_hour'),
     ];
   },
 });

@@ -24,10 +24,7 @@ import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '../../../elements/my_icons.js';
-import {
-  LocalizeBehavior,
-  Locale,
-} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
@@ -333,12 +330,12 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   loadAlbumList: function() {
-    const ERR_TITLE = Locale.localize('err_load_album_list');
+    const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
     return Permissions.request(Permissions.PICASA).then((granted) => {
       if (!granted) {
         // eslint-disable-next-line promise/no-nesting
         Permissions.removeGooglePhotos().catch(() => {});
-        const err = new Error(Locale.localize('err_auth_picasa'));
+        const err = new Error(ChromeLocale.localize('err_auth_picasa'));
         return Promise.reject(err);
       }
       this.set('waitForLoad', true);
@@ -372,7 +369,7 @@ export const GooglePhotosPage = Polymer({
         ChromeLog.error(err.message,
             'GooglePhotosPage.loadAlbumList', ERR_TITLE);
       }
-      showErrorDialog(Locale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
       return Promise.reject(err);
     });
   },
@@ -385,7 +382,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _loadAlbum: async function(id, name) {
-    const ERR_TITLE = Locale.localize('err_load_album');
+    const ERR_TITLE = ChromeLocale.localize('err_load_album');
     let album;
     try {
       this.set('waitForLoad', true);
@@ -404,7 +401,7 @@ export const GooglePhotosPage = Polymer({
         ChromeLog.error(err.message,
             'GooglePhotosPage.loadAlbum', ERR_TITLE);
       }
-      showErrorDialog(Locale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
     }
     return album;
   },
@@ -514,8 +511,8 @@ export const GooglePhotosPage = Polymer({
         this.set('albums.' + album.index + '.checked', false);
         ChromeLog.error('Tried to select more than max albums',
             'GooglePhotosPage._onAlbumSelectChanged', null);
-        showErrorDialog(Locale.localize('err_request_failed'),
-            Locale.localize('err_max_albums'));
+        showErrorDialog(ChromeLocale.localize('err_request_failed'),
+            ChromeLocale.localize('err_max_albums'));
 
         return;
       }
@@ -586,9 +583,9 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _showStorageErrorDialog: function(method) {
-    const ERR_TITLE = Locale.localize('err_storage_title');
+    const ERR_TITLE = ChromeLocale.localize('err_storage_title');
     ChromeLog.error('safeSet failed', method, ERR_TITLE);
-    showErrorDialog(ERR_TITLE, Locale.localize('err_storage_desc'));
+    showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
   },
 
   /**
@@ -649,9 +646,9 @@ export const GooglePhotosPage = Polymer({
   _computeTitle: function(isAlbumMode) {
     let ret = '';
     if (isAlbumMode) {
-      ret = Locale.localize('google_title');
+      ret = ChromeLocale.localize('google_title');
     } else {
-      ret = Locale.localize('google_title_photos');
+      ret = ChromeLocale.localize('google_title_photos');
     }
     return ret;
   },
@@ -683,9 +680,9 @@ export const GooglePhotosPage = Polymer({
   _computeModeTooltip: function(isAlbumMode) {
     let ret = '';
     if (isAlbumMode) {
-      ret = Locale.localize('tooltip_google_mode_albums');
+      ret = ChromeLocale.localize('tooltip_google_mode_albums');
     } else {
-      ret = Locale.localize('tooltip_google_mode_photos');
+      ret = ChromeLocale.localize('tooltip_google_mode_photos');
     }
     return ret;
   },
@@ -710,9 +707,9 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _computePhotoLabel: function(count) {
-    let ret = `${count} ${Locale.localize('photos')}`;
+    let ret = `${count} ${ChromeLocale.localize('photos')}`;
     if (count === 1) {
-      ret = `${count} ${Locale.localize('photo')}`;
+      ret = `${count} ${ChromeLocale.localize('photo')}`;
     }
     return ret;
   },
