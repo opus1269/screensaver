@@ -55,7 +55,7 @@ const _MAX_ALBUMS = 20;
 
 /**
  * Polymer element for the Google Photos
- * @namespace
+ * @namespace GooglePhotosPage
  */
 export const GooglePhotosPage = Polymer({
   _template: html`
@@ -326,7 +326,7 @@ export const GooglePhotosPage = Polymer({
 
   /**
    * Query Google Photos for the list of the users albums
-   * @returns {Promise<null>}
+   * @returns {Promise<null>} always resolves
    * @memberOf GooglePhotosPage
    */
   loadAlbumList: function() {

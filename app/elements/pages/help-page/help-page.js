@@ -25,7 +25,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for the Help and Feedback Page
- * @namespace
+ * @namespace HelpPage
  */
 export const HelpPage = Polymer({
   _template: html`

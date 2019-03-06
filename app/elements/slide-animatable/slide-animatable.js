@@ -13,6 +13,10 @@ import { html } from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js'
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+/**
+ * Polymer element to provide an animated slide
+ * @namespace SlideAnimatable
+ */
 Polymer({
   _template: html`
     <style>
@@ -31,6 +35,10 @@ Polymer({
 
   properties: {
 
+    /**
+     * Configuration of the current animation
+     * @memberOf SlideAnimatable
+     */
     animationConfig: {
       type: Object,
       value: function() {
@@ -55,12 +63,22 @@ Polymer({
       },
     },
 
+    /**
+     * Index of animation to use
+     * @memberOf SlideAnimatable
+     */
     aniType: {
       type: Number,
       observer: '_aniChanged',
     },
   },
 
+  /**
+   * Observer: Animation type changed
+   * @param {int} newValue - new animation type
+   * @private
+   * @memberOf SlideAnimatable
+   */
   _aniChanged: function(newValue) {
     let entry;
     let exit;

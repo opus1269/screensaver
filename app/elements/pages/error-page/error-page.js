@@ -34,7 +34,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for the Error Page
- * @namespace
+ * @namespace ErrorPage
  */
 export const ErrorPage = Polymer({
   _template: html`

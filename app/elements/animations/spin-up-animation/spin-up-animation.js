@@ -28,6 +28,10 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  ```
  */
 
+/**
+ * Polymer element to provide a spinup animation
+ * @namespace SpinUpAnimation
+ */
 Polymer({
   is: 'spin-up-animation',
 
@@ -35,6 +39,12 @@ Polymer({
     NeonAnimationBehavior,
   ],
 
+  /**
+   * Configure the animation
+   * @param {Object} config - configuration object
+   * @returns {KeyframeEffect} new key frame effect
+   * @memberOf SpinUpAnimation
+   */
   configure: function(config) {
     const node = config.node;
 
