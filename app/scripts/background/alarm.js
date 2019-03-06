@@ -21,7 +21,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Manage alarms from the chrome.alarms API
  * @see https://developer.chrome.com/apps/alarms
- * @namespace Alarm
+ * @module Alarm
  */
 
 const chromep = new ChromePromise();
@@ -35,7 +35,6 @@ const chromep = new ChromePromise();
  * @property {string} BADGE_TEXT - icon's Badge text should be set
  * @const
  * @private
- * @memberOf Alarm
  */
 const _ALARMS = {
   'ACTIVATE': 'ACTIVATE',
@@ -46,7 +45,6 @@ const _ALARMS = {
 
 /**
  * Set the repeating alarms states
- * @memberOf Alarm
  */
 export function updateRepeatingAlarms() {
   const keepAwake = ChromeStorage.getBool('keepAwake');
@@ -96,7 +94,6 @@ export function updateRepeatingAlarms() {
 
 /**
  * Set the icon badge text
- * @memberOf Alarm
  */
 export function updateBadgeText() {
   // delay setting a little to make sure range check is good
@@ -108,7 +105,6 @@ export function updateBadgeText() {
 /**
  * Set state when the screensaver is in the active time range
  * @private
- * @memberOf Alarm
  */
 function _setActiveState() {
   ChromeStorage.set('isAwake', true);
@@ -131,7 +127,6 @@ function _setActiveState() {
 /**
  * Set state when the screensaver is in the inactive time range
  * @private
- * @memberOf Alarm
  */
 function _setInactiveState() {
   ChromeStorage.set('isAwake', false);
@@ -147,7 +142,6 @@ function _setInactiveState() {
 /**
  * Set the Badge text on the icon
  * @private
- * @memberOf Alarm
  */
 function _setBadgeText() {
   let text = '';
@@ -165,7 +159,6 @@ function _setBadgeText() {
  * @see https://developer.chrome.com/apps/alarms#event-onAlarm
  * @param {Object} alarm - details on alarm
  * @private
- * @memberOf Alarm
  */
 function _onAlarm(alarm) {
 
@@ -194,7 +187,6 @@ function _onAlarm(alarm) {
 /**
  * Event: called when document and resources are loaded
  * @private
- * @memberOf Alarm
  */
 function _onLoad() {
   // Listen for alarms

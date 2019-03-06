@@ -76,20 +76,19 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Extension's Options page
- * @namespace Options
+ * @module Options
  */
 
 /**
  * Manage an html page that is inserted on demand<br />
  * May also be a url link to external site
- * @typedef {{}} Options.Page
+ * @typedef {{}} module:Options.Page
  * @property {string} label - label for Nav menu
  * @property {string} route - element name route to page
  * @property {string} icon - icon for Nav Menu
  * @property {?Object|Function} obj - something to be done when selected
  * @property {boolean} ready - true if html is inserted
  * @property {boolean} divider - true for divider before item
- * @memberOf Options
  */
 
 /**
@@ -97,7 +96,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @type {string}
  * @const
  * @private
- * @memberOf Options
  */
 const EXT_URI =
     'https://chrome.google.com/webstore/detail/screensaver/' +
@@ -109,7 +107,6 @@ const EXT_URI =
  * @const
  * @default
  * @private
- * @memberOf Options
  */
 const PUSHY_URI =
     'https://chrome.google.com/webstore/detail/pushy-clipboard/' +
@@ -120,15 +117,13 @@ const PUSHY_URI =
  * @type {Object}
  * @const
  * @private
- * @memberOf Options
  */
 const t = document.querySelector('#t');
 
 /**
  * Array of pages
- * @type {Options.Page[]}
+ * @type {module:Options.Page[]}
  * @private
- * @memberOf Options
  */
 t.pages = [
   {
@@ -194,7 +189,6 @@ t.dialogText = '';
  * Current {@link Options.Page}
  * @type {string}
  * @private
- * @memberOf Options
  */
 t.route = 'page-settings';
 
@@ -202,14 +196,12 @@ t.route = 'page-settings';
  * Google Photos permission
  * @type {string}
  * @property t.permission
- * @memberOf Options
  */
 
 /**
  * Chrome sign in state
  * @type {boolean}
  * @private
- * @memberOf Options
  */
 t.signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
@@ -217,7 +209,6 @@ t.signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
  * Display an error dialog
  * @param {string} title - dialog title
  * @param {string} text - dialog text
- * @memberOf Options
  */
 export function showErrorDialog(title, text) {
   // Display Error Dialog if not signed in to Chrome
@@ -229,7 +220,6 @@ export function showErrorDialog(title, text) {
 /**
  * Event: Document and resources loaded
  * @private
- * @memberOf Options
  */
 function _onLoad() {
 
@@ -271,7 +261,6 @@ function _onLoad() {
  * Route to proper page
  * @param {Event} event - ClickEvent
  * @private
- * @memberOf Options
  */
 t._onNavMenuItemTapped = function(event) {
   // Close drawer after menu item is selected if it is in narrow layout
@@ -303,7 +292,6 @@ t._onNavMenuItemTapped = function(event) {
 /**
  * Event: Clicked on accept permissions dialog button
  * @private
- * @memberOf Options
  */
 t._onAcceptPermissionsClicked = function() {
   ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
@@ -321,7 +309,6 @@ t._onAcceptPermissionsClicked = function() {
 /**
  * Event: Clicked on deny permission dialog button
  * @private
- * @memberOf Options
  */
 t._onDenyPermissionsClicked = function() {
   ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
@@ -334,7 +321,6 @@ t._onDenyPermissionsClicked = function() {
  * Computed property: Page title
  * @returns {string} i18n title
  * @private
- * @memberOf Options
  */
 t._computeTitle = function() {
   return ChromeLocale.localize('chrome_extension_name');
@@ -344,7 +330,6 @@ t._computeTitle = function() {
  * Computed property: Menu label
  * @returns {string} i18n label
  * @private
- * @memberOf Options
  */
 t._computeMenu = function() {
   return ChromeLocale.localize('menu');
@@ -354,7 +339,6 @@ t._computeMenu = function() {
  * Computed property: Permissions dialog title
  * @returns {string} i18n title
  * @private
- * @memberOf Options
  */
 t._computePermDialogTitle = function() {
   return ChromeLocale.localize('menu_permission');
@@ -364,7 +348,6 @@ t._computePermDialogTitle = function() {
  * Computed Binding: Info message for permission
  * @returns {string}
  * @private
- * @memberOf Options
  */
 t._computePermissionsMessage = function() {
   return ChromeLocale.localize('permission_message');
@@ -374,7 +357,6 @@ t._computePermissionsMessage = function() {
  * Computed Binding: Info message for permission
  * @returns {string}
  * @private
- * @memberOf Options
  */
 t._computePermissionsMessage1 = function() {
   return ChromeLocale.localize('permission_message1');
@@ -384,7 +366,6 @@ t._computePermissionsMessage1 = function() {
  * Computed Binding: Info message for permission
  * @returns {string}
  * @private
- * @memberOf Options
  */
 t._computePermissionsMessage2 = function() {
   return ChromeLocale.localize('permission_message2');
@@ -395,7 +376,6 @@ t._computePermissionsMessage2 = function() {
  * @param {string} permission - current setting
  * @returns {string}
  * @private
- * @memberOf Options
  */
 t._computePermissionsStatus = function(permission) {
   return `${ChromeLocale.localize(
@@ -407,7 +387,6 @@ t._computePermissionsStatus = function(permission) {
  * @param {string} name - {@link Options.page} route
  * @returns {int} index into array
  * @private
- * @memberOf Options
  */
 function _getPageIdx(name) {
   return t.pages.map(function(e) {
@@ -419,7 +398,6 @@ function _getPageIdx(name) {
  * Show the Google Photos page
  * @param {int} index - index into [t.pages]{@link Options.t.pages}
  * @private
- * @memberOf Options
  */
 function _showGooglePhotosPage(index) {
   t.signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
@@ -446,7 +424,6 @@ function _showGooglePhotosPage(index) {
  * Show the error viewer page
  * @param {int} index - index into {@link Options.pages}
  * @private
- * @memberOf Options
  */
 function _showErrorPage(index) {
   if (!t.pages[index].ready) {
@@ -462,7 +439,6 @@ function _showErrorPage(index) {
  * Show the help page
  * @param {int} index - index into [t.pages]{@link Options.t.pages}
  * @private
- * @memberOf Options
  */
 function _showHelpPage(index) {
   if (!t.pages[index].ready) {
@@ -480,7 +456,6 @@ function _showHelpPage(index) {
  * @param {int} index - index into [t.pages]{@link Options.t.pages}
  * @param {string} prevRoute - last page selected
  * @private
- * @memberOf Options
  */
 function _showScreensaverPreview(index, prevRoute) {
   // reselect previous page - need to delay so tap event is done
@@ -491,7 +466,6 @@ function _showScreensaverPreview(index, prevRoute) {
 /**
  * Show the permissions dialog
  * @private
- * @memberOf Options
  */
 function _showPermissionsDialog() {
   t.permission = ChromeStorage.get('permPicasa');
@@ -501,7 +475,6 @@ function _showPermissionsDialog() {
 /**
  * Set enabled state of Google Photos menu item
  * @private
- * @memberOf Options
  */
 function _setGooglePhotosMenuState() {
   // disable google-page if user hasn't allowed
@@ -520,7 +493,6 @@ function _setGooglePhotosMenuState() {
 /**
  * Set enabled state of Error Viewer menu item
  * @private
- * @memberOf Options
  */
 function _setErrorMenuState() {
   // disable error-page if no lastError
@@ -548,7 +520,6 @@ function _setErrorMenuState() {
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
  * @private
- * @memberOf Options
  */
 function _onMessage(request, sender, response) {
   if (request.message === ChromeMsg.HIGHLIGHT.message) {

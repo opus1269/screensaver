@@ -24,13 +24,12 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * The background script for the extension.<br>
- * @namespace Background
+ * @module Background
  */
 
 /**
  * Display the options tab
  * @private
- * @memberOf Background
  */
 function _showOptionsTab() {
   // send message to the option tab to focus it.
@@ -49,7 +48,6 @@ function _showOptionsTab() {
  * @param {string} details.reason - reason for install
  * @param {string} details.previousVersion - old version if 'update' reason
  * @private
- * @memberOf Background
  */
 function _onInstalled(details) {
   if (details.reason === 'install') {
@@ -88,7 +86,6 @@ function _onInstalled(details) {
  * starts up
  * @see https://developer.chrome.com/extensions/runtime#event-onStartup
  * @private
- * @memberOf Background
  */
 function _onStartup() {
   ChromeGA.page('/background.html');
@@ -100,7 +97,6 @@ function _onStartup() {
  * Event: Fired when a browser action icon is clicked.
  * @see https://goo.gl/abVwKu
  * @private
- * @memberOf Background
  */
 function _onIconClicked() {
   _showOptionsTab();
@@ -112,7 +108,6 @@ function _onIconClicked() {
  * @param {Event} event - StorageEvent
  * @param {string} event.key - storage item that changed
  * @private
- * @memberOf Background
  */
 function _onStorageChanged(event) {
   AppData.processState(event.key);
@@ -128,7 +123,6 @@ function _onStorageChanged(event) {
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
  * @private
- * @memberOf Background
  */
 function _onChromeMessage(request, sender, response) {
   if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
@@ -142,7 +136,6 @@ function _onChromeMessage(request, sender, response) {
 /**
  * Event: called when document and resources are loaded
  * @private
- * @memberOf Background
  */
 function _onLoad() {
   // listen for extension install or update

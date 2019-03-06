@@ -16,35 +16,32 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Handle optional permissions
- *  @namespace Permissions
+ *  @module Permissions
  */
 
 const chromep = new ChromePromise();
 
 /**
  * A permission state enum
- * @typedef {{}} Permissions.State
+ * @typedef {{}} module:Permissions.State
  * @property {string} notSet - never been allowed or denied
  * @property {string} allowed - user allowed
  * @property {string} denied - user denied
- * @memberOf Permissions
  */
 
 /**
  * A permission type
- * @typedef {{}} Permissions.Type
+ * @typedef {{}} module:Permissions.Type
  * @property {string} name - name in localStorage
  * @property {string[]} permissions - array of permissions
  * @property {string[]} origins - array of origins
- * @memberOf Permissions
  */
 
 /**
- * Possible states of an {@link Permissions.Type}
- * @type {Permissions.State}
+ * Possible states of an {@link module:Permissions.Type}
+ * @type {module:Permissions.State}
  * @const
  * @private
- * @memberOf Permissions
  */
 const _STATE = {
   notSet: 'notSet',
@@ -55,8 +52,7 @@ const _STATE = {
 /**
  * Permission for access to users' Google Photos
  * @const
- * @type {Permissions.Type}
- * @memberOf Permissions
+ * @type {module:Permissions.Type}
  */
 export const PICASA = {
   name: 'permPicasa',
@@ -67,8 +63,7 @@ export const PICASA = {
 /**
  * Permission for running in background
  * @const
- * @type {Permissions.Type}
- * @memberOf Permissions
+ * @type {module:Permissions.Type}
  */
 export const BACKGROUND = {
   name: 'permBackground',
@@ -77,10 +72,9 @@ export const BACKGROUND = {
 };
 
 /**
- * Has user made choice on permissions
- * @param {Permissions.Type} type - permission type
- * @returns {boolean} true if allowed or denied
- * @memberOf Permissions
+ * Has user mot made a choice on permission
+ * @param {module:Permissions.Type} type - permission type
+ * @returns {boolean} true if notSet
  */
 export function notSet(type) {
   return ChromeStorage.get(type.name) === _STATE.notSet;
@@ -88,19 +82,17 @@ export function notSet(type) {
 
 /**
  * Has the user allowed the optional permissions
- * @param {Permissions.Type} type - permission type
+ * @param {module:Permissions.Type} type - permission type
  * @returns {boolean} true if allowed
- * @memberOf Permissions
  */
 export function isAllowed(type) {
   return ChromeStorage.get(type.name) === _STATE.allowed;
 }
 
 /**
- * Has the explicitly denied the permission
- * @param {Permissions.Type} type - permission type
+ * Has the user explicitly denied the permission
+ * @param {module:Permissions.Type} type - permission type
  * @returns {boolean} true if allowed
- * @memberOf Permissions
  */
 export function isDenied(type) {
   return ChromeStorage.get(type.name) === _STATE.denied;
@@ -108,9 +100,8 @@ export function isDenied(type) {
 
 /**
  * Request optional permission - may block
- * @param {Permissions.Type} type - permission type
+ * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if permission granted
- * @memberOf Permissions
  */
 export function request(type) {
   let isGranted;
@@ -134,9 +125,8 @@ export function request(type) {
 
 /**
  * Remove the optional permissions
- * @param {Permissions.Type} type - permission type
+ * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if removed
- * @memberOf Permissions
  */
 export function remove(type) {
   return _contains(type).then((contains) => {
@@ -159,9 +149,8 @@ export function remove(type) {
 
 /**
  * Remove and deny the optional permissions
- * @param {Permissions.Type} type - permission type
+ * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if removed
- * @memberOf Permissions
  */
 export function deny(type) {
   return _contains(type).then((contains) => {
@@ -184,7 +173,6 @@ export function deny(type) {
 /**
  * Remove, deny, and clear photo selections for Google Photos
  * @returns {Promise<void>}
- * @memberOf Permissions
  */
 export function removeGooglePhotos() {
   return deny(PICASA).then(() => {
@@ -203,10 +191,9 @@ export function removeGooglePhotos() {
 
 /**
  * Persist the state of an {@link Permissions.Type}
- * @param {Permissions.Type} type - permission type
+ * @param {module:Permissions.Type} type - permission type
  * @param {string} value - permission state
  * @private
- * @memberOf Permissions
  */
 function _setState(type, value) {
   // send message to store value so items that are bound
@@ -219,9 +206,8 @@ function _setState(type, value) {
 
 /**
  * Determine if we have the optional permissions
- * @param {Permissions.Type} type - permission type
+ * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if we have permissions
- * @memberOf Permissions
  */
 function _contains(type) {
   return chromep.permissions.contains({

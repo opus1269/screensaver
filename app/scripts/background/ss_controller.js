@@ -21,7 +21,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Controller for the screen saver
- * @namespace SSControl
+ * @module SSControl
  */
 
 const chromep = new ChromePromise();
@@ -31,7 +31,6 @@ const chromep = new ChromePromise();
  * @type {string}
  * @const
  * @private
- * @memberOf SSControl
  */
 const _SS_URL = '/html/screensaver.html';
 
@@ -40,14 +39,12 @@ const _SS_URL = '/html/screensaver.html';
  * @type {string}
  * @const
  * @private
- * @memberOf SSControl
  */
 const _ERR_SHOW = ChromeLocale.localize('err_show_ss');
 
 /**
  * Determine if the screen saver can be displayed
  * @returns {boolean} true, if can display
- * @memberOf SSControl
  */
 export function isActive() {
   const enabled = ChromeStorage.getBool('enabled');
@@ -65,7 +62,6 @@ export function isActive() {
  * Display the screen saver(s)
  * !Important: Always request screensaver through this call
  * @param {boolean} single - if true, only show on one display
- * @memberOf SSControl
  */
 export function display(single) {
   ChromeStorage.set('isShowing', true);
@@ -78,7 +74,6 @@ export function display(single) {
 
 /**
  * Close all the screen saver windows
- * @memberOf SSControl
  */
 export function close() {
   ChromeStorage.set('isShowing', false);
@@ -92,7 +87,6 @@ export function close() {
  * @returns {Promise<boolean>} true if there is a full screen
  * window on the display
  * @private
- * @memberOf SSControl
  */
 function _hasFullscreen(display) {
   if (ChromeStorage.getBool('chromeFullscreen')) {
@@ -119,7 +113,6 @@ function _hasFullscreen(display) {
  * Determine if the screen saver is currently showing
  * @returns {Promise<boolean>} true if showing
  * @private
- * @memberOf SSControl
  */
 function _isShowing() {
   // send message to the screensaver to see if he is around
@@ -135,7 +128,6 @@ function _isShowing() {
  * Open a screen saver window on the given display
  * @param {Object} display - a connected display
  * @private
- * @memberOf SSControl
  */
 function _open(display) {
   // window creation options
@@ -181,7 +173,6 @@ function _open(display) {
 /**
  * Open a screensaver on every display
  * @private
- * @memberOf SSControl
  */
 function _openOnAllDisplays() {
   chromep.system.display.getInfo().then((displayArr) => {
@@ -207,7 +198,6 @@ function _openOnAllDisplays() {
  * @see https://developer.chrome.com/extensions/idle#event-onStateChanged
  * @param {string} state - current state of computer
  * @private
- * @memberOf SSControl
  */
 function _onIdleStateChanged(state) {
   _isShowing().then((isShowing) => {
@@ -246,7 +236,6 @@ function _onIdleStateChanged(state) {
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
  * @private
- * @memberOf SSControl
  */
 function _onChromeMessage(request, sender, response) {
   if (request.message === MyMsg.SS_SHOW.message) {
@@ -259,7 +248,6 @@ function _onChromeMessage(request, sender, response) {
 /**
  * Event: called when document and resources are loaded
  * @private
- * @memberOf SSControl
  */
 function _onLoad() {
   // listen for changes to the idle state of the computer
