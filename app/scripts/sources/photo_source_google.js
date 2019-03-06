@@ -311,7 +311,7 @@ export default class GoogleSource extends PhotoSource {
    */
   static async loadAlbum(id, name, interactive = true) {
     // max photos to load
-    const MAX_PHOTOS = 500;
+    const MAX_PHOTOS = 1000;
     // max items in search call
     const MAX_QUERIES = 100;
     const url = `${_URL_BASE}mediaItems:search`;
