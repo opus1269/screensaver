@@ -190,7 +190,7 @@ export function removeGooglePhotos() {
 }
 
 /**
- * Persist the state of an {@link Permissions.Type}
+ * Persist the state of an {@link module:Permissions.Type}
  * @param {module:Permissions.Type} type - permission type
  * @param {string} value - permission state
  * @private
