@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeGA from './analytics.js';
-import * as ChromeStorage from './storage.js';
+import ChromeLastError from './last_error.js';
 import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
@@ -13,19 +13,19 @@ import './ex_handler.js';
  * Log a message. Will also store the LastError to local storage as 'lastError'
  * @module ChromeLog
  */
+
 /**
  * Log an error
- * @param {?string} [message='unknown'] - override label
- * @param {?string} [method='unknownMethod'] - override action
+ * @param {string} [message='unknown'] - override label
+ * @param {string} [method='unknownMethod'] - override action
  * @param {?string} [title=null] - a title for the error
  * @param {?string} [extra=null] - extra info. for analytics
  */
 export function error(message = 'unknown', method = 'unknownMethod',
                       title = null, extra = null) {
-  const theTitle = title ? title : 'An error occurred';
+  title = title ? title : 'An error occurred';
   const gaMsg = extra ? `${message} ${extra}` : message;
-  ChromeStorage.setLastError(
-      new ChromeStorage.LastError(message, theTitle)).catch(() => {});
+   ChromeLastError.save(new ChromeLastError(title, message)).catch(() => {});
   ChromeGA.error(gaMsg, method);
 }
 
@@ -40,8 +40,7 @@ export function error(message = 'unknown', method = 'unknownMethod',
 export function exception(exception, message = null, fatal = false,
                           title = 'An exception was caught') {
   try {
-    ChromeStorage.setLastError(
-        new ChromeStorage.LastError(message, title)).catch(() => {});
+     ChromeLastError.save(new ChromeLastError(title, message)).catch(() => {});
     ChromeGA.exception(exception, message, fatal);
   } catch (err) {
     ChromeUtils.noop();

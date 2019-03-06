@@ -28,8 +28,8 @@ import * as MyUtils from '../../../scripts/my_utils.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeStorage
-  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import ChromeLastError
+  from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -125,7 +125,7 @@ export const ErrorPage = Polymer({
     lastError: {
       type: Object,
       value: function() {
-        return new ChromeStorage.LastError();
+        return new ChromeLastError();
       },
       notify: true,
     },
@@ -136,7 +136,7 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   ready: function() {
-    ChromeStorage.getLastError().then((lastError) => {
+     ChromeLastError.load().then((lastError) => {
       this.set('lastError', lastError);
       return null;
     }).catch((err) => {
@@ -179,15 +179,15 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   _onRemoveTapped: function() {
-    ChromeStorage.clearLastError().catch(() => {});
+     ChromeLastError.reset().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
   },
 
   /**
    * Computed Binding
-   * @param {ChromeStorage.LastError} lastError - the error
-   * @param {ChromeStorage.LastError} lastError.message - message title
-   * @param {ChromeStorage.LastError} lastError.stack - stack trace
+   * @param { ChromeLastError} lastError - the error
+   * @param { ChromeLastError} lastError.message - message title
+   * @param { ChromeLastError} lastError.stack - stack trace
    * @returns {string} stack trace
    * @private
    * @memberOf ErrorPage
@@ -198,9 +198,9 @@ export const ErrorPage = Polymer({
 
   /**
    * Computed Binding
-   * @param {ChromeStorage.LastError} lastError - the error
-   * @param {ChromeStorage.LastError} lastError.title - message title
-   * @param {ChromeStorage.LastError} lastError.message - message title
+   * @param { ChromeLastError} lastError - the error
+   * @param { ChromeLastError} lastError.title - message title
+   * @param { ChromeLastError} lastError.message - message title
    * @returns {string} page title
    * @private
    * @memberOf ErrorPage

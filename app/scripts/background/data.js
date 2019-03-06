@@ -13,6 +13,8 @@ import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import ChromeLastError
+  from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
@@ -266,7 +268,7 @@ export function initialize() {
   }).catch(() => {});
 
   // and the last error
-  ChromeStorage.clearLastError().catch((err) => {
+  ChromeLastError.reset().catch((err) => {
     ChromeGA.error(err.message, 'Data.initialize');
   });
 

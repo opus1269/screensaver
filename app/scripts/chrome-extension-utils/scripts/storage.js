@@ -15,18 +15,6 @@ import './ex_handler.js';
  */
 
 /**
- * Information on the last error that occurred
- *
- * @typedef {Object} ChromeStorage.LastError
- * @property {string} name - Object name
- * @property {string} title - title
- * @property {string} message - message
- * @property {string} stack - stack trace
- */
-
-const chromep = new ChromePromise();
-
-/**
  * Get a JSON parsed value from localStorage
  * @param {!string} key - key to get value for
  * @param {?Object|string} [def=null] - optional default value if key not found
@@ -116,53 +104,4 @@ export function safeSet(key, value, keyBool=null) {
     ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
   }
   return ret;
-}
-
-/**
- * An error that can be persisted
- * Usage: const err = new ChromeStorage.LastError(message, title)
- * @param {?string} [message=''] - the message
- * @param {?string} [title='An error occurred'] - the title
- * @property {string} name - Error name
- * @property {string} stack - stack trace
- */
-export function LastError(message = '', title = 'An error occurred') {
-  this.name = 'LastError';
-  this.message = message;
-  this.title = title;
-  this.stack = (new Error).stack;
-  LastError.prototype = Object.create(Error.prototype);
-  LastError.prototype.constructor = LastError;
-}
-
-/**
- * Get the LastError from chrome.storage.local
- * @returns {Promise<module:ChromeStorage.LastError>} last error
- */
-export function getLastError() {
-  return chromep.storage.local.get('lastError').then((values) => {
-    if (values.lastError) {
-      return Promise.resolve(values.lastError);
-    }
-    return new LastError();
-  });
-}
-
-/**
- * Save the LastError to chrome.storage.local
- * @see https://developer.chrome.com/apps/storage
- * @param {Object|module:ChromeStorage.LastError} error - the LastError
- * @returns {Promise<void>} void
- */
-export function setLastError(error) {
-  // Save it using the Chrome storage API.
-  return chromep.storage.local.set({'lastError': error});
-}
-
-/**
- * Set the LastError to an empty message in chrome.storage.local
- * @returns {Promise<void>} void
- */
-export function clearLastError() {
-  return setLastError(new LastError());
 }

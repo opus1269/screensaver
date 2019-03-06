@@ -62,6 +62,8 @@ import * as Permissions from './permissions.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import ChromeLastError
+  from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
@@ -123,7 +125,6 @@ const t = document.querySelector('#t');
 /**
  * Array of pages
  * @type {module:Options.Page[]}
- * @private
  */
 t.pages = [
   {
@@ -496,7 +497,7 @@ function _setGooglePhotosMenuState() {
  */
 function _setErrorMenuState() {
   // disable error-page if no lastError
-  ChromeStorage.getLastError().then((lastError) => {
+   ChromeLastError.load().then((lastError) => {
     const idx = _getPageIdx('page-error');
     const el = document.getElementById(t.pages[idx].route);
     if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
