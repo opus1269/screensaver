@@ -153,11 +153,7 @@ function _getError(response) {
   let msg = 'Unknown error.';
   if (response && response.status &&
       (typeof (response.statusText) !== 'undefined')) {
-    let statusMsg = ChromeLocale.localize('err_status');
-    if ((typeof (statusMsg) === 'undefined') || (statusMsg === '')) {
-      // in case localize is missing
-      statusMsg = 'Status';
-    }
+    let statusMsg = ChromeLocale.localize('err_status', 'Status');
     msg = `${statusMsg}: ${response.status}`;
     msg += `\n${response.statusText}`;
   }
