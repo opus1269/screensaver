@@ -15,10 +15,16 @@ import './ex_handler.js';
 /**
  * Get the i18n string
  * @param {string} messageName - key in messages.json
+ * @param {!string} [def=''] - default if no locales
  * @returns {string} internationalized string
  */
-export function localize(messageName) {
-  return chrome.i18n.getMessage(messageName);
+export function localize(messageName, def='') {
+  let msg = chrome.i18n.getMessage(messageName);
+  if ((typeof (msg) === 'undefined') || (msg === '')) {
+    // in case localize is missing
+    msg = def || '';
+  }
+  return msg;
 }
 
 /**
