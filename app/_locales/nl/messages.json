@@ -465,7 +465,19 @@
     "message": "Het maximale aantal albumselecties is bereikt."
   },
   "err_max_photos": {
-    "message": "The maximum number of photo selections has been reached."
+    "message": "Het maximale aantal fotoselecties is bereikt."
+  },
+  "err_unknown": {
+    "message": "onbekend"
+  },
+  "err_unknown_method": {
+    "message": "onbekende methode"
+  },
+  "err_error": {
+    "message": "Er is een fout opgetreden"
+  },
+  "err_exception": {
+    "message": "Er is een uitzondering opgetreden"
   },
   "err_google_quota": {
     "message": "De dagelijkse limiet van de Google Foto's-API overschreden."

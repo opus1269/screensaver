@@ -465,7 +465,19 @@
     "message": "È stato raggiunto il numero massimo di selezioni di album."
   },
   "err_max_photos": {
-    "message": "The maximum number of photo selections has been reached."
+    "message": "È stato raggiunto il numero massimo di selezioni di foto."
+  },
+  "err_unknown": {
+    "message": "sconosciuto"
+  },
+  "err_unknown_method": {
+    "message": "metodo sconosciuto"
+  },
+  "err_error": {
+    "message": "Si è verificato un errore"
+  },
+  "err_exception": {
+    "message": "Si è verificata un'eccezione"
   },
   "err_google_quota": {
     "message": "Ha superato il limite giornaliero dell'API di Google Foto."

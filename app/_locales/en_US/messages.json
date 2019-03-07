@@ -467,6 +467,18 @@
   "err_max_photos": {
     "message": "The maximum number of photo selections has been reached."
   },
+  "err_unknown": {
+    "message": "unknown"
+  },
+  "err_unknown_method": {
+    "message": "unknownMethod"
+  },
+  "err_error": {
+    "message": "An error occurred"
+  },
+  "err_exception": {
+    "message": "An exception occurred"
+  },
   "err_google_quota": {
     "message": "Exceeded the daily Google Photos API limit."
   },
