@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Source: options/permissions.js</title>
+	<title>Documentation Module: ChromeLastError</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -74,238 +74,685 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: options/permissions.js</h1>
-    
+	<h1 class="page-title">Module: ChromeLastError</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/*
- *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
- *  Licensed under the BSD-3-Clause
- *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-import * as ChromeAuth
-  from '../../scripts/chrome-extension-utils/scripts/auth.js';
-import * as ChromeJSON
-  from '../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/**
- * Handle optional permissions
- *  @module Permissions
- */
+<header>
+    
+        
+            
+        
+    
+</header>
 
-const chromep = new ChromePromise();
 
-/**
- * A permission state enum
- * @typedef {{}} module:Permissions.State
- * @property {string} notSet - never been allowed or denied
- * @property {string} allowed - user allowed
- * @property {string} denied - user denied
- */
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A custom error that can be persisted
+Usage: const err = new ChromeLastError(title, message)</p></div>
+        
 
-/**
- * A permission type
- * @typedef {{}} module:Permissions.Type
- * @property {string} name - name in localStorage
- * @property {string[]} permissions - array of permissions
- * @property {string[]} origins - array of origins
- */
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="module:ChromeLastError"><span class="type-signature"></span>new (require("ChromeLastError"))<span class="signature">(title, params)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
 
-/**
- * Possible states of an {@link module:Permissions.Type}
- * @type {module:Permissions.State}
- * @const
- * @private
- */
-const _STATE = {
-  notSet: 'notSet',
-  allowed: 'allowed',
-  denied: 'denied',
-};
+    
+    <div class="description">
+        <p>Create a new LastError</p>
+    </div>
+    
 
-/**
- * Permission for access to users' Google Photos
- * @const
- * @type {module:Permissions.Type}
- */
-export const PICASA = {
-  name: 'permPicasa',
-  permissions: [],
-  origins: ['https://photoslibrary.googleapis.com/'],
-};
+    
 
-/**
- * Permission for running in background
- * @const
- * @type {module:Permissions.Type}
- */
-export const BACKGROUND = {
-  name: 'permBackground',
-  permissions: ['background'],
-  origins: [],
-};
+    
 
-/**
- * Has user mot made a choice on permission
- * @param {module:Permissions.Type} type - permission type
- * @returns {boolean} true if notSet
- */
-export function notSet(type) {
-  return ChromeStorage.get(type.name) === _STATE.notSet;
-}
+    
+    
+        <h5>Parameters:</h5>
+        
 
-/**
- * Has the user allowed the optional permissions
- * @param {module:Permissions.Type} type - permission type
- * @returns {boolean} true if allowed
- */
-export function isAllowed(type) {
-  return ChromeStorage.get(type.name) === _STATE.allowed;
-}
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-/**
- * Has the user explicitly denied the permission
- * @param {module:Permissions.Type} type - permission type
- * @returns {boolean} true if allowed
- */
-export function isDenied(type) {
-  return ChromeStorage.get(type.name) === _STATE.denied;
-}
+        <th>Type</th>
 
-/**
- * Request optional permission - may block
- * @param {module:Permissions.Type} type - permission type
- * @returns {Promise&lt;boolean>} true if permission granted
- */
-export function request(type) {
-  let isGranted;
-  return chromep.permissions.request({
-    permissions: type.permissions,
-    origins: type.origins,
-  }).then((granted) => {
-    isGranted = granted;
-    if (granted) {
-      _setState(type, _STATE.allowed);
-      return Promise.resolve();
-    } else {
-      _setState(type, _STATE.denied);
-      // try to remove if it has been previously granted
-      return remove(type);
-    }
-  }).then(() => {
-    return Promise.resolve(isGranted);
-  });
-}
+        
+        <th>Argument</th>
+        
 
-/**
- * Remove the optional permissions
- * @param {module:Permissions.Type} type - permission type
- * @returns {Promise&lt;boolean>} true if removed
- */
-export function remove(type) {
-  return _contains(type).then((contains) => {
-    if (contains) {
-      // try to remove permission
-      return chromep.permissions.remove({
-        permissions: type.permissions,
-        origins: type.origins,
-      });
-    } else {
-      return Promise.resolve(false);
-    }
-  }).then((removed) => {
-    if (removed) {
-      _setState(type, _STATE.notSet);
-    }
-    return Promise.resolve(removed);
-  });
-}
+        
+        <th>Default</th>
+        
 
-/**
- * Remove and deny the optional permissions
- * @param {module:Permissions.Type} type - permission type
- * @returns {Promise&lt;boolean>} true if removed
- */
-export function deny(type) {
-  return _contains(type).then((contains) => {
-    if (contains) {
-      // try to remove permission
-      return chromep.permissions.remove({
-        permissions: type.permissions,
-        origins: type.origins,
-      });
-    } else {
-      return Promise.resolve(false);
-    }
-  }).then(() => {
-    // set to denied regardless of whether it was removed
-    _setState(type, _STATE.denied);
-    return Promise.resolve(true);
-  });
-}
+        <th class="last">Description</th>
+    </tr>
+    </thead>
 
-/**
- * Remove, deny, and clear photo selections for Google Photos
- * @returns {Promise&lt;void>}
- */
-export function removeGooglePhotos() {
-  return deny(PICASA).then(() => {
-    // remove selected albums
-    ChromeStorage.set('albumSelections', []);
+    <tbody>
+    
 
-    // remove cached Auth token
-    // eslint-disable-next-line promise/no-nesting
-    ChromeAuth.removeCachedToken(false, null, null).catch(() => {
-      // nice to remove but not critical
-      return null;
-    });
-    return null;
-  });
-}
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
 
-/**
- * Persist the state of an {@link module:Permissions.Type}
- * @param {module:Permissions.Type} type - permission type
- * @param {string} value - permission state
- * @private
- */
-function _setState(type, value) {
-  // send message to store value so items that are bound
-  // to it will get storage event
-  const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
-  msg.key = type.name;
-  msg.value = value;
-  ChromeMsg.send(msg).catch(() => {});
-}
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
-/**
- * Determine if we have the optional permissions
- * @param {module:Permissions.Type} type - permission type
- * @returns {Promise&lt;boolean>} true if we have permissions
- */
-function _contains(type) {
-  return chromep.permissions.contains({
-    permissions: type.permissions,
-    origins: type.origins,
-  });
-}
 
-</pre>
-    </article>
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    ''
+                
+                </td>
+            
+
+            <td class="description last"><p>optional title</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">params</span>
+|
+
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Error parameters</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="chrome-extension-utils_scripts_last_error.js.html">chrome-extension-utils/scripts/last_error.js</a>,
+				 <a href="chrome-extension-utils_scripts_last_error.js.html#sunlight-1-line-24">line 24</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id=".load"><span class="type-signature">&lt;static> </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;ChromeLastError>}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the LastError from chrome.storage.local</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="chrome-extension-utils_scripts_last_error.js.html">chrome-extension-utils/scripts/last_error.js</a>,
+				 <a href="chrome-extension-utils_scripts_last_error.js.html#sunlight-1-line-45">line 45</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        <p>If we failed to get the error</p>
+    
+    </div>
+
+
+        
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>last error</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;ChromeLastError></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".reset"><span class="type-signature">&lt;static> </span>reset<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the LastError to an empty message in chrome.storage.local</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="chrome-extension-utils_scripts_last_error.js.html">chrome-extension-utils/scripts/last_error.js</a>,
+				 <a href="chrome-extension-utils_scripts_last_error.js.html#sunlight-1-line-80">line 80</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        <p>If the error failed to clear</p>
+    
+    </div>
+
+
+        
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>void</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;void></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".save"><span class="type-signature">&lt;static> </span>save<span class="signature">(lastError)</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Save the LastError to chrome.storage.local</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>lastError</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ChromeLastError</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="chrome-extension-utils_scripts_last_error.js.html">chrome-extension-utils/scripts/last_error.js</a>,
+				 <a href="chrome-extension-utils_scripts_last_error.js.html#sunlight-1-line-64">line 64</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+	<dt class="tag-see method-doc-label method-doc-details-label">See:</dt>
+	<dd class="tag-see">
+		<ul>
+			<li><a href="https://developer.chrome.com/apps/storage">https://developer.chrome.com/apps/storage</a></li>
+			</ul>
+	</dd>
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Throws:</h5>
+    
+            
+
+    <div class="param-desc">
+    
+        <p>If the error failed to save</p>
+    
+    </div>
+
+
+        
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>void</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;void></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -315,6 +762,10 @@ function _contains(type) {
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>
