@@ -89,10 +89,38 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /**
+   * Max albums to use
+   * @returns {int} value
+   * @static
+   */
+  static get MAX_ALBUMS() {
+    return 30;
+  }
+
+  /**
+   * Max photos per album to use
+   * @returns {int} value
+   * @static
+   */
+  static get MAX_ALBUM_PHOTOS() {
+    return 1000;
+  }
+
+  /**
+   * Max photos total to use
+   * @returns {int} value
+   * @static
+   */
+  static get MAX_PHOTOS() {
+    return 10000;
+  }
+
+  /**
    * Is the error due to the Google Photos API quota? Also logs it if true
    * @param {Error} err - info on image
    * @param {string} caller - calling method
    * @returns {boolean} true if 429 error
+   * @static
    */
   static isQuotaError(err, caller) {
     let ret = false;
@@ -111,6 +139,7 @@ export default class GoogleSource extends PhotoSource {
    * @param {Error} err - info on image
    * @param {string} caller - calling method
    * @returns {boolean} true if OAuth2 not granted or revoked
+   * @static
    */
   static isAuthRevokedError(err, caller) {
     let ret = false;
@@ -129,6 +158,7 @@ export default class GoogleSource extends PhotoSource {
    * @param {Object} mediaEntry - Google Photos media object
    * @property {Object} mediaEntry.mediaMetadata - Google Photos meta data
    * @returns {boolean} true if entry is a photo
+   * @static
    * @private
    */
   static _isImage(mediaEntry) {
@@ -143,6 +173,7 @@ export default class GoogleSource extends PhotoSource {
   /** Get the image size to retrieve
    * @param {Object} mediaMetadata - info on image
    * @returns {{width: int, height: int}} image size
+   * @static
    * @private
    */
   static _getImageSize(mediaMetadata) {
@@ -170,6 +201,7 @@ export default class GoogleSource extends PhotoSource {
    * @param {Object} mediaItem - object from Google Photos API call
    * @param {string} albumName - Album name
    * @returns {module:PhotoSource.Photo} Photo, null if error
+   * @static
    * @private
    */
   static _processPhoto(mediaItem, albumName) {
@@ -203,6 +235,7 @@ export default class GoogleSource extends PhotoSource {
    * @param {Object} mediaItems - objects from Google Photos API call
    * @param {string} albumName - Album name
    * @returns {module:PhotoSource.Photo[]} Array of photos
+   * @static
    * @private
    */
   static _processPhotos(mediaItems, albumName) {
@@ -223,7 +256,10 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Load the given array of unique photo id's from Google Photos
    * @param {string[]} ids array of ids
+   * @throws An error if the photos failed to load
    * @returns {Promise<module:PhotoSource.Photo[]>} array of photos
+   * @static
+   * @async
    */
   static async loadPhotos(ids) {
     const METHOD = 'GoogleSource.loadPhotos';
@@ -306,12 +342,12 @@ export default class GoogleSource extends PhotoSource {
    * @param {string} id -  Unique Album ID
    * @param {string} name -  Album name
    * @param {boolean} interactive=true - interactive mode for permissions
-   * @throws Will throw an error if the album failed to load.
+   * @throws An error if the album failed to load.
    * @returns {module:GoogleSource.Album} Album
+   * @static
+   * @async
    */
   static async loadAlbum(id, name, interactive = true) {
-    // max photos to load
-    const MAX_PHOTOS = 1000;
     // max items in search call
     const MAX_QUERIES = 100;
     const url = `${_URL_BASE}mediaItems:search`;
@@ -327,50 +363,48 @@ export default class GoogleSource extends PhotoSource {
     conf.body = body;
     let nextPageToken;
     let photos = [];
-    try {
 
-      // Loop while there is a nextPageToken to load more items and we
-      // haven't loaded greater than MAX_PHOTOS.
-      let numPhotos = 0;
-      do {
-        const response = await ChromeHttp.doPost(url, conf);
-        nextPageToken = response.nextPageToken;
-        conf.body.pageToken = nextPageToken;
-        const mediaItems = response.mediaItems;
-        if (mediaItems) {
-          const newPhotos = this._processPhotos(mediaItems, name);
-          photos = photos.concat(newPhotos);
-          numPhotos += newPhotos.length;
-        }
-        if (numPhotos >= MAX_PHOTOS) {
-          ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
-              `nPhotos: ${MAX_PHOTOS}`);
-        }
-      } while (nextPageToken && !(numPhotos >= MAX_PHOTOS));
+    // Loop while there is a nextPageToken to load more items and we
+    // haven't loaded greater than MAX_ALBUM_PHOTOS.
+    let numPhotos = 0;
+    do {
+      const response = await ChromeHttp.doPost(url, conf);
+      nextPageToken = response.nextPageToken;
+      conf.body.pageToken = nextPageToken;
+      const mediaItems = response.mediaItems;
+      if (mediaItems) {
+        const newPhotos = this._processPhotos(mediaItems, name);
+        photos = photos.concat(newPhotos);
+        numPhotos += newPhotos.length;
+      }
+      if (numPhotos >= GoogleSource.MAX_ALBUM_PHOTOS) {
+        ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
+            `nPhotos: ${GoogleSource.MAX_ALBUM_PHOTOS}`);
+      }
+    } while (nextPageToken && !(numPhotos >= GoogleSource.MAX_ALBUM_PHOTOS));
 
-      /** @type {module:GoogleSource.Album} */
-      const album = {};
-      album.index = 0;
-      album.uid = 'album' + 0;
-      album.name = name;
-      album.id = id;
-      album.thumb = '';
-      album.checked = true;
-      album.photos = photos;
-      album.ct = photos.length;
+    /** @type {module:GoogleSource.Album} */
+    const album = {};
+    album.index = 0;
+    album.uid = 'album' + 0;
+    album.name = name;
+    album.id = id;
+    album.thumb = '';
+    album.checked = true;
+    album.photos = photos;
+    album.ct = photos.length;
 
-      ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
+    ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
-      return album;
-    } finally {
-      // throws on error
-    }
+    return album;
   }
 
   /**
    * Retrieve the user's list of albums
-   * @throws Will throw an error if the album list failed to load.
+   * @throws An error if the album list failed to load.
    * @returns {module:GoogleSource.Album[]} Array of albums
+   * @static
+   * @async
    */
   static async loadAlbumList() {
     let nextPageToken;
@@ -385,27 +419,23 @@ export default class GoogleSource extends PhotoSource {
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = true;
-    try {
 
-      // Loop while there is a nextPageToken to load more items.
-      do {
-        let response = await ChromeHttp.doGet(url, conf);
-        response = response || {};
-        nextPageToken = response.nextPageToken;
-        if (!response.albums || (response.albums.length === 0)) {
-          if ((gAlbums.length === 0) && !nextPageToken) {
-            // no albums
-            throw new Error(ChromeLocale.localize('err_no_albums'));
-          }
+    // Loop while there is a nextPageToken to load more items.
+    do {
+      let response = await ChromeHttp.doGet(url, conf);
+      response = response || {};
+      nextPageToken = response.nextPageToken;
+      if (!response.albums || (response.albums.length === 0)) {
+        if ((gAlbums.length === 0) && !nextPageToken) {
+          // no albums
+          throw new Error(ChromeLocale.localize('err_no_albums'));
         }
-        url = `${baseUrl}&pageToken=${nextPageToken}`;
-        if (response.albums && (response.albums.length > 0)) {
-          gAlbums = gAlbums.concat(response.albums);
-        }
-      } while (nextPageToken);
-    } finally {
-      // throws on error
-    }
+      }
+      url = `${baseUrl}&pageToken=${nextPageToken}`;
+      if (response.albums && (response.albums.length > 0)) {
+        gAlbums = gAlbums.concat(response.albums);
+      }
+    } while (nextPageToken);
 
     // Create the array of module:GoogleSource.Album
     for (const gAlbum of gAlbums) {
@@ -437,6 +467,7 @@ export default class GoogleSource extends PhotoSource {
    * Update the baseUrls of the given photos
    * @param {module:PhotoSource.Photo[]} photos
    * @returns {boolean} false if couldn't persist albumSelections
+   * @static
    */
   static updateBaseUrls(photos) {
     let ret = true;
@@ -451,7 +482,7 @@ export default class GoogleSource extends PhotoSource {
       return ret;
     }
 
-    // loop of all the photos
+    // loop on all the photos
     for (const photo of photos) {
 
       // loop on all the albums
@@ -482,6 +513,7 @@ export default class GoogleSource extends PhotoSource {
    * Return true if we should be fetching the albums
    * trying to minimize Google Photos API usage
    * @returns {boolean} true if we should use Google Photos albums
+   * @static
    */
   static _isFetchAlbums() {
     /* only fetch new albumSelections if all are true:
@@ -498,45 +530,52 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /**
-   * Fetch the albums for the selected albums
+   * Fetch the most recent state for the selected albums
+   * @throws An error if we could not load an album
    * @returns {Promise<module:GoogleSource.SelectedAlbum[]>} Array of albums
+   * @static
+   * @aysnc
    */
-  static _fetchAlbums() {
+  static async _fetchAlbums() {
     const albums = ChromeStorage.get('albumSelections', []);
     if (!this._isFetchAlbums() || (albums.length === 0)) {
       // no need to change - save on api calls
       return Promise.resolve(albums);
     }
 
-    // series of API calls to get each album
-    const promises = [];
-    for (const album of albums) {
-      promises.push(GoogleSource.loadAlbum(album.id, album.name, false));
-    }
-
-    // Collate the albums
-
-    return Promise.all(promises).then((albums) => {
-      let ct = 0;
-      /** @type {module:GoogleSource.SelectedAlbum[]} */
-      const selAlbums = [];
-      for (const album of albums) {
-        const photos = album.photos;
-        if (photos && photos.length) {
-          selAlbums.push({
-            id: album.id,
-            name: album.name,
-            photos: photos,
-          });
-          ct = ct + photos.length;
+    let ct = 0;
+    /** @type {module:GoogleSource.SelectedAlbum[]} */
+    const selAlbums = [];
+    // loop on each album and reload from Web
+    for (let i = 0; i < albums.length; i++) {
+      const album = albums[i] || [];
+      const newAlbum =
+          await GoogleSource.loadAlbum(album.id, album.name, false);
+      const photos = newAlbum.photos || [];
+      if (photos.length) {
+        selAlbums.push({
+          id: newAlbum.id,
+          name: newAlbum.name,
+          photos: photos,
+        });
+        ct = ct + photos.length;
+        if (ct > GoogleSource.MAX_PHOTOS) {
+          // exceeded total photo limit, stop processing
+          ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
+              `limit: ${ct}`);
+          // let user know
+          ChromeLog.error(ChromeLocale.localize('err_max_photos'),
+              'GoogleSource._fetchAlbums');
+          break;
         }
       }
+    }
 
-      ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
-          `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
+    ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
+        `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
 
-      return Promise.resolve(selAlbums);
-    });
+    return Promise.resolve(selAlbums);
+
   }
 
   /**

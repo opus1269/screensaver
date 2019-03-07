@@ -165,7 +165,7 @@
     "message": "24 Stunden"
   },
   "tooltip_select": {
-    "message": "Alle auswählen"
+    "message": "Maximum auswählen"
   },
   "tooltip_deselect": {
     "message": "Alle abwählen"
@@ -463,6 +463,9 @@
   },
   "err_max_albums": {
     "message": "Die maximale Anzahl der Albumauswahl wurde erreicht."
+  },
+  "err_max_photos": {
+    "message": "The maximum number of photo selections has been reached."
   },
   "err_google_quota": {
     "message": "Das tägliche Google Photos-API-Limit wurde überschritten."

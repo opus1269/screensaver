@@ -82,6 +82,11 @@ export const EVENT = {
     eventAction: 'limitedAlbums',
     eventLabel: '',
   },
+  PHOTO_SELECTIONS_LIMITED: {
+    eventCategory: 'googlePhotosAPI',
+    eventAction: 'limitedTotalPhotos',
+    eventLabel: '',
+  },
 };
 
 /**

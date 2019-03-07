@@ -47,11 +47,18 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Max albums to load
+ * Max number of albums to select
  * @type {int}
  * @memberOf GooglePhotosPage
  */
-const _MAX_ALBUMS = 30;
+const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
+
+/**
+ * Max number of total photos to select
+ * @type {int}
+ * @memberOf GooglePhotosPage
+ */
+const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
 /**
  * Polymer element for the Google Photos
@@ -143,10 +150,10 @@ export const GooglePhotosPage = Polymer({
           <paper-tooltip for="mode" position="left" offset="0">
             [[_computeModeTooltip(isAlbumMode)]]
           </paper-tooltip>
-          <!--<paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>-->
-          <!--<paper-tooltip for="select" position="left" offset="0">-->
-            <!--{{localize('tooltip_select')}}-->
-          <!--</paper-tooltip>-->
+          <paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
+          <paper-tooltip for="select" position="left" offset="0">
+            {{localize('tooltip_select')}}
+          </paper-tooltip>
           <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_onDeselectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
           <paper-tooltip for="deselect" position="left" offset="0">
             {{localize('tooltip_deselect')}}
@@ -407,6 +414,22 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
+   * Get total photo count that is currently saved
+   * @returns {int} Total number of photos saved
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _getTotalPhotoCount: function() {
+    let ct = 0;
+    const albums = ChromeStorage.get('albumSelections', []);
+    for (const album of albums) {
+      album.photos = album.photos || [];
+      ct += album.photos.length;
+    }
+    return ct;
+  },
+
+  /**
    * Set keys for photo sources
    * @param {boolean} useGoogle - Google Photos use enabled
    * @param {boolean} isAlbumMode - Are we in album mode
@@ -464,12 +487,30 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _onSelectAllTapped: async function() {
+    let albumCt = this.selections.length;
+    let photoCt = 0;
     ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
     for (let i = 0; i < this.albums.length; i++) {
+      if (albumCt === _MAX_ALBUMS) {
+        // reached max. number of albums
+        ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
+        showErrorDialog(ChromeLocale.localize('err_status'),
+            ChromeLocale.localize('err_max_albums'));
+        break;
+      }
       const album = this.albums[i];
       if (!album.checked) {
         const newAlbum = await this._loadAlbum(album.id, album.name);
         if (newAlbum) {
+          if ((photoCt + newAlbum.photos.length) >= _MAX_PHOTOS) {
+            // reached max number of photos
+            ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
+                `limit: ${photoCt}`);
+            showErrorDialog(ChromeLocale.localize('err_status'),
+                ChromeLocale.localize('err_max_photos'));
+            break;
+          }
+          photoCt += newAlbum.photos.length;
           this.selections.push({
             id: album.id, name: newAlbum.name, photos: newAlbum.photos,
           });
@@ -487,6 +528,7 @@ export const GooglePhotosPage = Polymer({
           this.set('albums.' + i + '.checked', true);
           this.set('albums.' + i + '.ct', newAlbum.ct);
         }
+        albumCt++;
       }
     }
   },
@@ -507,15 +549,25 @@ export const GooglePhotosPage = Polymer({
     if (album.checked) {
       // add new
       if (this.selections.length === _MAX_ALBUMS) {
+        // reached max number of albums
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
-        ChromeLog.error('Tried to select more than max albums',
-            'GooglePhotosPage._onAlbumSelectChanged', null);
         showErrorDialog(ChromeLocale.localize('err_request_failed'),
             ChromeLocale.localize('err_max_albums'));
 
         return;
       }
+      const photoCt = this._getTotalPhotoCount();
+      if (photoCt >= _MAX_PHOTOS) {
+        // reached max number of photos
+        ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
+            `limit: ${photoCt}`);
+        this.set('albums.' + album.index + '.checked', false);
+        showErrorDialog(ChromeLocale.localize('err_status'),
+            ChromeLocale.localize('err_max_photos'));
+        return;
+      }
+
       const newAlbum = await this._loadAlbum(album.id, album.name);
       if (newAlbum) {
         this.selections.push({
