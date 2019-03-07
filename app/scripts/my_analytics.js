@@ -34,6 +34,7 @@ const _TRACKING_ID = 'UA-61314754-1';
  * @property {ChromeGA.Event} LOAD_PHOTOS - photos
  * @property {ChromeGA.Event} PHOTOS_LIMITED - did not load all photos in album
  * @property {ChromeGA.Event} ALBUMS_LIMITED - limited photo selections
+ * @property {ChromeGA.Event} VIEW_PHOTO - view original source of photo
  * @const
  */
 export const EVENT = {
@@ -85,6 +86,11 @@ export const EVENT = {
   PHOTO_SELECTIONS_LIMITED: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'limitedTotalPhotos',
+    eventLabel: '',
+  },
+  VIEW_PHOTO: {
+    eventCategory: 'ui',
+    eventAction: 'viewPhoto',
     eventLabel: '',
   },
 };

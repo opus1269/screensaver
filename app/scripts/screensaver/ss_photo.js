@@ -4,6 +4,10 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as MyGA from '../../scripts/my_analytics.js';
+
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -159,6 +163,7 @@ export default class SSPhoto {
         break;
     }
     if (url !== null) {
+      ChromeGA.event(MyGA.EVENT.VIEW_PHOTO, this._type);
       chrome.tabs.create({url: url});
     }
   }
