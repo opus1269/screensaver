@@ -142,7 +142,7 @@ const _DEF_VALUES = {
   'useGoogleAlbums': true,
   'albumSelections': [],
   'useGooglePhotos': false,
-  'googleImage': [],
+  'googleImages': [],
   'gPhotosNeedsUpdate': false, // not used
   'gPhotosMaxAlbums': 10, // not used
   'isAwake': true, // not used
