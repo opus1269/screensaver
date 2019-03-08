@@ -68,6 +68,26 @@ const _URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
 const _ALBUMS_QUERY = '?pageSize=50';
 
 /**
+ * Only return stuff we use
+ * @type {string}
+ * @const
+ * @default
+ * @private
+ */
+const _MEDIA_ITEMS_FIELDS =
+    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,mediaMetadata/width,mediaMetadata/height)';
+
+/**
+ * Only return stuff we use
+ * @type {string}
+ * @const
+ * @default
+ * @private
+ */
+const _MEDIA_ITEMS_RESULTS_FIELDS =
+    'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,mediaItem/mediaMetadata/height)';
+
+    /**
  * A potential source of photos from Google
  * @extends PhotoSource
  */
@@ -285,17 +305,11 @@ export default class GoogleSource extends PhotoSource {
     let nCalls = 0;
     // get the photos in batches of MAX_QUERIES
     do {
-      let url = `${_URL_BASE}mediaItems:batchGet`;
-      let query = '?mediaItemIds=';
-      let first = true;
+      let url = `${_URL_BASE}mediaItems:batchGet?${_MEDIA_ITEMS_RESULTS_FIELDS}`;
+      let query = '';
       for (let i = start; i < stop; i++) {
-        if (first) {
-          query = query.concat(ids[i]);
-          first = false;
-        } else {
-          query = query.concat(`&mediaItemIds=${ids[i]}`);
-        }
-      }
+        query = query.concat(`&mediaItemIds=${ids[i]}`);
+       }
       url = url.concat(query);
 
       try {
@@ -306,7 +320,7 @@ export default class GoogleSource extends PhotoSource {
         // convert to array of media items
         for (const mediaItemResult of response.mediaItemResults) {
           // some may have failed to updated
-          if (!mediaItemResult.status) {
+          if (!mediaItemResult.status && mediaItemResult.mediaItem) {
             mediaItems.push(mediaItemResult.mediaItem);
           }
         }
@@ -351,7 +365,7 @@ export default class GoogleSource extends PhotoSource {
   static async loadAlbum(id, name, interactive = true) {
     // max items in search call
     const MAX_QUERIES = 100;
-    const url = `${_URL_BASE}mediaItems:search`;
+    const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
     const body = {
       'pageSize': MAX_QUERIES,
     };
@@ -590,6 +604,8 @@ export default class GoogleSource extends PhotoSource {
       return Promise.resolve(photos);
     }
 
+    // max photos to load
+    const MAX_PHOTOS = 5000;
     // max queries per request
     const MAX_QUERIES = 100;
 
@@ -612,7 +628,7 @@ export default class GoogleSource extends PhotoSource {
       'filters': filters,
     };
     
-    const url = `${_URL_BASE}mediaItems:search`;
+    const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
 
     // get list of photos based on filter
     const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
@@ -639,7 +655,7 @@ export default class GoogleSource extends PhotoSource {
       }
       nextPageToken = response.nextPageToken;
       conf.body.pageToken = nextPageToken;
-    } while (nextPageToken && (ct < GoogleSource.MAX_PHOTOS));
+    } while (nextPageToken && (ct < MAX_PHOTOS));
     
     ChromeGA.event(MyGA.EVENT.LOAD_FILTERED_PHOTOS, `nPhotos: ${ct}`);
 
