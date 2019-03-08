@@ -194,7 +194,7 @@ export default class PhotoSource {
       const useGoogle = ChromeStorage.getBool('useGoogle');
       let isGoogleKey = false;
       if ((this._photosKey === 'albumSelections') ||
-          (this._photosKey === 'googlePhotos')) {
+          (this._photosKey === 'googleImages')) {
         isGoogleKey = true;
       }
       if (!(isGoogleKey && !useGoogle)) {
