@@ -39,7 +39,7 @@ const chromep = new ChromePromise();
  * @const
  * @private
  */
-const _DATA_VERSION = 20;
+const _DATA_VERSION = 21;
 
 /**
  * A number and associated units
@@ -94,6 +94,7 @@ const _DATA_VERSION = 20;
  * @property {boolean} isAwake - true if screensaver can be displayed
  * @property {boolean} isShowing - true if screensaver is showing
  * @property {boolean} signedInToChrome - state of Chrome signin
+ * @property {{}} googlePhotosFilter - filter for retrieving google photos
  */
 
 /**
@@ -144,6 +145,18 @@ const _DEF_VALUES = {
   'isAwake': true, // not used
   'isShowing': false, // not used
   'signedInToChrome': true,
+  'googlePhotosFilter': {
+      'mediaTypeFilter': {
+        'mediaTypes': [
+          'PHOTO',
+        ],
+      },
+      'contentFilter': {
+        'excludedContentCategories': [
+          'UTILITY',
+        ],
+      },
+  },
 };
 
 /**

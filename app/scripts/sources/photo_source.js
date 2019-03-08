@@ -110,11 +110,19 @@ export default class PhotoSource {
   }
 
   /**
-   * Get if the source type
+   * Get the source type
    * @returns {string} the source type
    */
   getType() {
     return this._type;
+  }
+
+  /**
+   * Get use key name
+   * @returns {string} the source type
+   */
+  getUseKey() {
+    return this._useKey;
   }
 
   /**
@@ -181,10 +189,15 @@ export default class PhotoSource {
         return Promise.reject(err);
       });
     } else {
-      // hack so we don't delete album selections when Google Photos
+      // HACK so we don't delete album or photos when Google Photos
       // page is disabled
       const useGoogle = ChromeStorage.getBool('useGoogle');
-      if (!((this._photosKey === 'albumSelections') && !useGoogle)) {
+      let isGoogleKey = false;
+      if ((this._photosKey === 'albumSelections') ||
+          (this._photosKey === 'googlePhotos')) {
+        isGoogleKey = true;
+      }
+      if (!(isGoogleKey && !useGoogle)) {
         localStorage.removeItem(this._photosKey);
       }
       return Promise.resolve();

@@ -21,6 +21,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 
 import PhotoSource from './photo_source.js';
+import * as PhotoSources from './photo_sources.js';
 
 /**
  * A potential source of photos from Google Photos
@@ -233,12 +234,12 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Extract the photos into an Array
    * @param {Object} mediaItems - objects from Google Photos API call
-   * @param {string} albumName - Album name
+   * @param {string} [albumName=''] - optional Album name
    * @returns {module:PhotoSource.Photo[]} Array of photos
    * @static
    * @private
    */
-  static _processPhotos(mediaItems, albumName) {
+  static _processPhotos(mediaItems, albumName = '') {
     const photos = [];
     if (!mediaItems) {
       return photos;
@@ -510,23 +511,21 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /**
-   * Return true if we should be fetching the albums
+   * Return true if we should be fetching from Google
    * trying to minimize Google Photos API usage
-   * @returns {boolean} true if we should use Google Photos albums
+   * @returns {boolean} true if we should fetch
    * @static
    */
-  static _isFetchAlbums() {
-    /* only fetch new albumSelections if all are true:
+  static _isFetch() {
+    /* only fetch new photos if all are true:
      api is authorized
      screensaver is enabled
      using google photos   
-     using google albums   
      */
     const auth = ChromeStorage.get('permPicasa', 'notSet') === 'allowed';
     const enabled = ChromeStorage.getBool('enabled', true);
     const useGoogle = ChromeStorage.getBool('useGoogle', true);
-    const useGoogleAlbums = ChromeStorage.getBool('useGoogleAlbums', true);
-    return auth && enabled && useGoogle && useGoogleAlbums;
+    return auth && enabled && useGoogle;
   }
 
   /**
@@ -538,7 +537,7 @@ export default class GoogleSource extends PhotoSource {
    */
   static async _fetchAlbums() {
     const albums = ChromeStorage.get('albumSelections', []);
-    if (!this._isFetchAlbums() || (albums.length === 0)) {
+    if (!this._isFetch() || (albums.length === 0)) {
       // no need to change - save on api calls
       return Promise.resolve(albums);
     }
@@ -575,25 +574,111 @@ export default class GoogleSource extends PhotoSource {
         `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
 
     return Promise.resolve(selAlbums);
+  }
 
+  /**
+   * Load photos based on the given filter
+   * @param {boolean} [interactive=false] if true, called from UI
+   * @throws An error if we could not load the photos
+   * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
+   * @static
+   */
+  static async loadFilteredPhotos(interactive = false) {
+    const photos = ChromeStorage.get('googleImages', []);
+    if (!interactive && !this._isFetch()) {
+      // no need to change - save on api calls
+      return Promise.resolve(photos);
+    }
+
+    // max queries per request
+    const MAX_QUERIES = 100;
+
+    let filters = ChromeStorage.get('googlePhotosFilter',
+        {
+          'mediaTypeFilter': {
+            'mediaTypes': [
+              'PHOTO',
+            ],
+          },
+          'contentFilter': {
+            'excludedContentCategories': [
+              'UTILITY',
+            ],
+          },
+        });
+
+    const body = {
+      'pageSize': MAX_QUERIES,
+      'filters': filters,
+    };
+    
+    const url = `${_URL_BASE}mediaItems:search`;
+
+    // get list of photos based on filter
+    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    conf.isAuth = true;
+    conf.retryToken = true;
+    conf.interactive = interactive;
+    conf.body = body;
+
+    let ct = 0;
+    let nextPageToken;
+    /** @type {module:PhotoSource.Photo[]} */
+    let newPhotos = [];
+
+    // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
+    do {
+      let response = await ChromeHttp.doPost(url, conf);
+      response = response || {};
+      
+      // convert to module:PhotoSource.Photo[]
+      const photos = this._processPhotos(response.mediaItems);
+      if (photos.length > 0) {
+        newPhotos = newPhotos.concat(photos);
+        ct+= photos.length;
+      }
+      nextPageToken = response.nextPageToken;
+      conf.body.pageToken = nextPageToken;
+    } while (nextPageToken && (ct < GoogleSource.MAX_PHOTOS));
+    
+    ChromeGA.event(MyGA.EVENT.LOAD_FILTERED_PHOTOS, `nPhotos: ${ct}`);
+
+    return Promise.resolve(newPhotos);
   }
 
   /**
    * Fetch the albums for this source
-   * @returns {Promise<module:GoogleSource.SelectedAlbum[]>} Array of albums
+   * @returns {Promise<module:GoogleSource.SelectedAlbum[]|module:PhotoSource.Photo[]>}
+   * - array of albums or array of photos
    */
   fetchPhotos() {
     const METHOD = 'GoogleSource.fetchPhotos';
-    return GoogleSource._fetchAlbums().catch((err) => {
-      if (GoogleSource.isQuotaError(err, METHOD)) {
-        // Hit Google photos quota
-      } else if (GoogleSource.isAuthRevokedError(err, METHOD)) {
-        // Oauth2 Access was revoked
-      } else {
-        ChromeLog.error(err.message, METHOD);
-      }
-      // handle error ourselves
-      return Promise.resolve([]);
-    });
+    const key = this.getUseKey();
+    if (key === PhotoSources.UseKey.ALBUMS_GOOGLE) {
+      return GoogleSource._fetchAlbums().catch((err) => {
+        if (GoogleSource.isQuotaError(err, METHOD)) {
+          // Hit Google photos quota
+        } else if (GoogleSource.isAuthRevokedError(err, METHOD)) {
+          // Oauth2 Access was revoked
+        } else {
+          ChromeLog.error(err.message, METHOD);
+        }
+        // handle error ourselves
+        return Promise.resolve([]);
+      });
+    } else {
+      return GoogleSource.loadFilteredPhotos(false).catch((err) => {
+        if (GoogleSource.isQuotaError(err, METHOD)) {
+          // Hit Google photos quota
+        } else if (GoogleSource.isAuthRevokedError(err, METHOD)) {
+          // Oauth2 Access was revoked
+        } else {
+          ChromeLog.error(err.message, METHOD);
+        }
+        // handle error ourselves
+        return Promise.resolve([]);
+      });
+
+    }
   }
 }

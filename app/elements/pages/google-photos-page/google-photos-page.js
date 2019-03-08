@@ -142,11 +142,11 @@ export const GooglePhotosPage = Polymer({
       <paper-material elevation="1">
         <app-toolbar class="page-toolbar">
           <div class="flex">[[_computeTitle(isAlbumMode)]]</div>
-          <!--<paper-icon-button-->
-              <!--id="mode"-->
-              <!--icon="[[_computeModeIcon(isAlbumMode)]]"-->
-              <!--on-tap="_onModeTapped"-->
-              <!--disabled\$="[[!useGoogle]]"></paper-icon-button>-->
+          <paper-icon-button
+              id="mode"
+              icon="[[_computeModeIcon(isAlbumMode)]]"
+              on-tap="_onModeTapped"
+              disabled\$="[[!useGoogle]]"></paper-icon-button>
           <paper-tooltip for="mode" position="left" offset="0">
             [[_computeModeTooltip(isAlbumMode)]]
           </paper-tooltip>
@@ -158,7 +158,7 @@ export const GooglePhotosPage = Polymer({
           <paper-tooltip for="deselect" position="left" offset="0">
             {{localize('tooltip_deselect')}}
           </paper-tooltip>
-          <paper-icon-button id="refresh" icon="myicons:refresh" on-tap="_onRefreshTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
+          <paper-icon-button id="refresh" icon="myicons:refresh" on-tap="_onRefreshTapped" disabled\$="[[_computeRefreshIconDisabled(useGoogle)]]"></paper-icon-button>
           <paper-tooltip for="refresh" position="left" offset="0">
             {{localize('tooltip_refresh')}}
           </paper-tooltip>
@@ -209,8 +209,8 @@ export const GooglePhotosPage = Polymer({
 
         <!-- Photos UI -->
         <template is="dom-if" if="{{!isAlbumMode}}">
-          <div class="photos-container">
-            <paper-item>
+          <div class="photos-container" hidden$="[[isHidden]]">
+            <paper-item disabled\$="[[!useGoogle]]">
               Photo UI here;
             </paper-item>
           </div>
@@ -328,6 +328,8 @@ export const GooglePhotosPage = Polymer({
   ready: function() {
     if (ChromeStorage.getBool('isAlbumMode')) {
       this.loadAlbumList().catch((err) => {});
+    } else {
+      // TODO get photo count
     }
   },
 
@@ -382,6 +384,51 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
+   * Query Google Photos for the array of user's photos
+   * @returns {Promise<null>} always resolves
+   * @memberOf GooglePhotosPage
+   */
+  loadPhotos: function() {
+    // TODO add message for photos
+    const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
+    return Permissions.request(Permissions.PICASA).then((granted) => {
+      if (!granted) {
+        // eslint-disable-next-line promise/no-nesting
+        Permissions.removeGooglePhotos().catch(() => {});
+        const err = new Error(ChromeLocale.localize('err_auth_picasa'));
+        return Promise.reject(err);
+      }
+      this.set('waitForLoad', true);
+      return GoogleSource.loadFilteredPhotos(true);
+    }).then((photos) => {
+      // TODO show photo count in UI
+      // try to save
+      const set = ChromeStorage.safeSet('googleImages', photos,
+          'useGooglePhotos');
+      if (!set) {
+        // exceeded storage limits
+        this._showStorageErrorDialog('GooglePhotosPage.loadPhotos');
+      }
+      this.set('waitForLoad', false);
+      return Promise.resolve();
+    }).catch((err) => {
+      this.set('waitForLoad', false);
+      let dialogText = 'unknown';
+      if (GoogleSource.isQuotaError(err,
+          'GooglePhotosPage.loadPhotos')) {
+        // Hit Google photos quota
+        dialogText = ChromeLocale.localize('err_google_quota');
+      } else {
+        dialogText = err.message;
+        ChromeLog.error(err.message,
+            'GooglePhotosPage.loadPhotos', ERR_TITLE);
+      }
+      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+      return Promise.reject(err);
+    });
+  },
+
+  /**
    * Query Google Photos for the contents of an album
    * @param {string} id album to load
    * @param {string} name album name
@@ -421,10 +468,15 @@ export const GooglePhotosPage = Polymer({
    */
   _getTotalPhotoCount: function() {
     let ct = 0;
-    const albums = ChromeStorage.get('albumSelections', []);
-    for (const album of albums) {
-      album.photos = album.photos || [];
-      ct += album.photos.length;
+    if (this.isAlbumMode) {
+      const albums = ChromeStorage.get('albumSelections', []);
+      for (const album of albums) {
+        album.photos = album.photos || [];
+        ct += album.photos.length;
+      }
+    } else {
+      const photos = ChromeStorage.get('googleImages', []);
+      ct = photos.length;
     }
     return ct;
   },
@@ -454,8 +506,11 @@ export const GooglePhotosPage = Polymer({
     if (this.isAlbumMode) {
       this.loadAlbumList().catch((err) => {});
     } else {
+      // remove album selections
       this.albums.splice(0, this.albums.length);
       this.selections.splice(0, this.selections.length);
+      // get the photos
+      this.loadPhotos().catch((err) => {});
     }
   },
 
@@ -465,8 +520,14 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _onRefreshTapped: function() {
-    ChromeGA.event(ChromeGA.EVENT.ICON, 'refreshGoogleAlbums');
-    this.loadAlbumList().catch((err) => {});
+    let label = 'refreshGoogleAlbums';
+    if (this.isAlbumMode) {
+      this.loadAlbumList().catch((err) => {});
+    } else {
+      label = 'refreshGooglePhotos';
+      this.loadPhotos().catch((err) => {});
+    }
+    ChromeGA.event(ChromeGA.EVENT.ICON, label);
   },
 
   /**
@@ -621,8 +682,9 @@ export const GooglePhotosPage = Polymer({
     ChromeGA.event(ChromeGA.EVENT.TOGGLE,
         `useGoogle: ${useGoogle}`);
     if (useGoogle) {
-      // Switching to enabled, reload the Google Photo albums
-      PhotoSources.process('useGoogleAlbums').catch((err) => {
+      // Switching to enabled, refresh photos from web
+      let key = this.isAlbumMode ? 'useGoogleAlbums' : 'useGooglePhotos';
+      PhotoSources.process(key).catch((err) => {
         ChromeLog.error(err.message, 'GooglePhotosPage._onUseGoogleChanged');
       });
     }
@@ -740,7 +802,7 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Computed binding: Calculate mode tooltip
+   * Computed binding: Calculate disabled state of icons used by albums
    * @param {boolean} useGoogle - true if using Google Photos
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {boolean} true if album icons should be disabled
@@ -749,6 +811,17 @@ export const GooglePhotosPage = Polymer({
    */
   _computeAlbumIconDisabled(useGoogle, isAlbumMode) {
     return !(useGoogle && isAlbumMode);
+  },
+
+  /**
+   * Computed binding: Calculate refresh icon disabled state
+   * @param {boolean} useGoogle - true if using Google Photos
+   * @returns {boolean} true if album icons should be disabled
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _computeRefreshIconDisabled(useGoogle) {
+    return !useGoogle;
   },
 
   /**
