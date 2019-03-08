@@ -89,6 +89,8 @@ const _DATA_VERSION = 21;
  * @property {boolean} useGoogle - use this photo source
  * @property {boolean} useGoogleAlbums - use this photo source
  * @property {Array} albumSelections - user's selected Google Photos albums
+ * @property {boolean} useGooglePhotos - use this photo source
+ * @property {Array} googleImages - user's selected Google Photos
  * @property {boolean} gPhotosNeedsUpdate - are the photo links stale
  * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
  * @property {boolean} isAwake - true if screensaver can be displayed
@@ -140,6 +142,7 @@ const _DEF_VALUES = {
   'useGoogleAlbums': true,
   'albumSelections': [],
   'useGooglePhotos': false,
+  'googleImage': [],
   'gPhotosNeedsUpdate': false, // not used
   'gPhotosMaxAlbums': 10, // not used
   'isAwake': true, // not used

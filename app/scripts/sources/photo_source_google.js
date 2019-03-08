@@ -50,6 +50,18 @@ import * as PhotoSources from './photo_sources.js';
  */
 
 /**
+ * Google Photos API representation of a photo
+ * @typedef {{}} module:GoogleSource.mediaItem
+ * @property {{}} id
+ * @property {{}} mimeType
+ * @property {{}} baseUrl
+ * @property {{}} productUrl
+ * @property {{}} mediaMetadata
+ * @property {{}} mediaMetadata.width
+ * @property {{}} mediaMetadata.height
+ */
+
+/**
  * Path to Google Photos API
  * @type {string}
  * @const
@@ -167,6 +179,7 @@ export default class GoogleSource extends PhotoSource {
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
+      ChromeStorage.set('googleImages', []);
       ChromeStorage.set('albumSelections', []);
       ChromeLog.error(err.message, caller,
           ChromeLocale.localize('err_auth_revoked'));
@@ -176,23 +189,22 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /** Determine if a mediaEntry is an image
-   * @param {Object} mediaEntry - Google Photos media object
-   * @property {Object} mediaEntry.mediaMetadata - Google Photos meta data
+   * @param {module:GoogleSource.mediaItem} mediaItem - Google Photos media object
    * @returns {boolean} true if entry is a photo
    * @static
    * @private
    */
-  static _isImage(mediaEntry) {
-    return mediaEntry &&
-        mediaEntry.mimeType &&
-        mediaEntry.mimeType.startsWith('image/') &&
-        mediaEntry.mediaMetadata &&
-        mediaEntry.mediaMetadata.width &&
-        mediaEntry.mediaMetadata.height;
+  static _isImage(mediaItem) {
+    return mediaItem &&
+        mediaItem.mimeType &&
+        mediaItem.mimeType.startsWith('image/') &&
+        mediaItem.mediaMetadata &&
+        mediaItem.mediaMetadata.width &&
+        mediaItem.mediaMetadata.height;
   }
 
   /** Get the image size to retrieve
-   * @param {Object} mediaMetadata - info on image
+   * @param {{}} mediaMetadata - info on image
    * @returns {{width: int, height: int}} image size
    * @static
    * @private
@@ -219,7 +231,7 @@ export default class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {Object} mediaItem - object from Google Photos API call
+   * @param {module:GoogleSource.mediaItem} mediaItem - object from Google Photos API call
    * @param {string} albumName - Album name
    * @returns {module:PhotoSource.Photo} Photo, null if error
    * @static
@@ -253,7 +265,7 @@ export default class GoogleSource extends PhotoSource {
 
   /**
    * Extract the photos into an Array
-   * @param {Object} mediaItems - objects from Google Photos API call
+   * @param {{}} mediaItems - objects from Google Photos API call
    * @param {string} [albumName=''] - optional Album name
    * @returns {module:PhotoSource.Photo[]} Array of photos
    * @static

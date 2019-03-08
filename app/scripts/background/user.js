@@ -32,6 +32,7 @@ function _onSignInChanged(account, signedIn) {
   ChromeStorage.set('signedInToChrome', signedIn);
   if (!signedIn) {
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
+    ChromeStorage.set('googleImages', []);
     ChromeStorage.set('albumSelections', []);
     const type = ChromeStorage.get('permPicasa');
     if (type === 'allowed') {

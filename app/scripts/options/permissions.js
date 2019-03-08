@@ -177,6 +177,7 @@ export function deny(type) {
 export function removeGooglePhotos() {
   return deny(PICASA).then(() => {
     // remove selected albums
+    ChromeStorage.set('googleImages', []);
     ChromeStorage.set('albumSelections', []);
 
     // remove cached Auth token
