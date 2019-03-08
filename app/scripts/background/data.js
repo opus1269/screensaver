@@ -392,7 +392,7 @@ export function update() {
 export function restoreDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
     if (!key.includes('useGoogle') &&
-        (key !== 'googlePhotosSelections') &&
+        (key !== 'googleImages') &&
         (key !== 'albumSelections')) {
       // skip Google photos settings
       ChromeStorage.set(key, _DEF_VALUES[key]);
@@ -439,15 +439,43 @@ export function processState(key = 'all', doGoogle = false) {
   } else {
     // individual change
     if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
-      // photo source change
-      const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
-      PhotoSources.process(useKey).catch((err) => {
-        // send message on processing error
-        const msg = MyMsg.PHOTO_SOURCE_FAILED;
-        msg.key = useKey;
-        msg.error = err.message;
-        return ChromeMsg.send(msg);
-      }).catch(() => {});
+      // photo source change or full resolution google photos being asked for
+      let useKey = key;
+      if (key === 'fullResGoogle') {
+        const isAlbums = ChromeStorage.getBool('useGoogleAlbums');
+        if (isAlbums) {
+          // update albums with full res. photos
+          useKey = 'useGoogleAlbums';
+          PhotoSources.process(useKey).catch((err) => {
+            // send message on processing error
+            const msg = MyMsg.PHOTO_SOURCE_FAILED;
+            msg.key = useKey;
+            msg.error = err.message;
+            return ChromeMsg.send(msg);
+          }).catch(() => {});
+        }
+        const isPhotos = ChromeStorage.getBool('useGooglePhotos');
+        if (isPhotos) {
+          // update photos with full res. photos
+          useKey = 'useGooglePhotos';
+          PhotoSources.process(useKey).catch((err) => {
+            // send message on processing error
+            const msg = MyMsg.PHOTO_SOURCE_FAILED;
+            msg.key = useKey;
+            msg.error = err.message;
+            return ChromeMsg.send(msg);
+          }).catch(() => {});
+        }
+      } else {
+        // update photo source with full res. photos
+        PhotoSources.process(useKey).catch((err) => {
+          // send message on processing error
+          const msg = MyMsg.PHOTO_SOURCE_FAILED;
+          msg.key = useKey;
+          msg.error = err.message;
+          return ChromeMsg.send(msg);
+        }).catch(() => {});
+      }
     } else {
       const fn = STATE_MAP[key];
       if (typeof (fn) !== 'undefined') {
