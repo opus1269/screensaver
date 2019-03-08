@@ -77,7 +77,8 @@ const _URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
  * @default
  * @private
  */
-const _ALBUMS_QUERY = '?pageSize=50';
+const _ALBUMS_QUERY =
+    '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,coverPhotoBaseUrl)';
 
 /**
  * Only return stuff we use
@@ -99,7 +100,7 @@ const _MEDIA_ITEMS_FIELDS =
 const _MEDIA_ITEMS_RESULTS_FIELDS =
     'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,mediaItem/mediaMetadata/height)';
 
-    /**
+/**
  * A potential source of photos from Google
  * @extends PhotoSource
  */
@@ -116,8 +117,7 @@ export default class GoogleSource extends PhotoSource {
    * @param {?Object} [loadArg=null] - optional arg for load function
    * @constructor
    */
-  constructor(useKey, photosKey, type, desc, isDaily, isArray,
-              loadArg = null) {
+  constructor(useKey, photosKey, type, desc, isDaily, isArray, loadArg = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 
@@ -189,7 +189,8 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /** Determine if a mediaEntry is an image
-   * @param {module:GoogleSource.mediaItem} mediaItem - Google Photos media object
+   * @param {module:GoogleSource.mediaItem} mediaItem - Google Photos media
+   *     object
    * @returns {boolean} true if entry is a photo
    * @static
    * @private
@@ -210,11 +211,12 @@ export default class GoogleSource extends PhotoSource {
    * @private
    */
   static _getImageSize(mediaMetadata) {
-    const MAX_SIZE = 1600;
+    const MAX_SIZE = 1920;
     const ret = {};
     ret.width = parseInt(mediaMetadata.width);
     ret.height = parseInt(mediaMetadata.height);
     if (!ChromeStorage.getBool('fullResGoogle')) {
+      // limit size of image to download
       const max = Math.max(MAX_SIZE, ret.width, ret.height);
       if (max > MAX_SIZE) {
         if (ret.width === max) {
@@ -231,7 +233,8 @@ export default class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {module:GoogleSource.mediaItem} mediaItem - object from Google Photos API call
+   * @param {module:GoogleSource.mediaItem} mediaItem - object from Google
+   *     Photos API call
    * @param {string} albumName - Album name
    * @returns {module:PhotoSource.Photo} Photo, null if error
    * @static
@@ -321,11 +324,12 @@ export default class GoogleSource extends PhotoSource {
       let query = '';
       for (let i = start; i < stop; i++) {
         query = query.concat(`&mediaItemIds=${ids[i]}`);
-       }
+      }
       url = url.concat(query);
 
       try {
         // get the new mediaItemResults
+        /** @type {{mediaItemResults}} */
         const response = await ChromeHttp.doGet(url, conf);
         nCalls++;
         const mediaItems = [];
@@ -395,6 +399,7 @@ export default class GoogleSource extends PhotoSource {
     // haven't loaded greater than MAX_ALBUM_PHOTOS.
     let numPhotos = 0;
     do {
+      /** @type {{nextPageToken, mediaItems}} */
       const response = await ChromeHttp.doPost(url, conf);
       nextPageToken = response.nextPageToken;
       conf.body.pageToken = nextPageToken;
@@ -435,6 +440,7 @@ export default class GoogleSource extends PhotoSource {
    */
   static async loadAlbumList() {
     let nextPageToken;
+    /** @type {{mediaItemsCount, coverPhotoBaseUrl}[]} */
     let gAlbums = [];
     let albums = [];
     let ct = 0;
@@ -449,19 +455,22 @@ export default class GoogleSource extends PhotoSource {
 
     // Loop while there is a nextPageToken to load more items.
     do {
+      /** @type {{nextPageToken, albums}} */
       let response = await ChromeHttp.doGet(url, conf);
       response = response || {};
-      nextPageToken = response.nextPageToken;
-      if (!response.albums || (response.albums.length === 0)) {
+      response.albums = response.albums || [];
+      if (response.albums.length === 0) {
         if ((gAlbums.length === 0) && !nextPageToken) {
-          // no albums
+          // TODO don't throw just return empty list no albums
           throw new Error(ChromeLocale.localize('err_no_albums'));
         }
       }
-      url = `${baseUrl}&pageToken=${nextPageToken}`;
       if (response.albums && (response.albums.length > 0)) {
         gAlbums = gAlbums.concat(response.albums);
       }
+
+      nextPageToken = response.nextPageToken;
+      url = `${baseUrl}&pageToken=${nextPageToken}`;
     } while (nextPageToken);
 
     // Create the array of module:GoogleSource.Album
@@ -484,8 +493,7 @@ export default class GoogleSource extends PhotoSource {
       }
     }
 
-    ChromeGA.event(MyGA.EVENT.LOAD_ALBUM_LIST,
-        `nAlbums: ${albums.length}`);
+    ChromeGA.event(MyGA.EVENT.LOAD_ALBUM_LIST, `nAlbums: ${albums.length}`);
 
     return albums;
   }
@@ -639,7 +647,7 @@ export default class GoogleSource extends PhotoSource {
       'pageSize': MAX_QUERIES,
       'filters': filters,
     };
-    
+
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
 
     // get list of photos based on filter
@@ -656,19 +664,20 @@ export default class GoogleSource extends PhotoSource {
 
     // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
     do {
+      /** @type {{nextPageToken, mediaItems}} */
       let response = await ChromeHttp.doPost(url, conf);
       response = response || {};
-      
+
       // convert to module:PhotoSource.Photo[]
       const photos = this._processPhotos(response.mediaItems);
       if (photos.length > 0) {
         newPhotos = newPhotos.concat(photos);
-        ct+= photos.length;
+        ct += photos.length;
       }
       nextPageToken = response.nextPageToken;
       conf.body.pageToken = nextPageToken;
     } while (nextPageToken && (ct < MAX_PHOTOS));
-    
+
     ChromeGA.event(MyGA.EVENT.LOAD_FILTERED_PHOTOS, `nPhotos: ${ct}`);
 
     return Promise.resolve(newPhotos);
