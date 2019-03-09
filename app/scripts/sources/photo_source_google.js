@@ -142,6 +142,21 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /**
+   * No filtering
+   * @returns {{}} value
+   * @static
+   */
+  static get NO_FILTER() {
+    return {
+      'mediaTypeFilter': {
+        'mediaTypes': [
+          'PHOTO',
+        ],
+      },
+    };
+  }
+
+  /**
    * Max albums to use
    * @returns {int} value
    * @static
@@ -352,12 +367,17 @@ export default class GoogleSource extends PhotoSource {
     }
 
     // TODO finalize this valuemax photos to load
-    const MAX_PHOTOS = 5000;
+    const MAX_PHOTOS = 1000;
     // max queries per request
     const MAX_QUERIES = 100;
 
     // filter for photo selections
-    const filters = ChromeStorage.get('googlePhotosFilter', this.DEF_FILTER);
+    let filters;
+    if (ChromeStorage.get('googlePhotosNoFilter', false)) {
+      filters = this.NO_FILTER;
+    } else {
+      filters = ChromeStorage.get('googlePhotosFilter', this.DEF_FILTER);
+    }
 
     const body = {
       'pageSize': MAX_QUERIES,

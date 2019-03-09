@@ -20,6 +20,7 @@ import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js
 
 import './photo_cat.js';
 import '../../../elements/waiter-element/waiter-element.js';
+import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
@@ -44,8 +45,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 export const GooglePhotosPage = Polymer({
   // language=HTML format=false
-  _template: html`
-<!--suppress CssUnresolvedCustomPropertySet -->
+  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
 <style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
 <style>
@@ -91,35 +91,43 @@ export const GooglePhotosPage = Polymer({
       <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
     </paper-item>
     <paper-button raised disabled$="[[!needsPhotoRefresh]]" on-click="_onRefreshPhotosClicked">
-      [[localize('tooltip_refresh_photos')]]
+      [[localize('button_needs_refresh')]]
     </paper-button>
   </div>
+  
+  <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
+                  secondary-label="{{localize('photo_no_filter_desc')}}"
+                  on-tap="_noFilterTapped"
+                  checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
+  
   <photo-cat id="LANDSCAPES" section-title="[[localize('photo_cat_title')]]"
              label="[[localize('photo_cat_landscapes')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <paper-item class="album-note">
     {{localize('note_albums')}}
   </paper-item>
 
   <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  </app-localstorage-document>
+  <app-localstorage-document key="googlePhotosNoFilter" data="{{noFilter}}" storage="window.localStorage">
   </app-localstorage-document>
 
 </div>
@@ -133,7 +141,7 @@ export const GooglePhotosPage = Polymer({
 
   properties: {
 
-     /**
+    /**
      * Do we need to reload the photos
      * @memberOf PhotosView
      */
@@ -150,6 +158,16 @@ export const GooglePhotosPage = Polymer({
     photoCount: {
       type: Number,
       value: 0,
+      notify: true,
+    },
+
+    /**
+     * Flag to indicate if we should not filter photos
+     * @memberOf PhotosView
+     */
+    noFilter: {
+      type: Boolean,
+      value: false,
       notify: true,
     },
 
@@ -172,7 +190,7 @@ export const GooglePhotosPage = Polymer({
       value: false,
       notify: true,
     },
-    
+
     /**
      * Status of the option permission for the Google Photos API
      * @memberOf PhotosView
@@ -269,6 +287,43 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
+   * Save the current filter state
+   * @private
+   * @memberOf PhotosView
+   */
+  _saveFilter: function() {
+    const els = this.shadowRoot.querySelectorAll('photo-cat');
+    const filter = GoogleSource.DEF_FILTER;
+    let includes = filter.contentFilter.includedContentCategories || [];
+    let excludes = filter.contentFilter.excludedContentCategories || [];
+    for (const el of els) {
+      const cat = el.id;
+      const state = el.selected;
+      if (state === 'include') {
+        const idx = includes.findIndex((e) => {
+          return e === cat;
+        });
+        if (idx === -1) {
+          includes.push(cat);
+        }
+      } else {
+        const idx = excludes.findIndex((e) => {
+          return e === cat;
+        });
+        if (idx === -1) {
+          excludes.push(cat);
+        }
+      }
+    }
+    
+    filter.contentFilter.excludedContentCategories = excludes;
+    filter.contentFilter.includedContentCategories = includes;
+
+    this.set('needsPhotoRefresh', true);
+    ChromeStorage.set('googlePhotosFilter', filter);
+  },
+
+  /**
    * Set the states of the photo-cat elements
    * @private
    * @memberOf PhotosView
@@ -304,7 +359,7 @@ export const GooglePhotosPage = Polymer({
     ChromeLog.error('safeSet failed', method, ERR_TITLE);
     showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
   },
-  
+
   /**
    * Event: Selection of photo-cat changed
    * @param {Event} ev
@@ -313,7 +368,7 @@ export const GooglePhotosPage = Polymer({
    */
   _onPhotoCatChanged: function(ev) {
     const cat = ev.srcElement.id;
-    const selected = ev.detail.selected;
+    const selected = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter',
         GoogleSource.DEF_FILTER);
     const excludes = filter.contentFilter.excludedContentCategories || [];
@@ -358,6 +413,32 @@ export const GooglePhotosPage = Polymer({
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
   },
 
+  /**
+   * Event: No filters toggle changed
+   * @private
+   * @memberOf PhotosView
+   */
+  _noFilterTapped: function() {
+    if (this.noFilter) {
+      this.set('needsPhotoRefresh', true);
+      ChromeStorage.set('googlePhotosFilter', GoogleSource.DEF_FILTER);
+    } else {
+      this._saveFilter();
+    }
+  },
+
+  /**
+   * Computed property: Disabled state of filter ui elements
+   * @param {boolean} disabled - true if whole UI is disabled
+   * @param {boolean} noFilter - true if not filtering
+   * @returns {boolean} true if hidden
+   * @private
+   * @memberOf PhotosView
+   */
+  _computeFilterDisabled: function(disabled, noFilter) {
+    return disabled || noFilter;
+  },
+  
   /**
    * Computed property: Hidden state of main interface
    * @param {boolean} waitForLoad - true if loading
