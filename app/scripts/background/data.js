@@ -384,10 +384,11 @@ export function update() {
  */
 export function restoreDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
+    // skip Google photos settings
     if (!key.includes('useGoogle') &&
+        (key !== 'permPicasa') &&
         (key !== 'googleImages') &&
         (key !== 'albumSelections')) {
-      // skip Google photos settings
       ChromeStorage.set(key, _DEF_VALUES[key]);
     }
   });
