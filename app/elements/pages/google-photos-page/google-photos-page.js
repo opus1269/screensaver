@@ -139,6 +139,14 @@ export const GooglePhotosPage = Polymer({
         color: var(--disabled-text-color);
       }
       
+      :host paper-button {
+        @apply --paper-font-title;
+      }
+
+      :host #albumNote {
+        @apply --paper-font-title;
+      }
+
       :host #photoCount {
         @apply --paper-font-title;
       }
@@ -159,19 +167,19 @@ export const GooglePhotosPage = Polymer({
           </paper-tooltip>
           <paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
           <paper-tooltip for="select" position="left" offset="0">
-            {{localize('tooltip_select')}}
+            [[localize('tooltip_select')]]
           </paper-tooltip>
           <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_onDeselectAllTapped" disabled\$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
           <paper-tooltip for="deselect" position="left" offset="0">
-            {{localize('tooltip_deselect')}}
+            [[localize('tooltip_deselect')]]
           </paper-tooltip>
           <paper-icon-button id="refresh" icon="myicons:refresh" on-tap="_onRefreshTapped" disabled\$="[[_computeRefreshIconDisabled(useGoogle)]]"></paper-icon-button>
           <paper-tooltip for="refresh" position="left" offset="0">
-            {{localize('tooltip_refresh')}}
+            [[_computeRefreshTooltip(isAlbumMode)]]
           </paper-tooltip>
           <paper-toggle-button id="googlePhotosToggle" on-change="_onUseGoogleChanged" checked="{{useGoogle}}"></paper-toggle-button>
           <paper-tooltip for="googlePhotosToggle" position="left" offset="0">
-            {{localize('tooltip_google_toggle')}}
+            [[localize('tooltip_google_toggle')]]
           </paper-tooltip>
           <app-localstorage-document key="useGoogle" data="{{useGoogle}}" storage="window.localStorage">
           </app-localstorage-document>
@@ -217,29 +225,35 @@ export const GooglePhotosPage = Polymer({
         <!-- Photos UI -->
         <template is="dom-if" if="{{!isAlbumMode}}">
           <div class="photos-container" hidden\$="[[isHidden]]">
-            <paper-item id="photoCount" disabled\$="[[!useGoogle]]">
-              <span>{{localize('photo_count')}}</span>&nbsp <span>[[photoCount]]</span>
+            <paper-item class="list-note">
+              {{localize('note_albums')}}
             </paper-item>
-             <photo-cat id="LANDSCAPES"  section-title="{{localize('photo_cat_title')}}" 
-              label="{{localize('photo_cat_landscapes')}}"
+            <div class="horizontal layout">
+              <paper-item class="flex" id="photoCount" disabled\$="[[!useGoogle]]">
+                <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
+              </paper-item>
+              <paper-button raised disabled\$="[[!needsPhotoRefresh]]" on-click="_onRefreshPhotosClicked">[[localize('tooltip_refresh_photos')]]</paper-button>
+            </div>
+             <photo-cat id="LANDSCAPES"  section-title="[[localize('photo_cat_title')]]" 
+              label="[[localize('photo_cat_landscapes')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="CITYSCAPES" label="{{localize('photo_cat_cityscapes')}}"
+             <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="ANIMALS" label="{{localize('photo_cat_animals')}}"
+             <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="PEOPLE" label="{{localize('photo_cat_people')}}"
+             <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="PETS" label="{{localize('photo_cat_pets')}}"
+             <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="PERFORMANCES" label="{{localize('photo_cat_performances')}}"
+             <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="SPORT" label="{{localize('photo_cat_sport')}}"
+             <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="FOOD" label="{{localize('photo_cat_food')}}"
+             <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="SELFIES" label="{{localize('photo_cat_selfies')}}"
+             <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-             <photo-cat id="UTILITY" label="{{localize('photo_cat_utility')}}" selected="exclude"
+             <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
           </div>
         </template>
@@ -317,6 +331,16 @@ export const GooglePhotosPage = Polymer({
     selections: {
       type: Array,
       value: [],
+    },
+
+    /**
+     * Do we need to reload the photos
+     * @memberOf GooglePhotosPage
+     */
+    needsPhotoRefresh: {
+      type: Boolean,
+      value: false,
+      notify: true,
     },
 
     /**
@@ -400,7 +424,7 @@ export const GooglePhotosPage = Polymer({
 
       this.splice('albums', 0, this.albums.length);
 
-      if (albums.length) {
+      if (albums.length !== 0) {
         for (const album of albums) {
           this.push('albums', album);
         }
@@ -416,6 +440,8 @@ export const GooglePhotosPage = Polymer({
         // no albums, use photo mode
         this.set('isAlbumMode', false);
         this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
+        ChromeLog.error(ChromeLocale.localize('err_no_albums',
+            'GooglePhotosPage.loadAlbumList'));
       }
       this.set('waitForLoad', false);
       return null;
@@ -462,6 +488,7 @@ export const GooglePhotosPage = Polymer({
         // exceeded storage limits
         this._showStorageErrorDialog('GooglePhotosPage.loadPhotos');
       } else {
+        this.set('needsPhotoRefresh', false);
         this.set('photoCount', photos.length);
       }
 
@@ -794,7 +821,18 @@ export const GooglePhotosPage = Polymer({
     filter.contentFilter.excludedContentCategories = excludes;
     filter.contentFilter.includedContentCategories = includes;
 
+    this.set('needsPhotoRefresh', true);
     ChromeStorage.set('googlePhotosFilter', filter);
+  },
+
+  /**
+   * Event: Refresh photos button clicked
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _onRefreshPhotosClicked: function() {
+    this.loadPhotos().catch((err) => {});
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
   },
 
   /**
@@ -937,6 +975,21 @@ export const GooglePhotosPage = Polymer({
    */
   _computeAlbumIconDisabled(useGoogle, isAlbumMode) {
     return !(useGoogle && isAlbumMode);
+  },
+
+  /**
+   * Computed binding: Calculate refresh tooltip
+   * @param {boolean} isAlbumMode - true if album mode
+   * @returns {string} tooltip label
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _computeRefreshTooltip(isAlbumMode) {
+    let label = ChromeLocale.localize('tooltip_refresh');
+    if (!isAlbumMode) {
+      label = ChromeLocale.localize('tooltip_refresh_photos');
+    }
+    return label;
   },
 
   /**

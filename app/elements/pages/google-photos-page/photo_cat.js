@@ -87,12 +87,6 @@ Polymer({
      */
 
     /**
-     * Fired when the selected state changes due to user interaction.
-     * @event change
-     * @memberOf PhotoCat
-     */
-
-    /**
      * Descriptive label
      * @memberOf PhotoCat
      */
