@@ -97,6 +97,7 @@ const _DATA_VERSION = 21;
  * @property {boolean} isAwake - true if screensaver can be displayed
  * @property {boolean} isShowing - true if screensaver is showing
  * @property {boolean} signedInToChrome - state of Chrome signin
+ * @property {boolean} googlePhotosNoFilter - don't filter photos
  * @property {{}} googlePhotosFilter - filter for retrieving google photos
  */
 
@@ -149,6 +150,7 @@ const _DEF_VALUES = {
   'isAwake': true, // not used
   'isShowing': false, // not used
   'signedInToChrome': true,
+  'googlePhotosNoFilter': false,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
 };
 
