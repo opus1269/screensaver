@@ -129,26 +129,6 @@ export const GooglePhotosPage = Polymer({
 
   properties: {
 
-    /**
-     * Should we use the album photos in the screensaver
-     * @memberOf PhotosView
-     */
-    useGoogleAlbums: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /**
-     * Should we use the google photos in the screensaver
-     * @memberOf PhotosView
-     */
-    useGooglePhotos: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
      /**
      * Do we need to reload the photos
      * @memberOf PhotosView
@@ -174,16 +154,6 @@ export const GooglePhotosPage = Polymer({
      * @memberOf PhotosView
      */
     waitForLoad: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
-    /**
-     * Flag to determine if main list should be hidden
-     * @memberOf PhotosView
-     */
-    isHidden: {
       type: Boolean,
       value: false,
       notify: true,
