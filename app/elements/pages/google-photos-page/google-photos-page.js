@@ -23,10 +23,13 @@ import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.j
 import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
-import '../../../elements/my_icons.js';
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import './photo_cat.js';
+import {LocalizeBehavior} from
+      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
 import * as MyGA from '../../../scripts/my_analytics.js';
@@ -136,6 +139,10 @@ export const GooglePhotosPage = Polymer({
         color: var(--disabled-text-color);
       }
       
+      :host #photoCount {
+        @apply --paper-font-title;
+      }
+
     </style>
 
     <paper-material elevation="1" class="page-container">
@@ -209,10 +216,31 @@ export const GooglePhotosPage = Polymer({
 
         <!-- Photos UI -->
         <template is="dom-if" if="{{!isAlbumMode}}">
-          <div class="photos-container" hidden$="[[isHidden]]">
-            <paper-item disabled\$="[[!useGoogle]]">
-              Photo UI here;
+          <div class="photos-container" hidden\$="[[isHidden]]">
+            <paper-item id="photoCount" disabled\$="[[!useGoogle]]">
+              <span>{{localize('photo_count')}}</span>&nbsp <span>[[photoCount]]</span>
             </paper-item>
+             <photo-cat id="LANDSCAPES"  section-title="{{localize('photo_cat_title')}}" 
+              label="{{localize('photo_cat_landscapes')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="CITYSCAPES" label="{{localize('photo_cat_cityscapes')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="ANIMALS" label="{{localize('photo_cat_animals')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="PEOPLE" label="{{localize('photo_cat_people')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="PETS" label="{{localize('photo_cat_pets')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="PERFORMANCES" label="{{localize('photo_cat_performances')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="SPORT" label="{{localize('photo_cat_sport')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="FOOD" label="{{localize('photo_cat_food')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="SELFIES" label="{{localize('photo_cat_selfies')}}"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+             <photo-cat id="UTILITY" label="{{localize('photo_cat_utility')}}" selected="exclude"
+              on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
           </div>
         </template>
 
@@ -292,6 +320,16 @@ export const GooglePhotosPage = Polymer({
     },
 
     /**
+     * Count for photo mode
+     * @memberOf GooglePhotosPage
+     */
+    photoCount: {
+      type: Number,
+      value: 0,
+      notify: true,
+    },
+
+    /**
      * Flag to display the loading... UI
      * @memberOf GooglePhotosPage
      */
@@ -326,10 +364,17 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   ready: function() {
-    if (ChromeStorage.getBool('isAlbumMode')) {
+    if (ChromeStorage.getBool('isAlbumMode', true)) {
       this.loadAlbumList().catch((err) => {});
     } else {
-      // TODO get photo count
+      // TODO should be a data item?
+      setTimeout(function() {
+        const ct = this._getTotalPhotoCount();
+        this.set('photoCount', ct);
+        
+        // set state of photo categories
+        this._setPhotoCats();
+      }.bind(this), 0);
     }
   },
 
@@ -348,24 +393,32 @@ export const GooglePhotosPage = Polymer({
         return Promise.reject(err);
       }
       this.set('waitForLoad', true);
+      // get all the user's albums
       return GoogleSource.loadAlbumList();
     }).then((albums) => {
-      // get all the user's albums
-      this.splice('albums', 0, this.albums.length);
       albums = albums || [];
-      albums.forEach((album) => {
-        this.push('albums', album);
-      });
-      // update the currently selected albums from the web
-      // eslint-disable-next-line promise/no-nesting
-      // TODO do we need this?
-      // PhotoSources.process('useGoogleAlbums').catch((err) => {
-      //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
-      // });
-      // set selected state on albums
-      this._selectAlbums();
+
+      this.splice('albums', 0, this.albums.length);
+
+      if (albums.length) {
+        for (const album of albums) {
+          this.push('albums', album);
+        }
+        // update the currently selected albums from the web
+        // eslint-disable-next-line promise/no-nesting
+        // TODO do we need this?
+        // PhotoSources.process('useGoogleAlbums').catch((err) => {
+        //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
+        // });
+        // set selected state on albums
+        this._selectAlbums();
+      } else {
+        // no albums, use photo mode
+        this.set('isAlbumMode', false);
+        this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
+      }
       this.set('waitForLoad', false);
-      return Promise.resolve();
+      return null;
     }).catch((err) => {
       this.set('waitForLoad', false);
       let dialogText = 'unknown';
@@ -389,8 +442,7 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   loadPhotos: function() {
-    // TODO add message for photos
-    const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
+    const ERR_TITLE = ChromeLocale.localize('err_load_photos');
     return Permissions.request(Permissions.PICASA).then((granted) => {
       if (!granted) {
         // eslint-disable-next-line promise/no-nesting
@@ -401,16 +453,20 @@ export const GooglePhotosPage = Polymer({
       this.set('waitForLoad', true);
       return GoogleSource.loadFilteredPhotos(true);
     }).then((photos) => {
-      // TODO show photo count in UI
+      photos = photos || [];
+
       // try to save
       const set = ChromeStorage.safeSet('googleImages', photos,
           'useGooglePhotos');
       if (!set) {
         // exceeded storage limits
         this._showStorageErrorDialog('GooglePhotosPage.loadPhotos');
+      } else {
+        this.set('photoCount', photos.length);
       }
+
       this.set('waitForLoad', false);
-      return Promise.resolve();
+      return null;
     }).catch((err) => {
       this.set('waitForLoad', false);
       let dialogText = 'unknown';
@@ -482,6 +538,31 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
+   * Set the states of the photo-cat elements
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _setPhotoCats: function() {
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    const excludes = filter.contentFilter.excludedContentCategories || [];
+    const includes = filter.contentFilter.includedContentCategories || [];
+    
+    for (const exclude of excludes) {
+      const el = this.shadowRoot.getElementById(exclude);
+      if (el) {
+        el.selected = 'exclude';
+      }
+    }
+    for (const include of includes) {
+      const el = this.shadowRoot.getElementById(include);
+      if (el) {
+        el.selected = 'include';
+      }
+    }
+  },
+
+  /**
    * Set keys for photo sources
    * @param {boolean} useGoogle - Google Photos use enabled
    * @param {boolean} isAlbumMode - Are we in album mode
@@ -501,14 +582,17 @@ export const GooglePhotosPage = Polymer({
    * @memberOf GooglePhotosPage
    */
   _onModeTapped: function() {
+    // TODO probably need dialog to prompt about losing selections
     this.set('isAlbumMode', !this.isAlbumMode);
     this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
     if (this.isAlbumMode) {
+      ChromeStorage.set('googleImages', []);
       this.loadAlbumList().catch((err) => {});
     } else {
       // remove album selections
       this.albums.splice(0, this.albums.length);
       this.selections.splice(0, this.selections.length);
+      ChromeStorage.set('albumSelections', []);
       // get the photos
       this.loadPhotos().catch((err) => {});
     }
@@ -669,6 +753,48 @@ export const GooglePhotosPage = Polymer({
       }
     }
 
+  },
+
+  /**
+   * Event: Selection of photo-cat changed
+   * @param {Event} ev
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _onPhotoCatChanged: function(ev) {
+    const cat = ev.srcElement.id;
+    const selected = ev.detail.selected;
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    const excludes = filter.contentFilter.excludedContentCategories || [];
+    const includes = filter.contentFilter.includedContentCategories || [];
+    const excludesIdx = excludes.findIndex((e) => {
+      return e === cat;
+    });
+    const includesIdx = includes.findIndex((e) => {
+      return e === cat;
+    });
+
+    // add and category remove as appropriate
+    if (selected === 'include') {
+      if (includesIdx === -1) {
+        includes.push(cat);
+      }
+      if (excludesIdx !== -1) {
+        excludes.splice(excludesIdx, 1);
+      }
+    } else {
+      if (excludesIdx === -1) {
+        excludes.push(cat);
+      }
+      if (includesIdx !== -1) {
+        includes.splice(excludesIdx, 1);
+      }
+    }
+    filter.contentFilter.excludedContentCategories = excludes;
+    filter.contentFilter.includedContentCategories = includes;
+
+    ChromeStorage.set('googlePhotosFilter', filter);
   },
 
   /**

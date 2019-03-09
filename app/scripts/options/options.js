@@ -412,12 +412,12 @@ function _showGooglePhotosPage(index) {
   if (!t.pages[index].ready) {
     // create the page the first time
     t.pages[index].ready = true;
-    t.gPhotosPage =
-        new GooglePhotosPage('gPhotosPage');
+    t.gPhotosPage = new GooglePhotosPage('gPhotosPage');
     t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
   } else if (ChromeStorage.getBool('isAlbumMode')) {
     t.gPhotosPage.loadAlbumList().catch(() => {});
   }
+  // TODO anything to do for photo mode?
   t.route = t.pages[index].route;
 }
 

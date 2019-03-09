@@ -122,6 +122,26 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /**
+   * Default photo filter
+   * @returns {{}} value
+   * @static
+   */
+  static get DEF_FILTER() {
+    return {
+      'mediaTypeFilter': {
+        'mediaTypes': [
+          'PHOTO',
+        ],
+      },
+      'contentFilter': {
+        'excludedContentCategories': [
+          'UTILITY',
+        ],
+      },
+    };
+  }
+
+  /**
    * Max albums to use
    * @returns {int} value
    * @static
@@ -434,7 +454,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Retrieve the user's list of albums
    * @throws An error if the album list failed to load.
-   * @returns {module:GoogleSource.Album[]} Array of albums
+   * @returns {Promise<Array<module:GoogleSource.Album>>} Array of albums
    * @static
    * @async
    */
@@ -457,15 +477,10 @@ export default class GoogleSource extends PhotoSource {
     do {
       /** @type {{nextPageToken, albums}} */
       let response = await ChromeHttp.doGet(url, conf);
+      
       response = response || {};
       response.albums = response.albums || [];
-      if (response.albums.length === 0) {
-        if ((gAlbums.length === 0) && !nextPageToken) {
-          // TODO don't throw just return empty list no albums
-          throw new Error(ChromeLocale.localize('err_no_albums'));
-        }
-      }
-      if (response.albums && (response.albums.length > 0)) {
+      if (response.albums.length) {
         gAlbums = gAlbums.concat(response.albums);
       }
 
@@ -624,8 +639,8 @@ export default class GoogleSource extends PhotoSource {
       return Promise.resolve(photos);
     }
 
-    // max photos to load
-    const MAX_PHOTOS = 1000;
+    // TODO finalize this valuemax photos to load
+    const MAX_PHOTOS = 100;
     // max queries per request
     const MAX_QUERIES = 100;
 

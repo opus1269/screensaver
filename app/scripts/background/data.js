@@ -7,6 +7,7 @@
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
+import GoogleSource from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeAuth
@@ -148,18 +149,7 @@ const _DEF_VALUES = {
   'isAwake': true, // not used
   'isShowing': false, // not used
   'signedInToChrome': true,
-  'googlePhotosFilter': {
-      'mediaTypeFilter': {
-        'mediaTypes': [
-          'PHOTO',
-        ],
-      },
-      'contentFilter': {
-        'excludedContentCategories': [
-          'UTILITY',
-        ],
-      },
-  },
+  'googlePhotosFilter': GoogleSource.DEF_FILTER,
 };
 
 /**

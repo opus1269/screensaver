@@ -518,6 +518,51 @@
   "err_auth_revoked": {
     "message": "You no longer have access to your Google Photos. Please reselect them."
   },
+  "err_load_photos": {
+    "message": "Failed to retrieve Google Photos"
+  },
+  "photo_cat_title": {
+    "message": "Select photo categories to include or exclude"
+  },
+  "photo_count": {
+    "message": "Number of photos:"
+  },
+  "include": {
+    "message": "Include"
+  },
+  "exclude": {
+    "message": "Exclude"
+  },
+  "photo_cat_utility": {
+    "message": "UTILITY (recommended to exclude)"
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_food": {
+    "message": "FOOD"
+  },
+  "photo_cat_people": {
+    "message": "PEOPLE"
+  },
+  "photo_cat_landscapes": {
+    "message": "LANDSCAPES"
+  },
+  "photo_cat_cityscapes": {
+    "message": "CITYSCAPES"
+  },
+  "photo_cat_animals": {
+    "message": "ANIMALS"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_performances": {
+    "message": "PERFORMANCES"
+  },
+  "photo_cat_pets": {
+    "message": "PETS"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"
