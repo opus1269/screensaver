@@ -675,16 +675,6 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Event: Refresh photos button clicked
-   * @private
-   * @memberOf GooglePhotosPage
-   */
-  _onRefreshPhotosClicked: function() {
-    this.loadPhotos().catch((err) => {});
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
-  },
-
-  /**
    * Event: checked state changed on main toggle changed
    * @private
    * @memberOf GooglePhotosPage

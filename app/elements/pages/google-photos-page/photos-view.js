@@ -26,7 +26,6 @@ import '../../../elements/shared-styles.js';
 import {showErrorDialog} from '../../../scripts/options/options.js';
 import * as Permissions from '../../../scripts/options/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
-import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -198,7 +197,7 @@ export const GooglePhotosPage = Polymer({
   ready: function() {
     // TODO should be a data item?
     setTimeout(function() {
-      const ct = this.getTotalPhotoCount();
+      const ct = this._getTotalPhotoCount();
       this.set('photoCount', ct);
 
       // set state of photo categories
@@ -258,9 +257,10 @@ export const GooglePhotosPage = Polymer({
   /**
    * Get total photo count that is currently saved
    * @returns {int} Total number of photos saved
+   * @private
    * @memberOf PhotosView
    */
-  getTotalPhotoCount: function() {
+  _getTotalPhotoCount: function() {
     const photos = ChromeStorage.get('googleImages', []);
     return photos.length;
   },
@@ -288,36 +288,6 @@ export const GooglePhotosPage = Polymer({
         el.selected = 'include';
       }
     }
-  },
-
-  /**
-   * Set keys for photo sources
-   * @param {boolean} useGoogle - Google Photos use enabled
-   * @param {boolean} isAlbumMode - Are we in album mode
-   * @private
-   * @memberOf PhotosView
-   */
-  _setUseKeys: function(useGoogle, isAlbumMode) {
-    const useAlbums = (useGoogle && isAlbumMode);
-    const usePhotos = (useGoogle && !isAlbumMode);
-    this.set('useGoogleAlbums', useAlbums);
-    this.set('useGooglePhotos', usePhotos);
-  },
-
-  /**
-   * Event: Handle tap on refresh album list icon
-   * @private
-   * @memberOf PhotosView
-   */
-  _onRefreshTapped: function() {
-    let label = 'refreshGoogleAlbums';
-    if (this.isAlbumMode) {
-      this.loadAlbumList().catch((err) => {});
-    } else {
-      label = 'refreshGooglePhotos';
-      this.loadPhotos().catch((err) => {});
-    }
-    ChromeGA.event(ChromeGA.EVENT.ICON, label);
   },
 
   /**
@@ -374,25 +344,6 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Event: checked state changed on main toggle changed
-   * @private
-   * @memberOf PhotosView
-   */
-  _onUseGoogleChanged: function() {
-    const useGoogle = this.$.googlePhotosToggle.checked;
-    this._setUseKeys(useGoogle, this.isAlbumMode);
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE,
-        `useGoogle: ${useGoogle}`);
-    if (useGoogle) {
-      // Switching to enabled, refresh photos from web
-      let key = this.isAlbumMode ? 'useGoogleAlbums' : 'useGooglePhotos';
-      PhotoSources.process(key).catch((err) => {
-        ChromeLog.error(err.message, 'GooglePhotosPage._onUseGoogleChanged');
-      });
-    }
-  },
-
-  /**
    * Exceeded storage limits error
    * @param {string} method - function that caused error
    * @private
@@ -402,20 +353,5 @@ export const GooglePhotosPage = Polymer({
     const ERR_TITLE = ChromeLocale.localize('err_storage_title');
     ChromeLog.error('safeSet failed', method, ERR_TITLE);
     showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
-  },
-
-  /**
-   * Computed binding: Set photo count label on an album
-   * @param {int} count - number of photos in album
-   * @returns {string} i18n label
-   * @private
-   * @memberOf PhotosView
-   */
-  _computePhotoLabel: function(count) {
-    let ret = `${count} ${ChromeLocale.localize('photos')}`;
-    if (count === 1) {
-      ret = `${count} ${ChromeLocale.localize('photo')}`;
-    }
-    return ret;
   },
 });
