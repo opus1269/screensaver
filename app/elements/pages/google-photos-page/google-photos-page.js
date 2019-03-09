@@ -106,6 +106,22 @@ export const GooglePhotosPage = Polymer({
         white-space: normal;
       }
 
+      :host .album-note {
+        @apply --paper-font-title;
+        border: 1px #CCCCCC;
+        border-top-style: solid;
+        padding: 8px 16px 8px 16px;
+        margin-right: 0;
+        white-space: normal;
+      }
+
+      :host .photo-count-container {
+        border: 1px #CCCCCC;
+        border-bottom-style: solid;
+        padding: 16px 0 16px 0;
+        white-space: normal;
+      }
+
       :host .list-item {
         position: relative;
         border: 1px #CCCCCC;
@@ -140,16 +156,19 @@ export const GooglePhotosPage = Polymer({
       }
       
       :host paper-button {
+        margin: 0;
         @apply --paper-font-title;
       }
 
       :host #albumNote {
         @apply --paper-font-title;
-      }
+        padding-right: 0;
+ }
 
       :host #photoCount {
         @apply --paper-font-title;
-      }
+        padding-right: 0;
+}
 
     </style>
 
@@ -225,10 +244,7 @@ export const GooglePhotosPage = Polymer({
         <!-- Photos UI -->
         <template is="dom-if" if="{{!isAlbumMode}}">
           <div class="photos-container" hidden\$="[[isHidden]]">
-            <paper-item class="list-note">
-              {{localize('note_albums')}}
-            </paper-item>
-            <div class="horizontal layout">
+            <div class="photo-count-container horizontal layout">
               <paper-item class="flex" id="photoCount" disabled\$="[[!useGoogle]]">
                 <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
               </paper-item>
@@ -255,6 +271,9 @@ export const GooglePhotosPage = Polymer({
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
              <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
               on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
+            <paper-item class="album-note">
+              {{localize('note_albums')}}
+            </paper-item>
           </div>
         </template>
 
