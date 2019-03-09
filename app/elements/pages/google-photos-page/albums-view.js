@@ -11,6 +11,7 @@ import '../../../node_modules/@polymer/iron-label/iron-label.js';
 import '../../../node_modules/@polymer/iron-image/iron-image.js';
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
@@ -31,7 +32,6 @@ import * as MyGA from '../../../scripts/my_analytics.js';
 import {showErrorDialog} from '../../../scripts/options/options.js';
 import * as Permissions from '../../../scripts/options/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
-import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -58,95 +58,101 @@ const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
 /**
- * Polymer element for selectig Google Photos albums
+ * Polymer element for selecting Google Photos albums
  * @namespace AlbumsView
  */
 export const GooglePhotosPage = Polymer({
+  // language=HTML format=false
   _template: html`
-    <!--suppress CssUnresolvedCustomPropertySet -->
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <style>
-      :host {
-        display: block;
-        position: relative;
-      }
+<!--suppress CssUnresolvedCustomPropertySet -->
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<style>
+  :host {
+    display: block;
+    position: relative;
+  }
 
-      :host .waiter {
-        margin: 40px auto;
-      }
+  :host .waiter {
+    margin: 40px auto;
+  }
 
-      :host .waiter paper-item {
-        @apply --paper-font-title;
-        margin: 40px auto;
-      }
+  :host .waiter paper-item {
+    @apply --paper-font-title;
+    margin: 40px auto;
+  }
 
-      :host .list-note {
-        @apply --paper-font-title;
-        border: 1px #CCCCCC;
-        border-bottom-style: solid;
-        padding: 8px 16px 8px 16px;
-        white-space: normal;
-      }
+  :host .list-note {
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 8px 16px 8px 16px;
+    white-space: normal;
+  }
 
-      :host .list-item {
-        position: relative;
-        border: 1px #CCCCCC;
-        border-bottom-style: solid;
-        padding: 0 0 0 5px;
-        cursor: pointer;
-      }
+  :host .list-item {
+    position: relative;
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 0 0 0 5px;
+    cursor: pointer;
+  }
 
-      :host .list-item paper-item-body {
-        padding-left: 10px;
-      }
+  :host .list-item paper-item-body {
+    padding-left: 10px;
+  }
 
-      :host .list-item paper-item {
-        padding-right: 0;
-      }
+  :host .list-item paper-item {
+    padding-right: 0;
+  }
 
-      :host .list-item iron-image {
-        height: 72px;
-        width: 72px;
-      }
+  :host .list-item iron-image {
+    height: 72px;
+    width: 72px;
+  }
 
-      :host .list-item[disabled] iron-image {
-        opacity: .2;
-      }
+  :host .list-item[disabled] iron-image {
+    opacity: .2;
+  }
 
-      :host .list-item[disabled] {
-        pointer-events: none;
-      }
+  :host .list-item[disabled] {
+    pointer-events: none;
+  }
 
-      :host .list-item[disabled] .setting-label {
-        color: var(--disabled-text-color);
-      }
+  :host .list-item[disabled] .setting-label {
+    color: var(--disabled-text-color);
+  }
 
-    </style>
+</style>
 
-   <waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"></waiter-element>
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"></waiter-element>
 
-   <div class="list-container" hidden\$="[[waitForLoad]]">
-    <paper-item class="list-note">
-      {{localize('google_shared_albums_note')}}
-    </paper-item>
+<div class="list-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+  <paper-item class="list-note">
+    {{localize('google_shared_albums_note')}}
+  </paper-item>
 
-    <template is="dom-repeat" id="t" items="{{albums}}" as="album">
-      <div class="list-item" id="[[album.uid]]" disabled\$="[[!useGoogle]]">
-        <iron-label>
-          <paper-item class="center horizontal layout" tabindex="-1">
-            <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged" disabled\$="[[!useGoogle]]"></paper-checkbox>
-            <paper-item-body class="flex" two-line="">
-              <div class="setting-label">{{album.name}}</div>
-              <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
-              <paper-ripple center=""></paper-ripple>
-            </paper-item-body>
-            <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled\$="[[!useGoogle]]"></iron-image>
-          </paper-item>
-        </iron-label>
-      </div>
-    </template>
-  </div>
+  <template is="dom-repeat" id="t" items="{{albums}}" as="album">
+    <div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
+      <iron-label>
+        <paper-item class="center horizontal layout" tabindex="-1">
+          <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
+                          disabled$="[[disabled]]"></paper-checkbox>
+          <paper-item-body class="flex" two-line="">
+            <div class="setting-label">{{album.name}}</div>
+            <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
+            <paper-ripple center=""></paper-ripple>
+          </paper-item-body>
+          <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]"></iron-image>
+        </paper-item>
+      </iron-label>
+    </div>
+  </template>
+
+  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  </app-localstorage-document>
+
+</div>
 
 `,
 
@@ -157,36 +163,6 @@ export const GooglePhotosPage = Polymer({
   ],
 
   properties: {
-
-    /**
-     * Select by albums or photos
-     * @memberOf AlbumsView
-     */
-    isAlbumMode: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /**
-     * Should we use the album photos in the screensaver
-     * @memberOf AlbumsView
-     */
-    useGoogleAlbums: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /**
-     * Should we use the google photos in the screensaver
-     * @memberOf AlbumsView
-     */
-    useGooglePhotos: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
 
     /**
      * The array of all albums
@@ -207,6 +183,16 @@ export const GooglePhotosPage = Polymer({
     selections: {
       type: Array,
       value: [],
+    },
+
+    /**
+     * Flag to indicate if UI is disabled
+     * @memberOf AlbumsView
+     */
+    disabled: {
+      type: Boolean,
+      value: false,
+      notify: true,
     },
 
     /**
@@ -310,69 +296,10 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Query Google Photos for the contents of an album
-   * @param {string} id album to load
-   * @param {string} name album name
-   * @returns {GoogleSource.Album} Album
+   * Select as many albums as possible
    * @memberOf AlbumsView
    */
-  _loadAlbum: async function(id, name) {
-    const ERR_TITLE = ChromeLocale.localize('err_load_album');
-    let album;
-    try {
-      this.set('waitForLoad', true);
-      album = await GoogleSource.loadAlbum(id, name);
-      this.set('waitForLoad', false);
-      return album;
-    } catch (err) {
-      this.set('waitForLoad', false);
-      let dialogText = 'unknown';
-      if (GoogleSource.isQuotaError(err,
-          'GooglePhotosPage.loadAlbum')) {
-        // Hit Google photos quota
-        dialogText = ChromeLocale.localize('err_google_quota');
-      } else {
-        dialogText = err.message;
-        ChromeLog.error(err.message,
-            'GooglePhotosPage.loadAlbum', ERR_TITLE);
-      }
-      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
-    }
-    return album;
-  },
-
-  /**
-   * Set keys for photo sources
-   * @param {boolean} useGoogle - Google Photos use enabled
-   * @param {boolean} isAlbumMode - Are we in album mode
-   * @private
-   * @memberOf AlbumsView
-   */
-  _setUseKeys: function(useGoogle, isAlbumMode) {
-    const useAlbums = (useGoogle && isAlbumMode);
-    const usePhotos = (useGoogle && !isAlbumMode);
-    this.set('useGoogleAlbums', useAlbums);
-    this.set('useGooglePhotos', usePhotos);
-  },
-
-  /**
-   * Event: Handle tap on deselect all albums icon
-   * @private
-   * @memberOf AlbumsView
-   */
-  _onDeselectAllTapped: function() {
-    ChromeGA.event(ChromeGA.EVENT.ICON, 'deselectAllGoogleAlbums');
-    this._uncheckAll();
-    this.selections.splice(0, this.selections.length);
-    ChromeStorage.set('albumSelections', []);
-  },
-
-  /**
-   * Event: Handle tap on select all albums icon
-   * @private
-   * @memberOf AlbumsView
-   */
-  _onSelectAllTapped: async function() {
+  selectAllAlbums: async function() {
     let albumCt = this.selections.length;
     let photoCt = 0;
     ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
@@ -417,6 +344,48 @@ export const GooglePhotosPage = Polymer({
         albumCt++;
       }
     }
+  },
+
+  /**
+   * Remove selected albums
+   * @memberOf AlbumsView
+   */
+  removeSelectedAlbums: function() {
+    this._uncheckAll();
+    this.selections.splice(0, this.selections.length);
+    ChromeStorage.set('albumSelections', []);
+  },
+
+  /**
+   * Query Google Photos for the contents of an album
+   * @param {string} id album to load
+   * @param {string} name album name
+   * @returns {GoogleSource.Album} Album
+   * @memberOf AlbumsView
+   */
+  _loadAlbum: async function(id, name) {
+    const ERR_TITLE = ChromeLocale.localize('err_load_album');
+    let album;
+    try {
+      this.set('waitForLoad', true);
+      album = await GoogleSource.loadAlbum(id, name);
+      this.set('waitForLoad', false);
+      return album;
+    } catch (err) {
+      this.set('waitForLoad', false);
+      let dialogText = 'unknown';
+      if (GoogleSource.isQuotaError(err,
+          'GooglePhotosPage.loadAlbum')) {
+        // Hit Google photos quota
+        dialogText = ChromeLocale.localize('err_google_quota');
+      } else {
+        dialogText = err.message;
+        ChromeLog.error(err.message,
+            'GooglePhotosPage.loadAlbum', ERR_TITLE);
+      }
+      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+    }
+    return album;
   },
 
   /**
@@ -570,95 +539,6 @@ export const GooglePhotosPage = Polymer({
       ret = false;
     }
     return ret;
-  },
-
-  /**
-   * Computed binding: Calculate page title
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} page title
-   * @private
-   * @memberOf AlbumsView
-   */
-  _computeTitle: function(isAlbumMode) {
-    let ret = '';
-    if (isAlbumMode) {
-      ret = ChromeLocale.localize('google_title');
-    } else {
-      ret = ChromeLocale.localize('google_title_photos');
-    }
-    return ret;
-  },
-
-  /**
-   * Computed binding: Calculate mode icon
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} an icon
-   * @private
-   * @memberOf AlbumsView
-   */
-  _computeModeIcon: function(isAlbumMode) {
-    let ret = '';
-    if (isAlbumMode) {
-      ret = 'myicons:photo-album';
-    } else {
-      ret = 'myicons:photo';
-    }
-    return ret;
-  },
-
-  /**
-   * Computed binding: Calculate mode tooltip
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} page title
-   * @private
-   * @memberOf AlbumsView
-   */
-  _computeModeTooltip: function(isAlbumMode) {
-    let ret = '';
-    if (isAlbumMode) {
-      ret = ChromeLocale.localize('tooltip_google_mode_albums');
-    } else {
-      ret = ChromeLocale.localize('tooltip_google_mode_photos');
-    }
-    return ret;
-  },
-
-  /**
-   * Computed binding: Calculate disabled state of icons used by albums
-   * @param {boolean} useGoogle - true if using Google Photos
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {boolean} true if album icons should be disabled
-   * @private
-   * @memberOf AlbumsView
-   */
-  _computeAlbumIconDisabled(useGoogle, isAlbumMode) {
-    return !(useGoogle && isAlbumMode);
-  },
-
-  /**
-   * Computed binding: Calculate refresh tooltip
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} tooltip label
-   * @private
-   * @memberOf AlbumsView
-   */
-  _computeRefreshTooltip(isAlbumMode) {
-    let label = ChromeLocale.localize('tooltip_refresh');
-    if (!isAlbumMode) {
-      label = ChromeLocale.localize('tooltip_refresh_photos');
-    }
-    return label;
-  },
-
-  /**
-   * Computed binding: Calculate refresh icon disabled state
-   * @param {boolean} useGoogle - true if using Google Photos
-   * @returns {boolean} true if album icons should be disabled
-   * @private
-   * @memberOf AlbumsView
-   */
-  _computeRefreshIconDisabled(useGoogle) {
-    return !useGoogle;
   },
 
   /**

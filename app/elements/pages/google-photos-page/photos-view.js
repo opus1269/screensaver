@@ -9,6 +9,7 @@ import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
@@ -38,87 +39,90 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element selecting Google Photos
+ * Polymer element for selecting Google Photos
  * @namespace PhotosView
  */
 export const GooglePhotosPage = Polymer({
+  // language=HTML format=false
   _template: html`
-    <!--suppress CssUnresolvedCustomPropertySet -->
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <style>
-      :host {
-        display: block;
-        position: relative;
-      }
+<!--suppress CssUnresolvedCustomPropertySet -->
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<style>
+  :host {
+    display: block;
+    position: relative;
+  }
 
-      :host .album-note {
-        @apply --paper-font-title;
-        border: 1px #CCCCCC;
-        border-top-style: solid;
-        padding: 8px 16px 8px 16px;
-        margin-right: 0;
-        white-space: normal;
-      }
+  :host .album-note {
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-top-style: solid;
+    padding: 8px 16px 8px 16px;
+    margin-right: 0;
+    white-space: normal;
+  }
 
-      :host .photo-count-container {
-        border: 1px #CCCCCC;
-        border-bottom-style: solid;
-        padding: 16px 0 16px 0;
-        white-space: normal;
-      }
+  :host .photo-count-container {
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 16px 0 16px 0;
+    white-space: normal;
+  }
 
-      :host paper-button {
-        margin: 0;
-        @apply --paper-font-title;
-      }
+  :host .photo-count-container paper-button {
+    margin: 0;
+    margin-right: 8px;
+    @apply --paper-font-title;
+  }
 
-      :host #albumNote {
-        @apply --paper-font-title;
-        padding-right: 0;
-      }
+  :host .photo-count-container #photoCount {
+    @apply --paper-font-title;
+    padding-right: 0;
+  }
 
-      :host #photoCount {
-        @apply --paper-font-title;
-        padding-right: 0;
-      }
+</style>
 
-    </style>
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"></waiter-element>
 
-   <waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"></waiter-element>
+<div class="photos-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+  <div class="photo-count-container horizontal layout">
+    <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
+      <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
+    </paper-item>
+    <paper-button raised disabled$="[[!needsPhotoRefresh]]" on-click="_onRefreshPhotosClicked">
+      [[localize('tooltip_refresh_photos')]]
+    </paper-button>
+  </div>
+  <photo-cat id="LANDSCAPES" section-title="[[localize('photo_cat_title')]]"
+             label="[[localize('photo_cat_landscapes')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[disabled]]"></photo-cat>
+  <paper-item class="album-note">
+    {{localize('note_albums')}}
+  </paper-item>
 
-   <div class="photos-container" hidden\$="[[waitForLoad]]">
-      <div class="photo-count-container horizontal layout">
-        <paper-item class="flex" id="photoCount" disabled\$="[[!useGoogle]]">
-          <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
-        </paper-item>
-        <paper-button raised disabled\$="[[!needsPhotoRefresh]]" on-click="_onRefreshPhotosClicked">[[localize('tooltip_refresh_photos')]]</paper-button>
-      </div>
-       <photo-cat id="LANDSCAPES"  section-title="[[localize('photo_cat_title')]]" 
-        label="[[localize('photo_cat_landscapes')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-       <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
-        on-selected-changed="_onPhotoCatChanged" disabled\$="[[!useGoogle]]"></photo-cat>
-      <paper-item class="album-note">
-        {{localize('note_albums')}}
-      </paper-item>
-    </div>
+  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  </app-localstorage-document>
+
+</div>
 `,
 
   is: 'photos-view',
@@ -150,6 +154,16 @@ export const GooglePhotosPage = Polymer({
     },
 
     /**
+     * Flag to indicate if UI is disabled
+     * @memberOf PhotosView
+     */
+    disabled: {
+      type: Boolean,
+      value: false,
+      notify: true,
+    },
+
+    /**
      * Flag to display the loading... UI
      * @memberOf PhotosView
      */
@@ -157,6 +171,25 @@ export const GooglePhotosPage = Polymer({
       type: Boolean,
       value: false,
       notify: true,
+    },
+    
+    /**
+     * Status of the option permission for the Google Photos API
+     * @memberOf PhotosView
+     */
+    permPicasa: {
+      type: String,
+      value: 'notSet',
+      notify: true,
+    },
+
+    /**
+     * Flag to determine if main view should be hidden
+     * @memberOf PhotosView
+     */
+    isHidden: {
+      type: Boolean,
+      computed: '_computeHidden(waitForLoad, permPicasa)',
     },
   },
 
@@ -261,6 +294,18 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
+   * Exceeded storage limits error
+   * @param {string} method - function that caused error
+   * @private
+   * @memberOf PhotosView
+   */
+  _showStorageErrorDialog: function(method) {
+    const ERR_TITLE = ChromeLocale.localize('err_storage_title');
+    ChromeLog.error('safeSet failed', method, ERR_TITLE);
+    showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
+  },
+  
+  /**
    * Event: Selection of photo-cat changed
    * @param {Event} ev
    * @private
@@ -314,14 +359,18 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Exceeded storage limits error
-   * @param {string} method - function that caused error
+   * Computed property: Hidden state of main interface
+   * @param {boolean} waitForLoad - true if loading
+   * @param {string} permPicasa - permission state
+   * @returns {boolean} true if hidden
    * @private
    * @memberOf PhotosView
    */
-  _showStorageErrorDialog: function(method) {
-    const ERR_TITLE = ChromeLocale.localize('err_storage_title');
-    ChromeLog.error('safeSet failed', method, ERR_TITLE);
-    showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
+  _computeHidden: function(waitForLoad, permPicasa) {
+    let ret = true;
+    if (!waitForLoad && (permPicasa === 'allowed')) {
+      ret = false;
+    }
+    return ret;
   },
 });
