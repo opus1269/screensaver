@@ -130,6 +130,6 @@ Polymer({
    * @memberOf PhotoCat
    */
   _onSelectedChanged: function(ev) {
-    this.fire('selected-changed', {selected: ev.detail.value});
+    this.fire('selected-changed', {value: ev.detail.value});
   },
 });
