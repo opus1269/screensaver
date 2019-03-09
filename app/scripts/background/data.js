@@ -386,6 +386,7 @@ export function restoreDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
     // skip Google photos settings
     if (!key.includes('useGoogle') &&
+        (key !== 'googlePhotosFilter') &&
         (key !== 'permPicasa') &&
         (key !== 'googleImages') &&
         (key !== 'albumSelections')) {
