@@ -147,7 +147,7 @@ export const GooglePhotosPage = Polymer({
      */
     needsPhotoRefresh: {
       type: Boolean,
-      value: false,
+      value: true,
       notify: true,
     },
 
@@ -346,6 +346,9 @@ export const GooglePhotosPage = Polymer({
         el.selected = 'include';
       }
     }
+    
+    // persist the current state
+    this._saveFilter();
   },
 
   /**
@@ -421,7 +424,6 @@ export const GooglePhotosPage = Polymer({
   _noFilterTapped: function() {
     if (this.noFilter) {
       this.set('needsPhotoRefresh', true);
-      ChromeStorage.set('googlePhotosFilter', GoogleSource.DEF_FILTER);
     } else {
       this._saveFilter();
     }

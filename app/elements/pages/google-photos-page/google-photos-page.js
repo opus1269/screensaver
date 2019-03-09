@@ -240,9 +240,6 @@ export const GooglePhotosPage = Polymer({
       setTimeout(function() {
         // remove album selections
         this.$$('#albumsView').removeSelectedAlbums();
-
-        // get the photos
-        this.loadPhotos().catch((err) => {});
       }.bind(this), 0);
     }
   },
