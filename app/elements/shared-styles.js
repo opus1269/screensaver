@@ -23,6 +23,11 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
         }
       }
 
+      /* see https://github.com/Polymer/polymer/issues/3711#issuecomment-226361758*/
+      [hidden] {
+        display: none !important;
+      }
+
       /* Scrollbars */
       ::-webkit-scrollbar {
         background: transparent;

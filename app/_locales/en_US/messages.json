@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Settings"
   },
-  "menu_google": {
-    "message": "Select Google Photos albums"
-  },
   "menu_preview": {
     "message": "Preview screensaver"
   },
@@ -518,6 +515,12 @@
   "err_auth_revoked": {
     "message": "You no longer have access to your Google Photos. Please reselect them."
   },
+  "note_albums": {
+    "message": "Note: For more control over photo selections, create albums in Google Photos"
+  },
+  "menu_google": {
+    "message": "Select Google Photos"
+  },
   "err_load_photos": {
     "message": "Failed to retrieve Google Photos"
   },
@@ -562,6 +565,9 @@
   },
   "photo_cat_pets": {
     "message": "PETS"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Refresh photos"
   },
   "time_format": {
     "message": "12",
