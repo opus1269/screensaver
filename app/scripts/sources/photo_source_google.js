@@ -352,7 +352,7 @@ export default class GoogleSource extends PhotoSource {
     }
 
     // TODO finalize this valuemax photos to load
-    const MAX_PHOTOS = 100;
+    const MAX_PHOTOS = 5000;
     // max queries per request
     const MAX_QUERIES = 100;
 
