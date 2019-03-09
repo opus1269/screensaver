@@ -384,8 +384,10 @@ export function update() {
  */
 export function restoreDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
-    // skip Google photos settings
+    // skip some settings
     if (!key.includes('useGoogle') &&
+        (key !== 'signedInToChrome') &&
+        (key !== 'isAlbumMode') &&
         (key !== 'googlePhotosFilter') &&
         (key !== 'permPicasa') &&
         (key !== 'googleImages') &&
