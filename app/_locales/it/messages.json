@@ -578,6 +578,15 @@
   "tooltip_refresh_photos": {
     "message": "Aggiorna foto"
   },
+  "title_mode_switch": {
+    "message": "Passa alla modalità Foto di Google"
+  },
+  "desc_mode_switch": {
+    "message": "Sus selecciones de fotos actuales serán eliminadas.\n\nContinuar con el interruptor?"
+  },
+  "button_mode_switch": {
+    "message": "INTERRUTTORE"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

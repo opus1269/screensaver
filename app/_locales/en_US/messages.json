@@ -578,6 +578,15 @@
   "tooltip_refresh_photos": {
     "message": "Refresh photos"
   },
+  "title_mode_switch": {
+    "message": "Switch Google Photos mode"
+  },
+  "desc_mode_switch": {
+    "message": "Your current photo selections will be removed.\n\nContinue with switch?"
+  },
+  "button_mode_switch": {
+    "message": "SWITCH"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

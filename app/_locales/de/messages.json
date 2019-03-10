@@ -578,6 +578,15 @@
   "tooltip_refresh_photos": {
     "message": "Fotos aktualisieren"
   },
+  "title_mode_switch": {
+    "message": "Wechseln Sie den Google Photos-Modus"
+  },
+  "desc_mode_switch": {
+    "message": "Ihre aktuellen Fotoauswahlen werden entfernt.\n\nWeiter mit dem Schalter?"
+  },
+  "button_mode_switch": {
+    "message": "SCHALTER"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

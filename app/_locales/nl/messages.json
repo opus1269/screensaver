@@ -578,6 +578,15 @@
   "tooltip_refresh_photos": {
     "message": "Foto's vernieuwen"
   },
+  "title_mode_switch": {
+    "message": "Schakelen tussen de modus Google Foto's"
+  },
+  "desc_mode_switch": {
+    "message": "Je huidige fotoselecties worden verwijderd.\n\nDoorgaan met schakelaar?"
+  },
+  "button_mode_switch": {
+    "message": "SCHAKELAAR"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
