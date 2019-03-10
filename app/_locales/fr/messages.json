@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Paramètres"
   },
-  "menu_google": {
-    "message": "Sélectionner les albums photos"
-  },
   "menu_preview": {
     "message": "Aperçu des écrans de veille"
   },
@@ -517,6 +514,69 @@
   },
   "err_auth_revoked": {
     "message": "Vous n'avez plus accès à vos photos Google. Veuillez les resélectionner."
+  },
+  "note_albums": {
+    "message": "Remarque: pour mieux contrôler les sélections de photos, créez des albums dans Google Photos."
+  },
+  "menu_google": {
+    "message": "Sélectionnez Google Photos"
+  },
+  "err_load_photos": {
+    "message": "Échec de récupération de Google Photos"
+  },
+  "photo_no_filter": {
+    "message": "Toutes les photos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Utilisez vos photos les plus récentes de tout type"
+  },
+  "photo_cat_title": {
+    "message": "Seleziona le categorie di foto da includere o escludere"
+  },
+  "photo_count": {
+    "message": "Nombre de photos:"
+  },
+  "include": {
+    "message": "Comprendre"
+  },
+  "exclude": {
+    "message": "Exclure"
+  },
+  "photo_cat_utility": {
+    "message": "UTILITAIRE (recommandé d'exclure)"
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_food": {
+    "message": "ALIMENTS"
+  },
+  "photo_cat_people": {
+    "message": "PERSONNES"
+  },
+  "photo_cat_landscapes": {
+    "message": "PAYSAGES"
+  },
+  "photo_cat_cityscapes": {
+    "message": "PAYSAGES URBAINS"
+  },
+  "photo_cat_animals": {
+    "message": "ANIMAUX"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_performances": {
+    "message": "LES PERFORMANCES"
+  },
+  "photo_cat_pets": {
+    "message": "ANIMAUX DOMESTIQUES"
+  },
+  "button_needs_refresh": {
+    "message": "BESOINS DE RAFRAICHISSEMENT"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Actualiser les photos"
   },
   "time_format": {
     "message": "24",

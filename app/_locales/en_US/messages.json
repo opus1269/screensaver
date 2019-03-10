@@ -524,6 +524,12 @@
   "err_load_photos": {
     "message": "Failed to retrieve Google Photos"
   },
+  "photo_no_filter": {
+    "message": "All photos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Use your most recent photos of any type"
+  },
   "photo_cat_title": {
     "message": "Select photo categories to include or exclude"
   },
@@ -565,6 +571,9 @@
   },
   "photo_cat_pets": {
     "message": "PETS"
+  },
+  "button_needs_refresh": {
+    "message": "NEEDS REFRESH"
   },
   "tooltip_refresh_photos": {
     "message": "Refresh photos"

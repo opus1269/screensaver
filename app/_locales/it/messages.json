@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Impostazioni"
   },
-  "menu_google": {
-    "message": "Seleziona album Google Foto"
-  },
   "menu_preview": {
     "message": "Anteprima salvaschermo"
   },
@@ -517,6 +514,69 @@
   },
   "err_auth_revoked": {
     "message": "Non hai più accesso alle tue Foto Google. Si prega di riselezionarli."
+  },
+  "note_albums": {
+    "message": "Nota: per un maggiore controllo sulle selezioni di foto, crea album in Google Foto"
+  },
+  "menu_google": {
+    "message": "Seleziona Google Foto"
+  },
+  "err_load_photos": {
+    "message": "Impossibile recuperare le foto di Google"
+  },
+  "photo_no_filter": {
+    "message": "Tutte le foto"
+  },
+  "photo_no_filter_desc": {
+    "message": "Utilisez vos photos les plus récentes de tout type"
+  },
+  "photo_cat_title": {
+    "message": "Seleziona le categorie di foto da includere o escludere"
+  },
+  "photo_count": {
+    "message": "Nombre de photos:"
+  },
+  "include": {
+    "message": "Includere"
+  },
+  "exclude": {
+    "message": "Escludere"
+  },
+  "photo_cat_utility": {
+    "message": "UTILITÀ (consigliato per escludere)"
+  },
+  "photo_cat_selfies": {
+    "message": "CIBO"
+  },
+  "photo_cat_food": {
+    "message": "VOEDSEL"
+  },
+  "photo_cat_people": {
+    "message": "PERSONE"
+  },
+  "photo_cat_landscapes": {
+    "message": "PAESAGGI"
+  },
+  "photo_cat_cityscapes": {
+    "message": "PAESAGGI URBANI"
+  },
+  "photo_cat_animals": {
+    "message": "ANIMALI"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_performances": {
+    "message": "PRESTAZIONI"
+  },
+  "photo_cat_pets": {
+    "message": "ANIMALE DOMESTICO"
+  },
+  "button_needs_refresh": {
+    "message": "BISOGNO AGGIORNARE"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Aggiorna foto"
   },
   "time_format": {
     "message": "24",
