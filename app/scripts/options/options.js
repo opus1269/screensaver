@@ -253,7 +253,6 @@ function _onLoad() {
   _setGooglePhotosMenuState();
 
   // listen for changes to chrome.storage
-  // listen for changes to chrome.storage
   chrome.storage.onChanged.addListener(function(changes) {
     for (const key in changes) {
       if (changes.hasOwnProperty(key)) {
@@ -433,10 +432,9 @@ function _showGooglePhotosPage(index) {
     t.pages[index].ready = true;
     t.gPhotosPage = new GooglePhotosPage('gPhotosPage');
     t.$.googlePhotosInsertion.appendChild(t.gPhotosPage);
-  } else if (ChromeStorage.getBool('isAlbumMode')) {
+  } else if (ChromeStorage.getBool('isAlbumMode', true)) {
     t.gPhotosPage.loadAlbumList().catch(() => {});
   }
-  // TODO anything to do for photo mode?
   t.route = t.pages[index].route;
 }
 
