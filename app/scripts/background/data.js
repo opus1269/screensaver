@@ -431,9 +431,10 @@ export function processState(key = 'all', doGoogle = false) {
       // photo source change or full resolution google photos being asked for
       let useKey = key;
       if (key === 'fullResGoogle') {
+        // full res photo state changed update albums or photos
         const isAlbums = ChromeStorage.getBool('useGoogleAlbums');
         if (isAlbums) {
-          // update albums with full res. photos
+          // update albums
           useKey = 'useGoogleAlbums';
           PhotoSources.process(useKey).catch((err) => {
             // send message on processing error
@@ -445,7 +446,7 @@ export function processState(key = 'all', doGoogle = false) {
         }
         const isPhotos = ChromeStorage.getBool('useGooglePhotos');
         if (isPhotos) {
-          // update photos with full res. photos
+          // update photos
           useKey = 'useGooglePhotos';
           PhotoSources.process(useKey).catch((err) => {
             // send message on processing error
@@ -455,8 +456,9 @@ export function processState(key = 'all', doGoogle = false) {
             return ChromeMsg.send(msg);
           }).catch(() => {});
         }
-      } else {
-        // update photo source with full res. photos
+      } else if ((key !== 'useGoogleAlbums') && (key !== 'useGooglePhotos')) {
+        // update photo source - skip Google sources as they are handled 
+        // by the UI when the mode changes
         PhotoSources.process(useKey).catch((err) => {
           // send message on processing error
           const msg = MyMsg.PHOTO_SOURCE_FAILED;
@@ -466,6 +468,7 @@ export function processState(key = 'all', doGoogle = false) {
         }).catch(() => {});
       }
     } else {
+      // may be a function to handle it
       const fn = STATE_MAP[key];
       if (typeof (fn) !== 'undefined') {
         fn();
