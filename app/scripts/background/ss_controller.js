@@ -64,7 +64,6 @@ export function isActive() {
  * @param {boolean} single - if true, only show on one display
  */
 export function display(single) {
-  ChromeStorage.set('isShowing', true);
   if (!single && ChromeStorage.getBool('allDisplays')) {
     _openOnAllDisplays();
   } else {
@@ -76,7 +75,6 @@ export function display(single) {
  * Close all the screen saver windows
  */
 export function close() {
-  ChromeStorage.set('isShowing', false);
   // send message to the screen savers to close themselves
   ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
 }
@@ -231,7 +229,7 @@ function _onIdleStateChanged(state) {
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {ChromeMsg.Message} request - details for the message
+ * @param {module:ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous

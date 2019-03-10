@@ -54,7 +54,6 @@ function _onInstalled(details) {
     // initial install
     ChromeGA.event(ChromeGA.EVENT.INSTALLED, ChromeUtils.getVersion());
     AppData.initialize();
-    ChromeStorage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!MyUtils.DEBUG) {
@@ -77,7 +76,6 @@ function _onInstalled(details) {
     }
     // extension updated
     AppData.update();
-    ChromeStorage.set('isShowing', false);
   }
 }
 
@@ -90,7 +88,6 @@ function _onInstalled(details) {
 function _onStartup() {
   ChromeGA.page('/background.html');
   AppData.processState();
-  ChromeStorage.set('isShowing', false);
 }
 
 /**
@@ -118,7 +115,7 @@ function _onStorageChanged(event) {
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {ChromeMsg.Message} request - details for the message
+ * @param {module:ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous

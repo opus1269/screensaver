@@ -44,15 +44,15 @@ const _DATA_VERSION = 21;
 
 /**
  * A number and associated units
- * @typedef {Object} module:AppData.UnitValue
+ * @typedef {{}} module:AppData.UnitValue
  * @property {number} base - value in base unit
  * @property {number} display - value in display unit
  * @property {int} unit - display unit
  */
 
 /**
- * Values for app data in localStorage
- * @typedef {Object} module:AppData._DEF_VALUES
+ * Default values in localStorage
+ * @typedef {{}} module:AppData._DEF_VALUES
  * @property {int} version - version of data
  * @property {boolean} enabled - is screensaver enabled
  * @property {string} permPicasa - optional permission for Picasa
@@ -84,25 +84,16 @@ const _DATA_VERSION = 21;
  * @property {boolean} useInterestingFlickr - use this photo source
  * @property {boolean} useChromecast - use this photo source
  * @property {boolean} useAuthors - use this photo source
- * @property {boolean} useSpaceReddit - use this photo source
  * @property {boolean} fullResGoogle - true for actual size Google photos
  * @property {boolean} isAlbumMode - true if Google Photos album mode
  * @property {boolean} useGoogle - use this photo source
  * @property {boolean} useGoogleAlbums - use this photo source
- * @property {Array} albumSelections - user's selected Google Photos albums
+ * @property {[]} albumSelections - user's selected Google Photos albums
  * @property {boolean} useGooglePhotos - use this photo source
- * @property {Array} googleImages - user's selected Google Photos
- * @property {boolean} gPhotosNeedsUpdate - are the photo links stale
- * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
- * @property {boolean} isAwake - true if screensaver can be displayed
- * @property {boolean} isShowing - true if screensaver is showing
+ * @property {[]} googleImages - user's selected Google Photos
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
  * @property {{}} googlePhotosFilter - filter for retrieving google photos
- */
-
-/**
- * Default values in localStorage
  * @type {module:AppData._DEF_VALUES}
  * @const
  * @private
@@ -110,7 +101,6 @@ const _DATA_VERSION = 21;
 const _DEF_VALUES = {
   'version': _DATA_VERSION,
   'enabled': true,
-  'isAlbumMode': true,
   'permPicasa': 'notSet', // enum: notSet allowed denied
   'permBackground': 'notSet', // enum: notSet allowed denied
   'allowBackground': false,
@@ -123,7 +113,6 @@ const _DEF_VALUES = {
   'interactive': false,
   'showTime': 2, // 24 hr format
   'largeTime': false,
-  'fullResGoogle': false,
   'showPhotog': true,
   'showLocation': true,
   'background': 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
@@ -140,15 +129,13 @@ const _DEF_VALUES = {
   'useInterestingFlickr': false,
   'useChromecast': true,
   'useAuthors': false,
+  'fullResGoogle': false,
+  'isAlbumMode': true,
   'useGoogle': true,
   'useGoogleAlbums': true,
   'albumSelections': [],
   'useGooglePhotos': false,
   'googleImages': [],
-  'gPhotosNeedsUpdate': false, // not used
-  'gPhotosMaxAlbums': 10, // not used
-  'isAwake': true, // not used
-  'isShowing': false, // not used
   'signedInToChrome': true,
   'googlePhotosNoFilter': false,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
@@ -179,10 +166,6 @@ function _processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', true);
   keepAwake ? chrome.power.requestKeepAwake(
       'display') : chrome.power.releaseKeepAwake();
-  if (!keepAwake) {
-    // always on
-    ChromeStorage.set('isAwake', true);
-  }
   updateRepeatingAlarms();
   updateBadgeText();
 }
@@ -375,6 +358,14 @@ export function update() {
     }
   }
 
+  if (oldVersion < 21) {
+    // remove unused data
+    ChromeStorage.set('gPhotosNeedsUpdate', null);
+    ChromeStorage.set('gPhotosMaxAlbums', null);
+    ChromeStorage.set('isAwake', null);
+    ChromeStorage.set('isShowing', null);
+  }
+
   _addDefaults();
 
   // update state
@@ -429,7 +420,6 @@ export function processState(key = 'all', doGoogle = false) {
 
     // process photo SOURCES
     PhotoSources.processAll(doGoogle);
-    ChromeStorage.set('isShowing', false);
 
     // set os, if not already
     if (!ChromeStorage.get('os')) {
