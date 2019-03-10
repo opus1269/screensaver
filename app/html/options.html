@@ -192,17 +192,7 @@
     </custom-style>
 
     <!-- Error dialog keep above app-drawer-layout because of overlay bug -->
-    <paper-dialog id="errorDialog"
-                  entry-animation="scale-up-animation"
-                  exit-animation="fade-out-animation">
-      <h2 id="dialogTitle">[[dialogTitle]]</h2>
-      <paper-dialog-scrollable>
-        <p id="dialogText">[[dialogText]]</p>
-      </paper-dialog-scrollable>
-      <div class="buttons">
-        <paper-button dialog-dismiss>OK</paper-button>
-      </div>
-    </paper-dialog>
+    <error-dialog id="errorDialog"></error-dialog>
 
     <!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
     <paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
