@@ -194,6 +194,10 @@
     <!-- Error dialog keep above app-drawer-layout because of overlay bug -->
     <error-dialog id="errorDialog"></error-dialog>
 
+    <!-- Confirm dialog keep above app-drawer-layout because of overlay bug -->
+    <confirm-dialog id="confirmDialog" confirm-label="{{confirmLabel}}"
+                    on-confirm-tap="_onConfirmDialogTapped"></confirm-dialog>
+
     <!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
     <paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
                   exit-animation="fade-out-animation">

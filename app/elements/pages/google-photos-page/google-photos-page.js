@@ -20,6 +20,7 @@ import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js
 
 import './albums-view.js';
 import './photos-view.js';
+import {showConfirmDialog} from '../../../scripts/options/options.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
@@ -221,12 +222,11 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Event: Handle tap on mode icon
+   * Toggle between album and photo mode
    * @private
    * @memberOf GooglePhotosPage
    */
-  _onModeTapped: function() {
-    // TODO probably need dialog to prompt about losing selections
+  _modeChange: function() {
     this.set('isAlbumMode', !this.isAlbumMode);
     this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
     if (this.isAlbumMode) {
@@ -240,8 +240,23 @@ export const GooglePhotosPage = Polymer({
       setTimeout(function() {
         // remove album selections
         this.$$('#albumsView').removeSelectedAlbums();
+        this.$$('#photosView').setPhotoCount();
       }.bind(this), 0);
     }
+  },
+
+  /**
+   * Event: Handle tap on mode icon
+   * @private
+   * @memberOf GooglePhotosPage
+   */
+  _onModeTapped: function() {
+    // show a confirm dialog and pass in a callback that will be called
+    // if the user confirms the action
+    const text = ChromeLocale.localize('desc_mode_switch');
+    const title = ChromeLocale.localize('title_mode_switch');
+    const button = ChromeLocale.localize('button_mode_switch');
+    showConfirmDialog(text, title, button, this._modeChange.bind(this));
   },
 
   /**

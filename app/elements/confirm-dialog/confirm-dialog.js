@@ -88,11 +88,16 @@ Polymer({
    * Show the dialog
    * @param {string} [text]
    * @param {string} [title]
+   * @param {?string} [confirmLabel]
    * @private
    * @memberOf ConfirmDialog
    */
   open: function(text = 'Continue?',
-                 title = 'This operation cannot be undone') {
+                 title = 'This operation cannot be undone',
+                 confirmLabel = null) {
+    if (confirmLabel && (confirmLabel !== '')) {
+      this.set('confirmLabel', confirmLabel);
+    }
     text = text.replace(/\n/g, '<br/>');
     this.$.dialogTitle.innerHTML = title;
     this.$.dialogText.innerHTML = text;

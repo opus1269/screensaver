@@ -218,8 +218,7 @@ export const GooglePhotosPage = Polymer({
   ready: function() {
     // TODO should be a data item?
     setTimeout(function() {
-      const ct = this._getTotalPhotoCount();
-      this.set('photoCount', ct);
+      this.setPhotoCount();
 
       // set state of photo categories
       this._setPhotoCats();
@@ -276,14 +275,12 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * Get total photo count that is currently saved
-   * @returns {int} Total number of photos saved
-   * @private
+   * Set the photo count that is currently saved
    * @memberOf PhotosView
    */
-  _getTotalPhotoCount: function() {
+  setPhotoCount: function() {
     const photos = ChromeStorage.get('googleImages', []);
-    return photos.length;
+    this.set('photoCount', photos.length);
   },
 
   /**
@@ -315,7 +312,7 @@ export const GooglePhotosPage = Polymer({
         }
       }
     }
-    
+
     filter.contentFilter.excludedContentCategories = excludes;
     filter.contentFilter.includedContentCategories = includes;
 
@@ -346,7 +343,7 @@ export const GooglePhotosPage = Polymer({
         el.selected = 'include';
       }
     }
-    
+
     // persist the current state
     this._saveFilter();
   },
@@ -440,7 +437,7 @@ export const GooglePhotosPage = Polymer({
   _computeFilterDisabled: function(disabled, noFilter) {
     return disabled || noFilter;
   },
-  
+
   /**
    * Computed property: Hidden state of main interface
    * @param {boolean} waitForLoad - true if loading
