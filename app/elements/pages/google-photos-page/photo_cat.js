@@ -23,6 +23,8 @@ import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
 
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -30,46 +32,49 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @namespace PhotoCat
  */
 Polymer({
+  // language=HTML format=false
   _template: html`
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <!--suppress CssUnresolvedCustomPropertySet -->
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<!--suppress CssUnresolvedCustomPropertySet -->
 <style>
-      :host {
-        display: block;
-        position: relative;
-      }
+  :host {
+    display: block;
+    position: relative;
+  }
 
-      :host([disabled]) {
-        pointer-events: none;
-      }
+  :host([disabled]) {
+    pointer-events: none;
+  }
 
-     :host([indent]) paper-item {
-        padding-left: 24px;
-      }
+  :host([indent]) paper-item {
+    padding-left: 24px;
+  }
 
-     :host paper-radio-button {
-        --paper-radio-button-checked-color: var(--setting-item-color);
-        --paper-radio-button-checked-ink-color: var(--setting-item-color);
-        --paper-radio-button-label: {
-          @apply --paper-font-subhead;
-        };
-      }
-    </style>
+  :host paper-radio-button {
+    --paper-radio-button-checked-color: var(--setting-item-color);
+    --paper-radio-button-checked-ink-color: var(--setting-item-color);
+    --paper-radio-button-label: {
+      @apply --paper-font-subhead;
+    };
+  }
+</style>
 
-    <div class="section-title setting-label" tabindex="-1" hidden\$="[[!sectionTitle]]">
-      {{sectionTitle}}
-    </div>
+<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
+  {{sectionTitle}}
+</div>
 
-    <div class="horizontal layout">
-       <paper-item id="label" class="setting-label flex" tabindex="-1">
-        {{label}}
-      </paper-item>
-        <paper-radio-group selected="{{selected}}" on-selected-changed="_onSelectedChanged">
-                  <paper-radio-button name="include" disabled\$="[[disabled]]">{{localize('include')}}</paper-radio-button>
-                  <paper-radio-button name="exclude" disabled\$="[[disabled]]">{{localize('exclude')}}</paper-radio-button>
-        </paper-radio-button>
-    </div>
+<div class="horizontal layout">
+  <paper-item id="label" class="setting-label flex" tabindex="-1">
+    {{label}}
+  </paper-item>
+  <paper-radio-group selected="{{selected}}" on-selected-changed="_onSelectedChanged">
+    <paper-radio-button name="include" on-change="_onButtonChange" disabled$="[[disabled]]">{{localize('include')}}
+    </paper-radio-button>
+    <paper-radio-button name="exclude" on-change="_onButtonChange" disabled$="[[disabled]]">{{localize('exclude')}}
+    </paper-radio-button>
+    </paper-radio-button>
+</div>
 `,
 
   is: 'photo-cat',
@@ -121,6 +126,17 @@ Polymer({
       type: Boolean,
       value: false,
     },
+  },
+
+  /**
+   * Event: radio button tapped
+   * @param {Event} ev
+   * @private
+   * @memberOf PhotoCat
+   */
+  _onButtonChange: function(ev) {
+    ChromeGA.event(ChromeGA.EVENT.RADIO_BUTTON,
+        `${this.id}: ${ev.srcElement.name}`);
   },
 
   /**

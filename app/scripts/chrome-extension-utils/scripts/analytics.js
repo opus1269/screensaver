@@ -89,6 +89,11 @@ export const EVENT = {
     eventAction: 'buttonClicked',
     eventLabel: '',
   },
+  RADIO_BUTTON: {
+    eventCategory: 'ui',
+    eventAction: 'radioButtonClicked',
+    eventLabel: '',
+  },
   ICON: {
     eventCategory: 'ui',
     eventAction: 'toolbarIconClicked',
