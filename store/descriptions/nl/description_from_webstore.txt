@@ -1,6 +1,6 @@
 Deze extensie toont een screensaver bestaande uit een slideshow van foto's uit meerdere bronnen. Ondersteunde fotobronnen zijn onder andere:
 
-* Uw Google Fotoalbums
+* Uw Google Fotos en Fotoalbums
       Opmerking: gedeelde albums worden niet ondersteund
 * Enkele achtergrondfoto's gebruikt door Chromecast
 * Verschillende bronnen van Reddit
@@ -10,7 +10,7 @@ Opmerking: Foto's uit het lokale bestandssysteem worden niet ondersteund.
 
 Er zijn veel opties beschikbaar om de weergave van de slideshow te bepalen, met inbegrip van:
 
-*  Wachttijd nadat het apparaat inactief is voor het weergeven van de screensaver
+* Wachttijd nadat het apparaat inactief is voor het weergeven van de screensaver
 * Tijdsinterval tussen foto's
 * Foto weergavemodus - (bijv. frame, volledig scherm)
 * Foto overgangsanimaties - (bijv. vervagen, opschalen)
