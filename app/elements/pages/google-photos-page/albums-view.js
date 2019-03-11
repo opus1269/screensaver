@@ -266,29 +266,25 @@ Polymer({
         // PhotoSources.process('useGoogleAlbums').catch((err) => {
         //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
         // });
-        
+
         // set selected state on albums
         this._selectAlbums();
       } else {
-        // no albums, use photo mode TODO fix this
-        this.set('isAlbumMode', false);
-        this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
-        ChromeLog.error(ChromeLocale.localize('err_no_albums',
-            'AlbumViews.loadAlbumList'));
+        // no albums TODO how to switch mode?
+        let text = ChromeLocale.localize('err_no_albums');
+        ChromeLog.error(text, 'AlbumViews.loadAlbumList', ERR_TITLE);
+        showErrorDialog(ERR_TITLE, text);
       }
       this.set('waitForLoad', false);
       return null;
     }).catch((err) => {
       this.set('waitForLoad', false);
-      let text = '';
-      if (GoogleSource.isQuotaError(err,
-          'AlbumViews.loadAlbumList')) {
+      let text = err.message;
+      if (GoogleSource.isQuotaError(err, 'AlbumViews.loadAlbumList')) {
         // Hit Google photos quota
         text = ChromeLocale.localize('err_google_quota');
       } else {
-        text = err.message;
-        ChromeLog.error(err.message,
-            'AlbumViews.loadAlbumList', ERR_TITLE);
+        ChromeLog.error(text, 'AlbumViews.loadAlbumList', ERR_TITLE);
       }
       showErrorDialog(ERR_TITLE, text);
       return Promise.reject(err);
@@ -301,46 +297,51 @@ Polymer({
   selectAllAlbums: async function() {
     let albumCt = _selections.length;
     let photoCt = 0;
+
     ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
+
     for (let i = 0; i < this.albums.length; i++) {
+      const album = this.albums[i];
+
       if (albumCt === _MAX_ALBUMS) {
         // reached max. number of albums
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         showErrorDialog(ChromeLocale.localize('err_status'),
             ChromeLocale.localize('err_max_albums'));
         break;
+      } else if (album.checked) {
+        // already selected
+        continue;
       }
-      const album = this.albums[i];
-      if (!album.checked) {
-        const newAlbum = await this._loadAlbum(album.id, album.name);
-        if (newAlbum) {
-          if ((photoCt + newAlbum.photos.length) >= _MAX_PHOTOS) {
-            // reached max number of photos
-            ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
-                `limit: ${photoCt}`);
-            showErrorDialog(ChromeLocale.localize('err_status'),
-                ChromeLocale.localize('err_max_photos'));
-            break;
-          }
-          photoCt += newAlbum.photos.length;
-          _selections.push({
-            id: album.id, name: newAlbum.name, photos: newAlbum.photos,
-          });
-          ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
-              `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
-          const set = ChromeStorage.safeSet('albumSelections', _selections,
-              'useGoogleAlbums');
-          if (!set) {
-            // exceeded storage limits
-            _selections.pop();
-            this._showStorageErrorDialog('AlbumViews._onSelectAllTapped');
-            break;
-          }
-          this.set('albums.' + i + '.checked', true);
-          this.set('albums.' + i + '.ct', newAlbum.ct);
+
+      const newAlbum = await this._loadAlbum(album.id, album.name);
+      if (newAlbum) {
+        if ((photoCt + newAlbum.photos.length) >= _MAX_PHOTOS) {
+          // reached max number of photos
+          ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
+              `limit: ${photoCt}`);
+          showErrorDialog(ChromeLocale.localize('err_status'),
+              ChromeLocale.localize('err_max_photos'));
+          break;
         }
-        albumCt++;
+        photoCt += newAlbum.photos.length;
+        _selections.push({
+          id: album.id, name: newAlbum.name, photos: newAlbum.photos,
+        });
+        ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
+            `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
+        const set = ChromeStorage.safeSet('albumSelections', _selections,
+            'useGoogleAlbums');
+        if (!set) {
+          // exceeded storage limits
+          _selections.pop();
+          this._showStorageErrorDialog('AlbumViews._onSelectAllTapped');
+          break;
+        }
+        this.set('albums.' + i + '.checked', true);
+        this.set('albums.' + i + '.ct', newAlbum.ct);
       }
+      albumCt++;
     }
   },
 
@@ -430,6 +431,7 @@ Polymer({
           // exceeded storage limits
           _selections.pop();
           this.set('albums.' + album.index + '.checked', false);
+          // notify listeners
           this._showStorageErrorDialog(
               'AlbumViews._onAlbumSelectChanged');
         }
@@ -479,9 +481,10 @@ Polymer({
    * @private
    */
   _showStorageErrorDialog: function(method) {
-    const ERR_TITLE = ChromeLocale.localize('err_storage_title');
-    ChromeLog.error('safeSet failed', method, ERR_TITLE);
-    showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
+    const title = ChromeLocale.localize('err_storage_title');
+    const text = ChromeLocale.localize('err_storage_desc');
+    ChromeLog.error(text, method, title);
+    showErrorDialog(title, text);
   },
 
   /**
