@@ -26,7 +26,7 @@ import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
 
-import * as Permissions from '../../../scripts/options/permissions.js';
+import * as Permissions from '../../../scripts/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA

@@ -30,7 +30,7 @@ import '../../../elements/shared-styles.js';
 
 import * as MyGA from '../../../scripts/my_analytics.js';
 
-import * as Permissions from '../../../scripts/options/permissions.js';
+import * as Permissions from '../../../scripts/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA

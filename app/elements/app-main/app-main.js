@@ -63,7 +63,7 @@ import {GooglePhotosPage} from
       '../../elements/pages/google-photos-page/google-photos-page.js';
 import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
 import {HelpPage} from '../../elements/pages/help-page/help-page.js';
-import * as Permissions from '../../scripts/options/permissions.js';
+import * as Permissions from '../../scripts/permissions.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';

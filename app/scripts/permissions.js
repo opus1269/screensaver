@@ -5,14 +5,14 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeAuth
-  from '../../scripts/chrome-extension-utils/scripts/auth.js';
+  from './chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON
-  from '../../scripts/chrome-extension-utils/scripts/json.js';
+  from './chrome-extension-utils/scripts/json.js';
 import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
+  from './chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+  from './chrome-extension-utils/scripts/storage.js';
+import './chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Handle optional permissions
