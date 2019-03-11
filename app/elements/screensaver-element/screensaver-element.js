@@ -513,12 +513,16 @@ Polymer({
 
   /**
    * Observer: Paused state changed
-   * @param {boolean} paused - new value
+   * @param {boolean} newValue - new value
+   * @param {boolean} oldValue - old value
    * @private
    * @memberOf SlideAnimatable
    */
-  _pausedChanged: function(paused) {
-    if (paused) {
+  _pausedChanged: function(newValue, oldValue) {
+    if (typeof oldValue === 'undefined') {
+      return;
+    }
+    if (newValue) {
       this.$.pauseImage.classList.add('fadeOut');
       this.$.playImage.classList.remove('fadeOut');
     } else {
