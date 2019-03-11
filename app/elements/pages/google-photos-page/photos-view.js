@@ -18,6 +18,7 @@ import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
+import {AppMain} from '../../../elements/app-main/app-main.js';
 import './photo_cat.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
@@ -25,7 +26,6 @@ import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
 
-import {showErrorDialog} from '../../../scripts/options/options.js';
 import * as Permissions from '../../../scripts/options/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
 
@@ -222,6 +222,15 @@ export const GooglePhotosPage = Polymer({
 
       // set state of photo categories
       this._setPhotoCats();
+
+      // listen for changes to localStorage
+      window.addEventListener('storage', (ev) => {
+        if (ev.key === 'googleImages') {
+          this.setPhotoCount();
+          this.set('needsPhotoRefresh', true);
+        }
+      }, false);
+      
     }.bind(this), 0);
   },
 
@@ -259,7 +268,7 @@ export const GooglePhotosPage = Polymer({
       return null;
     }).catch((err) => {
       this.set('waitForLoad', false);
-      let dialogText = 'unknown';
+      let dialogText = '';
       if (GoogleSource.isQuotaError(err,
           'GooglePhotosPage.loadPhotos')) {
         // Hit Google photos quota
@@ -269,7 +278,8 @@ export const GooglePhotosPage = Polymer({
         ChromeLog.error(err.message,
             'GooglePhotosPage.loadPhotos', ERR_TITLE);
       }
-      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+      AppMain.showErrorDialog(
+          ChromeLocale.localize('err_request_failed'), dialogText);
       return Promise.reject(err);
     });
   },
@@ -355,9 +365,10 @@ export const GooglePhotosPage = Polymer({
    * @memberOf PhotosView
    */
   _showStorageErrorDialog: function(method) {
-    const ERR_TITLE = ChromeLocale.localize('err_storage_title');
-    ChromeLog.error('safeSet failed', method, ERR_TITLE);
-    showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
+    const title = ChromeLocale.localize('err_storage_title');
+    const text = ChromeLocale.localize('err_storage_desc');
+    ChromeLog.error(text, method, title);
+    AppMain.showErrorDialog(title, text);
   },
 
   /**
