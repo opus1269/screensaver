@@ -80,7 +80,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="80">
+          <list size="81">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -161,6 +161,7 @@
             <item index="77" class="java.lang.String" itemvalue="photo-cat" />
             <item index="78" class="java.lang.String" itemvalue="app-main" />
             <item index="79" class="java.lang.String" itemvalue="photos-view" />
+            <item index="80" class="java.lang.String" itemvalue="screensaver-element" />
           </list>
         </value>
       </option>

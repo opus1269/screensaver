@@ -9,7 +9,8 @@ import * as ChromeStorage
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver from './screensaver.js';
+import * as Screensaver
+  from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 
 /**

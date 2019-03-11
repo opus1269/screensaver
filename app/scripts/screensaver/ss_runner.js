@@ -8,7 +8,8 @@ import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver from './screensaver.js';
+import * as Screensaver
+  from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSFinder from './ss_photo_finder.js';
 import * as SSViews from './ss_views.js';
 import * as SSHistory from './ss_history.js';
@@ -206,7 +207,7 @@ function _step(newIdx = null) {
  * @private
  */
 function _runShow(newIdx = null) {
-  if (Screensaver.noPhotos()) {
+  if (Screensaver.isNoPhotos()) {
     // no usable photos to show
     return;
   }
