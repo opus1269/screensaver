@@ -80,7 +80,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="76">
+          <list size="80">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -157,6 +157,10 @@
             <item index="73" class="java.lang.String" itemvalue="app-localstorage-document" />
             <item index="74" class="java.lang.String" itemvalue="paper-radio-group" />
             <item index="75" class="java.lang.String" itemvalue="paper-radio-button" />
+            <item index="76" class="java.lang.String" itemvalue="albums-view" />
+            <item index="77" class="java.lang.String" itemvalue="photo-cat" />
+            <item index="78" class="java.lang.String" itemvalue="app-main" />
+            <item index="79" class="java.lang.String" itemvalue="photos-view" />
           </list>
         </value>
       </option>
