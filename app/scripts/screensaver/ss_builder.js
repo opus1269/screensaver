@@ -15,12 +15,12 @@ import * as SSPhotos from './ss_photos.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 /**
- * Builder for a {@link Screensaver}
+ * Builder for a {@link module:Screensaver}
  * @module SSBuilder
  */
 
 /**
- * Build everything related to a {@link Screensaver}
+ * Build everything related to a {@link module:Screensaver}
  * @returns {boolean} true if there are photos for the show
  */
 export function build() {

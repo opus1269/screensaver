@@ -16,7 +16,7 @@ import * as SSHistory from './ss_history.js';
 import * as SSTime from './ss_time.js';
 
 /**
- * Control the running of a {@link Screensaver}
+ * Control the running of a {@link module:Screensaver}
  * @module SSRunner
  */
 

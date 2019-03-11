@@ -98,85 +98,84 @@ export let setPaused = null;
 
 Polymer({
   // language=HTML format=false
-  _template: html`
-<!--suppress CssUnresolvedCustomProperty -->
+  _template: html`<!--suppress CssUnresolvedCustomProperty -->
 <style include="iron-flex iron-flex-alignment iron-positioning"></style>
 <style include="shared-styles"></style>
 <style>
 
-    /* Added programmatically */
-    .fadeOut {
-      animation: fadeOut 1s 2s;
-      animation-fill-mode: both;
-    }
+  /* Added programmatically */
+  .fadeOut {
+    animation: fadeOut 1s 2s;
+    animation-fill-mode: both;
+  }
 
-    @keyframes fadeOut {
-      from {
-        opacity: 1.0;
-      }
-      to {
-        opacity: 0.0;
-      }
+  @keyframes fadeOut {
+    from {
+      opacity: 1.0;
     }
-
-    .vcr {
-      position: fixed;
-      width: 15vh;
-      height: 15vh;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+    to {
       opacity: 0.0;
     }
+  }
 
-    .time {
-      font-size: 5.25vh;
-      font-weight: 200;
-      position: fixed;
-      right: 1vw;
-      bottom: 3.5vh;
-      padding: 0;
-      margin: 0;
-      color: white;
-      opacity: 1.0;
-    }
+  .vcr {
+    position: fixed;
+    width: 15vh;
+    height: 15vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.0;
+  }
 
-    .author {
-      font-size: 2.5vh;
-      font-weight: 300;
-      position: fixed;
-      overflow: hidden;
-      right: 1vw;
-      bottom: 1vh;
-      padding: 0;
-      margin: 0;
-      color: white;
-      opacity: 1.0;
-    }
+  .time {
+    font-size: 5.25vh;
+    font-weight: 200;
+    position: fixed;
+    right: 1vw;
+    bottom: 3.5vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
 
-    .location {
-      font-size: 2.5vh;
-      font-weight: 300;
-      position: fixed;
-      overflow: hidden;
-      left: 1vw;
-      bottom: 1vh;
-      padding: 0;
-      margin: 0;
-      color: white;
-      opacity: 1.0;
-    }
+  .author {
+    font-size: 2.5vh;
+    font-weight: 300;
+    position: fixed;
+    overflow: hidden;
+    right: 1vw;
+    bottom: 1vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
 
-    .noPhotos {
-      font-size: 5vh;
-      font-weight: 600;
-      position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      color: rgba(48, 63, 159, 1);
-      opacity: .8;
-    }
+  .location {
+    font-size: 2.5vh;
+    font-weight: 300;
+    position: fixed;
+    overflow: hidden;
+    left: 1vw;
+    bottom: 1vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+
+  .noPhotos {
+    font-size: 5vh;
+    font-weight: 600;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(48, 63, 159, 1);
+    opacity: .8;
+  }
 
 </style>
 
@@ -218,7 +217,7 @@ Polymer({
   properties: {
 
     /**
-     * The views of the photos
+     * Array of {@link module:SSView} objects
      */
     _views: {
       type: Array,

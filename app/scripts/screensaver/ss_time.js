@@ -14,7 +14,7 @@ import * as Screensaver
 import * as SSRunner from './ss_runner.js';
 
 /**
- * Time handling for an {@link Screensaver}
+ * Time handling for an {@link module:Screensaver}
  * @module SSTime
  */
 

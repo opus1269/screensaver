@@ -47,7 +47,7 @@ const _MAX_VIEWS = 20;
 
 /**
  * The array of views
- * @type {Array<SSView>}
+ * @type {Array<module:SSView>}
  * @const
  * @private
  */
@@ -99,7 +99,7 @@ function _setViewType() {
 
 /**
  * Create the {@link module:SSView} pages
- * @param {module:Screensaver} t
+ * @param {PolymerElement} t
  */
 export function create(t) {
   _pages = t.$.pages;
