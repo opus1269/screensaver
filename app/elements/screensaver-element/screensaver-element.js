@@ -222,7 +222,6 @@ Polymer({
     _views: {
       type: Array,
       value: [],
-      notify: true,
     },
 
     /**
@@ -231,7 +230,6 @@ Polymer({
     sizingType: {
       type: String,
       value: null,
-      notify: true,
     },
 
     /**
@@ -240,7 +238,6 @@ Polymer({
     aniType: {
       type: Number,
       value: 0,
-      notify: true,
     },
 
     /**
@@ -250,7 +247,7 @@ Polymer({
     screenWidth: {
       type: Number,
       value: screen.width,
-      notify: true,
+      readOnly: true,
     },
 
     /**
@@ -260,7 +257,7 @@ Polymer({
     screenHeight: {
       type: Number,
       value: screen.height,
-      notify: true,
+      readOnly: true,
     },
 
     /**
@@ -269,7 +266,7 @@ Polymer({
     paused: {
       type: Boolean,
       value: false,
-      notify: true,
+      observer: '_pausedChanged',
     },
 
     /**
@@ -278,7 +275,6 @@ Polymer({
     noPhotos: {
       type: Boolean,
       value: false,
-      notify: true,
     },
 
     /**
@@ -287,7 +283,6 @@ Polymer({
     timeLabel: {
       type: String,
       value: '',
-      notify: true,
     },
   },
 
@@ -321,7 +316,7 @@ Polymer({
   },
 
   /**
-   * Create the {@link SSViews} that will be animated
+   * Create the {@link module:SSViews} that will be animated
    */
   createPages: function() {
     SSViews.create(this);
@@ -365,14 +360,6 @@ Polymer({
    */
   setPaused: function(paused) {
     this.set('paused', paused);
-    // TODO can do this in observer
-    if (paused) {
-      this.$.pauseImage.classList.add('fadeOut');
-      this.$.playImage.classList.remove('fadeOut');
-    } else {
-      this.$.playImage.classList.add('fadeOut');
-      this.$.pauseImage.classList.remove('fadeOut');
-    }
   },
 
   /**
@@ -493,7 +480,6 @@ Polymer({
         }
 
         // update the Google Photos baseUrls for this screensaver session
-        // TODO what if a photo is deleted -- how do we know to mark bad
         SSPhotos.updateGooglePhotoUrls(newPhotos);
 
         // update any views with the new google photos
@@ -522,6 +508,22 @@ Polymer({
 
         _isUpdating = false;
       }
+    }
+  },
+
+  /**
+   * Observer: Paused state changed
+   * @param {boolean} paused - new value
+   * @private
+   * @memberOf SlideAnimatable
+   */
+  _pausedChanged: function(paused) {
+    if (paused) {
+      this.$.pauseImage.classList.add('fadeOut');
+      this.$.playImage.classList.remove('fadeOut');
+    } else {
+      this.$.playImage.classList.add('fadeOut');
+      this.$.pauseImage.classList.remove('fadeOut');
     }
   },
 
