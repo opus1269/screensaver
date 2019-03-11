@@ -95,7 +95,6 @@
 
     The extension will never change any of your data. It only has the
     ability to read albums and photos.
-    
 
   ***
 
@@ -103,10 +102,21 @@
 
     There is a daily limit to the number of times the extension can
     access Google Photos. To prevent exceeding this limit, the extension
-    limits the number of albums you can select and the number of photos
-    that are retrieved for each album.
+    has maximums for the number of albums you can select, the number of photos
+    that are retrieved for each album, and the total number of photos you
+    can select.
     
+  ***
 
+* **What am I seeing "No Photos" in the screensaver or the error "OAuth2 not granted or revoked."?**
+
+    If you sign out of Chrome your photo selections will be removed and you will
+    need to reauthorize the extension and reselect them.  In older versions
+    of the extension, you could still access the links to the photos you had
+    previously selected.  To improve security, the new API from Google
+    expires the links after about an hour, so the extension needs continued 
+    authorization to refresh them as needed.
+    
   ***
 
 * **Why are some of my photos upside down or on their side?**
@@ -181,7 +191,7 @@
 * **Can you hide the cursor when the screensaver is displayed?**
 
     **Update:** As of Chrome version 60 this has been fixed. It may
-    still be broken on Mac though.
+    still be broken on Mac and Chromebooks though.
 
     There is bug in Chrome that prevents this. It was working on MS Windows
     computers until Chrome Version 58 broke it. It has been broken on Chrome OS
