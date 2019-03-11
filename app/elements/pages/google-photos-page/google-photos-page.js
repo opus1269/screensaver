@@ -20,7 +20,7 @@ import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js
 
 import './albums-view.js';
 import './photos-view.js';
-import {AppMain} from '../../../elements/app-main/app-main.js';
+import {showConfirmDialog} from '../../../elements/app-main/app-main.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
@@ -256,7 +256,7 @@ export const GooglePhotosPage = Polymer({
     const text = ChromeLocale.localize('desc_mode_switch');
     const title = ChromeLocale.localize('title_mode_switch');
     const button = ChromeLocale.localize('button_mode_switch');
-    AppMain.showConfirmDialog(text, title, button, this._modeChange.bind(this));
+    showConfirmDialog(text, title, button, this._modeChange.bind(this));
   },
 
   /**

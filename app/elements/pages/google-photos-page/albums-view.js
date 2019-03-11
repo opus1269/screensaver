@@ -21,7 +21,7 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import {AppMain} from '../../../elements/app-main/app-main.js';
+import {showErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
@@ -300,7 +300,7 @@ export const GooglePhotosPage = Polymer({
         ChromeLog.error(err.message,
             'GooglePhotosPage.loadAlbumList', ERR_TITLE);
       }
-      AppMain.showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
       return Promise.reject(err);
     });
   },
@@ -317,7 +317,7 @@ export const GooglePhotosPage = Polymer({
       if (albumCt === _MAX_ALBUMS) {
         // reached max. number of albums
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
-        AppMain.showErrorDialog(ChromeLocale.localize('err_status'),
+        showErrorDialog(ChromeLocale.localize('err_status'),
             ChromeLocale.localize('err_max_albums'));
         break;
       }
@@ -329,7 +329,7 @@ export const GooglePhotosPage = Polymer({
             // reached max number of photos
             ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
                 `limit: ${photoCt}`);
-            AppMain.showErrorDialog(ChromeLocale.localize('err_status'),
+            showErrorDialog(ChromeLocale.localize('err_status'),
                 ChromeLocale.localize('err_max_photos'));
             break;
           }
@@ -393,7 +393,7 @@ export const GooglePhotosPage = Polymer({
         ChromeLog.error(err.message,
             'GooglePhotosPage.loadAlbum', ERR_TITLE);
       }
-      AppMain.showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
     }
     return album;
   },
@@ -417,7 +417,7 @@ export const GooglePhotosPage = Polymer({
         // reached max number of albums
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
-        AppMain.showErrorDialog(ChromeLocale.localize('err_request_failed'),
+        showErrorDialog(ChromeLocale.localize('err_request_failed'),
             ChromeLocale.localize('err_max_albums'));
 
         return;
@@ -428,7 +428,7 @@ export const GooglePhotosPage = Polymer({
         ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
             `limit: ${photoCt}`);
         this.set('albums.' + album.index + '.checked', false);
-        AppMain.showErrorDialog(ChromeLocale.localize('err_status'),
+        showErrorDialog(ChromeLocale.localize('err_status'),
             ChromeLocale.localize('err_max_photos'));
         return;
       }
@@ -500,7 +500,7 @@ export const GooglePhotosPage = Polymer({
   _showStorageErrorDialog: function(method) {
     const ERR_TITLE = ChromeLocale.localize('err_storage_title');
     ChromeLog.error('safeSet failed', method, ERR_TITLE);
-    AppMain.showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
+    showErrorDialog(ERR_TITLE, ChromeLocale.localize('err_storage_desc'));
   },
 
   /**

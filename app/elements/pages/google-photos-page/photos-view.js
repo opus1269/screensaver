@@ -18,7 +18,7 @@ import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import {AppMain} from '../../../elements/app-main/app-main.js';
+import {showErrorDialog} from '../../../elements/app-main/app-main.js';
 import './photo_cat.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
@@ -71,8 +71,7 @@ export const GooglePhotosPage = Polymer({
   }
 
   :host .photo-count-container paper-button {
-    margin: 0;
-    margin-right: 8px;
+    margin: 0 8px 0 0;
     @apply --paper-font-title;
   }
 
@@ -278,7 +277,7 @@ export const GooglePhotosPage = Polymer({
         ChromeLog.error(err.message,
             'GooglePhotosPage.loadPhotos', ERR_TITLE);
       }
-      AppMain.showErrorDialog(
+      showErrorDialog(
           ChromeLocale.localize('err_request_failed'), dialogText);
       return Promise.reject(err);
     });
@@ -368,7 +367,7 @@ export const GooglePhotosPage = Polymer({
     const title = ChromeLocale.localize('err_storage_title');
     const text = ChromeLocale.localize('err_storage_desc');
     ChromeLog.error(text, method, title);
-    AppMain.showErrorDialog(title, text);
+    showErrorDialog(title, text);
   },
 
   /**

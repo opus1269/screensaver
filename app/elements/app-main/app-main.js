@@ -87,6 +87,24 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
+ * Function to show a confirm dialog
+ * @type {Function}
+ */
+export let showConfirmDialog = null;
+
+/**
+ * Function to show an error dialog
+ * @type {Function}
+ */
+export let showErrorDialog = null;
+
+/**
+ * Function to call on confirm dialog confirm button click
+ * @type {Function}
+ */
+let confirmFn = null;
+
+/**
  * Manage an html page that is inserted on demand<br />
  * May also be a url link to external site
  * @typedef {{}} module:AppMain.Page
@@ -190,13 +208,7 @@ let gPhotosPage = null;
  */
 let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
-/**
- * Function to call on confirm dialog confirm button click
- * @type {Function}
- */
-let confirmFn = null;
-
-export const AppMain = Polymer({
+Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomProperty -->
 <style include="iron-flex iron-flex-alignment"></style>
@@ -443,6 +455,10 @@ export const AppMain = Polymer({
   ready: function() {
 
     ChromeGA.page('/options.html');
+    
+    // Initialize dialog exports
+    showErrorDialog = this.showErrorDialog.bind(this);
+    showConfirmDialog = this.showConfirmDialog.bind(this);
 
     // initialize page functions
     pages[1].obj = this._showScreensaverPreview.bind(this);
