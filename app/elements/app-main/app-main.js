@@ -454,7 +454,6 @@ Polymer({
    */
   ready: function() {
 
-    ChromeGA.page('/options.html');
     
     // Initialize dialog exports
     showErrorDialog = this.showErrorDialog.bind(this);
@@ -493,6 +492,8 @@ Polymer({
     }, false);
 
     setTimeout(function() {
+      ChromeGA.page('/options.html');
+      
       // initialize menu enabled states
       this._setErrorMenuState();
       this._setGooglePhotosMenuState();
