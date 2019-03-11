@@ -88,9 +88,9 @@ const _DATA_VERSION = 21;
  * @property {boolean} isAlbumMode - true if Google Photos album mode
  * @property {boolean} useGoogle - use this photo source
  * @property {boolean} useGoogleAlbums - use this photo source
- * @property {[]} albumSelections - user's selected Google Photos albums
+ * @property {Array} albumSelections - user's selected Google Photos albums
  * @property {boolean} useGooglePhotos - use this photo source
- * @property {[]} googleImages - user's selected Google Photos
+ * @property {Array} googleImages - user's selected Google Photos
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
  * @property {{}} googlePhotosFilter - filter for retrieving google photos

@@ -232,7 +232,7 @@ export default class GoogleSource extends PhotoSource {
    */
   static async loadAlbumList() {
     let nextPageToken;
-    /** @type {{mediaItemsCount, coverPhotoBaseUrl}[]} */
+    /** @type {Array<{mediaItemsCount, coverPhotoBaseUrl}>} */
     let gAlbums = [];
     let albums = [];
     let ct = 0;
