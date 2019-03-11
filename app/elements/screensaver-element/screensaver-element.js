@@ -295,7 +295,12 @@ Polymer({
    * Element is ready
    */
   ready: function() {
-    
+
+    // set selected background image
+    document.body.style.background = ChromeStorage.get('background',
+        'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').
+        substring(11);
+
     // Initialize exports
     createPages = this.createPages.bind(this);
     setSizingType = this.setSizingType.bind(this);
@@ -305,11 +310,6 @@ Polymer({
     setPaused = this.setPaused.bind(this);
 
     setTimeout(function() {
-      // set selected background image
-      document.body.style.background = ChromeStorage.get('background',
-          'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').
-          substring(11);
-
       ChromeGA.page('/screensaver.html');
 
       this._setZoom();
@@ -411,15 +411,14 @@ Polymer({
 
   /**
    * Launch the slide show
-   * @param {int} [delay=2000] - delay before start
+   * @param {int} [delay=1000] - delay in milli sec before start
    * @private
    */
-  _launch: function(delay = 2000) {
-    // TODO set delay in call to this
+  _launch: function(delay = 1000) {
     const hasPhotos = SSBuilder.build();
     if (hasPhotos) {
       // kick off the slide show if there are photos selected
-      SSRunner.start(1000);
+      SSRunner.start(delay);
     }
   },
 
