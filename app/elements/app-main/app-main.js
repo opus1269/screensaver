@@ -268,8 +268,7 @@ export const AppMain = Polymer({
 
   /* Height of the main scroll area */
   #mainContainer {
-    height: 1000px;
-    overflow: auto;
+    height: 100%;
     padding: 0 0;
   }
 
@@ -395,6 +394,9 @@ export const AppMain = Polymer({
     </div>
 
   </app-header-layout>
+  
+  <app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
+  </app-localstorage-document>
 
 </app-drawer-layout>
 `,
@@ -432,7 +434,6 @@ export const AppMain = Polymer({
     permission: {
       type: String,
       value: 'notSet',
-      notify: true,
     },
   },
 
@@ -670,7 +671,6 @@ export const AppMain = Polymer({
    * @private
    */
   _showPermissionsDialog: function() {
-    this.set('permission', ChromeStorage.get('permPicasa', 'notSet'));
     this.$.permissionsDialog.open();
   },
 
@@ -680,7 +680,6 @@ export const AppMain = Polymer({
    */
   _setGooglePhotosMenuState: function() {
     // disable google-page if user hasn't allowed
-    this.set('permission', ChromeStorage.get('permPicasa', 'notSet'));
     const idx = this._getPageIdx('page-google-photos');
     const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
     if (!el) {
