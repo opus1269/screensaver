@@ -407,7 +407,7 @@ Polymer({
 
   </app-header-layout>
   
-  <app-localstorage-document key="permPicasa" data="[[permission]]" storage="window.localStorage">
+  <app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
   </app-localstorage-document>
 
 </app-drawer-layout>
@@ -446,6 +446,7 @@ Polymer({
     permission: {
       type: String,
       value: 'notSet',
+      notify: true,
     },
   },
 
