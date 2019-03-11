@@ -44,24 +44,34 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
+ * Polymer element for selecting Google Photos albums
+ * @module AlbumsView
+ */
+
+/**
  * Max number of albums to select
  * @type {int}
- * @memberOf AlbumsView
+ * @const
+ * @private
  */
 const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 
 /**
  * Max number of total photos to select
  * @type {int}
- * @memberOf AlbumsView
+ * @const
+ * @private
  */
 const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
 /**
- * Polymer element for selecting Google Photos albums
- * @namespace AlbumsView
+ * The array of {@link module:GoogleSource.SelectedAlbum}
+ * @type {Array<module:GoogleSource.SelectedAlbum>}
+ * @private
  */
-export const GooglePhotosPage = Polymer({
+let _selections = [];
+
+Polymer({
   // language=HTML format=false
   _template: html`
 <!--suppress CssUnresolvedCustomPropertySet CssUnresolvedCustomProperty -->
@@ -129,7 +139,7 @@ export const GooglePhotosPage = Polymer({
 
 <div class="list-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
   <paper-item class="list-note">
-    {{localize('google_shared_albums_note')}}
+    [[localize('google_shared_albums_note')]]
   </paper-item>
 
   <template is="dom-repeat" id="t" items="{{albums}}" as="album">
@@ -139,7 +149,7 @@ export const GooglePhotosPage = Polymer({
           <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
                           disabled$="[[disabled]]"></paper-checkbox>
           <paper-item-body class="flex" two-line="">
-            <div class="setting-label">{{album.name}}</div>
+            <div class="setting-label">[[album.name]]</div>
             <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
             <paper-ripple center=""></paper-ripple>
           </paper-item-body>
@@ -165,49 +175,16 @@ export const GooglePhotosPage = Polymer({
   properties: {
 
     /**
-     * The array of all albums
-     * @type {GoogleSource.Album[]}
-     * @memberOf AlbumsView
+     * The array of all {@link module:GoogleSource.Album}
      */
     albums: {
       type: Array,
-      notify: true,
       value: [],
-    },
-
-    /**
-     * The array of selected albums
-     * @type {GoogleSource.SelectedAlbum[]}
-     * @memberOf AlbumsView
-     */
-    selections: {
-      type: Array,
-      value: [],
-    },
-
-    /**
-     * Flag to indicate if UI is disabled
-     * @memberOf AlbumsView
-     */
-    disabled: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
-    /**
-     * Flag to display the loading... UI
-     * @memberOf AlbumsView
-     */
-    waitForLoad: {
-      type: Boolean,
-      value: false,
       notify: true,
     },
 
     /**
      * Status of the option permission for the Google Photos API
-     * @memberOf AlbumsView
      */
     permPicasa: {
       type: String,
@@ -216,8 +193,23 @@ export const GooglePhotosPage = Polymer({
     },
 
     /**
+     * Flag to indicate if UI is disabled
+     */
+    disabled: {
+      type: Boolean,
+      value: false,
+    },
+
+    /**
+     * Flag to display the loading... UI
+     */
+    waitForLoad: {
+      type: Boolean,
+      value: false,
+    },
+
+    /**
      * Flag to determine if main list should be hidden
-     * @memberOf AlbumsView
      */
     isHidden: {
       type: Boolean,
@@ -227,28 +219,26 @@ export const GooglePhotosPage = Polymer({
 
   /**
    * Element is ready
-   * @memberOf AlbumsView
    */
   ready: function() {
-    setTimeout(function() {
+    setTimeout(() => {
       // listen for changes to localStorage
       window.addEventListener('storage', (ev) => {
         if (ev.key === 'albumSelections') {
           const albums = ChromeStorage.get('albumSelections', []);
           if (albums.length === 0) {
             this.set('albums', []);
-            this.set('selections', []);
+            _selections = [];
           }
         }
       }, false);
 
-    }.bind(this), 0);
+    }, 0);
   },
 
   /**
    * Query Google Photos for the list of the users albums
    * @returns {Promise<null>} always resolves
-   * @memberOf AlbumsView
    */
   loadAlbumList: function() {
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
@@ -279,37 +269,36 @@ export const GooglePhotosPage = Polymer({
         // set selected state on albums
         this._selectAlbums();
       } else {
-        // no albums, use photo mode
+        // no albums, use photo mode TODO fix this
         this.set('isAlbumMode', false);
         this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
         ChromeLog.error(ChromeLocale.localize('err_no_albums',
-            'GooglePhotosPage.loadAlbumList'));
+            'AlbumView.loadAlbumList'));
       }
       this.set('waitForLoad', false);
       return null;
     }).catch((err) => {
       this.set('waitForLoad', false);
-      let dialogText = 'unknown';
+      let text = '';
       if (GoogleSource.isQuotaError(err,
-          'GooglePhotosPage.loadAlbumList')) {
+          'AlbumView.loadAlbumList')) {
         // Hit Google photos quota
-        dialogText = ChromeLocale.localize('err_google_quota');
+        text = ChromeLocale.localize('err_google_quota');
       } else {
-        dialogText = err.message;
+        text = err.message;
         ChromeLog.error(err.message,
-            'GooglePhotosPage.loadAlbumList', ERR_TITLE);
+            'AlbumView.loadAlbumList', ERR_TITLE);
       }
-      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ERR_TITLE, text);
       return Promise.reject(err);
     });
   },
 
   /**
    * Select as many albums as possible
-   * @memberOf AlbumsView
    */
   selectAllAlbums: async function() {
-    let albumCt = this.selections.length;
+    let albumCt = _selections.length;
     let photoCt = 0;
     ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
     for (let i = 0; i < this.albums.length; i++) {
@@ -333,18 +322,17 @@ export const GooglePhotosPage = Polymer({
             break;
           }
           photoCt += newAlbum.photos.length;
-          this.selections.push({
+          _selections.push({
             id: album.id, name: newAlbum.name, photos: newAlbum.photos,
           });
           ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
               `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
-          const set = ChromeStorage.safeSet('albumSelections', this.selections,
+          const set = ChromeStorage.safeSet('albumSelections', _selections,
               'useGoogleAlbums');
           if (!set) {
             // exceeded storage limits
-            this.selections.pop();
-            this._showStorageErrorDialog(
-                'GooglePhotosPage._onSelectAllTapped');
+            _selections.pop();
+            this._showStorageErrorDialog('AlbumView._onSelectAllTapped');
             break;
           }
           this.set('albums.' + i + '.checked', true);
@@ -357,11 +345,10 @@ export const GooglePhotosPage = Polymer({
 
   /**
    * Remove selected albums
-   * @memberOf AlbumsView
    */
   removeSelectedAlbums: function() {
     this._uncheckAll();
-    this.selections.splice(0, this.selections.length);
+    _selections = [];
     ChromeStorage.set('albumSelections', []);
   },
 
@@ -369,50 +356,45 @@ export const GooglePhotosPage = Polymer({
    * Query Google Photos for the contents of an album
    * @param {string} id album to load
    * @param {string} name album name
-   * @returns {GoogleSource.Album} Album
-   * @memberOf AlbumsView
+   * @private
+   * @returns {module:GoogleSource.Album} Album, null on error
    */
   _loadAlbum: async function(id, name) {
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
-    let album;
+    let album = null;
     try {
       this.set('waitForLoad', true);
       album = await GoogleSource.loadAlbum(id, name);
       this.set('waitForLoad', false);
-      return album;
     } catch (err) {
       this.set('waitForLoad', false);
-      let dialogText = 'unknown';
-      if (GoogleSource.isQuotaError(err,
-          'GooglePhotosPage.loadAlbum')) {
+      let text = '';
+      if (GoogleSource.isQuotaError(err, 'AlbumView.loadAlbum')) {
         // Hit Google photos quota
-        dialogText = ChromeLocale.localize('err_google_quota');
+        text = ChromeLocale.localize('err_google_quota');
       } else {
-        dialogText = err.message;
-        ChromeLog.error(err.message,
-            'GooglePhotosPage.loadAlbum', ERR_TITLE);
+        text = err.message;
+        ChromeLog.error(err.message, 'AlbumView.loadAlbum', ERR_TITLE);
       }
-      showErrorDialog(ChromeLocale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ERR_TITLE, text);
     }
     return album;
   },
 
   /**
    * Event: Album checkbox state changed
-   * @param {Event} event - tap event
-   * @param {GoogleSource.Album} event.model.album - the album
+   * @param {Event} ev - checkbox state changed
+   * @param {module:GoogleSource.Album} ev.model.album - the album
    * @private
-   * @memberOf AlbumsView
    */
-  _onAlbumSelectChanged: async function(event) {
-    const album = event.model.album;
+  _onAlbumSelectChanged: async function(ev) {
+    const album = ev.model.album;
 
-    ChromeGA.event(ChromeGA.EVENT.CHECK,
-        `selectGoogleAlbum: ${album.checked}`);
+    ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
 
     if (album.checked) {
       // add new
-      if (this.selections.length === _MAX_ALBUMS) {
+      if (_selections.length === _MAX_ALBUMS) {
         // reached max number of albums
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
@@ -434,19 +416,21 @@ export const GooglePhotosPage = Polymer({
 
       const newAlbum = await this._loadAlbum(album.id, album.name);
       if (newAlbum) {
-        this.selections.push({
-          id: album.id, name: newAlbum.name, photos: newAlbum.photos,
+        _selections.push({
+          id: album.id,
+          name: newAlbum.name,
+          photos: newAlbum.photos,
         });
         ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
             `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
-        const set = ChromeStorage.safeSet('albumSelections', this.selections,
+        const set = ChromeStorage.safeSet('albumSelections', _selections,
             'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
-          this.selections.pop();
+          _selections.pop();
           this.set('albums.' + album.index + '.checked', false);
           this._showStorageErrorDialog(
-              'GooglePhotosPage._onAlbumSelectChanged');
+              'AlbumView._onAlbumSelectChanged');
         }
         this.set('albums.' + album.index + '.ct', newAlbum.ct);
       } else {
@@ -455,20 +439,19 @@ export const GooglePhotosPage = Polymer({
       }
     } else {
       // delete old
-      const index = this.selections.findIndex((e) => {
+      const index = _selections.findIndex((e) => {
         return e.id === album.id;
       });
       if (index !== -1) {
-        this.selections.splice(index, 1);
+        _selections.splice(index, 1);
       }
-      const set = ChromeStorage.safeSet('albumSelections', this.selections,
+      const set = ChromeStorage.safeSet('albumSelections', _selections,
           'useGoogleAlbums');
       if (!set) {
         // exceeded storage limits
-        this.selections.pop();
+        _selections.pop();
         this.set('albums.' + album.index + '.checked', false);
-        this._showStorageErrorDialog(
-            'GooglePhotosPage._onAlbumSelectChanged');
+        this._showStorageErrorDialog('AlbumView._onAlbumSelectChanged');
       }
     }
 
@@ -478,7 +461,6 @@ export const GooglePhotosPage = Polymer({
    * Get total photo count that is currently saved
    * @returns {int} Total number of photos saved
    * @private
-   * @memberOf AlbumsView
    */
   _getTotalPhotoCount: function() {
     let ct = 0;
@@ -494,7 +476,6 @@ export const GooglePhotosPage = Polymer({
    * Exceeded storage limits error
    * @param {string} method - function that caused error
    * @private
-   * @memberOf AlbumsView
    */
   _showStorageErrorDialog: function(method) {
     const ERR_TITLE = ChromeLocale.localize('err_storage_title');
@@ -505,16 +486,15 @@ export const GooglePhotosPage = Polymer({
   /**
    * Set the checked state of the stored albums
    * @private
-   * @memberOf AlbumsView
    */
   _selectAlbums: function() {
-    this.set('selections', ChromeStorage.get('albumSelections', []));
+    _selections = ChromeStorage.get('albumSelections', []);
     for (let i = 0; i < this.albums.length; i++) {
-      for (let j = 0; j < this.selections.length; j++) {
-        if (this.albums[i].id === this.selections[j].id) {
+      for (let j = 0; j < _selections.length; j++) {
+        if (this.albums[i].id === _selections[j].id) {
           this.set('albums.' + i + '.checked', true);
           // update photo count
-          this.set('albums.' + i + '.ct', this.selections[j].photos.length);
+          this.set('albums.' + i + '.ct', _selections[j].photos.length);
           break;
         }
       }
@@ -524,7 +504,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Uncheck all albums
    * @private
-   * @memberOf AlbumsView
    */
   _uncheckAll: function() {
     this.albums.forEach((album, index) => {
@@ -540,7 +519,6 @@ export const GooglePhotosPage = Polymer({
    * @param {string} permPicasa - permission state
    * @returns {boolean} true if hidden
    * @private
-   * @memberOf AlbumsView
    */
   _computeHidden: function(waitForLoad, permPicasa) {
     let ret = true;
@@ -555,7 +533,6 @@ export const GooglePhotosPage = Polymer({
    * @param {int} count - number of photos in album
    * @returns {string} i18n label
    * @private
-   * @memberOf AlbumsView
    */
   _computePhotoLabel: function(count) {
     let ret = `${count} ${ChromeLocale.localize('photos')}`;

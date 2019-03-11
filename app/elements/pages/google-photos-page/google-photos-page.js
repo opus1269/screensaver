@@ -231,17 +231,17 @@ export const GooglePhotosPage = Polymer({
     this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
     if (this.isAlbumMode) {
       // the dom-if may not have been loaded yet
-      setTimeout(function() {
+      setTimeout(() => {
         ChromeStorage.set('googleImages', []);
         this.loadAlbumList().catch((err) => {});
-      }.bind(this), 0);
+      }, 0);
     } else {
       // the dom-if may not have been loaded yet
-      setTimeout(function() {
+      setTimeout(() => {
         // remove album selections
         this.$$('#albumsView').removeSelectedAlbums();
         this.$$('#photosView').setPhotoCount();
-      }.bind(this), 0);
+      }, 0);
     }
   },
 

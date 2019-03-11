@@ -41,9 +41,11 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for selecting Google Photos
- * @namespace PhotosView
+ * @module PhotosView
  */
-export const GooglePhotosPage = Polymer({
+
+/** Polymer element */
+Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
 <style include="iron-flex iron-flex-alignment"></style>
@@ -142,7 +144,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Do we need to reload the photos
-     * @memberOf PhotosView
      */
     needsPhotoRefresh: {
       type: Boolean,
@@ -152,7 +153,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Count for photo mode
-     * @memberOf PhotosView
      */
     photoCount: {
       type: Number,
@@ -162,7 +162,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Flag to indicate if we should not filter photos
-     * @memberOf PhotosView
      */
     noFilter: {
       type: Boolean,
@@ -171,8 +170,16 @@ export const GooglePhotosPage = Polymer({
     },
 
     /**
+     * Status of the option permission for the Google Photos API
+     */
+    permPicasa: {
+      type: String,
+      value: 'notSet',
+      notify: true,
+    },
+
+    /**
      * Flag to indicate if UI is disabled
-     * @memberOf PhotosView
      */
     disabled: {
       type: Boolean,
@@ -182,7 +189,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Flag to display the loading... UI
-     * @memberOf PhotosView
      */
     waitForLoad: {
       type: Boolean,
@@ -191,18 +197,7 @@ export const GooglePhotosPage = Polymer({
     },
 
     /**
-     * Status of the option permission for the Google Photos API
-     * @memberOf PhotosView
-     */
-    permPicasa: {
-      type: String,
-      value: 'notSet',
-      notify: true,
-    },
-
-    /**
      * Flag to determine if main view should be hidden
-     * @memberOf PhotosView
      */
     isHidden: {
       type: Boolean,
@@ -212,10 +207,9 @@ export const GooglePhotosPage = Polymer({
 
   /**
    * Element is ready
-   * @memberOf PhotosView
    */
   ready: function() {
-    setTimeout(function() {
+    setTimeout(() => {
       this.setPhotoCount();
 
       // set state of photo categories
@@ -223,19 +217,19 @@ export const GooglePhotosPage = Polymer({
 
       // listen for changes to localStorage
       window.addEventListener('storage', (ev) => {
+        // noinspection JSUnresolvedVariable
         if (ev.key === 'googleImages') {
           this.setPhotoCount();
           this.set('needsPhotoRefresh', true);
         }
       }, false);
-      
-    }.bind(this), 0);
+
+    }, 0);
   },
 
   /**
    * Query Google Photos for the array of user's photos
    * @returns {Promise<null>} always resolves
-   * @memberOf PhotosView
    */
   loadPhotos: function() {
     const ERR_TITLE = ChromeLocale.localize('err_load_photos');
@@ -256,7 +250,7 @@ export const GooglePhotosPage = Polymer({
           'useGooglePhotos');
       if (!set) {
         // exceeded storage limits
-        this._showStorageErrorDialog('GooglePhotosPage.loadPhotos');
+        this._showStorageErrorDialog('PhotosView.loadPhotos');
       } else {
         this.set('needsPhotoRefresh', false);
         this.set('photoCount', photos.length);
@@ -266,25 +260,21 @@ export const GooglePhotosPage = Polymer({
       return null;
     }).catch((err) => {
       this.set('waitForLoad', false);
-      let dialogText = '';
-      if (GoogleSource.isQuotaError(err,
-          'GooglePhotosPage.loadPhotos')) {
+      let text = '';
+      if (GoogleSource.isQuotaError(err, 'PhotosView.loadPhotos')) {
         // Hit Google photos quota
-        dialogText = ChromeLocale.localize('err_google_quota');
+        text = ChromeLocale.localize('err_google_quota');
       } else {
-        dialogText = err.message;
-        ChromeLog.error(err.message,
-            'GooglePhotosPage.loadPhotos', ERR_TITLE);
+        text = err.message;
+        ChromeLog.error(err.message, 'PhotosView.loadPhotos', ERR_TITLE);
       }
-      showErrorDialog(
-          ChromeLocale.localize('err_request_failed'), dialogText);
+      showErrorDialog(ERR_TITLE, text);
       return Promise.reject(err);
     });
   },
 
   /**
    * Set the photo count that is currently saved
-   * @memberOf PhotosView
    */
   setPhotoCount: function() {
     const photos = ChromeStorage.get('googleImages', []);
@@ -294,7 +284,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Save the current filter state
    * @private
-   * @memberOf PhotosView
    */
   _saveFilter: function() {
     const els = this.shadowRoot.querySelectorAll('photo-cat');
@@ -331,7 +320,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Set the states of the photo-cat elements
    * @private
-   * @memberOf PhotosView
    */
   _setPhotoCats: function() {
     const filter = ChromeStorage.get('googlePhotosFilter',
@@ -360,7 +348,6 @@ export const GooglePhotosPage = Polymer({
    * Exceeded storage limits error
    * @param {string} method - function that caused error
    * @private
-   * @memberOf PhotosView
    */
   _showStorageErrorDialog: function(method) {
     const title = ChromeLocale.localize('err_storage_title');
@@ -373,7 +360,6 @@ export const GooglePhotosPage = Polymer({
    * Event: Selection of photo-cat changed
    * @param {Event} ev
    * @private
-   * @memberOf PhotosView
    */
   _onPhotoCatChanged: function(ev) {
     const cat = ev.srcElement.id;
@@ -389,7 +375,7 @@ export const GooglePhotosPage = Polymer({
       return e === cat;
     });
 
-    // add and category remove as appropriate
+    // add and remove as appropriate
     if (selected === 'include') {
       if (includesIdx === -1) {
         includes.push(cat);
@@ -415,7 +401,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: Refresh photos button clicked
    * @private
-   * @memberOf PhotosView
    */
   _onRefreshPhotosClicked: function() {
     this.loadPhotos().catch((err) => {});
@@ -425,7 +410,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: No filters toggle changed
    * @private
-   * @memberOf PhotosView
    */
   _noFilterTapped: function() {
     if (this.noFilter) {
@@ -441,7 +425,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} noFilter - true if not filtering
    * @returns {boolean} true if hidden
    * @private
-   * @memberOf PhotosView
    */
   _computeFilterDisabled: function(disabled, noFilter) {
     return disabled || noFilter;
@@ -453,7 +436,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} needsPhotoRefresh - true if photos need refresh
    * @returns {boolean} true if hidden
    * @private
-   * @memberOf PhotosView
    */
   _computeRefreshDisabled: function(disabled, needsPhotoRefresh) {
     return disabled || !needsPhotoRefresh;
@@ -465,7 +447,6 @@ export const GooglePhotosPage = Polymer({
    * @param {string} permPicasa - permission state
    * @returns {boolean} true if hidden
    * @private
-   * @memberOf PhotosView
    */
   _computeHidden: function(waitForLoad, permPicasa) {
     let ret = true;
