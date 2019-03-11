@@ -196,7 +196,7 @@ const pages = [
 
 /**
  * Google Photos Page
- * @type {GooglePhotosPage}
+ * @type {module:GooglePhotosPage}
  * @private
  */
 let gPhotosPage = null;
