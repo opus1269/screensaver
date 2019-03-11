@@ -301,7 +301,7 @@ Polymer({
 <error-dialog id="errorDialog"></error-dialog>
 
 <!-- Confirm dialog keep above app-drawer-layout because of overlay bug -->
-<confirm-dialog id="confirmDialog" confirm-label="{{confirmLabel}}"
+<confirm-dialog id="confirmDialog" confirm-label="[[localize('ok')]]"
                 on-confirm-tap="_onConfirmDialogTapped"></confirm-dialog>
 
 <!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
@@ -407,7 +407,7 @@ Polymer({
 
   </app-header-layout>
   
-  <app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
+  <app-localstorage-document key="permPicasa" data="[[permission]]" storage="window.localStorage">
   </app-localstorage-document>
 
 </app-drawer-layout>
@@ -422,13 +422,13 @@ Polymer({
   properties: {
 
     /**
-     * Current {@link module:AppMain.Page}
+     * Array of {@link module:AppMain.Page}
      * @const
      */
     pages: {
       type: Array,
       value: pages,
-      notify: true,
+      readOnly: true,
     },
 
     /**
