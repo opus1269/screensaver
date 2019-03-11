@@ -266,6 +266,7 @@ Polymer({
         // PhotoSources.process('useGoogleAlbums').catch((err) => {
         //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
         // });
+        
         // set selected state on albums
         this._selectAlbums();
       } else {
@@ -273,7 +274,7 @@ Polymer({
         this.set('isAlbumMode', false);
         this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
         ChromeLog.error(ChromeLocale.localize('err_no_albums',
-            'AlbumView.loadAlbumList'));
+            'AlbumViews.loadAlbumList'));
       }
       this.set('waitForLoad', false);
       return null;
@@ -281,13 +282,13 @@ Polymer({
       this.set('waitForLoad', false);
       let text = '';
       if (GoogleSource.isQuotaError(err,
-          'AlbumView.loadAlbumList')) {
+          'AlbumViews.loadAlbumList')) {
         // Hit Google photos quota
         text = ChromeLocale.localize('err_google_quota');
       } else {
         text = err.message;
         ChromeLog.error(err.message,
-            'AlbumView.loadAlbumList', ERR_TITLE);
+            'AlbumViews.loadAlbumList', ERR_TITLE);
       }
       showErrorDialog(ERR_TITLE, text);
       return Promise.reject(err);
@@ -332,7 +333,7 @@ Polymer({
           if (!set) {
             // exceeded storage limits
             _selections.pop();
-            this._showStorageErrorDialog('AlbumView._onSelectAllTapped');
+            this._showStorageErrorDialog('AlbumViews._onSelectAllTapped');
             break;
           }
           this.set('albums.' + i + '.checked', true);
@@ -369,12 +370,12 @@ Polymer({
     } catch (err) {
       this.set('waitForLoad', false);
       let text = '';
-      if (GoogleSource.isQuotaError(err, 'AlbumView.loadAlbum')) {
+      if (GoogleSource.isQuotaError(err, 'AlbumViews.loadAlbum')) {
         // Hit Google photos quota
         text = ChromeLocale.localize('err_google_quota');
       } else {
         text = err.message;
-        ChromeLog.error(err.message, 'AlbumView.loadAlbum', ERR_TITLE);
+        ChromeLog.error(err.message, 'AlbumViews.loadAlbum', ERR_TITLE);
       }
       showErrorDialog(ERR_TITLE, text);
     }
@@ -430,7 +431,7 @@ Polymer({
           _selections.pop();
           this.set('albums.' + album.index + '.checked', false);
           this._showStorageErrorDialog(
-              'AlbumView._onAlbumSelectChanged');
+              'AlbumViews._onAlbumSelectChanged');
         }
         this.set('albums.' + album.index + '.ct', newAlbum.ct);
       } else {
@@ -451,7 +452,7 @@ Polymer({
         // exceeded storage limits
         _selections.pop();
         this.set('albums.' + album.index + '.checked', false);
-        this._showStorageErrorDialog('AlbumView._onAlbumSelectChanged');
+        this._showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
       }
     }
 

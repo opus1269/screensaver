@@ -40,7 +40,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for the Google Photos
- * @namespace GooglePhotosPage
+ * @module GooglePhotosPage
  */
 export const GooglePhotosPage = Polymer({
   // language=HTML format=false
@@ -144,7 +144,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Select by albums or photos
-     * @memberOf GooglePhotosPage
      */
     isAlbumMode: {
       type: Boolean,
@@ -154,7 +153,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Should we use the album photos in the screensaver
-     * @memberOf GooglePhotosPage
      */
     useGoogleAlbums: {
       type: Boolean,
@@ -164,7 +162,6 @@ export const GooglePhotosPage = Polymer({
 
     /**
      * Should we use the google photos in the screensaver
-     * @memberOf GooglePhotosPage
      */
     useGooglePhotos: {
       type: Boolean,
@@ -175,7 +172,6 @@ export const GooglePhotosPage = Polymer({
 
   /**
    * Element is ready
-   * @memberOf GooglePhotosPage
    */
   ready: function() {
     setTimeout(function() {
@@ -188,7 +184,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Query Google Photos for the list of the users albums
    * @returns {Promise<null>} always resolves
-   * @memberOf GooglePhotosPage
    */
   loadAlbumList: function() {
     if (this.isAlbumMode) {
@@ -199,7 +194,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Query Google Photos for the array of user's photos
    * @returns {Promise<null>} always resolves
-   * @memberOf GooglePhotosPage
    */
   loadPhotos: function() {
     if (!this.isAlbumMode && this.useGoogle) {
@@ -212,7 +206,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} useGoogle - Google Photos use enabled
    * @param {boolean} isAlbumMode - Are we in album mode
    * @private
-   * @memberOf GooglePhotosPage
    */
   _setUseKeys: function(useGoogle, isAlbumMode) {
     const useAlbums = (useGoogle && isAlbumMode);
@@ -224,7 +217,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Toggle between album and photo mode
    * @private
-   * @memberOf GooglePhotosPage
    */
   _modeChange: function() {
     this.set('isAlbumMode', !this.isAlbumMode);
@@ -248,7 +240,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on mode icon
    * @private
-   * @memberOf GooglePhotosPage
    */
   _onModeTapped: function() {
     // show a confirm dialog and pass in a callback that will be called
@@ -262,7 +253,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on refresh album list icon
    * @private
-   * @memberOf GooglePhotosPage
    */
   _onRefreshTapped: function() {
     let label = 'refreshGoogleAlbums';
@@ -278,7 +268,6 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on deselect all albums icon
    * @private
-   * @memberOf GooglePhotosPage
    */
   _onDeselectAllTapped: function() {
     this.$$('#albumsView').removeSelectedAlbums();
@@ -288,16 +277,15 @@ export const GooglePhotosPage = Polymer({
   /**
    * Event: Handle tap on select all albums icon
    * @private
-   * @memberOf GooglePhotosPage
    */
   _onSelectAllTapped: async function() {
     this.$$('#albumsView').selectAllAlbums().catch(() => {});
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
   },
 
   /**
    * Event: checked state changed on main toggle changed
    * @private
-   * @memberOf GooglePhotosPage
    */
   _onUseGoogleChanged: function() {
     const useGoogle = this.$.googlePhotosToggle.checked;
@@ -317,7 +305,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} page title
    * @private
-   * @memberOf GooglePhotosPage
    */
   _computeTitle: function(isAlbumMode) {
     let ret = '';
@@ -334,16 +321,9 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} an icon
    * @private
-   * @memberOf GooglePhotosPage
    */
   _computeModeIcon: function(isAlbumMode) {
-    let ret = '';
-    if (isAlbumMode) {
-      ret = 'myicons:photo-album';
-    } else {
-      ret = 'myicons:photo';
-    }
-    return ret;
+    return isAlbumMode ? 'myicons:photo-album' : 'myicons:photo';
   },
 
   /**
@@ -351,10 +331,9 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} page title
    * @private
-   * @memberOf GooglePhotosPage
    */
   _computeModeTooltip: function(isAlbumMode) {
-    let ret = '';
+    let ret;
     if (isAlbumMode) {
       ret = ChromeLocale.localize('tooltip_google_mode_albums');
     } else {
@@ -369,7 +348,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {boolean} true if album icons should be disabled
    * @private
-   * @memberOf GooglePhotosPage
    */
   _computeAlbumIconDisabled(useGoogle, isAlbumMode) {
     return !(useGoogle && isAlbumMode);
@@ -380,7 +358,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} isAlbumMode - true if album mode
    * @returns {string} tooltip label
    * @private
-   * @memberOf GooglePhotosPage
    */
   _computeRefreshTooltip(isAlbumMode) {
     let label = ChromeLocale.localize('tooltip_refresh');
@@ -395,7 +372,6 @@ export const GooglePhotosPage = Polymer({
    * @param {boolean} useGoogle - true if using Google Photos
    * @returns {boolean} true if album icons should be disabled
    * @private
-   * @memberOf GooglePhotosPage
    */
   _computeRefreshIconDisabled(useGoogle) {
     return !useGoogle;
