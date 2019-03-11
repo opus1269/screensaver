@@ -273,7 +273,6 @@ export const GooglePhotosPage = Polymer({
         }
         // update the currently selected albums from the web
         // eslint-disable-next-line promise/no-nesting
-        // TODO do we need this?
         // PhotoSources.process('useGoogleAlbums').catch((err) => {
         //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
         // });

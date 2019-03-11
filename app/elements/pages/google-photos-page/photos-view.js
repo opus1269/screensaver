@@ -215,7 +215,6 @@ export const GooglePhotosPage = Polymer({
    * @memberOf PhotosView
    */
   ready: function() {
-    // TODO should be a data item?
     setTimeout(function() {
       this.setPhotoCount();
 

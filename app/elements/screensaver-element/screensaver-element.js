@@ -333,7 +333,6 @@ Polymer({
   /**
    * Do we have usable photos
    * @returns {boolean} true if all photos are bad
-   * // TODO name collision?
    */
   isNoPhotos: function() {
     return this.noPhotos;
