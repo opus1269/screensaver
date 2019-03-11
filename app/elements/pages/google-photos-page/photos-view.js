@@ -89,7 +89,7 @@ export const GooglePhotosPage = Polymer({
     <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
       <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
     </paper-item>
-    <paper-button raised disabled$="[[!needsPhotoRefresh]]" on-click="_onRefreshPhotosClicked">
+    <paper-button raised disabled\$="[[_computeRefreshDisabled(disabled, needsPhotoRefresh)]]" on-click="_onRefreshPhotosClicked">
       [[localize('button_needs_refresh')]]
     </paper-button>
   </div>
@@ -446,6 +446,18 @@ export const GooglePhotosPage = Polymer({
    */
   _computeFilterDisabled: function(disabled, noFilter) {
     return disabled || noFilter;
+  },
+
+  /**
+   * Computed property: Disabled state of filter ui elements
+   * @param {boolean} disabled - true if whole UI is disabled
+   * @param {boolean} needsPhotoRefresh - true if photos need refresh
+   * @returns {boolean} true if hidden
+   * @private
+   * @memberOf PhotosView
+   */
+  _computeRefreshDisabled: function(disabled, needsPhotoRefresh) {
+    return disabled || !needsPhotoRefresh;
   },
 
   /**
