@@ -323,6 +323,10 @@ export const GooglePhotosPage = Polymer({
    * @private
    */
   _stateChanged: function(isAlbumMode, useGoogle) {
+    if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
+      return;
+    }
+    
     const useAlbums = (useGoogle && isAlbumMode);
     const usePhotos = (useGoogle && !isAlbumMode);
     this.set('useGoogleAlbums', useAlbums);
