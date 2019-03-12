@@ -43,14 +43,6 @@ const chromep = new ChromePromise();
 const _DATA_VERSION = 21;
 
 /**
- * A number and associated units
- * @typedef {{}} module:AppData.UnitValue
- * @property {number} base - value in base unit
- * @property {number} display - value in display unit
- * @property {int} unit - display unit
- */
-
-/**
  * Default values in localStorage
  * @typedef {{}} module:AppData._DEF_VALUES
  * @property {int} version - version of data
@@ -58,9 +50,10 @@ const _DATA_VERSION = 21;
  * @property {string} permPicasa - optional permission for Picasa
  * @property {string} permBackground - optional permission to run in bg
  * @property {boolean} allowBackground - run Chrome in background
- * @property {module:AppData.UnitValue} idleTime - idle time to display
+ * @property {module:SettingSlider.UnitValue} idleTime - idle time to display
  *     screensaver
- * @property {module:AppData.UnitValue} transitionTime - time between photos
+ * @property {module:SettingSlider.UnitValue} transitionTime - time between
+ *     photos
  * @property {boolean} skip - ignore extreme aspect ratio photos
  * @property {boolean} shuffle - randomize photo order
  * @property {int} photoSizing - photo display type
@@ -164,8 +157,9 @@ function _processEnabled() {
  */
 function _processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', true);
-  keepAwake ? chrome.power.requestKeepAwake(
-      'display') : chrome.power.releaseKeepAwake();
+  keepAwake
+      ? chrome.power.requestKeepAwake('display')
+      : chrome.power.releaseKeepAwake();
   updateRepeatingAlarms();
   updateBadgeText();
 }

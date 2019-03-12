@@ -5,15 +5,17 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
+
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/iron-icon/iron-icon.js';
+
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
-import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -21,116 +23,98 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element to display a url link
- * @namespace SettingLink
+ * @module SettingLink
  */
+
+/** Polymer Element */
 Polymer({
-  _template: html`
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <style>
-      :host {
-        display: block;
-        position: relative;
-      }
+  // language=HTML format=false
+  _template: html`<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<style>
+  :host {
+    display: block;
+    position: relative;
+  }
 
-      :host([disabled]) {
-        pointer-events: none;
-      }
+  :host([disabled]) {
+    pointer-events: none;
+  }
 
-      :host paper-icon-item {
-        --paper-item-focused-before: {
-          background: transparent;
-        };
-        --paper-item-selected: {
-          background: transparent;
-        };
-        --paper-item-icon-width: 32px;
-        padding-left: 48px;
-        padding-top: 4px;
-        padding-bottom: 4px;
-        cursor: pointer;
-      }
+  :host paper-icon-item {
+    --paper-item-focused-before: {
+      background: transparent;
+    };
+    --paper-item-selected: {
+      background: transparent;
+    };
+    --paper-item-icon-width: 32px;
+    padding-left: 48px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    cursor: pointer;
+  }
 
-      :host .divider {
-        margin-left: 48px;
-        margin-right: 0;
-      }
-    </style>
+  .divider {
+    margin-left: 48px;
+    margin-right: 0;
+  }
+</style>
 
-    <div class="section-title setting-label" tabindex="-1" hidden\$="[[!sectionTitle]]">
-      {{sectionTitle}}
-    </div>
+<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
+  [[sectionTitle]]
+</div>
 
-    <paper-icon-item on-tap="_onLinkTapped" class="flex">
-      <paper-ripple center=""></paper-ripple>
-      <iron-icon class="setting-link-icon" icon="[[icon]]" slot="item-icon"></iron-icon>
-      <span class="setting-label">[[label]]</span>
-    </paper-icon-item>
+<paper-icon-item on-tap="_onLinkTapped" class="flex">
+  <paper-ripple center=""></paper-ripple>
+  <iron-icon class="setting-link-icon" icon="[[icon]]" slot="item-icon"></iron-icon>
+  <span class="setting-label">[[label]]</span>
+</paper-icon-item>
 
-    <hr class="divider" hidden\$="[[noseparator]]">
+<hr class="divider" hidden$="[[noseparator]]">
 `,
 
   is: 'setting-link',
 
   properties: {
-    /**
-     * Element name
-     * @memberOf SettingLink
-     */
+    
+    /** Element name */
     name: {
       type: String,
       value: 'unknown',
     },
 
-    /**
-     * Link description
-     * @memberOf SettingLink
-     */
+    /** Description */
     label: {
       type: String,
       value: '',
     },
 
-    /**
-     * Link icon
-     * @memberOf SettingLink
-     */
+    /** Icon */
     icon: {
       type: String,
       value: '',
     },
 
-    /**
-     * Link url
-     * @memberOf SettingLink
-     */
+    /** Link url @memberOf SettingLink */
     url: {
       type: String,
       value: '',
     },
 
-    /**
-     * Optional group title
-     * @memberOf SettingLink
-     */
+    /** Optional group title */
     sectionTitle: {
       type: String,
       value: '',
     },
 
-    /**
-     * Disabled state of element
-     * @memberOf SettingLink
-     */
+    /** Disabled state of element */
     disabled: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Visibility state of optional divider
-     * @memberOf SettingLink
-     */
+    /** Visibility state of optional divider */
     noseparator: {
       type: Boolean,
       value: false,
@@ -140,10 +124,10 @@ Polymer({
   /**
    * Event: Item tapped - show url in new tab
    * @private
-   * @memberOf SettingLink
    */
   _onLinkTapped: function() {
     ChromeGA.event(ChromeGA.EVENT.LINK, this.name);
+    // noinspection JSUnresolvedVariable
     chrome.tabs.create({ url: this.url });
   },
 });

@@ -9,6 +9,7 @@ import '../node_modules/@polymer/polymer/polymer-element.js';
 // eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');
 
+// language=HTML format=false
 $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
 <dom-module id="shared-styles">
   <template>
@@ -19,7 +20,7 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
 
       @media (max-width: 600px) {
         .page-title {
-          font-size: 24px!important;
+          font-size: 24px !important;
         }
       }
 
@@ -33,12 +34,12 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
         background: transparent;
         width: 8px;
       }
-      
+
       ::-webkit-scrollbar-button {
         background: transparent;
         height: 0;
       }
-      
+
       ::-webkit-scrollbar-thumb {
         background: rgba(48, 63, 159, 1);
         -webkit-border-radius: 8px;
@@ -47,10 +48,10 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
       }
 
       .page-toolbar {
-         /*@apply --paper-font-title;*/
-         background-color: var(--primary-color);
-         margin-bottom: 8px;
-       }
+        /*@apply --paper-font-title;*/
+        background-color: var(--primary-color);
+        margin-bottom: 8px;
+      }
 
       .page-container {
         max-width: 700px;
@@ -98,7 +99,7 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
         margin-right: 8px;
       }
 
-      app-toolbar  paper-toggle-button {
+      app-toolbar paper-toggle-button {
         padding-left: 8px;
         --paper-toggle-button-checked-button-color: white;
         --paper-toggle-button-checked-bar-color: white;
@@ -130,11 +131,11 @@ $_documentContainer.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
         margin-right: 8px;
       }
 
-    .setting-label {
-      white-space: normal;
-      word-wrap: break-word;
-      overflow: hidden;
-    }
+      .setting-label {
+        white-space: normal;
+        word-wrap: break-word;
+        overflow: hidden;
+      }
 
       :host([disabled]) .setting-label {
         color: var(--disabled-text-color);
