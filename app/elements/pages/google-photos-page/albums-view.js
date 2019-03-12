@@ -34,6 +34,7 @@ import '../../../elements/shared-styles.js';
 import * as MyGA from '../../../scripts/my_analytics.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
+import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -245,9 +246,10 @@ Polymer({
 
   /**
    * Query Google Photos for the list of the users albums
+   * @param {boolean} [updatePhotos=false] - if true, reload each album
    * @returns {Promise<null>} always resolves
    */
-  loadAlbumList: function() {
+  loadAlbumList: function(updatePhotos) {
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
     return Permissions.request(Permissions.PICASA).then((granted) => {
       if (!granted) {
@@ -268,11 +270,14 @@ Polymer({
         for (const album of albums) {
           this.push('albums', album);
         }
+        
         // update the currently selected albums from the web
-        // eslint-disable-next-line promise/no-nesting
-        // PhotoSources.process('useGoogleAlbums').catch((err) => {
-        //   ChromeGA.error(err.message, 'GooglePhotosPage.loadAlbumList');
-        // });
+        if (updatePhotos) {
+          // eslint-disable-next-line promise/no-nesting
+          PhotoSources.process('useGoogleAlbums').catch((err) => {
+            ChromeGA.error(err.message, 'AlbumViews.loadAlbumList');
+          });
+        }
 
         // set selected state on albums
         this._selectAlbums();
@@ -304,8 +309,6 @@ Polymer({
   selectAllAlbums: async function() {
     let albumCt = _selections.length;
     let photoCt = 0;
-
-    ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
 
     for (let i = 0; i < this.albums.length; i++) {
       const album = this.albums[i];
