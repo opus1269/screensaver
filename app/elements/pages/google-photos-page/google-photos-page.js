@@ -649,7 +649,7 @@ export const GooglePhotosPage = Polymer({
    */
   _selectAlbums: async function() {
     try {
-      const selAlbums = ChromeStorage.asyncGet('albumSelections', []);
+      const selAlbums = await ChromeStorage.asyncGet('albumSelections', []);
       this.set('selections', selAlbums);
       for (let i = 0; i < this.albums.length; i++) {
         for (let j = 0; j < this.selections.length; j++) {
