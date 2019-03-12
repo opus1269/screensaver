@@ -109,7 +109,7 @@ export const GooglePhotosPage = Polymer({
     <!-- Albums UI -->
     <template is="dom-if" if="{{isAlbumMode}}">
       <div>
-        <albums-view id="albumsView" disabled$="[[!useGoogle]]"></albums-view>
+        <albums-view id="albumsView" on-no-albums="_onNoAlbums" disabled$="[[!useGoogle]]"></albums-view>
       </div>
     </template>
 
@@ -174,11 +174,11 @@ export const GooglePhotosPage = Polymer({
    * Element is ready
    */
   ready: function() {
-    setTimeout(function() {
+    setTimeout(() => {
       if (this.isAlbumMode) {
         this.loadAlbumList().catch((err) => {});
       }
-    }.bind(this), 0);
+    }, 0);
   },
 
   /**
@@ -218,8 +218,9 @@ export const GooglePhotosPage = Polymer({
    * Toggle between album and photo mode
    * @private
    */
-  _modeChange: function() {
+  _changeMode: function() {
     this.set('isAlbumMode', !this.isAlbumMode);
+    // noinspection JSUnresolvedVariable
     this._setUseKeys(this.$.googlePhotosToggle.checked, this.isAlbumMode);
     if (this.isAlbumMode) {
       // the dom-if may not have been loaded yet
@@ -247,7 +248,16 @@ export const GooglePhotosPage = Polymer({
     const text = ChromeLocale.localize('desc_mode_switch');
     const title = ChromeLocale.localize('title_mode_switch');
     const button = ChromeLocale.localize('button_mode_switch');
-    showConfirmDialog(text, title, button, this._modeChange.bind(this));
+    showConfirmDialog(text, title, button, this._changeMode.bind(this));
+  },
+
+  /**
+   * Event: Handle event indicating the user has no albums
+   * @private
+   */
+  _onNoAlbums: function() {
+    // force change to photos mode
+    this._changeMode();
   },
 
   /**
@@ -288,6 +298,7 @@ export const GooglePhotosPage = Polymer({
    * @private
    */
   _onUseGoogleChanged: function() {
+    // noinspection JSUnresolvedVariable
     const useGoogle = this.$.googlePhotosToggle.checked;
     this._setUseKeys(useGoogle, this.isAlbumMode);
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `useGoogle: ${useGoogle}`);

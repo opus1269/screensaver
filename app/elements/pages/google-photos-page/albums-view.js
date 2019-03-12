@@ -5,21 +5,24 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
 import '../../../node_modules/@polymer/iron-image/iron-image.js';
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {showErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
@@ -29,7 +32,6 @@ import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
 import * as MyGA from '../../../scripts/my_analytics.js';
-
 import * as Permissions from '../../../scripts/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
 
@@ -175,6 +177,11 @@ Polymer({
   properties: {
 
     /**
+     * Fired when there are no albums.
+     * @event no-albums
+     */
+
+    /**
      * The array of all {@link module:GoogleSource.Album}
      */
     albums: {
@@ -270,10 +277,10 @@ Polymer({
         // set selected state on albums
         this._selectAlbums();
       } else {
-        // no albums TODO how to switch mode?
         let text = ChromeLocale.localize('err_no_albums');
         ChromeLog.error(text, 'AlbumViews.loadAlbumList', ERR_TITLE);
-        showErrorDialog(ERR_TITLE, text);
+        // fire event to let others know
+        this.fire('no-albums');
       }
       this.set('waitForLoad', false);
       return null;
