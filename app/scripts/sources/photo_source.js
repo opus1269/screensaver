@@ -127,9 +127,9 @@ export default class PhotoSource {
 
   /**
    * Get the photos from local storage
-   * @returns {module:PhotoSource.Photos} the photos
+   * @returns {Promise<module:PhotoSource.Photos>} the photos
    */
-  getPhotos() {
+  async getPhotos() {
     let ret = {
       type: this._type,
       photos: [],
@@ -137,20 +137,20 @@ export default class PhotoSource {
     if (this.use()) {
       let photos = [];
       if (this._isArray) {
-        let items = ChromeStorage.get(this._photosKey);
+        let items = await ChromeStorage.asyncGet(this._photosKey);
         // could be that items have not been retrieved yet
         items = items || [];
         for (const item of items) {
           photos = photos.concat(item.photos);
         }
       } else {
-        photos = ChromeStorage.get(this._photosKey);
+        photos = await ChromeStorage.asyncGet(this._photosKey);
         // could be that items have not been retrieved yet
         photos = photos || [];
       }
       ret.photos = photos;
     }
-    return ret;
+    return Promise.resolve(ret);
   }
 
   /**
@@ -168,11 +168,12 @@ export default class PhotoSource {
   process() {
     if (this.use()) {
       return this.fetchPhotos().then((photos) => {
-        const errMess = this._savePhotos(photos);
+        return this._savePhotos(photos);
+      }).then((errMess) => {
         if (!ChromeUtils.isWhiteSpace(errMess)) {
           return Promise.reject(new Error(errMess));
         }
-        return Promise.resolve();
+        return null;
       }).catch((err) => {
         let title = ChromeLocale.localize('err_photo_source_title');
         title += `: ${this._desc}`;
@@ -185,24 +186,26 @@ export default class PhotoSource {
       // page is disabled
       const useGoogle = ChromeStorage.getBool('useGoogle');
       if (!((this._photosKey === 'albumSelections') && !useGoogle)) {
-        localStorage.removeItem(this._photosKey);
+        const chromep = new ChromePromise();
+        chromep.storage.local.remove(this._photosKey).catch(() => {});
       }
-      return Promise.resolve();
+      return null;
     }
   }
 
   /**
-   * Save the photos to localStorage in a safe manner
+   * Save the photos to chrome.storage.local in a safe manner
    * @param {Object} photos - could be array of photos or albums
    * - {@link module:PhotoSource.Photo} Array
-   * @returns {?string} non-null on error
+   * @returns {Promise<?string>} non-null on error
    * @private
    */
-  _savePhotos(photos) {
+  async _savePhotos(photos) {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {
-      const set = ChromeStorage.safeSet(this._photosKey, photos, keyBool);
+      const set =
+          await ChromeStorage.asyncSet(this._photosKey, photos, keyBool);
       if (!set) {
         ret = 'Exceeded storage capacity.';
       }

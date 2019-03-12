@@ -20,7 +20,7 @@ window.app = window.app || {};
  */
 
 /**
- * Get the selected sources from local storage
+ * Get the sources that are marked true in local storage
  * @returns {module:PhotoSource[]} Array of sources
  * @private
  */
@@ -113,15 +113,16 @@ export function process(useKey) {
 /**
  * Get all the photos from all selected sources. These will be
  * used by the screensaver.
- * @returns {module:PhotoSource.Photos[]} Array of sources photos
+ * @returns {Promise<module:PhotoSource.Photos[]>} Array of sources photos
  */
-export function getSelectedPhotos() {
+export async function getSelectedPhotos() {
   const sources = _getSelectedSources();
   let ret = [];
   for (const source of sources) {
-    ret.push(source.getPhotos());
+    const photos = await source.getPhotos();
+    ret.push(photos);
   }
-  return ret;
+  return Promise.resolve(ret);
 }
 
 /**

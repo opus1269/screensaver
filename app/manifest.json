@@ -52,6 +52,7 @@
   "permissions": [
     "identity",
     "storage",
+    "unlimitedStorage",
     "idle",
     "power",
     "system.display",

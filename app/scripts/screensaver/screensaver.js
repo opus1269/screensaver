@@ -195,8 +195,8 @@ function _setZoom() {
  * @param {int} [delay=2000] - delay before start
  * @private
  */
-function _launch(delay = 2000) {
-  const hasPhotos = SSBuilder.build();
+async function _launch(delay = 2000) {
+  const hasPhotos = await SSBuilder.build();
   if (hasPhotos) {
     // kick off the slide show if there are photos selected
     SSRunner.start(1000);
@@ -320,7 +320,14 @@ function _onLoad() {
   _setupPhotoTransitions();
 
   // start screensaver
-  _launch();
+  _launch().catch((err) => {
+    // oops!
+    ChromeLog.error(err.message, 'Screensaver._launch');
+    setTimeout(() => {
+      // delay a little to process events
+      window.close();
+    }, 750);
+  });
 }
 
 // listen for documents and resources loaded

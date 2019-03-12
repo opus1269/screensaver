@@ -137,17 +137,17 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Is the error due to a revoked auth token
    * @param {Error} err - info on image
-   * @param {string} caller - calling method
+   * @param {string} name - calling method
    * @returns {boolean} true if OAuth2 not granted or revoked
    * @static
    */
-  static isAuthRevokedError(err, caller) {
+  static isAuthRevokedError(err, name) {
     let ret = false;
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
-      ChromeStorage.set('albumSelections', []);
-      ChromeLog.error(err.message, caller,
+      ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+      ChromeLog.error(err.message, name,
           ChromeLocale.localize('err_auth_revoked'));
       ret = true;
     }
@@ -469,7 +469,7 @@ export default class GoogleSource extends PhotoSource {
    * @returns {boolean} false if couldn't persist albumSelections
    * @static
    */
-  static updateBaseUrls(photos) {
+  static async updateBaseUrls(photos) {
     let ret = true;
 
     photos = photos || [];
@@ -477,7 +477,7 @@ export default class GoogleSource extends PhotoSource {
       return ret;
     }
 
-    const albums = ChromeStorage.get('albumSelections', []);
+    const albums = await ChromeStorage.asyncGet('albumSelections', []);
     if (albums.length === 0) {
       return ret;
     }
@@ -499,7 +499,7 @@ export default class GoogleSource extends PhotoSource {
     }
 
     // Try to save the updated albums
-    const set = ChromeStorage.safeSet('albumSelections', albums, null);
+    const set = await ChromeStorage.asyncSet('albumSelections', albums, null);
     if (!set) {
       ret = false;
       ChromeLog.error(ChromeLocale.localize('err_storage_title'),
@@ -534,10 +534,10 @@ export default class GoogleSource extends PhotoSource {
    * @throws An error if we could not load an album
    * @returns {Promise<module:GoogleSource.SelectedAlbum[]>} Array of albums
    * @static
-   * @aysnc
+   * @async
    */
   static async _fetchAlbums() {
-    const albums = ChromeStorage.get('albumSelections', []);
+    const albums = await ChromeStorage.asyncGet('albumSelections', []);
     if (!this._isFetchAlbums() || (albums.length === 0)) {
       // no need to change - save on api calls
       return Promise.resolve(albums);

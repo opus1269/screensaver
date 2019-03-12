@@ -14,17 +14,17 @@ import * as SSPhotos from './ss_photos.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 /**
- * Builder for a {@link Screensaver}
+ * Builder for a {@link module:Screensaver}
  * @module SSBuilder
  */
 
 /**
- * Build everything related to a {@link Screensaver}
- * @returns {boolean} true if there are photos for the show
+ * Build everything related to a {@link module:Screensaver}
+ * @returns {Promise<boolean>} true if there are photos for the show
  */
-export function build() {
+export async function build() {
   // load the photos for the slide show
-  const hasPhotos = _loadPhotos();
+  const hasPhotos = await _loadPhotos();
   if (hasPhotos) {
     // create the animated pages
     Screensaver.createPages();
@@ -36,25 +36,30 @@ export function build() {
 
 /**
  * Build the {@link SSPhotos} that will be displayed
- * @returns {boolean} true if there is at least one photo
+ * @returns {Promise<boolean>} true if there is at least one photo
  * @private
  */
-function _loadPhotos() {
-  let sources = PhotoSources.getSelectedPhotos();
-  sources = sources || [];
-  for (const source of sources) {
-    SSPhotos.addFromSource(source);
-  }
+async function _loadPhotos() {
+  try {
+    let sources = await PhotoSources.getSelectedPhotos();
+    sources = sources || [];
+    for (const source of sources) {
+      SSPhotos.addFromSource(source);
+    }
 
-  if (!SSPhotos.getCount()) {
-    // No usable photos
-    Screensaver.setNoPhotos();
-    return false;
+    if (!SSPhotos.getCount()) {
+      // No usable photos
+      Screensaver.setNoPhotos();
+      return Promise.resolve(false);
+    }
+  } catch (err) {
+    // TODO log error
+    return Promise.resolve(false);
   }
 
   if (ChromeStorage.getBool('shuffle')) {
     // randomize the order
     SSPhotos.shuffle();
   }
-  return true;
+  return Promise.resolve(true);
 }

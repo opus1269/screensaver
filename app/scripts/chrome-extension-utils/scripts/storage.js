@@ -18,8 +18,8 @@ import './ex_handler.js';
  * Get a JSON parsed value from localStorage
  * @param {!string} key - key to get value for
  * @param {?Object|string} [def=null] - optional default value if key not found
- * @returns {?Object|string|int|boolean|Array} JSON object or string, null if key
- *     does not exist
+ * @returns {?Object|string|int|boolean|Array} JSON object or string, null if
+ *     key does not exist
  */
 export function get(key, def = null) {
   let value = def;
@@ -81,7 +81,7 @@ export function set(key, value = null) {
  *                 that is true if the primary key has non-empty value
  * @returns {boolean} true if value was set successfully
  */
-export function safeSet(key, value, keyBool=null) {
+export function safeSet(key, value, keyBool = null) {
   let ret = true;
   const oldValue = get(key);
   try {
@@ -105,3 +105,74 @@ export function safeSet(key, value, keyBool=null) {
   }
   return ret;
 }
+
+/**
+ * Get a value from chrome.storage.local
+ * @see  https://developer.chrome.com/apps/storage
+ * @param {string} key - data key
+ * @param {?Object} [def=null] - default value if not found
+ * @returns {Promise<Object|Array>} object from storage
+ */
+export async function asyncGet(key, def = null) {
+  let ret = null;
+  const chromep = new ChromePromise();
+  try {
+    const res = await chromep.storage.local.get([key]);
+    ret = res[key];
+  } catch (err) {
+    if (def) {
+      ret = def;
+    }
+    // TODO handle error
+  }
+  return ret;
+}
+
+/**
+ * Save a value to chrome.storage.local only if there is enough room
+ * @see  https://developer.chrome.com/apps/storage
+ * @param {string} key - data key
+ * @param {Object} value - data value
+ * @param {?string} [keyBool=null] - key to a boolean value
+ *                 that is true if the primary key has non-empty value
+ * @returns {boolean} true if value was set successfully
+ */
+export async function asyncSet(key, value, keyBool = null) {
+  // TODO what about keyBool?
+  let ret = true;
+  const chromep = new ChromePromise();
+  const obj = {
+    [key]: value,
+  };
+  try {
+    await chromep.storage.local.set(obj);
+  } catch (err) {
+    // notify listeners save failed
+    ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
+    ret = false;
+  }
+  return ret;
+}
+  // const oldValue = get(key);
+  // try {
+  //   set(key, value);
+  // } catch (e) {
+  //   ret = false;
+  //   if (oldValue) {
+  //     // revert to old value
+  //     set(key, oldValue);
+  //   }
+  //   if (keyBool) {
+  //     // revert to old value
+  //     if (oldValue && oldValue.length) {
+  //       set(keyBool, true);
+  //     } else {
+  //       set(keyBool, false);
+  //     }
+  //   }
+  //   // notify listeners
+  //   ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
+// }
+
+// return ret;
+

@@ -177,14 +177,14 @@ export function deny(type) {
 export function removeGooglePhotos() {
   return deny(PICASA).then(() => {
     // remove selected albums
-    ChromeStorage.set('albumSelections', []);
+    // nice to remove but not critical
+    // eslint-disable-next-line promise/no-nesting
+    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
 
     // remove cached Auth token
+    // nice to remove but not critical
     // eslint-disable-next-line promise/no-nesting
-    ChromeAuth.removeCachedToken(false, null, null).catch(() => {
-      // nice to remove but not critical
-      return null;
-    });
+    ChromeAuth.removeCachedToken(false, null, null).catch(() => {});
     return null;
   });
 }

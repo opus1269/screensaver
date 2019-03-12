@@ -398,7 +398,7 @@ export function restoreDefaults() {
  * @param {string} [key='all'] - the item that changed
  * @param {boolean} [doGoogle=false] - update Google Photos?
  */
-export function processState(key = 'all', doGoogle = false) {
+export async function processState(key = 'all', doGoogle = false) {
   // Map processing functions to localStorage values
   const STATE_MAP = {
     'enabled': _processEnabled,
@@ -428,13 +428,14 @@ export function processState(key = 'all', doGoogle = false) {
     if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
       // photo source change
       const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
-      PhotoSources.process(useKey).catch((err) => {
-        // send message on processing error
+      try {
+        await PhotoSources.process(useKey);
+      } catch (err) {
         const msg = MyMsg.PHOTO_SOURCE_FAILED;
         msg.key = useKey;
         msg.error = err.message;
-        return ChromeMsg.send(msg);
-      }).catch(() => {});
+        ChromeMsg.send(msg).catch(() => {});
+      }
     } else {
       const fn = STATE_MAP[key];
       if (typeof (fn) !== 'undefined') {
