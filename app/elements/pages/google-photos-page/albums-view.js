@@ -34,7 +34,6 @@ import '../../../elements/shared-styles.js';
 import * as MyGA from '../../../scripts/my_analytics.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
-import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -250,6 +249,7 @@ Polymer({
    * @returns {Promise<null>} always resolves
    */
   loadAlbumList: function(updatePhotos) {
+    let albums;
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
     return Permissions.request(Permissions.PICASA).then((granted) => {
       if (!granted) {
@@ -261,32 +261,31 @@ Polymer({
       this.set('waitForLoad', true);
       // get all the user's albums
       return GoogleSource.loadAlbumList();
-    }).then((albums) => {
-      albums = albums || [];
+    }).then((newAlbums) => {
+      albums = newAlbums || [];
 
       this.splice('albums', 0, this.albums.length);
 
-      if (albums.length !== 0) {
-        for (const album of albums) {
-          this.push('albums', album);
-        }
-        
-        // update the currently selected albums from the web
-        if (updatePhotos) {
-          // eslint-disable-next-line promise/no-nesting
-          PhotoSources.process('useGoogleAlbums').catch((err) => {
-            ChromeGA.error(err.message, 'AlbumViews.loadAlbumList');
-          });
-        }
+      for (const album of albums) {
+        this.push('albums', album);
+      }
+      this._selectSavedAlbums();
 
-        // set selected state on albums
-        this._selectAlbums();
+      if (updatePhotos) {
+        // update the currently selected albums from the web
+        return this._updateSavedAlbums();
       } else {
+        return null;
+      }
+    }).then(() => {
+      if (!albums.length) {
+        // no albums
         let text = ChromeLocale.localize('err_no_albums');
         ChromeLog.error(text, 'AlbumViews.loadAlbumList', ERR_TITLE);
         // fire event to let others know
         this.fire('no-albums');
       }
+
       this.set('waitForLoad', false);
       return null;
     }).catch((err) => {
@@ -365,7 +364,7 @@ Polymer({
   },
 
   /**
-   * Query Google Photos for the contents of an album
+   * Fetch the photos for an album
    * @param {string} id album to load
    * @param {string} name album name
    * @private
@@ -376,7 +375,7 @@ Polymer({
     let album = null;
     try {
       this.set('waitForLoad', true);
-      album = await GoogleSource.loadAlbum(id, name);
+      album = await GoogleSource.loadAlbum(id, name, true);
       this.set('waitForLoad', false);
     } catch (err) {
       this.set('waitForLoad', false);
@@ -391,6 +390,49 @@ Polymer({
       showErrorDialog(ERR_TITLE, text);
     }
     return album;
+  },
+
+  /**
+   * Fetch the photos for all the selected albums
+   * @private
+   */
+  _updateSavedAlbums: async function() {
+    for (let i = _selections.length - 1; i >= 0; i--) {
+      const album = _selections[i];
+      let newAlbum;
+      try {
+        newAlbum = await GoogleSource.loadAlbum(album.id, album.name, true);
+      } catch (err) {
+        // could not get album
+        if (err.message.match(/404/)) {
+          // probably deleted
+          _selections.splice(i, 1);
+          continue;
+        }
+      }
+      
+      // replace 
+      _selections.splice(i, 1, {
+        id: album.id,
+        name: album.name,
+        photos: newAlbum.photos,
+      });
+    }
+
+    // try to save
+    const set = ChromeStorage.safeSet('albumSelections', _selections,
+        'useGoogleAlbums');
+    if (!set) {
+      // exceeded storage limits - revert to old
+      _selections = ChromeStorage.get('albumSelections', []);
+      const title = ChromeLocale.localize('err_storage_title');
+      const text = ChromeLocale.localize('err_storage_desc');
+      ChromeLog.error(text, 'AlbumViews._updateSavedAlbums', title);
+    } else {
+      // update selections
+      this._selectSavedAlbums();
+    }
+
   },
 
   /**
@@ -498,10 +540,10 @@ Polymer({
   },
 
   /**
-   * Set the checked state of the stored albums
+   * Set the checked state based on the currently saved albums
    * @private
    */
-  _selectAlbums: function() {
+  _selectSavedAlbums: function() {
     _selections = ChromeStorage.get('albumSelections', []);
     for (let i = 0; i < this.albums.length; i++) {
       for (let j = 0; j < _selections.length; j++) {

@@ -42,7 +42,7 @@ import * as PhotoSources from './photo_sources.js';
  */
 
 /**
- * A Selected Google Photo Album
+ * A Selected Google Photo Album, this is persisted
  * @typedef {Object} module:GoogleSource.SelectedAlbum
  * @property {string} id - Google album Id
  * @property {string} name - Google album name
