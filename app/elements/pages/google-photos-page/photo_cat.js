@@ -5,19 +5,22 @@
  ~ https://goo.gl/wFvBM1
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
+
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-radio-button/paper-radio-button.js';
 import '../../../node_modules/@polymer/paper-radio-group/paper-radio-group.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
@@ -28,9 +31,11 @@ import * as ChromeGA
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element include or exclude a Google Photos category
- * @namespace PhotoCat
+ * Polymer element to include or exclude a Google Photos category
+ * @module PhotoCat
  */
+
+/** Polymer Element */
 Polymer({
   // language=HTML format=false
   _template: html`
@@ -88,40 +93,27 @@ Polymer({
     /**
      * Fired when the selected property changes.
      * @event selected-changed
-     * @memberOf PhotoCat
      */
 
-    /**
-     * Descriptive label
-     * @memberOf PhotoCat
-     */
+    /** Descriptive label */
     label: {
       type: String,
       value: '',
     },
 
-    /**
-     * Selected state "include" or "exclude
-     * @memberOf PhotoCat
-     */
+    /** Selected state "include" or "exclude */
     selected: {
       type: String,
       value: 'include',
     },
 
-    /**
-     * Optional group title
-     * @memberOf PhotoCat
-     */
+    /** Optional group title */
     sectionTitle: {
       type: String,
       value: '',
     },
 
-    /**
-     * Disabled state of element
-     * @memberOf PhotoCat
-     */
+    /** Disabled state of element */
     disabled: {
       type: Boolean,
       value: false,
@@ -132,9 +124,9 @@ Polymer({
    * Event: radio button tapped
    * @param {Event} ev
    * @private
-   * @memberOf PhotoCat
    */
   _onButtonChange: function(ev) {
+    // noinspection JSUnresolvedVariable
     ChromeGA.event(ChromeGA.EVENT.RADIO_BUTTON,
         `${this.id}: ${ev.srcElement.name}`);
   },
@@ -143,7 +135,6 @@ Polymer({
    * Event: Selected property of button group changed
    * @param {Event} ev
    * @private
-   * @memberOf PhotoCat
    */
   _onSelectedChanged: function(ev) {
     this.fire('selected-changed', {value: ev.detail.value});
