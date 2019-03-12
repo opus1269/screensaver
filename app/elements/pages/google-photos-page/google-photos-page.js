@@ -227,18 +227,6 @@ export const GooglePhotosPage = Polymer({
   },
 
   /**
-   * refresh UI
-   * @private
-   */
-  _refresh: function() {
-    if (this.isAlbumMode) {
-      this.loadAlbumList().catch((err) => {});
-    } else {
-      this.loadPhotos().catch((err) => {});
-    }
-  },
-
-  /**
    * Event: Handle tap on mode icon
    * @private
    */
