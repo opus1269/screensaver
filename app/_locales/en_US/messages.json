@@ -587,6 +587,10 @@
   "button_mode_switch": {
     "message": "SWITCH"
   },
+  "close": {
+    "message": "CLOSE",
+    "description": "All Caps"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

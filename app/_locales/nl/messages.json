@@ -587,6 +587,10 @@
   "button_mode_switch": {
     "message": "SCHAKELAAR"
   },
+  "close": {
+    "message": "DICHTBIJ",
+    "description": "All Caps"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
