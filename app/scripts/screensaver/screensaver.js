@@ -227,7 +227,28 @@ t._onErrorChanged = async function(ev) {
     const type = photo.getType();
     if ('Google User' === type) {
       // Google baseUrl may have expired, try to update some photos
+      
+      const url = photo.getUrl();
+      // first, fetch again and check status - only handle 403 errors
+      try {
+        const response = await fetch(url, {
+          mode: 'no-cors',
+          method: 'get',
+        });
+        const status = response.status;
+        if (status !== 403) {
+          // some other problem, don't know how to fix it
+          _isUpdating = false;
+          return;
+        }
+      } catch (err) {
+        // some other problem, don't know how to fix it
+        _isUpdating = false;
+        return;
+      }
 
+      // Google baseUrl expired, try to update some photos
+      
       // limit number of calls to Google API per screensaver session
       // in case something weird happens
       _gPhotoCt++;
