@@ -13,22 +13,20 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Behavior for internationalizing strings
  * @polymerBehavior LocalizeBehavior
- * @namespace
+ * @module
  */
 export const LocalizeBehavior = {
 
   properties: {
-    /**
-     * Get an internationalized string
-     * @type {Function}
-     * @memberOf LocalizeBehavior
-     */
+    
+    /** Get an internationalized string */
     localize: {
       type: Function,
       value: function() {
         return function() {
           const messageName = arguments[0];
-          return ChromeLocale.localize(messageName);
+          const def = arguments[1];
+          return ChromeLocale.localize(messageName, def);
         };
       },
     },
