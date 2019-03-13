@@ -32,7 +32,7 @@ import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polym
 import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
-import * as Permissions from '../../../scripts/options/permissions.js';
+import * as Permissions from '../../../scripts/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA

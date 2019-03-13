@@ -1,6 +1,6 @@
 Diese Erweiterung zeigt einen Bildschirmschoner, bestehend aus einer Diashow von Fotos aus verschiedenen Quellen. Unterstützte Bildquellen sind:
 
-* Ihre Google Fotos Alben
+* Ihre Google Fotos und Alben
       Hinweis: Gemeinsame Alben werden nicht unterstützt
 * Einige Hintergrundfotos verwendet von Chrome
 * Mehrere Quellen von reddit

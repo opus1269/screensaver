@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Einstellungen"
   },
-  "menu_google": {
-    "message": "Wählen Sie Google Fotos Alben"
-  },
   "menu_preview": {
     "message": "Vorschau Bildschirmschoner"
   },
@@ -517,6 +514,78 @@
   },
   "err_auth_revoked": {
     "message": "Sie haben keinen Zugriff mehr auf Ihre Google Fotos. Bitte wählen Sie sie erneut aus."
+  },
+  "note_albums": {
+    "message": "Hinweis: Erstellen Sie in Google Fotos Alben, um die Fotoauswahl besser steuern zu können"
+  },
+  "menu_google": {
+    "message": "Wählen Sie Google Fotos aus"
+  },
+  "err_load_photos": {
+    "message": "Fehler beim Abrufen von Google Fotos"
+  },
+  "photo_no_filter": {
+    "message": "Alle Fotos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Verwenden Sie die neuesten Fotos eines beliebigen Typs"
+  },
+  "photo_cat_title": {
+    "message": "Seleziona le categorie di foto da includere o escludere"
+  },
+  "photo_count": {
+    "message": "Anzahl der Fotos:"
+  },
+  "include": {
+    "message": "Umfassen"
+  },
+  "exclude": {
+    "message": "Ausschließen"
+  },
+  "photo_cat_utility": {
+    "message": "DIENSTPROGRAMM (empfohlen zum Ausschließen)"
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_food": {
+    "message": "LEBENSMITTEL"
+  },
+  "photo_cat_people": {
+    "message": "MENSCHEN"
+  },
+  "photo_cat_landscapes": {
+    "message": "LANDSCHAFTEN"
+  },
+  "photo_cat_cityscapes": {
+    "message": "STADTLANDSCHAFTEN"
+  },
+  "photo_cat_animals": {
+    "message": "TIERE"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_performances": {
+    "message": "LEISTUNGEN"
+  },
+  "photo_cat_pets": {
+    "message": "HAUSTIERE"
+  },
+  "button_needs_refresh": {
+    "message": "NEEDS REFRESH"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Fotos aktualisieren"
+  },
+  "title_mode_switch": {
+    "message": "Wechseln Sie den Google Photos-Modus"
+  },
+  "desc_mode_switch": {
+    "message": "Ihre aktuellen Fotoauswahlen werden entfernt.\n\nWeiter mit dem Schalter?"
+  },
+  "button_mode_switch": {
+    "message": "SCHALTER"
   },
   "time_format": {
     "message": "24",

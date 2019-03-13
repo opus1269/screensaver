@@ -10,7 +10,8 @@ import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver from './screensaver.js';
+import * as Screensaver
+  from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
@@ -46,7 +47,7 @@ const _MAX_VIEWS = 20;
 
 /**
  * The array of views
- * @type {Array<SSView>}
+ * @type {Array<module:SSView>}
  * @const
  * @private
  */
@@ -78,7 +79,7 @@ function _setViewType() {
   }
   /** @type {?string} */
   let type = 'contain';
-  
+
   switch (_type) {
     case Type.LETTERBOX:
       type = 'contain';
@@ -98,7 +99,7 @@ function _setViewType() {
 
 /**
  * Create the {@link module:SSView} pages
- * @param {module:Screensaver.Template} t
+ * @param {PolymerElement} t
  */
 export function create(t) {
   _pages = t.$.pages;

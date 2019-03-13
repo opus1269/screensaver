@@ -30,12 +30,12 @@ export function create(useKey) {
   switch (useKey) {
     case PhotoSources.UseKey.ALBUMS_GOOGLE:
       return new GoogleSource(useKey, 'albumSelections', 'Google User',
-          ChromeLocale.localize('google_title_photos'),
+          ChromeLocale.localize('google_title'),
           true, true, null);
     case PhotoSources.UseKey.PHOTOS_GOOGLE:
       // not implemented yet
       return new GoogleSource(useKey, 'googleImages', 'Google User',
-          'NOT IMPLEMENTED',
+          ChromeLocale.localize('google_title_photos'),
           true, false, null);
     case PhotoSources.UseKey.CHROMECAST:
       return new CCSource(useKey, 'ccImages', 'Google',

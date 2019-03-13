@@ -69,8 +69,6 @@ export function updateRepeatingAlarms() {
     // then set inactive state
     if (!ChromeTime.isInRange(aStart, aStop)) {
       _setInactiveState();
-    } else {
-      ChromeStorage.set('isAwake', true);
     }
   } else {
     chrome.alarms.clear(_ALARMS.ACTIVATE);
@@ -107,7 +105,6 @@ export function updateBadgeText() {
  * @private
  */
 function _setActiveState() {
-  ChromeStorage.set('isAwake', true);
   if (ChromeStorage.getBool('keepAwake')) {
     chrome.power.requestKeepAwake('display');
   }
@@ -129,7 +126,6 @@ function _setActiveState() {
  * @private
  */
 function _setInactiveState() {
-  ChromeStorage.set('isAwake', false);
   if (ChromeStorage.getBool('allowSuspend')) {
     chrome.power.releaseKeepAwake();
   } else {

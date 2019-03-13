@@ -33,6 +33,7 @@ function _onSignInChanged(account, signedIn) {
   if (!signedIn) {
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
     ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+    ChromeStorage.asyncSet('googleImages', []).catch(() => {});
     const type = ChromeStorage.get('permPicasa');
     if (type === 'allowed') {
       ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),

@@ -10,6 +10,21 @@
   <meta charset="utf-8">
   <title>Photo Screen Saver Screensaver Page</title>
 
+  <style>
+    
+    body {
+      margin: 0;
+      font-family: "Roboto", "Noto", sans-serif;
+      font-size: 100%;
+      font-weight: 400;
+      min-height: 100vh;
+      overflow: hidden;
+      background-color: darkgray;
+      cursor: none;
+    }
+
+  </style>
+  
   <script src="../scripts/chrome-extension-utils/scripts/chrome-promise.js"></script>
   
   <!-- import polyfills-->
@@ -18,132 +33,11 @@
   <!-- Ensure Web Animations polyfill is loaded since neon-animation 3.0 doesn't import it -->
   <script src="../node_modules/web-animations-js/web-animations-next.min.js"></script>
 
-  <script type="module" src="../scripts/screensaver/screensaver.js"></script>
+  <script type="module" src="../elements/screensaver-element/screensaver-element.js"></script>
 
 </head>
 
-<body unresolved class="fullbleed vertical layout">
-<dom-bind id="t">
-  <template>
-
-    <custom-style>
-      <style include="iron-flex iron-flex-alignment iron-positioning">
-        body {
-          font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-size: 100%;
-          font-weight: 400;
-          height: 100vh;
-          margin: 0;
-          overflow: hidden;
-          cursor: none;
-        }
-
-        /* Added programmatically */
-        .fadeOut {
-          animation: fadeOut 1s 2s;
-          animation-fill-mode: both;
-        }
-
-        @keyframes fadeOut {
-          from {
-            opacity: 1.0;
-          }
-          to {
-            opacity: 0.0;
-          }
-        }
-
-        .vcr {
-          position: fixed;
-          width: 15vh;
-          height: 15vh;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          opacity: 0.0;
-        }
-
-        .time {
-          font-size: 5.25vh;
-          font-weight: 200;
-          position: fixed;
-          right: 1vw;
-          bottom: 3.5vh;
-          padding: 0;
-          margin: 0;
-          color: white;
-          opacity: 1.0;
-        }
-
-        .author {
-          font-size: 2.5vh;
-          font-weight: 300;
-          position: fixed;
-          overflow: hidden;
-          right: 1vw;
-          bottom: 1vh;
-          padding: 0;
-          margin: 0;
-          color: white;
-          opacity: 1.0;
-        }
-
-        .location {
-          font-size: 2.5vh;
-          font-weight: 300;
-          position: fixed;
-          overflow: hidden;
-          left: 1vw;
-          bottom: 1vh;
-          padding: 0;
-          margin: 0;
-          color: white;
-          opacity: 1.0;
-        }
-
-        .noPhotos {
-          font-size: 5vh;
-          font-weight: 600;
-          position: fixed;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          color: rgba(48, 63, 159, 1);
-          opacity: .8;
-        }
-
-      </style>
-    </custom-style>
-
-    <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
-      <neon-animated-pages id="pages" class="fit" animate-initial-selection>
-        <template is="dom-repeat" id="repeatTemplate" as="view" items="[[_views]]">
-          <slide-animatable ani-type="[[aniType]]" class="fit">
-            <section id="view[[index]]">
-              <iron-image
-                  class="image"
-                  src="[[view.url]]"
-                  width="[[screenWidth]]"
-                  height="[[screenHeight]]"
-                  sizing="[[sizingType]]"
-                  on-error-changed="_onErrorChanged"
-                  preload>
-              </iron-image>
-              <div class="time">[[timeLabel]]</div>
-              <div class="author">[[view.authorLabel]]</div>
-              <div class="location">[[view.locationLabel]]</div>
-            </section>
-          </slide-animatable>
-        </template>
-      </neon-animated-pages>
-    </div>
-    <div class="noPhotos" hidden$="[[!noPhotos]]">[[noPhotosLabel]]</div>
-    <iron-image id="pauseImage" class="vcr" src="../images/pause.png" sizing="contain" preload
-                hidden$="[[!paused]]"></iron-image>
-    <iron-image id="playImage" class="vcr" src="../images/play.png" sizing="contain" preload
-                hidden$="[[paused]]"></iron-image>
-  </template>
-</dom-bind>
-
+<body>
+<screensaver-element></screensaver-element>
 </body>
 </html>

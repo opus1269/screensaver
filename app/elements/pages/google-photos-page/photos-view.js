@@ -1,0 +1,458 @@
+/*
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
+ */
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import {showErrorDialog} from '../../../elements/app-main/app-main.js';
+import './photo_cat.js';
+import '../../../elements/waiter-element/waiter-element.js';
+import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
+import {LocalizeBehavior} from
+      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import '../../../elements/shared-styles.js';
+
+import * as Permissions from '../../../scripts/permissions.js';
+import GoogleSource from '../../../scripts/sources/photo_source_google.js';
+
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog
+  from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+/**
+ * Polymer element for selecting Google Photos
+ * @module PhotosView
+ */
+
+/** Polymer element */
+Polymer({
+  // language=HTML format=false
+  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
+<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<style>
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .album-note {
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-top-style: solid;
+    padding: 8px 16px 8px 16px;
+    margin-right: 0;
+    white-space: normal;
+  }
+
+  :host .photo-count-container {
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 16px 0 16px 0;
+    white-space: normal;
+  }
+
+  :host .photo-count-container paper-button {
+    margin: 0 8px 0 0;
+    @apply --paper-font-title;
+  }
+
+  :host .photo-count-container #photoCount {
+    @apply --paper-font-title;
+    padding-right: 0;
+  }
+
+</style>
+
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"></waiter-element>
+
+<div class="photos-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+  <div class="photo-count-container horizontal layout">
+    <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
+      <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
+    </paper-item>
+    <paper-button raised disabled\$="[[_computeRefreshDisabled(disabled, needsPhotoRefresh)]]" on-click="_onRefreshPhotosClicked">
+      [[localize('button_needs_refresh')]]
+    </paper-button>
+  </div>
+  
+  <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
+                  secondary-label="{{localize('photo_no_filter_desc')}}"
+                  on-tap="_noFilterTapped"
+                  checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
+  
+  <photo-cat id="LANDSCAPES" section-title="[[localize('photo_cat_title')]]"
+             label="[[localize('photo_cat_landscapes')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
+             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <paper-item class="album-note">
+    {{localize('note_albums')}}
+  </paper-item>
+
+  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  </app-localstorage-document>
+  <app-localstorage-document key="googlePhotosNoFilter" data="{{noFilter}}" storage="window.localStorage">
+  </app-localstorage-document>
+
+</div>
+`,
+
+  is: 'photos-view',
+
+  behaviors: [
+    LocalizeBehavior,
+  ],
+
+  properties: {
+
+    /**
+     * Do we need to reload the photos
+     */
+    needsPhotoRefresh: {
+      type: Boolean,
+      value: true,
+      notify: true,
+    },
+
+    /**
+     * Count for photo mode
+     */
+    photoCount: {
+      type: Number,
+      value: 0,
+      notify: true,
+    },
+
+    /**
+     * Flag to indicate if we should not filter photos
+     */
+    noFilter: {
+      type: Boolean,
+      value: false,
+      notify: true,
+    },
+
+    /**
+     * Status of the option permission for the Google Photos API
+     */
+    permPicasa: {
+      type: String,
+      value: 'notSet',
+      notify: true,
+    },
+
+    /**
+     * Flag to indicate if UI is disabled
+     */
+    disabled: {
+      type: Boolean,
+      value: false,
+      notify: true,
+    },
+
+    /**
+     * Flag to display the loading... UI
+     */
+    waitForLoad: {
+      type: Boolean,
+      value: false,
+      notify: true,
+    },
+
+    /**
+     * Flag to determine if main view should be hidden
+     */
+    isHidden: {
+      type: Boolean,
+      computed: '_computeHidden(waitForLoad, permPicasa)',
+    },
+  },
+
+  /**
+   * Element is ready
+   */
+  ready: function() {
+    setTimeout(() => {
+      this.setPhotoCount();
+
+      // set state of photo categories
+      this._setPhotoCats();
+
+      // listen for changes to localStorage
+      window.addEventListener('storage', (ev) => {
+        // noinspection JSUnresolvedVariable
+        if (ev.key === 'googleImages') {
+          this.setPhotoCount();
+          this.set('needsPhotoRefresh', true);
+        }
+      }, false);
+
+    }, 0);
+  },
+
+  /**
+   * Query Google Photos for the array of user's photos
+   * @returns {Promise<null>} always resolves
+   */
+  loadPhotos: function() {
+    const ERR_TITLE = ChromeLocale.localize('err_load_photos');
+    return Permissions.request(Permissions.PICASA).then((granted) => {
+      if (!granted) {
+        // eslint-disable-next-line promise/no-nesting
+        Permissions.removeGooglePhotos().catch(() => {});
+        const err = new Error(ChromeLocale.localize('err_auth_picasa'));
+        return Promise.reject(err);
+      }
+      this.set('waitForLoad', true);
+      return GoogleSource.loadFilteredPhotos(true);
+    }).then((photos) => {
+      photos = photos || [];
+
+      // try to save
+      const set = ChromeStorage.safeSet('googleImages', photos,
+          'useGooglePhotos');
+      if (!set) {
+        // exceeded storage limits
+        this._showStorageErrorDialog('PhotosView.loadPhotos');
+      } else {
+        this.set('needsPhotoRefresh', false);
+        this.set('photoCount', photos.length);
+      }
+
+      this.set('waitForLoad', false);
+      return null;
+    }).catch((err) => {
+      this.set('waitForLoad', false);
+      let text = '';
+      if (GoogleSource.isQuotaError(err, 'PhotosView.loadPhotos')) {
+        // Hit Google photos quota
+        text = ChromeLocale.localize('err_google_quota');
+      } else {
+        text = err.message;
+        ChromeLog.error(err.message, 'PhotosView.loadPhotos', ERR_TITLE);
+      }
+      showErrorDialog(ERR_TITLE, text);
+      return Promise.reject(err);
+    });
+  },
+
+  /**
+   * Set the photo count that is currently saved
+   */
+  setPhotoCount: function() {
+    const photos = ChromeStorage.get('googleImages', []);
+    this.set('photoCount', photos.length);
+  },
+
+  /**
+   * Save the current filter state
+   * @private
+   */
+  _saveFilter: function() {
+    const els = this.shadowRoot.querySelectorAll('photo-cat');
+    const filter = GoogleSource.DEF_FILTER;
+    let includes = filter.contentFilter.includedContentCategories || [];
+    let excludes = filter.contentFilter.excludedContentCategories || [];
+    for (const el of els) {
+      const cat = el.id;
+      const state = el.selected;
+      if (state === 'include') {
+        const idx = includes.findIndex((e) => {
+          return e === cat;
+        });
+        if (idx === -1) {
+          includes.push(cat);
+        }
+      } else {
+        const idx = excludes.findIndex((e) => {
+          return e === cat;
+        });
+        if (idx === -1) {
+          excludes.push(cat);
+        }
+      }
+    }
+
+    filter.contentFilter.excludedContentCategories = excludes;
+    filter.contentFilter.includedContentCategories = includes;
+
+    this.set('needsPhotoRefresh', true);
+    ChromeStorage.set('googlePhotosFilter', filter);
+  },
+
+  /**
+   * Set the states of the photo-cat elements
+   * @private
+   */
+  _setPhotoCats: function() {
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    const excludes = filter.contentFilter.excludedContentCategories || [];
+    const includes = filter.contentFilter.includedContentCategories || [];
+
+    for (const exclude of excludes) {
+      const el = this.shadowRoot.getElementById(exclude);
+      if (el) {
+        el.selected = 'exclude';
+      }
+    }
+    for (const include of includes) {
+      const el = this.shadowRoot.getElementById(include);
+      if (el) {
+        el.selected = 'include';
+      }
+    }
+
+    // persist the current state
+    this._saveFilter();
+  },
+
+  /**
+   * Exceeded storage limits error
+   * @param {string} method - function that caused error
+   * @private
+   */
+  _showStorageErrorDialog: function(method) {
+    const title = ChromeLocale.localize('err_storage_title');
+    const text = ChromeLocale.localize('err_storage_desc');
+    ChromeLog.error(text, method, title);
+    showErrorDialog(title, text);
+  },
+
+  /**
+   * Event: Selection of photo-cat changed
+   * @param {Event} ev
+   * @private
+   */
+  _onPhotoCatChanged: function(ev) {
+    const cat = ev.srcElement.id;
+    const selected = ev.detail.value;
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    const excludes = filter.contentFilter.excludedContentCategories || [];
+    const includes = filter.contentFilter.includedContentCategories || [];
+    const excludesIdx = excludes.findIndex((e) => {
+      return e === cat;
+    });
+    const includesIdx = includes.findIndex((e) => {
+      return e === cat;
+    });
+
+    // add and remove as appropriate
+    if (selected === 'include') {
+      if (includesIdx === -1) {
+        includes.push(cat);
+      }
+      if (excludesIdx !== -1) {
+        excludes.splice(excludesIdx, 1);
+      }
+    } else {
+      if (excludesIdx === -1) {
+        excludes.push(cat);
+      }
+      if (includesIdx !== -1) {
+        includes.splice(includesIdx, 1);
+      }
+    }
+    filter.contentFilter.excludedContentCategories = excludes;
+    filter.contentFilter.includedContentCategories = includes;
+
+    this.set('needsPhotoRefresh', true);
+    ChromeStorage.set('googlePhotosFilter', filter);
+  },
+
+  /**
+   * Event: Refresh photos button clicked
+   * @private
+   */
+  _onRefreshPhotosClicked: function() {
+    this.loadPhotos().catch((err) => {});
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
+  },
+
+  /**
+   * Event: No filters toggle changed
+   * @private
+   */
+  _noFilterTapped: function() {
+    if (this.noFilter) {
+      this.set('needsPhotoRefresh', true);
+    } else {
+      this._saveFilter();
+    }
+  },
+
+  /**
+   * Computed property: Disabled state of filter ui elements
+   * @param {boolean} disabled - true if whole UI is disabled
+   * @param {boolean} noFilter - true if not filtering
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeFilterDisabled: function(disabled, noFilter) {
+    return disabled || noFilter;
+  },
+
+  /**
+   * Computed property: Disabled state of filter ui elements
+   * @param {boolean} disabled - true if whole UI is disabled
+   * @param {boolean} needsPhotoRefresh - true if photos need refresh
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeRefreshDisabled: function(disabled, needsPhotoRefresh) {
+    return disabled || !needsPhotoRefresh;
+  },
+
+  /**
+   * Computed property: Hidden state of main interface
+   * @param {boolean} waitForLoad - true if loading
+   * @param {string} permPicasa - permission state
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeHidden: function(waitForLoad, permPicasa) {
+    let ret = true;
+    if (!waitForLoad && (permPicasa === 'allowed')) {
+      ret = false;
+    }
+    return ret;
+  },
+});

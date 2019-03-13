@@ -1,6 +1,6 @@
 This extension displays a screensaver composed of a slide show of photos from multiple sources. Supported photo sources include:
 
-* Your Google Photos Albums
+* Your Google Photos and Albums
       Note: Shared Albums are not supported
 * Some background photos used by Chromecast
 * Several sources from reddit

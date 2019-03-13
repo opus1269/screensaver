@@ -7,6 +7,7 @@
 import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
+import GoogleSource from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeAuth
@@ -39,27 +40,20 @@ const chromep = new ChromePromise();
  * @const
  * @private
  */
-const _DATA_VERSION = 21;
+const _DATA_VERSION = 22;
 
 /**
- * A number and associated units
- * @typedef {Object} module:AppData.UnitValue
- * @property {number} base - value in base unit
- * @property {number} display - value in display unit
- * @property {int} unit - display unit
- */
-
-/**
- * Values for app data in localStorage
- * @typedef {Object} module:AppData._DEF_VALUES
+ * Default values in localStorage
+ * @typedef {{}} module:AppData._DEF_VALUES
  * @property {int} version - version of data
  * @property {boolean} enabled - is screensaver enabled
  * @property {string} permPicasa - optional permission for Picasa
  * @property {string} permBackground - optional permission to run in bg
  * @property {boolean} allowBackground - run Chrome in background
- * @property {module:AppData.UnitValue} idleTime - idle time to display
+ * @property {module:SettingSlider.UnitValue} idleTime - idle time to display
  *     screensaver
- * @property {module:AppData.UnitValue} transitionTime - time between photos
+ * @property {module:SettingSlider.UnitValue} transitionTime - time between
+ *     photos
  * @property {boolean} skip - ignore extreme aspect ratio photos
  * @property {boolean} shuffle - randomize photo order
  * @property {int} photoSizing - photo display type
@@ -83,21 +77,16 @@ const _DATA_VERSION = 21;
  * @property {boolean} useInterestingFlickr - use this photo source
  * @property {boolean} useChromecast - use this photo source
  * @property {boolean} useAuthors - use this photo source
- * @property {boolean} useSpaceReddit - use this photo source
  * @property {boolean} fullResGoogle - true for actual size Google photos
  * @property {boolean} isAlbumMode - true if Google Photos album mode
  * @property {boolean} useGoogle - use this photo source
  * @property {boolean} useGoogleAlbums - use this photo source
  * @property {Array} albumSelections - user's selected Google Photos albums
- * @property {boolean} gPhotosNeedsUpdate - are the photo links stale
- * @property {int} gPhotosMaxAlbums - max albums a user can select at one time
- * @property {boolean} isAwake - true if screensaver can be displayed
- * @property {boolean} isShowing - true if screensaver is showing
+ * @property {boolean} useGooglePhotos - use this photo source
+ * @property {Array} googleImages - user's selected Google Photos
  * @property {boolean} signedInToChrome - state of Chrome signin
- */
-
-/**
- * Default values in localStorage
+ * @property {boolean} googlePhotosNoFilter - don't filter photos
+ * @property {{}} googlePhotosFilter - filter for retrieving google photos
  * @type {module:AppData._DEF_VALUES}
  * @const
  * @private
@@ -105,7 +94,6 @@ const _DATA_VERSION = 21;
 const _DEF_VALUES = {
   'version': _DATA_VERSION,
   'enabled': true,
-  'isAlbumMode': true,
   'permPicasa': 'notSet', // enum: notSet allowed denied
   'permBackground': 'notSet', // enum: notSet allowed denied
   'allowBackground': false,
@@ -118,7 +106,6 @@ const _DEF_VALUES = {
   'interactive': false,
   'showTime': 2, // 24 hr format
   'largeTime': false,
-  'fullResGoogle': false,
   'showPhotog': true,
   'showLocation': true,
   'background': 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
@@ -135,15 +122,16 @@ const _DEF_VALUES = {
   'useInterestingFlickr': false,
   'useChromecast': true,
   'useAuthors': false,
+  'fullResGoogle': false,
+  'isAlbumMode': true,
   'useGoogle': true,
   'useGoogleAlbums': true,
   'albumSelections': [], // not used
   'useGooglePhotos': false,
-  'gPhotosNeedsUpdate': false, // not used
-  'gPhotosMaxAlbums': 10, // not used
-  'isAwake': true, // not used
-  'isShowing': false, // not used
+  'googleImages': [],
   'signedInToChrome': true,
+  'googlePhotosNoFilter': false,
+  'googlePhotosFilter': GoogleSource.DEF_FILTER,
 };
 
 /**
@@ -192,12 +180,9 @@ function _processEnabled() {
  */
 function _processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', true);
-  keepAwake ? chrome.power.requestKeepAwake(
-      'display') : chrome.power.releaseKeepAwake();
-  if (!keepAwake) {
-    // always on
-    ChromeStorage.set('isAwake', true);
-  }
+  keepAwake
+      ? chrome.power.requestKeepAwake('display')
+      : chrome.power.releaseKeepAwake();
   updateRepeatingAlarms();
   updateBadgeText();
 }
@@ -399,6 +384,14 @@ export function update() {
     _updateToChromeLocaleStorage().catch(() => {});
   }
 
+  if (oldVersion < 22) {
+    // remove unused data
+    ChromeStorage.set('gPhotosNeedsUpdate', null);
+    ChromeStorage.set('gPhotosMaxAlbums', null);
+    ChromeStorage.set('isAwake', null);
+    ChromeStorage.set('isShowing', null);
+  }
+
   _addDefaults();
 
   // update state
@@ -410,10 +403,14 @@ export function update() {
  */
 export function restoreDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
+    // skip some settings
     if (!key.includes('useGoogle') &&
-        (key !== 'googlePhotosSelections') &&
+        (key !== 'signedInToChrome') &&
+        (key !== 'isAlbumMode') &&
+        (key !== 'googlePhotosFilter') &&
+        (key !== 'permPicasa') &&
+        (key !== 'googleImages') &&
         (key !== 'albumSelections')) {
-      // skip Google photos settings
       ChromeStorage.set(key, _DEF_VALUES[key]);
     }
   });
@@ -449,13 +446,13 @@ export async function processState(key = 'all', doGoogle = false) {
 
     // process photo SOURCES
     PhotoSources.processAll(doGoogle);
-    ChromeStorage.set('isShowing', false);
 
     // set os, if not already
     if (!ChromeStorage.get('os')) {
       _setOS().catch(() => {});
     }
   } else {
+    // TODO manually merge
     // individual change
     if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
       // photo source change
@@ -468,7 +465,47 @@ export async function processState(key = 'all', doGoogle = false) {
         msg.error = err.message;
         ChromeMsg.send(msg).catch(() => {});
       }
+      // photo source change or full resolution google photos being asked for
+      let useKey = key;
+      if (key === 'fullResGoogle') {
+        // full res photo state changed update albums or photos
+        const isAlbums = ChromeStorage.getBool('useGoogleAlbums');
+        if (isAlbums) {
+          // update albums
+          useKey = 'useGoogleAlbums';
+          PhotoSources.process(useKey).catch((err) => {
+            // send message on processing error
+            const msg = MyMsg.PHOTO_SOURCE_FAILED;
+            msg.key = useKey;
+            msg.error = err.message;
+            return ChromeMsg.send(msg);
+          }).catch(() => {});
+        }
+        const isPhotos = ChromeStorage.getBool('useGooglePhotos');
+        if (isPhotos) {
+          // update photos
+          useKey = 'useGooglePhotos';
+          PhotoSources.process(useKey).catch((err) => {
+            // send message on processing error
+            const msg = MyMsg.PHOTO_SOURCE_FAILED;
+            msg.key = useKey;
+            msg.error = err.message;
+            return ChromeMsg.send(msg);
+          }).catch(() => {});
+        }
+      } else if ((key !== 'useGoogleAlbums') && (key !== 'useGooglePhotos')) {
+        // update photo source - skip Google sources as they are handled 
+        // by the UI when the mode changes
+        PhotoSources.process(useKey).catch((err) => {
+          // send message on processing error
+          const msg = MyMsg.PHOTO_SOURCE_FAILED;
+          msg.key = useKey;
+          msg.error = err.message;
+          return ChromeMsg.send(msg);
+        }).catch(() => {});
+      }
     } else {
+      // may be a function to handle it
       const fn = STATE_MAP[key];
       if (typeof (fn) !== 'undefined') {
         fn();

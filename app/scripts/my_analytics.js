@@ -32,6 +32,9 @@ const _TRACKING_ID = 'UA-61314754-1';
  * @property {ChromeGA.Event} LOAD_ALBUM - album
  * @property {ChromeGA.Event} LOAD_PHOTO - photo
  * @property {ChromeGA.Event} LOAD_PHOTOS - photos
+ * @property {ChromeGA.Event} LOAD_FILTERED_PHOTOS - filtered photos
+ * @property {ChromeGA.Event} FETCH_ALBUMS - update albums from web
+ * @property {ChromeGA.Event} FETCH_PHOTOS - update photos from web
  * @property {ChromeGA.Event} PHOTOS_LIMITED - did not load all photos in album
  * @property {ChromeGA.Event} ALBUMS_LIMITED - limited photo selections
  * @property {ChromeGA.Event} VIEW_PHOTO - view original source of photo
@@ -68,9 +71,19 @@ export const EVENT = {
     eventAction: 'loadPhotos',
     eventLabel: '',
   },
+  LOAD_FILTERED_PHOTOS: {
+    eventCategory: 'googlePhotosAPI',
+    eventAction: 'loadFilteredPhotos',
+    eventLabel: '',
+  },
   FETCH_ALBUMS: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'fetchAlbums',
+    eventLabel: '',
+  },
+  FETCH_PHOTOS: {
+    eventCategory: 'googlePhotosAPI',
+    eventAction: 'fetchPhotos',
     eventLabel: '',
   },
   PHOTOS_LIMITED: {

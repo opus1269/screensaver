@@ -5,14 +5,14 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as ChromeAuth
-  from '../../scripts/chrome-extension-utils/scripts/auth.js';
+  from '../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON
-  from '../../scripts/chrome-extension-utils/scripts/json.js';
+  from '../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
+  from '../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+  from '../scripts/chrome-extension-utils/scripts/storage.js';
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Handle optional permissions
@@ -176,10 +176,12 @@ export function deny(type) {
  */
 export function removeGooglePhotos() {
   return deny(PICASA).then(() => {
-    // remove selected albums
+    // remove selected albums and photos
     // nice to remove but not critical
     // eslint-disable-next-line promise/no-nesting
     ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+    // eslint-disable-next-line promise/no-nesting
+    ChromeStorage.asyncSet('googleImages', []).catch(() => {});
 
     // remove cached Auth token
     // nice to remove but not critical
