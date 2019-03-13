@@ -34,7 +34,7 @@ function _toggleEnabled() {
   const oldState = ChromeStorage.getBool('enabled', true);
   ChromeStorage.set('enabled', !oldState);
   // storage changed event not fired on same page as the change
-  AppData.processState('enabled');
+  AppData.processState('enabled').catch(() => {});
 }
 
 // noinspection JSUnusedLocalSymbols

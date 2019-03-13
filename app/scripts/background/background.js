@@ -89,7 +89,7 @@ function _onInstalled(details) {
  */
 function _onStartup() {
   ChromeGA.page('/background.html');
-  AppData.processState();
+  AppData.processState().catch(() => {});
   ChromeStorage.set('isShowing', false);
 }
 
@@ -110,7 +110,7 @@ function _onIconClicked() {
  * @private
  */
 function _onStorageChanged(event) {
-  AppData.processState(event.key);
+  AppData.processState(event.key).catch(() => {});
 }
 
 // noinspection JSUnusedLocalSymbols

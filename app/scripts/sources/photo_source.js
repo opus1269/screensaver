@@ -118,6 +118,22 @@ export default class PhotoSource {
   }
 
   /**
+   * Get if the photos key that is persisted
+   * @returns {string} the photos key
+   */
+  getPhotosKey() {
+    return this._photosKey;
+  }
+
+  /**
+   * Get a human readable description
+   * @returns {string} the photos key
+   */
+  getDesc() {
+    return this._desc;
+  }
+
+  /**
    * Get if we should update daily
    * @returns {boolean} if true, update daily
    */

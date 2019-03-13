@@ -39,7 +39,7 @@ const chromep = new ChromePromise();
  * @const
  * @private
  */
-const _DATA_VERSION = 20;
+const _DATA_VERSION = 21;
 
 /**
  * A number and associated units
@@ -137,7 +137,7 @@ const _DEF_VALUES = {
   'useAuthors': false,
   'useGoogle': true,
   'useGoogleAlbums': true,
-  'albumSelections': [],
+  'albumSelections': [], // not used
   'useGooglePhotos': false,
   'gPhotosNeedsUpdate': false, // not used
   'gPhotosMaxAlbums': 10, // not used
@@ -145,6 +145,32 @@ const _DEF_VALUES = {
   'isShowing': false, // not used
   'signedInToChrome': true,
 };
+
+/**
+ * Move the currently selected photo sources to chrome.storage.local
+ * and delete the old ones
+ * @private
+ */
+async function _updateToChromeLocaleStorage() {
+  const sources = PhotoSources.getSelectedSources();
+  for (const source of sources) {
+    const key = source.getPhotosKey();
+    const value = ChromeStorage.get(key);
+    if (value) {
+      const set = await ChromeStorage.asyncSet(key, value);
+      if (!set) {
+        const desc = source.getDesc();
+        const msg = `Failed to move source: ${desc} to chrome.storage`;
+        ChromeLog.error(msg, 'AppData._updateToChromeLocaleStorage');
+      } else {
+        const desc = source.getDesc();
+        console.log(`moved source: ${desc} to chrome.storage`);
+      }
+      // delete old one
+      ChromeStorage.set(key, null);
+    }
+  }
+}
 
 /**
  * Set state based on screensaver enabled flag
@@ -276,7 +302,7 @@ export function initialize() {
   ChromeStorage.set('showTime', _getTimeFormat());
 
   // update state
-  processState();
+  processState().catch(() => {});
 }
 
 /**
@@ -285,13 +311,18 @@ export function initialize() {
 export function update() {
   // New items, changes, and removal of unused items can take place
   // here when the version changes
-  const oldVersion = ChromeStorage.getInt('version');
+  let oldVersion = ChromeStorage.getInt('version');
 
   if (Number.isNaN(oldVersion) || (_DATA_VERSION > oldVersion)) {
     // update version number
     ChromeStorage.set('version', _DATA_VERSION);
   }
-
+  
+  if (Number.isNaN(oldVersion) && (_DATA_VERSION === 21)) {
+    // TODO remove this when data version changes
+    _updateToChromeLocaleStorage().catch(() => {});
+  }
+  
   if (!Number.isNaN(oldVersion)) {
 
     if (oldVersion < 8) {
@@ -367,10 +398,14 @@ export function update() {
     }
   }
 
+  if (oldVersion < 21) {
+    _updateToChromeLocaleStorage().catch(() => {});
+  }
+
   _addDefaults();
 
   // update state
-  processState();
+  processState().catch(() => {});
 }
 
 /**
@@ -390,7 +425,7 @@ export function restoreDefaults() {
   ChromeStorage.set('showTime', _getTimeFormat());
 
   // update state
-  processState();
+  processState().catch(() => {});
 }
 
 /**

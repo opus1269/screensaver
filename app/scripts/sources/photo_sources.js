@@ -21,10 +21,9 @@ window.app = window.app || {};
 
 /**
  * Get the sources that are marked true in local storage
- * @returns {module:PhotoSource[]} Array of sources
- * @private
+ * @returns {Array<module:PhotoSource>} Array of sources
  */
-function _getSelectedSources() {
+export function getSelectedSources() {
   let ret = [];
   for (const key in UseKey) {
     if (UseKey.hasOwnProperty(key)) {
@@ -116,7 +115,7 @@ export function process(useKey) {
  * @returns {Promise<module:PhotoSource.Photos[]>} Array of sources photos
  */
 export async function getSelectedPhotos() {
-  const sources = _getSelectedSources();
+  const sources = getSelectedSources();
   let ret = [];
   for (const source of sources) {
     const photos = await source.getPhotos();
@@ -131,7 +130,7 @@ export async function getSelectedPhotos() {
  * @param {boolean} doGoogle=false - update user's Google Photos too
  */
 export function processAll(doGoogle = false) {
-  const sources = _getSelectedSources();
+  const sources = getSelectedSources();
   for (const source of sources) {
     let skip = false;
     const type = source.getType();
@@ -150,7 +149,7 @@ export function processAll(doGoogle = false) {
  * This normally requires a https call and may fail for various reasons
  */
 export function processDaily() {
-  const sources = _getSelectedSources();
+  const sources = getSelectedSources();
   for (const source of sources) {
     if (source.isDaily()) {
       source.process().catch(() => {});
