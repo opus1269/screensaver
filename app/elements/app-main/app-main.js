@@ -468,7 +468,7 @@ Polymer({
     pages[5].obj = this._showHelpPage.bind(this);
 
     // listen for chrome messages
-    ChromeMsg.listen(this._onMessage);
+    ChromeMsg.listen(this._onMessage.bind(this));
 
     // listen for changes to chrome.storage
     chrome.storage.onChanged.addListener((changes) => {
