@@ -146,6 +146,7 @@ export default class GoogleSource extends PhotoSource {
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
+      // eslint-disable-next-line promise/no-promise-in-callback
       ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
       ChromeLog.error(err.message, name,
           ChromeLocale.localize('err_auth_revoked'));
