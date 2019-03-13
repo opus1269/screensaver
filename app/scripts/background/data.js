@@ -126,7 +126,6 @@ const _DEF_VALUES = {
   'isAlbumMode': true,
   'useGoogle': true,
   'useGoogleAlbums': true,
-  'albumSelections': [], // not used
   'useGooglePhotos': false,
   'googleImages': [],
   'signedInToChrome': true,
@@ -299,12 +298,7 @@ export function update() {
     // update version number
     ChromeStorage.set('version', _DATA_VERSION);
   }
-  
-  if (Number.isNaN(oldVersion) && (_DATA_VERSION === 21)) {
-    // TODO remove this when data version changes
-    _updateToChromeLocaleStorage().catch(() => {});
-  }
-  
+
   if (!Number.isNaN(oldVersion)) {
 
     if (oldVersion < 8) {
@@ -390,6 +384,7 @@ export function update() {
     ChromeStorage.set('gPhotosMaxAlbums', null);
     ChromeStorage.set('isAwake', null);
     ChromeStorage.set('isShowing', null);
+    ChromeStorage.set('albumSelections', null);
   }
 
   _addDefaults();
@@ -452,19 +447,8 @@ export async function processState(key = 'all', doGoogle = false) {
       _setOS().catch(() => {});
     }
   } else {
-    // TODO manually merge
     // individual change
     if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
-      // photo source change
-      const useKey = (key === 'fullResGoogle') ? 'useGoogleAlbums' : key;
-      try {
-        await PhotoSources.process(useKey);
-      } catch (err) {
-        const msg = MyMsg.PHOTO_SOURCE_FAILED;
-        msg.key = useKey;
-        msg.error = err.message;
-        ChromeMsg.send(msg).catch(() => {});
-      }
       // photo source change or full resolution google photos being asked for
       let useKey = key;
       if (key === 'fullResGoogle') {
@@ -473,36 +457,39 @@ export async function processState(key = 'all', doGoogle = false) {
         if (isAlbums) {
           // update albums
           useKey = 'useGoogleAlbums';
-          PhotoSources.process(useKey).catch((err) => {
-            // send message on processing error
+          try {
+            await PhotoSources.process(useKey);
+          } catch (err) {
             const msg = MyMsg.PHOTO_SOURCE_FAILED;
             msg.key = useKey;
             msg.error = err.message;
-            return ChromeMsg.send(msg);
-          }).catch(() => {});
+            ChromeMsg.send(msg).catch(() => {});
+          }
         }
         const isPhotos = ChromeStorage.getBool('useGooglePhotos');
         if (isPhotos) {
           // update photos
           useKey = 'useGooglePhotos';
-          PhotoSources.process(useKey).catch((err) => {
-            // send message on processing error
+          try {
+            await PhotoSources.process(useKey);
+          } catch (err) {
             const msg = MyMsg.PHOTO_SOURCE_FAILED;
             msg.key = useKey;
             msg.error = err.message;
-            return ChromeMsg.send(msg);
-          }).catch(() => {});
+            ChromeMsg.send(msg).catch(() => {});
+          }
         }
       } else if ((key !== 'useGoogleAlbums') && (key !== 'useGooglePhotos')) {
         // update photo source - skip Google sources as they are handled 
         // by the UI when the mode changes
-        PhotoSources.process(useKey).catch((err) => {
-          // send message on processing error
+        try {
+          await PhotoSources.process(useKey);
+        } catch (err) {
           const msg = MyMsg.PHOTO_SOURCE_FAILED;
           msg.key = useKey;
           msg.error = err.message;
-          return ChromeMsg.send(msg);
-        }).catch(() => {});
+          ChromeMsg.send(msg).catch(() => {});
+        }
       }
     } else {
       // may be a function to handle it

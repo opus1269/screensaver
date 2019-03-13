@@ -433,6 +433,26 @@ Polymer({
       if ('Google User' === type) {
         // Google baseUrl may have expired, try to update some photos
 
+        // TODO Worked in development but not on release. why? cors thing, security thing
+        // first, fetch again and check status - only handle 403 errors
+        // const url = photo.getUrl();
+        // try {
+        //   const response = await fetch(url, {
+        //     mode: 'no-cors',
+        //     method: 'get',
+        //   });
+        //   const status = response.status;
+        //   if (status !== 403) {
+        //     // some other problem, don't know how to fix it
+        //     _isUpdating = false;
+        //     return;
+        //   }
+        // } catch (err) {
+        //   // some other problem, don't know how to fix it
+        //   _isUpdating = false;
+        //   return;
+        // }
+
         // limit number of calls to Google API per screensaver session
         // in case something weird happens
         _gPhotoCt++;

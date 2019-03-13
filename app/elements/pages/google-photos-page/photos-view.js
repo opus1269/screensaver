@@ -210,16 +210,16 @@ Polymer({
    */
   ready: function() {
     setTimeout(() => {
-      this.setPhotoCount();
+      this.setPhotoCount().catch(() => {});
 
       // set state of photo categories
       this._setPhotoCats();
 
       // listen for changes to localStorage
-      window.addEventListener('storage', (ev) => {
+      window.addEventListener('storage', async (ev) => {
         // noinspection JSUnresolvedVariable
         if (ev.key === 'googleImages') {
-          this.setPhotoCount();
+          await this.setPhotoCount();
           this.set('needsPhotoRefresh', true);
         }
       }, false);
@@ -232,6 +232,7 @@ Polymer({
    * @returns {Promise<null>} always resolves
    */
   loadPhotos: function() {
+    let photos;
     const ERR_TITLE = ChromeLocale.localize('err_load_photos');
     return Permissions.request(Permissions.PICASA).then((granted) => {
       if (!granted) {
@@ -242,12 +243,12 @@ Polymer({
       }
       this.set('waitForLoad', true);
       return GoogleSource.loadFilteredPhotos(true);
-    }).then((photos) => {
-      photos = photos || [];
+    }).then((newPhotos) => {
+      photos = newPhotos || [];
 
       // try to save
-      const set = ChromeStorage.safeSet('googleImages', photos,
-          'useGooglePhotos');
+      return ChromeStorage.asyncSet('googleImages', photos, 'useGooglePhotos');
+    }).then((set) => {
       if (!set) {
         // exceeded storage limits
         this._showStorageErrorDialog('PhotosView.loadPhotos');
@@ -275,9 +276,10 @@ Polymer({
 
   /**
    * Set the photo count that is currently saved
+   * @async
    */
-  setPhotoCount: function() {
-    const photos = ChromeStorage.get('googleImages', []);
+  setPhotoCount: async function() {
+    const photos = await ChromeStorage.asyncGet('googleImages', []);
     this.set('photoCount', photos.length);
   },
 

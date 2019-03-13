@@ -35,8 +35,6 @@ import * as ChromeLocale
   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage
   from '../../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -193,7 +191,6 @@ export const GooglePhotosPage = Polymer({
    * @returns {Promise<null>} always resolves
    */
   loadAlbumList: function(doPhotos = false) {
-    // fix in albumviews
     if (this.isAlbumMode) {
       return this.$$('#albumsView').loadAlbumList(doPhotos).catch((err) => {});
     }
@@ -204,7 +201,6 @@ export const GooglePhotosPage = Polymer({
    * @returns {Promise<null>} always resolves
    */
   loadPhotos: function() {
-    // TODO fix in photosview
     if (!this.isAlbumMode && this.useGoogle) {
       return this.$$('#photosView').loadPhotos().catch((err) => {});
     }
@@ -273,7 +269,6 @@ export const GooglePhotosPage = Polymer({
    * @private
    */
   _onDeselectAllTapped: function() {
-    // TODO fix in albumsview
     this.$$('#albumsView').removeSelectedAlbums();
     ChromeGA.event(ChromeGA.EVENT.ICON, 'deselectAllGoogleAlbums');
   },
@@ -283,7 +278,6 @@ export const GooglePhotosPage = Polymer({
    * @private
    */
   _onSelectAllTapped: async function() {
-    // TODO fix in albumsview
     this.$$('#albumsView').selectAllAlbums().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
   },
@@ -296,7 +290,6 @@ export const GooglePhotosPage = Polymer({
     // noinspection JSUnresolvedVariable
     const useGoogle = this.$.googlePhotosToggle.checked;
     if (useGoogle) {
-      // TODO may need fix
       // Switching to enabled, refresh photos from web
       if (this.isAlbumMode) {
         this.loadAlbumList(true).catch(() => {});
