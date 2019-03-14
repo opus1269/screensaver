@@ -531,7 +531,7 @@
     "message": "Use your most recent photos of any type"
   },
   "photo_cat_title": {
-    "message": "Select photo categories to include or exclude"
+    "message": "Select photo categories to include"
   },
   "photo_count": {
     "message": "Number of photos:"
@@ -590,6 +590,9 @@
   "close": {
     "message": "CLOSE",
     "description": "All Caps"
+  },
+  "photo_cat_landmarks": {
+    "message": "LANDMARKS"
   },
   "time_format": {
     "message": "12",

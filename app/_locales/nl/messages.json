@@ -531,7 +531,7 @@
     "message": "Gebruik uw meest recente foto's van elk type"
   },
   "photo_cat_title": {
-    "message": "Selecteer fotocategorieën die u wilt opnemen of uitsluiten"
+    "message": "Selecteer fotocategorieën die u wilt opnemen"
   },
   "photo_count": {
     "message": "Aantal foto's:"
@@ -571,6 +571,9 @@
   },
   "photo_cat_pets": {
     "message": "DIEREN"
+  },
+  "photo_cat_landmarks": {
+    "message": "BEZIENSWAARDIGHEDEN"
   },
   "button_needs_refresh": {
     "message": "BEHOEFT TE VERNIEUWEN"

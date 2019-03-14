@@ -531,7 +531,7 @@
     "message": "Utiliza tus fotos más recientes de cualquier tipo."
   },
   "photo_cat_title": {
-    "message": "Seleziona le categorie di foto da includere o escludere"
+    "message": "Seleziona le categorie di foto da includere"
   },
   "photo_count": {
     "message": "Número de fotos:"
@@ -571,6 +571,9 @@
   },
   "photo_cat_pets": {
     "message": "MASCOTAS"
+  },
+  "photo_cat_landmarks": {
+    "message": "PUNTOS DE REFERENCIA"
   },
   "button_needs_refresh": {
     "message": "NECESITA ACTUALIZAR"

@@ -531,7 +531,7 @@
     "message": "Verwenden Sie die neuesten Fotos eines beliebigen Typs"
   },
   "photo_cat_title": {
-    "message": "Seleziona le categorie di foto da includere o escludere"
+    "message": "Seleziona le categorie di foto da includere"
   },
   "photo_count": {
     "message": "Anzahl der Fotos:"
@@ -571,6 +571,9 @@
   },
   "photo_cat_pets": {
     "message": "HAUSTIERE"
+  },
+  "photo_cat_landmarks": {
+    "message": "SEHENSWÜRDIGKEITEN"
   },
   "button_needs_refresh": {
     "message": "NEEDS REFRESH"

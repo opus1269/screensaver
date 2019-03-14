@@ -531,7 +531,7 @@
     "message": "Utilisez vos photos les plus récentes de tout type"
   },
   "photo_cat_title": {
-    "message": "Seleziona le categorie di foto da includere o escludere"
+    "message": "Seleziona le categorie di foto da includere"
   },
   "photo_count": {
     "message": "Nombre de photos:"
@@ -571,6 +571,9 @@
   },
   "photo_cat_pets": {
     "message": "ANIMAUX DOMESTIQUES"
+  },
+  "photo_cat_landmarks": {
+    "message": "REPÈRES"
   },
   "button_needs_refresh": {
     "message": "BESOINS DE RAFRAICHISSEMENT"
