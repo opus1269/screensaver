@@ -230,14 +230,14 @@ Polymer({
    * Element is ready
    */
   ready: function() {
+    // listen for chrome messages
+    ChromeMsg.listen(this._onMessage.bind(this));
+
     setTimeout(() => {
       this.setPhotoCount().catch(() => {});
 
       // set state of photo categories
       this._setPhotoCats();
-
-      // listen for chrome messages
-      ChromeMsg.listen(this._onMessage.bind(this));
 
       // listen for changes to localStorage
       window.addEventListener('storage', async (ev) => {
@@ -247,7 +247,6 @@ Polymer({
           this.set('needsPhotoRefresh', true);
         }
       }, false);
-
     }, 0);
   },
 
@@ -255,12 +254,13 @@ Polymer({
    * Query Google Photos for the array of user's photos
    * @returns {Promise<null>} always resolves
    */
-  loadPhotos: function() {
-    return Permissions.request(Permissions.PICASA).then((granted) => {
+  loadPhotos: async function() {
+    try {
+      const granted = await Permissions.request(Permissions.PICASA);
+      
       if (!granted) {
         // failed to get google photos permission
-        // eslint-disable-next-line promise/no-nesting
-        Permissions.removeGooglePhotos().catch(() => {});
+        await Permissions.removeGooglePhotos();
         const title = ChromeLocale.localize('err_load_photos');
         const text = ChromeLocale.localize('err_auth_picasa');
         ChromeLog.error(text, 'PhotosView.loadPhotos', title);
@@ -272,15 +272,13 @@ Polymer({
       // on current status and completion
       this.set('waitForLoad', true);
       this.set('waiterStatus', '');
-      // eslint-disable-next-line promise/no-nesting
       ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS).catch(() => {});
-
-      return null;
-    }).catch(() => {
+      
+    } catch (err) {
       // ChromeMsg will handle any errors
       this.set('waitForLoad', false);
       return null;
-    });
+    }
   },
 
   /**

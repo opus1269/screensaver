@@ -246,59 +246,65 @@ Polymer({
    * @param {boolean} [updatePhotos=false] - if true, reload each album
    * @returns {Promise<null>} always resolves
    */
-  loadAlbumList: function(updatePhotos) {
-    let albums;
+  loadAlbumList: async function(updatePhotos) {
+    const METHOD = 'AlbumsView.loadAlbumList';
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
-    return Permissions.request(Permissions.PICASA).then((granted) => {
+    let albums;
+    
+    try {
+      const granted = await Permissions.request(Permissions.PICASA);
       if (!granted) {
-        // eslint-disable-next-line promise/no-nesting
-        Permissions.removeGooglePhotos().catch(() => {});
-        const err = new Error(ChromeLocale.localize('err_auth_picasa'));
-        return Promise.reject(err);
+        // failed to get google photos permission
+        await Permissions.removeGooglePhotos();
+        const title = ERR_TITLE;
+        const text = ChromeLocale.localize('err_auth_picasa');
+        ChromeLog.error(text, METHOD, title);
+        showErrorDialog(title, text);
+        return null;
       }
+
       this.set('waitForLoad', true);
+      
       // get all the user's albums
-      return GoogleSource.loadAlbumList();
-    }).then((newAlbums) => {
-      albums = newAlbums || [];
-
+      albums = await GoogleSource.loadAlbumList();
+      albums = albums || [];
+      
+      // update in UI
       this.splice('albums', 0, this.albums.length);
-
       for (const album of albums) {
         this.push('albums', album);
       }
 
-      return this._selectSavedAlbums();
-    }).then(() => {
+      // set selections based on those that are currently saved
+      await this._selectSavedAlbums();
+
       if (updatePhotos) {
-        // update the currently selected albums from the web
-        return this._updateSavedAlbums();
-      } else {
-        return null;
+        // update the currently selected albums from the web if requested
+        await this._updateSavedAlbums();
       }
-    }).then(() => {
-      if (!albums.length) {
+
+      if (albums.length === 0) {
         // no albums
         let text = ChromeLocale.localize('err_no_albums');
-        ChromeLog.error(text, 'AlbumViews.loadAlbumList', ERR_TITLE);
+        ChromeLog.error(text, METHOD, ERR_TITLE);
         // fire event to let others know
         this.fire('no-albums');
       }
 
-      this.set('waitForLoad', false);
-      return null;
-    }).catch((err) => {
+    } catch (err) {
+      // handle errors ourselves
       this.set('waitForLoad', false);
       let text = err.message;
-      if (GoogleSource.isQuotaError(err, 'AlbumViews.loadAlbumList')) {
+      if (GoogleSource.isQuotaError(err, METHOD)) {
         // Hit Google photos quota
         text = ChromeLocale.localize('err_google_quota');
       } else {
-        ChromeLog.error(text, 'AlbumViews.loadAlbumList', ERR_TITLE);
+        ChromeLog.error(text, METHOD, ERR_TITLE);
       }
       showErrorDialog(ERR_TITLE, text);
-      return Promise.reject(err);
-    });
+    } finally {
+      this.set('waitForLoad', false);
+    }
   },
 
   /**
@@ -407,6 +413,7 @@ Polymer({
   _updateSavedAlbums: async function() {
     for (let i = _selections.length - 1; i >= 0; i--) {
       const album = _selections[i];
+      this.set('waiterStatus', album.name);
       let newAlbum;
       try {
         newAlbum = await GoogleSource.loadAlbum(album.id, album.name, true);
@@ -440,7 +447,8 @@ Polymer({
       // update selections
       await this._selectSavedAlbums();
     }
-
+    
+    this.set('waiterStatus', '');
   },
 
   /**

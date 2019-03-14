@@ -14,6 +14,7 @@ import * as ChromeStorage
   from '../scripts/chrome-extension-utils/scripts/storage.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+// noinspection JSUnresolvedFunction
 /**
  * Handle optional permissions
  *  @module Permissions
@@ -103,24 +104,24 @@ export function isDenied(type) {
  * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if permission granted
  */
-export function request(type) {
-  let isGranted;
-  return chromep.permissions.request({
+export async function request(type) {
+  const granted = await chromep.permissions.request({
     permissions: type.permissions,
     origins: type.origins,
-  }).then((granted) => {
-    isGranted = granted;
-    if (granted) {
-      _setState(type, _STATE.allowed);
-      return Promise.resolve();
-    } else {
-      _setState(type, _STATE.denied);
-      // try to remove if it has been previously granted
-      return remove(type);
-    }
-  }).then(() => {
-    return Promise.resolve(isGranted);
   });
+
+  if (granted) {
+    _setState(type, _STATE.allowed);
+  } else {
+    _setState(type, _STATE.denied);
+    try {
+      // try to remove if it has been previously granted
+      await remove(type);
+    } catch (err) {
+      // not critical
+    }
+  }
+  return Promise.resolve(granted);
 }
 
 /**
@@ -128,23 +129,22 @@ export function request(type) {
  * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if removed
  */
-export function remove(type) {
-  return _contains(type).then((contains) => {
-    if (contains) {
-      // try to remove permission
-      return chromep.permissions.remove({
-        permissions: type.permissions,
-        origins: type.origins,
-      });
-    } else {
-      return Promise.resolve(false);
-    }
-  }).then((removed) => {
-    if (removed) {
-      _setState(type, _STATE.notSet);
-    }
-    return Promise.resolve(removed);
-  });
+export async function remove(type) {
+  let removed = false;
+
+  const contains = await _contains(type);
+  if (contains) {
+    removed = await chromep.permissions.remove({
+      permissions: type.permissions,
+      origins: type.origins,
+    });
+  }
+
+  if (removed) {
+    _setState(type, _STATE.notSet);
+  }
+
+  return Promise.resolve(removed);
 }
 
 /**
@@ -152,43 +152,36 @@ export function remove(type) {
  * @param {module:Permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if removed
  */
-export function deny(type) {
-  return _contains(type).then((contains) => {
-    if (contains) {
-      // try to remove permission
-      return chromep.permissions.remove({
-        permissions: type.permissions,
-        origins: type.origins,
-      });
-    } else {
-      return Promise.resolve(false);
-    }
-  }).then(() => {
-    // set to denied regardless of whether it was removed
-    _setState(type, _STATE.denied);
-    return Promise.resolve(true);
-  });
+export async function deny(type) {
+
+  const removed = await remove(type);
+
+  // set to denied regardless of whether it was removed
+  _setState(type, _STATE.denied);
+
+  return Promise.resolve(removed);
 }
 
 /**
  * Remove, deny, and clear photo selections for Google Photos
  * @returns {Promise<void>}
  */
-export function removeGooglePhotos() {
-  return deny(PICASA).then(() => {
+export async function removeGooglePhotos() {
+
+  await deny(PICASA);
+
+  try {
     // remove selected albums and photos
-    // nice to remove but not critical
-    // eslint-disable-next-line promise/no-nesting
-    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
-    // eslint-disable-next-line promise/no-nesting
-    ChromeStorage.asyncSet('googleImages', []).catch(() => {});
+    await ChromeStorage.asyncSet('albumSelections', []);
+    await ChromeStorage.asyncSet('googleImages', []);
 
     // remove cached Auth token
+    await ChromeAuth.removeCachedToken(false, null, null);
+  } catch (err) {
     // nice to remove but not critical
-    // eslint-disable-next-line promise/no-nesting
-    ChromeAuth.removeCachedToken(false, null, null).catch(() => {});
-    return null;
-  });
+  }
+
+  return null;
 }
 
 /**
