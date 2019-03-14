@@ -17,8 +17,7 @@ import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
-import '../../../node_modules/@polymer/paper-radio-button/paper-radio-button.js';
-import '../../../node_modules/@polymer/paper-radio-group/paper-radio-group.js';
+import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
@@ -38,8 +37,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /** Polymer Element */
 Polymer({
   // language=HTML format=false
-  _template: html`
-<style include="iron-flex iron-flex-alignment"></style>
+  _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
 <!--suppress CssUnresolvedCustomPropertySet -->
 <style>
@@ -52,34 +50,17 @@ Polymer({
     pointer-events: none;
   }
 
-  :host([indent]) paper-item {
-    padding-left: 24px;
-  }
-
-  :host paper-radio-button {
-    --paper-radio-button-checked-color: var(--setting-item-color);
-    --paper-radio-button-checked-ink-color: var(--setting-item-color);
-    --paper-radio-button-label: {
-      @apply --paper-font-subhead;
-    };
-  }
 </style>
 
 <div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
   {{sectionTitle}}
 </div>
 
-<div class="horizontal layout">
-  <paper-item id="label" class="setting-label flex" tabindex="-1">
-    {{label}}
-  </paper-item>
-  <paper-radio-group selected="{{selected}}" on-selected-changed="_onSelectedChanged">
-    <paper-radio-button name="include" on-change="_onButtonChange" disabled$="[[disabled]]">{{localize('include')}}
-    </paper-radio-button>
-    <paper-radio-button name="exclude" on-change="_onButtonChange" disabled$="[[disabled]]">{{localize('exclude')}}
-    </paper-radio-button>
-    </paper-radio-button>
-</div>
+<paper-item class="center horizontal layout">
+  <div id="label" class="setting-label flex" tabindex="-1">{{label}}</div>
+  <paper-checkbox name="include" checked="{{checked}}" on-change="_onCheckedChange" disabled$="[[disabled]]">[[localize('include')]]
+  </paper-checkbox>
+</paper-item>
 `,
 
   is: 'photo-cat',
@@ -91,8 +72,8 @@ Polymer({
   properties: {
 
     /**
-     * Fired when the selected property changes.
-     * @event selected-changed
+     * Fired when the user changes the selected state.
+     * @event value-changed
      */
 
     /** Descriptive label */
@@ -101,10 +82,11 @@ Polymer({
       value: '',
     },
 
-    /** Selected state "include" or "exclude */
-    selected: {
-      type: String,
-      value: 'include',
+    /** Checked state */
+    checked: {
+      type: Boolean,
+      value: false,
+      notify: true,
     },
 
     /** Optional group title */
@@ -121,22 +103,15 @@ Polymer({
   },
 
   /**
-   * Event: radio button tapped
+   * Event: checkbox tapped
    * @param {Event} ev
    * @private
    */
-  _onButtonChange: function(ev) {
+  _onCheckedChange: function(ev) {
     // noinspection JSUnresolvedVariable
-    ChromeGA.event(ChromeGA.EVENT.RADIO_BUTTON,
-        `${this.id}: ${ev.srcElement.name}`);
-  },
-
-  /**
-   * Event: Selected property of button group changed
-   * @param {Event} ev
-   * @private
-   */
-  _onSelectedChanged: function(ev) {
-    this.fire('selected-changed', {value: ev.detail.value});
-  },
+    ChromeGA.event(ChromeGA.EVENT.CHECK,
+        `${this.id}: ${ev.srcElement.checked}`);
+    // noinspection JSUnresolvedVariable
+    this.fire('value-changed', {value: ev.srcElement.checked});
+    },
 });

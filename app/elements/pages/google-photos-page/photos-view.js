@@ -98,30 +98,29 @@ Polymer({
   
   <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
                   secondary-label="{{localize('photo_no_filter_desc')}}"
-                  on-tap="_noFilterTapped"
                   checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
   
   <photo-cat id="LANDSCAPES" section-title="[[localize('photo_cat_title')]]"
              label="[[localize('photo_cat_landscapes')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="LANDMARKS" label="[[localize('photo_cat_landmarks')]]"
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="UTILITY" label="[[localize('photo_cat_utility')]]" selected="exclude"
-             on-selected-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+             on-value-changed="_onPhotoCatChanged" disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
   <paper-item class="album-note">
     {{localize('note_albums')}}
   </paper-item>
@@ -165,7 +164,7 @@ Polymer({
      */
     noFilter: {
       type: Boolean,
-      value: false,
+      value: true,
       notify: true,
     },
 
@@ -288,31 +287,29 @@ Polymer({
    * @private
    */
   _saveFilter: function() {
+    const filter = GoogleSource.NO_FILTER;
     const els = this.shadowRoot.querySelectorAll('photo-cat');
-    const filter = GoogleSource.DEF_FILTER;
-    let includes = filter.contentFilter.includedContentCategories || [];
-    let excludes = filter.contentFilter.excludedContentCategories || [];
+    filter.contentFilter = filter.contentFilter || {};
+    const includes = filter.contentFilter.includedContentCategories || [];
     for (const el of els) {
       const cat = el.id;
-      const state = el.selected;
-      if (state === 'include') {
-        const idx = includes.findIndex((e) => {
-          return e === cat;
-        });
+      const checked = el.checked;
+      const idx = includes.findIndex((e) => {
+        return e === cat;
+      });
+      if (checked) {
+        // add it
         if (idx === -1) {
           includes.push(cat);
         }
       } else {
-        const idx = excludes.findIndex((e) => {
-          return e === cat;
-        });
-        if (idx === -1) {
-          excludes.push(cat);
+        // remove it
+        if (idx !== -1) {
+          includes.splice(idx, 1);
         }
       }
     }
 
-    filter.contentFilter.excludedContentCategories = excludes;
     filter.contentFilter.includedContentCategories = includes;
 
     this.set('needsPhotoRefresh', true);
@@ -324,26 +321,20 @@ Polymer({
    * @private
    */
   _setPhotoCats: function() {
+    const els = this.shadowRoot.querySelectorAll('photo-cat');
     const filter = ChromeStorage.get('googlePhotosFilter',
         GoogleSource.DEF_FILTER);
-    const excludes = filter.contentFilter.excludedContentCategories || [];
+    filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
 
-    for (const exclude of excludes) {
-      const el = this.shadowRoot.getElementById(exclude);
-      if (el) {
-        el.selected = 'exclude';
-      }
-    }
-    for (const include of includes) {
-      const el = this.shadowRoot.getElementById(include);
-      if (el) {
-        el.selected = 'include';
-      }
-    }
+    for (const el of els) {
+      const cat = el.id;
+      const idx = includes.findIndex((e) => {
+        return e === cat;
+      });
 
-    // persist the current state
-    this._saveFilter();
+      el.set('checked', (idx !== -1));
+    }
   },
 
   /**
@@ -365,35 +356,25 @@ Polymer({
    */
   _onPhotoCatChanged: function(ev) {
     const cat = ev.srcElement.id;
-    const selected = ev.detail.value;
+    const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter',
         GoogleSource.DEF_FILTER);
-    const excludes = filter.contentFilter.excludedContentCategories || [];
+    filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
-    const excludesIdx = excludes.findIndex((e) => {
-      return e === cat;
-    });
     const includesIdx = includes.findIndex((e) => {
       return e === cat;
     });
 
     // add and remove as appropriate
-    if (selected === 'include') {
+    if (checked) {
       if (includesIdx === -1) {
         includes.push(cat);
       }
-      if (excludesIdx !== -1) {
-        excludes.splice(excludesIdx, 1);
-      }
     } else {
-      if (excludesIdx === -1) {
-        excludes.push(cat);
-      }
       if (includesIdx !== -1) {
         includes.splice(includesIdx, 1);
       }
     }
-    filter.contentFilter.excludedContentCategories = excludes;
     filter.contentFilter.includedContentCategories = includes;
 
     this.set('needsPhotoRefresh', true);
@@ -407,18 +388,6 @@ Polymer({
   _onRefreshPhotosClicked: function() {
     this.loadPhotos().catch((err) => {});
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
-  },
-
-  /**
-   * Event: No filters toggle changed
-   * @private
-   */
-  _noFilterTapped: function() {
-    if (this.noFilter) {
-      this.set('needsPhotoRefresh', true);
-    } else {
-      this._saveFilter();
-    }
   },
 
   /**
