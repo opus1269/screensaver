@@ -94,7 +94,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_ALBUMS() {
-    return 30;
+    return 60;
   }
 
   /**
@@ -103,7 +103,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_ALBUM_PHOTOS() {
-    return 1000;
+    return 2000;
   }
 
   /**
@@ -112,7 +112,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_PHOTOS() {
-    return 10000;
+    return 20000;
   }
 
   /**
