@@ -10,7 +10,9 @@ import '../../scripts/background/user.js';
 
 import * as AppData from './data.js';
 
+import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
+import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -122,12 +124,16 @@ function _onStorageChanged(event) {
  * @private
  */
 function _onChromeMessage(request, sender, response) {
+  let ret = false;
   if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
     AppData.restoreDefaults();
   } else if (request.message === ChromeMsg.STORE.message) {
     ChromeStorage.set(request.key, request.value);
+  } else if (request.message === MyMsg.LOAD_FILTERED_PHOTOS.message) {
+    ret = true;
+    GoogleSource.loadFilteredPhotos(true, true).catch(() => {});
   }
-  return false;
+  return ret;
 }
 
 /**

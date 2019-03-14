@@ -14,11 +14,14 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
+import * as MyMsg from '../../scripts/my_msg.js';
 
 import PhotoSource from './photo_source.js';
 import * as PhotoSources from './photo_sources.js';
@@ -78,7 +81,8 @@ const _URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
  * @private
  */
 const _ALBUMS_QUERY =
-    '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,coverPhotoBaseUrl)';
+    '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,' +
+    'coverPhotoBaseUrl)';
 
 /**
  * Only return stuff we use
@@ -88,7 +92,8 @@ const _ALBUMS_QUERY =
  * @private
  */
 const _MEDIA_ITEMS_FIELDS =
-    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,mediaMetadata/width,mediaMetadata/height)';
+    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,' +
+    'mediaMetadata/width,mediaMetadata/height)';
 
 /**
  * Only return stuff we use
@@ -98,7 +103,9 @@ const _MEDIA_ITEMS_FIELDS =
  * @private
  */
 const _MEDIA_ITEMS_RESULTS_FIELDS =
-    'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,mediaItem/mediaMetadata/height)';
+    'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,' +
+    'mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,' +
+    'mediaItem/mediaMetadata/height)';
 
 /**
  * A potential source of photos from Google
@@ -358,20 +365,22 @@ export default class GoogleSource extends PhotoSource {
 
   /**
    * Load photos based on the given filter
-   * @param {boolean} [interactive=false] if true, called from UI
+   * @param {boolean} [force=false] if true, force rpc
+   * @param {boolean} [save=false] if true, persist the photos ourselves
    * @throws An error if we could not load the photos
    * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
+   * @async
    * @static
    */
-  static async loadFilteredPhotos(interactive = false) {
+  static async loadFilteredPhotos(force = false, save = false) {
     const photos = ChromeStorage.get('googleImages', []);
-    if (!interactive && !this._isFetch()) {
+    if (!force && !this._isFetch()) {
       // no need to change - save on api calls
       return Promise.resolve(photos);
     }
 
     // TODO finalize this valuemax photos to load
-    const MAX_PHOTOS = 1000;
+    const MAX_PHOTOS = 2000;
     // max queries per request
     const MAX_QUERIES = 100;
 
@@ -394,35 +403,69 @@ export default class GoogleSource extends PhotoSource {
     const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
-    conf.interactive = interactive;
+    conf.interactive = force;
     conf.body = body;
 
     let nextPageToken;
     /** @type {module:PhotoSource.Photo[]} */
     let newPhotos = [];
 
-    // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
-    do {
-      /** @type {{nextPageToken, mediaItems}} */
-      let response = await ChromeHttp.doPost(url, conf);
-      response = response || {};
+    try {
+      // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
+      do {
+        /** @type {{nextPageToken, mediaItems}} */
+        let response = await ChromeHttp.doPost(url, conf);
+        response = response || {};
 
-      // convert to module:PhotoSource.Photo[]
-      const photos = this._processPhotos(response.mediaItems);
-      if (photos.length > 0) {
-        newPhotos = newPhotos.concat(photos);
+        // convert to module:PhotoSource.Photo[]
+        const photos = this._processPhotos(response.mediaItems);
+        if (photos.length > 0) {
+          newPhotos = newPhotos.concat(photos);
+        }
+
+        // don't go over MAX_PHOTOS
+        if (newPhotos.length > MAX_PHOTOS) {
+          newPhotos.splice(MAX_PHOTOS, newPhotos.length - MAX_PHOTOS);
+        }
+
+        if (save) {
+          // notify listeners of our current progress
+          const msg = ChromeJSON.shallowCopy(MyMsg.FILTERED_PHOTOS_COUNT);
+          msg.count = newPhotos.length;
+          ChromeMsg.send(msg).catch(() => {});
+        }
+
+        nextPageToken = response.nextPageToken;
+        conf.body.pageToken = nextPageToken;
+
+      } while (nextPageToken && (newPhotos.length < MAX_PHOTOS));
+
+    } catch (err) {
+      if (save) {
+        // notify listeners that we are done
+        const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_FILTERED_PHOTOS_DONE);
+        // msg.error = ChromeJSON.stringify(new Error(err.message));
+        msg.error = err.message;
+        ChromeMsg.send(msg).catch(() => {});
+        return Promise.resolve([]);
+      } else {
+        throw err;
       }
-      nextPageToken = response.nextPageToken;
-      conf.body.pageToken = nextPageToken;
-    } while (nextPageToken && (newPhotos.length < MAX_PHOTOS));
-
-    // don't go over MAX_PHOTOS
-    if (newPhotos.length > MAX_PHOTOS) {
-      newPhotos.splice(MAX_PHOTOS, newPhotos.length - MAX_PHOTOS);
     }
 
     ChromeGA.event(MyGA.EVENT.LOAD_FILTERED_PHOTOS,
         `nPhotos: ${newPhotos.length}`);
+
+    if (save) {
+      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_FILTERED_PHOTOS_DONE);
+      const set = await ChromeStorage.asyncSet('googleImages', newPhotos,
+          'useGooglePhotos');
+      if (!set) {
+        msg.error = ChromeLocale.localize('err_storage_title');
+      }
+      // notify listeners that we are done
+      ChromeMsg.send(msg).catch(() => {});
+    }
 
     return Promise.resolve(newPhotos);
   }
