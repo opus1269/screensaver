@@ -457,14 +457,13 @@ Polymer({
         // throttle call rate to Google API per screensaver session
         // in case something weird happens
         if ((Date.now() - _errHandler.lastTime) < _errHandler.TIME_LIMIT) {
-          console.log('throttled');
           _errHandler.isUpdating = false;
           return;
         }
+        
         // limit max number of calls to Google API per screensaver session
         // in case something weird happens
         _errHandler.count++;
-        console.log('times called: ', _errHandler.count);
         if (_errHandler.count >= _errHandler.MAX_COUNT) {
           _errHandler.isUpdating = false;
           return;
