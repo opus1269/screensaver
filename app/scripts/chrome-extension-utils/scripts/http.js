@@ -219,7 +219,7 @@ function _retry(url, opts, conf, attempt) {
  * @private
  */
 function _retryToken(url, opts, conf, attempt) {
-  ChromeGA.error('Refreshed auth token.', 'Http._retryToken');
+  ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
   return ChromeAuth.removeCachedToken(
       conf.interactive, conf.token, null).then(() => {
     conf.token = null;
