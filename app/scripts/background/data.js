@@ -129,7 +129,7 @@ const _DEF_VALUES = {
   'useGooglePhotos': false,
   'googleImages': [],
   'signedInToChrome': true,
-  'googlePhotosNoFilter': false,
+  'googlePhotosNoFilter': true,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
 };
 
