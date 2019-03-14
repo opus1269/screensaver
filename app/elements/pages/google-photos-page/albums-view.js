@@ -139,7 +139,7 @@ Polymer({
 
 </style>
 
-<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"></waiter-element>
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]" status-label="[[waiterStatus]]"></waiter-element>
 
 <div class="list-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
   <paper-item class="list-note">
@@ -183,43 +183,39 @@ Polymer({
      * @event no-albums
      */
 
-    /**
-     * The array of all {@link module:GoogleSource.Album}
-     */
+    /** The array of all {@link module:GoogleSource.Album} */
     albums: {
       type: Array,
       value: [],
       notify: true,
     },
 
-    /**
-     * Status of the option permission for the Google Photos API
-     */
+    /** Status of the optional permission for the Google Photos API */
     permPicasa: {
       type: String,
       value: 'notSet',
       notify: true,
     },
 
-    /**
-     * Flag to indicate if UI is disabled
-     */
+    /** Flag to indicate if UI is disabled */
     disabled: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Flag to display the loading... UI
-     */
+    /** Flag to display the loading... UI */
     waitForLoad: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Flag to determine if main list should be hidden
-     */
+    /** Status label for waiter */
+    waiterStatus: {
+      type: String,
+      value: '',
+    },
+
+    /** Flag to determine if main list should be hidden */
     isHidden: {
       type: Boolean,
       computed: '_computeHidden(waitForLoad, permPicasa)',
@@ -328,6 +324,7 @@ Polymer({
           continue;
         }
 
+        this.set('waiterStatus', album.name);
         const newAlbum = await this._loadAlbum(album.id, album.name, false);
         if (newAlbum) {
           if ((photoCt + newAlbum.photos.length) >= _MAX_PHOTOS) {
@@ -360,6 +357,7 @@ Polymer({
       }
     } finally {
       this.set('waitForLoad', false);
+      this.set('waiterStatus', '');
     }
   },
 
