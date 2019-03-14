@@ -134,8 +134,10 @@ export default class GoogleSource extends PhotoSource {
         ],
       },
       'contentFilter': {
-        'excludedContentCategories': [
-          'UTILITY',
+        'includedContentCategories': [
+          'LANDSCAPES',
+          'CITYSCAPES',
+          'LANDMARKS',
         ],
       },
     };
