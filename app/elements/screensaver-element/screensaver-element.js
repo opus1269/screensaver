@@ -62,26 +62,24 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
- * Max number of calls to loadPhotos during a session
- * @type {int}
- * @const
+ * Object to handle Google Photos load errors
+ * @type {Object}
+ * @typedef {Object} module:Screensaver.ErrHandler
+ * @property {int} MAX_COUNT - max times to call
+ * @property {int} count - count of calls
+ * @property {boolean} isUpdating - true if an event is handling an error
+ * @property {int} TIME_LIMIT - throttle calls to this fast in case something
+ *  weird happens
+ * @property {int} lastTime - last time called
  * @private
  */
-const _MAX_GPHOTO_UPDATES = 168; // up to one week
-
-/**
- * Number of calls to getMediaItem made
- * @type {int}
- * @private
- */
-let _gPhotoCt = 0;
-
-/**
- * Is the screensaver updating the google photos
- * @type {boolean}
- * @private
- */
-let _isUpdating = false;
+let _errHandler = {
+  MAX_COUNT: 168, // about a weeks worth, if all goes well
+  count: 0,
+  isUpdating: false,
+  TIME_LIMIT: (10 * 60000), // ten minutes in milli sec
+  lastTime: 0,
+};
 
 /** @type {Function} */
 export let createPages = null;
@@ -384,6 +382,7 @@ Polymer({
     if (ChromeUtils.getChromeVersion() >= 42) {
       // override zoom factor to 1.0 - chrome 42 and later
       const chromep = new ChromePromise();
+      // noinspection JSUnresolvedFunction
       chromep.tabs.getZoom().then((zoomFactor) => {
         if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
           chrome.tabs.setZoom(1.0);
@@ -416,14 +415,14 @@ Polymer({
   _onErrorChanged: async function(ev) {
     const isError = ev.detail.value;
 
-    if (_isUpdating) {
+    if (_errHandler.isUpdating) {
       // another error event is already handling this
       return;
     }
 
     if (isError) {
       // url failed to load
-      _isUpdating = true;
+      _errHandler.isUpdating = true;
 
       const model = ev.model;
       const index = model.index;
@@ -433,15 +432,16 @@ Polymer({
       if ('Google User' === type) {
         // Google baseUrl may have expired, try to update some photos
 
-        // TODO Worked in development but not on release. why? cors thing, security thing
+        // TODO have to use cors to get status code
+        // TODO so have to have permission from site
         // first, fetch again and check status - only handle 403 errors
         // const url = photo.getUrl();
         // try {
         //   const response = await fetch(url, {
-        //     mode: 'no-cors',
         //     method: 'get',
         //   });
         //   const status = response.status;
+        //   console.log(status);
         //   if (status !== 403) {
         //     // some other problem, don't know how to fix it
         //     _isUpdating = false;
@@ -449,17 +449,29 @@ Polymer({
         //   }
         // } catch (err) {
         //   // some other problem, don't know how to fix it
+        //   console.log(err);
         //   _isUpdating = false;
         //   return;
         // }
 
-        // limit number of calls to Google API per screensaver session
+        // throttle call rate to Google API per screensaver session
         // in case something weird happens
-        _gPhotoCt++;
-        if (_gPhotoCt >= _MAX_GPHOTO_UPDATES) {
-          _isUpdating = false;
+        if ((Date.now() - _errHandler.lastTime) < _errHandler.TIME_LIMIT) {
+          console.log('throttled');
+          _errHandler.isUpdating = false;
           return;
         }
+        // limit max number of calls to Google API per screensaver session
+        // in case something weird happens
+        _errHandler.count++;
+        console.log('times called: ', _errHandler.count);
+        if (_errHandler.count >= _errHandler.MAX_COUNT) {
+          _errHandler.isUpdating = false;
+          return;
+        }
+
+        // update last call time
+        _errHandler.lastTime = Date.now();
 
         // Calculate an hours worth of photos max
         const transTime = SSRunner.getWaitTime();
@@ -468,7 +480,7 @@ Polymer({
         // a lot for short times
         nPhotos = Math.max(nPhotos, 50);
 
-        if (_gPhotoCt === 1) {
+        if (_errHandler.count === 1) {
           // limit to 50 on first call for quicker starts
           nPhotos = Math.min(nPhotos, 50);
         } else {
@@ -493,8 +505,8 @@ Polymer({
           newPhotos = await GoogleSource.loadPhotos(ids);
         } catch (err) {
           // major problem, give up for this session
-          _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
-          _isUpdating = true;
+          _errHandler.count = _errHandler.MAX_COUNT + 1;
+          _errHandler.isUpdating = true;
           return;
         }
 
@@ -520,12 +532,12 @@ Polymer({
         const updated = GoogleSource.updateBaseUrls(newPhotos);
         if (!updated) {
           // major problem, give up for this session
-          _gPhotoCt = _MAX_GPHOTO_UPDATES + 1;
-          _isUpdating = true;
+          _errHandler.count = _errHandler.MAX_COUNT + 1;
+          _errHandler.isUpdating = true;
           return;
         }
 
-        _isUpdating = false;
+        _errHandler.isUpdating = false;
       }
     }
   },
