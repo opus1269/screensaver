@@ -132,6 +132,11 @@ function _onChromeMessage(request, sender, response) {
   } else if (request.message === MyMsg.LOAD_FILTERED_PHOTOS.message) {
     ret = true;
     GoogleSource.loadFilteredPhotos(true, true).catch(() => {});
+  } else if (request.message === MyMsg.LOAD_ALBUM.message) {
+    ret = true;
+    // noinspection JSUnresolvedVariable
+    GoogleSource.
+        loadAlbum(request.id, request.name, true, true).catch(() => {});
   }
   return ret;
 }

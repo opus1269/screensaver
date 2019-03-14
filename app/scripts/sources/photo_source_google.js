@@ -171,7 +171,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_ALBUMS() {
-    return 30;
+    return 60;
   }
 
   /**
@@ -180,7 +180,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_ALBUM_PHOTOS() {
-    return 1000;
+    return 2000;
   }
 
   /**
@@ -189,7 +189,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_PHOTOS() {
-    return 10000;
+    return 20000;
   }
 
   /**
@@ -301,12 +301,13 @@ export default class GoogleSource extends PhotoSource {
    * @param {string} id -  Unique Album ID
    * @param {string} name -  Album name
    * @param {boolean} interactive=true - interactive mode for permissions
+   * @param {boolean} notify=false - notify listeners of status
    * @throws An error if the album failed to load.
    * @returns {module:GoogleSource.Album} Album
    * @static
    * @async
    */
-  static async loadAlbum(id, name, interactive = true) {
+  static async loadAlbum(id, name, interactive = true, notify = false) {
     // max items in search call
     const MAX_QUERIES = 100;
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
@@ -339,13 +340,21 @@ export default class GoogleSource extends PhotoSource {
         ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
             `nPhotos: ${this.MAX_ALBUM_PHOTOS}`);
       }
-    } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    // don't go over MAX_ALBUM_PHOTOS
-    if (photos.length > this.MAX_ALBUM_PHOTOS) {
-      const delCt = photos.length - this.MAX_ALBUM_PHOTOS;
-      photos.splice(this.MAX_ALBUM_PHOTOS, delCt);
-    }
+      // don't go over MAX_ALBUM_PHOTOS
+      if (photos.length > this.MAX_ALBUM_PHOTOS) {
+        const delCt = photos.length - this.MAX_ALBUM_PHOTOS;
+        photos.splice(this.MAX_ALBUM_PHOTOS, delCt);
+      }
+      
+      if (notify) {
+        // notify listeners of our current progress
+        const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
+        msg.count = photos.length;
+        ChromeMsg.send(msg).catch(() => {});
+      }
+
+    } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
     /** @type {module:GoogleSource.Album} */
     const album = {};
@@ -359,6 +368,13 @@ export default class GoogleSource extends PhotoSource {
     album.ct = photos.length;
 
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
+    
+    if (notify) {
+      // notify listeners that we are done
+      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM_DONE);
+      msg.album = JSON.stringify(album);
+      ChromeMsg.send(msg).catch(() => {});
+    }
 
     return album;
   }
@@ -444,7 +460,6 @@ export default class GoogleSource extends PhotoSource {
       if (save) {
         // notify listeners that we are done
         const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_FILTERED_PHOTOS_DONE);
-        // msg.error = ChromeJSON.stringify(new Error(err.message));
         msg.error = err.message;
         ChromeMsg.send(msg).catch(() => {});
         return Promise.resolve([]);
@@ -669,7 +684,7 @@ export default class GoogleSource extends PhotoSource {
     for (let i = 0; i < albums.length; i++) {
       const album = albums[i] || [];
       const newAlbum =
-          await GoogleSource.loadAlbum(album.id, album.name, false);
+          await GoogleSource.loadAlbum(album.id, album.name, false, false);
       const photos = newAlbum.photos || [];
       if (photos.length) {
         selAlbums.push({

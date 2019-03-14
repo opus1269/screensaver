@@ -24,6 +24,10 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {module:ChromeMsg.Message} LOAD_FILTERED_PHOTOS_DONE - finished
  * loading the filtered google photos
  * @property {module:ChromeMsg.Message} FILTERED_PHOTOS_COUNT - number of photos
+ * @property {module:ChromeMsg.Message} LOAD_ALBUM - request to load
+ * the contents of a google photos album
+ * @property {module:ChromeMsg.Message} LOAD_ALBUM_DONE - finished
+ * @property {module:ChromeMsg.Message} ALBUM_PHOTOS_COUNT - number of photos
  * loaded so far
  * @const
  */
@@ -53,6 +57,17 @@ const _MSG = {
     message: 'filteredPhotosCount',
     count: 0,
   },
+  LOAD_ALBUM: {
+    message: 'loadAlbum',
+  },
+  LOAD_ALBUM_DONE: {
+    message: 'loadAlbumDone',
+    error: null,
+  },
+  ALBUM_COUNT: {
+    message: 'albumCount',
+    count: 0,
+  },
 };
 
 export const SS_SHOW = _MSG.SS_SHOW;
@@ -62,3 +77,6 @@ export const PHOTO_SOURCE_FAILED = _MSG.PHOTO_SOURCE_FAILED;
 export const LOAD_FILTERED_PHOTOS = _MSG.LOAD_FILTERED_PHOTOS;
 export const LOAD_FILTERED_PHOTOS_DONE = _MSG.LOAD_FILTERED_PHOTOS_DONE;
 export const FILTERED_PHOTOS_COUNT = _MSG.FILTERED_PHOTOS_COUNT;
+export const LOAD_ALBUM = _MSG.LOAD_ALBUM;
+export const LOAD_ALBUM_DONE = _MSG.LOAD_ALBUM_DONE;
+export const ALBUM_COUNT = _MSG.ALBUM_COUNT;

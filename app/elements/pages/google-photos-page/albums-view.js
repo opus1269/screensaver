@@ -32,15 +32,20 @@ import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
 import * as MyGA from '../../../scripts/my_analytics.js';
+import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import GoogleSource from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeJSON
+  from '../../../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeLocale
   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg
+  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
   from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
@@ -74,6 +79,13 @@ const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
  * @private
  */
 let _selections = [];
+
+/**
+ * The {@link module:GoogleSource.Album} that is currently loading
+ * @type {?module:GoogleSource.Album}
+ * @private
+ */
+let _loadingAlbum = null;
 
 Polymer({
   // language=HTML format=false
@@ -226,6 +238,9 @@ Polymer({
    * Element is ready
    */
   ready: function() {
+    // listen for chrome messages
+    ChromeMsg.listen(this._onMessage.bind(this));
+
     setTimeout(() => {
       // listen for changes to localStorage
       window.addEventListener('storage', async (ev) => {
@@ -250,7 +265,7 @@ Polymer({
     const METHOD = 'AlbumsView.loadAlbumList';
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
     let albums;
-    
+
     try {
       const granted = await Permissions.request(Permissions.PICASA);
       if (!granted) {
@@ -264,11 +279,11 @@ Polymer({
       }
 
       this.set('waitForLoad', true);
-      
+
       // get all the user's albums
       albums = await GoogleSource.loadAlbumList();
       albums = albums || [];
-      
+
       // update in UI
       this.splice('albums', 0, this.albums.length);
       for (const album of albums) {
@@ -313,7 +328,7 @@ Polymer({
   selectAllAlbums: async function() {
     let albumCt = _selections.length;
     let photoCt = 0;
-    
+
     this.set('waitForLoad', true);
     try {
       for (let i = 0; i < this.albums.length; i++) {
@@ -447,7 +462,7 @@ Polymer({
       // update selections
       await this._selectSavedAlbums();
     }
-    
+
     this.set('waiterStatus', '');
   },
 
@@ -484,7 +499,16 @@ Polymer({
         return;
       }
 
-      const newAlbum = await this._loadAlbum(album.id, album.name);
+      // send message to background page to do the work and send us messages
+      // on current status and completion
+      this.set('waitForLoad', true);
+      this.set('waiterStatus', '');
+      _loadingAlbum = album;
+      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM);
+      msg.id = album.id;
+      msg.name = album.name;
+      ChromeMsg.send(msg).catch(() => {});
+      const newAlbum = await this._loadAlbum(album.id, album.name, true);
       if (newAlbum) {
         _selections.push({
           id: album.id,
@@ -526,6 +550,72 @@ Polymer({
       }
     }
 
+  },
+
+  // noinspection JSUnusedLocalSymbols
+  /**
+   * Event: Fired when a message is sent from either an extension process<br>
+   * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
+   * @param {module:ChromeMsg.Message} request - details for the message
+   * @param {Object} [sender] - MessageSender object
+   * @param {Function} [response] - function to call once after processing
+   * @returns {boolean} true if asynchronous
+   * @private
+   */
+  _onMessage: async function(request, sender, response) {
+    if (request.message === MyMsg.LOAD_ALBUM_DONE.message) {
+      try {
+        // the background page has finished loading the album
+        const errMsg = request.error;
+        if (errMsg) {
+          const title = ChromeLocale.localize('err_load_album');
+          const text = errMsg;
+          // noinspection JSCheckFunctionSignatures
+          ChromeLog.error(text, 'AlbumsView._loadAlbum', title);
+          showErrorDialog(title, text);
+        } else {
+          // noinspection JSUnresolvedVariable
+          const album = ChromeJSON.parse(request.album);
+          if (album) {
+            _selections.push({
+              id: _loadingAlbum.id,
+              name: album.name,
+              photos: album.photos,
+            });
+            ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
+                `maxPhotos: ${_loadingAlbum.ct}, actualPhotosLoaded: ${album.ct}`);
+            const set = await ChromeStorage.asyncSet('albumSelections',
+                _selections,
+                'useGoogleAlbums');
+            if (!set) {
+              // exceeded storage limits
+              _selections.pop();
+              this.set('albums.' + _loadingAlbum.index + '.checked', false);
+              // notify listeners
+              this._showStorageErrorDialog('AlbumViews._loadAlbum');
+            }
+            this.set('albums.' + _loadingAlbum.index + '.ct', album.ct);
+          } else {
+            // failed to load album
+            this.set('albums.' + _loadingAlbum.index + '.checked', false);
+          }
+        }
+      } finally {
+        this.set('waitForLoad', false);
+        this.set('waiterStatus', '');
+        _loadingAlbum = null;
+      }
+      response(JSON.stringify({message: 'OK'}));
+    } else if (request.message === MyMsg.ALBUM_COUNT.message) {
+      // show user status of photo loading
+      // noinspection JSUnresolvedVariable
+      const count = request.count || 0;
+      let msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
+      this.set('waiterStatus', msg);
+      response(JSON.stringify({message: 'OK'}));
+    }
+    return true;
   },
 
   /**
