@@ -374,6 +374,9 @@ Polymer({
   _onMessage: function(request, sender, response) {
     if (request.message === MyMsg.LOAD_FILTERED_PHOTOS_DONE.message) {
       // the background page has finished loading and saving the photos
+      this.set('waitForLoad', false);
+      this.setPhotoCount();
+      
       const errMsg = request.error;
       if (errMsg) {
         const title = ChromeLocale.localize('err_load_photos');
@@ -381,9 +384,9 @@ Polymer({
         // noinspection JSCheckFunctionSignatures
         ChromeLog.error(text, 'PhotosView.loadPhotos', title);
         showErrorDialog(title, text);
+      } else {
+        this.set('needsPhotoRefresh', false);
       }
-      this.set('waitForLoad', false);
-      this.setPhotoCount();
       response(JSON.stringify({message: 'OK'}));
     } else if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
@@ -393,7 +396,7 @@ Polymer({
       this.set('waiterStatus', msg);
       response(JSON.stringify({message: 'OK'}));
     }
-    return false;
+    return true;
   },
 
   /**
