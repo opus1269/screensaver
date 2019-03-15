@@ -341,18 +341,6 @@ Polymer({
     ChromeStorage.set('googlePhotosFilter', filter);
   },
 
-  /**
-   * Exceeded storage limits error
-   * @param {string} method - function that caused error
-   * @private
-   */
-  _showStorageErrorDialog: function(method) {
-    const title = ChromeLocale.localize('err_storage_title');
-    const text = ChromeLocale.localize('err_storage_desc');
-    ChromeLog.error(text, method, title);
-    showErrorDialog(title, text);
-  },
-
   // noinspection JSUnusedLocalSymbols
   /**
    * Event: Fired when a message is sent from either an extension process<br>

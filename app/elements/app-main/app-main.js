@@ -99,6 +99,12 @@ export let showConfirmDialog = null;
 export let showErrorDialog = null;
 
 /**
+ * Function to show an error dialog about failing to store data
+ * @type {Function}
+ */
+export let showStorageErrorDialog = null;
+
+/**
  * Function to call on confirm dialog confirm button click
  * @type {Function}
  */
@@ -457,8 +463,9 @@ Polymer({
 
     
     // Initialize dialog exports
-    showErrorDialog = this.showErrorDialog.bind(this);
     showConfirmDialog = this.showConfirmDialog.bind(this);
+    showErrorDialog = this.showErrorDialog.bind(this);
+    showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
 
     // initialize page functions
     pages[1].obj = this._showScreensaverPreview.bind(this);
@@ -502,11 +509,22 @@ Polymer({
   },
 
   /**
-   * Display an error dialog
+   * Display an error dialog about failing to store data
    * @param {string} title - dialog title
    * @param {string} text - dialog text
    */
   showErrorDialog: function(title, text) {
+    this.$.errorDialog.open(title, text);
+  },
+
+  /**
+   * Display an error dialog
+   * @param {string} method - calling method
+   */
+  showStorageErrorDialog: function(method) {
+    const title = ChromeLocale.localize('err_storage_title');
+    const text = ChromeLocale.localize('err_storage_desc');
+    ChromeLog.error(text, method, title);
     this.$.errorDialog.open(title, text);
   },
 

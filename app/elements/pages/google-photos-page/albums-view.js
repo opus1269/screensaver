@@ -25,7 +25,8 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {showErrorDialog} from '../../../elements/app-main/app-main.js';
+import {showErrorDialog, showStorageErrorDialog} from
+      '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
@@ -295,14 +296,7 @@ Polymer({
       albums = albums || [];
 
       // update in UI
-      this.set('albums', []);
-      const newAlbums = [];
-      for (const album of albums) {
-        newAlbums.push(album);
-      }
-      this.set('albums', newAlbums);
-      this.notifyPath('albums');
-      // this.$.ironList.scrollToIndex(0);
+      this.set('albums', albums);
 
       // set selections based on those that are currently saved
       await this._selectSavedAlbums();
@@ -333,7 +327,6 @@ Polymer({
       showErrorDialog(ERR_TITLE, text);
     } finally {
       this.set('waitForLoad', false);
-      this.notifyPath('albums');
     }
   },
 
@@ -383,7 +376,7 @@ Polymer({
           if (!set) {
             // exceeded storage limits
             _selections.pop();
-            this._showStorageErrorDialog('AlbumViews._onSelectAllTapped');
+            showStorageErrorDialog('AlbumViews._onSelectAllTapped');
             break;
           }
           this.set('albums.' + i + '.checked', true);
@@ -393,7 +386,6 @@ Polymer({
       }
     } finally {
       this.set('waitForLoad', false);
-      this.set('waiterStatus', '');
     }
   },
 
@@ -470,15 +462,11 @@ Polymer({
     if (!set) {
       // exceeded storage limits - revert to old
       _selections = await ChromeStorage.asyncGet('albumSelections', []);
-      const title = ChromeLocale.localize('err_storage_title');
-      const text = ChromeLocale.localize('err_storage_desc');
-      ChromeLog.error(text, 'AlbumViews._updateSavedAlbums', title);
+      showStorageErrorDialog('AlbumViews._updateSavedAlbums');
     } else {
       // update selections
       await this._selectSavedAlbums();
     }
-
-    this.set('waiterStatus', '');
   },
 
   /**
@@ -517,7 +505,6 @@ Polymer({
       // send message to background page to do the work and send us messages
       // on current status and completion
       this.set('waitForLoad', true);
-      this.set('waiterStatus', '');
       _loadingAlbum = album;
       const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM);
       msg.id = album.id;
@@ -539,8 +526,7 @@ Polymer({
           _selections.pop();
           this.set('albums.' + album.index + '.checked', false);
           // notify listeners
-          this._showStorageErrorDialog(
-              'AlbumViews._onAlbumSelectChanged');
+          showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
         }
         this.set('albums.' + album.index + '.ct', newAlbum.ct);
       } else {
@@ -561,7 +547,7 @@ Polymer({
         // exceeded storage limits
         _selections.pop();
         this.set('albums.' + album.index + '.checked', false);
-        this._showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
+        showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
       }
     }
   },
@@ -606,8 +592,7 @@ Polymer({
               // exceeded storage limits
               _selections.pop();
               this.set('albums.' + _loadingAlbum.index + '.checked', false);
-              // notify listeners
-              this._showStorageErrorDialog('AlbumViews._loadAlbum');
+              showStorageErrorDialog('AlbumViews._loadAlbum');
             }
             this.set('albums.' + _loadingAlbum.index + '.ct', album.ct);
           } else {
@@ -617,7 +602,6 @@ Polymer({
         }
       } finally {
         this.set('waitForLoad', false);
-        this.set('waiterStatus', '');
         _loadingAlbum = null;
       }
       response(JSON.stringify({message: 'OK'}));
@@ -640,10 +624,13 @@ Polymer({
   _waitForLoadChanged: function(newValue) {
     if (newValue === false) {
       this.$.ironList._render();
+      if (this.waiterStatus !== undefined) {
+        this.set('waiterStatus', '');
+      }
     }
   },
-  
-    /**
+
+  /**
    * Get total photo count that is currently saved
    * @returns {Promise<int>} Total number of photos saved
    * @private
@@ -656,18 +643,6 @@ Polymer({
       ct += album.photos.length;
     }
     return Promise.resolve(ct);
-  },
-
-  /**
-   * Exceeded storage limits error
-   * @param {string} method - function that caused error
-   * @private
-   */
-  _showStorageErrorDialog: function(method) {
-    const title = ChromeLocale.localize('err_storage_title');
-    const text = ChromeLocale.localize('err_storage_desc');
-    ChromeLog.error(text, method, title);
-    showErrorDialog(title, text);
   },
 
   /**
