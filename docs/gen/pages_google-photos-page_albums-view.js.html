@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: pages/google-photos-page/albums-view.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ErrorPage.html">ErrorPage</a></li><li><a href="HelpPage.html">HelpPage</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingsPage.html">SettingsPage</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SlideAnimatable.html">SlideAnimatable</a></li><li><a href="SpinDownAnimation.html">SpinDownAnimation</a></li><li><a href="SpinUpAnimation.html">SpinUpAnimation</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Alarm.html">Alarm</a></li><li><a href="module-AlbumsView.html">AlbumsView</a></li><li><a href="module-AppData.html">AppData</a></li><li><a href="module-AppMain.html">AppMain</a></li><li><a href="module-Background.html">Background</a></li><li><a href="module-CCSource.html">CCSource</a></li><li><a href="module-ChromeAuth.html">ChromeAuth</a></li><li><a href="module-ChromeGA.html">ChromeGA</a></li><li><a href="module-ChromeHttp.html">ChromeHttp</a></li><li><a href="module-ChromeJSON.html">ChromeJSON</a></li><li><a href="module-ChromeLastError.html">ChromeLastError</a></li><li><a href="module-ChromeLocale.html">ChromeLocale</a></li><li><a href="module-ChromeLog.html">ChromeLog</a></li><li><a href="module-ChromeMsg.html">ChromeMsg</a></li><li><a href="module-ChromeStorage.html">ChromeStorage</a></li><li><a href="module-ChromeTime.html">ChromeTime</a></li><li><a href="module-ChromeUtils.html">ChromeUtils</a></li><li><a href="module-ConfirmDialog.html">ConfirmDialog</a></li><li><a href="module-ContextMenus.html">ContextMenus</a></li><li><a href="module-ErrorDialog.html">ErrorDialog</a></li><li><a href="module-FlickrSource.html">FlickrSource</a></li><li><a href="module-Geo.html">Geo</a></li><li><a href="module-GooglePhotosPage.html">GooglePhotosPage</a></li><li><a href="module-GoogleSource.html">GoogleSource</a></li><li><a href="module-MyGA.html">MyGA</a></li><li><a href="module-MyMsg.html">MyMsg</a></li><li><a href="module-MyUtils.html">MyUtils</a></li><li><a href="module-Permissions.html">Permissions</a></li><li><a href="module-PhotoCat.html">PhotoCat</a></li><li><a href="module-PhotoSource.html">PhotoSource</a></li><li><a href="module-PhotoSourceFactory.html">PhotoSourceFactory</a></li><li><a href="module-PhotoSources.html">PhotoSources</a></li><li><a href="module-PhotosView.html">PhotosView</a></li><li><a href="module-RedditSource.html">RedditSource</a></li><li><a href="module-Screensaver.html">Screensaver</a></li><li><a href="module-setting-elements_localize-behavior_localize-behavior.html">setting-elements/localize-behavior/localize-behavior</a></li><li><a href="module-SettingLink.html">SettingLink</a></li><li><a href="module-SettingSlider.html">SettingSlider</a></li><li><a href="module-SettingToggle.html">SettingToggle</a></li><li><a href="module-SSBuilder.html">SSBuilder</a></li><li><a href="module-SSControl.html">SSControl</a></li><li><a href="module-SSEvents.html">SSEvents</a></li><li><a href="module-SSFinder.html">SSFinder</a></li><li><a href="module-SSHistory.html">SSHistory</a></li><li><a href="module-SSPhoto.html">SSPhoto</a></li><li><a href="module-SSPhotos.html">SSPhotos</a></li><li><a href="module-SSRunner.html">SSRunner</a></li><li><a href="module-SSTime.html">SSTime</a></li><li><a href="module-SSView.html">SSView</a></li><li><a href="module-SSViewFactory.html">SSViewFactory</a></li><li><a href="module-SSViewFrame.html">SSViewFrame</a></li><li><a href="module-SSViewFull.html">SSViewFull</a></li><li><a href="module-SSViewLetterbox.html">SSViewLetterbox</a></li><li><a href="module-SSViews.html">SSViews</a></li><li><a href="module-SSViewZoom.html">SSViewZoom</a></li><li><a href="module-User.html">User</a></li><li><a href="module-WaiterElement.html">WaiterElement</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExHandler.html">ExHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-ErrorDialog.html#~event:confirm-tap">event:confirm-tap</a></li><li><a href="module-AlbumsView.html#~event:no-albums">event:no-albums</a></li><li><a href="module-PhotoCat.html#~event:value-changed">event:value-changed</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: pages/google-photos-page/albums-view.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
+ */
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/iron-list/iron-list.js';
+import '../../../node_modules/@polymer/iron-label/iron-label.js';
+import '../../../node_modules/@polymer/iron-image/iron-image.js';
+
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
+import {showErrorDialog, showStorageErrorDialog} from
+      '../../../elements/app-main/app-main.js';
+import '../../../elements/waiter-element/waiter-element.js';
+import {LocalizeBehavior} from
+      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import '../../../elements/my_icons.js';
+import '../../../elements/shared-styles.js';
+
+import * as MyGA from '../../../scripts/my_analytics.js';
+import * as MyMsg from '../../../scripts/my_msg.js';
+import * as Permissions from '../../../scripts/permissions.js';
+import GoogleSource from '../../../scripts/sources/photo_source_google.js';
+
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeJSON
+  from '../../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog
+  from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg
+  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils
+  from '../../../scripts/chrome-extension-utils/scripts/utils.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+/**
+ * Polymer element for selecting Google Photos albums
+ * @module AlbumsView
+ */
+
+/**
+ * Max number of albums to select
+ * @type {int}
+ * @const
+ * @private
+ */
+const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
+
+/**
+ * Max number of total photos to select
+ * @type {int}
+ * @const
+ * @private
+ */
+const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
+
+/**
+ * The array of {@link module:GoogleSource.SelectedAlbum}
+ * @type {Array&lt;module:GoogleSource.SelectedAlbum>}
+ * @private
+ */
+let _selections = [];
+
+/**
+ * The {@link module:GoogleSource.Album} that is currently loading
+ * @type {?module:GoogleSource.Album}
+ * @private
+ */
+let _loadingAlbum = null;
+
+Polymer({
+  // language=HTML format=false
+  _template: html`&lt;!--suppress CssUnresolvedCustomPropertySet CssUnresolvedCustomProperty -->
+&lt;style include="iron-flex iron-flex-alignment">&lt;/style>
+&lt;style include="shared-styles">&lt;/style>
+&lt;style>
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .waiter {
+    margin: 40px auto;
+  }
+
+  :host .waiter paper-item {
+    @apply --paper-font-title;
+    margin: 40px auto;
+  }
+
+  :host .list-note {
+    height: 48px;
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 8px 16px 8px 16px;
+    white-space: normal;
+  }
+
+  :host .list-item {
+    position: relative;
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 0 0 0 5px;
+    cursor: pointer;
+  }
+
+  :host .list-item paper-item-body {
+    padding-left: 10px;
+  }
+
+  :host .list-item paper-item {
+    padding-right: 0;
+  }
+
+  :host .list-item iron-image {
+    height: 72px;
+    width: 72px;
+  }
+
+  :host .list-item[disabled] iron-image {
+    opacity: .2;
+  }
+
+  :host .list-item[disabled] {
+    pointer-events: none;
+  }
+
+  :host .list-item[disabled] .setting-label {
+    color: var(--disabled-text-color);
+  }
+
+  :host #ironList {
+    /* browser viewport height minus both toolbars and note*/
+    height: calc(100vh - 193px);
+  }
+&lt;/style>
+
+&lt;waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
+                status-label="[[waiterStatus]]">&lt;/waiter-element>
+
+&lt;div class="list-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+  &lt;paper-item class="list-note">
+    [[localize('google_shared_albums_note')]]
+  &lt;/paper-item>
+
+  &lt;iron-list id="ironList" mutable-data="true" items="{{albums}}" as="album">
+    &lt;template>
+      &lt;iron-label>
+        &lt;div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
+          &lt;paper-item class="center horizontal layout" tabindex="-1">
+            &lt;paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
+                            disabled$="[[disabled]]">&lt;/paper-checkbox>
+            &lt;paper-item-body class="flex" two-line="">
+              &lt;div class="setting-label">[[album.name]]&lt;/div>
+              &lt;div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]&lt;/div>
+              &lt;paper-ripple center="">&lt;/paper-ripple>
+            &lt;/paper-item-body>
+            &lt;iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]">&lt;/iron-image>
+          &lt;/paper-item>
+        &lt;/div>
+      &lt;/iron-label>
+    &lt;/template>
+  &lt;/iron-list>
+
+  &lt;app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  &lt;/app-localstorage-document>
+
+&lt;/div>
+
+`,
+
+  is: 'albums-view',
+
+  behaviors: [
+    LocalizeBehavior,
+  ],
+
+  properties: {
+
+    /**
+     * Fired when there are no albums.
+     * @event no-albums
+     */
+
+    /** The array of all {@link module:GoogleSource.Album} */
+    albums: {
+      type: Array,
+      value: [],
+      notify: true,
+    },
+
+    /** Status of the optional permission for the Google Photos API */
+    permPicasa: {
+      type: String,
+      value: 'notSet',
+      notify: true,
+    },
+
+    /** Flag to indicate if UI is disabled */
+    disabled: {
+      type: Boolean,
+      value: false,
+    },
+
+    /** Flag to display the loading... UI */
+    waitForLoad: {
+      type: Boolean,
+      value: false,
+      notify: true,
+      observer: '_waitForLoadChanged',
+    },
+
+    /** Status label for waiter */
+    waiterStatus: {
+      type: String,
+      value: '',
+      notify: true,
+    },
+
+    /** Flag to determine if main list should be hidden */
+    isHidden: {
+      type: Boolean,
+      computed: '_computeHidden(waitForLoad, permPicasa)',
+    },
+  },
+
+  /**
+   * Element is ready
+   */
+  ready: function() {
+    // listen for chrome messages
+    ChromeMsg.listen(this._onMessage.bind(this));
+
+    setTimeout(() => {
+      // listen for changes to localStorage
+      window.addEventListener('storage', async (ev) => {
+        if (ev.key === 'albumSelections') {
+          const albums = await ChromeStorage.asyncSet('albumSelections', []);
+          if (albums.length === 0) {
+            this.set('albums', []);
+            _selections = [];
+          }
+        }
+      }, false);
+
+    }, 0);
+  },
+
+  /**
+   * Query Google Photos for the list of the users albums
+   * @param {boolean} [updatePhotos=false] - if true, reload each album
+   * @returns {Promise&lt;null>} always resolves
+   */
+  loadAlbumList: async function(updatePhotos) {
+    const METHOD = 'AlbumsView.loadAlbumList';
+    const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
+    let albums;
+
+    try {
+      const granted = await Permissions.request(Permissions.PICASA);
+      if (!granted) {
+        // failed to get google photos permission
+        await Permissions.removeGooglePhotos();
+        const title = ERR_TITLE;
+        const text = ChromeLocale.localize('err_auth_picasa');
+        ChromeLog.error(text, METHOD, title);
+        showErrorDialog(title, text);
+        return null;
+      }
+
+      this.set('waitForLoad', true);
+
+      // get all the user's albums
+      albums = await GoogleSource.loadAlbumList();
+      albums = albums || [];
+
+      // update in UI
+      this.set('albums', albums);
+
+      // set selections based on those that are currently saved
+      await this._selectSavedAlbums();
+
+      if (updatePhotos) {
+        // update the currently selected albums from the web if requested
+        await this._updateSavedAlbums();
+      }
+
+      if (albums.length === 0) {
+        // no albums
+        let text = ChromeLocale.localize('err_no_albums');
+        ChromeLog.error(text, METHOD, ERR_TITLE);
+        // fire event to let others know
+        this.fire('no-albums');
+      }
+
+    } catch (err) {
+      // handle errors ourselves
+      this.set('waitForLoad', false);
+      let text = err.message;
+      if (GoogleSource.isQuotaError(err, METHOD)) {
+        // Hit Google photos quota
+        text = ChromeLocale.localize('err_google_quota');
+      } else {
+        ChromeLog.error(text, METHOD, ERR_TITLE);
+      }
+      showErrorDialog(ERR_TITLE, text);
+    } finally {
+      this.set('waitForLoad', false);
+    }
+  },
+
+  /**
+   * Select as many albums as possible
+   */
+  selectAllAlbums: async function() {
+    let albumCt = _selections.length;
+    let photoCt = 0;
+
+    this.set('waitForLoad', true);
+    try {
+      for (let i = 0; i &lt; this.albums.length; i++) {
+        const album = this.albums[i];
+
+        if (albumCt === _MAX_ALBUMS) {
+          // reached max. number of albums
+          ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
+          showErrorDialog(ChromeLocale.localize('err_status'),
+              ChromeLocale.localize('err_max_albums'));
+          break;
+        } else if (album.checked) {
+          // already selected
+          continue;
+        }
+
+        this.set('waiterStatus', album.name);
+        const newAlbum = await this._loadAlbum(album.id, album.name, false);
+        if (newAlbum) {
+          if ((photoCt + newAlbum.photos.length) >= _MAX_PHOTOS) {
+            // reached max number of photos
+            ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
+                `limit: ${photoCt}`);
+            showErrorDialog(ChromeLocale.localize('err_status'),
+                ChromeLocale.localize('err_max_photos'));
+            break;
+          }
+          photoCt += newAlbum.photos.length;
+          _selections.push({
+            id: album.id, name: newAlbum.name, photos: newAlbum.photos,
+          });
+          ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
+              `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
+          const set = await ChromeStorage.asyncSet('albumSelections',
+              _selections,
+              'useGoogleAlbums');
+          if (!set) {
+            // exceeded storage limits
+            _selections.pop();
+            showStorageErrorDialog('AlbumViews._onSelectAllTapped');
+            break;
+          }
+          this.set('albums.' + i + '.checked', true);
+          this.set('albums.' + i + '.ct', newAlbum.ct);
+        }
+        albumCt++;
+      }
+    } finally {
+      this.set('waitForLoad', false);
+    }
+  },
+
+  /**
+   * Remove selected albums
+   */
+  removeSelectedAlbums: function() {
+    this._uncheckAll();
+    _selections = [];
+    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+  },
+
+  /**
+   * Fetch the photos for an album
+   * @param {string} id album to load
+   * @param {string} name album name
+   * @param {boolean} [showWaiter=true] if true, handle waiter UI ourselves
+   * @private
+   * @returns {module:GoogleSource.Album} Album, null on error
+   */
+  _loadAlbum: async function(id, name, showWaiter = true) {
+    const ERR_TITLE = ChromeLocale.localize('err_load_album');
+    let album = null;
+    try {
+      showWaiter ? this.set('waitForLoad', true) : ChromeUtils.noop();
+      album = await GoogleSource.loadAlbum(id, name, true);
+      showWaiter ? this.set('waitForLoad', false) : ChromeUtils.noop();
+    } catch (err) {
+      showWaiter ? this.set('waitForLoad', false) : ChromeUtils.noop();
+      let text = '';
+      if (GoogleSource.isQuotaError(err, 'AlbumViews.loadAlbum')) {
+        // Hit Google photos quota
+        text = ChromeLocale.localize('err_google_quota');
+      } else {
+        text = err.message;
+        ChromeLog.error(err.message, 'AlbumViews.loadAlbum', ERR_TITLE);
+      }
+      showErrorDialog(ERR_TITLE, text);
+    }
+    return album;
+  },
+
+  /**
+   * Fetch the photos for all the selected albums
+   * @private
+   */
+  _updateSavedAlbums: async function() {
+    for (let i = _selections.length - 1; i >= 0; i--) {
+      const album = _selections[i];
+      this.set('waiterStatus', album.name);
+      let newAlbum;
+      try {
+        newAlbum = await GoogleSource.loadAlbum(album.id, album.name, true);
+      } catch (err) {
+        // could not get album
+        if (err.message.match(/404/)) {
+          // probably deleted
+          _selections.splice(i, 1);
+          continue;
+        }
+      }
+
+      // replace 
+      _selections.splice(i, 1, {
+        id: album.id,
+        name: album.name,
+        photos: newAlbum.photos,
+      });
+    }
+
+    // try to save
+    const set = await ChromeStorage.asyncSet('albumSelections', _selections,
+        'useGoogleAlbums');
+    if (!set) {
+      // exceeded storage limits - revert to old
+      _selections = await ChromeStorage.asyncGet('albumSelections', []);
+      showStorageErrorDialog('AlbumViews._updateSavedAlbums');
+    } else {
+      // update selections
+      await this._selectSavedAlbums();
+    }
+  },
+
+  /**
+   * Event: Album checkbox state changed
+   * @param {Event} ev - checkbox state changed
+   * @param {module:GoogleSource.Album} ev.model.album - the album
+   * @private
+   */
+  _onAlbumSelectChanged: async function(ev) {
+    const album = ev.model.album;
+
+    ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
+
+    if (album.checked) {
+      // add new
+      if (_selections.length === _MAX_ALBUMS) {
+        // reached max number of albums
+        ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
+        this.set('albums.' + album.index + '.checked', false);
+        showErrorDialog(ChromeLocale.localize('err_request_failed'),
+            ChromeLocale.localize('err_max_albums'));
+
+        return;
+      }
+      const photoCt = await this._getTotalPhotoCount();
+      if (photoCt >= _MAX_PHOTOS) {
+        // reached max number of photos
+        ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
+            `limit: ${photoCt}`);
+        this.set('albums.' + album.index + '.checked', false);
+        showErrorDialog(ChromeLocale.localize('err_status'),
+            ChromeLocale.localize('err_max_photos'));
+        return;
+      }
+
+      // send message to background page to do the work and send us messages
+      // on current status and completion
+      this.set('waitForLoad', true);
+      _loadingAlbum = album;
+      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM);
+      msg.id = album.id;
+      msg.name = album.name;
+      ChromeMsg.send(msg).catch(() => {});
+      const newAlbum = await this._loadAlbum(album.id, album.name, true);
+      if (newAlbum) {
+        _selections.push({
+          id: album.id,
+          name: newAlbum.name,
+          photos: newAlbum.photos,
+        });
+        ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
+            `maxPhotos: ${album.ct}, actualPhotosLoaded: ${newAlbum.ct}`);
+        const set = await ChromeStorage.asyncSet('albumSelections', _selections,
+            'useGoogleAlbums');
+        if (!set) {
+          // exceeded storage limits
+          _selections.pop();
+          this.set('albums.' + album.index + '.checked', false);
+          // notify listeners
+          showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
+        }
+        this.set('albums.' + album.index + '.ct', newAlbum.ct);
+      } else {
+        // failed to load photos
+        this.set('albums.' + album.index + '.checked', false);
+      }
+    } else {
+      // delete old
+      const index = _selections.findIndex((e) => {
+        return e.id === album.id;
+      });
+      if (index !== -1) {
+        _selections.splice(index, 1);
+      }
+      const set = await ChromeStorage.asyncSet('albumSelections', _selections,
+          'useGoogleAlbums');
+      if (!set) {
+        // exceeded storage limits
+        _selections.pop();
+        this.set('albums.' + album.index + '.checked', false);
+        showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
+      }
+    }
+  },
+
+  // noinspection JSUnusedLocalSymbols
+  /**
+   * Event: Fired when a message is sent from either an extension process&lt;br>
+   * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
+   * @param {module:ChromeMsg.Message} request - details for the message
+   * @param {Object} [sender] - MessageSender object
+   * @param {Function} [response] - function to call once after processing
+   * @returns {boolean} true if asynchronous
+   * @private
+   */
+  _onMessage: async function(request, sender, response) {
+    if (request.message === MyMsg.LOAD_ALBUM_DONE.message) {
+      try {
+        // the background page has finished loading the album
+        const errMsg = request.error;
+        if (errMsg) {
+          const title = ChromeLocale.localize('err_load_album');
+          const text = errMsg;
+          // noinspection JSCheckFunctionSignatures
+          ChromeLog.error(text, 'AlbumsView._loadAlbum', title);
+          showErrorDialog(title, text);
+        } else {
+          // noinspection JSUnresolvedVariable
+          const album = ChromeJSON.parse(request.album);
+          if (album) {
+            _selections.push({
+              id: _loadingAlbum.id,
+              name: album.name,
+              photos: album.photos,
+            });
+            ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
+                `maxPhotos: ${_loadingAlbum.ct}, actualPhotosLoaded: ${album.ct}`);
+            const set = await ChromeStorage.asyncSet('albumSelections',
+                _selections,
+                'useGoogleAlbums');
+            if (!set) {
+              // exceeded storage limits
+              _selections.pop();
+              this.set('albums.' + _loadingAlbum.index + '.checked', false);
+              showStorageErrorDialog('AlbumViews._loadAlbum');
+            }
+            this.set('albums.' + _loadingAlbum.index + '.ct', album.ct);
+          } else {
+            // failed to load album
+            this.set('albums.' + _loadingAlbum.index + '.checked', false);
+          }
+        }
+      } finally {
+        this.set('waitForLoad', false);
+        this.set('waiterStatus', '');
+        _loadingAlbum = null;
+      }
+      response(JSON.stringify({message: 'OK'}));
+    } else if (request.message === MyMsg.ALBUM_COUNT.message) {
+      // show user status of photo loading
+      // noinspection JSUnresolvedVariable
+      const count = request.count || 0;
+      let msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
+      this.set('waiterStatus', msg);
+      response(JSON.stringify({message: 'OK'}));
+    }
+    return true;
+  },
+
+  /**
+   * Observer: waiter changed
+   * @param {boolean} newValue - state
+   * @private
+   */
+  _waitForLoadChanged: function(newValue) {
+    if (newValue === false) {
+      this.$.ironList._render();
+      if (this.waiterStatus !== undefined) {
+        this.set('waiterStatus', '');
+      }
+    }
+  },
+
+  /**
+   * Get total photo count that is currently saved
+   * @returns {Promise&lt;int>} Total number of photos saved
+   * @private
+   */
+  _getTotalPhotoCount: async function() {
+    let ct = 0;
+    const albums = await ChromeStorage.asyncGet('albumSelections', []);
+    for (const album of albums) {
+      album.photos = album.photos || [];
+      ct += album.photos.length;
+    }
+    return Promise.resolve(ct);
+  },
+
+  /**
+   * Set the checked state based on the currently saved albums
+   * @private
+   */
+  _selectSavedAlbums: async function() {
+    _selections = await ChromeStorage.asyncGet('albumSelections', []);
+    for (let i = 0; i &lt; this.albums.length; i++) {
+      for (let j = 0; j &lt; _selections.length; j++) {
+        if (this.albums[i].id === _selections[j].id) {
+          this.set('albums.' + i + '.checked', true);
+          // update photo count
+          this.set('albums.' + i + '.ct', _selections[j].photos.length);
+          break;
+        }
+      }
+    }
+  },
+
+  /**
+   * Uncheck all albums
+   * @private
+   */
+  _uncheckAll: function() {
+    this.albums.forEach((album, index) => {
+      if (album.checked) {
+        this.set('albums.' + index + '.checked', false);
+      }
+    });
+  },
+
+  /**
+   * Computed property: Hidden state of main interface
+   * @param {boolean} waitForLoad - true if loading
+   * @param {string} permPicasa - permission state
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeHidden: function(waitForLoad, permPicasa) {
+    let ret = true;
+    if (!waitForLoad &amp;&amp; (permPicasa === 'allowed')) {
+      ret = false;
+    }
+    return ret;
+  },
+
+  /**
+   * Computed binding: Set photo count label on an album
+   * @param {int} count - number of photos in album
+   * @returns {string} i18n label
+   * @private
+   */
+  _computePhotoLabel: function(count) {
+    let ret = `${count} ${ChromeLocale.localize('photos')}`;
+    if (count === 1) {
+      ret = `${count} ${ChromeLocale.localize('photo')}`;
+    }
+    return ret;
+  },
+});
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on March 15th 2019, 2:48:27 pm
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

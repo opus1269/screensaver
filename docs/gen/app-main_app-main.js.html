@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: app-main/app-main.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ErrorPage.html">ErrorPage</a></li><li><a href="HelpPage.html">HelpPage</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingsPage.html">SettingsPage</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SlideAnimatable.html">SlideAnimatable</a></li><li><a href="SpinDownAnimation.html">SpinDownAnimation</a></li><li><a href="SpinUpAnimation.html">SpinUpAnimation</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Alarm.html">Alarm</a></li><li><a href="module-AlbumsView.html">AlbumsView</a></li><li><a href="module-AppData.html">AppData</a></li><li><a href="module-AppMain.html">AppMain</a></li><li><a href="module-Background.html">Background</a></li><li><a href="module-CCSource.html">CCSource</a></li><li><a href="module-ChromeAuth.html">ChromeAuth</a></li><li><a href="module-ChromeGA.html">ChromeGA</a></li><li><a href="module-ChromeHttp.html">ChromeHttp</a></li><li><a href="module-ChromeJSON.html">ChromeJSON</a></li><li><a href="module-ChromeLastError.html">ChromeLastError</a></li><li><a href="module-ChromeLocale.html">ChromeLocale</a></li><li><a href="module-ChromeLog.html">ChromeLog</a></li><li><a href="module-ChromeMsg.html">ChromeMsg</a></li><li><a href="module-ChromeStorage.html">ChromeStorage</a></li><li><a href="module-ChromeTime.html">ChromeTime</a></li><li><a href="module-ChromeUtils.html">ChromeUtils</a></li><li><a href="module-ConfirmDialog.html">ConfirmDialog</a></li><li><a href="module-ContextMenus.html">ContextMenus</a></li><li><a href="module-ErrorDialog.html">ErrorDialog</a></li><li><a href="module-FlickrSource.html">FlickrSource</a></li><li><a href="module-Geo.html">Geo</a></li><li><a href="module-GooglePhotosPage.html">GooglePhotosPage</a></li><li><a href="module-GoogleSource.html">GoogleSource</a></li><li><a href="module-MyGA.html">MyGA</a></li><li><a href="module-MyMsg.html">MyMsg</a></li><li><a href="module-MyUtils.html">MyUtils</a></li><li><a href="module-Permissions.html">Permissions</a></li><li><a href="module-PhotoCat.html">PhotoCat</a></li><li><a href="module-PhotoSource.html">PhotoSource</a></li><li><a href="module-PhotoSourceFactory.html">PhotoSourceFactory</a></li><li><a href="module-PhotoSources.html">PhotoSources</a></li><li><a href="module-PhotosView.html">PhotosView</a></li><li><a href="module-RedditSource.html">RedditSource</a></li><li><a href="module-Screensaver.html">Screensaver</a></li><li><a href="module-setting-elements_localize-behavior_localize-behavior.html">setting-elements/localize-behavior/localize-behavior</a></li><li><a href="module-SettingLink.html">SettingLink</a></li><li><a href="module-SettingSlider.html">SettingSlider</a></li><li><a href="module-SettingToggle.html">SettingToggle</a></li><li><a href="module-SSBuilder.html">SSBuilder</a></li><li><a href="module-SSControl.html">SSControl</a></li><li><a href="module-SSEvents.html">SSEvents</a></li><li><a href="module-SSFinder.html">SSFinder</a></li><li><a href="module-SSHistory.html">SSHistory</a></li><li><a href="module-SSPhoto.html">SSPhoto</a></li><li><a href="module-SSPhotos.html">SSPhotos</a></li><li><a href="module-SSRunner.html">SSRunner</a></li><li><a href="module-SSTime.html">SSTime</a></li><li><a href="module-SSView.html">SSView</a></li><li><a href="module-SSViewFactory.html">SSViewFactory</a></li><li><a href="module-SSViewFrame.html">SSViewFrame</a></li><li><a href="module-SSViewFull.html">SSViewFull</a></li><li><a href="module-SSViewLetterbox.html">SSViewLetterbox</a></li><li><a href="module-SSViews.html">SSViews</a></li><li><a href="module-SSViewZoom.html">SSViewZoom</a></li><li><a href="module-User.html">User</a></li><li><a href="module-WaiterElement.html">WaiterElement</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExHandler.html">ExHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-ErrorDialog.html#~event:confirm-tap">event:confirm-tap</a></li><li><a href="module-AlbumsView.html#~event:no-albums">event:no-albums</a></li><li><a href="module-PhotoCat.html#~event:value-changed">event:value-changed</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: app-main/app-main.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
+ */
+import '../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../node_modules/@polymer/font-roboto/roboto.js';
+
+import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../node_modules/@polymer/iron-icon/iron-icon.js';
+import '../../node_modules/@polymer/iron-image/iron-image.js';
+
+import '../../node_modules/@polymer/paper-styles/typography.js';
+import '../../node_modules/@polymer/paper-styles/color.js';
+import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../node_modules/@polymer/paper-material/paper-material.js';
+import '../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+
+import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
+import '../../node_modules/@polymer/neon-animation/neon-animations.js';
+import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
+
+import '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
+import '../../node_modules/@polymer/app-layout/app-drawer/app-drawer.js';
+import '../../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
+import '../../node_modules/@polymer/app-layout/app-header/app-header.js';
+import '../../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
+import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
+import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
+import '../../elements/pages/settings-page/settings-page.js';
+import '../../elements/pages/error-page/error-page.js';
+import '../../elements/pages/help-page/help-page.js';
+import '../../elements/pages/google-photos-page/google-photos-page.js';
+
+import '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import '../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
+import '../../elements/setting-elements/setting-toggle/setting-toggle.js';
+import '../../elements/setting-elements/setting-slider/setting-slider.js';
+import '../../elements/setting-elements/setting-link/setting-link.js';
+import '../../elements/setting-elements/setting-background/setting-background.js';
+import '../../elements/setting-elements/setting-time/setting-time.js';
+import '../../elements/setting-elements/setting-text/setting-text.js';
+
+import '../../elements/my_icons.js';
+import '../../elements/error-dialog/error-dialog.js';
+import '../../elements/confirm-dialog/confirm-dialog.js';
+
+import '../../scripts/my_analytics.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+
+import {LocalizeBehavior} from
+      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {GooglePhotosPage} from
+      '../../elements/pages/google-photos-page/google-photos-page.js';
+import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
+import {HelpPage} from '../../elements/pages/help-page/help-page.js';
+import * as Permissions from '../../scripts/permissions.js';
+
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import ChromeLastError
+  from '../../scripts/chrome-extension-utils/scripts/last_error.js';
+import * as ChromeLocale
+  from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils
+  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+/**
+ * Polymer element for the main UI
+ * @module AppMain
+ */
+
+/**
+ * Function to show a confirm dialog
+ * @type {Function}
+ */
+export let showConfirmDialog = null;
+
+/**
+ * Function to show an error dialog
+ * @type {Function}
+ */
+export let showErrorDialog = null;
+
+/**
+ * Function to show an error dialog about failing to store data
+ * @type {Function}
+ */
+export let showStorageErrorDialog = null;
+
+/**
+ * Function to call on confirm dialog confirm button click
+ * @type {Function}
+ */
+let confirmFn = null;
+
+/**
+ * Manage an html page that is inserted on demand&lt;br />
+ * May also be a url link to external site
+ * @typedef {{}} module:AppMain.Page
+ * @property {string} label - label for Nav menu
+ * @property {string} route - element name route to page
+ * @property {string} icon - icon for Nav Menu
+ * @property {?Object|Function} obj - something to be done when selected
+ * @property {boolean} ready - true if html is inserted
+ * @property {boolean} divider - true for divider before item
+ */
+
+/**
+ * Path to the extension in the Web Store
+ * @type {string}
+ * @const
+ * @private
+ */
+const EXT_URI =
+    'https://chrome.google.com/webstore/detail/screensaver/' +
+    chrome.runtime.id + '/';
+
+/**
+ * Path to my Pushy Clipboard extension
+ * @type {string}
+ * @const
+ * @default
+ * @private
+ */
+const PUSHY_URI =
+    'https://chrome.google.com/webstore/detail/pushy-clipboard/' +
+    'jemdfhaheennfkehopbpkephjlednffd';
+
+/**
+ * Array of pages
+ * @type {module:Options.Page[]}
+ */
+const pages = [
+  {
+    label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
+    icon: 'myicons:settings', obj: null, ready: true, divider: false,
+  },
+  {
+    label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
+    icon: 'myicons:pageview', obj: null, ready: true,
+    divider: false,
+  },
+  {
+    label: ChromeLocale.localize('menu_google'),
+    route: 'page-google-photos', icon: 'myicons:cloud',
+    obj: null, ready: false, divider: true,
+  },
+  {
+    label: ChromeLocale.localize('menu_permission'),
+    route: 'page-permission', icon: 'myicons:perm-data-setting',
+    obj: null, ready: true, divider: false,
+  },
+  {
+    label: ChromeLocale.localize('menu_error'), route: 'page-error',
+    icon: 'myicons:error', obj: null,
+    ready: false, disabled: false, divider: true,
+  },
+  {
+    label: ChromeLocale.localize('menu_help'), route: 'page-help',
+    icon: 'myicons:help', obj: null, ready: false,
+    divider: false,
+  },
+  {
+    label: ChromeLocale.localize('help_faq'), route: 'page-faq',
+    icon: 'myicons:help',
+    obj: 'https://opus1269.github.io/screensaver/faq.html',
+    ready: true, divider: false,
+  },
+  {
+    label: ChromeLocale.localize('menu_support'), route: 'page-support',
+    icon: 'myicons:help', obj: `${EXT_URI}support`, ready: true,
+    divider: false,
+  },
+  {
+    label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
+    icon: 'myicons:grade', obj: `${EXT_URI}reviews`, ready: true,
+    divider: false,
+  },
+  {
+    label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
+    icon: 'myicons:extension', obj: PUSHY_URI, ready: true,
+    divider: true,
+  },
+];
+
+/**
+ * Google Photos Page
+ * @type {module:GooglePhotosPage}
+ * @private
+ */
+let gPhotosPage = null;
+
+/**
+ * Chrome sign in state
+ * @type {boolean}
+ * @private
+ */
+let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
+
+Polymer({
+  // language=HTML format=false
+  _template: html`&lt;!--suppress CssUnresolvedCustomProperty -->
+&lt;style include="iron-flex iron-flex-alignment">&lt;/style>
+&lt;style include="shared-styles">&lt;/style>
+&lt;style>
+
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  /* General styles */
+
+  paper-listbox iron-icon {
+    margin-right: 20px;
+    opacity: 0.54;
+  }
+
+  paper-listbox paper-item {
+    --paper-item: {
+      color: var(--menu-link-color);
+      text-rendering: optimizeLegibility;
+      cursor: pointer;
+    };
+    --paper-item-selected: {
+      color: var(--dark-primary-color);
+      background-color: var(--selected-color);
+      text-rendering: optimizeLegibility;
+      cursor: pointer;
+    };
+    --paper-item-focused-before: {
+      background-color: transparent;
+    };
+  }
+
+  app-drawer-layout:not([narrow]) [drawer-toggle] {
+    display: none;
+  }
+
+  app-drawer {
+    --app-drawer-content-container: {
+      border-right: var(--drawer-toolbar-border-color);
+    }
+  }
+
+  paper-dialog {
+    min-width: 25vw;
+    max-width: 50vw;
+  }
+
+  .main-toolbar {
+    color: var(--text-primary-color);
+    background-color: var(--dark-primary-color);
+    /*noinspection CssUnresolvedCustomPropertySet*/
+    @apply --paper-font-headline;
+  }
+
+  .menu-name {
+    /*noinspection CssUnresolvedCustomPropertySet*/
+    @apply --paper-font-title;
+    color: var(--dark-primary-color);
+    background-color: var(--drawer-menu-color);
+    border-bottom: var(--drawer-toolbar-border-color);
+  }
+
+  #mainPages neon-animatable {
+    padding: 0 0;
+  }
+
+  /* Height of the main scroll area */
+  #mainContainer {
+    height: 100%;
+    padding: 0 0;
+  }
+
+  .permText {
+    padding-bottom: 16px;
+  }
+
+  .status {
+    padding-top: 8px;
+    /*noinspection CssUnresolvedCustomPropertySet*/
+    @apply --paper-font-title;
+  }
+
+
+&lt;/style>
+
+&lt;!-- Error dialog keep above app-drawer-layout because of overlay bug -->
+&lt;error-dialog id="errorDialog">&lt;/error-dialog>
+
+&lt;!-- Confirm dialog keep above app-drawer-layout because of overlay bug -->
+&lt;confirm-dialog id="confirmDialog" confirm-label="[[localize('ok')]]"
+                on-confirm-tap="_onConfirmDialogTapped">&lt;/confirm-dialog>
+
+&lt;!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
+&lt;paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
+              exit-animation="fade-out-animation">
+  &lt;h2>[[localize('menu_permission')]]&lt;/h2>
+  &lt;paper-dialog-scrollable>
+    &lt;div>
+
+      &lt;paper-item class="permText">
+        [[localize('permission_message')]]
+      &lt;/paper-item>
+
+
+      &lt;paper-item class="permText">
+        [[localize('permission_message1')]]
+      &lt;/paper-item>
+
+      &lt;paper-item class="permText">
+        [[localize('permission_message2')]]
+      &lt;/paper-item>
+
+      &lt;paper-item class="status">
+        [[_computePermissionsStatus(permission)]]
+      &lt;/paper-item>
+
+    &lt;/div>
+  &lt;/paper-dialog-scrollable>
+  &lt;div class="buttons">
+    &lt;paper-button dialog-dismiss>CANCEL&lt;/paper-button>
+    &lt;paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">DENY&lt;/paper-button>
+    &lt;paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">ALLOW&lt;/paper-button>
+  &lt;/div>
+&lt;/paper-dialog>
+
+&lt;app-drawer-layout id="appDrawerLayout" responsive-width="800px">
+
+  &lt;!-- Drawer Content -->
+  &lt;app-drawer id="appDrawer" slot="drawer">
+    &lt;!-- For scrolling -->
+    &lt;div style="height: 100%; overflow: auto;">
+      &lt;!-- Menu Title -->
+      &lt;app-toolbar class="menu-name">
+        &lt;div>[[localize('menu')]]&lt;/div>
+      &lt;/app-toolbar>
+
+      &lt;!-- Menu Items -->
+      &lt;paper-listbox id="mainMenu" attr-for-selected="id"
+                     selected="[[route]]">
+        &lt;template is="dom-repeat" id="menuTemplate" items="[[pages]]">
+          &lt;hr hidden$="[[!item.divider]]"/>
+          &lt;paper-item id="[[item.route]]"
+                      class="center horizontal layout"
+                      on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
+            &lt;iron-icon icon="[[item.icon]]">&lt;/iron-icon>
+            &lt;span>[[item.label]]&lt;/span>
+          &lt;/paper-item>
+        &lt;/template>
+      &lt;/paper-listbox>
+    &lt;/div>
+  &lt;/app-drawer>
+
+  &lt;app-header-layout fullbleed]>
+
+    &lt;app-header fixed slot="header">
+
+      &lt;!-- App Toolbar -->
+      &lt;app-toolbar class="main-toolbar">
+        &lt;paper-icon-button icon="myicons:menu" drawer-toggle>&lt;/paper-icon-button>
+        &lt;div class="app-name center horizontal layout">
+          &lt;div>[[localize('chrome_extension_name')]]&lt;/div>
+        &lt;/div>
+      &lt;/app-toolbar>
+
+    &lt;/app-header>
+
+    &lt;!--Main Contents-->
+    &lt;div id="mainContainer">
+
+      &lt;!-- Options Tabbed Pages -->
+      &lt;neon-animated-pages id="mainPages"
+                           attr-for-selected="data-route"
+                           selected="{{route}}"
+                           entry-animation="fade-in-animation"
+                           exit-animation="fade-out-animation">
+        &lt;neon-animatable data-route="page-settings">
+          &lt;section>
+            &lt;settings-page id="settingsPage">&lt;/settings-page>
+          &lt;/section>
+        &lt;/neon-animatable>
+        &lt;neon-animatable data-route="page-google-photos">
+          &lt;section id="googlePhotosInsertion">&lt;/section>
+        &lt;/neon-animatable>
+        &lt;neon-animatable data-route="page-error">
+          &lt;section id="errorInsertion">&lt;/section>
+        &lt;/neon-animatable>
+        &lt;neon-animatable data-route="page-help">
+          &lt;section id="helpInsertion">&lt;/section>
+        &lt;/neon-animatable>
+      &lt;/neon-animated-pages>
+
+    &lt;/div>
+
+  &lt;/app-header-layout>
+  
+  &lt;app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
+  &lt;/app-localstorage-document>
+
+&lt;/app-drawer-layout>
+`,
+
+  is: 'app-main',
+
+  behaviors: [
+    LocalizeBehavior,
+  ],
+
+  properties: {
+
+    /**
+     * Array of {@link module:AppMain.Page}
+     * @const
+     */
+    pages: {
+      type: Array,
+      value: pages,
+      readOnly: true,
+    },
+
+    /**
+     * Current {@link module:AppMain.Page}
+     */
+    route: {
+      type: String,
+      value: 'page-settings',
+      notify: true,
+    },
+
+    /**
+     * Google Photos permission status
+     */
+    permission: {
+      type: String,
+      value: 'notSet',
+      notify: true,
+    },
+  },
+
+  /**
+   * Element is ready
+   */
+  ready: function() {
+
+    
+    // Initialize dialog exports
+    showConfirmDialog = this.showConfirmDialog.bind(this);
+    showErrorDialog = this.showErrorDialog.bind(this);
+    showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
+
+    // initialize page functions
+    pages[1].obj = this._showScreensaverPreview.bind(this);
+    pages[2].obj = this._showGooglePhotosPage.bind(this);
+    pages[3].obj = this._showPermissionsDialog.bind(this);
+    pages[4].obj = this._showErrorPage.bind(this);
+    pages[5].obj = this._showHelpPage.bind(this);
+
+    // listen for chrome messages
+    ChromeMsg.listen(this._onMessage.bind(this));
+
+    // listen for changes to chrome.storage
+    chrome.storage.onChanged.addListener((changes) => {
+      for (const key in changes) {
+        if (changes.hasOwnProperty(key)) {
+          if (key === 'lastError') {
+            this._setErrorMenuState();
+            break;
+          }
+        }
+      }
+    });
+
+    // listen for changes to localStorage
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === 'permPicasa') {
+        this._setGooglePhotosMenuState();
+      } else if (ev.key === 'signedInToChrome') {
+        this.signedInToChrome =
+            ChromeStorage.getBool('signedInToChrome', true);
+      }
+    }, false);
+
+    setTimeout(() => {
+      
+      // initialize menu enabled states
+      this._setErrorMenuState();
+      this._setGooglePhotosMenuState();
+    }, 0);
+  },
+
+  /**
+   * Display an error dialog about failing to store data
+   * @param {string} title - dialog title
+   * @param {string} text - dialog text
+   */
+  showErrorDialog: function(title, text) {
+    this.$.errorDialog.open(title, text);
+  },
+
+  /**
+   * Display an error dialog
+   * @param {string} method - calling method
+   */
+  showStorageErrorDialog: function(method) {
+    const title = ChromeLocale.localize('err_storage_title');
+    const text = ChromeLocale.localize('err_storage_desc');
+    ChromeLog.error(text, method, title);
+    this.$.errorDialog.open(title, text);
+  },
+
+  /**
+   * Display a confirm dialog
+   * @param {string} text - dialog text
+   * @param {string} title - dialog title
+   * @param {string} confirmLabel - confirm button text
+   * @param {Function} fn - function to call on confirm button click
+   */
+  showConfirmDialog: function(text, title, confirmLabel, fn) {
+    confirmFn = fn;
+    this.$.confirmDialog.open(text, title, confirmLabel);
+  },
+
+  /**
+   * Event: Clicked on confirm button of confirm dialog
+   * @private
+   */
+  _onConfirmDialogTapped: function() {
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Options.ConfirmDialog.Confirm');
+    if (confirmFn) {
+      confirmFn();
+    }
+  },
+
+  /**
+   * Event: navigation menu selected
+   * Route to proper page
+   * @param {Event} event - ClickEvent
+   * @private
+   */
+  _onNavMenuItemTapped: function(event) {
+    // Close drawer after menu item is selected if it is in narrow layout
+    const appDrawerLayout = this.$$('#appDrawerLayout');
+    const appDrawer = this.$$('#appDrawer');
+    if (appDrawer &amp;&amp; appDrawerLayout &amp;&amp; appDrawerLayout.narrow) {
+      appDrawer.close();
+    }
+
+    const idx = this._getPageIdx(event.currentTarget.id);
+
+    ChromeGA.event(ChromeGA.EVENT.MENU, pages[idx].route);
+
+    const prevRoute = this.route;
+
+    if (!pages[idx].obj) {
+      // some pages are just pages
+      this.set('route', pages[idx].route);
+    } else if (typeof pages[idx].obj === 'string') {
+      // some pages are url links
+      this.$.mainMenu.select(prevRoute);
+      chrome.tabs.create({url: pages[idx].obj});
+    } else {
+      // some pages have functions to view them
+      pages[idx].obj(idx, prevRoute);
+    }
+  },
+
+  /**
+   * Event: Clicked on accept permissions dialog button
+   * @private
+   */
+  _onAcceptPermissionsClicked: function() {
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
+    Permissions.request(Permissions.PICASA).then((granted) => {
+      if (!granted) {
+        return Permissions.removeGooglePhotos();
+      } else {
+        return null;
+      }
+    }).catch((err) => {
+      ChromeLog.error(err.message, 'Options._onAcceptPermissionsClicked');
+    });
+  },
+
+  /**
+   * Event: Clicked on deny permission dialog button
+   * @private
+   */
+  _onDenyPermissionsClicked: function() {
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
+    Permissions.removeGooglePhotos().catch((err) => {
+      ChromeLog.error(err.message, 'Options._onDenyPermissionsClicked');
+    });
+  },
+
+  /**
+   * Computed Binding: Determine content script permission status string
+   * @param {string} permission - current setting
+   * @returns {string}
+   * @private
+   */
+  _computePermissionsStatus: function(permission) {
+    return `${ChromeLocale.localize(
+        'permission_status')} ${ChromeLocale.localize(permission)}`;
+  },
+
+  /**
+   * Get the index into the {@link module:AppMain.pages} array
+   * @param {string} name - {@link module:AppMain.page} route
+   * @returns {int} index into array
+   * @private
+   */
+  _getPageIdx: function(name) {
+    return pages.map(function(e) {
+      return e.route;
+    }).indexOf(name);
+  },
+
+  /**
+   * Show the Google Photos page
+   * @param {int} index - index into {@link module:AppMain.pages}
+   * @private
+   */
+  _showGooglePhotosPage: function(index) {
+    signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
+    if (!signedInToChrome) {
+      // Display Error Dialog if not signed in to Chrome
+      const title = ChromeLocale.localize('err_chrome_signin_title');
+      const text = ChromeLocale.localize('err_chrome_signin');
+      this.$.errorDialog.open(title, text);
+      return;
+    }
+    if (!pages[index].ready) {
+      // create the page the first time
+      pages[index].ready = true;
+      gPhotosPage = new GooglePhotosPage('gPhotosPage');
+      this.$.googlePhotosInsertion.appendChild(gPhotosPage);
+    } else if (ChromeStorage.getBool('isAlbumMode', true)) {
+      gPhotosPage.loadAlbumList().catch(() => {});
+    }
+    this.set('route', pages[index].route);
+  },
+
+  /**
+   * Show the error viewer page
+   * @param {int} index - index into {@link module:AppMain.pages}
+   * @private
+   */
+  _showErrorPage: function(index) {
+    if (!pages[index].ready) {
+      // insert the page the first time
+      pages[index].ready = true;
+      const el = new ErrorPage();
+      this.$.errorInsertion.appendChild(el);
+    }
+    this.set('route', pages[index].route);
+  },
+
+  /**
+   * Show the help page
+   * @param {int} index - index into {@link module:AppMain.pages}
+   * @private
+   */
+  _showHelpPage: function(index) {
+    if (!pages[index].ready) {
+      // insert the page the first time
+      pages[index].ready = true;
+      const el = new HelpPage();
+      this.$.helpInsertion.appendChild(el);
+    }
+    this.set('route', pages[index].route);
+  },
+
+  /**
+   * Display a preview of the screen saver
+   * @param {int} index - index into {@link module:AppMain.pages}
+   * @param {string} prevRoute - last page selected
+   * @private
+   */
+  _showScreensaverPreview: function(index, prevRoute) {
+    // reselect previous page - need to delay so tap event is done
+    setTimeout(() => this.$.mainMenu.select(prevRoute), 500);
+    ChromeMsg.send(MyMsg.SS_SHOW).catch(() => {});
+  },
+
+  /**
+   * Show the permissions dialog
+   * @private
+   */
+  _showPermissionsDialog: function() {
+    this.$.permissionsDialog.open();
+  },
+
+  /**
+   * Set enabled state of Google Photos menu item
+   * @private
+   */
+  _setGooglePhotosMenuState: function() {
+    // disable google-page if user hasn't allowed
+    const idx = this._getPageIdx('page-google-photos');
+    const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
+    if (!el) {
+      ChromeGA.error('no element found',
+          'Options._setGooglePhotosMenuState');
+    } else if (this.permission !== 'allowed') {
+      el.setAttribute('disabled', 'true');
+    } else {
+      el.removeAttribute('disabled');
+    }
+  },
+
+  /**
+   * Set enabled state of Error Viewer menu item
+   * @private
+   */
+  _setErrorMenuState: function() {
+    // disable error-page if no lastError
+    ChromeLastError.load().then((lastError) => {
+      const idx = this._getPageIdx('page-error');
+      const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
+      if (el &amp;&amp; !ChromeUtils.isWhiteSpace(lastError.message)) {
+        el.removeAttribute('disabled');
+      } else if (el) {
+        el.setAttribute('disabled', 'true');
+      }
+      return null;
+    }).catch((err) => {
+      ChromeGA.error(err.message, 'Options._setErrorMenuState');
+    });
+  },
+
+  // noinspection JSUnusedLocalSymbols
+  /**
+   * Event: Fired when a message is sent from either an extension process&lt;br>
+   * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
+   * @param {module:ChromeMsg.Message} request - details for the message
+   * @param {Object} [sender] - MessageSender object
+   * @param {Function} [response] - function to call once after processing
+   * @returns {boolean} true if asynchronous
+   * @private
+   */
+  _onMessage: function(request, sender, response) {
+    if (request.message === ChromeMsg.HIGHLIGHT.message) {
+      // highlight ourselves and let the sender know we are here
+      const chromep = new ChromePromise();
+      chromep.tabs.getCurrent().then((tab) => {
+        chrome.tabs.update(tab.id, {'highlighted': true});
+        return null;
+      }).catch((err) => {
+        ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
+      });
+      response(JSON.stringify({message: 'OK'}));
+    } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
+      // Display Error Dialog if a save action exceeded the
+      // localStorage limit
+      const title = ChromeLocale.localize('err_storage_title');
+      const text = ChromeLocale.localize('err_storage_desc');
+      this.$.errorDialog.open(title, text);
+    } else if (request.message === MyMsg.PHOTO_SOURCE_FAILED.message) {
+      // failed to load
+      this.$.settingsPage.deselectPhotoSource(request.key);
+      const title = ChromeLocale.localize('err_photo_source_title');
+      const text = request.error;
+      this.$.errorDialog.open(title, text);
+    }
+    return false;
+  },
+
+});
+
+/**
+ * Event: called when document and resources are loaded&lt;br />
+ * @private
+ */
+function _onLoad() {
+  ChromeGA.page('/options.html');
+}
+
+// listen for document and resources loaded
+window.addEventListener('load', _onLoad);
+
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on March 15th 2019, 2:48:27 pm
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

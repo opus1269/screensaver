@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Source: pages/google-photos-page/photos-view.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ErrorPage.html">ErrorPage</a></li><li><a href="HelpPage.html">HelpPage</a></li><li><a href="SettingBackground.html">SettingBackground</a></li><li><a href="SettingDropdown.html">SettingDropdown</a></li><li><a href="SettingsPage.html">SettingsPage</a></li><li><a href="SettingText.html">SettingText</a></li><li><a href="SettingTime.html">SettingTime</a></li><li><a href="SlideAnimatable.html">SlideAnimatable</a></li><li><a href="SpinDownAnimation.html">SpinDownAnimation</a></li><li><a href="SpinUpAnimation.html">SpinUpAnimation</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-Alarm.html">Alarm</a></li><li><a href="module-AlbumsView.html">AlbumsView</a></li><li><a href="module-AppData.html">AppData</a></li><li><a href="module-AppMain.html">AppMain</a></li><li><a href="module-Background.html">Background</a></li><li><a href="module-CCSource.html">CCSource</a></li><li><a href="module-ChromeAuth.html">ChromeAuth</a></li><li><a href="module-ChromeGA.html">ChromeGA</a></li><li><a href="module-ChromeHttp.html">ChromeHttp</a></li><li><a href="module-ChromeJSON.html">ChromeJSON</a></li><li><a href="module-ChromeLastError.html">ChromeLastError</a></li><li><a href="module-ChromeLocale.html">ChromeLocale</a></li><li><a href="module-ChromeLog.html">ChromeLog</a></li><li><a href="module-ChromeMsg.html">ChromeMsg</a></li><li><a href="module-ChromeStorage.html">ChromeStorage</a></li><li><a href="module-ChromeTime.html">ChromeTime</a></li><li><a href="module-ChromeUtils.html">ChromeUtils</a></li><li><a href="module-ConfirmDialog.html">ConfirmDialog</a></li><li><a href="module-ContextMenus.html">ContextMenus</a></li><li><a href="module-ErrorDialog.html">ErrorDialog</a></li><li><a href="module-FlickrSource.html">FlickrSource</a></li><li><a href="module-Geo.html">Geo</a></li><li><a href="module-GooglePhotosPage.html">GooglePhotosPage</a></li><li><a href="module-GoogleSource.html">GoogleSource</a></li><li><a href="module-MyGA.html">MyGA</a></li><li><a href="module-MyMsg.html">MyMsg</a></li><li><a href="module-MyUtils.html">MyUtils</a></li><li><a href="module-Permissions.html">Permissions</a></li><li><a href="module-PhotoCat.html">PhotoCat</a></li><li><a href="module-PhotoSource.html">PhotoSource</a></li><li><a href="module-PhotoSourceFactory.html">PhotoSourceFactory</a></li><li><a href="module-PhotoSources.html">PhotoSources</a></li><li><a href="module-PhotosView.html">PhotosView</a></li><li><a href="module-RedditSource.html">RedditSource</a></li><li><a href="module-Screensaver.html">Screensaver</a></li><li><a href="module-setting-elements_localize-behavior_localize-behavior.html">setting-elements/localize-behavior/localize-behavior</a></li><li><a href="module-SettingLink.html">SettingLink</a></li><li><a href="module-SettingSlider.html">SettingSlider</a></li><li><a href="module-SettingToggle.html">SettingToggle</a></li><li><a href="module-SSBuilder.html">SSBuilder</a></li><li><a href="module-SSControl.html">SSControl</a></li><li><a href="module-SSEvents.html">SSEvents</a></li><li><a href="module-SSFinder.html">SSFinder</a></li><li><a href="module-SSHistory.html">SSHistory</a></li><li><a href="module-SSPhoto.html">SSPhoto</a></li><li><a href="module-SSPhotos.html">SSPhotos</a></li><li><a href="module-SSRunner.html">SSRunner</a></li><li><a href="module-SSTime.html">SSTime</a></li><li><a href="module-SSView.html">SSView</a></li><li><a href="module-SSViewFactory.html">SSViewFactory</a></li><li><a href="module-SSViewFrame.html">SSViewFrame</a></li><li><a href="module-SSViewFull.html">SSViewFull</a></li><li><a href="module-SSViewLetterbox.html">SSViewLetterbox</a></li><li><a href="module-SSViews.html">SSViews</a></li><li><a href="module-SSViewZoom.html">SSViewZoom</a></li><li><a href="module-User.html">User</a></li><li><a href="module-WaiterElement.html">WaiterElement</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="ExHandler.html">ExHandler</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-ErrorDialog.html#~event:confirm-tap">event:confirm-tap</a></li><li><a href="module-AlbumsView.html#~event:no-albums">event:no-albums</a></li><li><a href="module-PhotoCat.html#~event:value-changed">event:value-changed</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: pages/google-photos-page/photos-view.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/*
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
+ */
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import './photo_cat.js';
+import {LocalizeBehavior} from
+      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {showErrorDialog} from '../../../elements/app-main/app-main.js';
+import '../../../elements/waiter-element/waiter-element.js';
+import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
+import '../../../elements/shared-styles.js';
+
+import * as MyMsg from '../../../scripts/my_msg.js';
+import * as Permissions from '../../../scripts/permissions.js';
+import GoogleSource from '../../../scripts/sources/photo_source_google.js';
+
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog
+  from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg
+  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage
+  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+/**
+ * Polymer element for selecting Google Photos
+ * @module PhotosView
+ */
+
+/**
+ * A Google photos category for searches
+ * @typedef {{}} module:PhotosView.PhotoCategory
+ * @property {string} name
+ * @property {string} label
+ * @private
+ */
+
+/**
+ * Photo categories
+ * @type {module:PhotosView.PhotoCategory[]}
+ * @private
+ */
+const _CATS = [
+  {name: 'LANDSCAPES', label: ChromeLocale.localize('photo_cat_landscapes')},
+  {name: 'CITYSCAPES', label: ChromeLocale.localize('photo_cat_cityscapes')},
+  {name: 'LANDMARKS', label: ChromeLocale.localize('photo_cat_landmarks')},
+  {name: 'PEOPLE', label: ChromeLocale.localize('photo_cat_people')},
+  {name: 'ANIMALS', label: ChromeLocale.localize('photo_cat_animals')},
+  {name: 'PETS', label: ChromeLocale.localize('photo_cat_pets')},
+  {
+    name: 'PERFORMANCES',
+    label: ChromeLocale.localize('photo_cat_performances'),
+  },
+  {name: 'SPORT', label: ChromeLocale.localize('photo_cat_sport')},
+  {name: 'FOOD', label: ChromeLocale.localize('photo_cat_food')},
+  {name: 'SELFIES', label: ChromeLocale.localize('photo_cat_selfies')},
+];
+
+/** Polymer element */
+Polymer({
+  // language=HTML format=false
+  _template: html`&lt;!--suppress CssUnresolvedCustomPropertySet -->
+&lt;style include="iron-flex iron-flex-alignment">&lt;/style>
+&lt;style include="shared-styles">&lt;/style>
+&lt;style>
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .album-note {
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-top-style: solid;
+    padding: 8px 16px 8px 16px;
+    margin-right: 0;
+    white-space: normal;
+  }
+
+  :host .photo-count-container {
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 16px 0 16px 0;
+    white-space: normal;
+  }
+
+  :host .photo-count-container paper-button {
+    margin: 0 8px 0 0;
+    @apply --paper-font-title;
+  }
+
+  :host .photo-count-container #photoCount {
+    @apply --paper-font-title;
+    padding-right: 0;
+  }
+
+&lt;/style>
+
+&lt;waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
+                status-label="[[waiterStatus]]">&lt;/waiter-element>
+
+&lt;div class="photos-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+  &lt;div class="photo-count-container horizontal layout">
+    &lt;paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
+      &lt;span>[[localize('photo_count')]]&lt;/span>&amp;nbsp &lt;span>[[photoCount]]&lt;/span>
+    &lt;/paper-item>
+    &lt;paper-button raised disabled$="[[_computeRefreshDisabled(disabled, needsPhotoRefresh)]]"
+                  on-click="_onRefreshPhotosClicked">
+      [[localize('button_needs_refresh')]]
+    &lt;/paper-button>
+  &lt;/div>
+
+  &lt;setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
+                  secondary-label="{{localize('photo_no_filter_desc')}}"
+                  checked="{{noFilter}}" disabled$="[[disabled]]">&lt;/setting-toggle>
+
+  &lt;div class="section-title">[[localize('photo_cat_title')]]&lt;/div>
+  
+  &lt;template is="dom-repeat" items="[[cats]]" as="cat">
+    &lt;photo-cat id="[[cat.name]]"
+               label="[[cat.label]]"
+               on-value-changed="_onPhotoCatChanged"
+               disabled$="[[_computeFilterDisabled(disabled, noFilter)]]">&lt;/photo-cat>
+  &lt;/template>
+
+  &lt;paper-item class="album-note">
+    {{localize('note_albums')}}
+  &lt;/paper-item>
+
+  &lt;app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  &lt;/app-localstorage-document>
+  &lt;app-localstorage-document key="googlePhotosNoFilter" data="{{noFilter}}" storage="window.localStorage">
+  &lt;/app-localstorage-document>
+
+&lt;/div>
+`,
+
+  is: 'photos-view',
+
+  behaviors: [
+    LocalizeBehavior,
+  ],
+
+  properties: {
+
+    /** Array of photo categories */
+    cats: {
+      type: Array,
+      value: _CATS,
+      readonly: true,
+    },
+
+    /** Do we need to reload the photos */
+    needsPhotoRefresh: {
+      type: Boolean,
+      value: true,
+      notify: true,
+    },
+
+    /** Count for photo mode */
+    photoCount: {
+      type: Number,
+      value: 0,
+      notify: true,
+    },
+
+    /** Flag to indicate if we should not filter photos */
+    noFilter: {
+      type: Boolean,
+      value: true,
+      notify: true,
+    },
+
+    /** Status of the option permission for the Google Photos API */
+    permPicasa: {
+      type: String,
+      value: 'notSet',
+      notify: true,
+    },
+
+    /** Flag to indicate if UI is disabled */
+    disabled: {
+      type: Boolean,
+      value: false,
+    },
+
+    /** Flag to display the loading... UI */
+    waitForLoad: {
+      type: Boolean,
+      value: false,
+    },
+
+    /** Status label for waiter */
+    waiterStatus: {
+      type: String,
+      value: '',
+    },
+
+    /** Flag to determine if main view should be hidden */
+    isHidden: {
+      type: Boolean,
+      computed: '_computeHidden(waitForLoad, permPicasa)',
+    },
+  },
+
+  /**
+   * Element is ready
+   */
+  ready: function() {
+    // listen for chrome messages
+    ChromeMsg.listen(this._onMessage.bind(this));
+
+    setTimeout(() => {
+      this.setPhotoCount().catch(() => {});
+
+      // set state of photo categories
+      this._setPhotoCats();
+
+      // listen for changes to localStorage
+      window.addEventListener('storage', async (ev) => {
+        // noinspection JSUnresolvedVariable
+        if (ev.key === 'googleImages') {
+          await this.setPhotoCount();
+          this.set('needsPhotoRefresh', true);
+        }
+      }, false);
+    }, 0);
+  },
+
+  /**
+   * Query Google Photos for the array of user's photos
+   * @returns {Promise&lt;null>} always resolves
+   */
+  loadPhotos: async function() {
+    try {
+      const granted = await Permissions.request(Permissions.PICASA);
+
+      if (!granted) {
+        // failed to get google photos permission
+        await Permissions.removeGooglePhotos();
+        const title = ChromeLocale.localize('err_load_photos');
+        const text = ChromeLocale.localize('err_auth_picasa');
+        ChromeLog.error(text, 'PhotosView.loadPhotos', title);
+        showErrorDialog(title, text);
+        return null;
+      }
+
+      // send message to background page to do the work and send us messages
+      // on current status and completion
+      this.set('waitForLoad', true);
+      this.set('waiterStatus', '');
+      ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS).catch(() => {});
+
+    } catch (err) {
+      // ChromeMsg will handle any errors
+      this.set('waitForLoad', false);
+      return null;
+    }
+  },
+
+  /**
+   * Set the photo count that is currently saved
+   * @async
+   */
+  setPhotoCount: async function() {
+    const photos = await ChromeStorage.asyncGet('googleImages', []);
+    this.set('photoCount', photos.length);
+  },
+
+  /**
+   * Set the states of the photo-cat elements
+   * @private
+   */
+  _setPhotoCats: function() {
+    const els = this.shadowRoot.querySelectorAll('photo-cat');
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    filter.contentFilter = filter.contentFilter || {};
+    const includes = filter.contentFilter.includedContentCategories || [];
+
+    for (const el of els) {
+      const cat = el.id;
+      const idx = includes.findIndex((e) => {
+        return e === cat;
+      });
+
+      el.set('checked', (idx !== -1));
+    }
+  },
+
+  /**
+   * Event: Selection of photo-cat changed
+   * @param {Event} ev
+   * @private
+   */
+  _onPhotoCatChanged: function(ev) {
+    const cat = ev.srcElement.id;
+    const checked = ev.detail.value;
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    filter.contentFilter = filter.contentFilter || {};
+    const includes = filter.contentFilter.includedContentCategories || [];
+    const idx = includes.findIndex((e) => {
+      return e === cat;
+    });
+
+    // add and remove as appropriate
+    if (checked) {
+      if (idx === -1) {
+        includes.push(cat);
+      }
+    } else {
+      if (idx !== -1) {
+        includes.splice(idx, 1);
+      }
+    }
+
+    filter.contentFilter.includedContentCategories = includes;
+
+    this.set('needsPhotoRefresh', true);
+    ChromeStorage.set('googlePhotosFilter', filter);
+  },
+
+  // noinspection JSUnusedLocalSymbols
+  /**
+   * Event: Fired when a message is sent from either an extension process&lt;br>
+   * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
+   * @param {module:ChromeMsg.Message} request - details for the message
+   * @param {Object} [sender] - MessageSender object
+   * @param {Function} [response] - function to call once after processing
+   * @returns {boolean} true if asynchronous
+   * @private
+   */
+  _onMessage: function(request, sender, response) {
+    if (request.message === MyMsg.LOAD_FILTERED_PHOTOS_DONE.message) {
+      // the background page has finished loading and saving the photos
+      this.set('waitForLoad', false);
+      this.setPhotoCount();
+
+      const errMsg = request.error;
+      if (errMsg) {
+        const title = ChromeLocale.localize('err_load_photos');
+        const text = errMsg;
+        // noinspection JSCheckFunctionSignatures
+        ChromeLog.error(text, 'PhotosView.loadPhotos', title);
+        showErrorDialog(title, text);
+      } else {
+        this.set('needsPhotoRefresh', false);
+      }
+      response(JSON.stringify({message: 'OK'}));
+    } else if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
+      // show user status of photo loading
+      // noinspection JSUnresolvedVariable
+      const count = request.count || 0;
+      let msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
+      this.set('waiterStatus', msg);
+      response(JSON.stringify({message: 'OK'}));
+    }
+    return true;
+  },
+
+  /**
+   * Event: Refresh photos button clicked
+   * @private
+   */
+  _onRefreshPhotosClicked: function() {
+    this.loadPhotos().catch(() => {});
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
+  },
+
+  /**
+   * Computed property: Disabled state of filter ui elements
+   * @param {boolean} disabled - true if whole UI is disabled
+   * @param {boolean} noFilter - true if not filtering
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeFilterDisabled: function(disabled, noFilter) {
+    return disabled || noFilter;
+  },
+
+  /**
+   * Computed property: Disabled state of filter ui elements
+   * @param {boolean} disabled - true if whole UI is disabled
+   * @param {boolean} needsPhotoRefresh - true if photos need refresh
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeRefreshDisabled: function(disabled, needsPhotoRefresh) {
+    return disabled || !needsPhotoRefresh;
+  },
+
+  /**
+   * Computed property: Hidden state of main interface
+   * @param {boolean} waitForLoad - true if loading
+   * @param {string} permPicasa - permission state
+   * @returns {boolean} true if hidden
+   * @private
+   */
+  _computeHidden: function(waitForLoad, permPicasa) {
+    let ret = true;
+    if (!waitForLoad &amp;&amp; (permPicasa === 'allowed')) {
+      ret = false;
+    }
+    return ret;
+  },
+});
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on March 15th 2019, 2:48:28 pm
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
