@@ -55,6 +55,7 @@ import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
 import '../../elements/confirm-dialog/confirm-dialog.js';
 
+import '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import {LocalizeBehavior} from
@@ -499,13 +500,12 @@ Polymer({
       }
     }, false);
 
-    setTimeout(function() {
-      ChromeGA.page('/options.html');
+    setTimeout(() => {
       
       // initialize menu enabled states
       this._setErrorMenuState();
       this._setGooglePhotosMenuState();
-    }.bind(this), 0);
+    }, 0);
   },
 
   /**
@@ -787,3 +787,15 @@ Polymer({
   },
 
 });
+
+/**
+ * Event: called when document and resources are loaded<br />
+ * @private
+ */
+function _onLoad() {
+  ChromeGA.page('/options.html');
+}
+
+// listen for document and resources loaded
+window.addEventListener('load', _onLoad);
+

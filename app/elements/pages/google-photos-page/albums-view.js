@@ -236,6 +236,7 @@ Polymer({
     waiterStatus: {
       type: String,
       value: '',
+      notify: true,
     },
 
     /** Flag to determine if main list should be hidden */

@@ -36,7 +36,18 @@ import '../../elements/setting-elements/setting-background/setting-background.js
 import '../../elements/setting-elements/setting-time/setting-time.js';
 import '../../elements/setting-elements/setting-text/setting-text.js';
 
+import '../../scripts/my_analytics.js';
+
 import '../../scripts/screensaver/ss_events.js';
+import '../../scripts/screensaver/ss_events.js';
+import '../../scripts/screensaver/ss_history.js';
+import '../../scripts/screensaver/ss_photo.js';
+import '../../scripts/screensaver/ss_photo_finder.js';
+import '../../scripts/screensaver/views/ss_view.js';
+import '../../scripts/screensaver/views/ss_view_factory.js';
+import '../../scripts/screensaver/views/ss_view_frame.js';
+import '../../scripts/screensaver/views/ss_view_letterbox.js';
+import '../../scripts/screensaver/views/ss_view_zoom.js';
 
 import * as SSBuilder from '../../scripts/screensaver/ss_builder.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
@@ -302,15 +313,14 @@ Polymer({
     setTimeLabel = this.setTimeLabel.bind(this);
     setPaused = this.setPaused.bind(this);
 
-    setTimeout(function() {
-      ChromeGA.page('/screensaver.html');
+    setTimeout(() => {
 
       this._setZoom();
       this._setupPhotoTransitions();
 
       // start screensaver
       this._launch();
-    }.bind(this), 0);
+    }, 0);
   },
 
   /**
@@ -562,3 +572,15 @@ Polymer({
   },
 
 });
+
+/**
+ * Event: called when document and resources are loaded<br />
+ * @private
+ */
+function _onLoad() {
+  ChromeGA.page('/screensaver.html');
+}
+
+// listen for document and resources loaded
+window.addEventListener('load', _onLoad);
+
