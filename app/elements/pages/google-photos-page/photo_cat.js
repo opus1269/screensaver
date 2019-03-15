@@ -52,12 +52,8 @@ Polymer({
 
 </style>
 
-<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
-  {{sectionTitle}}
-</div>
-
 <paper-item class="center horizontal layout">
-  <div id="label" class="setting-label flex" tabindex="-1">{{label}}</div>
+  <div id="label" class="setting-label flex" tabindex="-1">[[label]]</div>
   <paper-checkbox name="include" checked="{{checked}}" on-change="_onCheckedChange" disabled$="[[disabled]]">[[localize('include')]]
   </paper-checkbox>
 </paper-item>

@@ -47,6 +47,35 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @module PhotosView
  */
 
+/**
+ * A Google photos category for searches
+ * @typedef {{}} module:PhotosView.PhotoCategory
+ * @property {string} name
+ * @property {string} label
+ * @private
+ */
+
+/**
+ * Photo categories
+ * @type {module:PhotosView.PhotoCategory[]}
+ * @private
+ */
+const _CATS = [
+  {name: 'LANDSCAPES', label: ChromeLocale.localize('photo_cat_landscapes')},
+  {name: 'CITYSCAPES', label: ChromeLocale.localize('photo_cat_cityscapes')},
+  {name: 'LANDMARKS', label: ChromeLocale.localize('photo_cat_landmarks')},
+  {name: 'PEOPLE', label: ChromeLocale.localize('photo_cat_people')},
+  {name: 'ANIMALS', label: ChromeLocale.localize('photo_cat_animals')},
+  {name: 'PETS', label: ChromeLocale.localize('photo_cat_pets')},
+  {
+    name: 'PERFORMANCES',
+    label: ChromeLocale.localize('photo_cat_performances'),
+  },
+  {name: 'SPORT', label: ChromeLocale.localize('photo_cat_sport')},
+  {name: 'FOOD', label: ChromeLocale.localize('photo_cat_food')},
+  {name: 'SELFIES', label: ChromeLocale.localize('photo_cat_selfies')},
+];
+
 /** Polymer element */
 Polymer({
   // language=HTML format=false
@@ -105,38 +134,15 @@ Polymer({
                   secondary-label="{{localize('photo_no_filter_desc')}}"
                   checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
 
-  <photo-cat id="LANDSCAPES" section-title="[[localize('photo_cat_title')]]"
-             label="[[localize('photo_cat_landscapes')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="CITYSCAPES" label="[[localize('photo_cat_cityscapes')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="LANDMARKS" label="[[localize('photo_cat_landmarks')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="PEOPLE" label="[[localize('photo_cat_people')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="ANIMALS" label="[[localize('photo_cat_animals')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="PETS" label="[[localize('photo_cat_pets')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="PERFORMANCES" label="[[localize('photo_cat_performances')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="SPORT" label="[[localize('photo_cat_sport')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="FOOD" label="[[localize('photo_cat_food')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-  <photo-cat id="SELFIES" label="[[localize('photo_cat_selfies')]]"
-             on-value-changed="_onPhotoCatChanged"
-             disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
-             
+  <div class="section-title">[[localize('photo_cat_title')]]</div>
+  
+  <template is="dom-repeat" items="[[cats]]" as="cat">
+    <photo-cat id="[[cat.name]]"
+               label="[[cat.label]]"
+               on-value-changed="_onPhotoCatChanged"
+               disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+  </template>
+
   <paper-item class="album-note">
     {{localize('note_albums')}}
   </paper-item>
@@ -157,53 +163,48 @@ Polymer({
 
   properties: {
 
-    /**
-     * Do we need to reload the photos
-     */
+    /** Array of photo categories */
+    cats: {
+      type: Array,
+      value: _CATS,
+      readonly: true,
+    },
+
+    /** Do we need to reload the photos */
     needsPhotoRefresh: {
       type: Boolean,
       value: true,
       notify: true,
     },
 
-    /**
-     * Count for photo mode
-     */
+    /** Count for photo mode */
     photoCount: {
       type: Number,
       value: 0,
       notify: true,
     },
 
-    /**
-     * Flag to indicate if we should not filter photos
-     */
+    /** Flag to indicate if we should not filter photos */
     noFilter: {
       type: Boolean,
       value: true,
       notify: true,
     },
 
-    /**
-     * Status of the option permission for the Google Photos API
-     */
+    /** Status of the option permission for the Google Photos API */
     permPicasa: {
       type: String,
       value: 'notSet',
       notify: true,
     },
 
-    /**
-     * Flag to indicate if UI is disabled
-     */
+    /** Flag to indicate if UI is disabled */
     disabled: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Flag to display the loading... UI
-     */
+    /** Flag to display the loading... UI */
     waitForLoad: {
       type: Boolean,
       value: false,
@@ -215,9 +216,7 @@ Polymer({
       value: '',
     },
 
-    /**
-     * Flag to determine if main view should be hidden
-     */
+    /** Flag to determine if main view should be hidden */
     isHidden: {
       type: Boolean,
       computed: '_computeHidden(waitForLoad, permPicasa)',
@@ -255,7 +254,7 @@ Polymer({
   loadPhotos: async function() {
     try {
       const granted = await Permissions.request(Permissions.PICASA);
-      
+
       if (!granted) {
         // failed to get google photos permission
         await Permissions.removeGooglePhotos();
@@ -271,7 +270,7 @@ Polymer({
       this.set('waitForLoad', true);
       this.set('waiterStatus', '');
       ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS).catch(() => {});
-      
+
     } catch (err) {
       // ChromeMsg will handle any errors
       this.set('waitForLoad', false);
@@ -370,7 +369,7 @@ Polymer({
       // the background page has finished loading and saving the photos
       this.set('waitForLoad', false);
       this.setPhotoCount();
-      
+
       const errMsg = request.error;
       if (errMsg) {
         const title = ChromeLocale.localize('err_load_photos');
