@@ -184,12 +184,21 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /**
-   * Max photos total to use
+   * Max photos total to use for album mode
    * @returns {int} value
    * @static
    */
   static get MAX_PHOTOS() {
     return 20000;
+  }
+
+  /**
+   * Max photos google images mode
+   * @returns {int} value
+   * @static
+   */
+  static get MAX_FILTERED_PHOTOS() {
+    return 3000;
   }
 
   /**
@@ -395,8 +404,7 @@ export default class GoogleSource extends PhotoSource {
       return Promise.resolve(photos);
     }
 
-    // TODO finalize this valuemax photos to load
-    const MAX_PHOTOS = 2000;
+    const MAX_PHOTOS = GoogleSource.MAX_FILTERED_PHOTOS;
     // max queries per request
     const MAX_QUERIES = 100;
 
