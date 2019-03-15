@@ -199,7 +199,6 @@ Polymer({
     disabled: {
       type: Boolean,
       value: false,
-      notify: true,
     },
 
     /**
@@ -208,7 +207,6 @@ Polymer({
     waitForLoad: {
       type: Boolean,
       value: false,
-      notify: true,
     },
 
     /** Status label for waiter */
@@ -291,41 +289,6 @@ Polymer({
   },
 
   /**
-   * Save the current filter state
-   * @private
-   */
-  _saveFilter: function() {
-    const filter = GoogleSource.NO_FILTER;
-    const els = this.shadowRoot.querySelectorAll('photo-cat');
-    // noinspection JSUndefinedPropertyAssignment
-    filter.contentFilter = filter.contentFilter || {};
-    const includes = filter.contentFilter.includedContentCategories || [];
-    for (const el of els) {
-      const cat = el.id;
-      const checked = el.checked;
-      const idx = includes.findIndex((e) => {
-        return e === cat;
-      });
-      if (checked) {
-        // add it
-        if (idx === -1) {
-          includes.push(cat);
-        }
-      } else {
-        // remove it
-        if (idx !== -1) {
-          includes.splice(idx, 1);
-        }
-      }
-    }
-
-    filter.contentFilter.includedContentCategories = includes;
-
-    this.set('needsPhotoRefresh', true);
-    ChromeStorage.set('googlePhotosFilter', filter);
-  },
-
-  /**
    * Set the states of the photo-cat elements
    * @private
    */
@@ -344,6 +307,39 @@ Polymer({
 
       el.set('checked', (idx !== -1));
     }
+  },
+
+  /**
+   * Event: Selection of photo-cat changed
+   * @param {Event} ev
+   * @private
+   */
+  _onPhotoCatChanged: function(ev) {
+    const cat = ev.srcElement.id;
+    const checked = ev.detail.value;
+    const filter = ChromeStorage.get('googlePhotosFilter',
+        GoogleSource.DEF_FILTER);
+    filter.contentFilter = filter.contentFilter || {};
+    const includes = filter.contentFilter.includedContentCategories || [];
+    const idx = includes.findIndex((e) => {
+      return e === cat;
+    });
+
+    // add and remove as appropriate
+    if (checked) {
+      if (idx === -1) {
+        includes.push(cat);
+      }
+    } else {
+      if (idx !== -1) {
+        includes.splice(idx, 1);
+      }
+    }
+
+    filter.contentFilter.includedContentCategories = includes;
+
+    this.set('needsPhotoRefresh', true);
+    ChromeStorage.set('googlePhotosFilter', filter);
   },
 
   /**
@@ -395,38 +391,6 @@ Polymer({
       response(JSON.stringify({message: 'OK'}));
     }
     return true;
-  },
-
-  /**
-   * Event: Selection of photo-cat changed
-   * @param {Event} ev
-   * @private
-   */
-  _onPhotoCatChanged: function(ev) {
-    const cat = ev.srcElement.id;
-    const checked = ev.detail.value;
-    const filter = ChromeStorage.get('googlePhotosFilter',
-        GoogleSource.DEF_FILTER);
-    filter.contentFilter = filter.contentFilter || {};
-    const includes = filter.contentFilter.includedContentCategories || [];
-    const includesIdx = includes.findIndex((e) => {
-      return e === cat;
-    });
-
-    // add and remove as appropriate
-    if (checked) {
-      if (includesIdx === -1) {
-        includes.push(cat);
-      }
-    } else {
-      if (includesIdx !== -1) {
-        includes.splice(includesIdx, 1);
-      }
-    }
-    filter.contentFilter.includedContentCategories = includes;
-
-    this.set('needsPhotoRefresh', true);
-    ChromeStorage.set('googlePhotosFilter', filter);
   },
 
   /**
