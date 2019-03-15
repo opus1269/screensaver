@@ -47,7 +47,7 @@ export function getSelectedSources() {
  * Enum for {@link module:PhotoSource} useKey
  * @typedef {enum} module:PhotoSources.UseKey
  * @readonly
- * @enum {int}
+ * @enum {string}
  */
 export const UseKey = {
   ALBUMS_GOOGLE: 'useGoogleAlbums',

@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Settings"
   },
-  "menu_google": {
-    "message": "Select Google Photos albums"
-  },
   "menu_preview": {
     "message": "Preview screensaver"
   },
@@ -517,6 +514,85 @@
   },
   "err_auth_revoked": {
     "message": "You no longer have access to your Google Photos. Please reselect them."
+  },
+  "note_albums": {
+    "message": "Note: For more control over photo selections, create albums in Google Photos"
+  },
+  "menu_google": {
+    "message": "Select Google Photos"
+  },
+  "err_load_photos": {
+    "message": "Failed to retrieve Google Photos"
+  },
+  "photo_no_filter": {
+    "message": "All photos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Use your most recent photos of any type"
+  },
+  "photo_cat_title": {
+    "message": "Select photo categories to include"
+  },
+  "photo_count": {
+    "message": "Number of photos:"
+  },
+  "include": {
+    "message": "Include"
+  },
+  "exclude": {
+    "message": "Exclude"
+  },
+  "photo_cat_utility": {
+    "message": "UTILITY (recommended to exclude)"
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_food": {
+    "message": "FOOD"
+  },
+  "photo_cat_people": {
+    "message": "PEOPLE"
+  },
+  "photo_cat_landscapes": {
+    "message": "LANDSCAPES"
+  },
+  "photo_cat_cityscapes": {
+    "message": "CITYSCAPES"
+  },
+  "photo_cat_animals": {
+    "message": "ANIMALS"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_performances": {
+    "message": "PERFORMANCES"
+  },
+  "photo_cat_pets": {
+    "message": "PETS"
+  },
+  "button_needs_refresh": {
+    "message": "NEEDS REFRESH"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Refresh photos"
+  },
+  "title_mode_switch": {
+    "message": "Switch Google Photos mode"
+  },
+  "desc_mode_switch": {
+    "message": "Your current photo selections will be removed.\n\nContinue with switch?"
+  },
+  "button_mode_switch": {
+    "message": "SWITCH"
+  },
+  "close": {
+    "message": "CLOSE",
+    "description": "All Caps"
+  },
+  "photo_cat_landmarks": {
+    "message": "LANDMARKS"
   },
   "time_format": {
     "message": "12",

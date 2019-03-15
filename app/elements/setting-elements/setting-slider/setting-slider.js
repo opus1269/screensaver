@@ -5,17 +5,20 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
+
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
 import '../../../node_modules/@polymer/paper-slider/paper-slider.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
 import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -23,130 +26,136 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element to select a value with a slider
- * @namespace SettingSlider
+ * @module SettingSlider
  */
+
+/**
+ * A unit type
+ * @typedef {{}} module:SettingSlider.UnitType
+ * @property {string} name - descriptive name
+ * @property {int} min - min value
+ * @property {int} max - max value
+ * @property {int} step - increment of changes
+ * @property {Number} mult - multiplier of a base
+ */
+
+/**
+ * A number and associated units
+ * @typedef {{}} module:SettingSlider.UnitValue
+ * @property {number} base - value in base unit
+ * @property {number} display - value in display unit
+ * @property {int} unit - display unit
+ */
+
+/** Polymer Element */
 Polymer({
-  _template: html`
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <style>
-      :host {
-        display: block;
-      }
+  // language=HTML format=false
+  _template: html`<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<style>
+  :host {
+    display: block;
+  }
 
-      :host([disabled]) {
-        pointer-events: none;
-      }
+  :host([disabled]) {
+    pointer-events: none;
+  }
 
-      #label {
-        margin: 20px 0 0 0;
+  #label {
+    margin: 20px 0 0 0;
+    --paper-item-min-height: {
+      min-height: 0;
+    };
+  }
 
-        --paper-item-min-height: {
-          min-height: 0;
-        };
-      }
+  :host paper-slider {
+    position: relative;
+    margin: 0;
+    padding-right: 16px;
+    padding-left: 5px;
+    cursor: pointer;
+  }
 
-      :host paper-slider {
-        position: relative;
-        margin: 0;
-        padding-right: 16px;
-        padding-left: 5px;
-        cursor: pointer;
-      }
+  :host > paper-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 
-      :host > paper-item {
-        padding-top: 10px;
-        padding-bottom: 10px;
-      }
+  :host paper-dropdown-menu {
+    width: 175px;
+    padding-right: 16px;
+    --paper-input-container-input: {
+      text-align: right;
+    };
+  }
 
-      :host paper-dropdown-menu {
-        width: 175px;
-        padding-right: 16px;
+</style>
 
-        --paper-input-container-input: {
-          text-align: right;
-        };
-      }
+<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
+  [[sectionTitle]]
+</div>
 
-    </style>
+<div>
+  <paper-item id="label" class="setting-label" tabindex="-1">
+    [[label]]
+  </paper-item>
+  <div class="horizontal layout">
+    <paper-slider class="flex" editable="" value="{{value.display}}"
+                  min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled$="[[disabled]]"
+                  on-change="_onSliderValueChanged"></paper-slider>
+    <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
+      <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}"
+                     on-tap="_onUnitMenuSelected">
+        <template id="t" is="dom-repeat" as="unit" items="[[units]]">
+          <paper-item>[[unit.name]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </div>
+</div>
+<hr hidden$="[[noseparator]]">
 
-    <div class="section-title setting-label" tabindex="-1" hidden\$="[[!sectionTitle]]">
-      {{sectionTitle}}
-    </div>
-    <div>
-      <paper-item id="label" class="setting-label" tabindex="-1">
-        {{label}}
-      </paper-item>
-      <div class="horizontal layout">
-        <paper-slider class="flex" editable="" value="{{value.display}}"
-         min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled\$="[[disabled]]"
-         on-change="_onSliderValueChanged"></paper-slider>
-        <paper-dropdown-menu disabled\$="[[disabled]]" noink="" no-label-float="">
-          <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}"
-           on-tap="_onUnitMenuSelected">
-            <template id="t" is="dom-repeat" as="unit" items="[[units]]">
-              <paper-item>[[unit.name]]</paper-item>
-            </template>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </div>
-    </div>
-    <hr hidden\$="[[noseparator]]">
-    
-    <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
-    </app-localstorage-document>
+<app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
+</app-localstorage-document>
 `,
 
   is: 'setting-slider',
 
   properties: {
-    /**
-     * Local storage key
-     * @memberOf SettingSlider
-     */
+
+    /** Element name */
     name: {
       type: String,
-      value: 'store',
+      value: 'unknown',
     },
 
     /**
-     * Slider description
-     * @memberOf SettingSlider
-     */
+     * Description */
     label: {
       type: String,
       value: '',
     },
 
-    /**
-     * Object containing slider value and display unit index
-     * @memberOf SettingSlider
-     */
+    /** @link {module:SettingSlider.UnitValue} */
     value: {
       type: Object,
       notify: true,
       value: function() {
-        return { 'base': 10, 'display': 10, 'unit': 0 };
+        return {'base': 10, 'display': 10, 'unit': 0};
       },
       observer: '_valueChanged',
     },
 
-    /**
-     * Object containing current unit object
-     * @memberOf SettingSlider
-     */
+    /** @link {module:SettingSlider.UnitType} */
     unit: {
       type: Object,
       notify: true,
       value: function() {
-        return { 'name': 'unknown', 'min': 1, 'max': 10, 'step': 1, 'mult': 1 };
+        return {'name': 'unknown', 'min': 1, 'max': 10, 'step': 1, 'mult': 1};
       },
     },
 
-    /**
-     * Current unit array index
-     * @memberOf SettingSlider
-     */
+    /** Current unit array index */
     unitIdx: {
       type: Number,
       notify: true,
@@ -154,10 +163,7 @@ Polymer({
       observer: '_unitIdxChanged',
     },
 
-    /**
-     * Array of unit objects
-     * @memberOf SettingSlider
-     */
+    /** Array of {@link module:SettingSlider.UnitType} */
     units: {
       type: Array,
       value: function() {
@@ -165,28 +171,19 @@ Polymer({
       },
     },
 
-    /**
-     * Optional group title
-     * @memberOf SettingSlider
-     */
+    /** Optional group title */
     sectionTitle: {
       type: String,
       value: '',
     },
 
-    /**
-     * Disabled state of element
-     * @memberOf SettingSlider
-     */
+    /** Disabled state of element */
     disabled: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Visibility state of optional divider
-     * @memberOf SettingSlider
-     */
+    /** Visibility state of optional divider */
     noseparator: {
       type: Boolean,
       value: false,
@@ -195,22 +192,19 @@ Polymer({
 
   /**
    * Element is ready
-   * @memberOf SettingSlider
    */
   ready: function() {
-    setTimeout(function() {
+    setTimeout(() => {
       this.$.list.selected = this.value.unit;
-    }.bind(this), 0);
+    }, 0);
   },
 
   /**
    * Observer: Unit changed
    * @param {number} newValue
-   * @param {number} oldValue
    * @private
-   * @memberOf SettingSlider
    */
-  _unitIdxChanged: function(newValue, oldValue) {
+  _unitIdxChanged: function(newValue) {
     if (newValue !== undefined) {
       this.set('value.unit', newValue);
       this._setBase();
@@ -227,7 +221,6 @@ Polymer({
    * @param {number} newValue.unit
    * @param {number} oldValue.unit
    * @private
-   * @memberOf SettingSlider
    */
   _valueChanged: function(newValue, oldValue) {
     if (newValue !== undefined) {
@@ -242,7 +235,6 @@ Polymer({
   /**
    * Event: User changed slider value
    * @private
-   * @memberOf SettingSlider
    */
   _onSliderValueChanged: function() {
     this._setBase();
@@ -254,7 +246,6 @@ Polymer({
    * Event: unit menu item tapped
    * @param {Event} ev - tap event
    * @private
-   * @memberOf SettingSlider
    */
   _onUnitMenuSelected: function(ev) {
     const model = this.$.t.modelForElement(ev.target);
@@ -267,7 +258,6 @@ Polymer({
   /**
    * Set the base value
    * @private
-   * @memberOf SettingSlider
    */
   _setBase: function() {
     this.set('value.base', this.units[this.unitIdx].mult * this.value.display);

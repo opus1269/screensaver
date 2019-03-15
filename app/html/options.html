@@ -15,6 +15,85 @@
   <!-- important -->
   <title>Photo Screen Saver Options Page</title>
 
+  <style>
+    /* Application theme */
+    html {
+      --primary-color: var(--paper-indigo-500);
+      --light-primary-color: var(--paper-indigo-300);
+      --dark-primary-color: var(--paper-indigo-700);
+      --text-primary-color: #FFFFFF; /*text/icons*/
+      --accent-color: var(--paper-pink-a200);
+      --light-accent-color: var(--paper-pink-a100);
+      --dark-accent-color: var(--paper-pink-a400);
+      --primary-background-color: #FFFFFF;
+      --primary-text-color: var(--paper-grey-900);
+      --secondary-text-color: #737373;
+      --disabled-text-color: #9B9B9B;
+      --divider-color: #DBDBDB;
+      /* indigo-100 50% opacity */
+      --selected-color: rgba(197, 202, 233, .5);
+
+      /* Components */
+
+      --setting-item-color: var(--paper-teal-700);
+
+      /* app-drawer */
+      --drawer-menu-color: #FFFFFF;
+      --drawer-border-color: 1px solid #CCCCCC;
+      --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
+
+      /* paper-listbox */
+      --paper-listbox-background-color: #FFFFFF;
+      --menu-link-color: #111111;
+
+      /* paper-dialog */
+      --paper-dialog-background-color: #FFFFFF;
+
+      /* paper-slider */
+      --paper-slider-active-color: var(--setting-item-color);
+      --paper-slider-secondary-color: var(--setting-item-color);
+      --paper-slider-knob-color: var(--setting-item-color);
+      --paper-slider-pin-color: var(--setting-item-color);
+      --paper-slider-knob-start-color: var(--setting-item-color);
+      --paper-slider-knob-start-border-color: transparent;
+      --paper-slider-pin-start-color: var(--setting-item-color);
+
+      /* paper-input */
+      --paper-input-container-focus-color: var(--setting-item-color);;
+
+      /* paper-checkbox */
+      --paper-checkbox-checked-color: var(--setting-item-color);;
+
+      --app-drawer-width: 350px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Roboto", "Noto", sans-serif;
+      min-height: 100vh;
+      background-color: #EEEEEE;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      background: transparent;
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-button {
+      background: transparent;
+      height: 0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(48, 63, 159, 1);
+      -webkit-border-radius: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+  </style>
+
   <script src="../scripts/chrome-extension-utils/scripts/chrome-promise.js"></script>
 
   <!-- import polyfills -->
@@ -23,293 +102,14 @@
   <!-- Ensure Web Animations polyfill is loaded since neon-animation 3.0 doesn't import it -->
   <script src="../node_modules/web-animations-js/web-animations-next.min.js"></script>
 
-  <script type="module" src="../scripts/options/options.js"></script>
+  <!-- Main UI element -->
+  <script type="module" src="../elements/app-main/app-main.js"></script>
 
 </head>
 
-<body unresolved class="fullbleed layout vertical">
-<dom-bind id="t">
-  <template>
+<body>
 
-    <custom-style>
-      <style include="iron-flex iron-flex-alignment">
-
-        /* Application theme */
-        html {
-          --primary-color: var(--paper-indigo-500);
-          --light-primary-color: var(--paper-indigo-300);
-          --dark-primary-color: var(--paper-indigo-700);
-          --text-primary-color: #FFFFFF; /*text/icons*/
-          --accent-color: var(--paper-pink-a200);
-          --light-accent-color: var(--paper-pink-a100);
-          --dark-accent-color: var(--paper-pink-a400);
-          --primary-background-color: #FFFFFF;
-          --primary-text-color: var(--paper-grey-900);
-          --secondary-text-color: #737373;
-          --disabled-text-color: #9B9B9B;
-          --divider-color: #DBDBDB;
-          /* indigo-100 50% opacity */
-          --selected-color: rgba(197, 202, 233, .5);
-
-          /* Components */
-
-          --setting-item-color: var(--paper-teal-700);
-
-          /* app-drawer */
-          --drawer-menu-color: #FFFFFF;
-          --drawer-border-color: 1px solid #CCCCCC;
-          --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
-
-          /* paper-listbox */
-          --paper-listbox-background-color: #FFFFFF;
-          --menu-link-color: #111111;
-
-          /* paper-dialog */
-          --paper-dialog-background-color: #FFFFFF;
-
-          /* paper-slider */
-          --paper-slider-active-color: var(--setting-item-color);
-          --paper-slider-secondary-color: var(--setting-item-color);
-          --paper-slider-knob-color: var(--setting-item-color);
-          --paper-slider-pin-color: var(--setting-item-color);
-          --paper-slider-knob-start-color: var(--setting-item-color);
-          --paper-slider-knob-start-border-color: transparent;
-          --paper-slider-pin-start-color: var(--setting-item-color);
-
-          /* paper-input */
-          --paper-input-container-focus-color: var(--setting-item-color);;
-
-          /* paper-checkbox */
-          --paper-checkbox-checked-color: var(--setting-item-color);;
-
-          --app-drawer-width: 350px;
-        }
-
-        body {
-          font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-          background: #FAFAFA;
-          color: #333333;
-          min-width: 600px;
-          min-height: 700px;
-          overflow: hidden;
-          margin: 0 0;
-        }
-
-        /* Scrollbars */
-        ::-webkit-scrollbar {
-          background: transparent;
-          width: 8px;
-        }
-
-        ::-webkit-scrollbar-button {
-          background: transparent;
-          height: 0;
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: rgba(48, 63, 159, 1);
-          -webkit-border-radius: 8px;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-
-        /* General styles */
-
-        paper-listbox iron-icon {
-          margin-right: 20px;
-          opacity: 0.54;
-        }
-
-        paper-listbox paper-item {
-          --paper-item: {
-            color: var(--menu-link-color);
-            text-rendering: optimizeLegibility;
-            cursor: pointer;
-          };
-          --paper-item-selected: {
-            color: var(--dark-primary-color);
-            background-color: var(--selected-color);
-            text-rendering: optimizeLegibility;
-            cursor: pointer;
-          };
-          --paper-item-focused-before: {
-            background-color: transparent;
-          };
-        }
-
-        app-drawer-layout:not([narrow]) [drawer-toggle] {
-          display: none;
-        }
-
-        app-drawer {
-          --app-drawer-content-container: {
-            border-right: var(--drawer-toolbar-border-color);
-          }
-        }
-
-        paper-dialog {
-          min-width: 25vw;
-          max-width: 50vw;
-        }
-
-        .main-toolbar {
-          color: var(--text-primary-color);
-          background-color: var(--dark-primary-color);
-          /*noinspection CssUnresolvedCustomPropertySet*/
-          @apply --paper-font-headline;
-        }
-
-        .menu-name {
-          /*noinspection CssUnresolvedCustomPropertySet*/
-          @apply --paper-font-title;
-          color: var(--dark-primary-color);
-          background-color: var(--drawer-menu-color);
-          border-bottom: var(--drawer-toolbar-border-color);
-        }
-
-        #mainPages neon-animatable {
-          padding: 0 0;
-        }
-
-        /* Height of the main scroll area */
-        #mainContainer {
-          height: 1000px;
-          overflow: auto;
-          padding: 0 0;
-        }
-
-        .permText {
-          padding-bottom: 16px;
-        }
-
-        .status {
-          padding-top: 8px;
-          /*noinspection CssUnresolvedCustomPropertySet*/
-          @apply --paper-font-title;
-        }
-
-      </style>
-    </custom-style>
-
-    <!-- Error dialog keep above app-drawer-layout because of overlay bug -->
-    <paper-dialog id="errorDialog"
-                  entry-animation="scale-up-animation"
-                  exit-animation="fade-out-animation">
-      <h2 id="dialogTitle">[[dialogTitle]]</h2>
-      <paper-dialog-scrollable>
-        <p id="dialogText">[[dialogText]]</p>
-      </paper-dialog-scrollable>
-      <div class="buttons">
-        <paper-button dialog-dismiss>OK</paper-button>
-      </div>
-    </paper-dialog>
-
-    <!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
-    <paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
-                  exit-animation="fade-out-animation">
-      <h2>[[_computePermDialogTitle()]]</h2>
-      <paper-dialog-scrollable>
-        <div>
-
-          <paper-item class="permText">
-            [[_computePermissionsMessage()]]
-          </paper-item>
-
-
-          <paper-item class="permText">
-            [[_computePermissionsMessage1()]]
-          </paper-item>
-
-          <paper-item class="permText">
-            [[_computePermissionsMessage2()]]
-          </paper-item>
-
-          <paper-item class="status">
-            [[_computePermissionsStatus(permission)]]
-          </paper-item>
-
-        </div>
-      </paper-dialog-scrollable>
-      <div class="buttons">
-        <paper-button dialog-dismiss>CANCEL</paper-button>
-        <paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">DENY</paper-button>
-        <paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">ALLOW</paper-button>
-      </div>
-    </paper-dialog>
-
-    <app-drawer-layout fullbleed id="appDrawerLayout" responsive-width="800px">
-
-      <!-- Drawer Content -->
-      <app-drawer id="appDrawer" slot="drawer">
-        <!-- For scrolling -->
-        <div style="height: 100%; overflow: auto;">
-          <!-- Menu Title -->
-          <app-toolbar class="menu-name">
-            <div>{{_computeMenu()}}</div>
-          </app-toolbar>
-
-          <!-- Menu Items -->
-          <paper-listbox id="mainMenu" attr-for-selected="id"
-                         selected="[[route]]">
-            <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
-              <hr hidden$="[[!item.divider]]"/>
-              <paper-item id="[[item.route]]"
-                          class="center horizontal layout"
-                          on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
-                <iron-icon icon="[[item.icon]]"></iron-icon>
-                <span>[[item.label]]</span>
-              </paper-item>
-            </template>
-          </paper-listbox>
-        </div>
-      </app-drawer>
-
-      <app-header-layout fullbleed has-scrolling-region>
-
-        <app-header fixed slot="header">
-
-          <!-- App Toolbar -->
-          <app-toolbar class="main-toolbar">
-            <paper-icon-button icon="myicons:menu" drawer-toggle></paper-icon-button>
-            <div class="app-name center horizontal layout">
-              <div>{{_computeTitle()}}</div>
-            </div>
-          </app-toolbar>
-
-        </app-header>
-
-        <!--Main Contents-->
-        <div id="mainContainer">
-
-
-          <!-- Options Tabbed Pages -->
-          <neon-animated-pages id="mainPages"
-                               attr-for-selected="data-route"
-                               selected="{{route}}"
-                               entry-animation="fade-in-animation"
-                               exit-animation="fade-out-animation">
-            <neon-animatable data-route="page-settings">
-              <section>
-                <settings-page id="settingsPage"></settings-page>
-              </section>
-            </neon-animatable>
-            <neon-animatable data-route="page-google-photos">
-              <section id="googlePhotosInsertion"></section>
-            </neon-animatable>
-            <neon-animatable data-route="page-error">
-              <section id="errorInsertion"></section>
-            </neon-animatable>
-            <neon-animatable data-route="page-help">
-              <section id="helpInsertion"></section>
-            </neon-animatable>
-          </neon-animated-pages>
-        </div>
-
-      </app-header-layout>
-
-    </app-drawer-layout>
-  </template>
-</dom-bind>
+<app-main></app-main>
 
 </body>
 </html>

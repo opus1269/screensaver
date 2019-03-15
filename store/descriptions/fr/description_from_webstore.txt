@@ -1,6 +1,6 @@
 Cette extension est un écran de veille qui affiche un diaporama de photos provenant de différentes sources. Les sources de photos prises en charge sont les suivantes :
 
-* Albums photo Google
+* Photos et Albums photo Google
       Remarque : les albums partagés ne sont pas pris en charge
 * Quelques photos de fond d’écran utilisées par Chromecast
 * Plusieurs sources de reddit

@@ -25,6 +25,7 @@ import * as ChromeUtils from './utils.js';
  * @type {{}}
  * @property {module:ChromeGA.Event} INSTALLED - extension installed
  * @property {module:ChromeGA.Event} UPDATED - extension updated
+ * @property {module:ChromeGA.Event} REFRESHED_AUTH_TOKEN - cached token refreshed
  * @property {module:ChromeGA.Event} ALARM - Chrome alarm triggered
  * @property {module:ChromeGA.Event} MENU - menu selected
  * @property {module:ChromeGA.Event} TOGGLE - setting-toggle
@@ -47,6 +48,11 @@ export const EVENT = {
   UPDATED: {
     eventCategory: 'extension',
     eventAction: 'updated',
+    eventLabel: '',
+  },
+  REFRESHED_AUTH_TOKEN: {
+    eventCategory: 'user',
+    eventAction: 'refreshedAuthToken',
     eventLabel: '',
   },
   ALARM: {
@@ -87,6 +93,11 @@ export const EVENT = {
   BUTTON: {
     eventCategory: 'ui',
     eventAction: 'buttonClicked',
+    eventLabel: '',
+  },
+  RADIO_BUTTON: {
+    eventCategory: 'ui',
+    eventAction: 'radioButtonClicked',
     eventLabel: '',
   },
   ICON: {

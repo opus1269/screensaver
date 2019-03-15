@@ -1,6 +1,6 @@
 Esta extensión muestra un salvapantalla compuesto por una presentación de diapositivas de fotos de múltiples fuentes. Las fuentes fotográficas compatibles incluyen:
 
-* Tus álbumes de fotos de Google
+* Tus fotos y álbumes de fotos de Google
       Nota: Los álbumes compartidos no son compatibles
 * Algunas fotos de fondo utilizadas por Chromecast
 * Varias fuentes de reddit

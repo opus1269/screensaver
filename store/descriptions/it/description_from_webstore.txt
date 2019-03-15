@@ -1,6 +1,6 @@
 Questa estensione mostra un salvaschermo composto da una presentazione di foto provenienti da più fonti. Le fonti fotografiche supportate includono:
 
-* I vostri album di foto  Google
+* I vostri foto e album di foto Google
       Nota:gli album condivisi non sono supportati
 * Alcune foto di sfondo utilizzate da Chromecast
 * Diverse fonti da reddit

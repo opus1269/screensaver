@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Ajustes"
   },
-  "menu_google": {
-    "message": "Álbumes de Google Fotos"
-  },
   "menu_preview": {
     "message": "Vista previa de"
   },
@@ -517,6 +514,85 @@
   },
   "err_auth_revoked": {
     "message": "Ya no tienes acceso a tus fotos de Google. Por favor, vuelva a seleccionarlos."
+  },
+  "note_albums": {
+    "message": "Nota: para tener más control sobre las selecciones de fotos, cree álbumes en Google Photos"
+  },
+  "menu_google": {
+    "message": "Seleccione Google Photos"
+  },
+  "err_load_photos": {
+    "message": "Error al recuperar fotos de Google"
+  },
+  "photo_no_filter": {
+    "message": "Todas las fotos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Utiliza tus fotos más recientes de cualquier tipo."
+  },
+  "photo_cat_title": {
+    "message": "Seleziona le categorie di foto da includere"
+  },
+  "photo_count": {
+    "message": "Número de fotos:"
+  },
+  "include": {
+    "message": "Incluir"
+  },
+  "exclude": {
+    "message": "Excluir"
+  },
+  "photo_cat_utility": {
+    "message": "UTILIDAD (recomendado para excluir)"
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_food": {
+    "message": "COMIDA"
+  },
+  "photo_cat_people": {
+    "message": "GENTE"
+  },
+  "photo_cat_landscapes": {
+    "message": "PAISAJES"
+  },
+  "photo_cat_cityscapes": {
+    "message": "paisajes urbanos"
+  },
+  "photo_cat_animals": {
+    "message": "ANIMALES"
+  },
+  "photo_cat_sport": {
+    "message": "DEPORTE"
+  },
+  "photo_cat_performances": {
+    "message": "ACTUACIONES"
+  },
+  "photo_cat_pets": {
+    "message": "MASCOTAS"
+  },
+  "photo_cat_landmarks": {
+    "message": "PUNTOS DE REFERENCIA"
+  },
+  "button_needs_refresh": {
+    "message": "NECESITA ACTUALIZAR"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Actualizar fotos"
+  },
+  "title_mode_switch": {
+    "message": "Cambia el modo de fotos de Google"
+  },
+  "desc_mode_switch": {
+    "message": "Sus selecciones de fotos actuales serán eliminadas.\n\nContinuar con el interruptor?"
+  },
+  "button_mode_switch": {
+    "message": "INTERRUPTOR"
+  },
+  "close": {
+    "message": "CERRAR",
+    "description": "All Caps"
   },
   "time_format": {
     "message": "24",

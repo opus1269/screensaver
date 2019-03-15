@@ -35,7 +35,6 @@ const _MOUSE_START = {x: null, y: null};
  * @private
  */
 function _close() {
-  ChromeStorage.set('isShowing', false);
   // send message to other screen savers to close themselves
   ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
   setTimeout(() => {
@@ -71,7 +70,7 @@ function _onKeyCommand(cmd) {
  * Event: Fired when a message is sent from either an extension<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {ChromeMsg.Message} request - details for the message
+ * @param {module:ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous

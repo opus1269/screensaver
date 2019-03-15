@@ -10,7 +10,9 @@ import '../../scripts/background/user.js';
 
 import * as AppData from './data.js';
 
+import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
+import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -54,7 +56,6 @@ function _onInstalled(details) {
     // initial install
     ChromeGA.event(ChromeGA.EVENT.INSTALLED, ChromeUtils.getVersion());
     AppData.initialize();
-    ChromeStorage.set('isShowing', false);
     _showOptionsTab();
   } else if (details.reason === 'update') {
     if (!MyUtils.DEBUG) {
@@ -77,7 +78,6 @@ function _onInstalled(details) {
     }
     // extension updated
     AppData.update();
-    ChromeStorage.set('isShowing', false);
   }
 }
 
@@ -90,7 +90,6 @@ function _onInstalled(details) {
 function _onStartup() {
   ChromeGA.page('/background.html');
   AppData.processState().catch(() => {});
-  ChromeStorage.set('isShowing', false);
 }
 
 /**
@@ -118,19 +117,28 @@ function _onStorageChanged(event) {
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {ChromeMsg.Message} request - details for the message
+ * @param {module:ChromeMsg.Message} request - details for the message
  * @param {Object} [sender] - MessageSender object
  * @param {Function} [response] - function to call once after processing
  * @returns {boolean} true if asynchronous
  * @private
  */
 function _onChromeMessage(request, sender, response) {
+  let ret = false;
   if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
     AppData.restoreDefaults();
   } else if (request.message === ChromeMsg.STORE.message) {
     ChromeStorage.set(request.key, request.value);
+  } else if (request.message === MyMsg.LOAD_FILTERED_PHOTOS.message) {
+    ret = true;
+    GoogleSource.loadFilteredPhotos(true, true).catch(() => {});
+  } else if (request.message === MyMsg.LOAD_ALBUM.message) {
+    ret = true;
+    // noinspection JSUnresolvedVariable
+    GoogleSource.
+        loadAlbum(request.id, request.name, true, true).catch(() => {});
   }
-  return false;
+  return ret;
 }
 
 /**

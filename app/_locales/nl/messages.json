@@ -98,9 +98,6 @@
   "menu_settings": {
     "message": "Instellingen"
   },
-  "menu_google": {
-    "message": "Selecteer Google Fotoalbums"
-  },
   "menu_preview": {
     "message": "Voorbeeld screensaver"
   },
@@ -517,6 +514,85 @@
   },
   "err_auth_revoked": {
     "message": "U hebt geen toegang meer tot uw Google Foto's. Selecteer ze opnieuw."
+  },
+  "note_albums": {
+    "message": "Opmerking: maak albums in Google Foto's voor meer controle over fotoselecties"
+  },
+  "menu_google": {
+    "message": "Selecteer Google Foto's"
+  },
+  "err_load_photos": {
+    "message": "Kan Google Foto's niet ophalen"
+  },
+  "photo_no_filter": {
+    "message": "Alle foto's"
+  },
+  "photo_no_filter_desc": {
+    "message": "Gebruik uw meest recente foto's van elk type"
+  },
+  "photo_cat_title": {
+    "message": "Selecteer fotocategorieën die u wilt opnemen"
+  },
+  "photo_count": {
+    "message": "Aantal foto's:"
+  },
+  "include": {
+    "message": "omvatten"
+  },
+  "exclude": {
+    "message": "Uitsluiten"
+  },
+  "photo_cat_utility": {
+    "message": "NUT (aanbevolen om uit te sluiten) \""
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_food": {
+    "message": "CIBO"
+  },
+  "photo_cat_people": {
+    "message": "MENSEN"
+  },
+  "photo_cat_landscapes": {
+    "message": "LANDSCHAPPEN"
+  },
+  "photo_cat_cityscapes": {
+    "message": "STADSGEZICHTEN"
+  },
+  "photo_cat_animals": {
+    "message": "DIEREN"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_performances": {
+    "message": "PRESTATIES"
+  },
+  "photo_cat_pets": {
+    "message": "DIEREN"
+  },
+  "photo_cat_landmarks": {
+    "message": "BEZIENSWAARDIGHEDEN"
+  },
+  "button_needs_refresh": {
+    "message": "BEHOEFT TE VERNIEUWEN"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Foto's vernieuwen"
+  },
+  "title_mode_switch": {
+    "message": "Schakelen tussen de modus Google Foto's"
+  },
+  "desc_mode_switch": {
+    "message": "Je huidige fotoselecties worden verwijderd.\n\nDoorgaan met schakelaar?"
+  },
+  "button_mode_switch": {
+    "message": "SCHAKELAAR"
+  },
+  "close": {
+    "message": "DICHTBIJ",
+    "description": "All Caps"
   },
   "time_format": {
     "message": "24",

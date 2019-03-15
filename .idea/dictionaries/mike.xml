@@ -3,12 +3,14 @@
     <words>
       <w>abcdefghijklmnopqrstuvwxyz</w>
       <w>chromiumapp</w>
+      <w>cityscapes</w>
       <w>entrypoint</w>
       <w>georss</w>
       <w>gphoto</w>
       <w>interestingness</w>
       <w>latlng</w>
       <w>mult</w>
+      <w>selfies</w>
       <w>signout</w>
     </words>
   </dictionary>
