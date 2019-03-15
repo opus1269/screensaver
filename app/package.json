@@ -17,6 +17,7 @@
     "@polymer/iron-icon": "^3.0.1",
     "@polymer/iron-image": "^3.0.1",
     "@polymer/iron-label": "^3.0.1",
+    "@polymer/iron-list": "^3.0.2",
     "@polymer/iron-pages": "^3.0.1",
     "@polymer/neon-animation": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
