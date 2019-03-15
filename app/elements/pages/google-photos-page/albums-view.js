@@ -603,6 +603,7 @@ Polymer({
         }
       } finally {
         this.set('waitForLoad', false);
+        this.set('waiterStatus', '');
         _loadingAlbum = null;
       }
       response(JSON.stringify({message: 'OK'}));
