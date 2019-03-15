@@ -43,7 +43,7 @@ export const Type = {
  * @const
  * @private
  */
-const _MAX_VIEWS = 20;
+const _MAX_VIEWS = 10;
 
 /**
  * The array of views
