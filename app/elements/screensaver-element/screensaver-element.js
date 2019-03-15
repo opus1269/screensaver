@@ -88,7 +88,7 @@ let _errHandler = {
   MAX_COUNT: 168, // about a weeks worth, if all goes well
   count: 0,
   isUpdating: false,
-  TIME_LIMIT: (10 * 60000), // ten minutes in milli sec
+  TIME_LIMIT: (5 * 60000), // five minutes in milli sec
   lastTime: 0,
 };
 
@@ -538,7 +538,7 @@ Polymer({
         }
 
         // persist new baseUrls to albumSelections
-        const updated = GoogleSource.updateBaseUrls(newPhotos);
+        const updated = await GoogleSource.updateBaseUrls(newPhotos);
         if (!updated) {
           // major problem, give up for this session
           _errHandler.count = _errHandler.MAX_COUNT + 1;

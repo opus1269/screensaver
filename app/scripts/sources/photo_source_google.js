@@ -346,7 +346,7 @@ export default class GoogleSource extends PhotoSource {
         const delCt = photos.length - this.MAX_ALBUM_PHOTOS;
         photos.splice(this.MAX_ALBUM_PHOTOS, delCt);
       }
-      
+
       if (notify) {
         // notify listeners of our current progress
         const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
@@ -368,7 +368,7 @@ export default class GoogleSource extends PhotoSource {
     album.ct = photos.length;
 
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
-    
+
     if (notify) {
       // notify listeners that we are done
       const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM_DONE);
@@ -578,6 +578,34 @@ export default class GoogleSource extends PhotoSource {
       return ret;
     }
 
+    const useAlbums = ChromeStorage.get('useGoogleAlbums', false);
+    if (useAlbums) {
+      ret = await GoogleSource._updateAlbumsBaseUrls(photos);
+    }
+
+    const usePhotos = ChromeStorage.get('useGooglePhotos', false);
+    if (usePhotos) {
+      ret = await GoogleSource._updatePhotosBaseUrls(photos);
+    }
+
+    return ret;
+  }
+
+  /**
+   * Update the baseUrls of the given photos in the saved albums
+   * @param {module:PhotoSource.Photo[]} photos
+   * @returns {boolean} false if couldn't persist albumSelections
+   * @private
+   * @static
+   */
+  static async _updateAlbumsBaseUrls(photos) {
+    let ret = true;
+
+    photos = photos || [];
+    if (photos.length === 0) {
+      return ret;
+    }
+
     const albums = await ChromeStorage.asyncGet('albumSelections', []);
     if (albums.length === 0) {
       return ret;
@@ -585,7 +613,6 @@ export default class GoogleSource extends PhotoSource {
 
     // loop on all the photos
     for (const photo of photos) {
-
       // loop on all the albums
       for (const album of albums) {
         const albumPhotos = album.photos;
@@ -604,7 +631,49 @@ export default class GoogleSource extends PhotoSource {
     if (!set) {
       ret = false;
       ChromeLog.error(ChromeLocale.localize('err_storage_title'),
-          'GoogleSource.updateBaseUrls');
+          'GoogleSource._updateAlbumsBaseUrls');
+    }
+
+    return ret;
+  }
+
+  /**
+   * Update the baseUrls of the given photos in the saved photos
+   * @param {module:PhotoSource.Photo[]} photos
+   * @returns {boolean} false if couldn't persist googleImages
+   * @private
+   * @static
+   */
+  static async _updatePhotosBaseUrls(photos) {
+    let ret = true;
+
+    photos = photos || [];
+    if (photos.length === 0) {
+      return ret;
+    }
+
+    const savedPhotos = await ChromeStorage.asyncGet('googleImages', []);
+    if (savedPhotos.length === 0) {
+      return ret;
+    }
+
+    // loop on all the photos
+    for (const photo of photos) {
+      const index = savedPhotos.findIndex((e) => {
+        return e.ex.id === photo.ex.id;
+      });
+      if (index >= 0) {
+        // found it, update baseUrl
+        savedPhotos[index].url = photo.url;
+      }
+    }
+
+    // Try to save the updated photos
+    const set = await ChromeStorage.asyncSet('googleImages', savedPhotos, null);
+    if (!set) {
+      ret = false;
+      ChromeLog.error(ChromeLocale.localize('err_storage_title'),
+          'GoogleSource._updatePhotosBaseUrls');
     }
 
     return ret;
