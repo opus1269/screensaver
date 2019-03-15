@@ -12,6 +12,7 @@ import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import '../../../node_modules/@polymer/iron-list/iron-list.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
 import '../../../node_modules/@polymer/iron-image/iron-image.js';
 
@@ -89,8 +90,7 @@ let _loadingAlbum = null;
 
 Polymer({
   // language=HTML format=false
-  _template: html`
-<!--suppress CssUnresolvedCustomPropertySet CssUnresolvedCustomProperty -->
+  _template: html`<!--suppress CssUnresolvedCustomPropertySet CssUnresolvedCustomProperty -->
 <style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
 <style>
@@ -109,6 +109,7 @@ Polymer({
   }
 
   :host .list-note {
+    height: 48px;
     @apply --paper-font-title;
     border: 1px #CCCCCC;
     border-bottom-style: solid;
@@ -149,31 +150,38 @@ Polymer({
     color: var(--disabled-text-color);
   }
 
+  :host #ironList {
+    /* browser viewport height minus both toolbars and note*/
+    height: calc(100vh - 193px);
+  }
 </style>
 
-<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]" status-label="[[waiterStatus]]"></waiter-element>
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
+                status-label="[[waiterStatus]]"></waiter-element>
 
 <div class="list-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
   <paper-item class="list-note">
     [[localize('google_shared_albums_note')]]
   </paper-item>
 
-  <template is="dom-repeat" id="t" items="{{albums}}" as="album">
-    <div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
+  <iron-list id="ironList" mutable-data="true" items="{{albums}}" as="album">
+    <template>
       <iron-label>
-        <paper-item class="center horizontal layout" tabindex="-1">
-          <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
-                          disabled$="[[disabled]]"></paper-checkbox>
-          <paper-item-body class="flex" two-line="">
-            <div class="setting-label">[[album.name]]</div>
-            <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
-            <paper-ripple center=""></paper-ripple>
-          </paper-item-body>
-          <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]"></iron-image>
-        </paper-item>
+        <div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
+          <paper-item class="center horizontal layout" tabindex="-1">
+            <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
+                            disabled$="[[disabled]]"></paper-checkbox>
+            <paper-item-body class="flex" two-line="">
+              <div class="setting-label">[[album.name]]</div>
+              <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
+              <paper-ripple center=""></paper-ripple>
+            </paper-item-body>
+            <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]"></iron-image>
+          </paper-item>
+        </div>
       </iron-label>
-    </div>
-  </template>
+    </template>
+  </iron-list>
 
   <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
   </app-localstorage-document>
@@ -219,6 +227,8 @@ Polymer({
     waitForLoad: {
       type: Boolean,
       value: false,
+      notify: true,
+      observer: '_waitForLoadChanged',
     },
 
     /** Status label for waiter */
@@ -285,10 +295,14 @@ Polymer({
       albums = albums || [];
 
       // update in UI
-      this.splice('albums', 0, this.albums.length);
+      this.set('albums', []);
+      const newAlbums = [];
       for (const album of albums) {
-        this.push('albums', album);
+        newAlbums.push(album);
       }
+      this.set('albums', newAlbums);
+      this.notifyPath('albums');
+      // this.$.ironList.scrollToIndex(0);
 
       // set selections based on those that are currently saved
       await this._selectSavedAlbums();
@@ -319,6 +333,7 @@ Polymer({
       showErrorDialog(ERR_TITLE, text);
     } finally {
       this.set('waitForLoad', false);
+      this.notifyPath('albums');
     }
   },
 
@@ -549,7 +564,6 @@ Polymer({
         this._showStorageErrorDialog('AlbumViews._onAlbumSelectChanged');
       }
     }
-
   },
 
   // noinspection JSUnusedLocalSymbols
@@ -619,6 +633,17 @@ Polymer({
   },
 
   /**
+   * Observer: waiter changed
+   * @param {boolean} newValue - state
+   * @private
+   */
+  _waitForLoadChanged: function(newValue) {
+    if (newValue === false) {
+      this.$.ironList._render();
+    }
+  },
+  
+    /**
    * Get total photo count that is currently saved
    * @returns {Promise<int>} Total number of photos saved
    * @private

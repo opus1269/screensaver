@@ -43,8 +43,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 export const GooglePhotosPage = Polymer({
   // language=HTML format=false
-  _template: html`
-<!--suppress CssUnresolvedCustomPropertySet -->
+  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
 <style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
 <style>
@@ -57,10 +56,12 @@ export const GooglePhotosPage = Polymer({
     margin: 0;
   }
 
+  :host .page-container {
+    margin-bottom: 0;
+  }
+  
   :host .page-content {
-    height: 800px;
-    overflow: hidden;
-    overflow-y: scroll;
+    min-height: calc(100vh - 128px);
     margin: 0;
   }
 
