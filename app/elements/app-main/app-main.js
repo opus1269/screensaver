@@ -501,6 +501,7 @@ Polymer({
     }, false);
 
     setTimeout(() => {
+      ChromeGA.page('/options.html');
       
       // initialize menu enabled states
       this._setErrorMenuState();
@@ -787,15 +788,3 @@ Polymer({
   },
 
 });
-
-/**
- * Event: called when document and resources are loaded<br />
- * @private
- */
-function _onLoad() {
-  ChromeGA.page('/options.html');
-}
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);
-
