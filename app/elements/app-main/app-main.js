@@ -501,11 +501,11 @@ Polymer({
     }, false);
 
     setTimeout(() => {
-      ChromeGA.page('/options.html');
-      
       // initialize menu enabled states
       this._setErrorMenuState();
       this._setGooglePhotosMenuState();
+      
+      ChromeGA.page('/options.html');
     }, 0);
   },
 

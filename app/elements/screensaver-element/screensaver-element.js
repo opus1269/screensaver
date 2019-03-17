@@ -314,12 +314,13 @@ Polymer({
     setPaused = this.setPaused.bind(this);
 
     setTimeout(() => {
-
       this._setZoom();
       this._setupPhotoTransitions();
 
       // start screensaver
       this._launch();
+      
+      ChromeGA.page('/screensaver.html');
     }, 0);
   },
 
@@ -572,15 +573,3 @@ Polymer({
   },
 
 });
-
-/**
- * Event: called when document and resources are loaded<br />
- * @private
- */
-function _onLoad() {
-  ChromeGA.page('/screensaver.html');
-}
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);
-
