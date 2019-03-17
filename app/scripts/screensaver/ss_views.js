@@ -15,6 +15,7 @@ import * as Screensaver
 import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
+import './views/ss_view.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
 
 /**
@@ -258,7 +259,7 @@ export function findLoadedPhoto(idx) {
     replaceAll();
   }
 
-  if (_views[idx].isLoaded()) {
+  if ((_views[idx] !== undefined) && _views[idx].isLoaded()) {
     return idx;
   }
 
