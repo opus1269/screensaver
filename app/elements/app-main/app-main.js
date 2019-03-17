@@ -546,7 +546,6 @@ Polymer({
    * @private
    */
   _onConfirmDialogTapped: function() {
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Options.ConfirmDialog.Confirm');
     if (confirmFn) {
       confirmFn();
     }
