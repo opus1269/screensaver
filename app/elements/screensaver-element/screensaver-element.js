@@ -315,7 +315,7 @@ Polymer({
     setTimeout(() => {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
-      
+
       this._setZoom();
       this._setupPhotoTransitions();
 
@@ -390,19 +390,16 @@ Polymer({
    * @private
    */
   _setZoom: function() {
-    if (ChromeUtils.getChromeVersion() >= 42) {
-      // override zoom factor to 1.0 - chrome 42 and later
-      const chromep = new ChromePromise();
-      // noinspection JSUnresolvedFunction
-      chromep.tabs.getZoom().then((zoomFactor) => {
-        if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
-          chrome.tabs.setZoom(1.0);
-        }
-        return null;
-      }).catch((err) => {
-        ChromeLog.error(err.message, 'chromep.tabs.getZoom');
-      });
-    }
+    // override zoom factor to 1.0
+    // noinspection JSUnresolvedFunction
+    window.browser.tabs.getZoom().then((zoomFactor) => {
+      if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
+        window.browser.tabs.setZoom(1.0);
+      }
+      return null;
+    }).catch((err) => {
+      ChromeLog.error(err.message, 'chromep.tabs.getZoom');
+    });
   },
 
   /**
@@ -471,7 +468,7 @@ Polymer({
           _errHandler.isUpdating = false;
           return;
         }
-        
+
         // limit max number of calls to Google API per screensaver session
         // in case something weird happens
         _errHandler.count++;

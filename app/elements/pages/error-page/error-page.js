@@ -142,7 +142,7 @@ export const ErrorPage = Polymer({
     }).catch((err) => {
       ChromeGA.error(err.message, 'ErrorPage.ready');
     });
-    chrome.storage.onChanged.addListener((changes) => {
+    window.browser.storage.onChanged.addListener((changes) => {
       // listen for changes to lastError
       for (const key in changes) {
         if (changes.hasOwnProperty(key)) {
@@ -170,7 +170,7 @@ export const ErrorPage = Polymer({
 
     const url = MyUtils.getEmailUrl('Last Error', body);
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
-    chrome.tabs.create({url: url});
+    window.browser.tabs.create({url: url});
   },
 
   /**

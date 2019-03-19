@@ -128,6 +128,6 @@ Polymer({
   _onLinkTapped: function() {
     ChromeGA.event(ChromeGA.EVENT.LINK, this.name);
     // noinspection JSUnresolvedVariable
-    chrome.tabs.create({ url: this.url });
+    window.browser.tabs.create({ url: this.url });
   },
 });

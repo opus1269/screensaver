@@ -131,7 +131,7 @@ let confirmFn = null;
  */
 const EXT_URI =
     'https://chrome.google.com/webstore/detail/screensaver/' +
-    chrome.runtime.id + '/';
+    window.browser.runtime.id + '/';
 
 /**
  * Path to my Pushy Clipboard extension
@@ -480,7 +480,7 @@ Polymer({
     ChromeMsg.listen(this._onMessage.bind(this));
 
     // listen for changes to chrome.storage
-    chrome.storage.onChanged.addListener((changes) => {
+    window.browser.storage.onChanged.addListener((changes) => {
       for (const key in changes) {
         if (changes.hasOwnProperty(key)) {
           if (key === 'lastError') {
@@ -576,7 +576,7 @@ Polymer({
     } else if (typeof pages[idx].obj === 'string') {
       // some pages are url links
       this.$.mainMenu.select(prevRoute);
-      chrome.tabs.create({url: pages[idx].obj});
+      window.browser.tabs.create({url: pages[idx].obj});
     } else {
       // some pages have functions to view them
       pages[idx].obj(idx, prevRoute);
@@ -761,12 +761,11 @@ Polymer({
   _onMessage: function(request, sender, response) {
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
-      const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab) => {
-        chrome.tabs.update(tab.id, {'highlighted': true});
+      window.browser.tabs.getCurrent().then((tab) => {
+        window.browser.tabs.update(tab.id, {'highlighted': true});
         return null;
       }).catch((err) => {
-        ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
+        ChromeLog.error(err.message, 'browser.tabs.getCurrent');
       });
       response(JSON.stringify({message: 'OK'}));
     } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
