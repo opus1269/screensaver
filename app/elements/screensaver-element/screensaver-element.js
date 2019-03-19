@@ -398,7 +398,7 @@ Polymer({
       }
       return null;
     }).catch((err) => {
-      ChromeLog.error(err.message, 'chromep.tabs.getZoom');
+      ChromeLog.error(err.message, 'browser.tabs.getZoom');
     });
   },
 

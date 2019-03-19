@@ -145,7 +145,7 @@ async function _updateToChromeLocaleStorage() {
       const set = await ChromeStorage.asyncSet(key, value);
       if (!set) {
         const desc = source.getDesc();
-        const msg = `Failed to move source: ${desc} to chrome.storage`;
+        const msg = `Failed to move source: ${desc} to browser.storage`;
         ChromeLog.error(msg, 'AppData._updateToChromeLocaleStorage');
       }
       // delete old one
