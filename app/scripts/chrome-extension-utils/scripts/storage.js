@@ -115,9 +115,8 @@ export function safeSet(key, value, keyBool = null) {
  */
 export async function asyncGet(key, def = null) {
   let ret = null;
-  const chromep = new ChromePromise();
   try {
-    const res = await chromep.storage.local.get([key]);
+    const res = await window.browser.storage.local.get([key]);
     ret = res[key];
   } catch (err) {
     if (def) {
@@ -146,12 +145,11 @@ export async function asyncGet(key, def = null) {
 export async function asyncSet(key, value, keyBool = null) {
   // TODO what about keyBool?
   let ret = true;
-  const chromep = new ChromePromise();
   const obj = {
     [key]: value,
   };
   try {
-    await chromep.storage.local.set(obj);
+    await window.browser.storage.local.set(obj);
   } catch (err) {
     // notify listeners save failed
     ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});

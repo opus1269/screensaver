@@ -55,7 +55,7 @@ export async function getToken(interactive = false, scopes = null) {
         'https://www.googleapis.com/auth/photoslibrary.readonly'];
       const clientId =
           '595750713699-n3tal780utvvuum73tgf44q41564afmc.apps.googleusercontent.com';
-      const redirectUrl = chrome.identity.getRedirectURL('oauth2');
+      const redirectUrl = window.browser.identity.getRedirectURL('oauth2');
       let url = 'https://accounts.google.com/o/oauth2/auth';
       url += `?client_id=${encodeURIComponent(clientId)}`;
       url += `&redirect_uri=${encodeURIComponent(redirectUrl)}`;
@@ -65,7 +65,7 @@ export async function getToken(interactive = false, scopes = null) {
         url: url,
         interactive: interactive,
       };
-      let responseUrl = await chromep.identity.launchWebAuthFlow(request);
+      let responseUrl = await window.browser.identity.launchWebAuthFlow(request);
       responseUrl = responseUrl || '';
       const regex = /access_token=(.*?)(?=&)/;
       let match = responseUrl.match(regex);

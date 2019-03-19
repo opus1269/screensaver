@@ -19,7 +19,7 @@ import './ex_handler.js';
  * @returns {string} internationalized string
  */
 export function localize(messageName, def='') {
-  let msg = chrome.i18n.getMessage(messageName);
+  let msg = window.browser.i18n.getMessage(messageName);
   if ((typeof (msg) === 'undefined') || (msg === '')) {
     // in case localize is missing
     msg = def || '';
@@ -32,5 +32,5 @@ export function localize(messageName, def='') {
  * @returns {string} current locale e.g. en_US
  */
 export function getLocale() {
-  return chrome.i18n.getMessage('@@ui_locale');
+  return window.browser.i18n.getMessage('@@ui_locale');
 }

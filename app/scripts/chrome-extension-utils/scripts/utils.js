@@ -11,8 +11,6 @@ import './ex_handler.js';
  * @module ChromeUtils
  */
 
-const chromep = new ChromePromise();
-
 /**
  * Set to true if development build
  * @type {boolean}
@@ -27,7 +25,7 @@ const _DEBUG = false;
  * @returns {Promise.<boolean>} true if the given os
  */
 function _isOS(os) {
-  return chromep.runtime.getPlatformInfo().then((info) => {
+  return window.browser.runtime.getPlatformInfo().then((info) => {
     return Promise.resolve((info.os === os));
   }).catch(() => {
     // something went wrong - linux seems to fail this call sometimes
@@ -45,7 +43,7 @@ export const DEBUG = _DEBUG;
  * @returns {string} Extension name
  */
 export function getExtensionName() {
-  return `chrome-extension://${chrome.runtime.id}`;
+  return `chrome-extension://${window.browser.runtime.id}`;
 }
 
 /**
@@ -53,7 +51,7 @@ export function getExtensionName() {
  * @returns {string} Extension version
  */
 export function getVersion() {
-  const manifest = chrome.runtime.getManifest();
+  const manifest = window.browser.runtime.getManifest();
   return manifest.version;
 }
 
@@ -83,7 +81,7 @@ export function getFullChromeVersion() {
  */
 export function getPlatformOS() {
   let output = 'Unknown';
-  return chromep.runtime.getPlatformInfo().then((info) => {
+  return window.browser.runtime.getPlatformInfo().then((info) => {
     const os = info.os;
     switch (os) {
       case 'win':

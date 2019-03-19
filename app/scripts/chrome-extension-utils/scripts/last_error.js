@@ -6,8 +6,6 @@
  */
 import './ex_handler.js';
 
-const chromep = new ChromePromise();
-
 /**
  * A custom error that can be persisted
  * Usage: const err = new ChromeLastError(title, message)
@@ -43,7 +41,7 @@ export default class ChromeLastError extends Error {
    * @returns {Promise<ChromeLastError>} last error
    */
   static load() {
-    return chromep.storage.local.get('lastError').then((value) => {
+    return window.browser.storage.local.get('lastError').then((value) => {
       const details = value.lastError;
       if (details) {
         const lastError = new ChromeLastError(details.title, details.message);
@@ -69,7 +67,7 @@ export default class ChromeLastError extends Error {
     };
 
     // persist
-    return chromep.storage.local.set({'lastError': value});
+    return window.browser.storage.local.set({'lastError': value});
   }
 
   /**
@@ -79,6 +77,6 @@ export default class ChromeLastError extends Error {
    */
   static reset() {
     // Save it using the Chrome storage API.
-    return chromep.storage.local.set({'lastError': new ChromeLastError()});
+    return window.browser.storage.local.set({'lastError': new ChromeLastError()});
   }
 }

@@ -62,8 +62,7 @@ export const STORE = _MSG.STORE;
  * @returns {Promise<JSON>} response JSON
  */
 export function send(type) {
-  const chromep = new ChromePromise();
-  return chromep.runtime.sendMessage(type, null).then((response) => {
+  return window.browser.runtime.sendMessage(type, null).then((response) => {
     return Promise.resolve(response);
   }).catch((err) => {
     if (err.message &&
@@ -81,5 +80,5 @@ export function send(type) {
  * @param {Function} listener - function to receive messages
  */
 export function listen(listener) {
-  chrome.runtime.onMessage.addListener(listener);
+  window.browser.runtime.onMessage.addListener(listener);
 }
