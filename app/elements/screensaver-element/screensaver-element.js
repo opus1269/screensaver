@@ -526,6 +526,10 @@ Polymer({
         // update any views with the new google photos
         for (let i = 0; i < this._views.length; i++) {
           const view = this._views[i];
+          if (view.isLoaded()) {
+            // img is ok
+            continue;
+          }
           const photo = view.photo;
           const type = photo.getType();
           if (type === 'Google User') {
