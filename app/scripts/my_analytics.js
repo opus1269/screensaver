@@ -109,16 +109,9 @@ export const EVENT = {
 };
 
 /**
- * Event: called when document and resources are loaded<br />
- * Initialize Google Analytics
- * @private
+ * Initialize analytics
  */
-function _onLoad() {
-  // initialize analytics
+export function initialize() {
   ChromeGA.initialize(_TRACKING_ID, 'Photo Screensaver',
       'screensaver', ChromeUtils.getVersion());
 }
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);
-  

@@ -117,23 +117,6 @@ export const EVENT = {
   },
 };
 
-// Standard Google Universal Analytics code
-// noinspection OverlyComplexFunctionJS
-(function(i, s, o, g, r, a, m) {
-  i['GoogleAnalyticsObject'] = r;
-  // noinspection CommaExpressionJS
-  i[r] = i[r] || function() {
-    (i[r].q = i[r].q || []).push(arguments);
-  }, i[r].l = 1 * new Date();
-  // noinspection CommaExpressionJS
-  a = s.createElement(o),
-      m = s.getElementsByTagName(o)[0];
-  a.async = 1;
-  a.src = g;
-  m.parentNode.insertBefore(a, m);
-})(window, document, 'script',
-    'https://www.google-analytics.com/analytics.js', 'ga');
-
 /**
  * Initialize analytics
  * @param {string} trackingId - tracking id
@@ -142,6 +125,23 @@ export const EVENT = {
  * @param {string} appVersion - extension version
  */
 export function initialize(trackingId, appName, appId, appVersion) {
+  // Standard Google Universal Analytics code
+  // noinspection OverlyComplexFunctionJS
+  (function(i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    // noinspection CommaExpressionJS
+    i[r] = i[r] || function() {
+      (i[r].q = i[r].q || []).push(arguments);
+    }, i[r].l = 1 * new Date();
+    // noinspection CommaExpressionJS
+    a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(window, document, 'script',
+      'https://www.google-analytics.com/analytics.js', 'ga');
+
   ga('create', trackingId, 'auto');
   // see: http://stackoverflow.com/a/22152353/1958200
   ga('set', 'checkProtocolTask', function() {

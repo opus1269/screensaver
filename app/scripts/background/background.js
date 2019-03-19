@@ -10,6 +10,7 @@ import '../../scripts/background/user.js';
 
 import * as AppData from './data.js';
 
+import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
@@ -146,6 +147,8 @@ function _onChromeMessage(request, sender, response) {
  * @private
  */
 function _onLoad() {
+  MyGA.initialize();
+  
   // listen for extension install or update
   chrome.runtime.onInstalled.addListener(_onInstalled);
 

@@ -55,7 +55,7 @@ import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
 import '../../elements/confirm-dialog/confirm-dialog.js';
 
-import '../../scripts/my_analytics.js';
+import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import {LocalizeBehavior} from
@@ -461,8 +461,9 @@ Polymer({
    * Element is ready
    */
   ready: function() {
+    MyGA.initialize();
+    ChromeGA.page('/options.html');
 
-    
     // Initialize dialog exports
     showConfirmDialog = this.showConfirmDialog.bind(this);
     showErrorDialog = this.showErrorDialog.bind(this);
@@ -504,8 +505,6 @@ Polymer({
       // initialize menu enabled states
       this._setErrorMenuState();
       this._setGooglePhotosMenuState();
-      
-      ChromeGA.page('/options.html');
     }, 0);
   },
 

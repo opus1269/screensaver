@@ -36,8 +36,7 @@ import '../../elements/setting-elements/setting-background/setting-background.js
 import '../../elements/setting-elements/setting-time/setting-time.js';
 import '../../elements/setting-elements/setting-text/setting-text.js';
 
-import '../../scripts/my_analytics.js';
-
+import * as MyGA from '../../scripts/my_analytics.js';
 import '../../scripts/screensaver/ss_events.js';
 import '../../scripts/screensaver/ss_events.js';
 import '../../scripts/screensaver/ss_history.js';
@@ -314,13 +313,14 @@ Polymer({
     setPaused = this.setPaused.bind(this);
 
     setTimeout(() => {
+      MyGA.initialize();
+      ChromeGA.page('/screensaver.html');
+      
       this._setZoom();
       this._setupPhotoTransitions();
 
       // start screensaver
       this._launch();
-      
-      ChromeGA.page('/screensaver.html');
     }, 0);
   },
 
