@@ -31,8 +31,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @module AppData
  */
 
-const chromep = new ChromePromise();
-
 /**
  * Version of localStorage - update when items are added, removed, changed
  * @type {int}
@@ -168,7 +166,7 @@ function _processEnabled() {
   const label = ChromeStorage.getBool('enabled') ? ChromeLocale.localize(
       'disable') : ChromeLocale.localize('enable');
   updateBadgeText();
-  chromep.contextMenus.update('ENABLE_MENU', {
+  window.browser.contextMenus.update('ENABLE_MENU', {
     title: label,
   }).catch(() => {});
 }
@@ -180,8 +178,8 @@ function _processEnabled() {
 function _processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', true);
   keepAwake
-      ? chrome.power.requestKeepAwake('display')
-      : chrome.power.releaseKeepAwake();
+      ? window.browser.power.requestKeepAwake('display')
+      : window.browser.power.releaseKeepAwake();
   updateRepeatingAlarms();
   updateBadgeText();
 }
@@ -193,7 +191,7 @@ function _processKeepAwake() {
 function _processIdleTime() {
   const idleTime = getIdleSeconds();
   if (idleTime) {
-    chrome.idle.setDetectionInterval(idleTime);
+    window.browser.idle.setDetectionInterval(idleTime);
   } else {
     ChromeLog.error('idleTime is null', 'Data._processIdleTime');
   }
@@ -219,7 +217,7 @@ function _getTimeFormat() {
  * @private
  */
 function _setOS() {
-  return chromep.runtime.getPlatformInfo().then((info) => {
+  return window.browser.runtime.getPlatformInfo().then((info) => {
     ChromeStorage.set('os', info.os);
     return null;
   }).catch(() => {

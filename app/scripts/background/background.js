@@ -38,7 +38,7 @@ function _showOptionsTab() {
   // send message to the option tab to focus it.
   ChromeMsg.send(ChromeMsg.HIGHLIGHT).catch(() => {
     // no one listening, create it
-    chrome.tabs.create({url: '/html/options.html'});
+    window.browser.tabs.create({url: '/html/options.html'});
   });
 }
 
@@ -74,7 +74,7 @@ function _onInstalled(details) {
       }
       if (showThreeInfo) {
         // show info on the update when moving from a now 3.x.x version
-        chrome.tabs.create({url: '/html/update3.html'});
+        window.browser.tabs.create({url: '/html/update3.html'});
       }
     }
     // extension updated
@@ -150,13 +150,13 @@ function _onLoad() {
   MyGA.initialize();
   
   // listen for extension install or update
-  chrome.runtime.onInstalled.addListener(_onInstalled);
+  window.browser.runtime.onInstalled.addListener(_onInstalled);
 
   // listen for Chrome starting
-  chrome.runtime.onStartup.addListener(_onStartup);
+  window.browser.runtime.onStartup.addListener(_onStartup);
 
   // listen for click on the icon
-  chrome.browserAction.onClicked.addListener(_onIconClicked);
+  window.browser.browserAction.onClicked.addListener(_onIconClicked);
 
   // listen for changes to the stored data
   addEventListener('storage', _onStorageChanged, false);

@@ -11,8 +11,6 @@ import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -47,39 +45,26 @@ function _toggleEnabled() {
  * @private
  */
 function _onInstalled(details) {
-  const chromep = new ChromePromise();
 
   // create menus on the right click menu of the extension icon
-  chromep.contextMenus.create({
+  window.browser.contextMenus.create({
     type: 'normal',
     id: _DISPLAY_MENU,
     title: ChromeLocale.localize('display_now'),
     contexts: ['browser_action'],
-  }).catch((err) => {
-    if (!err.message.includes('duplicate id')) {
-      ChromeLog.error(err.message, 'chromep.contextMenus.create');
-    }
   });
 
-  chromep.contextMenus.create({
+  window.browser.contextMenus.create({
     type: 'normal',
     id: _ENABLE_MENU,
     title: ChromeLocale.localize('disable'),
     contexts: ['browser_action'],
-  }).catch((err) => {
-    if (!err.message.includes('duplicate id')) {
-      ChromeLog.error(err.message, 'chromep.contextMenus.create');
-    }
   });
 
-  chromep.contextMenus.create({
+  window.browser.contextMenus.create({
     type: 'separator',
     id: 'SEP_MENU',
     contexts: ['browser_action'],
-  }).catch((err) => {
-    if (!err.message.includes('duplicate id')) {
-      ChromeLog.error(err.message, 'chromep.contextMenus.create');
-    }
   });
 }
 
@@ -124,13 +109,13 @@ function _onKeyCommand(cmd) {
  */
 function _onLoad() {
   // listen for install events
-  chrome.runtime.onInstalled.addListener(_onInstalled);
+  window.browser.runtime.onInstalled.addListener(_onInstalled);
 
   // listen for clicks on context menus
-  chrome.contextMenus.onClicked.addListener(_onMenuClicked);
+  window.browser.contextMenus.onClicked.addListener(_onMenuClicked);
 
   // listen for special keyboard commands
-  chrome.commands.onCommand.addListener(_onKeyCommand);
+  window.browser.commands.onCommand.addListener(_onKeyCommand);
 }
 
 // listen for documents and resources loaded

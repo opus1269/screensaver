@@ -164,7 +164,9 @@ export default class SSPhoto {
     }
     if (url !== null) {
       ChromeGA.event(MyGA.EVENT.VIEW_PHOTO, this._type);
-      chrome.tabs.create({url: url});
+      browser.tabs.create({url: url}).catch((err) => {
+        console.log(err);
+      });
     }
   }
 }

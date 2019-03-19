@@ -24,8 +24,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @module Alarm
  */
 
-const chromep = new ChromePromise();
-
 /**
  * Alarms triggered by chrome.alarms
  * @typedef {Object} Alarms
@@ -53,14 +51,14 @@ export function updateRepeatingAlarms() {
 
   // create keep awake active period scheduling alarms
   if (keepAwake && (aStart !== aStop)) {
-    const startDelayMin = ChromeTime.getTimeDelta(aStart);
-    const stopDelayMin = ChromeTime.getTimeDelta(aStop);
+    const startDelayMin = Math.max(ChromeTime.getTimeDelta(aStart), 1);
+    const stopDelayMin = Math.max(ChromeTime.getTimeDelta(aStop), 1);
 
-    chrome.alarms.create(_ALARMS.ACTIVATE, {
+    window.browser.alarms.create(_ALARMS.ACTIVATE, {
       delayInMinutes: startDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
-    chrome.alarms.create(_ALARMS.DEACTIVATE, {
+    window.browser.alarms.create(_ALARMS.DEACTIVATE, {
       delayInMinutes: stopDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
@@ -71,14 +69,14 @@ export function updateRepeatingAlarms() {
       _setInactiveState();
     }
   } else {
-    chrome.alarms.clear(_ALARMS.ACTIVATE);
-    chrome.alarms.clear(_ALARMS.DEACTIVATE);
+    window.browser.alarms.clear(_ALARMS.ACTIVATE);
+    window.browser.alarms.clear(_ALARMS.DEACTIVATE);
   }
 
   // Add daily alarm to update photo sources that request this
-  chromep.alarms.get(_ALARMS.UPDATE_PHOTOS).then((alarm) => {
+  window.browser.alarms.get(_ALARMS.UPDATE_PHOTOS).then((alarm) => {
     if (!alarm) {
-      chrome.alarms.create(_ALARMS.UPDATE_PHOTOS, {
+      window.browser.alarms.create(_ALARMS.UPDATE_PHOTOS, {
         when: Date.now() + ChromeTime.MSEC_IN_DAY,
         periodInMinutes: ChromeTime.MIN_IN_DAY,
       });
@@ -86,7 +84,7 @@ export function updateRepeatingAlarms() {
     return null;
   }).catch((err) => {
     ChromeLog.error(err.message,
-        'chromep.alarms.get(_ALARMS.UPDATE_PHOTOS)');
+        'browser.alarms.get(_ALARMS.UPDATE_PHOTOS)');
   });
 }
 
@@ -95,7 +93,7 @@ export function updateRepeatingAlarms() {
  */
 export function updateBadgeText() {
   // delay setting a little to make sure range check is good
-  chrome.alarms.create(_ALARMS.BADGE_TEXT, {
+  window.browser.alarms.create(_ALARMS.BADGE_TEXT, {
     when: Date.now() + 1000,
   });
 }
@@ -106,10 +104,10 @@ export function updateBadgeText() {
  */
 function _setActiveState() {
   if (ChromeStorage.getBool('keepAwake')) {
-    chrome.power.requestKeepAwake('display');
+    window.browser.power.requestKeepAwake('display');
   }
   const interval = AppData.getIdleSeconds();
-  chromep.idle.queryState(interval).then((state) => {
+  window.browser.idle.queryState(interval).then((state) => {
     // display screensaver if enabled and the idle time criteria is met
     if (ChromeStorage.getBool('enabled') && (state === 'idle')) {
       display(false);
@@ -127,9 +125,9 @@ function _setActiveState() {
  */
 function _setInactiveState() {
   if (ChromeStorage.getBool('allowSuspend')) {
-    chrome.power.releaseKeepAwake();
+    window.browser.power.releaseKeepAwake();
   } else {
-    chrome.power.requestKeepAwake('system');
+    window.browser.power.requestKeepAwake('system');
   }
   close();
   updateBadgeText();
@@ -147,7 +145,7 @@ function _setBadgeText() {
     text = ChromeStorage.getBool('keepAwake') ? ChromeLocale.localize(
         'power_abbrev') : ChromeLocale.localize('off_abbrev');
   }
-  chrome.browserAction.setBadgeText({text: text});
+  window.browser.browserAction.setBadgeText({text: text});
 }
 
 /**
@@ -186,7 +184,7 @@ function _onAlarm(alarm) {
  */
 function _onLoad() {
   // Listen for alarms
-  chrome.alarms.onAlarm.addListener(_onAlarm);
+  window.browser.alarms.onAlarm.addListener(_onAlarm);
 }
 
 // listen for document and resources loaded

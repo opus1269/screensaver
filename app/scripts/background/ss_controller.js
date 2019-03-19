@@ -24,8 +24,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @module SSControl
  */
 
-const chromep = new ChromePromise();
-
 /**
  * Screensaver URL
  * @type {string}
@@ -88,7 +86,7 @@ export function close() {
  */
 function _hasFullscreen(display) {
   if (ChromeStorage.getBool('chromeFullscreen')) {
-    return chromep.windows.getAll({populate: false}).then((wins) => {
+    return window.browser.windows.getAll({populate: false}).then((wins) => {
       let ret = false;
       const left = display ? display.bounds.left : 0;
       const top = display ? display.bounds.top : 0;
@@ -151,16 +149,16 @@ function _open(display) {
       winOpts.height = 1;
     }
 
-    return chromep.windows.create(winOpts);
+    return window.browser.windows.create(winOpts);
   }).then((win) => {
     if (win && (winOpts.state !== 'fullscreen')) {
-      chrome.windows.update(win.id, {state: 'fullscreen'});
+      window.browser.windows.update(win.id, {state: 'fullscreen'});
     }
     return win;
   }).then((win) => {
     // force focus
     if (win) {
-      chrome.windows.update(win.id, {focused: true});
+      window.browser.windows.update(win.id, {focused: true});
     }
     return null;
   }).catch((err) => {
@@ -173,7 +171,7 @@ function _open(display) {
  * @private
  */
 function _openOnAllDisplays() {
-  chromep.system.display.getInfo().then((displayArr) => {
+  window.browser.system.display.getInfo().then((displayArr) => {
     if (displayArr.length === 1) {
       _open(null);
     } else {
@@ -189,10 +187,10 @@ function _openOnAllDisplays() {
 
 /**
  * Event: Fired when the system changes to an active, idle or locked state.
- * The event fires with "locked" if the screen is locked or the [built in] screensaver
- * activates, "idle" if the system is unlocked and the user has not
- * generated any input for a specified number of seconds, and "active"
- * when the user generates input on an idle system.
+ * The event fires with "locked" if the screen is locked or the [built in]
+ * screensaver activates, "idle" if the system is unlocked and the user has not
+ * generated any input for a specified number of seconds, and "active" when the
+ * user generates input on an idle system.
  * @see https://developer.chrome.com/extensions/idle#event-onStateChanged
  * @param {string} state - current state of computer
  * @private
@@ -212,7 +210,8 @@ function _onIdleStateChanged(state) {
         if (!isTrue) {
           // Windows 10 Creators triggers an 'active' state
           // when the window is created, so we have to skip closing here.
-          // Wouldn't need this at all if ChromeOS handled keyboard (or focus?) right
+          // Wouldn't need this at all if ChromeOS handled keyboard (or focus?)
+          // right
           close();
         }
         return null;
@@ -249,9 +248,8 @@ function _onChromeMessage(request, sender, response) {
  */
 function _onLoad() {
   // listen for changes to the idle state of the computer
-  chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
-  
-  
+  window.browser.idle.onStateChanged.addListener(_onIdleStateChanged);
+
   // listen for chrome messages
   ChromeMsg.listen(_onChromeMessage);
 }

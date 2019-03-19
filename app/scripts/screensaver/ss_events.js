@@ -169,7 +169,7 @@ function _onLoad() {
   window.addEventListener('click', _onMouseClick, false);
 
   // listen for special keyboard commands
-  chrome.commands.onCommand.addListener(_onKeyCommand);
+  window.browser.commands.onCommand.addListener(_onKeyCommand);
 }
 
 // listen for document and resources loaded

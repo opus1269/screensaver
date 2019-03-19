@@ -21,6 +21,9 @@ module.exports = {
   },
 
   'globals': {
+    'window.browser': true,
+    'document.browser': true,
+    'browser': true,
     'Chrome': true,
     'require': true,
     'chrome': true,
