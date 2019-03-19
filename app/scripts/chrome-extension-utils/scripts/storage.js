@@ -111,7 +111,7 @@ export function safeSet(key, value, keyBool = null) {
  * @see  https://developer.chrome.com/apps/storage
  * @param {string} key - data key
  * @param {?Object} [def=null] - default value if not found
- * @returns {Promise<Object|Array>} object from storage, def if not found
+ * @returns {Promise<Object|Array|string|int>} object from storage, def if not found
  */
 export async function asyncGet(key, def = null) {
   let ret = null;

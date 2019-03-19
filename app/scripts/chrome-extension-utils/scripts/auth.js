@@ -14,8 +14,6 @@ import './ex_handler.js';
  * @module ChromeAuth
  */
 
-const chromep = new ChromePromise();
-
 /**
  * Get an OAuth2.0 token<br />
  * Note: Every time you use a different scopes array, you will get a new
@@ -24,10 +22,11 @@ const chromep = new ChromePromise();
  * @param {boolean} interactive - if true may block
  * @param {string[]|null} [scopes=null] - optional scopes to use, overrides
  * those in the manifest
+ * @throws An error if we couldn't get token
  * @returns {Promise<string>} An access token
  */
 export async function getToken(interactive = false, scopes = null) {
-  let token;
+  let token = null;
   const isOpera = ChromeUtils.isOpera();
 
   if (!isOpera) {
@@ -38,16 +37,18 @@ export async function getToken(interactive = false, scopes = null) {
     if (scopes && scopes.length) {
       request.scopes = scopes;
     }
-    return chromep.identity.getAuthToken(request).then((theToken) => {
-      token = theToken;
-      return Promise.resolve(token);
+    return _getChromeAuthToken(request).then((theToken) => {
+      return Promise.resolve(theToken);
     });
   } else {
-    // everyone else uses launchWebAuthFlow
-    token = await ChromeStorage.asyncGet('token', null);
-    if (token) {
-      return Promise.resolve(token);
-    } else {
+    try {
+      // everyone else uses launchWebAuthFlow
+      token = await ChromeStorage.asyncGet('token', null);
+      if (token) {
+        // cached
+        return Promise.resolve(token);
+      }
+
       const scopes = [
         'openid',
         'email',
@@ -65,7 +66,8 @@ export async function getToken(interactive = false, scopes = null) {
         url: url,
         interactive: interactive,
       };
-      let responseUrl = await window.browser.identity.launchWebAuthFlow(request);
+      let responseUrl =
+          await window.browser.identity.launchWebAuthFlow(request);
       responseUrl = responseUrl || '';
       const regex = /access_token=(.*?)(?=&)/;
       let match = responseUrl.match(regex);
@@ -75,6 +77,8 @@ export async function getToken(interactive = false, scopes = null) {
         await ChromeStorage.asyncSet('token', token);
       }
       return Promise.resolve(token);
+    } catch (err) {
+      throw err;
     }
   }
 }
@@ -88,10 +92,10 @@ export async function getToken(interactive = false, scopes = null) {
  * @returns {Promise.<string>} the old token
  */
 export async function removeCachedToken(interactive = false, curToken = null,
-                                  scopes = null) {
-  let oldToken = null;
+                                        scopes = null) {
+  let oldToken = curToken;
   const isOpera = ChromeUtils.isOpera();
-  
+
   if (isOpera) {
     try {
       oldToken = await ChromeStorage.asyncGet('token', null);
@@ -102,20 +106,17 @@ export async function removeCachedToken(interactive = false, curToken = null,
     }
   } else {
     if (curToken === null) {
-      return getToken(interactive, scopes).then((token) => {
-        oldToken = token;
-        return chromep.identity.removeCachedAuthToken({token: token});
-      }).then(() => {
-        return Promise.resolve(oldToken);
-      });
+      oldToken = await getToken(interactive, scopes);
     } else {
       oldToken = curToken;
-      return chromep.identity.removeCachedAuthToken({
-        'token': curToken,
-      }).then(() => {
-        return Promise.resolve(oldToken);
-      });
     }
+    chrome.identity.removeCachedAuthToken({'token': curToken}, () => {
+      const err = chrome.runtime.lastError;
+      if (err) {
+        // ignore;
+      }
+    });
+    return Promise.resolve(oldToken);
   }
 }
 
@@ -126,18 +127,35 @@ export async function removeCachedToken(interactive = false, curToken = null,
 export function isSignedIn() {
   let ret = true;
   const isOpera = ChromeUtils.isOpera();
-  
+
   if (isOpera) {
     // does not matter for non-chrome browsers
     return Promise.resolve(ret);
   }
-  // try to get a token and check failure message
-  return chromep.identity.getAuthToken({interactive: false}).then(() => {
-    return Promise.resolve(ret);
-  }).catch((err) => {
-    if (err.message.match(/not signed in/)) {
+
+  // chrome - try to get a token and check failure message
+  return _getChromeAuthToken({interactive: false}).then(() => {
+    const err = chrome.runtime.lastError;
+    if (err && err.message.match(/not signed in/)) {
       ret = false;
     }
     return Promise.resolve(ret);
+  });
+}
+
+/**
+ * Get auth token the chrome way as a promise
+ * @param {Object} request - request object
+ * @returns {Promise<boolean>} true if signed in
+ */
+function _getChromeAuthToken(request) {
+  return new Promise((resolve, reject) => {
+    chrome.identity.getAuthToken(request, (token) => {
+      const err = chrome.runtime.lastError;
+      if (err) {
+        reject(err);
+      }
+      resolve(token);
+    });
   });
 }
