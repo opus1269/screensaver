@@ -29,13 +29,13 @@ import * as SSRunner from './ss_runner.js';
  * @property {Array<module:SSHistory.Item>} arr - history items
  * @property {int} idx - pointer into arr
  * @property {int} max - max length of arr, it will actually have 1 item more
- * @consts
+ * @const
  * @private
  */
 const _history = {
   arr: [],
   idx: -1,
-  max: 20,
+  max: 10,
 };
 
 /**
