@@ -62,6 +62,7 @@ import {LocalizeBehavior} from
       '../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import {GooglePhotosPage} from
       '../../elements/pages/google-photos-page/google-photos-page.js';
+import {SignInPage} from '../../elements/pages/signin-page/signin-page.js';
 import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
 import {HelpPage} from '../../elements/pages/help-page/help-page.js';
 import * as Permissions from '../../scripts/permissions.js';
@@ -146,7 +147,7 @@ const PUSHY_URI =
 
 /**
  * Array of pages
- * @type {module:Options.Page[]}
+ * @type {module:AppMain.Page[]}
  */
 const pages = [
   {
@@ -162,6 +163,11 @@ const pages = [
     label: ChromeLocale.localize('menu_google'),
     route: 'page-google-photos', icon: 'myicons:cloud',
     obj: null, ready: false, divider: true,
+  },
+  {
+    label: ChromeLocale.localize('menu_signin'),
+    route: 'page-signin', icon: 'myicons:account-circle',
+    obj: null, ready: false, divider: false,
   },
   {
     label: ChromeLocale.localize('menu_permission'),
@@ -402,6 +408,9 @@ Polymer({
         <neon-animatable data-route="page-google-photos">
           <section id="googlePhotosInsertion"></section>
         </neon-animatable>
+        <neon-animatable data-route="page-signin">
+          <section id="signInInsertion"></section>
+        </neon-animatable>
         <neon-animatable data-route="page-error">
           <section id="errorInsertion"></section>
         </neon-animatable>
@@ -472,9 +481,10 @@ Polymer({
     // initialize page functions
     pages[1].obj = this._showScreensaverPreview.bind(this);
     pages[2].obj = this._showGooglePhotosPage.bind(this);
-    pages[3].obj = this._showPermissionsDialog.bind(this);
-    pages[4].obj = this._showErrorPage.bind(this);
-    pages[5].obj = this._showHelpPage.bind(this);
+    pages[3].obj = this._showSignInPage.bind(this);
+    pages[4].obj = this._showPermissionsDialog.bind(this);
+    pages[5].obj = this._showErrorPage.bind(this);
+    pages[6].obj = this._showHelpPage.bind(this);
 
     // listen for chrome messages
     ChromeMsg.listen(this._onMessage.bind(this));
@@ -632,6 +642,21 @@ Polymer({
     return pages.map(function(e) {
       return e.route;
     }).indexOf(name);
+  },
+
+  /**
+   * Show the Sign-in page
+   * @param {int} index - index into {@link module:AppMain.pages}
+   * @private
+   */
+  _showSignInPage: function(index) {
+    if (!pages[index].ready) {
+      // insert the page the first time
+      pages[index].ready = true;
+      const el = new SignInPage();
+      this.$.signInInsertion.appendChild(el);
+    }
+    this.set('route', pages[index].route);
   },
 
   /**
