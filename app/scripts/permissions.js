@@ -20,8 +20,6 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  *  @module Permissions
  */
 
-const chromep = new ChromePromise();
-
 /**
  * A permission state enum
  * @typedef {{}} module:Permissions.State
@@ -105,7 +103,7 @@ export function isDenied(type) {
  * @returns {Promise<boolean>} true if permission granted
  */
 export async function request(type) {
-  const granted = await chromep.permissions.request({
+  const granted = await window.browser.permissions.request({
     permissions: type.permissions,
     origins: type.origins,
   });
@@ -134,7 +132,7 @@ export async function remove(type) {
 
   const contains = await _contains(type);
   if (contains) {
-    removed = await chromep.permissions.remove({
+    removed = await window.browser.permissions.remove({
       permissions: type.permissions,
       origins: type.origins,
     });
@@ -205,7 +203,7 @@ function _setState(type, value) {
  * @returns {Promise<boolean>} true if we have permissions
  */
 function _contains(type) {
-  return chromep.permissions.contains({
+  return window.browser.permissions.contains({
     permissions: type.permissions,
     origins: type.origins,
   });

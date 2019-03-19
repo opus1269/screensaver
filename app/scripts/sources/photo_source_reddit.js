@@ -20,7 +20,7 @@ import PhotoSource from './photo_source.js';
    * @private
    */
   const _REDIRECT_URI =
-      `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
+      `https://${window.browser.runtime.id}.chromiumapp.org/reddit`;
 
   // noinspection SpellCheckingInspection
 /**

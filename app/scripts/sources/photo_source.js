@@ -215,8 +215,7 @@ export default class PhotoSource {
         isGoogleKey = true;
       }
       if (!(isGoogleKey && !useGoogle)) {
-        const chromep = new ChromePromise();
-        chromep.storage.local.remove(this._photosKey).catch(() => {});
+        window.browser.storage.local.remove(this._photosKey).catch(() => {});
       }
       return null;
     }
