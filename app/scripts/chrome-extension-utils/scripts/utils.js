@@ -139,6 +139,17 @@ export function isMac() {
 }
 
 /**
+ * Determine if we are installed on Opera
+ * @see https://stackoverflow.com/a/34918134/4468645
+ * Note: !!window.chrome && !!window.chrome.webstore no longer works for Chrome
+ * detection
+ * @returns {boolean} true if Opera browser
+ */
+export function isOpera() {
+  return !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+}
+
+/**
  * No operation
  */
 export function noop() {}

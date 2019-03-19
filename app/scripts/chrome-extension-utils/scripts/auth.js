@@ -4,10 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeStorage from './storage.js';
+import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
 /**
- * Google Oauth2.0 utilities
+ * Oauth2.0 utilities
  * @see https://developer.chrome.com/apps/identity
  * @module ChromeAuth
  */
@@ -24,16 +26,57 @@ const chromep = new ChromePromise();
  * those in the manifest
  * @returns {Promise<string>} An access token
  */
-export function getToken(interactive = false, scopes = null) {
-  const request = {
-    interactive: interactive,
-  };
-  if (scopes && scopes.length) {
-    request.scopes = scopes;
+export async function getToken(interactive = false, scopes = null) {
+  let token;
+  const isOpera = ChromeUtils.isOpera();
+
+  if (!isOpera) {
+    // Chrome uses getAuthToken
+    const request = {
+      interactive: interactive,
+    };
+    if (scopes && scopes.length) {
+      request.scopes = scopes;
+    }
+    return chromep.identity.getAuthToken(request).then((theToken) => {
+      token = theToken;
+      return Promise.resolve(token);
+    });
+  } else {
+    // everyone else uses launchWebAuthFlow
+    token = await ChromeStorage.asyncGet('token', null);
+    if (token) {
+      return Promise.resolve(token);
+    } else {
+      const scopes = [
+        'openid',
+        'email',
+        'profile',
+        'https://www.googleapis.com/auth/photoslibrary.readonly'];
+      const clientId =
+          '595750713699-n3tal780utvvuum73tgf44q41564afmc.apps.googleusercontent.com';
+      const redirectUrl = chrome.identity.getRedirectURL('oauth2');
+      let url = 'https://accounts.google.com/o/oauth2/auth';
+      url += `?client_id=${encodeURIComponent(clientId)}`;
+      url += `&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+      url += '&response_type=token';
+      url += `&scope=${encodeURIComponent(scopes.join(' '))}`;
+      const request = {
+        url: url,
+        interactive: interactive,
+      };
+      let responseUrl = await chromep.identity.launchWebAuthFlow(request);
+      responseUrl = responseUrl || '';
+      const regex = /access_token=(.*?)(?=&)/;
+      let match = responseUrl.match(regex);
+      match = match || [];
+      token = match[1];
+      if (token && !ChromeUtils.isWhiteSpace(token)) {
+        await ChromeStorage.asyncSet('token', token);
+      }
+      return Promise.resolve(token);
+    }
   }
-  return chromep.identity.getAuthToken(request).then((token) => {
-    return Promise.resolve(token);
-  });
 }
 
 /**
@@ -44,23 +87,35 @@ export function getToken(interactive = false, scopes = null) {
  * those in the manifest
  * @returns {Promise.<string>} the old token
  */
-export function removeCachedToken(interactive = false, curToken = null,
+export async function removeCachedToken(interactive = false, curToken = null,
                                   scopes = null) {
   let oldToken = null;
-  if (curToken === null) {
-    return getToken(interactive, scopes).then((token) => {
-      oldToken = token;
-      return chromep.identity.removeCachedAuthToken({token: token});
-    }).then(() => {
+  const isOpera = ChromeUtils.isOpera();
+  
+  if (isOpera) {
+    try {
+      oldToken = await ChromeStorage.asyncGet('token', null);
+      await ChromeStorage.asyncSet('token', null);
+    } catch (err) {
+      // ignore
       return Promise.resolve(oldToken);
-    });
+    }
   } else {
-    oldToken = curToken;
-    return chromep.identity.removeCachedAuthToken({
-      'token': curToken,
-    }).then(() => {
-      return Promise.resolve(oldToken);
-    });
+    if (curToken === null) {
+      return getToken(interactive, scopes).then((token) => {
+        oldToken = token;
+        return chromep.identity.removeCachedAuthToken({token: token});
+      }).then(() => {
+        return Promise.resolve(oldToken);
+      });
+    } else {
+      oldToken = curToken;
+      return chromep.identity.removeCachedAuthToken({
+        'token': curToken,
+      }).then(() => {
+        return Promise.resolve(oldToken);
+      });
+    }
   }
 }
 
@@ -70,30 +125,18 @@ export function removeCachedToken(interactive = false, curToken = null,
  */
 export function isSignedIn() {
   let ret = true;
+  const isOpera = ChromeUtils.isOpera();
+  
+  if (isOpera) {
+    // does not matter for non-chrome browsers
+    return Promise.resolve(ret);
+  }
   // try to get a token and check failure message
   return chromep.identity.getAuthToken({interactive: false}).then(() => {
     return Promise.resolve(ret);
   }).catch((err) => {
     if (err.message.match(/not signed in/)) {
       ret = false;
-    }
-    return Promise.resolve(ret);
-  });
-}
-
-/**
- * Has our authorization been revoked (or not granted) for the default
- * scopes
- * @returns {Promise<boolean>} true if no valid token
- */
-export function isRevoked() {
-  let ret = false;
-  // try to get a token and check failure message
-  return chromep.identity.getAuthToken({interactive: false}).then(() => {
-    return Promise.resolve(ret);
-  }).catch((err) => {
-    if (err.message.match(/OAuth2 not granted or revoked/)) {
-      ret = true;
     }
     return Promise.resolve(ret);
   });
