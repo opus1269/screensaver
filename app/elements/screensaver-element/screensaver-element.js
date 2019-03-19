@@ -410,8 +410,8 @@ Polymer({
    * @param {int} [delay=1000] - delay in milli sec before start
    * @private
    */
-  _launch: function(delay = 1000) {
-    const hasPhotos = SSBuilder.build();
+  _launch: async function(delay = 1000) {
+    const hasPhotos = await SSBuilder.build();
     if (hasPhotos) {
       // kick off the slide show if there are photos selected
       SSRunner.start(delay);
