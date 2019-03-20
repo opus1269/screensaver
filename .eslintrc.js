@@ -35,6 +35,7 @@ module.exports = {
     'gapi': true,
     'self': true,
     'clients': true,
+    'firebase': true,
     'Snoocore': true,
     'ChromePromise': true,
     'ExHandler': true,

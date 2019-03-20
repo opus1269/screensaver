@@ -17,9 +17,23 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 
 /**
- * Manage the Chrome sign-in state
+ * Manage the user
  * @module User
  */
+
+/**
+ * Sign in
+ * @private
+ */
+export async function signIn() {
+}
+
+/**
+ * Sign out
+ * @private
+ */
+export async function signOut() {
+}
 
 /**
  * Event: Fired when signin state changes for an act. on the user's profile.
@@ -28,7 +42,7 @@ import * as MyGA from '../../scripts/my_analytics.js';
  * @param {boolean} signedIn - true if signedIn
  * @private
  */
-function _onSignInChanged(account, signedIn) {
+function _onChromeSignInChanged(account, signedIn) {
   ChromeStorage.set('signedInToChrome', signedIn);
   if (!signedIn) {
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
@@ -37,7 +51,7 @@ function _onSignInChanged(account, signedIn) {
     const type = ChromeStorage.get('permPicasa');
     if (type === 'allowed') {
       ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),
-          'User._onSignInChanged');
+          'User._onChromeSignInChanged');
     }
   }
 }
@@ -47,8 +61,10 @@ function _onSignInChanged(account, signedIn) {
  * @private
  */
 function _onLoad() {
-  // Listen for changes to Browser sign-in
-  chrome.identity.onSignInChanged.addListener(_onSignInChanged);
+  // Listen for changes to Chrome Browser sign-in
+  if (chrome && chrome.identity && chrome.identity.onSignInChanged) {
+    chrome.identity.onSignInChanged.addListener(_onChromeSignInChanged);
+  }
 }
 
 // listen for documents and resources loaded
