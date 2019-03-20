@@ -45,7 +45,8 @@ export function signIn() {
   return ChromeAuth.getToken(true).then((token) => {
     return Fb.signIn(token);
   }).then((user) => {
-    _setSignIn(true, user);
+    return _setSignIn(true, user);
+  }).then(() => {
     return Promise.resolve(true);
   });
 }
@@ -58,7 +59,8 @@ export function signIn() {
  */
 export function signOut() {
   return Fb.signOut().then(() => {
-    _setSignIn(false);
+    return _setSignIn(false);
+  }).then(() => {
     return Promise.resolve(true);
   });
 }
@@ -67,12 +69,19 @@ export function signOut() {
  * Set signIn state
  * @param {boolean} signedIn - true if signed in
  * @param {Object} [user=null] - user object
+ * @returns {Promise<void>}
  * @private
  */
-function _setSignIn(signedIn, user = null) {
-  const photoUrl = (user && user.photoUrl) ? user.photoUrl : '';
+async function _setSignIn(signedIn, user = null) {
+  const email = (user && user.email) ? user.email : '';
+  const photoUrl = (user && user.photoURL) ? user.photoURL : '';
   ChromeStorage.set('signedIn', signedIn);
+  ChromeStorage.set('email', email);
   ChromeStorage.set('photoURL', photoUrl);
+  if (!signedIn) {
+    await ChromeStorage.asyncSet('token', null);
+  }
+  return null;
 }
 
 // noinspection JSUnusedLocalSymbols
