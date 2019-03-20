@@ -597,6 +597,12 @@
   "menu_signin": {
     "message": "Manage Google Photos account"
   },
+  "current_chrome_user": {
+    "message": "Current Chrome user"
+  },
+  "account_signin": {
+    "message": "Account sign in"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

@@ -30,17 +30,19 @@ import * as ChromeAuth
   from '../../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-// import * as ChromeLocale
-//   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLocale
+  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
   from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
   from '../../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {
+  showConfirmDialog,
+  showErrorDialog,
+} from '../../app-main/app-main.js';
 
 /**
  * Polymer element for managing sign-in
@@ -220,6 +222,15 @@ export const SignInPage = Polymer({
   },
 
   /**
+   * Element is ready
+   */
+  ready: function() {
+    setTimeout(() => {
+      // initialize button state
+      this._checkChromeSignIn();
+    }, 0);
+  },
+  /**
    * We have animated in and are now the current page
    */
   onCurrentPage: function() {
@@ -258,8 +269,13 @@ export const SignInPage = Polymer({
    * @private
    */
   _computeTitle: function(isSignedIn) {
-    const signedIn = `Signed in as: ${ChromeStorage.get('email')}`;
-    const signedOut = 'Account Sign In';
+    let signInName = ChromeLocale.localize('current_chrome_user');
+    const email = ChromeStorage.get('email', null);
+    if (email) {
+      signInName = email;
+    }
+    const signedIn = `Signed in as: ${signInName}`;
+    const signedOut = ChromeLocale.localize('account_signin');
     return isSignedIn ? signedIn : signedOut;
   },
 
@@ -298,14 +314,8 @@ export const SignInPage = Polymer({
    * @private
    */
   _checkChromeSignIn: function() {
-    window.browser.identity.getProfileUserInfo().then((userInfo) => {
-      if (!ChromeAuth.isSignedIn() &&
-          ChromeUtils.isWhiteSpace(userInfo.id)) {
-        this.set('isSignInDisabled', true);
-      } else {
-        this.set('isSignInDisabled', false);
-        this._checkPermissions();
-      }
+    ChromeAuth.isSignedIn().then((signedIn) => {
+      this.set('isSignInDisabled', !signedIn);
       return null;
     }).catch((err) => {
       ChromeLog.error(err.message, 'SignInPage._checkChromeSignIn');

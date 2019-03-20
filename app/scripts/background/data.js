@@ -38,7 +38,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @const
  * @private
  */
-const _DATA_VERSION = 22;
+const _DATA_VERSION = 23;
 
 /**
  * Default values in localStorage
@@ -85,6 +85,7 @@ const _DATA_VERSION = 22;
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
  * @property {{}} googlePhotosFilter - filter for retrieving google photos
+ * @property {boolean} signedIn - general signin state
  * @type {module:AppData._DEF_VALUES}
  * @const
  * @private
@@ -129,6 +130,7 @@ const _DEF_VALUES = {
   'signedInToChrome': true,
   'googlePhotosNoFilter': true,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
+  'signedIn': false,
 };
 
 /**
@@ -383,6 +385,12 @@ export function update() {
     ChromeStorage.set('isAwake', null);
     ChromeStorage.set('isShowing', null);
     ChromeStorage.set('albumSelections', null);
+  }
+
+  if (oldVersion < 23) {
+    // set new signin state
+    const signedInToChrome = ChromeStorage.get('signedInToChrome', false);
+    ChromeStorage.set('signedIn', signedInToChrome);
   }
 
   _addDefaults();
