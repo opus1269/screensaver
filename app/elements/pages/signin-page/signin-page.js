@@ -1,8 +1,8 @@
 /*
- ~ Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
- ~ Licensed under Apache 2.0
- ~ https://opensource.org/licenses/Apache-2.0
- ~ https://goo.gl/wFvBM1
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -22,12 +22,11 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {LocalizeBehavior} from '../../setting-elements/localize-behavior/localize-behavior.js';
+import {showErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/my_icons.js';
 import '../../../elements/error-dialog/error-dialog.js';
 import '../../../elements/waiter-element/waiter-element.js';
 
-import * as ChromeAuth
-  from '../../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
@@ -39,15 +38,13 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 import * as Permissions from '../../../scripts/permissions.js';
-import {showErrorDialog} from '../../app-main/app-main.js';
 
 /**
  * Polymer element for managing sign-in
  * @module SignInPage
  */
-
-const ERROR_SIGN_IN = 'Failed to sign in.';
 
 /** Polymer element */
 export const SignInPage = Polymer({
@@ -118,8 +115,7 @@ export const SignInPage = Polymer({
 
     <div class="text-content vertical center-justified layout center">
       <paper-item id="description" hidden$="[[_computeDescHidden(isWaiting, signedIn)]]">
-        Sign-In is only required if you want to use your Google Photos.
-        Your email address is used only for this purpose.
+        [[localize('signin_desc')]]
       </paper-item>
 
       <waiter-element active="[[isWaiting]]" label="[[_computeWaiterLabel(isWaiting)]]">
@@ -128,14 +124,13 @@ export const SignInPage = Polymer({
     </div>
 
     <div class="button-content vertical layout center">
-      <paper-item id="googleAccountButton" tabindex="0" on-click="_onAccountButtonClicked"
-                  disabled$="[[isSignInDisabled]]">
+      <paper-item id="googleAccountButton" tabindex="0" on-click="_onAccountButtonClicked">
         <paper-ripple center=""></paper-ripple>
         <iron-icon icon="myicons:google" item-icon=""></iron-icon>
         <span id="buttonText" class="setting-label">[[_computeButtonLabel(signedIn)]]</span>
       </paper-item>
     </div>
-        
+
   </div>
 
 </paper-material>
@@ -149,37 +144,15 @@ export const SignInPage = Polymer({
   ],
 
   properties: {
-    /**
-     * Signin state
-     */
+    /** Signin state */
     signedIn: {
       type: Boolean,
       value: false,
       notify: true,
     },
 
-    /**
-     * Signin disabled state
-     */
-    isSignInDisabled: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /**
-     * Waiting for signIn/signOut state
-     */
+    /** Waiting for signIn/signOut state */
     isWaiting: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
-    /**
-     * Display dialog OK button state
-     */
-    showConfirmButton: {
       type: Boolean,
       value: false,
       notify: true,
@@ -190,12 +163,8 @@ export const SignInPage = Polymer({
    * Element is ready
    */
   ready: function() {
-    setTimeout(() => {
-      // initialize button state
-      this._setButtonState();
-    }, 0);
   },
-  
+
   /**
    * Event: Signin/SignOut button clicked
    * @private
@@ -238,7 +207,9 @@ export const SignInPage = Polymer({
    * @private
    */
   _computeButtonLabel: function(isSignedIn) {
-    return isSignedIn ? 'Sign out' : 'Sign in';
+    return isSignedIn
+        ? ChromeLocale.localize('signout')
+        : ChromeLocale.localize('signin');
   },
 
   /**
@@ -247,7 +218,9 @@ export const SignInPage = Polymer({
    * @private
    */
   _computeWaiterLabel: function() {
-    return this.signedIn ? 'Signing Out...' : 'Signing In...';
+    return this.signedIn
+        ? ChromeLocale.localize('signing_out')
+        : ChromeLocale.localize('signing_in');
   },
 
   /**
@@ -262,27 +235,13 @@ export const SignInPage = Polymer({
   },
 
   /**
-   * Set the button state
-   * @private
-   */
-  _setButtonState: function() {
-    // TODO any criteria? get rid of?
-    if (ChromeAuth.isDeprecatedSignIn()) {
-      this.set('isSignInDisabled', false);
-    } else {
-      this.set('isSignInDisabled', false);
-    }
-  },
-
-  /**
    * Attempt to sign in
    * @returns {Promise<void>}
    * @private
    */
   _signIn: async function() {
     const METHOD = 'SignInPage._signIn';
-    // TODO add message
-    const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
+    const ERR_TITLE = ChromeLocale.localize('err_signin');
 
     this.set('isWaiting', true);
     try {
@@ -296,19 +255,19 @@ export const SignInPage = Polymer({
         showErrorDialog(title, text);
         return null;
       }
-      
+
       const response = await ChromeMsg.send(ChromeMsg.SIGN_IN);
       if (response.message === 'error') {
-        ChromeLog.error(response.error, 'SignInPage._signIn');
-        showErrorDialog(ERROR_SIGN_IN, response.error);
+        ChromeLog.error(response.error, METHOD);
+        showErrorDialog(ERR_TITLE, response.error);
       }
       this.set('isWaiting', false);
       return null;
 
     } catch (err) {
       this.set('isWaiting', false);
-      ChromeLog.error(err.message, 'SignInPage._signIn');
-      showErrorDialog(ERROR_SIGN_IN, err.message);
+      ChromeLog.error(err.message, METHOD);
+      showErrorDialog(ERR_TITLE, err.message);
       throw err;
     } finally {
       this.set('isWaiting', false);
@@ -326,5 +285,5 @@ export const SignInPage = Polymer({
     await ChromeMsg.send(ChromeMsg.SIGN_OUT);
     this.set('isWaiting', false);
     return null;
-   },
+  },
 });

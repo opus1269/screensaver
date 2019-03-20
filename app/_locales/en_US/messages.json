@@ -603,6 +603,24 @@
   "account_signin": {
     "message": "Account sign in"
   },
+  "err_signin": {
+    "message": "Failed to sign in"
+  },
+  "signin": {
+    "message": "Sign in"
+  },
+  "signin_desc": {
+    "message": "Sign-In is only required if you want to use your Google Photos.\nYour email address is used only for this purpose."
+  },
+  "signout": {
+    "message": "Sign out"
+  },
+  "signing_in": {
+    "message": "Signing in..."
+  },
+  "signing_out": {
+    "message": "Signing out..."
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

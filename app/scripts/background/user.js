@@ -95,19 +95,18 @@ async function _setSignInState(signedIn, user = null) {
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
  * @param {module:ChromeMsg.Message} request - details for the
  * @param {Object} sender - MessageSender object
- * @param {function} response - function to call once after processing
- * @returns {boolean} true if asynchronous
+ * @returns {Promise<JSON>}
  * @private
  */
-function _onChromeMessage(request, sender, response) {
-  let ret = false;
+function _onChromeMessage(request, sender) {
+  const ret = {
+    message: 'ok',
+  };
 
   if (request.message === ChromeMsg.SIGN_IN.message) {
     // try to signIn a user
-    ret = true; // async
-    signIn().then(() => {
-      response({message: 'ok'});
-      return null;
+    return signIn().then(() => {
+      return Promise.resolve(ret);
     }).catch((err) => {
       ChromeLog.error(`${request.message}: ${err.message}`,
           'User._onChromeMessage');
@@ -115,20 +114,18 @@ function _onChromeMessage(request, sender, response) {
       signOut().catch(() => {
         // always resolves
       });
-      response({message: 'error', error: err.message});
+      ret.error = err.message;
+      return Promise.resolve(ret);
     });
   } else if (request.message === ChromeMsg.SIGN_OUT.message) {
     // signOut a user - will always sign out
-    ret = true; // async
-    signOut().then(() => {
-      response({message: 'ok'});
-      return null;
+    return signOut().then(() => {
+      return Promise.resolve(ret);
     }).catch(() => {
       // always resolves
-      response({message: 'ok'});
+      return Promise.resolve(ret);
     });
   }
-  return ret;
 }
 
 /**
