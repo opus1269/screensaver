@@ -208,13 +208,6 @@ const pages = [
  */
 let gPhotosPage = null;
 
-/**
- * Chrome sign in state
- * @type {boolean}
- * @private
- */
-let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
-
 Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomProperty -->
@@ -392,6 +385,8 @@ Polymer({
 
   </app-header-layout>
   
+  <app-localstorage-document key="signedIn" data="{{signedIn}}" storage="window.localStorage">
+  </app-localstorage-document>
   <app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
   </app-localstorage-document>
   <app-localstorage-document key="photoURL" data="{{avatar}}" storage="window.localStorage">
@@ -419,6 +414,13 @@ Polymer({
     route: {
       type: String,
       value: 'page-settings',
+      notify: true,
+    },
+
+    /** Signin state */
+    signedIn: {
+      type: Boolean,
+      value: false,
       notify: true,
     },
 
@@ -479,11 +481,8 @@ Polymer({
 
     // listen for changes to localStorage
     window.addEventListener('storage', (ev) => {
-      if (ev.key === 'permPicasa') {
+      if ((ev.key === 'permPicasa') || (ev.key === 'signedIn')) {
         this._setGooglePhotosMenuState();
-      } else if (ev.key === 'signedInToChrome') {
-        this.signedInToChrome =
-            ChromeStorage.getBool('signedInToChrome', true);
       }
     }, false);
 
@@ -616,14 +615,14 @@ Polymer({
    * @private
    */
   _showGooglePhotosPage: function(index) {
-    signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
-    if (!signedInToChrome) {
-      // Display Error Dialog if not signed in to Chrome
-      const title = ChromeLocale.localize('err_chrome_signin_title');
-      const text = ChromeLocale.localize('err_chrome_signin');
+    if (!this.signedIn) {
+      // Display Error Dialog if not signed in
+      const title = ChromeLocale.localize('err_signin_title');
+      const text = ChromeLocale.localize('err_signin_dec');
       this.$.errorDialog.open(title, text);
       return;
     }
+    
     if (!pages[index].ready) {
       // create the page the first time
       pages[index].ready = true;
@@ -688,7 +687,7 @@ Polymer({
     if (!el) {
       ChromeGA.error('no element found',
           'AppMain._setGooglePhotosMenuState');
-    } else if (this.permission !== 'allowed') {
+    } else if (!this.signedIn || (this.permission !== 'allowed')) {
       el.setAttribute('disabled', 'true');
     } else {
       el.removeAttribute('disabled');
@@ -715,41 +714,44 @@ Polymer({
     });
   },
 
-  // noinspection JSUnusedLocalSymbols
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
    * @see https://developer.chrome.com/extensions/runtime#event-onMessage
    * @param {module:ChromeMsg.Message} request - details for the message
-   * @param {Object} [sender] - MessageSender object
-   * @param {Function} [response] - function to call once after processing
-   * @returns {boolean} true if asynchronous
+   * @returns {Promise<JSON>}
    * @private
    */
-  _onMessage: function(request, sender, response) {
+  _onMessage: function(request) {
+    const ret = {
+      message: 'ok',
+    };
+    
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
-      window.browser.tabs.getCurrent().then((tab) => {
+      return window.browser.tabs.getCurrent().then((tab) => {
         window.browser.tabs.update(tab.id, {'highlighted': true});
-        return null;
+        return Promise.resolve(ret);
       }).catch((err) => {
         ChromeLog.error(err.message, 'browser.tabs.getCurrent');
+        ret.error = err.message;
+        return Promise.resolve(ret);
       });
-      response(JSON.stringify({message: 'OK'}));
     } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
       // Display Error Dialog if a save action exceeded the
       // localStorage limit
       const title = ChromeLocale.localize('err_storage_title');
       const text = ChromeLocale.localize('err_storage_desc');
       this.$.errorDialog.open(title, text);
+      return Promise.resolve(ret);
     } else if (request.message === MyMsg.PHOTO_SOURCE_FAILED.message) {
       // failed to load
       this.$.settingsPage.deselectPhotoSource(request.key);
       const title = ChromeLocale.localize('err_photo_source_title');
       const text = request.error;
       this.$.errorDialog.open(title, text);
+      return Promise.resolve(ret);
     }
-    return false;
   },
 
 });

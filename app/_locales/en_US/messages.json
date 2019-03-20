@@ -606,6 +606,12 @@
   "err_signin": {
     "message": "Failed to sign in"
   },
+  "err_signin_title": {
+    "message": "Not signed in"
+  },
+  "err_signin_desc": {
+    "message": "Please sign in to the account that has your Google Photos."
+  },
   "signin": {
     "message": "Sign in"
   },

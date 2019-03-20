@@ -88,17 +88,15 @@ async function _setSignInState(signedIn, user = null) {
   return null;
 }
 
-// noinspection JSUnusedLocalSymbols
 /**
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
  * @param {module:ChromeMsg.Message} request - details for the
- * @param {Object} sender - MessageSender object
  * @returns {Promise<JSON>}
  * @private
  */
-function _onChromeMessage(request, sender) {
+function _onChromeMessage(request) {
   const ret = {
     message: 'ok',
   };
