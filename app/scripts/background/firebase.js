@@ -25,12 +25,9 @@ let _app = null;
 let _auth;
 
 /**
- * Initialize firebase and its Namespaces
- * @param {ServiceWorkerRegistration} swReg - use own ServiceWorker
- * @returns {Promise.<void>} void
- * @private
+ * Initialize the firebase libraries
  */
-function _initializeFirebase(swReg) {
+export function initialize() {
   // noinspection SpellCheckingInspection
   const config = {
     apiKey: 'AIzaSyDOTQ6sUMq8XJg4_EoKG947h6GvcIKWlRI',
@@ -40,34 +37,11 @@ function _initializeFirebase(swReg) {
     projectId: 'eminent-bond-863',
   };
 
-  return _deleteFirebaseApp().then(() => {
-    _app = firebase.initializeApp(config);
+  if (!_app) {
+    _app = window.firebase.initializeApp(config);
 
-    _auth = firebase.auth();
-
-    return Promise.resolve();
-  });
-}
-
-/**
- * Delete firebase.app if it exists
- * @returns {Promise<void>|Promise<void>} void
- * @private
- */
-function _deleteFirebaseApp() {
-  if (_app) {
-    return firebase.app().delete();
+    _auth = window.firebase.auth();
   }
-  return Promise.resolve();
-}
-
-/**
- * Initialize the firebase libraries
- * @param {ServiceWorkerRegistration} swReg - service worker
- * @returns {Promise<void>} void
- */
-export function initialize(swReg) {
-  return _initializeFirebase(swReg);
 }
 
 /**
@@ -77,7 +51,8 @@ export function initialize(swReg) {
  * @returns {Promise<Object>} The current firebase user
  */
 export function signIn(token) {
-  const credential = firebase.auth.GoogleAuthProvider.credential(null, token);
+  const credential =
+      window.firebase.auth.GoogleAuthProvider.credential(null, token);
   return _auth.signInAndRetrieveDataWithCredential(credential).
       then((result) => {
         return Promise.resolve(result.user);
@@ -92,3 +67,4 @@ export function signIn(token) {
 export function signOut() {
   return _auth.signOut();
 }
+

@@ -39,10 +39,10 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import {
-  showConfirmDialog,
-  showErrorDialog,
-} from '../../app-main/app-main.js';
+// import {
+//   showConfirmDialog,
+//   showErrorDialog,
+// } from '../../app-main/app-main.js';
 
 /**
  * Polymer element for managing sign-in
