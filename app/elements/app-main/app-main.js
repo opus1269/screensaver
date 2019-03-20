@@ -489,12 +489,19 @@ Polymer({
     showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
 
     // initialize page functions
-    pages[1].obj = this._showScreensaverPreview.bind(this);
-    pages[2].obj = this._showGooglePhotosPage.bind(this);
-    pages[3].obj = this._showSignInPage.bind(this);
-    pages[4].obj = this._showPermissionsDialog.bind(this);
-    pages[5].obj = this._showErrorPage.bind(this);
-    pages[6].obj = this._showHelpPage.bind(this);
+    let idx;
+    idx = this._getPageIdx('page-preview');
+    pages[idx].obj = this._showScreensaverPreview.bind(this);
+    idx = this._getPageIdx('page-google-photos');
+    pages[idx].obj = this._showGooglePhotosPage.bind(this);
+    idx = this._getPageIdx('page-signin');
+    pages[idx].obj = this._showSignInPage.bind(this);
+    idx = this._getPageIdx('page-permission');
+    pages[idx].obj = this._showPermissionsDialog.bind(this);
+    idx = this._getPageIdx('page-error');
+    pages[idx].obj = this._showErrorPage.bind(this);
+    idx = this._getPageIdx('page-help');
+    pages[idx].obj = this._showHelpPage.bind(this);
 
     // listen for chrome messages
     ChromeMsg.listen(this._onMessage.bind(this));
@@ -768,7 +775,7 @@ Polymer({
     const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
     if (!el) {
       ChromeGA.error('no element found',
-          'Options._setGooglePhotosMenuState');
+          'AppMain._setGooglePhotosMenuState');
     } else if (this.permission !== 'allowed') {
       el.setAttribute('disabled', 'true');
     } else {
@@ -792,7 +799,7 @@ Polymer({
       }
       return null;
     }).catch((err) => {
-      ChromeGA.error(err.message, 'Options._setErrorMenuState');
+      ChromeGA.error(err.message, 'AppMain._setErrorMenuState');
     });
   },
 
