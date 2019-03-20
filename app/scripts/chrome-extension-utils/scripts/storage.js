@@ -149,7 +149,11 @@ export async function asyncSet(key, value, keyBool = null) {
     [key]: value,
   };
   try {
-    await window.browser.storage.local.set(obj);
+    if (value) {
+      await window.browser.storage.local.set(obj);
+    } else {
+      await window.browser.storage.local.remove(key);
+    }
   } catch (err) {
     // notify listeners save failed
     ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
