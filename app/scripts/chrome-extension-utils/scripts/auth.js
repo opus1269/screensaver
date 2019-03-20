@@ -15,7 +15,7 @@ import './ex_handler.js';
  */
 
 /**
- * Set this when using launchWebAuthFlow
+ * Info for launchWebAuthFlow
  * @typedef {{}} module:ChromeAuth.AuthFlow
  * @property {string} baseUrl
  * @property {[string]} scopes
@@ -179,8 +179,7 @@ export function isSignedIn() {
   }
 
   // chrome - try to get a token and check failure message
-  return _getChromeAuthToken({interactive: false}).then(() => {
-    const err = chrome.runtime.lastError;
+  return _getChromeAuthToken({interactive: false}).catch((err) => {
     if (err && err.message.match(/not signed in/)) {
       ret = false;
     }
