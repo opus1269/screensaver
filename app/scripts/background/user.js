@@ -6,6 +6,8 @@
  */
 import * as Fb from './firebase.js';
 
+import * as MyGA from '../../scripts/my_analytics.js';
+
 import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
@@ -19,8 +21,6 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import * as MyGA from '../../scripts/my_analytics.js';
 
 /**
  * Manage the user
@@ -37,7 +37,7 @@ ChromeMsg.listen(_onChromeMessage);
 
 /**
  * Sign in
- * @throws An error is signin failed
+ * @throws An error if signin failed
  * @returns {Promise<boolean>} true on success
  * @private
  */
@@ -53,7 +53,7 @@ export function signIn() {
 
 /**
  * Sign out
- * @throws An error is signin failed
+ * @throws An error if signout failed
  * @returns {Promise<boolean>} true on success
  * @private
  */

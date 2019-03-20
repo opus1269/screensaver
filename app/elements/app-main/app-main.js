@@ -279,12 +279,15 @@ Polymer({
     @apply --paper-font-headline;
   }
 
-  .menu-name {
-    /*noinspection CssUnresolvedCustomPropertySet*/
-    @apply --paper-font-title;
+  .menu-title {
     color: var(--dark-primary-color);
     background-color: var(--drawer-menu-color);
     border-bottom: var(--drawer-toolbar-border-color);
+  }
+
+  .menu-name {
+    /*noinspection CssUnresolvedCustomPropertySet*/
+    @apply --paper-font-title;
   }
 
   #mainPages neon-animatable {
@@ -356,9 +359,14 @@ Polymer({
   <app-drawer id="appDrawer" slot="drawer">
     <!-- For scrolling -->
     <div style="height: 100%; overflow: auto;">
-      <!-- Menu Title -->
-      <app-toolbar class="menu-name">
-        <div>[[localize('menu')]]</div>
+      <!-- Menu Drawer Toolbar -->
+      <app-toolbar class="menu-title">
+        <span class="menu-name flex">Menu</span>
+        <!--suppress HtmlUnknownTarget -->
+        <img src="[[avatar]]"
+             style$="height: 40px; width: 40px;
+                         border-radius: 20px; box-sizing: border-box;
+                         display: [[_computeAvatarDisplay(avatar)]];">
       </app-toolbar>
 
       <!-- Menu Items -->
@@ -425,6 +433,8 @@ Polymer({
   
   <app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
   </app-localstorage-document>
+  <app-localstorage-document key="photoURL" data="{{avatar}}" storage="window.localStorage">
+  </app-localstorage-document>
 
 </app-drawer-layout>
 `,
@@ -437,31 +447,31 @@ Polymer({
 
   properties: {
 
-    /**
-     * Array of {@link module:AppMain.Page}
-     * @const
-     */
+    /** Array of {@link module:AppMain.Page} */
     pages: {
       type: Array,
       value: pages,
       readOnly: true,
     },
 
-    /**
-     * Current {@link module:AppMain.Page}
-     */
+    /** Current {@link module:AppMain.Page} */
     route: {
       type: String,
       value: 'page-settings',
       notify: true,
     },
 
-    /**
-     * Google Photos permission status
-     */
+    /** Google Photos permission status */
     permission: {
       type: String,
       value: 'notSet',
+      notify: true,
+    },
+
+    /** User's avatar */
+    avatar: {
+      type: String,
+      value: '',
       notify: true,
     },
   },
@@ -630,6 +640,20 @@ Polymer({
   _computePermissionsStatus: function(permission) {
     return `${ChromeLocale.localize(
         'permission_status')} ${ChromeLocale.localize(permission)}`;
+  },
+
+  /**
+   * Computed Binding: Display avatar if one exists
+   * @param {string} avatar - current setting
+   * @returns {string}
+   * @private
+   */
+  _computeAvatarDisplay: function(avatar) {
+    let ret = 'inline';
+    if (ChromeUtils.isWhiteSpace(avatar)) {
+      ret = 'none';
+    }
+    return ret;
   },
 
   /**
