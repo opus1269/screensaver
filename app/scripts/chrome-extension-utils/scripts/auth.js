@@ -15,6 +15,37 @@ import './ex_handler.js';
  */
 
 /**
+ * Set this when using launchWebAuthFlow
+ * @typedef {{}} module:ChromeAuth.AuthFlow
+ * @property {string} baseUrl
+ * @property {[string]} scopes
+ * @property {string} client
+ * @property {string} redirect
+ */
+
+/**
+ * Set this when using launchWebAuthFlow
+ * @type {module:ChromeAuth.AuthFlow|null}
+ */
+let _authFlow = null;
+
+/**
+ * Setup launchWebAuthFlow
+ * @param {!string} baseUrl
+ * @param {![string]} scopes
+ * @param {!string} client
+ * @param {!string} redirect
+ */
+export function setAuthFlow(baseUrl, scopes, client, redirect) {
+  _authFlow = {
+    baseUrl: baseUrl,
+    scopes: scopes,
+    client: client,
+    redirect: redirect,
+  };
+}
+
+/**
  * Get an OAuth2.0 token<br />
  * Note: Every time you use a different scopes array, you will get a new
  * token the first time, so you need to always get it with those scopes
@@ -43,27 +74,25 @@ export async function getToken(
       return Promise.resolve(theToken);
     });
   } else {
+    // everyone else uses launchWebAuthFlow
+    if (!_authFlow) {
+      throw new Error('No web flow defined');
+    }
+    
     try {
-      // everyone else uses launchWebAuthFlow
       token = await ChromeStorage.asyncGet('token', null);
       if (token) {
         // cached
         return Promise.resolve(token);
       }
-
-      const scopes = [
-        'openid',
-        'email',
-        'profile',
-        'https://www.googleapis.com/auth/photoslibrary.readonly'];
-      const clientId =
-          '595750713699-n3tal780utvvuum73tgf44q41564afmc.apps.googleusercontent.com';
-      const redirectUrl = window.browser.identity.getRedirectURL('oauth2');
-      let url = 'https://accounts.google.com/o/oauth2/auth';
-      url += `?client_id=${encodeURIComponent(clientId)}`;
-      url += `&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+      
+      let url = _authFlow.baseUrl;
+      url += `?client_id=${encodeURIComponent(_authFlow.client)}`;
+      url += `&redirect_uri=${encodeURIComponent(_authFlow.redirect)}`;
       url += '&response_type=token';
-      url += `&scope=${encodeURIComponent(scopes.join(' '))}`;
+
+      let theScopes = scopes || _authFlow.scopes;
+      url += `&scope=${encodeURIComponent(theScopes.join(' '))}`;
 
       if (prompt) {
         url += `&prompt=${prompt}`;

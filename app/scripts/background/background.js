@@ -16,6 +16,8 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
+import * as ChromeAuth
+  from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg
@@ -151,6 +153,18 @@ function _onLoad() {
   MyGA.initialize();
   
   Fb.initialize();
+
+  const scopes = [
+    'openid',
+    'email',
+    'profile',
+    'https://www.googleapis.com/auth/photoslibrary.readonly'
+  ];
+  const clientId =
+      '595750713699-n3tal780utvvuum73tgf44q41564afmc.apps.googleusercontent.com';
+  const redirectUrl = window.browser.identity.getRedirectURL('oauth2');
+  const url = 'https://accounts.google.com/o/oauth2/auth';
+  ChromeAuth.setAuthFlow(url, scopes, clientId, redirectUrl);
   
   // listen for extension install or update
   window.browser.runtime.onInstalled.addListener(_onInstalled);
