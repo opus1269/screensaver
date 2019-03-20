@@ -42,7 +42,7 @@ ChromeMsg.listen(_onChromeMessage);
  * @private
  */
 export function signIn() {
-  return ChromeAuth.getToken(true).then((token) => {
+  return ChromeAuth.getToken(true, null, 'select_account').then((token) => {
     return Fb.signIn(token);
   }).then((user) => {
     return _setSignInState(true, user);
@@ -81,6 +81,7 @@ async function _setSignInState(signedIn, user = null) {
   if (!signedIn) {
     // this is the old way we handled signin, when we were Chrome only
     ChromeStorage.set('signedInToChrome', null);
+    
     await ChromeStorage.asyncSet('token', null);
     await ChromeStorage.asyncSet('albumSelections', null);
     await ChromeStorage.asyncSet('googleImages', null);

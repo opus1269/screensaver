@@ -21,12 +21,15 @@ import './ex_handler.js';
  * and remove the cached one with the scopes.
  * @param {boolean} interactive - if true may block
  * @param {string[]|null} [scopes=null] - optional scopes to use, overrides
+ * @param {string|null} [prompt=null] - openid prompt type space delimited
  * those in the manifest
  * @throws An error if we couldn't get token
  * @returns {Promise<string>} An access token
  */
-export async function getToken(interactive = false, scopes = null) {
+export async function getToken(
+    interactive = false, scopes = null, prompt = null) {
   let token = null;
+  let error = null;
 
   if (isDeprecatedSignIn()) {
     // Still using getAuthToken
@@ -61,6 +64,11 @@ export async function getToken(interactive = false, scopes = null) {
       url += `&redirect_uri=${encodeURIComponent(redirectUrl)}`;
       url += '&response_type=token';
       url += `&scope=${encodeURIComponent(scopes.join(' '))}`;
+
+      if (prompt) {
+        url += `&prompt=${prompt}`;
+      }
+      
       const request = {
         url: url,
         interactive: interactive,
@@ -73,11 +81,20 @@ export async function getToken(interactive = false, scopes = null) {
       match = match || [];
       token = match[1];
       if (token && !ChromeUtils.isWhiteSpace(token)) {
+        // cache token
         await ChromeStorage.asyncSet('token', token);
+      } else {
+        // failed to get token
+        error = new Error('Failed to get auth token');
       }
-      return Promise.resolve(token);
     } catch (err) {
-      throw err;
+      error = err;
+    }
+
+    if (error) {
+      throw error;
+    } else {
+      return Promise.resolve(token);
     }
   }
 }
