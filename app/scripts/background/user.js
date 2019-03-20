@@ -45,7 +45,7 @@ export function signIn() {
   return ChromeAuth.getToken(true).then((token) => {
     return Fb.signIn(token);
   }).then((user) => {
-    return _setSignIn(true, user);
+    return _setSignInState(true, user);
   }).then(() => {
     return Promise.resolve(true);
   });
@@ -59,7 +59,7 @@ export function signIn() {
  */
 export function signOut() {
   return Fb.signOut().then(() => {
-    return _setSignIn(false);
+    return _setSignInState(false);
   }).then(() => {
     return Promise.resolve(true);
   });
@@ -72,7 +72,7 @@ export function signOut() {
  * @returns {Promise<void>}
  * @private
  */
-async function _setSignIn(signedIn, user = null) {
+async function _setSignInState(signedIn, user = null) {
   const email = (user && user.email) ? user.email : '';
   const photoUrl = (user && user.photoURL) ? user.photoURL : '';
   ChromeStorage.set('signedIn', signedIn);
@@ -139,11 +139,14 @@ function _onChromeMessage(request, sender, response) {
  * @private
  */
 function _onChromeSignInChanged(account, signedIn) {
-  ChromeStorage.set('signedInToChrome', signedIn);
-  if (!signedIn) {
+  // this is the old way we handled signin, when we were Chrome only
+  const oldSignIn = ChromeStorage.get('signedInToChrome', null);
+  if (oldSignIn && !signedIn) {
+    // signing out of the old way
+    ChromeStorage.set('signedInToChrome', null);
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
-    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
-    ChromeStorage.asyncSet('googleImages', []).catch(() => {});
+    ChromeStorage.asyncSet('albumSelections', null).catch(() => {});
+    ChromeStorage.asyncSet('googleImages', null).catch(() => {});
     const type = ChromeStorage.get('permPicasa');
     if (type === 'allowed') {
       ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),

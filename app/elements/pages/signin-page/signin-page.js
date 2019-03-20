@@ -39,38 +39,15 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-// import {
-//   showConfirmDialog,
-//   showErrorDialog,
-// } from '../../app-main/app-main.js';
+import * as Permissions from '../../../scripts/permissions.js';
+import {showErrorDialog} from '../../app-main/app-main.js';
 
 /**
  * Polymer element for managing sign-in
  * @module SignInPage
  */
 
-const ERROR_NETWORK = 'There is no Internet connection';
 const ERROR_SIGN_IN = 'Failed to sign in.';
-const ERROR_SIGN_OUT = 'Failed to sign out.';
-const ERROR_PERMISSION =
-    'Notification permission is required to sign-in.';
-let ERROR_BLOCKED_MESSAGE =
-    `<p>
-        You either blocked notifications for the extension, the Chrome
-        settings block all notifications, or you dismissed the notification
-         popup too many times.<br />
-        If you want to sign-in, go to <b>Chrome settings</b> and click
-        on <b>Advanced</b>.
-        Click on <b>Content settings</b> then <b>Notifications</b>.
-        Make sure <b>Ask before sending (recommended)</b> is selected.
-        In the <b>Block</b> area allow <b>Pushy Clipboard</b>.
-        If it is not there, <b>ADD</b> this:<br />
-        chrome-extension://jemdfhaheennfkehopbpkephjlednffd/ site.
-      </p>`;
-const ERROR_DEFAULT_MESSAGE =
-    'Display notification pop-up again?';
-const ERROR_UNKNOWN_MESSAGE =
-    'An error occurred. Please try again later.<br />';
 
 /** Polymer element */
 export const SignInPage = Polymer({
@@ -81,10 +58,6 @@ export const SignInPage = Polymer({
   :host {
     display: block;
     position: relative;
-  }
-
-  #errorDialog {
-    max-width: 40vw;
   }
 
   .text-content {
@@ -143,18 +116,10 @@ export const SignInPage = Polymer({
   <!-- Content -->
   <div class="page-content fit vertical layout">
 
-    <!-- Error dialog -->
-    <error-dialog id="errorDialog" show-confirm-button="[[showConfirmButton]]"
-                  on-confirm-tap="_onDialogConfirmTapped"></error-dialog>
-
     <div class="text-content vertical center-justified layout center">
       <paper-item id="description" hidden$="[[_computeDescHidden(isWaiting, signedIn)]]">
-        You must be signed in to the Browser with the account you
-        wish to use to share with your other devices.
-        Sign-In is only required if you want to share data with your
-        other devices or backup/restore your data to Google Drive.
-        Your email address is used only for these purposes.
-        You also need to "Allow Notifications" so the extension can receive messages.
+        Sign-In is only required if you want to use your Google Photos.
+        Your email address is used only for this purpose.
       </paper-item>
 
       <waiter-element active="[[isWaiting]]" label="[[_computeWaiterLabel(isWaiting)]]">
@@ -227,17 +192,10 @@ export const SignInPage = Polymer({
   ready: function() {
     setTimeout(() => {
       // initialize button state
-      this._checkChromeSignIn();
+      this._setButtonState();
     }, 0);
   },
   
-  /**
-   * We have animated in and are now the current page
-   */
-  onCurrentPage: function() {
-    this._checkChromeSignIn();
-  },
-
   /**
    * Event: Signin/SignOut button clicked
    * @private
@@ -245,22 +203,15 @@ export const SignInPage = Polymer({
   _onAccountButtonClicked: function() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON,
         `SignInPage.accountButton: ${!this.signedIn}`);
-    if (!navigator.onLine) {
-      const title = this.signedIn ? ERROR_SIGN_OUT : ERROR_SIGN_IN;
-      ChromeLog.error(ERROR_NETWORK, 'SignInPage._accountButton', title);
-      this._showDialog(title, ERROR_NETWORK, false);
+    if (this.signedIn) {
+      this._signOut().catch(() => {
+        this.set('isWaiting', false);
+      });
     } else {
-      this.set('isWaiting', true);
-      this.signedIn ? this._signOut() : this._signIn();
+      this._signIn().catch(() => {
+        this.set('isWaiting', false);
+      });
     }
-  },
-
-  /**
-   * Event: Dialog confirm button click
-   * @private
-   */
-  _onDialogConfirmTapped: function() {
-    this._checkPermissions();
   },
 
   /**
@@ -311,101 +262,69 @@ export const SignInPage = Polymer({
   },
 
   /**
-   * Determine if the user is signed into the Browser
+   * Set the button state
    * @private
    */
-  _checkChromeSignIn: function() {
-    ChromeAuth.isSignedIn().then((signedIn) => {
-      this.set('isSignInDisabled', !signedIn);
-      return null;
-    }).catch((err) => {
-      ChromeLog.error(err.message, 'SignInPage._checkChromeSignIn');
-    });
+  _setButtonState: function() {
+    // TODO any criteria? get rid of?
+    if (ChromeAuth.isDeprecatedSignIn()) {
+      this.set('isSignInDisabled', false);
+    } else {
+      this.set('isSignInDisabled', false);
+    }
   },
 
   /**
-   * Display popup to Allow Notifications if necessary
+   * Attempt to sign in
+   * @returns {Promise<void>}
    * @private
    */
-  _checkPermissions: function() {
-    // Note: Don't rely on Notification.permission
-    // if extension requests notifications permission
-    this.set('isSignInDisabled', true);
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'denied') {
-        // user denied or Chrome setting blocks all
-        if (ChromeAuth.isSignedIn()) {
-          // force sign out
-          this._forceSignOut();
-        }
-        this._showDialog(ERROR_PERMISSION, ERROR_BLOCKED_MESSAGE, false);
-      } else if (permission === 'default') {
-        // user closed notification popup
-        if (ChromeAuth.isSignedIn()) {
-          // force sign out
-          this._forceSignOut();
-        }
-        this._showDialog(ERROR_PERMISSION, ERROR_DEFAULT_MESSAGE, true);
-      } else {
-        // granted
-        this.set('isSignInDisabled', false);
+  _signIn: async function() {
+    const METHOD = 'SignInPage._signIn';
+    // TODO add message
+    const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
+
+    this.set('isWaiting', true);
+    try {
+      const granted = await Permissions.request(Permissions.PICASA);
+      if (!granted) {
+        // failed to get google photos permission
+        await Permissions.removeGooglePhotos();
+        const title = ERR_TITLE;
+        const text = ChromeLocale.localize('err_auth_picasa');
+        ChromeLog.error(text, METHOD, title);
+        showErrorDialog(title, text);
+        return null;
       }
-      return null;
-    }).catch((err) => {
-      // something went wrong
-      ChromeLog.error(err.message, 'SignInPage._checkPermissions');
-      const text = ERROR_UNKNOWN_MESSAGE + err.message;
-      this._showDialog(ERROR_PERMISSION, text, false);
-    });
-  },
-
-  /**
-   * Attempt to sign in with current Browser account
-   * @private
-   */
-  _signIn: function() {
-    ChromeMsg.send(ChromeMsg.SIGN_IN).then((response) => {
+      
+      const response = await ChromeMsg.send(ChromeMsg.SIGN_IN);
       if (response.message === 'error') {
         ChromeLog.error(response.error, 'SignInPage._signIn');
-        this._showDialog(ERROR_SIGN_IN, response.error, false);
+        showErrorDialog(ERROR_SIGN_IN, response.error);
       }
       this.set('isWaiting', false);
       return null;
-    }).catch(() => {
+
+    } catch (err) {
       this.set('isWaiting', false);
-    });
+      ChromeLog.error(err.message, 'SignInPage._signIn');
+      showErrorDialog(ERROR_SIGN_IN, err.message);
+      throw err;
+    } finally {
+      this.set('isWaiting', false);
+    }
   },
 
   /**
    * sign out user - will always do it, one way or another
+   * @returns {Promise<void>}
    * @private
    */
-  _signOut: function() {
-    ChromeMsg.send(ChromeMsg.SIGN_OUT).then(() => {
-      this.set('isWaiting', false);
-      return null;
-    }).catch(() => {
-      this.set('isWaiting', false);
-    });
-  },
-
-  /**
-   * Force sign out
-   * @private
-   */
-  _forceSignOut: function() {
-    ChromeMsg.send(ChromeMsg.FORCE_SIGN_OUT).catch(() => {});
-  },
-
-  /**
-   * Show the error dialog
-   * @param {string} title - dialog title
-   * @param {string} text - dialog message
-   * @param {boolean} showConfirmButton - if true, display showConfirmButton
-   * @private
-   */
-  _showDialog: function(title, text, showConfirmButton) {
-    this.set('showConfirmButton', showConfirmButton);
-    this.$.errorDialog.open(title, text);
-  },
+  _signOut: async function() {
+    // TODO try need force signout?
+    this.set('isWaiting', true);
+    await ChromeMsg.send(ChromeMsg.SIGN_OUT);
+    this.set('isWaiting', false);
+    return null;
+   },
 });
