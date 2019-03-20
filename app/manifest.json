@@ -46,8 +46,6 @@
   "oauth2": {
     "client_id": "595750713699-odrvm10qr3eua2nt2q9vre27bvbtvhe1.apps.googleusercontent.com",
     "scopes": [
-      "email",
-      "profile",
       "https://www.googleapis.com/auth/photoslibrary.readonly"
     ]
   },
