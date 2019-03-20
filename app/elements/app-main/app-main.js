@@ -65,7 +65,6 @@ import {GooglePhotosPage} from
 import {SignInPage} from '../../elements/pages/signin-page/signin-page.js';
 import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
 import {HelpPage} from '../../elements/pages/help-page/help-page.js';
-import * as Permissions from '../../scripts/permissions.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -168,11 +167,6 @@ const pages = [
     label: ChromeLocale.localize('menu_signin'),
     route: 'page-signin', icon: 'myicons:account-circle',
     obj: null, ready: false, divider: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_permission'),
-    route: 'page-permission', icon: 'myicons:perm-data-setting',
-    obj: null, ready: true, divider: false,
   },
   {
     label: ChromeLocale.localize('menu_error'), route: 'page-error',
@@ -320,39 +314,6 @@ Polymer({
 <confirm-dialog id="confirmDialog" confirm-label="[[localize('ok')]]"
                 on-confirm-tap="_onConfirmDialogTapped"></confirm-dialog>
 
-<!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
-<paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
-              exit-animation="fade-out-animation">
-  <h2>[[localize('menu_permission')]]</h2>
-  <paper-dialog-scrollable>
-    <div>
-
-      <paper-item class="permText">
-        [[localize('permission_message')]]
-      </paper-item>
-
-
-      <paper-item class="permText">
-        [[localize('permission_message1')]]
-      </paper-item>
-
-      <paper-item class="permText">
-        [[localize('permission_message2')]]
-      </paper-item>
-
-      <paper-item class="status">
-        [[_computePermissionsStatus(permission)]]
-      </paper-item>
-
-    </div>
-  </paper-dialog-scrollable>
-  <div class="buttons">
-    <paper-button dialog-dismiss>CANCEL</paper-button>
-    <paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">DENY</paper-button>
-    <paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">ALLOW</paper-button>
-  </div>
-</paper-dialog>
-
 <app-drawer-layout id="appDrawerLayout" responsive-width="800px">
 
   <!-- Drawer Content -->
@@ -496,8 +457,6 @@ Polymer({
     pages[idx].obj = this._showGooglePhotosPage.bind(this);
     idx = this._getPageIdx('page-signin');
     pages[idx].obj = this._showSignInPage.bind(this);
-    idx = this._getPageIdx('page-permission');
-    pages[idx].obj = this._showPermissionsDialog.bind(this);
     idx = this._getPageIdx('page-error');
     pages[idx].obj = this._showErrorPage.bind(this);
     idx = this._getPageIdx('page-help');
@@ -611,45 +570,6 @@ Polymer({
   },
 
   /**
-   * Event: Clicked on accept permissions dialog button
-   * @private
-   */
-  _onAcceptPermissionsClicked: function() {
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
-    Permissions.request(Permissions.PICASA).then((granted) => {
-      if (!granted) {
-        return Permissions.removeGooglePhotos();
-      } else {
-        return null;
-      }
-    }).catch((err) => {
-      ChromeLog.error(err.message, 'Options._onAcceptPermissionsClicked');
-    });
-  },
-
-  /**
-   * Event: Clicked on deny permission dialog button
-   * @private
-   */
-  _onDenyPermissionsClicked: function() {
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
-    Permissions.removeGooglePhotos().catch((err) => {
-      ChromeLog.error(err.message, 'Options._onDenyPermissionsClicked');
-    });
-  },
-
-  /**
-   * Computed Binding: Determine content script permission status string
-   * @param {string} permission - current setting
-   * @returns {string}
-   * @private
-   */
-  _computePermissionsStatus: function(permission) {
-    return `${ChromeLocale.localize(
-        'permission_status')} ${ChromeLocale.localize(permission)}`;
-  },
-
-  /**
    * Computed Binding: Display avatar if one exists
    * @param {string} avatar - current setting
    * @returns {string}
@@ -755,14 +675,6 @@ Polymer({
     // reselect previous page - need to delay so tap event is done
     setTimeout(() => this.$.mainMenu.select(prevRoute), 500);
     ChromeMsg.send(MyMsg.SS_SHOW).catch(() => {});
-  },
-
-  /**
-   * Show the permissions dialog
-   * @private
-   */
-  _showPermissionsDialog: function() {
-    this.$.permissionsDialog.open();
   },
 
   /**
