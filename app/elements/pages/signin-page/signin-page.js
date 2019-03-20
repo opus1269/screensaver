@@ -230,6 +230,7 @@ export const SignInPage = Polymer({
       this._checkChromeSignIn();
     }, 0);
   },
+  
   /**
    * We have animated in and are now the current page
    */

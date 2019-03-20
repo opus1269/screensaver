@@ -79,7 +79,11 @@ async function _setSignIn(signedIn, user = null) {
   ChromeStorage.set('email', email);
   ChromeStorage.set('photoURL', photoUrl);
   if (!signedIn) {
+    // this is the old way we handled signin, when we were Chrome only
+    ChromeStorage.set('signedInToChrome', null);
     await ChromeStorage.asyncSet('token', null);
+    await ChromeStorage.asyncSet('albumSelections', null);
+    await ChromeStorage.asyncSet('googleImages', null);
   }
   return null;
 }

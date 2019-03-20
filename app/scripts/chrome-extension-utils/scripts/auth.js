@@ -27,10 +27,9 @@ import './ex_handler.js';
  */
 export async function getToken(interactive = false, scopes = null) {
   let token = null;
-  const isOpera = ChromeUtils.isOpera();
 
-  if (!isOpera) {
-    // Chrome uses getAuthToken
+  if (isDeprecatedSignIn()) {
+    // Still using getAuthToken
     const request = {
       interactive: interactive,
     };
@@ -94,9 +93,8 @@ export async function getToken(interactive = false, scopes = null) {
 export async function removeCachedToken(interactive = false, curToken = null,
                                         scopes = null) {
   let oldToken = curToken;
-  const isOpera = ChromeUtils.isOpera();
 
-  if (isOpera) {
+  if (!isDeprecatedSignIn()) {
     try {
       oldToken = await ChromeStorage.asyncGet('token', null);
       await ChromeStorage.asyncSet('token', null);
@@ -105,6 +103,7 @@ export async function removeCachedToken(interactive = false, curToken = null,
       return Promise.resolve(oldToken);
     }
   } else {
+    // still using old way of access
     if (curToken === null) {
       oldToken = await getToken(interactive, scopes);
     } else {
@@ -141,6 +140,14 @@ export function isSignedIn() {
     }
     return Promise.resolve(ret);
   });
+}
+
+/**
+ * Are we signed in under the old Chrome only way
+ * @returns {boolean} true if using old way
+ */
+export function isDeprecatedSignIn() {
+  return ChromeStorage.getBool('signedInToChrome', false);
 }
 
 /**

@@ -127,7 +127,6 @@ const _DEF_VALUES = {
   'useGoogleAlbums': true,
   'useGooglePhotos': false,
   'googleImages': [],
-  'signedInToChrome': true,
   'googlePhotosNoFilter': true,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
   'signedIn': false,
@@ -267,12 +266,6 @@ export function initialize() {
 
   // set operating system
   _setOS().catch(() => {});
-
-  // set signin state
-  ChromeAuth.isSignedIn().then((signedIn) => {
-    ChromeStorage.set('signedInToChrome', signedIn);
-    return null;
-  }).catch(() => {});
 
   // and the last error
   ChromeLastError.reset().catch((err) => {
