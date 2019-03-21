@@ -189,6 +189,7 @@ Polymer({
       type: Boolean,
       value: true,
       notify: true,
+      observer: '_noFilterChanged',
     },
 
     /** Status of the option permission for the Google Photos API */
@@ -387,6 +388,22 @@ Polymer({
   _onRefreshPhotosClicked: function() {
     this.loadPhotos().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
+  },
+
+  /**
+   * Observer: noFilter changed
+   * @param {number} newValue
+   * @param {number} oldValue
+   * @private
+   */
+  _noFilterChanged: function(newValue, oldValue) {
+    if (newValue !== undefined) {
+      if (oldValue !== undefined) {
+        if (newValue !== oldValue) {
+          this.set('needsPhotoRefresh', true);
+        }
+      }
+    }
   },
 
   /**
