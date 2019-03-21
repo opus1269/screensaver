@@ -4,8 +4,6 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeAuth 
-  from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeHttp
@@ -108,18 +106,6 @@ const _MEDIA_ITEMS_RESULTS_FIELDS =
     'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,' +
     'mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,' +
     'mediaItem/mediaMetadata/height)';
-
-const scopes = [
-  'openid',
-  'email',
-  'profile',
-  'https://www.googleapis.com/auth/photoslibrary.readonly',
-];
-const clientId =
-    '595750713699-n3tal780utvvuum73tgf44q41564afmc.apps.googleusercontent.com';
-const redirectUrl = window.browser.identity.getRedirectURL('oauth2');
-const url = 'https://accounts.google.com/o/oauth2/auth';
-ChromeAuth.setAuthFlow(url, scopes, clientId, redirectUrl);
 
 /**
  * A potential source of photos from Google

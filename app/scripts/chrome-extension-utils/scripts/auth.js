@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as Fb from '../../../scripts/background/firebase.js';
+
 import * as ChromeStorage from './storage.js';
 import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
@@ -13,37 +15,6 @@ import './ex_handler.js';
  * @see https://developer.chrome.com/apps/identity
  * @module ChromeAuth
  */
-
-/**
- * Info for launchWebAuthFlow
- * @typedef {{}} module:ChromeAuth.AuthFlow
- * @property {string} baseUrl
- * @property {[string]} scopes
- * @property {string} client
- * @property {string} redirect
- */
-
-/**
- * Set this when using launchWebAuthFlow
- * @type {module:ChromeAuth.AuthFlow|null}
- */
-let _authFlow = null;
-
-/**
- * Setup launchWebAuthFlow
- * @param {!string} baseUrl
- * @param {![string]} scopes
- * @param {!string} client
- * @param {!string} redirect
- */
-export function setAuthFlow(baseUrl, scopes, client, redirect) {
-  _authFlow = {
-    baseUrl: baseUrl,
-    scopes: scopes,
-    client: client,
-    redirect: redirect,
-  };
-}
 
 /**
  * Get an OAuth2.0 token<br />
@@ -74,11 +45,7 @@ export async function getToken(
       return Promise.resolve(theToken);
     });
   } else {
-    // everyone else uses launchWebAuthFlow
-    if (!_authFlow) {
-      throw new Error('No web flow defined');
-    }
-    
+    // everyone else uses firebase
     try {
       token = await ChromeStorage.asyncGet('token', null);
       if (token) {
@@ -86,36 +53,8 @@ export async function getToken(
         return Promise.resolve(token);
       }
       
-      let url = _authFlow.baseUrl;
-      url += `?client_id=${encodeURIComponent(_authFlow.client)}`;
-      url += `&redirect_uri=${encodeURIComponent(_authFlow.redirect)}`;
-      url += '&response_type=token';
+      token = await Fb.getAuthToken();
 
-      let theScopes = scopes || _authFlow.scopes;
-      url += `&scope=${encodeURIComponent(theScopes.join(' '))}`;
-
-      if (prompt) {
-        url += `&prompt=${prompt}`;
-      }
-      
-      const request = {
-        url: url,
-        interactive: interactive,
-      };
-      let responseUrl =
-          await window.browser.identity.launchWebAuthFlow(request);
-      responseUrl = responseUrl || '';
-      const regex = /access_token=(.*?)(?=&)/;
-      let match = responseUrl.match(regex);
-      match = match || [];
-      token = match[1];
-      if (token && !ChromeUtils.isWhiteSpace(token)) {
-        // cache token
-        await ChromeStorage.asyncSet('token', token);
-      } else {
-        // failed to get token
-        error = new Error('Failed to get auth token');
-      }
     } catch (err) {
       error = err;
     }

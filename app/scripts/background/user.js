@@ -8,8 +8,6 @@ import * as Fb from './firebase.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 
-import * as ChromeAuth
-  from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
@@ -42,9 +40,7 @@ ChromeMsg.listen(_onChromeMessage);
  * @private
  */
 export function signIn() {
-  return ChromeAuth.getToken(true, null, 'select_account').then((token) => {
-    return Fb.signIn(token);
-  }).then((user) => {
+  return Fb.signIn().then((user) => {
     return _setSignInState(true, user);
   }).then(() => {
     return Promise.resolve(true);

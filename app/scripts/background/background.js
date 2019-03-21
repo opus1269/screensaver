@@ -9,7 +9,6 @@ import '../../scripts/background/context_menus.js';
 import '../../scripts/background/user.js';
 
 import * as AppData from './data.js';
-import * as Fb from './firebase.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -150,8 +149,6 @@ function _onChromeMessage(request, sender, response) {
 function _onLoad() {
   MyGA.initialize();
   
-  Fb.initialize();
-
   // listen for extension install or update
   window.browser.runtime.onInstalled.addListener(_onInstalled);
 
