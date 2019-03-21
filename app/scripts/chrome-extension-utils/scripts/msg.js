@@ -78,14 +78,11 @@ export const FORCE_SIGN_OUT = _MSG.FORCE_SIGN_OUT;
  */
 export function send(type) {
   return window.browser.runtime.sendMessage(type, null).then((response) => {
+    if (response === undefined) {
+      return Promise.reject(new Error('No response'));
+    }
     return Promise.resolve(response);
   }).catch((err) => {
-    if (err.message &&
-        !err.message.includes('port closed') &&
-        !err.message.includes('Receiving end does not exist')) {
-      const msg = `type: ${type.message}, ${err.message}`;
-      ChromeGA.error(msg, 'Msg.send');
-    }
     return Promise.reject(err);
   });
 }
