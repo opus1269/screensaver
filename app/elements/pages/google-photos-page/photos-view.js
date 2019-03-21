@@ -369,6 +369,7 @@ Polymer({
         this.set('needsPhotoRefresh', false);
       }
       response(JSON.stringify({message: 'OK'}));
+      return true;
     } else if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       // noinspection JSUnresolvedVariable
@@ -376,8 +377,8 @@ Polymer({
       let msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
       this.set('waiterStatus', msg);
       response(JSON.stringify({message: 'OK'}));
+      return true;
     }
-    return true;
   },
 
   /**
