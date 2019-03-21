@@ -21,7 +21,7 @@ import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js
 import './photo_cat.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {showErrorDialog} from '../../../elements/app-main/app-main.js';
+import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/shared-styles.js';
@@ -237,14 +237,18 @@ Polymer({
       // set state of photo categories
       this._setPhotoCats();
 
-      // listen for changes to localStorage
-      window.addEventListener('storage', async (ev) => {
-        // noinspection JSUnresolvedVariable
-        if (ev.key === 'googleImages') {
-          await this.setPhotoCount();
-          this.set('needsPhotoRefresh', true);
+      // listen for changes to chrome.storage
+      chrome.storage.onChanged.addListener((changes) => {
+        for (const key in changes) {
+          if (changes.hasOwnProperty(key)) {
+            if (key === 'googleImages') {
+              this.setPhotoCount().catch(() => {});
+              this.set('needsPhotoRefresh', true);
+              break;
+            }
+          }
         }
-      }, false);
+      });
     }, 0);
   },
 
@@ -253,6 +257,8 @@ Polymer({
    * @returns {Promise<null>} always resolves
    */
   loadPhotos: async function() {
+    const METHOD = 'PhotosView.loadPhotos';
+    let error = null;
     try {
       const granted = await Permissions.request(Permissions.PICASA);
 
@@ -261,21 +267,45 @@ Polymer({
         await Permissions.removeGooglePhotos();
         const title = ChromeLocale.localize('err_load_photos');
         const text = ChromeLocale.localize('err_auth_picasa');
-        ChromeLog.error(text, 'PhotosView.loadPhotos', title);
+        ChromeLog.error(text, METHOD, title);
         showErrorDialog(title, text);
         return null;
       }
 
       // send message to background page to do the work and send us messages
-      // on current status and completion
+      // on current status
       this.set('waitForLoad', true);
       this.set('waiterStatus', '');
-      ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS).catch(() => {});
 
+      const json = await ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS);
+      
+      if (Array.isArray(json)) {
+        // photos
+        const set =
+            await ChromeStorage.asyncSet('googleImages', json, 'useGooglePhotos');
+        if (!set) {
+          showStorageErrorDialog(METHOD);
+          this.set('needsPhotoRefresh', true);
+        } else {
+          this.set('needsPhotoRefresh', false);
+        }
+        await this.setPhotoCount();
+      } else {
+        // error
+        error = new Error(json.message);
+      }
     } catch (err) {
-      // ChromeMsg will handle any errors
+      error = err;
+    } finally {
       this.set('waitForLoad', false);
-      return null;
+      this.set('waiterStatus', '');
+    }
+
+    if (error) {
+      const title = ChromeLocale.localize('err_load_photos');
+      const text = error.message;
+      ChromeLog.error(text, METHOD, title);
+      showErrorDialog(title, text);
     }
   },
 
@@ -354,23 +384,7 @@ Polymer({
    * @private
    */
   _onMessage: function(request, sender, response) {
-    if (request.message === MyMsg.LOAD_FILTERED_PHOTOS_DONE.message) {
-      // the background page has finished loading and saving the photos
-      this.set('waitForLoad', false);
-      this.setPhotoCount();
-
-      const errMsg = request.error;
-      if (errMsg) {
-        const title = ChromeLocale.localize('err_load_photos');
-        const text = errMsg;
-        // noinspection JSCheckFunctionSignatures
-        ChromeLog.error(text, 'PhotosView.loadPhotos', title);
-        showErrorDialog(title, text);
-      } else {
-        this.set('needsPhotoRefresh', false);
-      }
-      response(JSON.stringify({message: 'OK'}));
-    } else if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
+    if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       // noinspection JSUnresolvedVariable
       const count = request.count || 0;
@@ -378,7 +392,7 @@ Polymer({
       this.set('waiterStatus', msg);
       response(JSON.stringify({message: 'OK'}));
     }
-    return true;
+    return false;
   },
 
   /**

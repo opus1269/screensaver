@@ -132,7 +132,12 @@ function _onChromeMessage(request, sender, response) {
     ChromeStorage.set(request.key, request.value);
   } else if (request.message === MyMsg.LOAD_FILTERED_PHOTOS.message) {
     ret = true;
-    GoogleSource.loadFilteredPhotos(true, true).catch(() => {});
+    GoogleSource.loadFilteredPhotos(true, true).then((photos) => {
+      response(photos);
+      return null;
+    }).catch((err) => {
+      response({message: err.message});
+    });
   } else if (request.message === MyMsg.LOAD_ALBUM.message) {
     ret = true;
     // noinspection JSUnresolvedVariable
@@ -148,7 +153,7 @@ function _onChromeMessage(request, sender, response) {
  */
 function _onLoad() {
   MyGA.initialize();
-  
+
   // listen for extension install or update
   chrome.runtime.onInstalled.addListener(_onInstalled);
 

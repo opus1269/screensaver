@@ -21,8 +21,6 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {module:ChromeMsg.Message} PHOTO_SOURCE_FAILED - failed to web load
  * @property {module:ChromeMsg.Message} LOAD_FILTERED_PHOTOS - request to load
  * the filtered google photos
- * @property {module:ChromeMsg.Message} LOAD_FILTERED_PHOTOS_DONE - finished
- * loading the filtered google photos
  * @property {module:ChromeMsg.Message} FILTERED_PHOTOS_COUNT - number of photos
  * @property {module:ChromeMsg.Message} LOAD_ALBUM - request to load
  * the contents of a google photos album
@@ -49,10 +47,6 @@ const _MSG = {
   LOAD_FILTERED_PHOTOS: {
     message: 'loadFilteredPhotos',
   },
-  LOAD_FILTERED_PHOTOS_DONE: {
-    message: 'loadFilteredPhotosDone',
-    error: null,
-  },
   FILTERED_PHOTOS_COUNT: {
     message: 'filteredPhotosCount',
     count: 0,
@@ -75,7 +69,6 @@ export const SS_CLOSE = _MSG.SS_CLOSE;
 export const SS_IS_SHOWING = _MSG.SS_IS_SHOWING;
 export const PHOTO_SOURCE_FAILED = _MSG.PHOTO_SOURCE_FAILED;
 export const LOAD_FILTERED_PHOTOS = _MSG.LOAD_FILTERED_PHOTOS;
-export const LOAD_FILTERED_PHOTOS_DONE = _MSG.LOAD_FILTERED_PHOTOS_DONE;
 export const FILTERED_PHOTOS_COUNT = _MSG.FILTERED_PHOTOS_COUNT;
 export const LOAD_ALBUM = _MSG.LOAD_ALBUM;
 export const LOAD_ALBUM_DONE = _MSG.LOAD_ALBUM_DONE;

@@ -391,14 +391,14 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Load photos based on the given filter
    * @param {boolean} [force=false] if true, force rpc
-   * @param {boolean} [save=false] if true, persist the photos ourselves
+   * @param {boolean} [notify=false] if true, notify listeners of progress
    * @throws An error if we could not load the photos
    * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
    * @async
    * @static
    */
-  static async loadFilteredPhotos(force = false, save = false) {
-    const photos = ChromeStorage.get('googleImages', []);
+  static async loadFilteredPhotos(force = false, notify = false) {
+    const photos = await ChromeStorage.asyncGet('googleImages', []);
     if (!force && !this._isFetch()) {
       // no need to change - save on api calls
       return Promise.resolve(photos);
@@ -437,6 +437,14 @@ export default class GoogleSource extends PhotoSource {
     try {
       // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
       do {
+
+        if (notify) {
+          // notify listeners of our current progress
+          const msg = ChromeJSON.shallowCopy(MyMsg.FILTERED_PHOTOS_COUNT);
+          msg.count = newPhotos.length;
+          ChromeMsg.send(msg).catch(() => {});
+        }
+
         /** @type {{nextPageToken, mediaItems}} */
         let response = await ChromeHttp.doPost(url, conf);
         response = response || {};
@@ -452,43 +460,17 @@ export default class GoogleSource extends PhotoSource {
           newPhotos.splice(MAX_PHOTOS, newPhotos.length - MAX_PHOTOS);
         }
 
-        if (save) {
-          // notify listeners of our current progress
-          const msg = ChromeJSON.shallowCopy(MyMsg.FILTERED_PHOTOS_COUNT);
-          msg.count = newPhotos.length;
-          ChromeMsg.send(msg).catch(() => {});
-        }
-
         nextPageToken = response.nextPageToken;
         conf.body.pageToken = nextPageToken;
 
       } while (nextPageToken && (newPhotos.length < MAX_PHOTOS));
 
     } catch (err) {
-      if (save) {
-        // notify listeners that we are done
-        const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_FILTERED_PHOTOS_DONE);
-        msg.error = err.message;
-        ChromeMsg.send(msg).catch(() => {});
-        return Promise.resolve([]);
-      } else {
-        throw err;
-      }
+      throw err;
     }
 
     ChromeGA.event(MyGA.EVENT.LOAD_FILTERED_PHOTOS,
         `nPhotos: ${newPhotos.length}`);
-
-    if (save) {
-      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_FILTERED_PHOTOS_DONE);
-      const set = await ChromeStorage.asyncSet('googleImages', newPhotos,
-          'useGooglePhotos');
-      if (!set) {
-        msg.error = ChromeLocale.localize('err_storage_title');
-      }
-      // notify listeners that we are done
-      ChromeMsg.send(msg).catch(() => {});
-    }
 
     return Promise.resolve(newPhotos);
   }
