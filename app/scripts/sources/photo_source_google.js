@@ -336,15 +336,26 @@ export default class GoogleSource extends PhotoSource {
     // Loop while there is a nextPageToken to load more items and we
     // haven't loaded greater than MAX_ALBUM_PHOTOS.
     do {
+
+      if (notify) {
+        // notify listeners of our current progress
+        const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
+        msg.count = photos.length;
+        ChromeMsg.send(msg).catch(() => {});
+      }
+
       /** @type {{nextPageToken, mediaItems}} */
       const response = await ChromeHttp.doPost(url, conf);
+      
       nextPageToken = response.nextPageToken;
       conf.body.pageToken = nextPageToken;
+      
       const mediaItems = response.mediaItems;
       if (mediaItems) {
         const newPhotos = this._processPhotos(mediaItems, name);
         photos = photos.concat(newPhotos);
       }
+      
       if (photos.length > this.MAX_ALBUM_PHOTOS) {
         ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
             `nPhotos: ${this.MAX_ALBUM_PHOTOS}`);
@@ -355,14 +366,6 @@ export default class GoogleSource extends PhotoSource {
         const delCt = photos.length - this.MAX_ALBUM_PHOTOS;
         photos.splice(this.MAX_ALBUM_PHOTOS, delCt);
       }
-
-      if (notify) {
-        // notify listeners of our current progress
-        const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
-        msg.count = photos.length;
-        ChromeMsg.send(msg).catch(() => {});
-      }
-
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
     /** @type {module:GoogleSource.Album} */
@@ -378,18 +381,11 @@ export default class GoogleSource extends PhotoSource {
 
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
-    if (notify) {
-      // notify listeners that we are done
-      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM_DONE);
-      msg.album = JSON.stringify(album);
-      ChromeMsg.send(msg).catch(() => {});
-    }
-
     return album;
   }
 
   /**
-   * Load photos based on the given filter
+   * Load photos based on a filter
    * @param {boolean} [force=false] if true, force rpc
    * @param {boolean} [notify=false] if true, notify listeners of progress
    * @throws An error if we could not load the photos

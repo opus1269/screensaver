@@ -141,8 +141,13 @@ function _onChromeMessage(request, sender, response) {
   } else if (request.message === MyMsg.LOAD_ALBUM.message) {
     ret = true;
     // noinspection JSUnresolvedVariable
-    GoogleSource.
-        loadAlbum(request.id, request.name, true, true).catch(() => {});
+    GoogleSource.loadAlbum(request.id, request.name, true, true).
+        then((album) => {
+      response(album);
+      return null;
+    }).catch((err) => {
+      response({message: err.message});
+    });
   }
   return ret;
 }
