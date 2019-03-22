@@ -245,25 +245,6 @@ Polymer({
   ready: function() {
     // listen for chrome messages
     ChromeMsg.listen(this._onMessage.bind(this));
-
-    // setTimeout(() => {
-    //   // listen for changes to chrome.storage
-    //   chrome.storage.onChanged.addListener(async (changes) => {
-    //     for (const key in changes) {
-    //       if (changes.hasOwnProperty(key)) {
-    //         if (key === 'albumSelections') {
-    //           const albums =
-    //               await ChromeStorage.asyncGet('albumSelections', []);
-    //           if (albums.length === 0) {
-    //             this.set('albums', []);
-    //             _selections = [];
-    //           }
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   });
-    // }, 0);
   },
 
   /**
@@ -315,7 +296,6 @@ Polymer({
 
     } catch (err) {
       // handle errors ourselves
-      this.set('waitForLoad', false);
       let text = err.message;
       if (GoogleSource.isQuotaError(err, METHOD)) {
         // Hit Google photos quota
@@ -365,6 +345,7 @@ Polymer({
                 ChromeLocale.localize('err_max_photos'));
             break;
           }
+          
           photoCt += newAlbum.photos.length;
           _selections.push({
             id: album.id,
@@ -400,7 +381,11 @@ Polymer({
    * Remove selected albums
    */
   removeSelectedAlbums: function() {
-    this._uncheckAll();
+    this.albums.forEach((album, index) => {
+      if (album.checked) {
+        this.set('albums.' + index + '.checked', false);
+      }
+    });
     _selections = [];
     ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
   },
@@ -644,18 +629,6 @@ Polymer({
         }
       }
     }
-  },
-
-  /**
-   * Uncheck all albums
-   * @private
-   */
-  _uncheckAll: function() {
-    this.albums.forEach((album, index) => {
-      if (album.checked) {
-        this.set('albums.' + index + '.checked', false);
-      }
-    });
   },
 
   /**
