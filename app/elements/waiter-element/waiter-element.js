@@ -18,9 +18,14 @@ import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
+ * Module for waiter element
+ * @module els/waiter_element
+ */
+
+/**
  * Polymer element to display a spinner and text while performing a
  * lengthy operation
- * @module WaiterElement
+ * @PolymerElement
  */
 Polymer({
   // language=HTML format=false
@@ -33,12 +38,16 @@ Polymer({
   }
 
   :host .waiter {
-    margin: 20px auto;
+    margin: 40px auto;
   }
-
+  
   /*noinspection CssUnresolvedCustomPropertySet*/
   :host .waiter paper-item {
     @apply --paper-font-title;
+  }
+
+  :host #statusLabel {
+    text-align: center;
   }
 </style>
 
@@ -47,7 +56,7 @@ Polymer({
     <paper-spinner active="[[active]]" tabindex="-1"></paper-spinner>
   </div>
   <paper-item>[[label]]</paper-item>
-  <paper-item>[[statusLabel]]</paper-item>
+  <paper-item id="statusLabel"></paper-item>
 </div>
 `,
 
@@ -72,7 +81,18 @@ Polymer({
     statusLabel: {
       type: String,
       value: '',
-      notify: true,
+      observer: '_statusLabelChanged',
     },
+  },
+
+  /**
+   * Observer: Set status label
+   * @param {string} label - label
+   * @private
+   */
+  _statusLabelChanged: function(label) {
+    if (label) {
+      this.$.statusLabel.innerHTML = label.replace(/\n/g, '<br/>');
+    }
   },
 });
