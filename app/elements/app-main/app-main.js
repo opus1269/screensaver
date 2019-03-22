@@ -38,18 +38,12 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import '../../elements/pages/settings-page/settings-page.js';
-import '../../elements/pages/error-page/error-page.js';
-import '../../elements/pages/help-page/help-page.js';
-import '../../elements/pages/google-photos-page/google-photos-page.js';
-
-import '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import '../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
-import '../../elements/setting-elements/setting-toggle/setting-toggle.js';
-import '../../elements/setting-elements/setting-slider/setting-slider.js';
-import '../../elements/setting-elements/setting-link/setting-link.js';
-import '../../elements/setting-elements/setting-background/setting-background.js';
-import '../../elements/setting-elements/setting-time/setting-time.js';
-import '../../elements/setting-elements/setting-text/setting-text.js';
+import {LocalizeBehavior} from
+      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {GooglePhotosPage} from
+      '../../elements/pages/google-photos-page/google-photos-page.js';
+import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
+import {HelpPage} from '../../elements/pages/help-page/help-page.js';
 
 import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
@@ -57,13 +51,6 @@ import '../../elements/confirm-dialog/confirm-dialog.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
-
-import {LocalizeBehavior} from
-      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {GooglePhotosPage} from
-      '../../elements/pages/google-photos-page/google-photos-page.js';
-import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
-import {HelpPage} from '../../elements/pages/help-page/help-page.js';
 import * as Permissions from '../../scripts/permissions.js';
 
 import * as ChromeGA
@@ -83,8 +70,9 @@ import * as ChromeUtils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for the main UI
- * @module AppMain
+ * Module for the main UI
+ * @module els/app_main
+
  */
 
 /**
@@ -146,7 +134,7 @@ const PUSHY_URI =
 
 /**
  * Array of pages
- * @type {module:Options.Page[]}
+ * @type {module:AppMain.Page[]}
  */
 const pages = [
   {
@@ -203,7 +191,7 @@ const pages = [
 
 /**
  * Google Photos Page
- * @type {module:GooglePhotosPage}
+ * @type {module:els/pgs/google_photos.GooglePhotosPage}
  * @private
  */
 let gPhotosPage = null;
@@ -215,6 +203,11 @@ let gPhotosPage = null;
  */
 let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
+/**
+ * Polymer element for the Main UI
+ * @PolymerElement
+ * @constructor
+ */
 Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomProperty -->
@@ -338,9 +331,9 @@ Polymer({
     </div>
   </paper-dialog-scrollable>
   <div class="buttons">
-    <paper-button dialog-dismiss>CANCEL</paper-button>
-    <paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">DENY</paper-button>
-    <paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">ALLOW</paper-button>
+    <paper-button dialog-dismiss>[[localize('cancel')]]</paper-button>
+    <paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">[[localize('deny')]]</paper-button>
+    <paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">[[localize('allow')]]</paper-button>
   </div>
 </paper-dialog>
 
@@ -428,28 +421,21 @@ Polymer({
 
   properties: {
 
-    /**
-     * Array of {@link module:AppMain.Page}
-     * @const
-     */
+    /** Array of {@link module:AppMain.Page} */
     pages: {
       type: Array,
       value: pages,
       readOnly: true,
     },
 
-    /**
-     * Current {@link module:AppMain.Page}
-     */
+    /** Current {@link module:AppMain.Page} */
     route: {
       type: String,
       value: 'page-settings',
       notify: true,
     },
 
-    /**
-     * Google Photos permission status
-     */
+    /** Google Photos permission status */
     permission: {
       type: String,
       value: 'notSet',
@@ -596,7 +582,7 @@ Polymer({
         return null;
       }
     }).catch((err) => {
-      ChromeLog.error(err.message, 'Options._onAcceptPermissionsClicked');
+      ChromeLog.error(err.message, 'AppMain._onAcceptPermissionsClicked');
     });
   },
 
@@ -607,7 +593,7 @@ Polymer({
   _onDenyPermissionsClicked: function() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
     Permissions.removeGooglePhotos().catch((err) => {
-      ChromeLog.error(err.message, 'Options._onDenyPermissionsClicked');
+      ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
     });
   },
 
@@ -719,7 +705,7 @@ Polymer({
     const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
     if (!el) {
       ChromeGA.error('no element found',
-          'Options._setGooglePhotosMenuState');
+          'AppMain._setGooglePhotosMenuState');
     } else if (this.permission !== 'allowed') {
       el.setAttribute('disabled', 'true');
     } else {
@@ -743,7 +729,7 @@ Polymer({
       }
       return null;
     }).catch((err) => {
-      ChromeGA.error(err.message, 'Options._setErrorMenuState');
+      ChromeGA.error(err.message, 'AppMain._setErrorMenuState');
     });
   },
 

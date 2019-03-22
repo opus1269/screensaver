@@ -38,8 +38,15 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for the Google Photos
- * @module GooglePhotosPage
+ * Module for the Google Photos page
+ * @module els/pgs/google_photos
+ */
+
+/**
+ * Polymer element for the Google Photos page
+ * @PolymerElement
+ * @constructor
+ * @alias module:els/pgs/google_photos.GooglePhotosPage
  */
 export const GooglePhotosPage = Polymer({
   // language=HTML format=false

@@ -594,6 +594,12 @@
   "photo_cat_landmarks": {
     "message": "LANDMARKS"
   },
+  "deny": {
+    "message": "DENY"
+  },
+  "allow": {
+    "message": "ALLOW"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"
