@@ -5,23 +5,30 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import './photo_cat.js';
+
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
+import {
+  showErrorDialog,
+  showStorageErrorDialog,
+} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/shared-styles.js';
@@ -43,13 +50,13 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for selecting Google Photos
- * @module PhotosView
+ * Module for selecting Google Photos
+ * @module els/pgs/google_photos/photos_view
  */
 
 /**
  * A Google photos category for searches
- * @typedef {{}} module:PhotosView.PhotoCategory
+ * @typedef {{}} module:els/pgs/google_photos/photos_view.PhotoCategory
  * @property {string} name
  * @property {string} label
  * @private
@@ -57,7 +64,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Photo categories
- * @type {module:PhotosView.PhotoCategory[]}
+ * @type {module:els/pgs/google_photos/photos_view.PhotoCategory[]}
  * @private
  */
 const _CATS = [
@@ -76,7 +83,12 @@ const _CATS = [
   {name: 'SELFIES', label: ChromeLocale.localize('photo_cat_selfies')},
 ];
 
-/** Polymer element */
+/**
+ * Polymer element for the Google Photos page
+ * @PolymerElement
+ * @constructor
+ * @alias module:els/pgs/google_photos/photos_view.PhotosView
+ */
 Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
@@ -238,6 +250,7 @@ Polymer({
       this._setPhotoCats();
 
       // listen for changes to chrome.storage
+      // noinspection JSUnresolvedVariable
       chrome.storage.onChanged.addListener((changes) => {
         for (const key in changes) {
           if (changes.hasOwnProperty(key)) {
@@ -272,17 +285,17 @@ Polymer({
         return null;
       }
 
-      // send message to background page to do the work and send us messages
-      // on current status
       this.set('waitForLoad', true);
       this.set('waiterStatus', '');
 
+      // send message to background page to do the work
       const json = await ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS);
-      
+
       if (Array.isArray(json)) {
         // photos
         const set =
-            await ChromeStorage.asyncSet('googleImages', json, 'useGooglePhotos');
+            await ChromeStorage.asyncSet('googleImages', json,
+                'useGooglePhotos');
         if (!set) {
           showStorageErrorDialog(METHOD);
           this.set('needsPhotoRefresh', true);
@@ -334,7 +347,6 @@ Polymer({
       const idx = includes.findIndex((e) => {
         return e === cat;
       });
-
       el.set('checked', (idx !== -1));
     }
   },
@@ -411,11 +423,9 @@ Polymer({
    * @private
    */
   _noFilterChanged: function(newValue, oldValue) {
-    if (newValue !== undefined) {
-      if (oldValue !== undefined) {
-        if (newValue !== oldValue) {
-          this.set('needsPhotoRefresh', true);
-        }
+    if ((newValue !== undefined) && (oldValue !== undefined)) {
+      if (newValue !== oldValue) {
+        this.set('needsPhotoRefresh', true);
       }
     }
   },
