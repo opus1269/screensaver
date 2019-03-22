@@ -340,6 +340,7 @@ export default class GoogleSource extends PhotoSource {
       if (notify) {
         // notify listeners of our current progress
         const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
+        msg.name = name;
         msg.count = photos.length;
         ChromeMsg.send(msg).catch(() => {});
       }
