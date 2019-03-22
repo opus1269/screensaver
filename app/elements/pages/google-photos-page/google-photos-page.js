@@ -23,6 +23,7 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import './albums-view.js';
 import './photos-view.js';
+
 import {showConfirmDialog} from '../../../elements/app-main/app-main.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
@@ -231,7 +232,7 @@ export const GooglePhotosPage = Polymer({
       setTimeout(() => {
         // remove album selections
         this.$$('#albumsView').removeSelectedAlbums();
-        this.$$('#photosView').setPhotoCount();
+        this.$$('#photosView').setPhotoCount().catch(() => {});
       }, 0);
     }
   },
@@ -334,7 +335,6 @@ export const GooglePhotosPage = Polymer({
     if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
       return;
     }
-    
     const useAlbums = (useGoogle && isAlbumMode);
     const usePhotos = (useGoogle && !isAlbumMode);
     this.set('useGoogleAlbums', useAlbums);
