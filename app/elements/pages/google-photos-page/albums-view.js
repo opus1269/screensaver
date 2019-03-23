@@ -294,12 +294,7 @@ Polymer({
     } catch (err) {
       // handle errors ourselves
       let text = err.message;
-      if (GoogleSource.isQuotaError(err, METHOD)) {
-        // Hit Google photos quota
-        text = ChromeLocale.localize('err_google_quota');
-      } else {
-        ChromeLog.error(text, METHOD, ERR_TITLE);
-      }
+      ChromeLog.error(text, METHOD, ERR_TITLE);
       showErrorDialog(ERR_TITLE, text);
     } finally {
       this.set('waitForLoad', false);
