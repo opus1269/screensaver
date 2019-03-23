@@ -89,6 +89,13 @@
     Notice that you can override any of the short-cuts and make them work
     globally on non Chrome OS devices.
 
+  ***
+
+* **On my Raspberry Pi, I click on the settings icon and nothing happens. How do I fix it?**
+
+    Make sure you have version 61 or later of Chromium installed.
+    Also, make sure you have the latest version of the extension.
+
 ### Google Photos
 
 * **Why does the dialog asking for Google permissions say it can change my data?**
@@ -96,7 +103,6 @@
     The extension will never change any of your data. It only has the
     ability to read albums and photos.
     
-
   ***
 
 * **Why can't I select all my albums and photos?**
@@ -106,7 +112,6 @@
     limits the number of albums you can select and the number of photos
     that are retrieved for each album.
     
-
   ***
 
 * **Why are some of my photos upside down or on their side?**
@@ -128,8 +133,7 @@
     option.
 
   ***
-
-  
+ 
 * **I am signed in to Google Photos, but am getting an error when trying to load my Google Photos albums. Why is that??**
 
     You need to sign into the Chrome Browser as the user whose Google 
