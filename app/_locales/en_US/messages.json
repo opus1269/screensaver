@@ -572,6 +572,9 @@
   "photo_cat_pets": {
     "message": "PETS"
   },
+  "photo_cat_landmarks": {
+    "message": "LANDMARKS"
+  },
   "button_needs_refresh": {
     "message": "NEEDS REFRESH"
   },
@@ -590,9 +593,6 @@
   "close": {
     "message": "CLOSE",
     "description": "All Caps"
-  },
-  "photo_cat_landmarks": {
-    "message": "LANDMARKS"
   },
   "deny": {
     "message": "DENY"

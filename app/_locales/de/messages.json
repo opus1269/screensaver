@@ -594,6 +594,15 @@
     "message": "SCHLIESSEN",
     "description": "All Caps"
   },
+  "deny": {
+    "message": "VERWEIGERN"
+  },
+  "allow": {
+    "message": "ERMÖGLICHEN"
+  },
+  "removed_album": {
+    "message": "Album wurde entfernt"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

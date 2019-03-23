@@ -594,6 +594,15 @@
     "message": "DICHTBIJ",
     "description": "All Caps"
   },
+  "deny": {
+    "message": "ONTKENNEN"
+  },
+  "allow": {
+    "message": "TOESTAAN"
+  },
+  "removed_album": {
+    "message": "Album verwijderd"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"

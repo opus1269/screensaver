@@ -594,6 +594,15 @@
     "message": "VICINO",
     "description": "All Caps"
   },
+  "deny": {
+    "message": "NEGARE"
+  },
+  "allow": {
+    "message": "PERMETTERE"
+  },
+  "removed_album": {
+    "message": "Album rimosso"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
