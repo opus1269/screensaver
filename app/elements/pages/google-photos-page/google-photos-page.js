@@ -67,7 +67,7 @@ export const GooglePhotosPage = Polymer({
   :host .page-container {
     margin-bottom: 0;
   }
-  
+
   :host .page-content {
     min-height: calc(100vh - 128px);
     margin: 0;
@@ -248,6 +248,7 @@ export const GooglePhotosPage = Polymer({
     const title = ChromeLocale.localize('title_mode_switch');
     const button = ChromeLocale.localize('button_mode_switch');
     showConfirmDialog(text, title, button, this._changeMode.bind(this));
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'changeGooglePhotosMode');
   },
 
   /**
