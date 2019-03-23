@@ -59,7 +59,7 @@ export const STORE = _MSG.STORE;
 /**
  * Send a chrome message
  * @param {module:ChromeMsg.Message} type - type of message
- * @returns {Promise<JSON>} response JSON
+ * @returns {Promise<JSON|Array>} response JSON
  */
 export function send(type) {
   const chromep = new ChromePromise();
