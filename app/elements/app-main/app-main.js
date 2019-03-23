@@ -72,7 +72,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Module for the main UI
  * @module els/app_main
-
  */
 
 /**
@@ -102,7 +101,7 @@ let confirmFn = null;
 /**
  * Manage an html page that is inserted on demand<br />
  * May also be a url link to external site
- * @typedef {{}} module:AppMain.Page
+ * @typedef {{}} module:els/app_main.Page
  * @property {string} label - label for Nav menu
  * @property {string} route - element name route to page
  * @property {string} icon - icon for Nav Menu
@@ -134,7 +133,7 @@ const PUSHY_URI =
 
 /**
  * Array of pages
- * @type {module:AppMain.Page[]}
+ * @type {module:els/app_main.Page[]}
  */
 const pages = [
   {
@@ -421,14 +420,14 @@ Polymer({
 
   properties: {
 
-    /** Array of {@link module:AppMain.Page} */
+    /** Array of {@link module:els/app_main.Page} */
     pages: {
       type: Array,
       value: pages,
       readOnly: true,
     },
 
-    /** Current {@link module:AppMain.Page} */
+    /** Current {@link module:els/app_main.Page} */
     route: {
       type: String,
       value: 'page-settings',
@@ -495,16 +494,20 @@ Polymer({
   },
 
   /**
-   * Display an error dialog about failing to store data
+   * Display an error dialog
    * @param {string} title - dialog title
    * @param {string} text - dialog text
+   * @param {?string} [method=null] - optional calling method
    */
-  showErrorDialog: function(title, text) {
+  showErrorDialog: function(title, text, method = null) {
+    if (method) {
+      ChromeLog.error(text, method, title);
+    }
     this.$.errorDialog.open(title, text);
   },
 
   /**
-   * Display an error dialog
+   * Display an error dialog about failing to save data
    * @param {string} method - calling method
    */
   showStorageErrorDialog: function(method) {
@@ -609,8 +612,8 @@ Polymer({
   },
 
   /**
-   * Get the index into the {@link module:AppMain.pages} array
-   * @param {string} name - {@link module:AppMain.page} route
+   * Get the index into the {@link module:els/app_main.pages} array
+   * @param {string} name - {@link module:els/app_main.page} route
    * @returns {int} index into array
    * @private
    */
@@ -622,7 +625,7 @@ Polymer({
 
   /**
    * Show the Google Photos page
-   * @param {int} index - index into {@link module:AppMain.pages}
+   * @param {int} index - index into {@link module:els/app_main.pages}
    * @private
    */
   _showGooglePhotosPage: function(index) {
@@ -647,7 +650,7 @@ Polymer({
 
   /**
    * Show the error viewer page
-   * @param {int} index - index into {@link module:AppMain.pages}
+   * @param {int} index - index into {@link module:els/app_main.pages}
    * @private
    */
   _showErrorPage: function(index) {
@@ -662,7 +665,7 @@ Polymer({
 
   /**
    * Show the help page
-   * @param {int} index - index into {@link module:AppMain.pages}
+   * @param {int} index - index into {@link module:els/app_main.pages}
    * @private
    */
   _showHelpPage: function(index) {
@@ -677,7 +680,7 @@ Polymer({
 
   /**
    * Display a preview of the screen saver
-   * @param {int} index - index into {@link module:AppMain.pages}
+   * @param {int} index - index into {@link module:els/app_main.pages}
    * @param {string} prevRoute - last page selected
    * @private
    */
