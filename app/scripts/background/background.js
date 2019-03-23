@@ -148,6 +148,15 @@ function _onChromeMessage(request, sender, response) {
     }).catch((err) => {
       response({message: err.message});
     });
+  } else if (request.message === MyMsg.LOAD_ALBUMS.message) {
+    ret = true;
+    GoogleSource.loadAlbums(true, true).
+        then((albums) => {
+      response(albums);
+      return null;
+    }).catch((err) => {
+      response({message: err.message});
+    });
   }
   return ret;
 }
