@@ -228,7 +228,6 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static isAuthRevokedError(err, name) {
-    // TODO does this work with other langueages?
     let ret = false;
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
@@ -410,7 +409,7 @@ export default class GoogleSource extends PhotoSource {
             loadAlbum(album.id, album.name, interactive, notify);
       } catch (err) {
         if (err.message.match(/404/)) {
-          // likely deleted
+          // album likely deleted in Google Photos
           let msg = ChromeLocale.localize('removed_album');
           msg+= `: ${album.name}`;
           ChromeLog.error(msg, METHOD);
@@ -418,9 +417,8 @@ export default class GoogleSource extends PhotoSource {
           albums.splice(i, 1);
           continue;
         } else {
-          ChromeLog.error(err.message, METHOD);
-          // use old
-          newAlbum = album;
+          // failed to load album
+          throw err;
         }
       }
 
