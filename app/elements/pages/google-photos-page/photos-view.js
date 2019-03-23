@@ -25,10 +25,8 @@ import './photo_cat.js';
 
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {
-  showErrorDialog,
-  showStorageErrorDialog,
-} from '../../../elements/app-main/app-main.js';
+import {showErrorDialog, showStorageErrorDialog} from
+      '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/shared-styles.js';
@@ -41,8 +39,6 @@ import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
@@ -280,8 +276,7 @@ Polymer({
         await Permissions.removeGooglePhotos();
         const title = ChromeLocale.localize('err_load_photos');
         const text = ChromeLocale.localize('err_auth_picasa');
-        ChromeLog.error(text, METHOD, title);
-        showErrorDialog(title, text);
+        showErrorDialog(title, text, METHOD);
         return null;
       }
 
@@ -317,8 +312,7 @@ Polymer({
     if (error) {
       const title = ChromeLocale.localize('err_load_photos');
       const text = error.message;
-      ChromeLog.error(text, METHOD, title);
-      showErrorDialog(title, text);
+      showErrorDialog(title, text, METHOD);
     }
   },
 
