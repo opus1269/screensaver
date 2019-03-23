@@ -347,26 +347,24 @@ export default class GoogleSource extends PhotoSource {
 
       /** @type {{nextPageToken, mediaItems}} */
       const response = await ChromeHttp.doPost(url, conf);
-      
+
       nextPageToken = response.nextPageToken;
       conf.body.pageToken = nextPageToken;
-      
+
       const mediaItems = response.mediaItems;
       if (mediaItems) {
         const newPhotos = this._processPhotos(mediaItems, name);
         photos = photos.concat(newPhotos);
       }
-      
-      if (photos.length > this.MAX_ALBUM_PHOTOS) {
-        ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
-            `nPhotos: ${this.MAX_ALBUM_PHOTOS}`);
-      }
 
       // don't go over MAX_ALBUM_PHOTOS
       if (photos.length > this.MAX_ALBUM_PHOTOS) {
+        ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
+            `nPhotos: ${this.MAX_ALBUM_PHOTOS}`);
         const delCt = photos.length - this.MAX_ALBUM_PHOTOS;
         photos.splice(this.MAX_ALBUM_PHOTOS, delCt);
       }
+
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
     /** @type {module:GoogleSource.Album} */
@@ -383,6 +381,69 @@ export default class GoogleSource extends PhotoSource {
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
     return album;
+  }
+
+  /**
+   * Load the saved albums from the Web
+   * @param {boolean} interactive=true - interactive mode for permissions
+   * @param {boolean} notify=false - notify listeners of status
+   * @throws An error if the albums could not be updated
+   * @returns {Promise<module:GoogleSource.Album[]>}
+   */
+  static async loadAlbums(interactive = false, notify = false) {
+    const METHOD = 'GoogleSource.loadAlbums';
+
+    /** @type {module:GoogleSource.SelectedAlbum[]} */
+    const albums = await ChromeStorage.asyncGet('albumSelections', []);
+    if ((albums.length === 0)) {
+      return Promise.resolve(albums);
+    }
+
+    let ct = 0;
+    // loop on each album and reload from Web
+    for (let i = albums.length - 1; i >= 0; i--) {
+      const album = albums[i] || [];
+      let newAlbum = null;
+      try {
+        newAlbum = await GoogleSource.
+            loadAlbum(album.id, album.name, interactive, notify);
+      } catch (err) {
+        // TODO know when NOT to delete during background fetch if offline
+        if (err.message.match(/404/)) {
+          // TODO internationalize
+          const msg = `${album.name} deleted`;
+          ChromeLog.error(msg, METHOD);
+          // delete it
+          albums.splice(i, 1);
+          continue;
+        } else {
+          ChromeLog.error(err.message, METHOD);
+          // use old
+          newAlbum = album;
+        }
+      }
+
+      const photos = newAlbum.photos || [];
+      
+      // replace 
+      albums.splice(i, 1, {
+        id: album.id,
+        name: newAlbum.name,
+        photos: photos,
+      });
+      
+      ct += photos.length;
+      if (ct > GoogleSource.MAX_PHOTOS) {
+        // exceeded total photo limit, stop processing
+        ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${ct}`);
+        // let user know
+        ChromeLog.error(ChromeLocale.localize('err_max_photos'),
+            METHOD);
+        break;
+      }
+    }
+
+    return Promise.resolve(albums);
   }
 
   /**
@@ -672,6 +733,16 @@ export default class GoogleSource extends PhotoSource {
    * - array of albums or array of photos
    */
   fetchPhotos() {
+    
+    // TODO this needs to throw error or we may loose selections
+
+    // this will at least ensure the LAN is connected
+    // may get false positives for other failures
+    if (!navigator.onLine) {
+      // handle error ourselves
+      return Promise.resolve([]);
+    }
+
     const METHOD = 'GoogleSource.fetchPhotos';
     const key = this.getUseKey();
     if (key === PhotoSources.UseKey.ALBUMS_GOOGLE) {
@@ -729,44 +800,22 @@ export default class GoogleSource extends PhotoSource {
    * @async
    */
   static async _fetchAlbums() {
-    const albums = await ChromeStorage.asyncGet('albumSelections', []);
-    if (!this._isFetch() || (albums.length === 0)) {
+    if (!this._isFetch()) {
       // no need to change - save on api calls
+      const albums = await ChromeStorage.asyncGet('albumSelections', []);
       return Promise.resolve(albums);
     }
 
     let ct = 0;
-    /** @type {module:GoogleSource.SelectedAlbum[]} */
-    const selAlbums = [];
-    // loop on each album and reload from Web
-    for (let i = 0; i < albums.length; i++) {
-      const album = albums[i] || [];
-      const newAlbum =
-          await GoogleSource.loadAlbum(album.id, album.name, false, false);
-      const photos = newAlbum.photos || [];
-      if (photos.length) {
-        selAlbums.push({
-          id: newAlbum.id,
-          name: newAlbum.name,
-          photos: photos,
-        });
-        ct = ct + photos.length;
-        if (ct > GoogleSource.MAX_PHOTOS) {
-          // exceeded total photo limit, stop processing
-          ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
-              `limit: ${ct}`);
-          // let user know
-          ChromeLog.error(ChromeLocale.localize('err_max_photos'),
-              'GoogleSource._fetchAlbums');
-          break;
-        }
-      }
+    const albums = await this.loadAlbums(false, false);
+    for (const album of albums) {
+      ct += album.photos.length;
     }
 
     ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
-        `nAlbums: ${selAlbums.length} nPhotos: ${ct}`);
+        `nAlbums: ${albums.length} nPhotos: ${ct}`);
 
-    return Promise.resolve(selAlbums);
+    return Promise.resolve(albums);
   }
 
   /** Determine if a mediaEntry is an image
