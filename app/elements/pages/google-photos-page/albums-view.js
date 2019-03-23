@@ -524,7 +524,7 @@ Polymer({
 
       // send message to background page to do the work
       const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUMS);
-      /** @type {module:GoogleSource.SelectedAlbum[]|{message:}} */
+      /** @type {(module:GoogleSource.SelectedAlbum[]|{message})} */
       const response = await ChromeMsg.send(msg);
       
       if (Array.isArray(response)) {
