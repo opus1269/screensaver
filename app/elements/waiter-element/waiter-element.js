@@ -91,7 +91,7 @@ Polymer({
    * @private
    */
   _statusLabelChanged: function(label) {
-    if (label) {
+    if (label !== undefined) {
       this.$.statusLabel.innerHTML = label.replace(/\n/g, '<br/>');
     }
   },
