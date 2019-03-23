@@ -201,24 +201,24 @@ export default class GoogleSource extends PhotoSource {
     return 3000;
   }
 
-  /**
-   * Is the error due to the Google Photos API quota? Also logs it if true
-   * @param {Error} err - info on image
-   * @param {string} caller - calling method
-   * @returns {boolean} true if 429 error
-   * @static
-   */
-  static isQuotaError(err, caller) {
-    let ret = false;
-    const statusMsg = `${ChromeLocale.localize('err_status')}: 429`;
-    if (err.message.includes(statusMsg)) {
-      // Hit Google photos quota
-      ChromeLog.error(err.message, caller,
-          ChromeLocale.localize('err_google_quota'));
-      ret = true;
-    }
-    return ret;
-  }
+  // /**
+  //  * Is the error due to the Google Photos API quota? Also logs it if true
+  //  * @param {Error} err - info on image
+  //  * @param {string} caller - calling method
+  //  * @returns {boolean} true if 429 error
+  //  * @static
+  //  */
+  // static isQuotaError(err, caller) {
+  //   let ret = false;
+  //   const statusMsg = `${ChromeLocale.localize('err_status')}: 429`;
+  //   if (err.message.includes(statusMsg)) {
+  //     // Hit Google photos quota
+  //     ChromeLog.error(err.message, caller,
+  //         ChromeLocale.localize('err_google_quota'));
+  //     ret = true;
+  //   }
+  //   return ret;
+  // }
 
   /**
    * Is the error due to a revoked auth token
@@ -228,6 +228,7 @@ export default class GoogleSource extends PhotoSource {
    * @static
    */
   static isAuthRevokedError(err, name) {
+    // TODO does this work with other langueages?
     let ret = false;
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
@@ -408,10 +409,10 @@ export default class GoogleSource extends PhotoSource {
         newAlbum = await GoogleSource.
             loadAlbum(album.id, album.name, interactive, notify);
       } catch (err) {
-        // TODO know when NOT to delete during background fetch if offline
         if (err.message.match(/404/)) {
-          // TODO internationalize
-          const msg = `${album.name} deleted`;
+          // likely deleted
+          let msg = ChromeLocale.localize('removed_album');
+          msg+= `: ${album.name}`;
           ChromeLog.error(msg, METHOD);
           // delete it
           albums.splice(i, 1);
@@ -424,14 +425,14 @@ export default class GoogleSource extends PhotoSource {
       }
 
       const photos = newAlbum.photos || [];
-      
+
       // replace 
       albums.splice(i, 1, {
         id: album.id,
         name: newAlbum.name,
         photos: photos,
       });
-      
+
       ct += photos.length;
       if (ct > GoogleSource.MAX_PHOTOS) {
         // exceeded total photo limit, stop processing
@@ -542,7 +543,6 @@ export default class GoogleSource extends PhotoSource {
    * @async
    */
   static async loadPhotos(ids) {
-    const METHOD = 'GoogleSource.loadPhotos';
     ids = ids || [];
     let photos = [];
     // max items in getBatch call
@@ -571,31 +571,20 @@ export default class GoogleSource extends PhotoSource {
       }
       url = url.concat(query);
 
-      try {
-        // get the new mediaItemResults
-        /** @type {{mediaItemResults}} */
-        const response = await ChromeHttp.doGet(url, conf);
-        nCalls++;
-        const mediaItems = [];
-        // convert to array of media items
-        for (const mediaItemResult of response.mediaItemResults) {
-          // some may have failed to updated
-          if (!mediaItemResult.status && mediaItemResult.mediaItem) {
-            mediaItems.push(mediaItemResult.mediaItem);
-          }
+      // get the new mediaItemResults
+      /** @type {{mediaItemResults}} */
+      const response = await ChromeHttp.doGet(url, conf);
+      nCalls++;
+      const mediaItems = [];
+      // convert to array of media items
+      for (const mediaItemResult of response.mediaItemResults) {
+        // some may have failed to updated
+        if (!mediaItemResult.status && mediaItemResult.mediaItem) {
+          mediaItems.push(mediaItemResult.mediaItem);
         }
-        const newPhotos = this._processPhotos(mediaItems, '');
-        photos = photos.concat(newPhotos);
-      } catch (err) {
-        if (this.isQuotaError(err, METHOD)) {
-          // Hit Google photos quota
-        } else if (this.isAuthRevokedError(err, METHOD)) {
-          // Oauth2 Access was revoked
-        } else {
-          ChromeLog.error(err.message, METHOD);
-        }
-        throw err;
       }
+      const newPhotos = this._processPhotos(mediaItems, '');
+      photos = photos.concat(newPhotos);
 
       if (stop === ids.length) {
         done = true;
@@ -615,6 +604,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Update the baseUrls of the given photos
    * @param {module:PhotoSource.Photo[]} photos
+   * @throws An error on failure
    * @returns {boolean} false if couldn't persist albumSelections
    * @static
    */
@@ -642,6 +632,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Update the baseUrls of the given photos in the saved albums
    * @param {module:PhotoSource.Photo[]} photos
+   * @throws An error on failure
    * @returns {boolean} false if couldn't persist albumSelections
    * @private
    * @static
@@ -688,6 +679,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Update the baseUrls of the given photos in the saved photos
    * @param {module:PhotoSource.Photo[]} photos
+   * @throws An error on failure
    * @returns {boolean} false if couldn't persist googleImages
    * @private
    * @static
@@ -726,54 +718,6 @@ export default class GoogleSource extends PhotoSource {
 
     return ret;
   }
-
-  /**
-   * Fetch the albums or photos for this source
-   * @returns {Promise<module:GoogleSource.SelectedAlbum[]|module:PhotoSource.Photo[]>}
-   * - array of albums or array of photos
-   */
-  fetchPhotos() {
-    
-    // TODO this needs to throw error or we may loose selections
-
-    // this will at least ensure the LAN is connected
-    // may get false positives for other failures
-    if (!navigator.onLine) {
-      // handle error ourselves
-      return Promise.resolve([]);
-    }
-
-    const METHOD = 'GoogleSource.fetchPhotos';
-    const key = this.getUseKey();
-    if (key === PhotoSources.UseKey.ALBUMS_GOOGLE) {
-      // album mode
-      return GoogleSource._fetchAlbums().catch((err) => {
-        if (GoogleSource.isQuotaError(err, METHOD)) {
-          // Hit Google photos quota
-        } else if (GoogleSource.isAuthRevokedError(err, METHOD)) {
-          // Oauth2 Access was revoked
-        } else {
-          ChromeLog.error(err.message, METHOD);
-        }
-        // handle error ourselves
-        return Promise.resolve([]);
-      });
-    } else {
-      // photo mode
-      return GoogleSource.loadFilteredPhotos(false).catch((err) => {
-        if (GoogleSource.isQuotaError(err, METHOD)) {
-          // Hit Google photos quota
-        } else if (GoogleSource.isAuthRevokedError(err, METHOD)) {
-          // Oauth2 Access was revoked
-        } else {
-          ChromeLog.error(err.message, METHOD);
-        }
-        // handle error ourselves
-        return Promise.resolve([]);
-      });
-    }
-  }
-
   /**
    * Return true if we should be fetching from Google
    * trying to minimize Google Photos API usage
@@ -812,8 +756,10 @@ export default class GoogleSource extends PhotoSource {
       ct += album.photos.length;
     }
 
-    ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
-        `nAlbums: ${albums.length} nPhotos: ${ct}`);
+    if ((albums.length > 0)) {
+      ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
+          `nAlbums: ${albums.length} nPhotos: ${ct}`);
+    }
 
     return Promise.resolve(albums);
   }
@@ -918,4 +864,38 @@ export default class GoogleSource extends PhotoSource {
     }
     return photos;
   }
+
+  /**
+   * Fetch the albums or photos for this source
+   * @throws An error if we couldn't update
+   * @returns {Promise<module:GoogleSource.SelectedAlbum[]|module:PhotoSource.Photo[]>}
+   * - array of albums or array of photos
+   */
+  async fetchPhotos() {
+    const METHOD = 'GoogleSource.fetchPhotos';
+
+    // this will at least ensure the LAN is connected
+    // may get false positives for other failures
+    if (!navigator.onLine) {
+      return Promise.reject(new Error(ChromeLocale.localize('err_network')));
+    }
+
+    try {
+      const key = this.getUseKey();
+      if (key === PhotoSources.UseKey.ALBUMS_GOOGLE) {
+        // album mode
+        return await GoogleSource._fetchAlbums();
+      } else {
+        // photo mode
+        return await GoogleSource.loadFilteredPhotos(false);
+      }
+    } catch (err) {
+      if (GoogleSource.isAuthRevokedError(err, METHOD)) {
+        // Oauth2 Access was revoked - handled error ourselves
+        return Promise.resolve([]);
+      }
+      return Promise.reject(err);
+    }
+  }
+
 }

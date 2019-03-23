@@ -600,6 +600,9 @@
   "allow": {
     "message": "ALLOW"
   },
+  "removed_album": {
+    "message": "Removed album"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"
