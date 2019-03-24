@@ -465,13 +465,12 @@ Polymer({
     ChromeMsg.listen(this._onMessage.bind(this));
 
     // listen for changes to chrome.storage
+    // noinspection JSUnresolvedVariable
     chrome.storage.onChanged.addListener((changes) => {
-      for (const key in changes) {
-        if (changes.hasOwnProperty(key)) {
-          if (key === 'lastError') {
-            this._setErrorMenuState();
-            break;
-          }
+      for (const key of Object.keys(changes)) {
+        if (key === 'lastError') {
+          this._setErrorMenuState();
+          break;
         }
       }
     });

@@ -244,17 +244,15 @@ Polymer({
 
       // set state of photo categories
       this._setPhotoCats();
-
+      
       // listen for changes to chrome.storage
       // noinspection JSUnresolvedVariable
       chrome.storage.onChanged.addListener((changes) => {
-        for (const key in changes) {
-          if (changes.hasOwnProperty(key)) {
-            if (key === 'googleImages') {
-              this.setPhotoCount().catch(() => {});
-              this.set('needsPhotoRefresh', true);
-              break;
-            }
+        for (const key of Object.keys(changes)) {
+          if (key === 'googleImages') {
+            this.setPhotoCount().catch(() => {});
+            this.set('needsPhotoRefresh', true);
+            break;
           }
         }
       });

@@ -21,22 +21,19 @@ window.app = window.app || {};
 
 /**
  * Get the sources that are marked true in local storage
- * @returns {Array<module:PhotoSource>} Array of sources
+ * @returns {Array<PhotoSource>} Array of sources
  */
 export function getSelectedSources() {
   let ret = [];
-  for (const key in UseKey) {
-    if (UseKey.hasOwnProperty(key)) {
-      const useKey = UseKey[key];
-      if (ChromeStorage.getBool(useKey)) {
-        try {
-          const source = PhotoSourceFactory.create(useKey);
-          if (source) {
-            ret.push(source);
-          }
-        } catch (ex) {
-          ChromeGA.exception(ex, `${useKey} failed to load`, false);
+  for (const useKey of Object.values(UseKey)) {
+    if (ChromeStorage.getBool(useKey, false)) {
+      try {
+        const source = PhotoSourceFactory.create(useKey);
+        if (source) {
+          ret.push(source);
         }
+      } catch (ex) {
+        ChromeGA.exception(ex, `${useKey} failed to load`, false);
       }
     }
   }
@@ -61,15 +58,13 @@ export const UseKey = {
 };
 
 /**
- * Get all the useage keys
- * @returns {string[]} Array of useage keys
+ * Get all the usage keys
+ * @returns {string[]} Array of usage keys
  */
 export function getUseKeys() {
   let ret = [];
-  for (const key in UseKey) {
-    if (UseKey.hasOwnProperty(key)) {
-      ret.push(UseKey[key]);
-    }
+  for (const useKey of Object.values(UseKey)) {
+    ret.push(useKey);
   }
   return ret;
 }
@@ -81,12 +76,10 @@ export function getUseKeys() {
  */
 export function isUseKey(keyName) {
   let ret = false;
-  for (const key in UseKey) {
-    if (UseKey.hasOwnProperty(key)) {
-      if (UseKey[key] === keyName) {
-        ret = true;
-        break;
-      }
+  for (const useKey of Object.values(UseKey)) {
+    if (useKey === keyName) {
+      ret = true;
+      break;
     }
   }
   return ret;

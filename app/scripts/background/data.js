@@ -271,7 +271,7 @@ export function update() {
  * Restore default values for data saved in localStorage
  */
 export function restoreDefaults() {
-  Object.keys(_DEF_VALUES).forEach(function(key) {
+  Object.keys(_DEF_VALUES).forEach((key) => {
     // skip Google Photos settings
     if (!key.includes('useGoogle') &&
         (key !== 'useGoogleAlbums') &&
@@ -376,7 +376,7 @@ export async function processState(key = 'all') {
       }
     }
   }
-  
+
   return null;
 }
 

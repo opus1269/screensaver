@@ -136,21 +136,21 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   ready: function() {
-     ChromeLastError.load().then((lastError) => {
+    ChromeLastError.load().then((lastError) => {
       this.set('lastError', lastError);
       return null;
     }).catch((err) => {
       ChromeGA.error(err.message, 'ErrorPage.ready');
     });
+     
+    // listen for changes to lastError
+    // noinspection JSUnresolvedVariable
     chrome.storage.onChanged.addListener((changes) => {
-      // listen for changes to lastError
-      for (const key in changes) {
-        if (changes.hasOwnProperty(key)) {
-          if (key === 'lastError') {
-            const change = changes[key];
-            this.set('lastError', change.newValue);
-            break;
-          }
+      for (const key of Object.keys(changes)) {
+        if (key === 'lastError') {
+          const change = changes[key];
+          this.set('lastError', change.newValue);
+          break;
         }
       }
     });
@@ -179,7 +179,7 @@ export const ErrorPage = Polymer({
    * @memberOf ErrorPage
    */
   _onRemoveTapped: function() {
-     ChromeLastError.reset().catch(() => {});
+    ChromeLastError.reset().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
   },
 
