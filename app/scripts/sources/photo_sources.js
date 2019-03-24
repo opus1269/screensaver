@@ -20,6 +20,23 @@ window.app = window.app || {};
  */
 
 /**
+ * Enum for {@link module:sources/photo_source.PhotoSource} useKey
+ * @typedef {enum} module:sources/photo_sources.UseKey
+ * @readonly
+ * @enum {string}
+ */
+export const UseKey = {
+  ALBUMS_GOOGLE: 'useGoogleAlbums',
+  PHOTOS_GOOGLE: 'useGooglePhotos',
+  CHROMECAST: 'useChromecast',
+  SPACE_RED: 'useSpaceReddit',
+  EARTH_RED: 'useEarthReddit',
+  ANIMAL_RED: 'useAnimalReddit',
+  INT_FLICKR: 'useInterestingFlickr',
+  AUTHOR: 'useAuthors',
+};
+
+/**
  * Get the sources that are marked true in local storage
  * @returns {Array<module:sources/photo_source.PhotoSource>} Array of sources
  */
@@ -39,23 +56,6 @@ export function getSelectedSources() {
   }
   return ret;
 }
-
-/**
- * Enum for {@link module:sources/photo_source.PhotoSource} useKey
- * @typedef {enum} module:sources/photo_sources.UseKey
- * @readonly
- * @enum {string}
- */
-export const UseKey = {
-  ALBUMS_GOOGLE: 'useGoogleAlbums',
-  PHOTOS_GOOGLE: 'useGooglePhotos',
-  CHROMECAST: 'useChromecast',
-  SPACE_RED: 'useSpaceReddit',
-  EARTH_RED: 'useEarthReddit',
-  ANIMAL_RED: 'useAnimalReddit',
-  INT_FLICKR: 'useInterestingFlickr',
-  AUTHOR: 'useAuthors',
-};
 
 /**
  * Get all the usage keys

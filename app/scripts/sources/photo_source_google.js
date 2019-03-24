@@ -27,13 +27,13 @@ import PhotoSource from './photo_source.js';
 import * as PhotoSources from './photo_sources.js';
 
 /**
- * A potential source of photos from Google Photos
- * @module GoogleSource
+ * A source of photos from Google Photos
+ * @module sources/photo_source_google
  */
 
 /**
  * A Google Photo Album
- * @typedef {Object} module:GoogleSource.Album
+ * @typedef {Object} module:sources/photo_source_google.Album
  * @property {int} index - Array index
  * @property {string} uid - unique identifier
  * @property {string} name - album name
@@ -46,7 +46,7 @@ import * as PhotoSources from './photo_sources.js';
 
 /**
  * A Selected Google Photo Album, this is persisted
- * @typedef {Object} module:GoogleSource.SelectedAlbum
+ * @typedef {Object} module:sources/photo_source_google.SelectedAlbum
  * @property {string} id - Google album Id
  * @property {string} name - Google album name
  * @property {module:sources/photo_source.Photo[]} photos - Array of photos
@@ -54,7 +54,7 @@ import * as PhotoSources from './photo_sources.js';
 
 /**
  * Google Photos API representation of a photo
- * @typedef {{}} module:GoogleSource.mediaItem
+ * @typedef {{}} module:sources/photo_source_google.mediaItem
  * @property {{}} id
  * @property {{}} mimeType
  * @property {{}} baseUrl
@@ -108,10 +108,11 @@ const _MEDIA_ITEMS_RESULTS_FIELDS =
     'mediaItem/mediaMetadata/height)';
 
 /**
- * A potential source of photos from Google
- * @extends PhotoSource
+ * A source of photos from Google Photos
+ * @extends module:sources/photo_source.PhotoSource
+ * @alias module:sources/photo_source_google.GoogleSource
  */
-export default class GoogleSource extends PhotoSource {
+class GoogleSource extends PhotoSource {
 
   /**
    * Create a new photo source
@@ -246,7 +247,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Retrieve the user's list of albums
    * @throws An error if the album list failed to load.
-   * @returns {Promise<Array<module:GoogleSource.Album>>} Array of albums
+   * @returns {Promise<Array<module:sources/photo_source_google.Album>>} Array of albums
    * @static
    * @async
    */
@@ -280,11 +281,11 @@ export default class GoogleSource extends PhotoSource {
       url = `${baseUrl}&pageToken=${nextPageToken}`;
     } while (nextPageToken);
 
-    // Create the array of module:GoogleSource.Album
+    // Create the array of module:sources/photo_source_google.Album
     for (const gAlbum of gAlbums) {
       if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
 
-        /** @type {module:GoogleSource.Album} */
+        /** @type {module:sources/photo_source_google.Album} */
         const album = {};
         album.index = ct;
         album.uid = 'album' + ct;
@@ -312,7 +313,7 @@ export default class GoogleSource extends PhotoSource {
    * @param {boolean} interactive=true - interactive mode for permissions
    * @param {boolean} notify=false - notify listeners of status
    * @throws An error if the album failed to load.
-   * @returns {module:GoogleSource.Album} Album
+   * @returns {module:sources/photo_source_google.Album} Album
    * @static
    * @async
    */
@@ -367,7 +368,7 @@ export default class GoogleSource extends PhotoSource {
 
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    /** @type {module:GoogleSource.Album} */
+    /** @type {module:sources/photo_source_google.Album} */
     const album = {};
     album.index = 0;
     album.uid = 'album' + 0;
@@ -388,12 +389,12 @@ export default class GoogleSource extends PhotoSource {
    * @param {boolean} interactive=true - interactive mode for permissions
    * @param {boolean} notify=false - notify listeners of status
    * @throws An error if the albums could not be updated
-   * @returns {Promise<module:GoogleSource.Album[]>}
+   * @returns {Promise<module:sources/photo_source_google.Album[]>}
    */
   static async loadAlbums(interactive = false, notify = false) {
     const METHOD = 'GoogleSource.loadAlbums';
 
-    /** @type {module:GoogleSource.SelectedAlbum[]} */
+    /** @type {module:sources/photo_source_google.SelectedAlbum[]} */
     const albums = await ChromeStorage.asyncGet('albumSelections', []);
     if ((albums.length === 0)) {
       return Promise.resolve(albums);
@@ -737,7 +738,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Fetch the most recent state for the selected albums
    * @throws An error if we could not load an album
-   * @returns {Promise<module:GoogleSource.SelectedAlbum[]>} Array of albums
+   * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]>} Array of albums
    * @static
    * @async
    */
@@ -763,7 +764,7 @@ export default class GoogleSource extends PhotoSource {
   }
 
   /** Determine if a mediaEntry is an image
-   * @param {module:GoogleSource.mediaItem} mediaItem - Google Photos media
+   * @param {module:sources/photo_source_google.mediaItem} mediaItem - Google Photos media
    *     object
    * @returns {boolean} true if entry is a photo
    * @static
@@ -807,7 +808,7 @@ export default class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {module:GoogleSource.mediaItem} mediaItem - object from Google
+   * @param {module:sources/photo_source_google.mediaItem} mediaItem - object from Google
    *     Photos API call
    * @param {string} albumName - Album name
    * @returns {module:sources/photo_source.Photo} Photo, null if error
@@ -866,7 +867,7 @@ export default class GoogleSource extends PhotoSource {
   /**
    * Fetch the albums or photos for this source
    * @throws An error if we couldn't update
-   * @returns {Promise<module:GoogleSource.SelectedAlbum[]|module:sources/photo_source.Photo[]>}
+   * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]|module:sources/photo_source.Photo[]>}
    * - array of albums or array of photos
    */
   async fetchPhotos() {
@@ -895,5 +896,6 @@ export default class GoogleSource extends PhotoSource {
       return Promise.reject(err);
     }
   }
-
 }
+
+export default GoogleSource;

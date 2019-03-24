@@ -74,8 +74,8 @@ const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
 /**
- * The array of {@link module:GoogleSource.SelectedAlbum}
- * @type {Array<module:GoogleSource.SelectedAlbum>}
+ * The array of {@link module:sources/photo_source_google.SelectedAlbum}
+ * @type {Array<module:sources/photo_source_google.SelectedAlbum>}
  * @private
  */
 let _selections = [];
@@ -195,7 +195,7 @@ Polymer({
      * @event no-albums
      */
 
-    /** The array of all {@link module:GoogleSource.Album} */
+    /** The array of all {@link module:sources/photo_source_google.Album} */
     albums: {
       type: Array,
       value: [],
@@ -344,7 +344,7 @@ Polymer({
   /**
    * Event: Album checkbox state changed
    * @param {Event} ev - checkbox state changed
-   * @param {module:GoogleSource.Album} ev.model.album - the album
+   * @param {module:sources/photo_source_google.Album} ev.model.album - the album
    * @returns {Promise<void>}
    * @private
    */
@@ -426,7 +426,7 @@ Polymer({
 
   /**
    * Load an album from the Web
-   * @param {module:GoogleSource.Album} album
+   * @param {module:sources/photo_source_google.Album} album
    * @param {boolean} [wait=true] if true handle waiter
    * @returns {Promise<boolean>} true, if successful
    * @private
@@ -524,7 +524,7 @@ Polymer({
 
       // send message to background page to do the work
       const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUMS);
-      /** @type {(module:GoogleSource.SelectedAlbum[]|{message})} */
+      /** @type {(module:sources/photo_source_google.SelectedAlbum[]|{message})} */
       const response = await ChromeMsg.send(msg);
       
       if (Array.isArray(response)) {

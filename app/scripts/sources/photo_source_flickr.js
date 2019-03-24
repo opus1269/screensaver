@@ -13,15 +13,14 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import PhotoSource from './photo_source.js';
 
 /**
- * A potential source of photos from flickr
- * @module FlickrSource
+ * A source of photos from Flickr
+ * @module sources/photo_source_flickr
  */
 
 /**
  * Flickr rest API
  * @type {string}
  * @const
- * @default
  * @private
  */
 const _URL_BASE = 'https://api.flickr.com/services/rest/';
@@ -38,16 +37,16 @@ const _KEY = '1edd9926740f0e0d01d4ecd42de60ac6';
  * Max photos to return
  * @type {int}
  * @const
- * @default
  * @private
  */
 const _MAX_PHOTOS = 250;
 
 /**
- * A potential source of photos from flickr
- * @extends PhotoSource
+ * A source of photos from Flickr
+ * @extends module:sources/photo_source.PhotoSource
+ * @alias module:sources/photo_source_flickr.FlickrSource
  */
-export default class FlickrSource extends PhotoSource {
+class FlickrSource extends PhotoSource {
 
   /**
    * Create a new photo source
@@ -77,8 +76,9 @@ export default class FlickrSource extends PhotoSource {
       return Promise.reject(err);
     }
 
-    /** @(type) {PhotoSource.SourcePhoto[]} */
+    /** @type {module:sources/photo_source.Photo[]} */
     const photos = [];
+    
     for (const photo of response.photos.photo) {
       let url = null;
       let width;
@@ -139,3 +139,5 @@ export default class FlickrSource extends PhotoSource {
     });
   }
 }
+
+export default FlickrSource;

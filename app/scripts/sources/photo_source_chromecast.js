@@ -11,10 +11,16 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import PhotoSource from './photo_source.js';
 
 /**
- * A potential source of photos from Chromecast
- * @module CCSource
+ * A source of photos from Chromecast
+ * @module sources/photo_source_chromecast
  */
-export default class CCSource extends PhotoSource {
+
+/**
+ * A source of photos from Chromecast
+ * @extends module:sources/photo_source.PhotoSource
+ * @alias module:sources/photo_source_chromecast.CCSource
+ */
+class CCSource extends PhotoSource {
 
   /**
    * Create a new photo source
@@ -25,7 +31,6 @@ export default class CCSource extends PhotoSource {
    * @param {boolean} isDaily - Should the source be updated daily
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
-   * @constructor
    */
   constructor(useKey, photosKey, type, desc, isDaily, isArray,
               loadArg = null) {
@@ -47,3 +52,5 @@ export default class CCSource extends PhotoSource {
     });
   }
 }
+
+export default CCSource;

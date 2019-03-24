@@ -17,14 +17,14 @@ import RedditSource from './photo_source_reddit.js';
 import * as PhotoSources from './photo_sources.js';
 
 /**
- * Factory to create {@link module:sources/photo_source} instances
- * @module PhotoSourceFactory
+ * Factory to create {@link module:sources/photo_source.PhotoSource} instances
+ * @module sources/photo_source_factory
  */
 
 /**
- * Factory Method to create a new {@link PhotoSource}
- * @param {string} useKey - {@link PhotoSource.UseKey}
- * @returns {?PhotoSource} a new PhotoSource or subclass
+ * Factory Method to create a new {@link module:sources/photo_source.PhotoSource}
+ * @param {string} useKey {@link module:sources/photo_sources.UseKey}
+ * @returns {?module:sources/photo_source.PhotoSource} a new PhotoSource or subclass
  */
 export function create(useKey) {
   switch (useKey) {

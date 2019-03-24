@@ -15,7 +15,7 @@ import * as ChromeUtils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * A potential source of photos for the screen saver
+ * A source of photos for the screen saver
  * @module sources/photo_source
  */
 
@@ -40,7 +40,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
- * A potential source of photos for the screen saver
+ * A source of photos for the screen saver
  * @alias module:sources/photo_source.PhotoSource
  */
 class PhotoSource {
