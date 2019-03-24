@@ -12,8 +12,6 @@ import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import ChromeLastError
   from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale
@@ -27,7 +25,7 @@ import * as ChromeStorage
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Manage the extension's data
+ * Manage the extension's global data
  * @module AppData
  */
 
@@ -40,7 +38,7 @@ const chromep = new ChromePromise();
  * @const
  * @private
  */
-const _DATA_VERSION = 22;
+const _DATA_VERSION = 23;
 
 /**
  * Default values in localStorage
@@ -81,9 +79,7 @@ const _DATA_VERSION = 22;
  * @property {boolean} isAlbumMode - true if Google Photos album mode
  * @property {boolean} useGoogle - use this photo source
  * @property {boolean} useGoogleAlbums - use this photo source
- * @property {Array} albumSelections - user's selected Google Photos albums
  * @property {boolean} useGooglePhotos - use this photo source
- * @property {Array} googleImages - user's selected Google Photos
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
  * @property {{}} googlePhotosFilter - filter for retrieving google photos
@@ -127,163 +123,36 @@ const _DEF_VALUES = {
   'useGoogle': true,
   'useGoogleAlbums': true,
   'useGooglePhotos': false,
-  'googleImages': [],
   'signedInToChrome': true,
   'googlePhotosNoFilter': true,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
 };
 
 /**
- * Move the currently selected photo sources to chrome.storage.local
- * and delete the old ones
- * @private
- */
-async function _updateToChromeLocaleStorage() {
-  const sources = PhotoSources.getSelectedSources();
-  for (const source of sources) {
-    const key = source.getPhotosKey();
-    const value = ChromeStorage.get(key);
-    if (value) {
-      const set = await ChromeStorage.asyncSet(key, value);
-      if (!set) {
-        const desc = source.getDesc();
-        const msg = `Failed to move source: ${desc} to chrome.storage`;
-        ChromeLog.error(msg, 'AppData._updateToChromeLocaleStorage');
-      }
-      // delete old one
-      ChromeStorage.set(key, null);
-    }
-  }
-}
-
-/**
- * Set state based on screensaver enabled flag
- * Note: this does not effect the keep awake settings so you could
- * use the extension as a display keep awake scheduler without
- * using the screensaver
- * @private
- */
-function _processEnabled() {
-  // update context menu text
-  const label = ChromeStorage.getBool('enabled') ? ChromeLocale.localize(
-      'disable') : ChromeLocale.localize('enable');
-  updateBadgeText();
-  chromep.contextMenus.update('ENABLE_MENU', {
-    title: label,
-  }).catch(() => {});
-}
-
-/**
- * Set power scheduling features
- * @private
- */
-function _processKeepAwake() {
-  const keepAwake = ChromeStorage.getBool('keepAwake', true);
-  keepAwake
-      ? chrome.power.requestKeepAwake('display')
-      : chrome.power.releaseKeepAwake();
-  updateRepeatingAlarms();
-  updateBadgeText();
-}
-
-/**
- * Set wait time for screen saver display after machine is idle
- * @private
- */
-function _processIdleTime() {
-  const idleTime = getIdleSeconds();
-  if (idleTime) {
-    chrome.idle.setDetectionInterval(idleTime);
-  } else {
-    ChromeLog.error('idleTime is null', 'Data._processIdleTime');
-  }
-}
-
-/**
- * Get default time format based on locale
- * @returns {int} 12 or 24
- * @private
- */
-function _getTimeFormat() {
-  let ret = 2; // 24 hr
-  const format = ChromeLocale.localize('time_format');
-  if (format && (format === '12')) {
-    ret = 1;
-  }
-  return ret;
-}
-
-/**
- * Set the 'os' value
- * @returns {Promise} err on failure
- * @private
- */
-function _setOS() {
-  return chromep.runtime.getPlatformInfo().then((info) => {
-    ChromeStorage.set('os', info.os);
-    return null;
-  }).catch(() => {
-    // something went wrong - linux seems to fail this call sometimes
-    ChromeStorage.set('os', 'unknown');
-    return null;
-  });
-}
-
-/**
- * Save the [_DEF_VALUES]{@link module:AppData._DEF_VALUES} items, if they
- * do not already exist
- * @private
- */
-function _addDefaults() {
-  Object.keys(_DEF_VALUES).forEach(function(key) {
-    if (ChromeStorage.get(key) === null) {
-      ChromeStorage.set(key, _DEF_VALUES[key]);
-    }
-  });
-}
-
-/**
- * Convert a setting-slider value due to addition of units
- * @param {!string} key - localStorage key
- * @private
- */
-function _convertSliderValue(key) {
-  const value = ChromeStorage.get(key);
-  if (value) {
-    const newValue = {
-      base: value,
-      display: value,
-      unit: 0,
-    };
-    ChromeStorage.set(key, newValue);
-  }
-}
-
-/**
  * Initialize the data saved in localStorage
  */
-export function initialize() {
-  _addDefaults();
+export async function initialize() {
+  try {
+    _addDefaults();
 
-  // set operating system
-  _setOS().catch(() => {});
+    // set operating system
+    await _setOS();
 
-  // set signin state
-  ChromeAuth.isSignedIn().then((signedIn) => {
+    // set signin state
+    const signedIn = await ChromeAuth.isSignedIn();
     ChromeStorage.set('signedInToChrome', signedIn);
-    return null;
-  }).catch(() => {});
 
-  // and the last error
-  ChromeLastError.reset().catch((err) => {
-    ChromeGA.error(err.message, 'Data.initialize');
-  });
+    // add the last error
+    await ChromeLastError.reset();
 
-  // set time format based on locale
-  ChromeStorage.set('showTime', _getTimeFormat());
+    // set time format based on locale
+    ChromeStorage.set('showTime', _getTimeFormat());
 
-  // update state
-  processState().catch(() => {});
+    // update state
+    await processState();
+  } catch (err) {
+    // ignore
+  }
 }
 
 /**
@@ -387,6 +256,11 @@ export function update() {
     ChromeStorage.set('albumSelections', null);
   }
 
+  if (oldVersion < 22) {
+    // remove unused data
+    ChromeStorage.set('googleImages', null);
+  }
+
   _addDefaults();
 
   // update state
@@ -398,14 +272,14 @@ export function update() {
  */
 export function restoreDefaults() {
   Object.keys(_DEF_VALUES).forEach(function(key) {
-    // skip some settings
+    // skip Google Photos settings
     if (!key.includes('useGoogle') &&
+        (key !== 'useGoogleAlbums') &&
+        (key !== 'useGooglePhotos') &&
         (key !== 'signedInToChrome') &&
         (key !== 'isAlbumMode') &&
         (key !== 'googlePhotosFilter') &&
-        (key !== 'permPicasa') &&
-        (key !== 'googleImages') &&
-        (key !== 'albumSelections')) {
+        (key !== 'permPicasa')) {
       ChromeStorage.set(key, _DEF_VALUES[key]);
     }
   });
@@ -420,36 +294,28 @@ export function restoreDefaults() {
 /**
  * Process changes to localStorage items
  * @param {string} [key='all'] - the item that changed
- * @param {boolean} [doGoogle=false] - update Google Photos?
+ * @returns {Promise<void>}
  */
-export async function processState(key = 'all', doGoogle = false) {
-  // Map processing functions to localStorage values
-  const STATE_MAP = {
-    'enabled': _processEnabled,
-    'keepAwake': _processKeepAwake,
-    'activeStart': _processKeepAwake,
-    'activeStop': _processKeepAwake,
-    'allowSuspend': _processKeepAwake,
-    'idleTime': _processIdleTime,
-  };
+export async function processState(key = 'all') {
   if (key === 'all') {
-    // process everything
-    Object.keys(STATE_MAP).forEach(function(ky) {
-      const fn = STATE_MAP[ky];
-      fn();
-    });
+    // update everything
+
+    _processEnabled();
+    _processKeepAwake();
+    _processIdleTime();
 
     // process photo SOURCES
-    PhotoSources.processAll(doGoogle);
+    PhotoSources.processAll(false);
 
     // set os, if not already
     if (!ChromeStorage.get('os')) {
-      _setOS().catch(() => {});
+      await _setOS();
     }
   } else {
     // individual change
+
     if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
-      // photo source change or full resolution google photos being asked for
+      // photo source usage or full resolution google photos changed
       let useKey = key;
       if (key === 'fullResGoogle') {
         // full res photo state changed update albums or photos
@@ -492,21 +358,151 @@ export async function processState(key = 'all', doGoogle = false) {
         }
       }
     } else {
-      // may be a function to handle it
-      const fn = STATE_MAP[key];
-      if (typeof (fn) !== 'undefined') {
-        fn();
+      switch (key) {
+        case 'enabled':
+          _processEnabled();
+          break;
+        case 'idleTime':
+          _processIdleTime();
+          break;
+        case 'keepAwake':
+        case 'activeStart':
+        case 'activeStop':
+        case 'allowSuspend':
+          _processKeepAwake();
+          break;
+        default:
+          break;
       }
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * Get the idle time in seconds
+ * @returns {!int} idle time in seconds
+ */
+export function getIdleSeconds() {
+  const idle = ChromeStorage.get('idleTime', _DEF_VALUES['idleTime']);
+  return idle.base * 60;
+}
+
+/**
+ * Move the currently selected photo sources to chrome.storage.local
+ * and delete the old ones
+ * @private
+ */
+async function _updateToChromeLocaleStorage() {
+  const sources = PhotoSources.getSelectedSources();
+  for (const source of sources) {
+    const key = source.getPhotosKey();
+    const value = ChromeStorage.get(key);
+    if (value) {
+      const set = await ChromeStorage.asyncSet(key, value);
+      if (!set) {
+        const desc = source.getDesc();
+        const msg = `Failed to move source: ${desc} to chrome.storage`;
+        ChromeLog.error(msg, 'AppData._updateToChromeLocaleStorage');
+      }
+      // delete old one
+      ChromeStorage.set(key, null);
     }
   }
 }
 
 /**
- * Get the idle time in seconds
- * @returns {int} idle time in seconds
+ * Set state based on screensaver enabled flag
+ * Note: this does not effect the keep awake settings so you could
+ * use the extension as a display keep awake scheduler without
+ * using the screensaver
+ * @private
  */
-export function getIdleSeconds() {
-  const idle = ChromeStorage.get('idleTime',
-      {'base': 5, 'display': 5, 'unit': 0});
-  return idle.base * 60;
+function _processEnabled() {
+  // update context menu text
+  const label = ChromeStorage.getBool('enabled') ? ChromeLocale.localize(
+      'disable') : ChromeLocale.localize('enable');
+  updateBadgeText();
+  chromep.contextMenus.update('ENABLE_MENU', {
+    title: label,
+  }).catch(() => {});
+}
+
+/**
+ * Set power scheduling features
+ * @private
+ */
+function _processKeepAwake() {
+  const keepAwake = ChromeStorage.getBool('keepAwake', true);
+  keepAwake
+      ? chrome.power.requestKeepAwake('display')
+      : chrome.power.releaseKeepAwake();
+  updateRepeatingAlarms();
+  updateBadgeText();
+}
+
+/**
+ * Set wait time for screen saver display after machine is idle
+ * @private
+ */
+function _processIdleTime() {
+  chrome.idle.setDetectionInterval(getIdleSeconds());
+}
+
+/**
+ * Get default time format based on locale
+ * @returns {int} 12 or 24
+ * @private
+ */
+function _getTimeFormat() {
+  const format = ChromeLocale.localize('time_format', '12');
+  return (format === '12') ? 1 : 2;
+}
+
+/**
+ * Set the 'os' value
+ * @returns {Promise<void>}
+ * @private
+ */
+async function _setOS() {
+  try {
+    const info = await chromep.runtime.getPlatformInfo();
+    ChromeStorage.set('os', info.os);
+  } catch (err) {
+    // something went wrong - linux seems to fail this call sometimes
+    ChromeStorage.set('os', 'unknown');
+  }
+
+  return null;
+}
+
+/**
+ * Save the [_DEF_VALUES]{@link module:AppData._DEF_VALUES} items, if they
+ * do not already exist
+ * @private
+ */
+function _addDefaults() {
+  Object.keys(_DEF_VALUES).forEach(function(key) {
+    if (ChromeStorage.get(key) === null) {
+      ChromeStorage.set(key, _DEF_VALUES[key]);
+    }
+  });
+}
+
+/**
+ * Convert a setting-slider value due to addition of units
+ * @param {!string} key - localStorage key
+ * @private
+ */
+function _convertSliderValue(key) {
+  const value = ChromeStorage.get(key);
+  if (value) {
+    const newValue = {
+      base: value,
+      display: value,
+      unit: 0,
+    };
+    ChromeStorage.set(key, newValue);
+  }
 }

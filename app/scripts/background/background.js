@@ -56,9 +56,12 @@ function _onInstalled(details) {
   if (details.reason === 'install') {
     // initial install
     ChromeGA.event(ChromeGA.EVENT.INSTALLED, ChromeUtils.getVersion());
-    AppData.initialize();
-    _showOptionsTab();
+    AppData.initialize().then(() => {
+      _showOptionsTab();
+      return null;
+    }).catch(() => {});
   } else if (details.reason === 'update') {
+    // extension updated
     if (!MyUtils.DEBUG) {
       const oldVer = details.previousVersion;
       const version = ChromeUtils.getVersion();
@@ -77,7 +80,6 @@ function _onInstalled(details) {
         chrome.tabs.create({url: '/html/update3.html'});
       }
     }
-    // extension updated
     AppData.update();
   }
 }
