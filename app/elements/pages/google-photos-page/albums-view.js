@@ -438,7 +438,7 @@ Polymer({
     let ret = false;
 
     try {
-      if (_selections.length === _MAX_ALBUMS) {
+      if (_selections.length >= _MAX_ALBUMS) {
         // reached max number of albums
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
