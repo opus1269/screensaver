@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Source: animations/spin-up-animation/spin-up-animation.js</title>
+	<title>Documentation Module: sources/photo_source</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -81,83 +81,536 @@
 <div class="row">
 
 	
-	<div class="col-md-12">
+	<div class="col-md-8">
 	
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: animations/spin-up-animation/spin-up-animation.js</h1>
-    
+	<h1 class="page-title">Module: sources/photo_source</h1>
 <section>
-    <article>
-        <pre
-            class="sunlight-highlight-javascript linenums">/*
- *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
- *  Licensed under the BSD-3-Clause
- *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import {NeonAnimationBehavior} from
-      '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
-import {Polymer} from
-      '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+<header>
+    
+</header>
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/*
- `&lt;spin-up-animation>` animates the scale transform of an element from 0 to 1
- and the rotate from 0 to 1 turn
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A potential source of photos for the screen saver</p></div>
+        
 
- Configuration:
- ```
- {
- name: 'spin-up-animation',
- node: &lt;node>,
- transformOrigin: &lt;transform-origin>,
- timing: &lt;animation-timing>
- }
- ```
- */
+        
+<dl class="details">
+    
 
-/**
- * Polymer element to provide a spinup animation
- * @namespace SpinUpAnimation
- */
-Polymer({
-  is: 'spin-up-animation',
+	
 
-  behaviors: [
-    NeonAnimationBehavior,
-  ],
+	
 
-  /**
-   * Configure the animation
-   * @param {Object} config - configuration object
-   * @returns {KeyframeEffect} new key frame effect
-   * @memberOf SpinUpAnimation
-   */
-  configure: function(config) {
-    const node = config.node;
+	
 
-    if (config.transformOrigin) {
-      this.setPrefixedProperty(node, 'transformOrigin',
-          config.transformOrigin);
-    }
+    
 
-    this._effect = new KeyframeEffect(node, [
-      {'transform': 'scale(0) rotate(0)'},
-      {'transform': 'scale(1) rotate(1.0turn)'},
-    ], this.timingFromConfig(config));
+    
 
-    return this._effect;
-  },
-});
-</pre>
-    </article>
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_photo_source.js.html">sources/photo_source.js</a>,
+				 <a href="sources_photo_source.js.html#sunlight-1-line-17">line 17</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-sources_photo_source.PhotoSource.html">PhotoSource</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+<hr>
+<dt class="name" id=".Photo">
+    <h4 id=".Photo">Photo</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>A photo from a <a href="module-sources_photo_source.PhotoSource.html">module:sources/photo_source.PhotoSource</a>
+This is the photo information that is persisted.</p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The url to the photo</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>author</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The photographer</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>asp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The aspect ratio of the photo</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Additional information about the photo</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>geolocation 'lat lon'</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_photo_source.js.html">sources/photo_source.js</a>,
+				 <a href="sources_photo_source.js.html#sunlight-1-line-22">line 22</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<hr>
+<dt class="name" id=".Photos">
+    <h4 id=".Photos">Photos</h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The photos for a <a href="module-sources_photo_source.PhotoSource.html">module:sources/photo_source.PhotoSource</a></p>
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Object</span>
+
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>type of <a href="module-sources_photo_source.PhotoSource.html">module:sources/photo_source.PhotoSource</a></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>photos</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="module-sources_photo_source.html#.Photo">module:sources/photo_source.Photo</a>></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The photos</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_photo_source.js.html">sources/photo_source.js</a>,
+				 <a href="sources_photo_source.js.html#sunlight-1-line-34">line 34</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -167,6 +620,10 @@ Polymer({
 
 	<div class="clearfix"></div>
 
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
 	
 
 </div>
