@@ -15,13 +15,13 @@ import * as PhotoSourceFactory from './photo_source_factory.js';
 window.app = window.app || {};
 
 /**
- * Manage the {@link module:PhotoSource} objects
- * @module PhotoSources
+ * Manage the {@link module:sources/photo_source.PhotoSource} objects
+ * @module sources/photo_sources
  */
 
 /**
  * Get the sources that are marked true in local storage
- * @returns {Array<PhotoSource>} Array of sources
+ * @returns {Array<module:sources/photo_source.PhotoSource>} Array of sources
  */
 export function getSelectedSources() {
   let ret = [];
@@ -41,8 +41,8 @@ export function getSelectedSources() {
 }
 
 /**
- * Enum for {@link module:PhotoSource} useKey
- * @typedef {enum} module:PhotoSources.UseKey
+ * Enum for {@link module:sources/photo_source.PhotoSource} useKey
+ * @typedef {enum} module:sources/photo_sources.UseKey
  * @readonly
  * @enum {string}
  */
@@ -105,7 +105,7 @@ export function process(useKey) {
 /**
  * Get all the photos from all selected sources. These will be
  * used by the screensaver.
- * @returns {Promise<module:PhotoSource.Photos[]>} Array of sources photos
+ * @returns {Promise<module:sources/photo_source.Photos[]>} Array of sources photos
  */
 export async function getSelectedPhotos() {
   const sources = getSelectedSources();

@@ -216,7 +216,7 @@ Polymer({
   },
 
   /**
-   * Deselect the given {@link module:PhotoSource}
+   * Deselect the given {@link module:sources/photo_source}
    * @param {string} useName - Name of <setting-toggle>
    * @memberOf SettingsPage
    */
@@ -243,7 +243,7 @@ Polymer({
   },
 
   /**
-   * Set checked state of a {@link module:PhotoSource}
+   * Set checked state of a {@link module:sources/photo_source}
    * @param {string} useName - source name
    * @param {boolean} state - checked state
    * @private
@@ -258,7 +258,7 @@ Polymer({
   },
 
   /**
-   * Set checked state of all {@link module:PhotoSource} objects
+   * Set checked state of all {@link module:sources/photo_source} objects
    * @param {boolean} state - checked state
    * @private
    * @memberOf SettingsPage
@@ -276,13 +276,14 @@ Polymer({
    * @memberOf SettingsPage
    */
   _onEnabledChanged: function() {
+    // noinspection JSUnresolvedVariable
     const enabled = this.$.settingsToggle.checked;
     ChromeGA.event(ChromeGA.EVENT.TOGGLE,
         `screensaverEnabled: ${enabled}`);
   },
 
   /**
-   * Event: select all {@link module:PhotoSource} objects tapped
+   * Event: select all {@link module:sources/photo_source} objects tapped
    * @private
    * @memberOf SettingsPage
    */
@@ -291,7 +292,7 @@ Polymer({
   },
 
   /**
-   * Event: deselect all {@link module:PhotoSource} objects tapped
+   * Event: deselect all {@link module:sources/photo_source} objects tapped
    * @private
    * @memberOf SettingsPage
    */

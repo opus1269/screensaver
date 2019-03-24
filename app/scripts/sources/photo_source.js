@@ -15,10 +15,15 @@ import * as ChromeUtils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * A photo from a {@link module:PhotoSource}
+ * A potential source of photos for the screen saver
+ * @module sources/photo_source
+ */
+
+/**
+ * A photo from a {@link module:sources/photo_source.PhotoSource}
  * This is the photo information that is persisted.
  *
- * @typedef {{}} module:PhotoSource.Photo
+ * @typedef {{}} module:sources/photo_source.Photo
  * @property {string} url - The url to the photo
  * @property {string} author - The photographer
  * @property {number} asp - The aspect ratio of the photo
@@ -27,18 +32,18 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
- * The photos for a {@link module:PhotoSource}
+ * The photos for a {@link module:sources/photo_source.PhotoSource}
  *
- * @typedef {{}} module:PhotoSource.Photos
- * @property {string} type - type of {@link module:PhotoSource}
- * @property {module:PhotoSource.Photo[]} photos - The photos
+ * @typedef {{}} module:sources/photo_source.Photos
+ * @property {string} type - type of {@link module:sources/photo_source.PhotoSource}
+ * @property {module:sources/photo_source.Photo[]} photos - The photos
  */
 
 /**
  * A potential source of photos for the screen saver
- * @module PhotoSource
+ * @alias module:sources/photo_source.PhotoSource
  */
-export default class PhotoSource {
+class PhotoSource {
 
   /**
    * Create a new photo source
@@ -49,7 +54,6 @@ export default class PhotoSource {
    * @param {boolean} isDaily - Should the source be updated daily
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
-   * @constructor
    */
   constructor(useKey, photosKey, type, desc, isDaily, isArray,
               loadArg = null) {
@@ -63,8 +67,8 @@ export default class PhotoSource {
   }
 
   /**
-   * Add a {@link module:PhotoSource.Photo} to an existing Array
-   * @param {Array} photos - {@link module:PhotoSource.Photo} Array
+   * Add a {@link module:sources/photo_source.Photo} to an existing Array
+   * @param {Array} photos - {@link module:sources/photo_source.Photo} Array
    * @param {string} url - The url to the photo
    * @param {string} author - The photographer
    * @param {number} asp - The aspect ratio of the photo
@@ -72,7 +76,6 @@ export default class PhotoSource {
    * @param {string} [point=''] - 'lat lon'
    */
   static addPhoto(photos, url, author, asp, ex, point = '') {
-    /** @type {module:PhotoSource.Photo} */
     const photo = {
       url: url,
       author: author,
@@ -151,7 +154,7 @@ export default class PhotoSource {
 
   /**
    * Get the photos from local storage
-   * @returns {Promise<module:PhotoSource.Photos>} the photos
+   * @returns {Promise<module:sources/photo_source.Photos>} the photos
    */
   async getPhotos() {
     let ret = {
@@ -215,6 +218,7 @@ export default class PhotoSource {
         isGoogleKey = true;
       }
       if (!(isGoogleKey && !useGoogle)) {
+        // noinspection JSUnresolvedFunction
         const chromep = new ChromePromise();
         chromep.storage.local.remove(this._photosKey).catch(() => {});
       }
@@ -224,8 +228,7 @@ export default class PhotoSource {
 
   /**
    * Save the photos to chrome.storage.local in a safe manner
-   * @param {Object} photos - could be array of photos or albums
-   * - {@link module:PhotoSource.Photo} Array
+   * @param {Object} photos - could be array of {@link module:sources/photo_source.Photo} or albums
    * @returns {Promise<?string>} non-null on error
    * @private
    */
@@ -242,3 +245,5 @@ export default class PhotoSource {
     return ret;
   }
 }
+
+export default PhotoSource;

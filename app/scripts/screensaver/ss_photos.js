@@ -33,8 +33,8 @@ const _photos = [];
 let _curIdx = 0;
 
 /**
- * Add the photos from an {@link module:PhotoSource.Photos}
- * @param {module:PhotoSource.Photos} source - The {@link module:PhotoSource.Photos}
+ * Add the photos from an {@link module:sources/photo_source.Photos}
+ * @param {module:sources/photo_source.Photos} source
  */
 export function addFromSource(source) {
   const type = source.type;
@@ -128,7 +128,7 @@ export function getNextGooglePhotos(num, idx) {
 
 /**
  * Update the urls of the given photos
- * @param {module:PhotoSource.Photo[]} photos
+ * @param {module:sources/photo_source.Photo[]} photos
  */
 export function updateGooglePhotoUrls(photos) {
   for (let i = _photos.length - 1; i >= 0; i--) {

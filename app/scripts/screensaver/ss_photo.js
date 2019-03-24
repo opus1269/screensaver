@@ -15,7 +15,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {int} _id - Unique id
  * @property {string} _url - The url to the photo
  * @property {string} _photographer - The photographer
- * @property {string} _type - type of {@link module:PhotoSource}
+ * @property {string} _type - type of {@link module:sources/photo_source}
  * @property {number} _aspectRatio - aspect ratio
  * @property {Object} _ex - additional information about the photo
  * @property {string} _point - geolocation 'lat lon'
@@ -27,8 +27,8 @@ export default class SSPhoto {
   /**
    * Create a new photo
    * @param {int} id - unique id
-   * @param {module:PhotoSource.Photo} source - source photo
-   * @param {string} sourceType - type of {@link module:PhotoSource}
+   * @param {module:sources/photo_source.Photo} source - source photo
+   * @param {string} sourceType - type of {@link module:sources/photo_source}
    * @constructor
    */
   constructor(id, source, sourceType) {
@@ -164,6 +164,7 @@ export default class SSPhoto {
     }
     if (url !== null) {
       ChromeGA.event(MyGA.EVENT.VIEW_PHOTO, this._type);
+      // noinspection JSUnresolvedVariable
       chrome.tabs.create({url: url});
     }
   }

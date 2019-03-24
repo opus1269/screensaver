@@ -68,7 +68,7 @@ export default class FlickrSource extends PhotoSource {
   /**
    * Extract the photos into an Array
    * @param {JSON} response - server response
-   * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
+   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    * @private
    */
   static _processPhotos(response) {
@@ -110,7 +110,7 @@ export default class FlickrSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
-   * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
+   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
   fetchPhotos() {
     let url;

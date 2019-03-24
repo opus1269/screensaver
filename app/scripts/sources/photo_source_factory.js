@@ -17,7 +17,7 @@ import RedditSource from './photo_source_reddit.js';
 import * as PhotoSources from './photo_sources.js';
 
 /**
- * Factory to create {@link module:PhotoSource} instances
+ * Factory to create {@link module:sources/photo_source} instances
  * @module PhotoSourceFactory
  */
 

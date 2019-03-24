@@ -147,7 +147,7 @@ import PhotoSource from './photo_source.js';
     /**
      * Build the list of photos for one page of items
      * @param {Array} children - Array of objects from reddit
-     * @returns {module:PhotoSource.Photo[]} Array of photos
+     * @returns {module:sources/photo_source.Photo[]} Array of photos
      * @private
      */
     static _processChildren(children) {
@@ -197,7 +197,7 @@ import PhotoSource from './photo_source.js';
 
     /**
      * Fetch the photos for this source
-     * @returns {Promise<module:PhotoSource.Photo[]>} Array of photos
+     * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
      */
     fetchPhotos() {
       let photos = [];
