@@ -16,7 +16,7 @@ import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 /**
  * Builder for a {@link module:Screensaver}
- * @module SSBuilder
+ * @module ss/builder
  */
 
 /**
@@ -36,7 +36,7 @@ export async function build() {
 }
 
 /**
- * Build the {@link SSPhotos} that will be displayed
+ * Build the {@link module:ss/photos.Photos} that will be displayed
  * @returns {Promise<boolean>} true if there is at least one photo
  * @private
  */

@@ -9,8 +9,8 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import SSView from './ss_view.js';
 
 /**
- * Screensaver letterbox view
- * @module SSViewLetterbox
+ * Letterbox view
+ * @module ss/views/view_letterbox
  */
 
 /**
@@ -22,19 +22,15 @@ import SSView from './ss_view.js';
 const _SCREEN_AR = screen.width / screen.height;
 
 /**
- * Screensaver letterbox view
- * @property {Element} image - paper-image
- * @property {Element} author - label
- * @property {Element} time - label
- * @property {Element} location - Geo location
- * @property {Object} model - template item model
- * @extends SSView
+ * Letterbox view
+ * @extends module:ss/views/view.SSView
+ * @alias module:ss/views/view_letterbox.SSViewLetterbox
  */
-export default class SSViewLetterbox extends SSView {
+class SSViewLetterbox extends SSView {
 
   /**
    * Create new SSView
-   * @param {SSPhoto} photo - An {@link SSPhoto}
+   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
    * @constructor
    */
   constructor(photo) {
@@ -92,3 +88,6 @@ export default class SSViewLetterbox extends SSView {
     }
   }
 }
+
+export default SSViewLetterbox;
+

@@ -20,7 +20,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Base class for other SSView classes
- * @module SSView
+ * @module ss/views/view
  */
 
 /**
@@ -41,13 +41,13 @@ const _SCREEN_AR = screen.width / screen.height;
  * @property {string} url - photo url, binding
  * @property {string} authorLabel - author text, binding
  * @property {string} locationLabel - location text, binding
+ * @alias module:ss/views/view.SSView
  */
-export default class SSView {
+class SSView {
 
   /**
    * Create a new SSView
-   * @param {SSPhoto} photo - An {@link SSPhoto}
-   * @constructor
+   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
    */
   constructor(photo) {
     this.photo = photo;
@@ -265,7 +265,7 @@ export default class SSView {
 
   /**
    * Set the photo
-   * @param {SSPhoto} photo - a photo to render
+   * @param {module:ss/photo.SSPhoto} photo - a photo to render
    */
   setPhoto(photo) {
     this.photo = photo;
@@ -296,3 +296,6 @@ export default class SSView {
     return !!this.image && this.image.loaded;
   }
 }
+
+export default SSView;
+

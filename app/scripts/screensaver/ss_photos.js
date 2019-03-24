@@ -13,20 +13,21 @@ import SSView from './views/ss_view.js';
 import * as SSViews from './ss_views.js';
 
 /**
- * Collection of {@link SSPhoto} objects
- * @module SSPhotos
+ * Collection of {@link module:ss/photo.SSPhoto} objects
+ * @module ss/photos
  */
 
 /**
  * The array of photos
- * @type {Array<SSPhoto>}
+ * @typedef {Array<module:ss/photo.SSPhoto>} module:ss/photos.Photos
+ * @type module:ss/photos.Photos
  * @const
  * @private
  */
 const _photos = [];
 
 /**
- * Current index into {@link _photos}
+ * Current index into {@link module:ss/photos.Photos}
  * @type {int}
  * @private
  */
@@ -68,17 +69,17 @@ export function hasUsable() {
 }
 
 /**
- * Get the {@link SSPhoto} at the given index
+ * Get the {@link module:ss/photo.SSPhoto} at the given index
  * @param {int} idx - The index
- * @returns {SSPhoto} A {@link SSPhoto}
+ * @returns {module:ss/photo.SSPhoto} A {@link module:ss/photo.SSPhoto}
  */
 export function get(idx) {
   return _photos[idx];
 }
 
 /**
- * Get the next {@link SSPhoto} that is usable
- * @returns {?SSPhoto} An {@link SSPhoto}
+ * Get the next {@link module:ss/photo.SSPhoto} that is usable
+ * @returns {?module:ss/photo.SSPhoto} An {@link module:ss/photo.SSPhoto}
  */
 export function getNextUsable() {
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
@@ -107,7 +108,7 @@ export function getCurrentIndex() {
  * Get the next nun google photos
  * @param {int} num - max number to get
  * @param {int} idx - starting index
- * @returns {Array<SSPhoto>} array of photos num long or less
+ * @returns {Array<module:ss/photo.SSPhoto>} array of photos num long or less
  */
 export function getNextGooglePhotos(num, idx) {
   const photos = [];

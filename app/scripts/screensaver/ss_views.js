@@ -19,13 +19,13 @@ import './views/ss_view.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
 
 /**
- * Collection of {@link module:SSView} objects
- * @module SSViews
+ * Collection of {@link module:ss/views/view.SSView} objects
+ * @module ss/views
  */
 
 /**
  * Enum for view type
- * @typedef {int} module:SSViews.Type
+ * @typedef {int} module:ss/views.Type
  * @readonly
  * @enum {int}
  */
@@ -48,7 +48,8 @@ const _MAX_VIEWS = 10;
 
 /**
  * The array of views
- * @type {Array<module:SSView>}
+ * @typedef {Array<module:ss/views/view.SSView>} module:ss/views.Views
+ * @type module:ss/views.Views
  * @const
  * @private
  */
@@ -63,7 +64,7 @@ let _pages = null;
 
 /**
  * The view type
- * @type {module:SSViews.Type}
+ * @type {module:ss/views.Type}
  * @private
  */
 let _type = Type.UNDEFINED;
@@ -99,7 +100,7 @@ function _setViewType() {
 }
 
 /**
- * Create the {@link module:SSView} pages
+ * Create the {@link module:ss/views/view.SSView} pages
  * @param {PolymerElement} t
  */
 export function create(t) {
@@ -132,7 +133,7 @@ export function create(t) {
 
 /**
  * Get the type of view
- * @returns {module:SSViews.Type}
+ * @returns {module:ss/views.Type}
  */
 export function getType() {
   if (_type === Type.UNDEFINED) {
@@ -150,7 +151,7 @@ export function getCount() {
 }
 
 /**
- * Get the {@link SSView} at the given index
+ * Get the {@link module:ss/views/view.SSView} at the given index
  * @param {int} idx - The index
  * @returns {SSView}
  */
@@ -164,6 +165,7 @@ export function get(idx) {
  */
 export function getSelectedIndex() {
   if (_pages) {
+    // noinspection JSUnresolvedVariable
     return _pages.selected;
   }
   // noinspection UnnecessaryReturnStatementJS
@@ -180,11 +182,12 @@ export function setSelectedIndex(selected) {
 
 /**
  * Is the given idx the selected index
- * @param {int} idx - index into {@link module:SSViews}
+ * @param {int} idx - index into {@link module:ss/views.Views}
  * @returns {boolean} true if selected
  */
 export function isSelectedIndex(idx) {
   let ret = false;
+  // noinspection JSUnresolvedVariable
   if (_pages && (idx === _pages.selected)) {
     ret = true;
   }
@@ -192,9 +195,9 @@ export function isSelectedIndex(idx) {
 }
 
 /**
- * Is the given {@link SSPhoto} in one of the {@link _views}
- * @param {SSPhoto} photo
- * @returns {boolean} true if in {@link _views}
+ * Is the given {@link module:ss/photo.SSPhoto} in one of the {@link module:ss/views.Views}
+ * @param {module:ss/photo.SSPhoto} photo
+ * @returns {boolean} true if in {@link module:ss/views.Views}
  */
 export function hasPhoto(photo) {
   let ret = false;
@@ -250,8 +253,8 @@ export function replaceAll() {
 
 /**
  * Try to find a photo that has finished loading
- * @param {int} idx - index into {@link _views}
- * @returns {int} index into {@link _views}, -1 if none are loaded
+ * @param {int} idx - index into {@link module:ss/views.Views}
+ * @returns {int} index into {@link module:ss/views.Views}, -1 if none are loaded
  */
 export function findLoadedPhoto(idx) {
   if (!hasUsable()) {

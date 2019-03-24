@@ -19,7 +19,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Event handling for a {@link module:Screensaver}
- * @module SSEvents
+ * @module ss/events
  */
 
 /**
@@ -169,6 +169,7 @@ function _onLoad() {
   window.addEventListener('click', _onMouseClick, false);
 
   // listen for special keyboard commands
+  // noinspection JSUnresolvedVariable
   chrome.commands.onCommand.addListener(_onKeyCommand);
 }
 

@@ -12,21 +12,21 @@ import * as SSRunner from './ss_runner.js';
 
 /**
  * Track the recent traversal history of a {@link module:Screensaver}
- * @module SSHistory
+ * @module ss/history
  */
 
 /**
  * History item
- * @typedef {Object} module:SSHistory.Item
- * @property {int} viewsIdx - {@link SSViews} index
- * @property {int} replaceIdx - {@link SSViews} index
- * @property {int} photoId - {@link SSPhoto} id
- * @property {int} photosPos - pointer into {@link SSPhotos}
+ * @typedef {Object} module:ss/history.Item
+ * @property {int} viewsIdx - {@link module:ss/views.Views} index
+ * @property {int} replaceIdx - {@link module:ss/views.Views} index
+ * @property {int} photoId - {@link module:ss/photo.SSPhoto} id
+ * @property {int} photosPos - pointer into {@link module:ss/photos.Photos}
  */
 
 /**
  * Slide show history
- * @property {Array<module:SSHistory.Item>} arr - history items
+ * @property {Array<module:ss/history.Item>} arr - history items
  * @property {int} idx - pointer into arr
  * @property {int} max - max length of arr, it will actually have 1 item more
  * @const
@@ -89,7 +89,7 @@ export function clear() {
 
 /**
  * Backup one slide
- * @returns {?null} {@link SSViews} index to step to
+ * @returns {?null} {@link module:ss/views.Views} index to step to
  */
 export function back() {
   if (_history.idx <= 0) {

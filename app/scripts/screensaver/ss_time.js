@@ -15,7 +15,7 @@ import * as SSRunner from './ss_runner.js';
 
 /**
  * Time handling for an {@link module:Screensaver}
- * @module SSTime
+ * @module ss/time
  */
 
 /**

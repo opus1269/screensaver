@@ -16,7 +16,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Handle interaction the Google maps geocode API
- * @module Geo
+ * @module ss/geo
  */
 
 /**
@@ -31,15 +31,15 @@ const _GEOCODE_API =
 
 /**
  * A Geo location
- * @typedef {Object} Geo.Location
+ * @typedef {Object} ss/geo.Location
  * @property {string} loc - descriptive location
  * @property {string} point - geo location 'lat lon'
  */
 
 /**
  * Location cache
- * @typedef {Object} module:Geo.Cache
- * @property {module:Geo.Location[]} entries - Array of locations
+ * @typedef {Object} module:ss/geo.Cache
+ * @property {module:ss/geo.Location[]} entries - Array of locations
  * @property {int} maxSize - max entries to cache
  * @private
  */
@@ -87,9 +87,9 @@ export function get(point) {
 }
 
 /**
- * Try to get (@link module:Geo.Location} from cache
+ * Try to get (@link module:ss/geo.Location} from cache
  * @param {string} point - a geolocation
- * @returns {module:Geo.Location|undefined} location, undefined if not cached
+ * @returns {module:ss/geo.Location|undefined} location, undefined if not cached
  * @private
  */
 function _getFromCache(point) {
@@ -99,7 +99,7 @@ function _getFromCache(point) {
 }
 
 /**
- * Try to get (@link module:Geo.Location} from cache
+ * Try to get (@link module:ss/geo.Location} from cache
  * @param {string} point - a geolocation
  * @param {string} location - description
  * @private

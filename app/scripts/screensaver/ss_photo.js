@@ -12,6 +12,11 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A photo for the {@link module:Screensaver}
+ * @module ss/photo
+ */
+
+/**
+ * A photo for the {@link module:Screensaver}
  * @property {int} _id - Unique id
  * @property {string} _url - The url to the photo
  * @property {string} _photographer - The photographer
@@ -20,16 +25,15 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {Object} _ex - additional information about the photo
  * @property {string} _point - geolocation 'lat lon'
  * @property {boolean} _isBad - true if url didn't load
- * @module SSPhoto
+ * @alias module:ss/photo.SSPhoto
  */
-export default class SSPhoto {
+class SSPhoto {
 
   /**
    * Create a new photo
    * @param {int} id - unique id
    * @param {module:sources/photo_source.Photo} source - source photo
    * @param {string} sourceType - type of {@link module:sources/photo_source}
-   * @constructor
    */
   constructor(id, source, sourceType) {
     this._id = id;
@@ -169,3 +173,5 @@ export default class SSPhoto {
     }
   }
 }
+
+export default SSPhoto;

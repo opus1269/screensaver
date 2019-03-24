@@ -225,7 +225,7 @@ Polymer({
   properties: {
 
     /**
-     * Array of {@link module:SSView} objects
+     * Array of {@link module:ss/views/view.SSView} objects
      */
     _views: {
       type: Array,
@@ -325,7 +325,7 @@ Polymer({
   },
 
   /**
-   * Create the {@link module:SSViews} that will be animated
+   * Create the {@link module:ss/views.Views} that will be animated
    */
   createPages: function() {
     SSViews.create(this);
@@ -392,10 +392,12 @@ Polymer({
   _setZoom: function() {
     if (ChromeUtils.getChromeVersion() >= 42) {
       // override zoom factor to 1.0 - chrome 42 and later
+      // noinspection JSUnresolvedFunction
       const chromep = new ChromePromise();
       // noinspection JSUnresolvedFunction
       chromep.tabs.getZoom().then((zoomFactor) => {
         if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
+          // noinspection JSUnresolvedFunction
           chrome.tabs.setZoom(1.0);
         }
         return null;

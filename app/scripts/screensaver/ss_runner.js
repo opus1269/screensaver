@@ -17,7 +17,7 @@ import * as SSTime from './ss_time.js';
 
 /**
  * Control the running of a {@link module:Screensaver}
- * @module SSRunner
+ * @module ss/runner
  */
 
 /**
@@ -80,7 +80,7 @@ export function setWaitTime(waitTime) {
 
 /**
  * Set last selected index
- * @param {int} lastSelected - last index in {@link SSViews}
+ * @param {int} lastSelected - last index in {@link module:ss/views.Views}
  */
 export function setLastSelected(lastSelected) {
   _VARS.lastSelected = lastSelected;
@@ -88,7 +88,7 @@ export function setLastSelected(lastSelected) {
 
 /**
  * Set last selected index
- * @param {int} idx - replace index in {@link SSViews}
+ * @param {int} idx - replace index in {@link module:ss/views.Views}
  */
 export function setReplaceIdx(idx) {
   _VARS.replaceIdx = idx;
@@ -120,7 +120,7 @@ export function isPaused() {
 
 /**
  * Is the given idx a part of the current animation pair
- * @param {int} idx - index into {@link SSViews}
+ * @param {int} idx - index into {@link module:ss/views.Views}
  * @returns {boolean} if selected or last selected
  */
 export function isCurrentPair(idx) {

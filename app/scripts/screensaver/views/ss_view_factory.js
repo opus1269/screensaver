@@ -15,15 +15,15 @@ import SSViewLetterbox from './ss_view_letterbox.js';
 import * as SSViews from '../ss_views.js';
 
 /**
- * Factory to create {@link module:SSView} instances
- * @module SSViewFactory
+ * Factory to create {@link module:ss/views/view.SSView} instances
+ * @module ss/views/view_factory
  */
 
 /**
- * Factory Method to create a new {@link module:SSView} subclass
- * @param {SSPhoto} photo - An {@link module:SSPhoto}
- * @param {module:SSViews.Type} type - photo sizing type
- * @returns {Object} a new {@link module:SSView} subclass of the given type
+ * Factory Method to create a new {@link module:ss/views/view.SSView} subclass
+ * @param {module:ss/photo.SSPhoto} photo - An {@link module:module:ss/photo.SSPhoto}
+ * @param {module:ss/views.Type} type - photo sizing type
+ * @returns {Object} a new {@link module:ss/views/view.SSView} subclass of the given type
  */
 export function create(photo, type) {
   switch (type) {

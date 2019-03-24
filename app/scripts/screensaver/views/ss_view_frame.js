@@ -9,20 +9,20 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import SSView from './ss_view.js';
 
 /**
- * Screensaver zoom view and base class for other SSView classes
- * @property {Element} image - paper-image
- * @property {Element} author - label
- * @property {Element} time - label
- * @property {Element} location - Geo location
- * @property {Object} model - template item model
- * @extends SSView
- * @module SSViewFrame
+ * Frame view
+ * @module ss/views/view_frame
  */
-export default class SSViewFrame extends SSView {
+
+/**
+ * Frame view
+ * @extends module:ss/views/view.SSView
+ * @alias module:ss/views/view_frame.SSViewFrame
+ */
+class SSViewFrame extends SSView {
 
   /**
    * Create new SSViewFrame
-   * @param {SSPhoto} photo - An {@link SSPhoto}
+   * @param {module:ss/photo.SSPhoto} photo
    * @constructor
    */
   constructor(photo) {
@@ -82,9 +82,10 @@ export default class SSViewFrame extends SSView {
     const timeStyle = this.time.style;
     const image = this.image;
     const imageStyle = image.style;
+    // noinspection JSUnresolvedVariable
     const img = image.$.img;
     const imgStyle = img.style;
-    /** @type {SSPhoto} */
+    /** @type {module:ss/photo.SSPhoto} */
     const photo = this.photo;
     const ar = photo.getAspectRatio();
 
@@ -143,3 +144,6 @@ export default class SSViewFrame extends SSView {
     }
   }
 }
+
+export default SSViewFrame;
+

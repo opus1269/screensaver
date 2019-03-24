@@ -9,20 +9,20 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import SSView from './ss_view.js';
 
 /**
- * Screensaver full view
- * @property {Element} image - paper-image
- * @property {Element} author - label
- * @property {Element} time - label
- * @property {Element} location - Geo location
- * @property {Object} model - template item model
- * @extends SSView
- * @module SSViewFull
+ * Full view
+ * @module ss/views/view_full
  */
-export default class SSViewFull extends SSView {
+
+/**
+ * Full view
+ * @extends module:ss/views/view.SSView
+ * @alias module:ss/views/view_full.SSViewFull
+ */
+class SSViewFull extends SSView {
 
   /**
    * Create new SSViewFull
-   * @param {SSPhoto} photo - An {@link SSPhoto}
+   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
    * @constructor
    */
   constructor(photo) {
@@ -35,9 +35,13 @@ export default class SSViewFull extends SSView {
   render() {
     super.render();
 
+    // noinspection JSUnresolvedVariable
     const img = this.image.$.img;
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.objectFit = 'fill';
   }
 }
+
+export default SSViewFull;
+

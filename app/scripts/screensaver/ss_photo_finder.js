@@ -14,7 +14,7 @@ import * as SSRunner from './ss_runner.js';
 
 /**
  * Find a photo that is ready for slideshow
- * @module SSFinder
+ * @module ss/photo_finder
  */
 
 /**
@@ -36,8 +36,8 @@ export function initialize() {
 
 /**
  * Get the next photo to display
- * @param {int} idx - index into {@link SSViews}
- * @returns {int} next - index into {@link SSViews}
+ * @param {int} idx - index into {@link module:ss/views.Views}
+ * @returns {int} next - index into {@link module:ss/views.Views}
  * to display, -1 if none are ready
  */
 export function getNext(idx) {
@@ -54,7 +54,7 @@ export function getNext(idx) {
 
 /**
  * Add the next photo from the master array
- * @param {int} idx - {@link SSViews} index to replace
+ * @param {int} idx - {@link module:ss/views.Views} index to replace
  */
 export function replacePhoto(idx) {
   if (idx >= 0) {
@@ -63,7 +63,7 @@ export function replacePhoto(idx) {
 
   /**
  * Add the next photo from the master array
- * @param {int} idx - index into {@link SSViews}
+ * @param {int} idx - index into {@link module:ss/views.Views}
  * @private
  */
 function _replacePhoto(idx) {
