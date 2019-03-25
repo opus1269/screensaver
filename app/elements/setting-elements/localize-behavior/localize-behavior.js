@@ -11,9 +11,15 @@ import * as ChromeLocale
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Behavior for internationalizing strings
+ * Module for the LocalizeBehavior
+ * @module els/setting/localize_behavior
+ */
+
+/**
+ * Polymer behavior for internationalizing strings
+ * @type {{}}
+ * @alias module:els/setting/localize_behavior.LocalizeBehavior
  * @polymerBehavior LocalizeBehavior
- * @module
  */
 export const LocalizeBehavior = {
 
@@ -32,3 +38,4 @@ export const LocalizeBehavior = {
     },
   },
 };
+

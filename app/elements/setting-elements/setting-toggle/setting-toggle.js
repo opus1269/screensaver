@@ -26,12 +26,17 @@ import * as ChromeGA
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for a text entry
- * @module SettingToggle
+ * Module for the SettingToggle
+ * @module els/setting/toggle
  */
 
-/** Polymer Element */
-Polymer({
+/**
+ * Polymer element for a toggle button
+ * @type {{}}
+ * @alias module:els/setting/toggle.SettingToggle
+ * @PolymerElement
+ */
+const SettingToggle = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -147,3 +152,6 @@ Polymer({
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
   },
 });
+
+export default SettingToggle;
+

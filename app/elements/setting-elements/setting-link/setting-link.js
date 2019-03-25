@@ -22,12 +22,17 @@ import * as ChromeGA
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element to display a url link
- * @module SettingLink
+ * Module for the SettingLink
+ * @module els/setting/link
  */
 
-/** Polymer Element */
-Polymer({
+/**
+ * Polymer element for a url link
+ * @type {{}}
+ * @alias module:els/setting/link.SettingLink
+ * @PolymerElement
+ */
+const SettingLink = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -131,3 +136,6 @@ Polymer({
     chrome.tabs.create({ url: this.url });
   },
 });
+
+export default SettingLink;
+

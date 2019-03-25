@@ -25,30 +25,35 @@ import * as ChromeGA
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element to select a value with a slider
- * @module SettingSlider
+ * Module for a SettingSlider
+ * @module els/setting/slider
  */
 
 /**
  * A unit type
- * @typedef {{}} module:SettingSlider.UnitType
+ * @typedef {{}} module:els/setting/slider.UnitType
  * @property {string} name - descriptive name
  * @property {int} min - min value
  * @property {int} max - max value
  * @property {int} step - increment of changes
- * @property {Number} mult - multiplier of a base
+ * @property {number} mult - multiplier of a base
  */
 
 /**
  * A number and associated units
- * @typedef {{}} module:SettingSlider.UnitValue
+ * @typedef {{}} module:els/setting/slider.UnitValue
  * @property {number} base - value in base unit
  * @property {number} display - value in display unit
  * @property {int} unit - display unit
  */
 
-/** Polymer Element */
-Polymer({
+/**
+ * Polymer element for a url link
+ * @type {{}}
+ * @alias module:els/setting/slider.SettingSlider
+ * @PolymerElement
+ */
+const SettingSlider = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -263,3 +268,6 @@ Polymer({
     this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
   },
 });
+
+export default SettingSlider;
+

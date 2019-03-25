@@ -5,69 +5,83 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
+
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-input/paper-input.js';
-import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for a text entry
- * @namespace SettingText
+ * Module for the SettingText
+ * @module els/setting/text
  */
-Polymer({
-  _template: html`
-    <style include="iron-flex iron-flex-alignment"></style>
-    <style include="shared-styles"></style>
-    <style>
 
-      :host {
-        display: block;
-        position: relative;
-      }
+/**
+ * Polymer element for text entry
+ * @type {{}}
+ * @alias module:els/setting/text.SettingText
+ * @PolymerElement
+ */
+const SettingText = Polymer({
+  // language=HTML format=false
+  _template: html`<style include="iron-flex iron-flex-alignment"></style>
+<style include="shared-styles"></style>
+<style>
 
-      :host([disabled]) {
-        pointer-events: none;
-      }
+  :host {
+    display: block;
+    position: relative;
+  }
 
-      :host([indent]) paper-item {
-        padding-left: 24px;
-      }
+  :host([disabled]) {
+    pointer-events: none;
+  }
 
-      :host paper-input {
-        width: 175px;
+  :host([indent]) paper-item {
+    padding-left: 24px;
+  }
 
-        --paper-input-container-input: {
-          text-align: right;
-        };
-      }
+  :host paper-input {
+    width: 175px;
 
-    </style>
+    --paper-input-container-input: {
+      text-align: right;
+    };
+  }
 
-    <div class="section-title setting-label" tabindex="-1" hidden\$="[[!sectionTitle]]">{{sectionTitle}}
+</style>
+
+<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
+  [[sectionTitle]]
+</div>
+<paper-item class="center horizontal layout" tabindex="-1">
+  <paper-item-body class="flex" two-line="">
+    <div class="setting-label" hidden$="[[!mainLabel]]">
+      [[mainLabel]]
     </div>
-    <paper-item class="center horizontal layout" tabindex="-1">
-      <paper-item-body class="flex" two-line="">
-        <div class="setting-label" hidden\$="[[!mainLabel]]">{{mainLabel}}</div>
-        <div class="setting-label" secondary="" hidden\$="[[!secondaryLabel]]">
-          {{secondaryLabel}}
-        </div>
-      </paper-item-body>
-      <paper-input id="text" value="{{value}}" minlength="1" maxlength="{{maxLength}}" placeholder="{{placeholder}}" tabindex="0" disabled\$="[[disabled]]" on-blur="_onBlur" on-keyup="_onKeyUp"></paper-input>
-    </paper-item>
-    <hr hidden\$="[[noseparator]]">
+    <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+      [[secondaryLabel]]
+    </div>
+  </paper-item-body>
+  <paper-input id="text" value="{{value}}" minlength="1" maxlength="[[maxLength]]" placeholder="[[placeholder]]"
+               tabindex="0" disabled$="[[disabled]]" on-blur="_onBlur" on-keyup="_onKeyUp"></paper-input>
+</paper-item>
+<hr hidden$="[[noseparator]]">
 
-    <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
-    </app-localstorage-document>
+<app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
+</app-localstorage-document>
 `,
 
   is: 'setting-text',
@@ -78,85 +92,59 @@ Polymer({
   },
 
   properties: {
-    /**
-     * Local storage key
-     * @memberOf SettingText
-     */
+
+    /** Local storage key */
     name: {
       type: String,
       value: 'store',
     },
 
-    /**
-     * Text value
-     * @memberOf SettingText
-     */
+    /** Text value */
     value: {
       type: String,
       value: '',
       notify: true,
     },
 
-    /**
-     * Placeholder text when empty
-     * @memberOf SettingText
-     */
+    /** Placeholder text when empty */
     placeholder: {
       type: String,
       value: 'e.g. Text',
       notify: true,
     },
 
-    /**
-     * Max length of text entry
-     * @memberOf SettingText
-     */
+    /** Max length of text entry */
     maxLength: {
       type: Number,
       value: '16',
       notify: true,
     },
 
-    /**
-     * Descriptive label
-     * @memberOf SettingText
-     */
+    /** Descriptive label */
     mainLabel: {
       type: String,
       value: '',
     },
 
-    /**
-     * Secondary descriptive label
-     * @memberOf SettingText
-     */
+    /** Secondary descriptive label */
     secondaryLabel: {
       type: String,
       value: '',
     },
 
-    /**
-     * Optional group title
-     * @memberOf SettingText
-     */
+    /** Optional group title */
     sectionTitle: {
       type: String,
       value: '',
     },
 
-    /**
-     * Disabled state of element
-     * @memberOf SettingText
-     */
+    /** Disabled state of element */
     disabled: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Visibility state of optional divider
-     * @memberOf SettingText
-     */
+    /** Visibility state of optional divider */
     noseparator: {
       type: Boolean,
       value: false,
@@ -166,11 +154,10 @@ Polymer({
   /**
    * Event: Lost focus - fire setting-text-changed event
    * @private
-   * @memberOf SettingText
    */
   _onBlur: function() {
     ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
-    this.fire('setting-text-changed', { value: this.value });
+    this.fire('setting-text-changed', {value: this.value});
   },
 
   /**
@@ -178,13 +165,15 @@ Polymer({
    * @param {Event} event - key event
    * @param {int} event.keyCode - key code
    * @private
-   * @memberOf SettingText
    */
   _onKeyUp: function(event) {
     // check if 'Enter' was pressed
     if (event.keyCode === 13) {
       ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
-      this.fire('setting-text-changed', { value: this.value });
+      this.fire('setting-text-changed', {value: this.value});
     }
   },
 });
+
+export default SettingText;
+
