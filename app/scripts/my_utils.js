@@ -12,7 +12,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Misc. utility methods
- * @module MyUtils
+ * @module utils
  */
 
 /**

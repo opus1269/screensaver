@@ -21,7 +21,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Controller for the screen saver
- * @module SSControl
+ * @module bg/ss_control
  */
 
 const chromep = new ChromePromise();

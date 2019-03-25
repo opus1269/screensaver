@@ -27,7 +27,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * The background script for the extension.<br>
- * @module Background
+ * @module bg/background
  */
 
 /**

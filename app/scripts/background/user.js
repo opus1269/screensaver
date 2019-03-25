@@ -18,7 +18,7 @@ import * as MyGA from '../../scripts/my_analytics.js';
 
 /**
  * Manage the Chrome sign-in state
- * @module User
+ * @module bg/user
  */
 
 /**
@@ -48,6 +48,7 @@ function _onSignInChanged(account, signedIn) {
  */
 function _onLoad() {
   // Listen for changes to Browser sign-in
+  // noinspection JSUnresolvedVariable
   chrome.identity.onSignInChanged.addListener(_onSignInChanged);
 }
 

@@ -20,7 +20,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Manage the Context Menus for the extension
  * @see https://developer.chrome.com/extensions/contextMenus
- * @module ContextMenus
+ * @module bg/context_menus
  */
 
 const _DISPLAY_MENU = 'DISPLAY_MENU';

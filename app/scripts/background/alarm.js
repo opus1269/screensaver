@@ -21,18 +21,19 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Manage alarms from the chrome.alarms API
  * @see https://developer.chrome.com/apps/alarms
- * @module Alarm
+ * @module bg/alarm
  */
 
 const chromep = new ChromePromise();
 
 /**
  * Alarms triggered by chrome.alarms
- * @typedef {Object} Alarms
+ * @typedef {JSON} module:bg/alarm.Alarms
  * @property {string} ACTIVATE - screen saver is active
  * @property {string} DEACTIVATE - screen saver is not activate
  * @property {string} UPDATE_PHOTOS - photo sources should be updated
  * @property {string} BADGE_TEXT - icon's Badge text should be set
+ * @type {module:bg/alarm.Alarms}
  * @const
  * @private
  */

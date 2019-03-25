@@ -17,14 +17,14 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 // noinspection JSUnresolvedFunction
 /**
  * Handle optional permissions
- *  @module Permissions
+ *  @module permissions
  */
 
 const chromep = new ChromePromise();
 
 /**
  * A permission state enum
- * @typedef {{}} module:Permissions.State
+ * @typedef {{}} module:permissions.State
  * @property {string} notSet - never been allowed or denied
  * @property {string} allowed - user allowed
  * @property {string} denied - user denied
@@ -32,15 +32,15 @@ const chromep = new ChromePromise();
 
 /**
  * A permission type
- * @typedef {{}} module:Permissions.Type
+ * @typedef {{}} module:permissions.Type
  * @property {string} name - name in localStorage
  * @property {string[]} permissions - array of permissions
  * @property {string[]} origins - array of origins
  */
 
 /**
- * Possible states of an {@link module:Permissions.Type}
- * @type {module:Permissions.State}
+ * Possible states of an {@link module:permissions.Type}
+ * @type {module:permissions.State}
  * @const
  * @private
  */
@@ -53,7 +53,7 @@ const _STATE = {
 /**
  * Permission for access to users' Google Photos
  * @const
- * @type {module:Permissions.Type}
+ * @type {module:permissions.Type}
  */
 export const PICASA = {
   name: 'permPicasa',
@@ -64,7 +64,7 @@ export const PICASA = {
 /**
  * Permission for running in background
  * @const
- * @type {module:Permissions.Type}
+ * @type {module:permissions.Type}
  */
 export const BACKGROUND = {
   name: 'permBackground',
@@ -74,7 +74,7 @@ export const BACKGROUND = {
 
 /**
  * Has user mot made a choice on permission
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {boolean} true if notSet
  */
 export function notSet(type) {
@@ -83,7 +83,7 @@ export function notSet(type) {
 
 /**
  * Has the user allowed the optional permissions
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {boolean} true if allowed
  */
 export function isAllowed(type) {
@@ -92,7 +92,7 @@ export function isAllowed(type) {
 
 /**
  * Has the user explicitly denied the permission
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {boolean} true if allowed
  */
 export function isDenied(type) {
@@ -101,7 +101,7 @@ export function isDenied(type) {
 
 /**
  * Request optional permission - may block
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if permission granted
  */
 export async function request(type) {
@@ -126,7 +126,7 @@ export async function request(type) {
 
 /**
  * Remove the optional permissions
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if removed
  */
 export async function remove(type) {
@@ -149,7 +149,7 @@ export async function remove(type) {
 
 /**
  * Remove and deny the optional permissions
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if removed
  */
 export async function deny(type) {
@@ -185,8 +185,8 @@ export async function removeGooglePhotos() {
 }
 
 /**
- * Persist the state of an {@link module:Permissions.Type}
- * @param {module:Permissions.Type} type - permission type
+ * Persist the state of an {@link module:permissions.Type}
+ * @param {module:permissions.Type} type - permission type
  * @param {string} value - permission state
  * @private
  */
@@ -201,7 +201,7 @@ function _setState(type, value) {
 
 /**
  * Determine if we have the optional permissions
- * @param {module:Permissions.Type} type - permission type
+ * @param {module:permissions.Type} type - permission type
  * @returns {Promise<boolean>} true if we have permissions
  */
 function _contains(type) {

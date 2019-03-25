@@ -26,7 +26,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage the extension's global data
- * @module AppData
+ * @module bg/data
  */
 
 const chromep = new ChromePromise();
@@ -42,7 +42,7 @@ const _DATA_VERSION = 23;
 
 /**
  * Default values in localStorage
- * @typedef {{}} module:AppData._DEF_VALUES
+ * @typedef {{}} module:bg/data._DEF_VALUES
  * @property {int} version - version of data
  * @property {boolean} enabled - is screensaver enabled
  * @property {string} permPicasa - optional permission for Picasa
@@ -83,7 +83,7 @@ const _DATA_VERSION = 23;
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
  * @property {{}} googlePhotosFilter - filter for retrieving google photos
- * @type {module:AppData._DEF_VALUES}
+ * @type {module:bg/data._DEF_VALUES}
  * @const
  * @private
  */
@@ -478,7 +478,7 @@ async function _setOS() {
 }
 
 /**
- * Save the [_DEF_VALUES]{@link module:AppData._DEF_VALUES} items, if they
+ * Save the [_DEF_VALUES]{@link module:bg/data._DEF_VALUES} items, if they
  * do not already exist
  * @private
  */

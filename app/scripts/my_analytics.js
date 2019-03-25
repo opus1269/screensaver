@@ -12,7 +12,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage Google Analytics tracking
- * @module MyGA
+ * @module analytics
  */
 
 /**

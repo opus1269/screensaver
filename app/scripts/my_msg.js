@@ -9,7 +9,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Wrapper for chrome messages specific to this app
  * @see https://developer.chrome.com/extensions/messaging
- * @module MyMsg
+ * @module msg
  */
 
 /**
