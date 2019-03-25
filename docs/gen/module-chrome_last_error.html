@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Module: sources/photo_source_flickr</title>
+	<title>Documentation Module: chrome/last_error</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -86,7 +86,7 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Module: sources/photo_source_flickr</h1>
+	<h1 class="page-title">Module: chrome/last_error</h1>
 <section>
 
 <header>
@@ -98,7 +98,8 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>A source of photos from Flickr</p></div>
+            <div class="description"><p>A custom error that can be persisted
+Usage: const err = new ChromeLastError(title, message)</p></div>
         
 
         
@@ -136,8 +137,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_photo_source_flickr.js.html">sources/photo_source_flickr.js</a>,
-				 <a href="sources_photo_source_flickr.js.html#sunlight-1-line-15">line 15</a>
+				<a href="chrome-extension-utils_scripts_last_error.js.html">chrome-extension-utils/scripts/last_error.js</a>,
+				 <a href="chrome-extension-utils_scripts_last_error.js.html#sunlight-1-line-12">line 12</a>
 			</li>
 		</ul>
 	</dd>
@@ -163,7 +164,7 @@
         <h3 class="subsection-title">Classes</h3>
 
         <dl>
-            <dt><a href="module-sources_photo_source_flickr.FlickrSource.html">FlickrSource</a></dt>
+            <dt><a href="module-chrome_last_error.LastError.html">LastError</a></dt>
             <dd></dd>
         </dl>
     
@@ -172,253 +173,6 @@
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-<hr>
-<dt class="name" id="~_KEY">
-    <h4 id="~_KEY"><span class="type-signature">&lt;private, inner, constant> </span>_KEY<span class="type-signature"> :string</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Flickr rest API authorization key</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">string</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_photo_source_flickr.js.html">sources/photo_source_flickr.js</a>,
-				 <a href="sources_photo_source_flickr.js.html#sunlight-1-line-34">line 34</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="~_MAX_PHOTOS">
-    <h4 id="~_MAX_PHOTOS"><span class="type-signature">&lt;private, inner, constant> </span>_MAX_PHOTOS<span class="type-signature"> :int</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Max photos to return</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">int</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_photo_source_flickr.js.html">sources/photo_source_flickr.js</a>,
-				 <a href="sources_photo_source_flickr.js.html#sunlight-1-line-42">line 42</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="~_URL_BASE">
-    <h4 id="~_URL_BASE"><span class="type-signature">&lt;private, inner, constant> </span>_URL_BASE<span class="type-signature"> :string</span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Flickr rest API</p>
-    </div>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">string</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_photo_source_flickr.js.html">sources/photo_source_flickr.js</a>,
-				 <a href="sources_photo_source_flickr.js.html#sunlight-1-line-26">line 26</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        </dl>
     
 
     
