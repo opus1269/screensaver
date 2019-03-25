@@ -1,5 +1,7 @@
 # User Documentation
 
+### [How To](help/index.html)
+
 ### [Frequently Asked Questions](faq.html)
 
 ### [Offer Assistance With Translations](translate.html)

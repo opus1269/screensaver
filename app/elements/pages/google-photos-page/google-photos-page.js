@@ -30,6 +30,8 @@ import {LocalizeBehavior} from
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
+import * as MyUtils from '../../../scripts/my_utils.js';
+
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
@@ -101,6 +103,10 @@ const GooglePhotosPage = Polymer({
                          disabled$="[[!useGoogle]]"></paper-icon-button>
       <paper-tooltip for="refresh" position="left" offset="0">
         [[_computeRefreshTooltip(isAlbumMode)]]
+      </paper-tooltip>
+      <paper-icon-button id="help" icon="myicons:help" on-tap="_onHelpTapped"></paper-icon-button>
+      <paper-tooltip for="help" position="left" offset="0">
+        [[localize('help')]]
       </paper-tooltip>
       <paper-toggle-button id="googlePhotosToggle" on-change="_onUseGoogleChanged"
                            checked="{{useGoogle}}"></paper-toggle-button>
@@ -273,6 +279,18 @@ const GooglePhotosPage = Polymer({
     }
     let lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
     ChromeGA.event(ChromeGA.EVENT.ICON, lbl);
+  },
+
+  /**
+   * Event: Handle tap on help icon
+   * @private
+   */
+  _onHelpTapped: function() {
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'googlePhotosHelp');
+    const anchor = this.isAlbumMode ? 'albums' : 'photos';
+    const url = `${MyUtils.getGithubPagesPath()}help/google_photos.html#${anchor}`;
+    // noinspection JSUnresolvedVariable
+    chrome.tabs.create({url: url});
   },
 
   /**
