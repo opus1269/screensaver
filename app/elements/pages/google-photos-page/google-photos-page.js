@@ -45,11 +45,11 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for the Google Photos page
- * @PolymerElement
- * @constructor
+ * @type {{loadAlbumList: Function}}
  * @alias module:els/pgs/google_photos.GooglePhotosPage
+ * @PolymerElement
  */
-export const GooglePhotosPage = Polymer({
+const GooglePhotosPage = Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
 <style include="iron-flex iron-flex-alignment"></style>
@@ -208,8 +208,9 @@ export const GooglePhotosPage = Polymer({
   /**
    * Fetch Google Photos for the array of user's photos
    * @returns {Promise<null>} always resolves
+   * @private
    */
-  loadPhotos: function() {
+  _loadPhotos: function() {
     if (!this.isAlbumMode && this.useGoogle) {
       return this.$$('#photosView').loadPhotos().catch((err) => {});
     }
@@ -268,7 +269,7 @@ export const GooglePhotosPage = Polymer({
     if (this.isAlbumMode) {
       this.loadAlbumList().catch((err) => {});
     } else {
-      this.loadPhotos().catch((err) => {});
+      this._loadPhotos().catch((err) => {});
     }
     let lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
     ChromeGA.event(ChromeGA.EVENT.ICON, lbl);
@@ -304,7 +305,7 @@ export const GooglePhotosPage = Polymer({
       if (this.isAlbumMode) {
         this.loadAlbumList(true).catch(() => {});
       } else {
-        this.loadPhotos().catch(() => {});
+        this._loadPhotos().catch(() => {});
       }
     }
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `useGoogle: ${useGoogle}`);
@@ -394,3 +395,5 @@ export const GooglePhotosPage = Polymer({
   },
 
 });
+
+export default GooglePhotosPage;

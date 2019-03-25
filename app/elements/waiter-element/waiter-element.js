@@ -18,13 +18,14 @@ import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for waiter element
+ * Module for the Waiter Element
  * @module els/waiter_element
  */
 
 /**
- * Polymer element to display a spinner and text while performing a
- * lengthy operation
+ * Polymer element to display waiter for lengthy operations
+ * @type {{}}
+ * @alias module:els/waiter_element.WaiterElement
  * @PolymerElement
  */
 Polymer({

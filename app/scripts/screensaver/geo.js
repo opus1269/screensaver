@@ -31,7 +31,7 @@ const _GEOCODE_API =
 
 /**
  * A Geo location
- * @typedef {Object} ss/geo.Location
+ * @typedef {Object} module:ss/geo.Location
  * @property {string} loc - descriptive location
  * @property {string} point - geo location 'lat lon'
  */

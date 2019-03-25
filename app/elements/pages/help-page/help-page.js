@@ -5,16 +5,20 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '../../../node_modules/@polymer/paper-material/paper-material.js';
-import '../../../elements/setting-elements/setting-link/setting-link.js';
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+
+import '../../../node_modules/@polymer/paper-styles/typography.js';
+import '../../../node_modules/@polymer/paper-styles/color.js';
+
+import '../../../node_modules/@polymer/paper-material/paper-material.js';
+
+import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
+import '../../../elements/setting-elements/setting-link/setting-link.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
@@ -24,10 +28,17 @@ import * as ChromeUtils
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for the Help and Feedback Page
- * @namespace HelpPage
+ * Module for the Help page
+ * @module els/pgs/help
  */
-export const HelpPage = Polymer({
+
+/**
+ * Polymer element for the Help page
+ * @type {{}}
+ * @alias module:els/pgs/help.HelpPage
+ * @PolymerElement
+ */
+const HelpPage = Polymer({
   _template: html`
     <!--suppress CssUnresolvedCustomPropertySet -->
     <style include="iron-flex iron-flex-alignment"></style>
@@ -78,10 +89,7 @@ export const HelpPage = Polymer({
 
   properties: {
 
-    /**
-     * Path to our Github repo
-     * @memberOf HelpPage
-     */
+    /** Path to our Github repo */
     githubPath: {
       type: String,
       value: function() {
@@ -90,10 +98,7 @@ export const HelpPage = Polymer({
       readOnly: true,
     },
 
-    /**
-     * Path to our Web Site
-     * @memberOf HelpPage
-     */
+    /** Path to our Web Site */
     githubPagesPath: {
       type: String,
       value: function() {
@@ -108,7 +113,6 @@ export const HelpPage = Polymer({
    * @param {string} subject - email subject
    * @returns {string} url
    * @private
-   * @memberOf HelpPage
    */
   _computeMailToUrl: function(subject) {
     return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
@@ -118,10 +122,12 @@ export const HelpPage = Polymer({
    * computed binding: Get the extension version
    * @returns {string} Version of the extension
    * @private
-   * @memberOf HelpPage
    */
   _computeVersion: function() {
     const text = ChromeUtils.getVersion();
     return encodeURIComponent(text);
   },
 });
+
+export default HelpPage;
+

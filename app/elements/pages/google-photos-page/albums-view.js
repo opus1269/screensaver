@@ -53,8 +53,8 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for selecting Google Photos albums
- * @module AlbumsView
+ * Module for the AlbumsView element
+ * @module els/pgs/google_photos/albums_view
  */
 
 /**
@@ -79,6 +79,13 @@ const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
  * @private
  */
 let _selections = [];
+
+/**
+ * Polymer element to manage Google Photos album selections
+ * @type {{}}
+ * @alias module:els/pgs/google_photos/photo_cat/albums_view.AlbumsView
+ * @PolymerElement
+ */
 
 Polymer({
   // language=HTML format=false

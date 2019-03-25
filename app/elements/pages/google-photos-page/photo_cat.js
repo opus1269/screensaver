@@ -30,11 +30,16 @@ import * as ChromeGA
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element to include or exclude a Google Photos category
- * @module PhotoCat
+ * Module for the PhotoCat element
+ * @module els/pgs/google_photos/photo_cat
  */
 
-/** Polymer Element */
+/**
+ * Polymer element to include or exclude a Google Photos category
+ * @type {{}}
+ * @alias module:els/pgs/google_photos/photo_cat.PhotoCat
+ * @PolymerElement
+ */
 Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>

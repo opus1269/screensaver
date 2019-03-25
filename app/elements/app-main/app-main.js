@@ -40,10 +40,10 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 import '../../elements/pages/settings-page/settings-page.js';
 import {LocalizeBehavior} from
       '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {GooglePhotosPage} from
+import GooglePhotosPage from
       '../../elements/pages/google-photos-page/google-photos-page.js';
-import {ErrorPage} from '../../elements/pages/error-page/error-page.js';
-import {HelpPage} from '../../elements/pages/help-page/help-page.js';
+import ErrorPage from '../../elements/pages/error-page/error-page.js';
+import HelpPage from '../../elements/pages/help-page/help-page.js';
 
 import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
@@ -193,7 +193,7 @@ const pages = [
  * @type {module:els/pgs/google_photos.GooglePhotosPage}
  * @private
  */
-let gPhotosPage = null;
+let gPhotosPage;
 
 /**
  * Chrome sign in state
@@ -203,9 +203,10 @@ let gPhotosPage = null;
 let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
 /**
- * Polymer element for the Main UI
+ * Polymer element for the main UI
+ * @type {{}}
+ * @alias module:els/app_main.AppMain
  * @PolymerElement
- * @constructor
  */
 Polymer({
   // language=HTML format=false
@@ -639,7 +640,7 @@ Polymer({
     if (!pages[index].ready) {
       // create the page the first time
       pages[index].ready = true;
-      gPhotosPage = new GooglePhotosPage('gPhotosPage');
+      gPhotosPage = new GooglePhotosPage();
       this.$.googlePhotosInsertion.appendChild(gPhotosPage);
     } else if (ChromeStorage.getBool('isAlbumMode', true)) {
       gPhotosPage.loadAlbumList().catch(() => {});

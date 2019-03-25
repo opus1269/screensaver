@@ -48,8 +48,15 @@ import * as ChromeStorage
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
+ * Module for the Settings Page
+ * @module els/pgs/settings
+ */
+
+/**
  * Polymer element for the Settings Page
- * @namespace SettingsPage
+ * @type {{deselectPhotoSource: Function}}
+ * @alias module:els/pgs/settings.SettingsPage
+ * @PolymerElement
  */
 Polymer({
   _template: html`
@@ -167,40 +174,28 @@ Polymer({
 
   properties: {
 
-    /**
-     * Index of current tab
-     * @memberOf SettingsPage
-     */
+    /** Index of current tab */
     selectedTab: {
       type: Number,
       value: 0,
       notify: true,
     },
 
-    /**
-     * Flag for enabled state of screensaver
-     * @memberOf SettingsPage
-     */
+    /** Flag for enabled state of screensaver */
     enabled: {
       type: Boolean,
       value: true,
       notify: true,
     },
 
-    /**
-     * Index of time value to show on screensaver
-     * @memberOf SettingsPage
-     */
+    /** Index of time value to show on screensaver */
     showTimeValue: {
       type: Number,
       value: 1,
       notify: true,
     },
 
-    /**
-     * Flag to indicate visibility of toolbar icons
-     * @memberOf SettingsPage
-     */
+    /** Flag to indicate visibility of toolbar icons */
     menuHidden: {
       type: Boolean,
       computed: '_computeMenuHidden(selectedTab)',
@@ -209,7 +204,6 @@ Polymer({
 
   /**
    * Element is ready
-   * @memberOf SettingsPage
    */
   ready: function() {
     this.set('selectedTab', 0);
@@ -218,7 +212,6 @@ Polymer({
   /**
    * Deselect the given {@link module:sources/photo_source}
    * @param {string} useName - Name of <setting-toggle>
-   * @memberOf SettingsPage
    */
   deselectPhotoSource: function(useName) {
     this._setPhotoSourceChecked(useName, false);
@@ -233,7 +226,6 @@ Polymer({
    * @param {int} mult - multiplier between base and display
    * @returns {{name: *, min: *, mult: *, max: *, name: *, step: *}}
    * @private
-   * @memberOf SettingsPage
    */
   _getUnit: function(name, min, max, step, mult) {
     return {
@@ -247,7 +239,6 @@ Polymer({
    * @param {string} useName - source name
    * @param {boolean} state - checked state
    * @private
-   * @memberOf SettingsPage
    */
   _setPhotoSourceChecked: function(useName, state) {
     const query = `[name=${useName}]`;
@@ -261,7 +252,6 @@ Polymer({
    * Set checked state of all {@link module:sources/photo_source} objects
    * @param {boolean} state - checked state
    * @private
-   * @memberOf SettingsPage
    */
   _setPhotoSourcesChecked: function(state) {
     const useNames = PhotoSources.getUseKeys();
@@ -273,7 +263,6 @@ Polymer({
   /**
    * Event: Change enabled state of screensaver
    * @private
-   * @memberOf SettingsPage
    */
   _onEnabledChanged: function() {
     // noinspection JSUnresolvedVariable
@@ -285,7 +274,6 @@ Polymer({
   /**
    * Event: select all {@link module:sources/photo_source} objects tapped
    * @private
-   * @memberOf SettingsPage
    */
   _selectAllTapped: function() {
     this._setPhotoSourcesChecked(true);
@@ -294,7 +282,6 @@ Polymer({
   /**
    * Event: deselect all {@link module:sources/photo_source} objects tapped
    * @private
-   * @memberOf SettingsPage
    */
   _deselectAllTapped: function() {
     this._setPhotoSourcesChecked(false);
@@ -303,7 +290,6 @@ Polymer({
   /**
    * Event: restore default settings tapped
    * @private
-   * @memberOf SettingsPage
    */
   _restoreDefaultsTapped: function() {
     ChromeMsg.send(ChromeMsg.RESTORE_DEFAULTS).catch(() => {});
@@ -312,7 +298,6 @@ Polymer({
   /**
    * Event: Process the background permission
    * @private
-   * @memberOf SettingsPage
    */
   _chromeBackgroundTapped() {
     // this used to not be updated yet in Polymer 1
@@ -338,7 +323,6 @@ Polymer({
    * @param {int} selectedTab - the current tab
    * @returns {boolean} true if menu should be visible
    * @private
-   * @memberOf SettingsPage
    */
   _computeMenuHidden: function(selectedTab) {
     return (selectedTab !== 2);
@@ -350,7 +334,6 @@ Polymer({
    * @param {number} showTimeValue - showTime value
    * @returns {boolean} true if disabled
    * @private
-   * @memberOf SettingsPage
    */
   _computeLargeTimeDisabled: function(enabled, showTimeValue) {
     let ret = false;
@@ -364,7 +347,6 @@ Polymer({
    * Computed binding: idle time values
    * @returns {Array} Array of menu items
    * @private
-   * @memberOf SettingsPage
    */
   _computeWaitTimeUnits: function() {
     return [
@@ -378,7 +360,6 @@ Polymer({
    * Computed binding: transition time values
    * @returns {Array} Array of menu items
    * @private
-   * @memberOf SettingsPage
    */
   _computeTransitionTimeUnits: function() {
     return [
@@ -393,7 +374,6 @@ Polymer({
    * Computed binding: photo sizing values
    * @returns {Array} Array of menu items
    * @private
-   * @memberOf SettingsPage
    */
   _computePhotoSizingMenu: function() {
     return [
@@ -409,7 +389,6 @@ Polymer({
    * Computed binding: photo transition values
    * @returns {Array} Array of menu items
    * @private
-   * @memberOf SettingsPage
    */
   _computePhotoTransitionMenu: function() {
     return [
@@ -429,7 +408,6 @@ Polymer({
    * Computed binding: time format values
    * @returns {Array} Array of menu items
    * @private
-   * @memberOf SettingsPage
    */
   _computeTimeFormatMenu: function() {
     return [

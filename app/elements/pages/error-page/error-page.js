@@ -5,11 +5,14 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
-import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
@@ -18,10 +21,11 @@ import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+
+import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
@@ -33,10 +37,17 @@ import ChromeLastError
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for the Error Page
- * @namespace ErrorPage
+ * Module for the Last Error page
+ * @module els/pgs/error
  */
-export const ErrorPage = Polymer({
+
+/**
+ * Polymer element for the Last Error page
+ * @type {{}}
+ * @alias module:els/pgs/error.ErrorPage
+ * @PolymerElement
+ */
+const ErrorPage = Polymer({
   _template: html`
     <!--suppress CssUnresolvedCustomPropertySet -->
     <style include="iron-flex iron-flex-alignment"></style>
@@ -118,10 +129,7 @@ export const ErrorPage = Polymer({
 
   properties: {
 
-    /**
-     * The LastError Object to display
-     * @memberOf ErrorPage
-     */
+    /** The LastError Object to display */
     lastError: {
       type: Object,
       value: function() {
@@ -133,7 +141,6 @@ export const ErrorPage = Polymer({
 
   /**
    * Element is ready
-   * @memberOf ErrorPage
    */
   ready: function() {
     ChromeLastError.load().then((lastError) => {
@@ -159,7 +166,6 @@ export const ErrorPage = Polymer({
   /**
    * Event: Email support
    * @private
-   * @memberOf ErrorPage
    */
   _onEmailTapped: function() {
     let body = MyUtils.getEmailBody();
@@ -176,7 +182,6 @@ export const ErrorPage = Polymer({
   /**
    * Event: Remove the error
    * @private
-   * @memberOf ErrorPage
    */
   _onRemoveTapped: function() {
     ChromeLastError.reset().catch(() => {});
@@ -190,7 +195,6 @@ export const ErrorPage = Polymer({
    * @param { ChromeLastError} lastError.stack - stack trace
    * @returns {string} stack trace
    * @private
-   * @memberOf ErrorPage
    */
   _computeStack: function(lastError) {
     return lastError.message ? lastError.stack : '';
@@ -203,9 +207,11 @@ export const ErrorPage = Polymer({
    * @param { ChromeLastError} lastError.message - message title
    * @returns {string} page title
    * @private
-   * @memberOf ErrorPage
    */
   _computeTitle: function(lastError) {
     return lastError.message ? lastError.title : '';
   },
 });
+
+export default ErrorPage;
+
