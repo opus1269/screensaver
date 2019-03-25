@@ -28,7 +28,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @alias module:els/waiter_element.WaiterElement
  * @PolymerElement
  */
-Polymer({
+const WaiterElement = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -97,3 +97,6 @@ Polymer({
     }
   },
 });
+
+export default WaiterElement;
+

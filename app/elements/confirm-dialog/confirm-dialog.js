@@ -31,12 +31,17 @@ import * as ChromeLocale
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /** 
- * Polymer dialog to confirm an action
- * @module ConfirmDialog
+ * Module for ConfirmDialog
+ * @module els/confirm_dialog
  */
 
-/** Polymer Element */
-Polymer({
+/**
+ * Polymer dialog to confirm an action
+ * @type {{}}
+ * @alias module:els/confirm_dialog.ConfirmDialog
+ * @PolymerElement
+ */
+const ConfirmDialog = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -106,7 +111,9 @@ Polymer({
       this.set('confirmLabel', confirmLabel);
     }
     text = text.replace(/\n/g, '<br/>');
+    // noinspection JSUnresolvedVariable
     this.$.dialogTitle.innerHTML = title;
+    // noinspection JSUnresolvedVariable
     this.$.dialogText.innerHTML = text;
     // noinspection JSUnresolvedVariable
     this.$.dialog.open();
@@ -121,3 +128,6 @@ Polymer({
     this.$.dialog.close();
   },
 });
+
+export default ConfirmDialog;
+

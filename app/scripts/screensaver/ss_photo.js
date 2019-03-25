@@ -11,12 +11,12 @@ import * as ChromeGA
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * A photo for the {@link module:Screensaver}
+ * A photo for the {@link module:els/screensaver.Screensaver}
  * @module ss/photo
  */
 
 /**
- * A photo for the {@link module:Screensaver}
+ * A photo for the {@link module:els/screensaver.Screensaver}
  * @property {int} _id - Unique id
  * @property {string} _url - The url to the photo
  * @property {string} _photographer - The photographer

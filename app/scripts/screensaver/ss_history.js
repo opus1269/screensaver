@@ -11,7 +11,7 @@ import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
 
 /**
- * Track the recent traversal history of a {@link module:Screensaver}
+ * Track the recent traversal history of a {@link module:els/screensaver.Screensaver}
  * @module ss/history
  */
 

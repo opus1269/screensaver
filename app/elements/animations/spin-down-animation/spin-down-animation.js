@@ -5,10 +5,10 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 
 import {NeonAnimationBehavior} from
       '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -26,10 +26,17 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
- * Polymer element to provide a spindown animation
- * @namespace SpinDownAnimation
+ * Module for the SpinDownAnimation
+ * @module els/spin_down_animation
  */
-Polymer({
+
+/**
+ * Polymer element to provide a spin down animation
+ * @type {{}}
+ * @alias module:els/spin_down_animation.SpinDownAnimation
+ * @PolymerElement
+ */
+const SpinDownAnimation = Polymer({
   is: 'spin-down-animation',
 
   behaviors: [
@@ -40,7 +47,6 @@ Polymer({
    * Configure the animation
    * @param {Object} config - configuration object
    * @returns {KeyframeEffect} new key frame effect
-   * @memberOf SpinDownAnimation
    */
   configure: function(config) {
     const node = config.node;
@@ -58,3 +64,6 @@ Polymer({
     return this._effect;
   },
 });
+
+export default SpinDownAnimation;
+

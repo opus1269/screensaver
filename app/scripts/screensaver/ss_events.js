@@ -18,7 +18,7 @@ import * as ChromeStorage
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Event handling for a {@link module:Screensaver}
+ * Event handling for a {@link module:els/screensaver.Screensaver}
  * @module ss/events
  */
 

@@ -5,26 +5,33 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import { NeonAnimatableBehavior } from
+import {NeonAnimatableBehavior} from
       '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
-import { Polymer } from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element to provide an animated slide
- * @namespace SlideAnimatable
+ * Module for the SlideAnimatable
+ * @module els/slide_animatable
  */
-Polymer({
-  _template: html`
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <slot></slot>
+
+/**
+ * Polymer element to provide an animatable slide
+ * @type {{}}
+ * @alias module:els/slide_animatable.SlideAnimatable
+ * @PolymerElement
+ */
+const SlideAnimatable = Polymer({
+  // language=HTML format=false
+  _template: html`<style>
+  :host {
+    display: block;
+  }
+</style>
+<slot></slot>
 `,
 
   is: 'slide-animatable',
@@ -35,10 +42,7 @@ Polymer({
 
   properties: {
 
-    /**
-     * Configuration of the current animation
-     * @memberOf SlideAnimatable
-     */
+    /** Configuration of the current animation */
     animationConfig: {
       type: Object,
       value: function() {
@@ -63,10 +67,7 @@ Polymer({
       },
     },
 
-    /**
-     * Index of animation to use
-     * @memberOf SlideAnimatable
-     */
+    /** Index of animation to use */
     aniType: {
       type: Number,
       observer: '_aniChanged',
@@ -77,7 +78,6 @@ Polymer({
    * Observer: Animation type changed
    * @param {int} newValue - new animation type
    * @private
-   * @memberOf SlideAnimatable
    */
   _aniChanged: function(newValue) {
     let entry;
@@ -130,3 +130,6 @@ Polymer({
     this.animationConfig.exit.timing.duration = dur;
   },
 });
+
+export default SlideAnimatable;
+

@@ -67,14 +67,14 @@ import * as ChromeUtils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer element for a screensaver
- * @module Screensaver
+ * Module for a screensaver
+ * @module els/screensaver
  */
 
 /**
  * Object to handle Google Photos load errors
  * @type {Object}
- * @typedef {Object} module:Screensaver.ErrHandler
+ * @typedef {Object} module:els/screensaver.Screensaver.ErrHandler
  * @property {int} MAX_COUNT - max times to call
  * @property {int} count - count of calls
  * @property {boolean} isUpdating - true if an event is handling an error
@@ -104,7 +104,13 @@ export let setTimeLabel = null;
 /** @type {Function} */
 export let setPaused = null;
 
-Polymer({
+/**
+ * Polymer element to display a screensaver
+ * @type {{}}
+ * @alias module:els/screensaver.Screensaver
+ * @PolymerElement
+ */
+const Screensaver = Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomProperty -->
 <style include="iron-flex iron-flex-alignment iron-positioning"></style>
@@ -575,3 +581,6 @@ Polymer({
   },
 
 });
+
+export default Screensaver;
+

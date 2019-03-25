@@ -26,12 +26,17 @@ import {LocalizeBehavior} from
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Polymer dialog to display an error
- * @module ErrorDialog
+ * Module for ErrorDialog
+ * @module els/error_dialog
  */
 
-/** Polymer Element */
-Polymer({
+/**
+ * Polymer dialog to display an error
+ * @type {{}}
+ * @alias module:els/error_dialog.ErrorDialog
+ * @PolymerElement
+ */
+const ErrorDialog = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -96,7 +101,9 @@ Polymer({
     title = title || 'Unknown';
     text = text || 'Unknown';
     text = text.replace(/\n/g, '<br/>');
+    // noinspection JSUnresolvedVariable
     this.$.dialogTitle.innerHTML = title;
+    // noinspection JSUnresolvedVariable
     this.$.dialogText.innerHTML = text;
     // noinspection JSUnresolvedVariable
     this.$.dialog.open();
@@ -111,3 +118,6 @@ Polymer({
     this.$.dialog.close();
   },
 });
+
+export default ErrorDialog;
+

@@ -6,6 +6,11 @@
  */
 import '../node_modules/@polymer/polymer/polymer-element.js';
 
+/**
+ * Module for the shared styles
+ * @module els/shared_styles
+ */
+
 // eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');
 
