@@ -48,10 +48,10 @@ const _DATA_VERSION = 23;
  * @property {string} permPicasa - optional permission for Picasa
  * @property {string} permBackground - optional permission to run in bg
  * @property {boolean} allowBackground - run Chrome in background
- * @property {module:SettingSlider.UnitValue} idleTime - idle time to display
- *     screensaver
- * @property {module:SettingSlider.UnitValue} transitionTime - time between
- *     photos
+ * @property {module:els/setting/slider.SettingSlider.UnitValue} idleTime
+ * - idle time to display screensaver
+ * @property {module:els/setting/slider.SettingSlider.UnitValue} transitionTime
+ * - time between photos
  * @property {boolean} skip - ignore extreme aspect ratio photos
  * @property {boolean} shuffle - randomize photo order
  * @property {int} photoSizing - photo display type

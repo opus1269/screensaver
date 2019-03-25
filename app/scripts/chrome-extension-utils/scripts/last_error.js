@@ -64,7 +64,7 @@ class ChromeLastError extends Error {
   /**
    * Save the LastError to chrome.storage.local
    * @see https://developer.chrome.com/apps/storage
-   * @param {ChromeLastError} lastError
+   * @param {module:chrome/last_error.ChromeLastError} lastError
    * @throws If the error failed to save
    * @returns {Promise<void>} void
    */

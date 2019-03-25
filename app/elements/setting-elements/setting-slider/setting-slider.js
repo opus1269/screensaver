@@ -141,7 +141,7 @@ const SettingSlider = Polymer({
       value: '',
     },
 
-    /** @link {module:SettingSlider.UnitValue} */
+    /** @link {module:els/setting/slider.SettingSlider.UnitValue} */
     value: {
       type: Object,
       notify: true,
@@ -151,7 +151,7 @@ const SettingSlider = Polymer({
       observer: '_valueChanged',
     },
 
-    /** @link {module:SettingSlider.UnitType} */
+    /** @link {module:els/setting/slider.SettingSlider.UnitType} */
     unit: {
       type: Object,
       notify: true,
@@ -168,7 +168,7 @@ const SettingSlider = Polymer({
       observer: '_unitIdxChanged',
     },
 
-    /** Array of {@link module:SettingSlider.UnitType} */
+    /** Array of {@link module:els/setting/slider.SettingSlider.UnitType} */
     units: {
       type: Array,
       value: function() {

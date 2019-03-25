@@ -153,7 +153,7 @@ export function getCount() {
 /**
  * Get the {@link module:ss/views/view.SSView} at the given index
  * @param {int} idx - The index
- * @returns {SSView}
+ * @returns {module:ss/views/view.SSView}
  */
 export function get(idx) {
   return _views[idx];

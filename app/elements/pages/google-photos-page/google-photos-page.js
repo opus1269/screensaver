@@ -189,7 +189,7 @@ const GooglePhotosPage = Polymer({
   ready: function() {
     setTimeout(() => {
       if (this.isAlbumMode) {
-        this.loadAlbumList().catch((err) => {});
+        this.loadAlbumList().catch(() => {});
       }
     }, 0);
   },
@@ -201,7 +201,7 @@ const GooglePhotosPage = Polymer({
    */
   loadAlbumList: function(doPhotos = false) {
     if (this.isAlbumMode) {
-      return this.$$('#albumsView').loadAlbumList(doPhotos).catch((err) => {});
+      return this.$$('#albumsView').loadAlbumList(doPhotos).catch(() => {});
     }
   },
 
@@ -212,7 +212,7 @@ const GooglePhotosPage = Polymer({
    */
   _loadPhotos: function() {
     if (!this.isAlbumMode && this.useGoogle) {
-      return this.$$('#photosView').loadPhotos().catch((err) => {});
+      return this.$$('#photosView').loadPhotos().catch(() => {});
     }
   },
 
@@ -226,7 +226,7 @@ const GooglePhotosPage = Polymer({
       // the dom-if may not have been loaded yet
       setTimeout(() => {
         ChromeStorage.asyncSet('googleImages', []).catch(() => {});
-        this.loadAlbumList().catch((err) => {});
+        this.loadAlbumList().catch(() => {});
       }, 0);
     } else {
       // the dom-if may not have been loaded yet
@@ -267,9 +267,9 @@ const GooglePhotosPage = Polymer({
    */
   _onRefreshTapped: function() {
     if (this.isAlbumMode) {
-      this.loadAlbumList().catch((err) => {});
+      this.loadAlbumList().catch(() => {});
     } else {
-      this._loadPhotos().catch((err) => {});
+      this._loadPhotos().catch(() => {});
     }
     let lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
     ChromeGA.event(ChromeGA.EVENT.ICON, lbl);

@@ -176,6 +176,7 @@ const ErrorPage = Polymer({
 
     const url = MyUtils.getEmailUrl('Last Error', body);
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
+    // noinspection JSUnresolvedVariable
     chrome.tabs.create({url: url});
   },
 
