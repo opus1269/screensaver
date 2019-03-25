@@ -11,12 +11,12 @@ import './ex_handler.js';
 
 /**
  * Fetch with authentication and exponential back-off
- * @module ChromeHttp
+ * @module chrome/http
  */
 
 /**
  * Http configuration
- * @typedef {?{}} module:ChromeHttp.Config
+ * @typedef {?{}} module:chrome/http.Config
  * @property {boolean} [isAuth=false] - if true, authorization required
  * @property {boolean} [retryToken=false] - if true, retry with new token
  * @property {boolean} [interactive=false] - user initiated, if true
@@ -28,7 +28,7 @@ import './ex_handler.js';
 
 /**
  * Http response
- * @typedef {{}} module:ChromeHttp.Response
+ * @typedef {{}} module:chrome/http.Response
  * @property {boolean} ok - success flag
  * @property {Function} json - returned data as JSON
  * @property {int} status - HTTP response code
@@ -39,7 +39,7 @@ import './ex_handler.js';
  * Authorization header
  * @type {string}
  * @private
- * @memberOf module:ChromeHttp
+ * @memberOf module:chrome/http
  */
 const _AUTH_HEADER = 'Authorization';
 
@@ -66,7 +66,7 @@ const _DELAY = 1000;
 
 /**
  * Configuration object
- * @type {module:ChromeHttp.Config}
+ * @type {module:chrome/http.Config}
  */
 export const CONFIG = {
   isAuth: false,
@@ -80,7 +80,7 @@ export const CONFIG = {
 /**
  * Perform GET request
  * @param {string} url - server request
- * @param {?module:ChromeHttp.Config} [conf=null] - configuration
+ * @param {?module:chrome/http.Config} [conf=null] - configuration
  * @returns {Promise.<JSON>} response from server
  */
 export function doGet(url, conf = null) {
@@ -91,7 +91,7 @@ export function doGet(url, conf = null) {
 /**
  * Perform POST request
  * @param {string} url - server request
- * @param {?module:ChromeHttp.Config} [conf=null] - configuration
+ * @param {?module:chrome/http.Config} [conf=null] - configuration
  * @returns {Promise.<JSON>} response from server
  */
 export function doPost(url, conf = null) {
@@ -101,10 +101,10 @@ export function doPost(url, conf = null) {
 
 /**
  * Check response and act accordingly
- * @param {module:ChromeHttp.Response} response - server response
+ * @param {module:chrome/http.Response} response - server response
  * @param {string} url - server
  * @param {Object} opts - fetch options
- * @param {module:ChromeHttp.Config} conf - configuration
+ * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @returns {Promise.<JSON>} response from server
  * @private
@@ -145,7 +145,7 @@ function _processResponse(response, url, opts, conf, attempt) {
 
 /**
  * Get Error message
- * @param {module:ChromeHttp.Response} response - server response
+ * @param {module:chrome/http.Response} response - server response
  * @returns {Error}
  * @private
  */
@@ -193,7 +193,7 @@ function _getAuthToken(isAuth, interactive) {
  * Retry authorized fetch with exponential back-off
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:ChromeHttp.Config} conf - configuration
+ * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @returns {Promise.<JSON>} response from server
  * @private
@@ -213,7 +213,7 @@ function _retry(url, opts, conf, attempt) {
  * Retry fetch after removing cached auth token
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:ChromeHttp.Config} conf - configuration
+ * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @returns {Promise.<JSON>} response from server
  * @private
@@ -232,7 +232,7 @@ function _retryToken(url, opts, conf, attempt) {
  * Perform fetch, optionally using authorization and exponential back-off
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:ChromeHttp.Config} conf - configuration
+ * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @returns {Promise.<JSON>} response from server
  * @private
@@ -266,7 +266,7 @@ function _fetch(url, opts, conf, attempt) {
  * Do a server request
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:ChromeHttp.Config} conf - configuration
+ * @param {module:chrome/http.Config} conf - configuration
  * @returns {Promise.<JSON>} response from server
  * @private
  */

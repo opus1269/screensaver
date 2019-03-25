@@ -9,7 +9,7 @@ import './ex_handler.js';
 /**
  * Google Oauth2.0 utilities
  * @see https://developer.chrome.com/apps/identity
- * @module ChromeAuth
+ * @module chrome/auth
  */
 
 const chromep = new ChromePromise();

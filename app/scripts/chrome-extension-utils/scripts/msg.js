@@ -10,12 +10,12 @@ import './ex_handler.js';
 /**
  * Wrapper for chrome messages
  * @see https://developer.chrome.com/extensions/messaging
- * @module ChromeMsg
+ * @module chrome/msg
  */
 
 /**
  * A Chrome message
- * @typedef {{}} module:ChromeMsg.Message
+ * @typedef {{}} module:chrome/msg.Message
  * @property {string} message - Unique name
  * @property {Error} error - an error
  * @property {string|Object} item - a message specific item
@@ -27,10 +27,10 @@ import './ex_handler.js';
 /**
  * Chrome Messages
  * @type {{}}
- * @property {module:ChromeMsg.Message} HIGHLIGHT - highlight a tab
- * @property {module:ChromeMsg.Message} RESTORE_DEFAULTS - restore default settings
- * @property {module:ChromeMsg.Message} STORAGE_EXCEEDED - local storage save failed
- * @property {module:ChromeMsg.Message} STORE - save value to storage
+ * @property {module:chrome/msg.Message} HIGHLIGHT - highlight a tab
+ * @property {module:chrome/msg.Message} RESTORE_DEFAULTS - restore default settings
+ * @property {module:chrome/msg.Message} STORAGE_EXCEEDED - local storage save failed
+ * @property {module:chrome/msg.Message} STORE - save value to storage
  * @const
  * @private
  */
@@ -58,11 +58,13 @@ export const STORE = _MSG.STORE;
 
 /**
  * Send a chrome message
- * @param {module:ChromeMsg.Message} type - type of message
+ * @param {module:chrome/msg.Message} type - type of message
  * @returns {Promise<JSON|Array>} response JSON
  */
 export function send(type) {
+  // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
+  // noinspection JSUnresolvedFunction
   return chromep.runtime.sendMessage(type, null).then((response) => {
     return Promise.resolve(response);
   }).catch((err) => {
@@ -81,5 +83,6 @@ export function send(type) {
  * @param {Function} listener - function to receive messages
  */
 export function listen(listener) {
+  // noinspection JSUnresolvedVariable
   chrome.runtime.onMessage.addListener(listener);
 }

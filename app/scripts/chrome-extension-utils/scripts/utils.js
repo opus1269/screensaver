@@ -8,7 +8,7 @@ import './ex_handler.js';
 
 /**
  * Utility methods
- * @module ChromeUtils
+ * @module chrome/utils
  */
 
 const chromep = new ChromePromise();

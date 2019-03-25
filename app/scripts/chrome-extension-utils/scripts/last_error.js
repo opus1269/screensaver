@@ -6,20 +6,27 @@
  */
 import './ex_handler.js';
 
+// noinspection JSUnresolvedFunction
 const chromep = new ChromePromise();
 
 /**
  * A custom error that can be persisted
  * Usage: const err = new ChromeLastError(title, message)
- * @module ChromeLastError
+ * @module chrome/last_error
  */
-export default class ChromeLastError extends Error {
+
+/**
+ * A custom error that can be persisted
+ * Usage: const err = new ChromeLastError(title, message)
+ * @extends Error
+ * @alias module:chrome/last_error.LastError
+ */
+class ChromeLastError extends Error {
 
   /**
    * Create a new LastError
    * @param {string} title='' - optional title
    * @param {...params|string} params - Error parameters
-   * @constructor
    */
   constructor(title = 'An error occurred', ...params) {
     // Pass remaining arguments (including vendor specific ones)
@@ -82,3 +89,6 @@ export default class ChromeLastError extends Error {
     return chromep.storage.local.set({'lastError': new ChromeLastError()});
   }
 }
+
+export default ChromeLastError;
+

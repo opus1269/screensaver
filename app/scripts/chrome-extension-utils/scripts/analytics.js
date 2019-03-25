@@ -9,12 +9,12 @@ import * as ChromeUtils from './utils.js';
 
 /**
  * Google Analytics tracking
- * @module ChromeGA
+ * @module chrome/ga
  */
 
 /**
  * Google Analytics Event
- * @typedef {Object} module:ChromeGA.Event
+ * @typedef {Object} module:chrome/ga.Event
  * @property {string} eventCategory - category
  * @property {string} eventAction - action
  * @property {string} eventLabel - label
@@ -23,20 +23,20 @@ import * as ChromeUtils from './utils.js';
 /**
  * Event types
  * @type {{}}
- * @property {module:ChromeGA.Event} INSTALLED - extension installed
- * @property {module:ChromeGA.Event} UPDATED - extension updated
- * @property {module:ChromeGA.Event} REFRESHED_AUTH_TOKEN - cached token refreshed
- * @property {module:ChromeGA.Event} ALARM - Chrome alarm triggered
- * @property {module:ChromeGA.Event} MENU - menu selected
- * @property {module:ChromeGA.Event} TOGGLE - setting-toggle
- * @property {module:ChromeGA.Event} LINK - setting-link
- * @property {module:ChromeGA.Event} TEXT - setting-text
- * @property {module:ChromeGA.Event} SLIDER_VALUE - setting-slider value
- * @property {module:ChromeGA.Event} SLIDER_UNITS - setting-slider unit
- * @property {module:ChromeGA.Event} BUTTON - button click
- * @property {module:ChromeGA.Event} ICON - toolbar icon click
- * @property {module:ChromeGA.Event} CHECK - checkbox click
- * @property {module:ChromeGA.Event} KEY_COMMAND - keyboard shortcut
+ * @property {module:chrome/ga.Event} INSTALLED - extension installed
+ * @property {module:chrome/ga.Event} UPDATED - extension updated
+ * @property {module:chrome/ga.Event} REFRESHED_AUTH_TOKEN - cached token refreshed
+ * @property {module:chrome/ga.Event} ALARM - Chrome alarm triggered
+ * @property {module:chrome/ga.Event} MENU - menu selected
+ * @property {module:chrome/ga.Event} TOGGLE - setting-toggle
+ * @property {module:chrome/ga.Event} LINK - setting-link
+ * @property {module:chrome/ga.Event} TEXT - setting-text
+ * @property {module:chrome/ga.Event} SLIDER_VALUE - setting-slider value
+ * @property {module:chrome/ga.Event} SLIDER_UNITS - setting-slider unit
+ * @property {module:chrome/ga.Event} BUTTON - button click
+ * @property {module:chrome/ga.Event} ICON - toolbar icon click
+ * @property {module:chrome/ga.Event} CHECK - checkbox click
+ * @property {module:chrome/ga.Event} KEY_COMMAND - keyboard shortcut
  * @const
  */
 export const EVENT = {
@@ -166,7 +166,7 @@ export function page(page) {
 
 /**
  * Send an event
- * @param {module:ChromeGA.Event} event - the event type
+ * @param {module:chrome/ga.Event} event - the event type
  * @param {?string} [label=null] - override label
  * @param {?string} [action=null] - override action
  */

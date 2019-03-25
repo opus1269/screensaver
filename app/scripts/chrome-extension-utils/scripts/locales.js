@@ -9,7 +9,7 @@ import './ex_handler.js';
 /**
  * Internationalization methods
  * @see https://developer.chrome.com/extensions/i18n
- * @module ChromeLocale
+ * @module chrome/locale
  */
 
 /**

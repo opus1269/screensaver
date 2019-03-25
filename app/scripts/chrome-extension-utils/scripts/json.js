@@ -9,7 +9,7 @@ import './ex_handler.js';
 
 /**
  * JSON utilities
- * @module ChromeJSON
+ * @module chrome/json
  */
 
 /**

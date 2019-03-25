@@ -12,7 +12,7 @@ import './ex_handler.js';
 
 /**
  * Log a message. Will also store the LastError to local storage as 'lastError'
- * @module ChromeLog
+ * @module chrome/log
  */
 
 /**

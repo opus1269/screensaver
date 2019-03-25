@@ -11,17 +11,21 @@ import './ex_handler.js';
 
 /**
  * Time Class
+ * @module chrome/time
+ */
+
+/**
+ * Time Class
  * @property {int} _hr - 24 hour time
  * @property {int} _min - minutes
- * @module ChromeTime
+ * @alias module:chrome/time.ChromeTime
  */
-export default class ChromeTime {
+class ChromeTime {
 
   /**
    * Create a new Time
    * @param {?string} [timeString=null] - in '00:00' format, if null
    * use current Date
-   * @constructor
    */
   constructor(timeString = null) {
     this._parse(timeString);
@@ -230,4 +234,7 @@ export default class ChromeTime {
     return ret;
   }
 }
+
+export default ChromeTime;
+
 

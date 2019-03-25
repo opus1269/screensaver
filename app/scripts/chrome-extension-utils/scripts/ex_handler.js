@@ -7,6 +7,12 @@
 import * as ChromeLog from './log.js';
 
 /**
+ * Google Oauth2.0 utilities
+ * @see https://developer.chrome.com/apps/identity
+ * @module chrome/exception
+ */
+
+/**
  * Replace global error handler for logging with Google Analytics.
  */
 export class ExHandler {

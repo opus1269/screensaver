@@ -15,18 +15,18 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Chrome Messages for this app
  * @type {{}}
- * @property {module:ChromeMsg.Message} SS_SHOW - show screensaver
- * @property {module:ChromeMsg.Message} SS_CLOSE - close screensaver
- * @property {module:ChromeMsg.Message} SS_IS_SHOWING - is a screensaver showing
- * @property {module:ChromeMsg.Message} PHOTO_SOURCE_FAILED - failed to web load
- * @property {module:ChromeMsg.Message} LOAD_FILTERED_PHOTOS - request to load
+ * @property {module:chrome/msg.Message} SS_SHOW - show screensaver
+ * @property {module:chrome/msg.Message} SS_CLOSE - close screensaver
+ * @property {module:chrome/msg.Message} SS_IS_SHOWING - is a screensaver showing
+ * @property {module:chrome/msg.Message} PHOTO_SOURCE_FAILED - failed to web load
+ * @property {module:chrome/msg.Message} LOAD_FILTERED_PHOTOS - request to load
  * the filtered google photos
- * @property {module:ChromeMsg.Message} FILTERED_PHOTOS_COUNT - number of photos
- * @property {module:ChromeMsg.Message} LOAD_ALBUMS - request to load contents
+ * @property {module:chrome/msg.Message} FILTERED_PHOTOS_COUNT - number of photos
+ * @property {module:chrome/msg.Message} LOAD_ALBUMS - request to load contents
  * of the saved albums
- * @property {module:ChromeMsg.Message} LOAD_ALBUM - request to load
+ * @property {module:chrome/msg.Message} LOAD_ALBUM - request to load
  * the contents of a google photos album
- * @property {module:ChromeMsg.Message} ALBUM_PHOTOS_COUNT - number of photos
+ * @property {module:chrome/msg.Message} ALBUM_PHOTOS_COUNT - number of photos
  * loaded so far
  * @const
  */

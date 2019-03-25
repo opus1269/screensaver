@@ -10,8 +10,8 @@ import * as ChromeMsg from './msg.js';
 import './ex_handler.js';
 
 /**
- * Manage items in localStorage
- * @module ChromeStorage
+ * Manage items in storage
+ * @module chrome/storage
  */
 
 /**
@@ -115,6 +115,7 @@ export function safeSet(key, value, keyBool = null) {
  */
 export async function asyncGet(key, def = null) {
   let ret = null;
+  // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
   try {
     const res = await chromep.storage.local.get([key]);
@@ -146,6 +147,7 @@ export async function asyncGet(key, def = null) {
 export async function asyncSet(key, value, keyBool = null) {
   // TODO what about keyBool?
   let ret = true;
+  // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
   const obj = {
     [key]: value,
