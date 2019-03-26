@@ -72,5 +72,9 @@ export function getGithubPath() {
  * @returns {string} path
  */
 export function getGithubPagesPath() {
-  return 'https://opus1269.github.io/screensaver/';
+  if (DEBUG) {
+    return 'http://127.0.0.1:4000/';
+  } else {
+    return 'https://opus1269.github.io/screensaver/';
+  }
 }
