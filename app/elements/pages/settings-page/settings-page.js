@@ -5,14 +5,16 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/iron-pages/iron-pages.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
-import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-tabs/paper-tab.js';
 import '../../../node_modules/@polymer/paper-tabs/paper-tabs.js';
@@ -20,6 +22,10 @@ import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
+
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/setting-elements/setting-slider/setting-slider.js';
 import '../../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
@@ -28,10 +34,9 @@ import '../../../elements/setting-elements/setting-time/setting-time.js';
 import {LocalizeBehavior} from
       '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
-import { Polymer } from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../elements/shared-styles.js';
 
+import * as MyUtils from '../../../scripts/my_utils.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 
@@ -59,111 +64,163 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @PolymerElement
  */
 Polymer({
-  _template: html`
-    <style include="iron-flex iron-flex-alignment shared-styles">
-      :host {
-        display: block;
-        position: relative;
-      }
-      
-      #topToolbar {
-        padding: 10px 10px 10px 24px;
-      }
+  // language=HTML format=false
+  _template: html`<style include="iron-flex iron-flex-alignment shared-styles">
+  :host {
+    display: block;
+    position: relative;
+  }
 
-      :host app-toolbar {
-        height: 100px;
-      }
+  #topToolbar {
+    padding: 10px 10px 10px 24px;
+  }
 
-    </style>
+  :host app-toolbar {
+    height: 100px;
+  }
 
-    <paper-material elevation="1" class="page-container">
-      <paper-material elevation="1">
-        <app-toolbar class="page-toolbar">
-          <div id="topToolbar" top-item="" class="horizontal layout flex">
-            <iron-label for="settingsToggle" class="center horizontal layout flex">
-              <div class="flex">{{localize('screensaver')}}
-                <span hidden\$="[[!enabled]]">{{localize('on')}}</span>
-                <span hidden\$="[[enabled]]">{{localize('off')}}</span>
-              </div>
-            </iron-label>
-            <paper-icon-button id="select" icon="myicons:check-box" on-tap="_selectAllTapped" hidden\$="[[menuHidden]]" disabled\$="[[!enabled]]"></paper-icon-button>
-            <paper-tooltip for="select" position="left" offset="0">
-              {{localize('tooltip_select')}}
-            </paper-tooltip>
-            <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_deselectAllTapped" hidden\$="[[menuHidden]]" disabled\$="[[!enabled]]"></paper-icon-button>
-            <paper-tooltip for="deselect" position="left" offset="0">
-              {{localize('tooltip_deselect')}}
-            </paper-tooltip>
-            <paper-icon-button id="restore" icon="myicons:settings-backup-restore" on-tap="_restoreDefaultsTapped" disabled\$="[[!enabled]]"></paper-icon-button>
-            <paper-tooltip for="restore" position="left" offset="0">
-              {{localize('tooltip_restore')}}
-            </paper-tooltip>
-            <paper-toggle-button id="settingsToggle" on-change="_onEnabledChanged" checked="{{enabled}}"></paper-toggle-button>
-            <paper-tooltip for="settingsToggle" position="left" offset="0">
-              {{localize('tooltip_settings_toggle')}}
-            </paper-tooltip>
+</style>
+
+<paper-material elevation="1" class="page-container">
+  <paper-material elevation="1">
+    <app-toolbar class="page-toolbar">
+      <div id="topToolbar" top-item="" class="horizontal layout flex">
+        <iron-label for="settingsToggle" class="center horizontal layout flex">
+          <div class="flex">[[localize('screensaver')]]
+            <span hidden$="[[!enabled]]">[[localize('on')]]</span>
+            <span hidden$="[[enabled]]">[[localize('off')]]</span>
           </div>
-          
-         <paper-tabs selected="{{selectedTab}}" bottom-item="" class="fit">
-            <paper-tab>{{localize('tab_slideshow')}}</paper-tab>
-            <paper-tab>{{localize('tab_display')}}</paper-tab>
-            <paper-tab>{{localize('tab_sources')}}</paper-tab>
-          </paper-tabs>
-          
-        </app-toolbar>
-        <app-localstorage-document key="enabled" data="{{enabled}}" storage="window.localStorage">
-        </app-localstorage-document>
-
-      </paper-material>
-
-      <div class="page-content">
-        <iron-pages selected="{{selectedTab}}">
-          <div>
-            <setting-slider name="idleTime" label="{{localize('setting_idle_time')}}" units="{{_computeWaitTimeUnits()}}" disabled\$="[[!enabled]]"></setting-slider>
-            <setting-slider name="transitionTime" label="{{localize('setting_transition_time')}}" units="{{_computeTransitionTimeUnits()}}" disabled\$="[[!enabled]]"></setting-slider>
-            <setting-dropdown name="photoSizing" label="{{localize('setting_photo_sizing')}}" items="{{_computePhotoSizingMenu()}}" disabled\$="[[!enabled]]"></setting-dropdown>
-            <setting-dropdown name="photoTransition" label="{{localize('setting_photo_transition')}}" items="{{_computePhotoTransitionMenu()}}" disabled\$="[[!enabled]]"></setting-dropdown>
-            <setting-toggle name="allowBackground" main-label="{{localize('setting_background')}}" secondary-label="{{localize('setting_background_desc')}}" on-tap="_chromeBackgroundTapped" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="interactive" main-label="{{localize('setting_interactive')}}" secondary-label="{{localize('setting_interactive_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="shuffle" main-label="{{localize('setting_shuffle')}}" secondary-label="{{localize('setting_shuffle_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="skip" main-label="{{localize('setting_skip')}}" secondary-label="{{localize('setting_skip_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="fullResGoogle" main-label="{{localize('setting_full_res')}}" secondary-label="{{localize('setting_full_res_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="showPhotog" main-label="{{localize('setting_photog')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="showLocation" main-label="{{localize('setting_location')}}" secondary-label="{{localize('setting_location_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="allowPhotoClicks" main-label="{{localize('setting_photo_clicks')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-dropdown name="showTime" label="{{localize('setting_show_time')}}" items="{{_computeTimeFormatMenu()}}" value="{{showTimeValue}}" disabled\$="[[!enabled]]"></setting-dropdown>
-            <setting-toggle name="largeTime" main-label="{{localize('setting_large_time')}}" indent="" disabled\$="[[_computeLargeTimeDisabled(enabled, showTimeValue)]]">
-            </setting-toggle>
-            <setting-background name="background" main-label="{{localize('setting_bg')}}" secondary-label="{{localize('setting_bg_desc')}}" noseparator="" disabled\$="[[!enabled]]"></setting-background>
-          </div>
-          <div>
-            <setting-toggle name="allDisplays" main-label="{{localize('setting_all_displays')}}" secondary-label="{{localize('setting_all_displays_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="chromeFullscreen" main-label="{{localize('setting_full_screen')}}" secondary-label="{{localize('setting_full_screen_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle id="keepAwake" name="keepAwake" main-label="{{localize('setting_keep_awake')}}" secondary-label="{{localize('setting_keep_awake_desc')}}" checked="{{keepEnabled}}"></setting-toggle>
-            <paper-tooltip for="keepAwake" position="top" offset="0">
-              {{localize('tooltip_keep_awake')}}
-            </paper-tooltip>
-            <setting-time name="activeStart" main-label="{{localize('setting_start_time')}}" secondary-label="{{localize('setting_start_time_desc')}}" format="{{showTimeValue}}" indent="" disabled\$="[[!keepEnabled]]"></setting-time>
-            <setting-time name="activeStop" main-label="{{localize('setting_stop_time')}}" secondary-label="{{localize('setting_stop_time_desc')}}" format="{{showTimeValue}}" indent="" disabled\$="[[!keepEnabled]]"></setting-time>
-            <setting-toggle id="allowSuspend" name="allowSuspend" main-label="{{localize('setting_suspend')}}" secondary-label="{{localize('setting_suspend_desc')}}" indent="" noseparator="" disabled\$="[[!keepEnabled]]"></setting-toggle>
-          </div>
-          <div>
-            <setting-toggle name="useChromecast" main-label="{{localize('setting_chromecast')}}" secondary-label="{{localize('setting_chromecast_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="useInterestingFlickr" main-label="{{localize('setting_flickr_int')}}" secondary-label="{{localize('setting_flickr_int_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="useSpaceReddit" main-label="{{localize('setting_reddit_space')}}" secondary-label="{{localize('setting_reddit_space_desc')}}" noseparator="" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="useEarthReddit" main-label="{{localize('setting_reddit_earth')}}" secondary-label="{{localize('setting_reddit_earth_desc')}}" noseparator="" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="useAnimalReddit" main-label="{{localize('setting_reddit_animal')}}" secondary-label="{{localize('setting_reddit_animal_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <setting-toggle name="useAuthors" main-label="{{localize('setting_mine')}}" secondary-label="{{localize('setting_mine_desc')}}" disabled\$="[[!enabled]]"></setting-toggle>
-            <paper-item tabindex="-1">
-              {{localize('setting_click_to_view')}}
-            </paper-item>
-            <paper-item tabindex="-1">
-              {{localize('setting_flickr_api')}}
-            </paper-item>
-          </div>
-        </iron-pages>
+        </iron-label>
+        <paper-icon-button id="select" icon="myicons:check-box" on-tap="_selectAllTapped" hidden$="[[menuHidden]]"
+                           disabled$="[[!enabled]]"></paper-icon-button>
+        <paper-tooltip for="select" position="left" offset="0">
+          [[localize('tooltip_select')]]
+        </paper-tooltip>
+        <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_deselectAllTapped"
+                           hidden$="[[menuHidden]]" disabled$="[[!enabled]]"></paper-icon-button>
+        <paper-tooltip for="deselect" position="left" offset="0">
+          [[localize('tooltip_deselect')]]
+        </paper-tooltip>
+        <paper-icon-button id="restore" icon="myicons:settings-backup-restore" on-tap="_restoreDefaultsTapped"
+                           disabled$="[[!enabled]]"></paper-icon-button>
+        <paper-tooltip for="restore" position="left" offset="0">
+          [[localize('tooltip_restore')]]
+        </paper-tooltip>
+        <paper-icon-button id="help" icon="myicons:help" on-tap="_onHelpTapped"></paper-icon-button>
+        <paper-tooltip for="help" position="left" offset="0">
+          [[localize('help')]]
+        </paper-tooltip>
+        <paper-toggle-button id="settingsToggle" on-change="_onEnabledChanged"
+                             checked="{{enabled}}"></paper-toggle-button>
+        <paper-tooltip for="settingsToggle" position="left" offset="0">
+          [[localize('tooltip_settings_toggle')]]
+        </paper-tooltip>
       </div>
-    </paper-material>
+
+      <paper-tabs selected="{{selectedTab}}" bottom-item="" class="fit">
+        <paper-tab>[[localize('tab_slideshow')]]</paper-tab>
+        <paper-tab>[[localize('tab_display')]]</paper-tab>
+        <paper-tab>[[localize('tab_sources')]]</paper-tab>
+      </paper-tabs>
+
+    </app-toolbar>
+    <app-localstorage-document key="enabled" data="{{enabled}}" storage="window.localStorage">
+    </app-localstorage-document>
+
+  </paper-material>
+
+  <div class="page-content">
+    <iron-pages selected="{{selectedTab}}">
+      <div>
+        <setting-slider name="idleTime" label="[[localize('setting_idle_time')]]" units="[[_computeWaitTimeUnits()]]"
+                        disabled$="[[!enabled]]"></setting-slider>
+        <setting-slider name="transitionTime" label="[[localize('setting_transition_time')]]"
+                        units="[[_computeTransitionTimeUnits()]]" disabled$="[[!enabled]]"></setting-slider>
+        <setting-dropdown name="photoSizing" label="[[localize('setting_photo_sizing')]]"
+                          items="[[_computePhotoSizingMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
+        <setting-dropdown name="photoTransition" label="[[localize('setting_photo_transition')]]"
+                          items="[[_computePhotoTransitionMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
+        <setting-toggle name="allowBackground" main-label="[[localize('setting_background')]]"
+                        secondary-label="[[localize('setting_background_desc')]]" on-tap="_chromeBackgroundTapped"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="interactive" main-label="[[localize('setting_interactive')]]"
+                        secondary-label="[[localize('setting_interactive_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="shuffle" main-label="[[localize('setting_shuffle')]]"
+                        secondary-label="[[localize('setting_shuffle_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="skip" main-label="[[localize('setting_skip')]]"
+                        secondary-label="[[localize('setting_skip_desc')]]" disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="fullResGoogle" main-label="[[localize('setting_full_res')]]"
+                        secondary-label="[[localize('setting_full_res_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="showPhotog" main-label="[[localize('setting_photog')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="showLocation" main-label="[[localize('setting_location')]]"
+                        secondary-label="[[localize('setting_location_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[_computeTimeFormatMenu()]]"
+                          value="[[showTimeValue]]" disabled$="[[!enabled]]"></setting-dropdown>
+        <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
+                        disabled$="[[_computeLargeTimeDisabled(enabled, showTimeValue)]]">
+        </setting-toggle>
+        <setting-background name="background" main-label="[[localize('setting_bg')]]"
+                            secondary-label="[[localize('setting_bg_desc')]]" noseparator=""
+                            disabled$="[[!enabled]]"></setting-background>
+      </div>
+      <div>
+        <setting-toggle name="allDisplays" main-label="[[localize('setting_all_displays')]]"
+                        secondary-label="[[localize('setting_all_displays_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="chromeFullscreen" main-label="[[localize('setting_full_screen')]]"
+                        secondary-label="[[localize('setting_full_screen_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle id="keepAwake" name="keepAwake" main-label="[[localize('setting_keep_awake')]]"
+                        secondary-label="[[localize('setting_keep_awake_desc')]]"
+                        checked="[[keepEnabled]]"></setting-toggle>
+        <paper-tooltip for="keepAwake" position="top" offset="0">
+          [[localize('tooltip_keep_awake')]]
+        </paper-tooltip>
+        <setting-time name="activeStart" main-label="[[localize('setting_start_time')]]"
+                      secondary-label="[[localize('setting_start_time_desc')]]" format="[[showTimeValue]]" indent=""
+                      disabled$="[[!keepEnabled]]"></setting-time>
+        <setting-time name="activeStop" main-label="[[localize('setting_stop_time')]]"
+                      secondary-label="[[localize('setting_stop_time_desc')]]" format="[[showTimeValue]]" indent=""
+                      disabled$="[[!keepEnabled]]"></setting-time>
+        <setting-toggle id="allowSuspend" name="allowSuspend" main-label="[[localize('setting_suspend')]]"
+                        secondary-label="[[localize('setting_suspend_desc')]]" indent="" noseparator=""
+                        disabled$="[[!keepEnabled]]"></setting-toggle>
+      </div>
+      <div>
+        <setting-toggle name="useChromecast" main-label="[[localize('setting_chromecast')]]"
+                        secondary-label="[[localize('setting_chromecast_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="useInterestingFlickr" main-label="[[localize('setting_flickr_int')]]"
+                        secondary-label="[[localize('setting_flickr_int_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="useSpaceReddit" main-label="[[localize('setting_reddit_space')]]"
+                        secondary-label="[[localize('setting_reddit_space_desc')]]" noseparator=""
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="useEarthReddit" main-label="[[localize('setting_reddit_earth')]]"
+                        secondary-label="[[localize('setting_reddit_earth_desc')]]" noseparator=""
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="useAnimalReddit" main-label="[[localize('setting_reddit_animal')]]"
+                        secondary-label="[[localize('setting_reddit_animal_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="useAuthors" main-label="[[localize('setting_mine')]]"
+                        secondary-label="[[localize('setting_mine_desc')]]" disabled$="[[!enabled]]"></setting-toggle>
+        <paper-item tabindex="-1">
+          [[localize('setting_click_to_view')]]
+        </paper-item>
+        <paper-item tabindex="-1">
+          [[localize('setting_flickr_api')]]
+        </paper-item>
+      </div>
+    </iron-pages>
+  </div>
+</paper-material>
 `,
 
   is: 'settings-page',
@@ -216,7 +273,7 @@ Polymer({
   deselectPhotoSource: function(useName) {
     this._setPhotoSourceChecked(useName, false);
   },
-  
+
   /**
    * Return a Unit object
    * @param {string} name
@@ -269,6 +326,31 @@ Polymer({
     const enabled = this.$.settingsToggle.checked;
     ChromeGA.event(ChromeGA.EVENT.TOGGLE,
         `screensaverEnabled: ${enabled}`);
+  },
+
+  /**
+   * Event: Handle tap on help icon
+   * @private
+   */
+  _onHelpTapped: function() {
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'settingsHelp');
+    let anchor = 'ss_controls';
+    switch (this.selectedTab) {
+      case 0:
+        anchor = 'ss_controls';
+        break;
+      case 1:
+        anchor = 'display_controls';
+        break;
+      case 2:
+        anchor = 'photo_sources';
+        break;
+      default:
+        break;
+    }
+    const url = `${MyUtils.getGithubPagesPath()}help/settings.html#${anchor}`;
+    // noinspection JSUnresolvedVariable
+    chrome.tabs.create({url: url});
   },
 
   /**
