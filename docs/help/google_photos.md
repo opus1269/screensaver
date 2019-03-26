@@ -87,4 +87,26 @@ If you toggle it on, the screensaver will use the photos
 and will also refresh the contents from Google Photos.
 This can be a lengthy operation.
 
+Main UI:
+
+![alt text](./assets/google_photos_photos_needs_refresh.png)
+
+If the "NEEDS REFRESH" button is active, the information on the stored photos
+is out of date and need to be refreshed. This can be a lengthy operation.
+
+![alt text](./assets/google_photos_photos_all_photos.png)
+
+If this is selected, the extension will retrieve all of your most recent
+photos up to the maximum. These are automatically updated once a day.
+
+![alt text](./assets/google_photos_photos_cats.png)
+
+If the "All photos" option is not enabled, the extension will retrieve your
+most recent photos that are labeled with one or more of the selected
+categories up to the maximum. These are automatically updated once a day.
+
+These labels are automatically assigned in Google Photos and there is no guarantee
+that they are accurate.
+
+
 
