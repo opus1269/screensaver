@@ -22,6 +22,7 @@ settings you have defined, will remain in effect.
 
 Settings:
 
+<a name="wait_time"></a>
 ![alt text](./assets/settings_ss_controls_wait_time.png)
 
 The amount of time the computer must be idle before the screensaver
@@ -156,24 +157,39 @@ Settings:
 
 ![alt text](./assets/settings_display_controls_all_displays.png)
 
-Select the background style for the screensaver. This will display a
-dialog with the available styles.
+Display a screensaver on all the displays connected to this computer. This
+is harder than it sounds. If it is not working as you think it should,
+please [let me know](mailto:photoscreensaver%40gmail.com).
 
 ![alt text](./assets/settings_display_controls_fullscreen.png)
 
-Select the background style for the screensaver. This will display a
-dialog with the available styles.
+Do not display the screensaver if you have a Chrome window open that is
+in full screen mode.  This is most useful if you are watching a video through
+a Chrome app or web page. Unfortunately, the extension cannot detect non Chrome
+full screen windows.
 
 ![alt text](./assets/settings_display_controls_keep_awake.png)
 
-Select the background style for the screensaver. This will display a
-dialog with the available styles.
+Manage when to display the screensaver and the behavior of the computer's
+power settings.
+
+If the "Keep Awake" is off, the screensaver will be displayed whenever the
+computer is idle for a [certain period of time](#wait_time).
+
+If the "Keep Awake" is on, the screensaver will only be displayed if the
+current time is between the "Time to start" and "Time to stop". If the "Time to start"
+and "Time to stop" are the same, the screensaver will always display. The screen
+will not go to sleep during this time. If the "Allow system suspend" is on,
+the computer may go to sleep.
+
+Note: The requests to keep the screen and computer awake are only suggestions
+to the operating system, and may not be honored.
 
 
 <a name="photo_sources"></a>
 ## Photo Sources Tab
 
-This interface allows you to select one or publicly available sources
+This interface allows you to select one or more publicly available sources
 of photos for use in the screensaver.
 
 ![alt text](./assets/settings_photo_sources.png)
@@ -199,7 +215,30 @@ settings you have defined, will remain in effect.
 
 Photo Sources:
 
-Chromecast: 
+![alt text](./assets/settings_photo_sources_chromecast.png)
+
+A subset of photos used by the Chromecast screensaver
+
+![alt text](./assets/settings_photo_sources_flickr_interesting.png)
+
+[Interesting photos from Flickr](https://www.flickr.com/explore/interesting/7days/)
+
+![alt text](./assets/settings_photo_sources_reddit_space.png)
+
+[Space photos from reddit](https://www.reddit.com/r/spaceporn/)
+
+![alt text](./assets/settings_photo_sources_reddit_earth.png)
+
+[Earth photos from reddit](https://www.reddit.com/r/earthporn/)
+
+![alt text](./assets/settings_photo_sources_reddit_animal.png)
+
+[Animal photos from reddit](https://www.reddit.com/r/animalporn/)
+
+![alt text](./assets/settings_photo_sources_me.png)
+
+[Some of my photos (including my cats!)](https://www.flickr.com/photos/86149994@N06/)
+
 
 
 

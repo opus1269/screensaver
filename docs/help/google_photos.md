@@ -61,7 +61,7 @@ This interface allows you to select the most recent photos from your Google
 Photos account that will be displayed in the screensaver. The number of photos
 is limited to a maximum of 3,000.
 The contents are updated daily by the extension.
-Videos are not supported and are filtered out of the album.
+Videos are not supported and are filtered out.
 
 If you want more control over which photos are used, you should create
 one or more albums in Google Photos and select them in the extension.
