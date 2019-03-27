@@ -3,7 +3,7 @@
   "name": "__MSG_chrome_extension_name__",
   "short_name": "__MSG_chrome_extension_name__",
   "description": "__MSG_chrome_extension_description__",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "minimum_chrome_version": "38",
   "default_locale": "en_US",
   "commands": {
