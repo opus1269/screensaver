@@ -52,5 +52,5 @@ function _onLoad() {
   chrome.identity.onSignInChanged.addListener(_onSignInChanged);
 }
 
-// listen for documents and resources loaded
+// Listen for documents and resources loaded
 window.addEventListener('load', _onLoad);
