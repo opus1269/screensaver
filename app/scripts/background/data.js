@@ -256,7 +256,7 @@ export function update() {
     ChromeStorage.set('albumSelections', null);
   }
 
-  if (oldVersion < 22) {
+  if (oldVersion < 23) {
     // remove unused data
     ChromeStorage.set('googleImages', null);
   }
