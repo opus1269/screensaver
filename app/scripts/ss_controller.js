@@ -4,20 +4,20 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as MyMsg from '../../scripts/my_msg.js';
+import * as MyMsg from './my_msg.js';
 
 import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
+  from './chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
+  from './chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
+  from './chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+  from './chrome-extension-utils/scripts/storage.js';
+import ChromeTime from './chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+  from './chrome-extension-utils/scripts/utils.js';
+import './chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Controller for the screen saver
@@ -242,6 +242,12 @@ function _onChromeMessage(request, sender, response) {
   }
   return false;
 }
+
+// listen for changes to the idle state of the computer
+chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
+
+// listen for chrome messages
+ChromeMsg.listen(_onChromeMessage);
 
 /**
  * Event: called when document and resources are loaded

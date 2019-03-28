@@ -4,14 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as SSController from '../scripts/background/ss_controller.js';
+import * as SSController from '../scripts/ss_controller.js';
 
-import * as ChromeHttp from './chrome-extension-utils/scripts/http.js';
-import * as ChromeJSON from './chrome-extension-utils/scripts/json.js';
+import * as ChromeHttp from '../scripts/chrome-extension-utils/scripts/http.js';
+import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeStorage
   from '../scripts/chrome-extension-utils/scripts/storage.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import ChromeTime from './chrome-extension-utils/scripts/time.js';
+import ChromeTime from '../scripts/chrome-extension-utils/scripts/time.js';
 
 /**
  * Manage weather information

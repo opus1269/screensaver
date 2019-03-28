@@ -5,7 +5,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as AppData from './data.js';
-import {display} from './ss_controller.js';
+
+import * as SSController from '../../scripts/ss_controller.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -93,7 +94,7 @@ function _onInstalled(details) {
 function _onMenuClicked(info) {
   if (info.menuItemId === _DISPLAY_MENU) {
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
-    display(false);
+    SSController.display(false);
   } else if (info.menuItemId === _ENABLE_MENU) {
     const isEnabled = ChromeStorage.getBool('enabled');
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
@@ -114,7 +115,7 @@ function _onKeyCommand(cmd) {
     _toggleEnabled();
   } else if (cmd === 'show-screensaver') {
     ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
-    display(false);
+    SSController.display(false);
   }
 }
 
