@@ -69,7 +69,7 @@ const WeatherElement = Polymer({
     <iron-image
         class="image flex"
         src="[[weather.iconUrl]]"
-        preload>W
+        preload>
     </iron-image>
     <paper-item class="description">[[weather.description]]</paper-item>
   </div>
