@@ -159,6 +159,11 @@ Polymer({
         <setting-toggle name="showLocation" main-label="[[localize('setting_location')]]"
                         secondary-label="[[localize('setting_location_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="showCurrentWeather" main-label="[[localize('setting_weather')]]"
+                        secondary-label="[[localize('setting_weather_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]" items="[[_computeTempUnitMenu()]]"
+                          value="[[weatherTempUnitValue]]" disabled$="[[!enabled]]" indent=""></setting-dropdown>
         <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[_computeTimeFormatMenu()]]"
@@ -249,6 +254,13 @@ Polymer({
     showTimeValue: {
       type: Number,
       value: 1,
+      notify: true,
+    },
+
+    /** Index of temp unit to show on screensaver */
+    weatherTempUnitValue: {
+      type: Number,
+      value: 0,
       notify: true,
     },
 
@@ -496,6 +508,18 @@ Polymer({
       ChromeLocale.localize('no'),
       ChromeLocale.localize('menu_12_hour'),
       ChromeLocale.localize('menu_24_hour'),
+    ];
+  },
+
+  /**
+   * Computed binding: temperature units
+   * @returns {Array} Array of menu items
+   * @private
+   */
+  _computeTempUnitMenu: function() {
+    return [
+      '\u00b0C',
+      '\u00b0F',
     ];
   },
 });

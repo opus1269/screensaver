@@ -20,6 +20,7 @@ import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/slide-animatable/slide-animatable.js';
+import '../../elements/weather-element/weather-element.js';
 
 import '../../elements/pages/settings-page/settings-page.js';
 import '../../elements/pages/error-page/error-page.js';
@@ -154,6 +155,16 @@ const Screensaver = Polymer({
     opacity: 1.0;
   }
 
+  .weather {
+    position: fixed;
+    left: 1vw;
+    bottom: 1vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+
   .author {
     font-size: 2.5vh;
     font-weight: 300;
@@ -210,6 +221,7 @@ const Screensaver = Polymer({
           <div class="time">[[timeLabel]]</div>
           <div class="author">[[view.authorLabel]]</div>
           <div class="location">[[view.locationLabel]]</div>
+          <weather-element class="weather"></weather-element>
         </section>
       </slide-animatable>
     </template>

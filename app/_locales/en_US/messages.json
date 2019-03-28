@@ -603,6 +603,19 @@
   "removed_album": {
     "message": "Removed album"
   },
+  "setting_weather": {
+    "message": "Show current weather, if available"
+  },
+  "setting_weather_desc": {
+    "message": "This is updated about once an hour"
+  },
+  "setting_temp_unit": {
+    "message": "Temperature unit"
+  },
+  "temp_unit": {
+    "message": "F",
+    "description": "Set to F for Fahrenheit C for Celsius"
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

@@ -5,8 +5,9 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as AppData from './data.js';
-import {isActive, close, display} from './ss_controller.js';
+import * as SSController from './ss_controller.js';
 
+import * as Weather from '../../scripts/weather.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeLocale
@@ -33,6 +34,7 @@ const chromep = new ChromePromise();
  * @property {string} DEACTIVATE - screen saver is not activate
  * @property {string} UPDATE_PHOTOS - photo sources should be updated
  * @property {string} BADGE_TEXT - icon's Badge text should be set
+ * @property {string} WEATHER - try to update current weather
  * @type {module:bg/alarm.Alarms}
  * @const
  * @private
@@ -42,15 +44,16 @@ const _ALARMS = {
   'DEACTIVATE': 'DEACTIVATE',
   'UPDATE_PHOTOS': 'UPDATE_PHOTOS',
   'BADGE_TEXT': 'BADGE_TEXT',
+  'WEATHER': 'WEATHER',
 };
 
 /**
- * Set the repeating alarms states
+ * Set the repeating alarms for the keep awake
  */
-export function updateRepeatingAlarms() {
-  const keepAwake = ChromeStorage.getBool('keepAwake');
-  const aStart = ChromeStorage.get('activeStart', '00:00');
-  const aStop = ChromeStorage.get('activeStop', '00:00');
+export function updateKeepAwakeAlarm() {
+  const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
+  const aStart = ChromeStorage.get('activeStart', AppData.DEFS.activeStart);
+  const aStop = ChromeStorage.get('activeStop', AppData.DEFS.activeStop);
 
   // create keep awake active period scheduling alarms
   if (keepAwake && (aStart !== aStop)) {
@@ -76,19 +79,54 @@ export function updateRepeatingAlarms() {
     chrome.alarms.clear(_ALARMS.DEACTIVATE);
   }
 
+  updateBadgeText();
+}
+
+/**
+ * Set the repeating daily photo alarm
+ * @returns {Promise<void>}
+ */
+export async function updatePhotoAlarm() {
   // Add daily alarm to update photo sources that request this
-  chromep.alarms.get(_ALARMS.UPDATE_PHOTOS).then((alarm) => {
+  return chromep.alarms.get(_ALARMS.UPDATE_PHOTOS).then((alarm) => {
     if (!alarm) {
       chrome.alarms.create(_ALARMS.UPDATE_PHOTOS, {
         when: Date.now() + ChromeTime.MSEC_IN_DAY,
         periodInMinutes: ChromeTime.MIN_IN_DAY,
       });
     }
-    return null;
+    return Promise.resolve();
   }).catch((err) => {
-    ChromeLog.error(err.message,
-        'chromep.alarms.get(_ALARMS.UPDATE_PHOTOS)');
+    ChromeLog.error(err.message, 'Alarm.updatePhotoAlarm');
+    return Promise.resolve();
   });
+}
+
+/**
+ * Set the weather alarm
+ * @returns {Promise<void>}
+ */
+export async function updateWeatherAlarm() {
+  const weather = ChromeStorage.getBool('showCurrentWeather',
+      AppData.DEFS.showCurrentWeather);
+  if (weather) {
+    // Add repeating alarm to update current weather
+    return chromep.alarms.get(_ALARMS.WEATHER).then((alarm) => {
+      if (!alarm) {
+        chrome.alarms.create(_ALARMS.WEATHER, {
+          when: Date.now(),
+          periodInMinutes: Weather.CALL_TIME,
+        });
+      }
+      return Promise.resolve();
+    }).catch((err) => {
+      ChromeLog.error(err.message, 'Alarm.updateWeatherAlarm');
+      return Promise.resolve();
+    });
+  } else {
+    chrome.alarms.clear(_ALARMS.WEATHER);
+    return Promise.resolve();
+  }
 }
 
 /**
@@ -103,23 +141,28 @@ export function updateBadgeText() {
 
 /**
  * Set state when the screensaver is in the active time range
+ * @returns {Promise<void>}
  * @private
  */
 function _setActiveState() {
-  if (ChromeStorage.getBool('keepAwake')) {
+  const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
+  const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
+  if (keepAwake) {
     chrome.power.requestKeepAwake('display');
   }
   const interval = AppData.getIdleSeconds();
-  chromep.idle.queryState(interval).then((state) => {
+  return chromep.idle.queryState(interval).then((state) => {
     // display screensaver if enabled and the idle time criteria is met
-    if (ChromeStorage.getBool('enabled') && (state === 'idle')) {
-      display(false);
+    if (enabled && (state === 'idle')) {
+      SSController.display(false);
     }
-    return null;
+    updateBadgeText();
+    return Promise.resolve();
   }).catch((err) => {
     ChromeLog.error(err.message, 'Alarm._setActiveState');
+    updateBadgeText();
+    return Promise.resolve();
   });
-  updateBadgeText();
 }
 
 /**
@@ -127,12 +170,14 @@ function _setActiveState() {
  * @private
  */
 function _setInactiveState() {
-  if (ChromeStorage.getBool('allowSuspend')) {
+  const allowSuspend = ChromeStorage.getBool('allowSuspend',
+      AppData.DEFS.allowSuspend);
+  if (allowSuspend) {
     chrome.power.releaseKeepAwake();
   } else {
     chrome.power.requestKeepAwake('system');
   }
-  close();
+  SSController.close();
   updateBadgeText();
 }
 
@@ -141,12 +186,15 @@ function _setInactiveState() {
  * @private
  */
 function _setBadgeText() {
+  const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
+  const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
   let text = '';
-  if (ChromeStorage.getBool('enabled')) {
-    text = isActive() ? '' : ChromeLocale.localize('sleep_abbrev');
+  if (enabled) {
+    text = SSController.isActive() ? '' : ChromeLocale.localize('sleep_abbrev');
   } else {
-    text = ChromeStorage.getBool('keepAwake') ? ChromeLocale.localize(
-        'power_abbrev') : ChromeLocale.localize('off_abbrev');
+    text = keepAwake
+        ? ChromeLocale.localize('power_abbrev')
+        : ChromeLocale.localize('off_abbrev');
   }
   chrome.browserAction.setBadgeText({text: text});
 }
@@ -162,7 +210,7 @@ function _onAlarm(alarm) {
   switch (alarm.name) {
     case _ALARMS.ACTIVATE:
       // entering active time range of keep awake
-      _setActiveState();
+      _setActiveState().catch(() => {});
       break;
     case _ALARMS.DEACTIVATE:
       // leaving active time range of keep awake
@@ -175,6 +223,10 @@ function _onAlarm(alarm) {
     case _ALARMS.BADGE_TEXT:
       // set the icons text
       _setBadgeText();
+      break;
+    case _ALARMS.WEATHER:
+      // update the weather
+      Weather.update().catch(() => {});
       break;
     default:
       break;

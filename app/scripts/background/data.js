@@ -4,11 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import {updateBadgeText, updateRepeatingAlarms} from './alarm.js';
+import * as Alarm from './alarm.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
@@ -38,15 +39,16 @@ const chromep = new ChromePromise();
  * @const
  * @private
  */
-const _DATA_VERSION = 23;
+const _DATA_VERSION = 24;
 
 /**
  * Default values in localStorage
- * @typedef {{}} module:bg/data._DEF_VALUES
+ * @typedef {{}} module:bg/data.Defaults
  * @property {int} version - version of data
  * @property {boolean} enabled - is screensaver enabled
  * @property {string} permPicasa - optional permission for Picasa
  * @property {string} permBackground - optional permission to run in bg
+ * @property {string} permWeather - optional permission to show weather
  * @property {boolean} allowBackground - run Chrome in background
  * @property {module:els/setting/slider.SettingSlider.UnitValue} idleTime
  * - idle time to display screensaver
@@ -82,16 +84,26 @@ const _DATA_VERSION = 23;
  * @property {boolean} useGooglePhotos - use this photo source
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
- * @property {{}} googlePhotosFilter - filter for retrieving google photos
- * @type {module:bg/data._DEF_VALUES}
- * @const
- * @private
+ * @property {module:sources/photo_source_google.GoogleSource.DEF_FILTER}
+ * googlePhotosFilter - filter for retrieving google photos
+ * @property {module:weather.Location} location - geo location
+ * @property {boolean} showCurrentWeather - display weather
+ * @property {int} weatherTempUnit - temp unit (0 == C 1 == F)
+ * @property {module:weather.CurrentWeather} currentWeather - weather
  */
-const _DEF_VALUES = {
+
+/**
+ * Default values in localStorage
+ * @type {module:bg/data.Defaults}
+ * @const
+ * @readonly
+ */
+export const DEFS = {
   'version': _DATA_VERSION,
   'enabled': true,
   'permPicasa': 'notSet', // enum: notSet allowed denied
   'permBackground': 'notSet', // enum: notSet allowed denied
+  'permWeather': 'notSet', // enum: notSet allowed denied
   'allowBackground': false,
   'idleTime': {'base': 5, 'display': 5, 'unit': 0}, // minutes
   'transitionTime': {'base': 30, 'display': 30, 'unit': 0}, // seconds
@@ -126,6 +138,10 @@ const _DEF_VALUES = {
   'signedInToChrome': true,
   'googlePhotosNoFilter': true,
   'googlePhotosFilter': GoogleSource.DEF_FILTER,
+  'location': {lat: 0, lon: 0},
+  'showCurrentWeather': false,
+  'weatherTempUnit': 0,
+  'currentWeather': Weather.DEF_WEATHER,
 };
 
 /**
@@ -148,6 +164,9 @@ export async function initialize() {
     // set time format based on locale
     ChromeStorage.set('showTime', _getTimeFormat());
 
+    // set temp unit based on locale
+    ChromeStorage.set('weatherTempUnit', _getTempUnit());
+    
     // update state
     await processState();
   } catch (err) {
@@ -234,8 +253,7 @@ export function update() {
     }).catch(() => {});
 
     // change minimum transition time
-    const trans = ChromeStorage.get('transitionTime',
-        {'base': 30, 'display': 30, 'unit': 0});
+    const trans = ChromeStorage.get('transitionTime', DEFS.transitionTime);
     if ((trans.unit === 0)) {
       trans.base = Math.max(10, trans.base);
       trans.display = trans.base;
@@ -271,7 +289,7 @@ export function update() {
  * Restore default values for data saved in localStorage
  */
 export function restoreDefaults() {
-  Object.keys(_DEF_VALUES).forEach((key) => {
+  Object.keys(DEFS).forEach((key) => {
     // skip Google Photos settings
     if (!key.includes('useGoogle') &&
         (key !== 'useGoogleAlbums') &&
@@ -280,12 +298,15 @@ export function restoreDefaults() {
         (key !== 'isAlbumMode') &&
         (key !== 'googlePhotosFilter') &&
         (key !== 'permPicasa')) {
-      ChromeStorage.set(key, _DEF_VALUES[key]);
+      ChromeStorage.set(key, DEFS[key]);
     }
   });
 
   // restore default time format based on locale
   ChromeStorage.set('showTime', _getTimeFormat());
+
+  // restore default temp unit based on locale
+  ChromeStorage.set('weatherTempUnit', _getTempUnit());
 
   // update state
   processState().catch(() => {});
@@ -303,6 +324,8 @@ export async function processState(key = 'all') {
     _processEnabled();
     _processKeepAwake();
     _processIdleTime();
+    await Alarm.updatePhotoAlarm();
+    await Alarm.updateWeatherAlarm();
 
     // process photo SOURCES
     PhotoSources.processAll(false);
@@ -319,7 +342,8 @@ export async function processState(key = 'all') {
       let useKey = key;
       if (key === 'fullResGoogle') {
         // full res photo state changed update albums or photos
-        const isAlbums = ChromeStorage.getBool('useGoogleAlbums');
+        const isAlbums =
+            ChromeStorage.getBool('useGoogleAlbums', DEFS.useGoogleAlbums);
         if (isAlbums) {
           // update albums
           useKey = 'useGoogleAlbums';
@@ -332,7 +356,8 @@ export async function processState(key = 'all') {
             ChromeMsg.send(msg).catch(() => {});
           }
         }
-        const isPhotos = ChromeStorage.getBool('useGooglePhotos');
+        const isPhotos =
+            ChromeStorage.getBool('useGooglePhotos', DEFS.useGooglePhotos);
         if (isPhotos) {
           // update photos
           useKey = 'useGooglePhotos';
@@ -371,6 +396,12 @@ export async function processState(key = 'all') {
         case 'allowSuspend':
           _processKeepAwake();
           break;
+        case 'showCurrentWeather':
+          await Alarm.updateWeatherAlarm();
+          break;
+        case 'weatherTempUnit':
+          await Weather.updateUnits();
+          break;
         default:
           break;
       }
@@ -385,7 +416,7 @@ export async function processState(key = 'all') {
  * @returns {!int} idle time in seconds
  */
 export function getIdleSeconds() {
-  const idle = ChromeStorage.get('idleTime', _DEF_VALUES['idleTime']);
+  const idle = ChromeStorage.get('idleTime', DEFS.idleTime);
   return idle.base * 60;
 }
 
@@ -420,10 +451,12 @@ async function _updateToChromeLocaleStorage() {
  * @private
  */
 function _processEnabled() {
+  Alarm.updateBadgeText();
+  const isEnabled = ChromeStorage.getBool('enabled', DEFS.enabled);
   // update context menu text
-  const label = ChromeStorage.getBool('enabled') ? ChromeLocale.localize(
-      'disable') : ChromeLocale.localize('enable');
-  updateBadgeText();
+  const label = isEnabled
+      ? ChromeLocale.localize('disable')
+      : ChromeLocale.localize('enable');
   chromep.contextMenus.update('ENABLE_MENU', {
     title: label,
   }).catch(() => {});
@@ -434,12 +467,11 @@ function _processEnabled() {
  * @private
  */
 function _processKeepAwake() {
-  const keepAwake = ChromeStorage.getBool('keepAwake', true);
+  const keepAwake = ChromeStorage.getBool('keepAwake', DEFS.keepAwake);
   keepAwake
       ? chrome.power.requestKeepAwake('display')
       : chrome.power.releaseKeepAwake();
-  updateRepeatingAlarms();
-  updateBadgeText();
+  Alarm.updateKeepAwakeAlarm();
 }
 
 /**
@@ -451,13 +483,23 @@ function _processIdleTime() {
 }
 
 /**
- * Get default time format based on locale
- * @returns {int} 12 or 24
+ * Get default time format index based on locale
+ * @returns {int} 1 or 2
  * @private
  */
 function _getTimeFormat() {
   const format = ChromeLocale.localize('time_format', '12');
   return (format === '12') ? 1 : 2;
+}
+
+/**
+ * Get default temperature unit index based on locale
+ * @returns {int} 0 or 1
+ * @private
+ */
+function _getTempUnit() {
+  const unit = ChromeLocale.localize('temp_unit', 'C');
+  return (unit === 'C') ? 0 : 1;
 }
 
 /**
@@ -478,14 +520,14 @@ async function _setOS() {
 }
 
 /**
- * Save the [_DEF_VALUES]{@link module:bg/data._DEF_VALUES} items, if they
+ * Save the {@link module:bg/data.Defaults} items, if they
  * do not already exist
  * @private
  */
 function _addDefaults() {
-  Object.keys(_DEF_VALUES).forEach(function(key) {
+  Object.keys(DEFS).forEach(function(key) {
     if (ChromeStorage.get(key) === null) {
-      ChromeStorage.set(key, _DEF_VALUES[key]);
+      ChromeStorage.set(key, DEFS[key]);
     }
   });
 }

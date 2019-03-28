@@ -50,6 +50,8 @@
     ]
   },
   "permissions": [
+    "geolocation",
+    "https://api.openweathermap.org/",
     "identity",
     "storage",
     "unlimitedStorage",
