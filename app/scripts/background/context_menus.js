@@ -119,20 +119,12 @@ function _onKeyCommand(cmd) {
   }
 }
 
-/**
- * Event: called when document and resources are loaded<br />
- * @private
- */
-function _onLoad() {
-  // listen for install events
-  chrome.runtime.onInstalled.addListener(_onInstalled);
+// listen for install events
+chrome.runtime.onInstalled.addListener(_onInstalled);
 
-  // listen for clicks on context menus
-  chrome.contextMenus.onClicked.addListener(_onMenuClicked);
+// listen for clicks on context menus
+chrome.contextMenus.onClicked.addListener(_onMenuClicked);
 
-  // listen for special keyboard commands
-  chrome.commands.onCommand.addListener(_onKeyCommand);
-}
+// listen for special keyboard commands
+chrome.commands.onCommand.addListener(_onKeyCommand);
 
-// listen for documents and resources loaded
-window.addEventListener('load', _onLoad);

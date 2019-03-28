@@ -42,15 +42,6 @@ function _onSignInChanged(account, signedIn) {
   }
 }
 
-/**
- * Event: called when document and resources are loaded
- * @private
- */
-function _onLoad() {
-  // Listen for changes to Browser sign-in
-  // noinspection JSUnresolvedVariable
-  chrome.identity.onSignInChanged.addListener(_onSignInChanged);
-}
-
-// listen for documents and resources loaded
-window.addEventListener('load', _onLoad);
+// Listen for changes to Browser sign-in
+// noinspection JSUnresolvedVariable
+chrome.identity.onSignInChanged.addListener(_onSignInChanged);

@@ -233,15 +233,6 @@ function _onAlarm(alarm) {
   }
 }
 
-/**
- * Event: called when document and resources are loaded
- * @private
- */
-function _onLoad() {
-  // Listen for alarms
-  chrome.alarms.onAlarm.addListener(_onAlarm);
-}
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);
+// Listen for alarms
+chrome.alarms.onAlarm.addListener(_onAlarm);
   

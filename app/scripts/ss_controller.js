@@ -248,19 +248,3 @@ chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
 
 // listen for chrome messages
 ChromeMsg.listen(_onChromeMessage);
-
-/**
- * Event: called when document and resources are loaded
- * @private
- */
-function _onLoad() {
-  // listen for changes to the idle state of the computer
-  chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
-  
-  
-  // listen for chrome messages
-  ChromeMsg.listen(_onChromeMessage);
-}
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);

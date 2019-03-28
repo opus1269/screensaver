@@ -151,27 +151,18 @@ function _onMouseClick() {
   _close();
 }
 
-/**
- * Event: called when document and resources are loaded
- * @private
- */
-function _onLoad() {
-  // listen for chrome messages
-  ChromeMsg.listen(_onMessage);
+// listen for chrome messages
+ChromeMsg.listen(_onMessage);
 
-  // listen for key events
-  window.addEventListener('keydown', _onKey, false);
+// listen for key events
+window.addEventListener('keydown', _onKey, false);
 
-  // listen for mousemove events
-  window.addEventListener('mousemove', _onMouseMove, false);
+// listen for mousemove events
+window.addEventListener('mousemove', _onMouseMove, false);
 
-  // listen for mouse click events
-  window.addEventListener('click', _onMouseClick, false);
+// listen for mouse click events
+window.addEventListener('click', _onMouseClick, false);
 
-  // listen for special keyboard commands
-  // noinspection JSUnresolvedVariable
-  chrome.commands.onCommand.addListener(_onKeyCommand);
-}
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);
+// listen for special keyboard commands
+// noinspection JSUnresolvedVariable
+chrome.commands.onCommand.addListener(_onKeyCommand);

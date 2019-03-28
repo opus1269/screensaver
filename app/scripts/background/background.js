@@ -163,28 +163,19 @@ function _onChromeMessage(request, sender, response) {
   return ret;
 }
 
-/**
- * Event: called when document and resources are loaded
- * @private
- */
-function _onLoad() {
-  MyGA.initialize();
+MyGA.initialize();
 
-  // listen for extension install or update
-  chrome.runtime.onInstalled.addListener(_onInstalled);
+// listen for extension install or update
+chrome.runtime.onInstalled.addListener(_onInstalled);
 
-  // listen for Chrome starting
-  chrome.runtime.onStartup.addListener(_onStartup);
+// listen for Chrome starting
+chrome.runtime.onStartup.addListener(_onStartup);
 
-  // listen for click on the icon
-  chrome.browserAction.onClicked.addListener(_onIconClicked);
+// listen for click on the icon
+chrome.browserAction.onClicked.addListener(_onIconClicked);
 
-  // listen for changes to the stored data
-  addEventListener('storage', _onStorageChanged, false);
+// listen for changes to the stored data
+addEventListener('storage', _onStorageChanged, false);
 
-  // listen for chrome messages
-  ChromeMsg.listen(_onChromeMessage);
-}
-
-// listen for document and resources loaded
-window.addEventListener('load', _onLoad);
+// listen for chrome messages
+ChromeMsg.listen(_onChromeMessage);
