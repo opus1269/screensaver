@@ -76,7 +76,7 @@ const SettingToggle = Polymer({
       </div>
       <paper-ripple center=""></paper-ripple>
     </paper-item-body>
-    <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}" on-change="_onChange"
+    <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}" on-change="_onChange" on-tap="_onTap"
                          disabled$="[[disabled]]">
     </paper-toggle-button>
   </paper-item>
@@ -150,6 +150,16 @@ const SettingToggle = Polymer({
    */
   _onChange: function() {
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
+  },
+
+  /**
+   * Event: toggle tapped
+   * @param {Event} ev
+   * @private
+   */
+  _onTap: function(ev) {
+    // so tap events only get called once.
+    ev.stopPropagation();
   },
 });
 
