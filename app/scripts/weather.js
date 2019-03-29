@@ -54,6 +54,18 @@ export const DEF_WEATHER = {
 };
 
 /**
+ * Default geolocation permission options
+ * @readonly
+ * @const
+ * @type {{enableHighAccuracy, timeout, maximumAge}}
+ */
+export const DEF_LOC_OPTIONS = {
+  enableHighAccuracy: false,
+  timeout: 5000,
+  maximumAge: 0,
+};
+
+/**
  * The most frequently we will call the API
  * @type {int}
  * @readonly
@@ -74,18 +86,6 @@ const _DEF_LOC = {
 };
 
 /**
- * Default geolocation options
- * @readonly
- * @const
- * @type {{}}
- */
-const _DEF_LOC_OPTIONS = {
-  enableHighAccuracy: false,
-  timeout: 5000,
-  maximumAge: 0,
-};
-
-/**
  * API key
  * @type {string}
  * @private
@@ -103,7 +103,7 @@ const _URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
  * Update the weather
  * @returns {Promise<void>}
  */
-export function update() {
+export async function update() {
   const METHOD = 'Weather.update';
   const ERR_TITLE = ChromeLocale.localize('err_weather_update');
   const showWeather = ChromeStorage.get('showCurrentWeather', false);
@@ -121,17 +121,27 @@ export function update() {
     return Promise.resolve();
   }
 
-  return getLocation().then((location) => {
-    location = location || _DEF_LOC;
+  // first, try to update location
+  let location;
+  try {
+    location = await getLocation();
+  } catch (err) {
+    ChromeLog.error(err.message, METHOD, ERR_TITLE);
+    // use last location
+    location = ChromeStorage.get('location', _DEF_LOC);
+  } finally {
     ChromeStorage.set('location', location);
+  }
 
+  // now, try to update weather
+  try {
     const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.maxRetries = 2;
     let url = _URL_BASE;
     url += `?lat=${location.lat}&lon=${location.lon}&APPID=${_KEY}`;
-    return ChromeHttp.doGet(url, conf);
-  }).then((response) => {
-    response = response || {};
+
+    /** @type {{cod, name, main, weather}} */
+    const response = await ChromeHttp.doGet(url, conf);
 
     if (response.cod !== 200) {
       const msg = `${ChromeLocale.localize('err_status')}: ${response.cod}`;
@@ -166,11 +176,12 @@ export function update() {
     }
 
     ChromeStorage.set('currentWeather', curWeather);
+
     return Promise.resolve();
-  }).catch((err) => {
+  } catch (err) {
     ChromeLog.error(err.message, METHOD, ERR_TITLE);
     return Promise.resolve();
-  });
+  }
 }
 
 /**
@@ -189,10 +200,11 @@ export function updateUnits() {
 
 /**
  * Get the current geo location. Will prompt if needed
- * @param {{}} options
+ * @param {?{}} options
+ * @throws An error if we failed to get location
  * @returns {Promise<module:weather.Location>}
  */
-export function getLocation(options = _DEF_LOC_OPTIONS) {
+export function getLocation(options = DEF_LOC_OPTIONS) {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject, options);
   }).then((position) => {
@@ -202,14 +214,6 @@ export function getLocation(options = _DEF_LOC_OPTIONS) {
     };
     ChromeStorage.set('location', ret);
     return Promise.resolve(ret);
-  }).catch((err) => {
-    if (err.code !== 1) {
-      // get last saved, unless permission has been denied
-      const ret = ChromeStorage.get('location', {lat: 0, lon: 0});
-      return Promise.resolve(ret);
-    } else {
-      throw new Error(ChromeLocale.localize('err_geolocation_perm'));
-    }
   });
 }
 

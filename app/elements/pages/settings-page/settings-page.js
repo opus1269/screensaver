@@ -399,7 +399,7 @@ Polymer({
   },
 
   /**
-   * Event: Process the background 
+   * Event: Process the background
    * @private
    */
   _onChromeBackgroundTapped: function() {
@@ -428,7 +428,7 @@ Polymer({
     const ERR_TEXT = ChromeLocale.localize('err_weather_perm');
     // this used to not be updated yet in Polymer 1
     const isShow = ChromeStorage.getBool('showCurrentWeather', false);
-    
+
     try {
       if (isShow) {
         // see if we have geolocation permission
@@ -440,8 +440,11 @@ Polymer({
           // noinspection ExceptionCaughtLocallyJS
           throw new Error(ChromeLocale.localize('err_geolocation_perm'));
         } else if (permGeo.state === 'prompt') {
-            // try to get location so we will get prompt
-            await Weather.getLocation();
+          // try to get location so we will get prompt
+          const options = ChromeJSON.shallowCopy(Weather.DEF_LOC_OPTIONS);
+          // give it a long time to timeout
+          options.timeout = 60000;
+          await Weather.getLocation(options);
         } else {
           // already have geolocation permission
           // update the weather
@@ -454,7 +457,7 @@ Polymer({
         const granted = await Permissions.request(Permissions.WEATHER);
 
         if (!granted) {
-           // noinspection ExceptionCaughtLocallyJS
+          // noinspection ExceptionCaughtLocallyJS
           throw new Error(ERR_TEXT);
         } else {
           // update the weather
