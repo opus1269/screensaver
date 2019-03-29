@@ -80,6 +80,10 @@ Polymer({
     padding: 10px 10px 10px 24px;
   }
 
+  #onOffLabel {
+    cursor: pointer;
+  }
+
   :host app-toolbar {
     height: 100px;
   }
@@ -91,7 +95,7 @@ Polymer({
     <app-toolbar class="page-toolbar">
       <div id="topToolbar" top-item="" class="horizontal layout flex">
         <iron-label for="settingsToggle" class="center horizontal layout flex">
-          <div class="flex">[[localize('screensaver')]]
+          <div id="onOffLabel" class="flex">[[localize('screensaver')]]
             <span hidden$="[[!enabled]]">[[localize('on')]]</span>
             <span hidden$="[[enabled]]">[[localize('off')]]</span>
           </div>
@@ -433,6 +437,7 @@ Polymer({
 
         if (permGeo.state === 'denied') {
           // user has denied it
+          // noinspection ExceptionCaughtLocallyJS
           throw new Error(ChromeLocale.localize('err_geolocation_perm'));
         } else if (permGeo.state === 'prompt') {
             // try to get location so we will get prompt
@@ -449,7 +454,8 @@ Polymer({
         const granted = await Permissions.request(Permissions.WEATHER);
 
         if (!granted) {
-           throw new Error(ERR_TEXT);
+           // noinspection ExceptionCaughtLocallyJS
+          throw new Error(ERR_TEXT);
         } else {
           // update the weather
           await Weather.update();
