@@ -486,19 +486,23 @@ Polymer({
     } catch (err) {
       // something weird happened
       
-      // set to false
-      let msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
-      msg.key = 'showCurrentWeather';
-      msg.value = false;
-      await ChromeMsg.send(msg);
+      try {
+        // set to false
+        let msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+        msg.key = 'showCurrentWeather';
+        msg.value = false;
+        await ChromeMsg.send(msg);
 
-      // update the alarm
-      msg = ChromeJSON.shallowCopy(MyMsg.UPDATE_WEATHER_ALARM);
-      msg.key = 'showCurrentWeather';
-      msg.value = false;
-      await ChromeMsg.send(msg);
+        // update the alarm
+        msg = ChromeJSON.shallowCopy(MyMsg.UPDATE_WEATHER_ALARM);
+        msg.key = 'showCurrentWeather';
+        msg.value = false;
+        await ChromeMsg.send(msg);
 
-      await Permissions.remove(Permissions.WEATHER);
+        await Permissions.remove(Permissions.WEATHER);
+      } catch (err) {
+        // ignore
+      }
       
       showErrorDialog(ERR_TITLE, err.message, METHOD);
     }
