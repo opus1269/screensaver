@@ -111,11 +111,13 @@ export async function updateWeatherAlarm() {
       AppData.DEFS.showCurrentWeather);
   if (weather) {
     // Add repeating alarm to update current weather
+    // Trigger it every ten minutes, even though weather won't
+    // update that often
     return chromep.alarms.get(_ALARMS.WEATHER).then((alarm) => {
       if (!alarm) {
         chrome.alarms.create(_ALARMS.WEATHER, {
           when: Date.now(),
-          periodInMinutes: Weather.CALL_TIME,
+          periodInMinutes: 10,
         });
       }
       return Promise.resolve();

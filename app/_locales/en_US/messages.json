@@ -607,10 +607,19 @@
     "message": "Show current weather, if available"
   },
   "setting_weather_desc": {
-    "message": "This is updated about once an hour"
+    "message": "You will be prompted to allow viewing your location and accessing the weather api"
   },
   "setting_temp_unit": {
     "message": "Temperature unit"
+  },
+  "err_weather_perm": {
+    "message": "Weather information will not be available"
+  },
+  "err_geolocation_perm": {
+    "message": "You have not allowed location sharing"
+  },
+  "err_weather_update": {
+    "message": "Failed to update weather"
   },
   "temp_unit": {
     "message": "F",

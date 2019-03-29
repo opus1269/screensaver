@@ -50,8 +50,6 @@
     ]
   },
   "permissions": [
-    "geolocation",
-    "https://api.openweathermap.org/",
     "identity",
     "storage",
     "unlimitedStorage",
@@ -63,7 +61,8 @@
   ],
   "optional_permissions": [
     "background",
-    "https://photoslibrary.googleapis.com/"
+    "https://photoslibrary.googleapis.com/",
+    "https://api.openweathermap.org/"
   ],
   "background": {
     "persistent": false,

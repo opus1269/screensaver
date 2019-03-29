@@ -36,12 +36,17 @@ import {LocalizeBehavior} from
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
+import {showErrorDialog} from '../../../elements/app-main/app-main.js';
+
 import * as MyUtils from '../../../scripts/my_utils.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
+import * as Weather from '../../../scripts/weather.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeJSON
+  from '../../../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeLocale
   from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
@@ -91,17 +96,17 @@ Polymer({
             <span hidden$="[[enabled]]">[[localize('off')]]</span>
           </div>
         </iron-label>
-        <paper-icon-button id="select" icon="myicons:check-box" on-tap="_selectAllTapped" hidden$="[[menuHidden]]"
+        <paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped" hidden$="[[menuHidden]]"
                            disabled$="[[!enabled]]"></paper-icon-button>
         <paper-tooltip for="select" position="left" offset="0">
           [[localize('tooltip_select')]]
         </paper-tooltip>
-        <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_deselectAllTapped"
+        <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_onDeselectAllTapped"
                            hidden$="[[menuHidden]]" disabled$="[[!enabled]]"></paper-icon-button>
         <paper-tooltip for="deselect" position="left" offset="0">
           [[localize('tooltip_deselect')]]
         </paper-tooltip>
-        <paper-icon-button id="restore" icon="myicons:settings-backup-restore" on-tap="_restoreDefaultsTapped"
+        <paper-icon-button id="restore" icon="myicons:settings-backup-restore" on-tap="_onRestoreDefaultsTapped"
                            disabled$="[[!enabled]]"></paper-icon-button>
         <paper-tooltip for="restore" position="left" offset="0">
           [[localize('tooltip_restore')]]
@@ -141,7 +146,7 @@ Polymer({
         <setting-dropdown name="photoTransition" label="[[localize('setting_photo_transition')]]"
                           items="[[_computePhotoTransitionMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="allowBackground" main-label="[[localize('setting_background')]]"
-                        secondary-label="[[localize('setting_background_desc')]]" on-tap="_chromeBackgroundTapped"
+                        secondary-label="[[localize('setting_background_desc')]]" on-tap="_onChromeBackgroundTapped"
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="interactive" main-label="[[localize('setting_interactive')]]"
                         secondary-label="[[localize('setting_interactive_desc')]]"
@@ -161,7 +166,7 @@ Polymer({
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="showCurrentWeather" main-label="[[localize('setting_weather')]]"
                         secondary-label="[[localize('setting_weather_desc')]]"
-                        disabled$="[[!enabled]]"></setting-toggle>
+                        disabled$="[[!enabled]]" on-tap="_onShowWeatherTapped"></setting-toggle>
         <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]" items="[[_computeTempUnitMenu()]]"
                           value="[[weatherTempUnitValue]]" disabled$="[[!enabled]]" indent=""></setting-dropdown>
         <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
@@ -369,7 +374,7 @@ Polymer({
    * Event: select all {@link module:sources/photo_source} objects tapped
    * @private
    */
-  _selectAllTapped: function() {
+  _onSelectAllTapped: function() {
     this._setPhotoSourcesChecked(true);
   },
 
@@ -377,7 +382,7 @@ Polymer({
    * Event: deselect all {@link module:sources/photo_source} objects tapped
    * @private
    */
-  _deselectAllTapped: function() {
+  _onDeselectAllTapped: function() {
     this._setPhotoSourcesChecked(false);
   },
 
@@ -385,30 +390,85 @@ Polymer({
    * Event: restore default settings tapped
    * @private
    */
-  _restoreDefaultsTapped: function() {
+  _onRestoreDefaultsTapped: function() {
     ChromeMsg.send(ChromeMsg.RESTORE_DEFAULTS).catch(() => {});
   },
 
   /**
-   * Event: Process the background permission
+   * Event: Process the background 
    * @private
    */
-  _chromeBackgroundTapped() {
+  _onChromeBackgroundTapped: function() {
+    const METHOD = 'SettingsPage._onShowWeatherTapped';
+    const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
     // this used to not be updated yet in Polymer 1
     const isSet = ChromeStorage.getBool('allowBackground');
     const perm = Permissions.BACKGROUND;
     const isAllowed = Permissions.isAllowed(perm);
-    const errTitle = ChromeLocale.localize('err_optional_permissions');
     if (isSet && !isAllowed) {
       Permissions.request(perm).catch((err) => {
-        ChromeLog.error(err.message,
-            'settings-page._chromeBackgroundTapped', errTitle);
+        ChromeLog.error(err.message, METHOD, ERR_TITLE);
       });
     } else if (!isSet && isAllowed) {
-      Permissions.remove(perm).catch((err) => {
-        ChromeLog.error(err.message,
-            'settings-page._chromeBackgroundTapped', errTitle);
-      });
+      Permissions.remove(perm).catch(() => {});
+    }
+  },
+
+  /**
+   * Event: Process the weather permission
+   * @private
+   */
+  _onShowWeatherTapped: async function() {
+    const METHOD = 'SettingsPage._onShowWeatherTapped';
+    const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
+    const ERR_TEXT = ChromeLocale.localize('err_weather_perm');
+    // this used to not be updated yet in Polymer 1
+    const isShow = ChromeStorage.getBool('showCurrentWeather', false);
+    
+    try {
+      if (isShow) {
+        // see if we have geolocation permission
+        const permGeo = await navigator.permissions.query(
+            {name: 'geolocation'});
+
+        if (permGeo.state === 'denied') {
+          // user has denied it
+          throw new Error(ChromeLocale.localize('err_geolocation_perm'));
+        } else if (permGeo.state === 'prompt') {
+            // try to get location so we will get prompt
+            await Weather.getLocation();
+        } else {
+          // already have geolocation permission
+          // update the weather
+          await Weather.update();
+        }
+
+        // have geolocation permission, now get weather permission
+
+        // try to get weather permission
+        const granted = await Permissions.request(Permissions.WEATHER);
+
+        if (!granted) {
+           throw new Error(ERR_TEXT);
+        } else {
+          // update the weather
+          await Weather.update();
+        }
+      } else {
+        // remove weather permission
+        await Permissions.remove(Permissions.WEATHER);
+        // revoke geolocation permission - not implemented in Chrome
+        // await navigator.permissions.revoke({name: 'geolocation'});
+      }
+    } catch (err) {
+      // something weird happened
+      // set to false
+      const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+      msg.key = 'showCurrentWeather';
+      msg.value = false;
+      ChromeMsg.send(msg).catch(() => {});
+      await Permissions.remove(Permissions.WEATHER);
+      showErrorDialog(ERR_TITLE, err.message, METHOD);
     }
   },
 

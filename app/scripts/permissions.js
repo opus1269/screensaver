@@ -8,19 +8,18 @@ import * as ChromeAuth
   from '../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON
   from '../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLog
+  from '../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
   from '../scripts/chrome-extension-utils/scripts/storage.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-// noinspection JSUnresolvedFunction
 /**
  * Handle optional permissions
  *  @module permissions
  */
-
-const chromep = new ChromePromise();
 
 /**
  * A permission state enum
@@ -37,6 +36,10 @@ const chromep = new ChromePromise();
  * @property {string[]} permissions - array of permissions
  * @property {string[]} origins - array of origins
  */
+
+// noinspection JSUnresolvedFunction
+/** */
+const chromep = new ChromePromise();
 
 /**
  * Possible states of an {@link module:permissions.Type}
@@ -59,6 +62,18 @@ export const PICASA = {
   name: 'permPicasa',
   permissions: [],
   origins: ['https://photoslibrary.googleapis.com/'],
+};
+
+/**
+ * Permission for weather
+ * geolocation can't be optional permission, so need to use permissions API
+ * @const
+ * @type {module:permissions.Type}
+ */
+export const WEATHER = {
+  name: 'permWeather',
+  permissions: [],
+  origins: ['https://api.openweathermap.org/'],
 };
 
 /**
@@ -102,25 +117,33 @@ export function isDenied(type) {
 /**
  * Request optional permission - may block
  * @param {module:permissions.Type} type - permission type
+ * @throws An error if request failed
  * @returns {Promise<boolean>} true if permission granted
  */
 export async function request(type) {
-  const granted = await chromep.permissions.request({
-    permissions: type.permissions,
-    origins: type.origins,
-  });
+  let granted = false;
+  try {
+    granted = await chromep.permissions.request({
+      permissions: type.permissions,
+      origins: type.origins,
+    });
 
-  if (granted) {
-    _setState(type, _STATE.allowed);
-  } else {
-    _setState(type, _STATE.denied);
-    try {
-      // try to remove if it has been previously granted
-      await remove(type);
-    } catch (err) {
-      // not critical
+    if (granted) {
+      _setState(type, _STATE.allowed);
+    } else {
+      _setState(type, _STATE.denied);
+      try {
+        // try to remove if it has been previously granted
+        await remove(type);
+      } catch (err) {
+        // not critical
+      }
     }
+  } catch (err) {
+    ChromeLog.error(err.message, 'Permission.request');
+    throw err;
   }
+
   return Promise.resolve(granted);
 }
 

@@ -8,10 +8,13 @@ import * as SSController from '../scripts/ss_controller.js';
 
 import * as ChromeHttp from '../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale
+  from '../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage
   from '../scripts/chrome-extension-utils/scripts/storage.js';
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import ChromeTime from '../scripts/chrome-extension-utils/scripts/time.js';
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage weather information
@@ -57,7 +60,7 @@ export const DEF_WEATHER = {
  * @const
  * @private
  */
-export const CALL_TIME = ChromeTime.MSEC_IN_HOUR;
+const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 
 /**
  * Default geolocation options
@@ -101,6 +104,8 @@ const _URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
  * @returns {Promise<void>}
  */
 export function update() {
+  const METHOD = 'Weather.update';
+  const ERR_TITLE = ChromeLocale.localize('err_weather_update');
   const showWeather = ChromeStorage.get('showCurrentWeather', false);
   const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
   if (!showWeather || !SSController.isActive()) {
@@ -111,12 +116,12 @@ export function update() {
   const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
   const lastTime = curWeather.time;
   const time = Date.now();
-  if ((time - lastTime) < CALL_TIME) {
+  if ((time - lastTime) < MIN_CALL_FREQ) {
     // don't update faster than this
     return Promise.resolve();
   }
 
-  return _getLocation().then((location) => {
+  return getLocation().then((location) => {
     location = location || _DEF_LOC;
     ChromeStorage.set('location', location);
 
@@ -126,11 +131,11 @@ export function update() {
     url += `?lat=${location.lat}&lon=${location.lon}&APPID=${_KEY}`;
     return ChromeHttp.doGet(url, conf);
   }).then((response) => {
-    /** @type {{name, main, cod}} */
     response = response || {};
 
     if (response.cod !== 200) {
-      console.log('bad weather response');
+      const msg = `${ChromeLocale.localize('err_status')}: ${response.cod}`;
+      ChromeLog.error(msg, METHOD, ERR_TITLE);
       return Promise.resolve();
     }
 
@@ -163,11 +168,14 @@ export function update() {
     ChromeStorage.set('currentWeather', curWeather);
     return Promise.resolve();
   }).catch((err) => {
-    console.log(err);
+    ChromeLog.error(err.message, METHOD, ERR_TITLE);
     return Promise.resolve();
   });
 }
 
+/**
+ * Update the display units
+ */
 export function updateUnits() {
   const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
   const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
@@ -180,30 +188,29 @@ export function updateUnits() {
 }
 
 /**
- * Get the current geo location
+ * Get the current geo location. Will prompt if needed
  * @param {{}} options
  * @returns {Promise<module:weather.Location>}
- * @private
  */
-function _getLocation(options = _DEF_LOC_OPTIONS) {
-  if (navigator.geolocation) {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, options);
-    }).then((position) => {
-      const ret = {
-        lat: position.coords.latitude,
-        lon: position.coords.longitude,
-      };
-      ChromeStorage.set('location', ret);
-      return Promise.resolve(ret);
-    }).catch(() => {
-      // get last saved
+export function getLocation(options = _DEF_LOC_OPTIONS) {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  }).then((position) => {
+    const ret = {
+      lat: position.coords.latitude,
+      lon: position.coords.longitude,
+    };
+    ChromeStorage.set('location', ret);
+    return Promise.resolve(ret);
+  }).catch((err) => {
+    if (err.code !== 1) {
+      // get last saved, unless permission has been denied
       const ret = ChromeStorage.get('location', {lat: 0, lon: 0});
       return Promise.resolve(ret);
-    });
-  } else {
-    return Promise.reject(new Error('Function not supported'));
-  }
+    } else {
+      throw new Error(ChromeLocale.localize('err_geolocation_perm'));
+    }
+  });
 }
 
 /**
