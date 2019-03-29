@@ -9,6 +9,7 @@ import '../../scripts/background/context_menus.js';
 import '../../scripts/background/user.js';
 
 import * as AppData from './data.js';
+import * as Alarm from './alarm.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -152,12 +153,19 @@ function _onChromeMessage(request, sender, response) {
     });
   } else if (request.message === MyMsg.LOAD_ALBUMS.message) {
     ret = true;
-    GoogleSource.loadAlbums(true, true).
-        then((albums) => {
+    GoogleSource.loadAlbums(true, true).then((albums) => {
       response(albums);
       return null;
     }).catch((err) => {
       response({message: err.message});
+    });
+  } else if (request.message === MyMsg.UPDATE_WEATHER_ALARM.message) {
+    ret = true;
+    Alarm.updateWeatherAlarm().then(() => {
+      response({message: 'OK'});
+      return null;
+    }).catch((err) => {
+      response({errorMessage: err.message});
     });
   }
   return ret;

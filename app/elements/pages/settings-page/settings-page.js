@@ -38,6 +38,7 @@ import '../../../elements/shared-styles.js';
 
 import {showErrorDialog} from '../../../elements/app-main/app-main.js';
 
+import * as MyMsg from '../../../scripts/my_msg.js';
 import * as MyUtils from '../../../scripts/my_utils.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
@@ -431,6 +432,8 @@ Polymer({
 
     try {
       if (isShow) {
+        // show weather
+        
         // see if we have geolocation permission
         const permGeo = await navigator.permissions.query(
             {name: 'geolocation'});
@@ -445,10 +448,6 @@ Polymer({
           // give it a long time to timeout
           options.timeout = 60000;
           await Weather.getLocation(options);
-        } else {
-          // already have geolocation permission
-          // update the weather
-          await Weather.update();
         }
 
         // have geolocation permission, now get weather permission
@@ -464,19 +463,43 @@ Polymer({
           await Weather.update();
         }
       } else {
+        // not showing weather
+        
+        // reset current weather to default
+        ChromeStorage.set('currentWeather', Weather.DEF_WEATHER);
         // remove weather permission
         await Permissions.remove(Permissions.WEATHER);
         // revoke geolocation permission - not implemented in Chrome
         // await navigator.permissions.revoke({name: 'geolocation'});
       }
-    } catch (err) {
-      // something weird happened
-      // set to false
-      const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+      
+      // now update the alarm
+      const msg = ChromeJSON.shallowCopy(MyMsg.UPDATE_WEATHER_ALARM);
       msg.key = 'showCurrentWeather';
       msg.value = false;
-      ChromeMsg.send(msg).catch(() => {});
+      const response = await ChromeMsg.send(msg);
+      if (response.errorMessage) {
+        // noinspection ExceptionCaughtLocallyJS
+        throw new Error(response.errorMessage);
+      }
+
+    } catch (err) {
+      // something weird happened
+      
+      // set to false
+      let msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+      msg.key = 'showCurrentWeather';
+      msg.value = false;
+      await ChromeMsg.send(msg);
+
+      // update the alarm
+      msg = ChromeJSON.shallowCopy(MyMsg.UPDATE_WEATHER_ALARM);
+      msg.key = 'showCurrentWeather';
+      msg.value = false;
+      await ChromeMsg.send(msg);
+
       await Permissions.remove(Permissions.WEATHER);
+      
       showErrorDialog(ERR_TITLE, err.message, METHOD);
     }
   },

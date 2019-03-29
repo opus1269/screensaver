@@ -47,7 +47,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 export const DEF_WEATHER = {
   time: 0,
   tempValue: 0.0,
-  temp: '0',
+  temp: '',
   description: '',
   iconUrl: '',
   city: '',

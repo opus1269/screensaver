@@ -28,6 +28,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * the contents of a google photos album
  * @property {module:chrome/msg.Message} ALBUM_PHOTOS_COUNT - number of photos
  * loaded so far
+ * @property {module:chrome/msg.Message} UPDATE_WEATHER_ALARM
  * @const
  */
 const _MSG = {
@@ -62,6 +63,9 @@ const _MSG = {
     message: 'albumCount',
     count: 0,
   },
+  UPDATE_WEATHER_ALARM: {
+    message: 'updateWeatherAlarm',
+  },
 };
 
 export const SS_SHOW = _MSG.SS_SHOW;
@@ -73,3 +77,4 @@ export const FILTERED_PHOTOS_COUNT = _MSG.FILTERED_PHOTOS_COUNT;
 export const LOAD_ALBUMS = _MSG.LOAD_ALBUMS;
 export const LOAD_ALBUM = _MSG.LOAD_ALBUM;
 export const ALBUM_COUNT = _MSG.ALBUM_COUNT;
+export const UPDATE_WEATHER_ALARM = _MSG.UPDATE_WEATHER_ALARM;

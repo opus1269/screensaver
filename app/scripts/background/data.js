@@ -396,9 +396,6 @@ export async function processState(key = 'all') {
         case 'allowSuspend':
           _processKeepAwake();
           break;
-        case 'showCurrentWeather':
-          await Alarm.updateWeatherAlarm();
-          break;
         case 'weatherTempUnit':
           await Weather.updateUnits();
           break;
