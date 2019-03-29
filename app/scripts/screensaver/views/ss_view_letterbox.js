@@ -46,6 +46,7 @@ class SSViewLetterbox extends SSView {
     const ar = this.photo.getAspectRatio();
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;
+    const weatherStyle = this.weather.style;
     const timeStyle = this.time.style;
 
     // percent of the screen width of image
@@ -59,13 +60,20 @@ class SSViewLetterbox extends SSView {
 
     authorStyle.textAlign = 'right';
     locationStyle.textAlign = 'left';
+    weatherStyle.textAlign = 'left';
 
     authorStyle.right = (right + 1) + 'vw';
     authorStyle.bottom = (bottom + 1) + 'vh';
     authorStyle.width = imgWidthPer - .5 + 'vw';
+    
     locationStyle.left = (right + 1) + 'vw';
     locationStyle.bottom = (bottom + 1) + 'vh';
     locationStyle.width = imgWidthPer - .5 + 'vw';
+    
+    weatherStyle.left = (right + 1) + 'vw';
+    weatherStyle.bottom = (bottom + 1) + 'vh';
+    weatherStyle.width = imgWidthPer - .5 + 'vw';
+    
     timeStyle.right = (right + 1) + 'vw';
     timeStyle.bottom = (bottom + 3.5) + 'vh';
 

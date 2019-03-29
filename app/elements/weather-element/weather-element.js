@@ -9,7 +9,6 @@ import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn
 import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
 import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '../../node_modules/@polymer/iron-image/iron-image.js';
 
 import '../../node_modules/@polymer/paper-styles/typography.js';
 import '../../node_modules/@polymer/paper-styles/color.js';
@@ -47,6 +46,10 @@ const WeatherElement = Polymer({
     padding: 0;
   }
 
+  :host .image {
+    height: 4vh;
+  }
+
   :host .description {
     font-size: 2vh;
     font-weight: 200;
@@ -66,11 +69,11 @@ const WeatherElement = Polymer({
 
 <div class="weather vertical layout" hidden$="[[!show]]">
   <div class="horizontal layout center">
-    <iron-image
-        class="image flex"
-        src="[[weather.iconUrl]]"
-        preload>
-    </iron-image>
+    <!--suppress HtmlUnknownTarget -->
+<!--suppress HtmlRequiredAltAttribute -->
+<img
+        class="image"
+        src="[[weather.iconUrl]]">
     <paper-item class="description">[[weather.description]]</paper-item>
   </div>
   <paper-item class="temp">[[weather.temp]]</paper-item>

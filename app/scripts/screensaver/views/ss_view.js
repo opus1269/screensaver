@@ -37,6 +37,7 @@ const _SCREEN_AR = screen.width / screen.height;
  * @property {Element} author - label
  * @property {Element} time - label
  * @property {Element} location - Geo location
+ * @property {Element} weather - current weather
  * @property {Object} model - template item model
  * @property {string} url - photo url, binding
  * @property {string} authorLabel - author text, binding
@@ -55,6 +56,7 @@ class SSView {
     this.author = null;
     this.time = null;
     this.location = null;
+    this.weather = null;
     this.model = null;
     this.url = photo.getUrl();
     this.authorLabel = '';
@@ -250,13 +252,15 @@ class SSView {
    * @param {Element} author - div, photographer
    * @param {Element} time - div, current time
    * @param {Element} location - div, geolocation text
+   * @param {Element} weather - weather-element weather
    * @param {Object} model - template item model
    */
-  setElements(image, author, time, location, model) {
+  setElements(image, author, time, location, weather, model) {
     this.image = image;
     this.author = author;
     this.time = time;
     this.location = location;
+    this.weather = weather;
     this.model = model;
 
     this._setTimeStyle();

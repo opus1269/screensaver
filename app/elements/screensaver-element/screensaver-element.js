@@ -54,7 +54,9 @@ import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as SSTime from '../../scripts/screensaver/ss_time.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
+
 import GoogleSource from '../../scripts/sources/photo_source_google.js';
+import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -336,6 +338,9 @@ const Screensaver = Polymer({
       
       this._setZoom();
       this._setupPhotoTransitions();
+      
+      // TODO await on this
+      Weather.update().catch(() => {});
 
       // start screensaver
       this._launch();

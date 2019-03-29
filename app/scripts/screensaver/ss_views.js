@@ -126,8 +126,9 @@ export function create(t) {
     const author = el.querySelector('.author');
     const time = el.querySelector('.time');
     const location = el.querySelector('.location');
+    const weather = el.querySelector('.weather');
     const model = t.$.repeatTemplate.modelForElement(el);
-    view.setElements(image, author, time, location, model);
+    view.setElements(image, author, time, location, weather, model);
   });
 }
 

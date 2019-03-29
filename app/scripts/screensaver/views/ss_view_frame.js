@@ -79,6 +79,7 @@ class SSViewFrame extends SSView {
 
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;
+    const weatherStyle = this.weather.style;
     const timeStyle = this.time.style;
     const image = this.image;
     const imageStyle = image.style;
@@ -130,6 +131,10 @@ class SSViewFrame extends SSView {
     timeStyle.right = sidePer + 1.0 + 'vw';
     timeStyle.textAlign = 'right';
     timeStyle.bottom = topPer + 5.0 + 'vh';
+
+    weatherStyle.left = sidePer + 1.0 + 'vw';
+    weatherStyle.textAlign = 'left';
+    weatherStyle.bottom = topPer + 5.0 + 'vh';
 
     // percent of half the width of image
     let maxWidth = imgWidthPer / 2;
