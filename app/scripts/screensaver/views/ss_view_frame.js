@@ -134,7 +134,7 @@ class SSViewFrame extends SSView {
 
     weatherStyle.left = sidePer + 1.0 + 'vw';
     weatherStyle.textAlign = 'left';
-    weatherStyle.bottom = topPer + 5.0 + 'vh';
+    weatherStyle.bottom = topPer + 6.5 + 'vh';
 
     // percent of half the width of image
     let maxWidth = imgWidthPer / 2;
