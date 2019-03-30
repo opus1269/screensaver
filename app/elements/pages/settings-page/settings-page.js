@@ -460,7 +460,7 @@ Polymer({
           throw new Error(ERR_TEXT);
         } else {
           // update the weather
-          await Weather.update();
+          await Weather.update(true);
         }
       } else {
         // not showing weather

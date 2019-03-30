@@ -4,13 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as SSController from '../scripts/ss_controller.js';
+import * as MyMsg from '../scripts/my_msg.js';
 
 import * as ChromeHttp from '../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeLocale
   from '../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
   from '../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../scripts/chrome-extension-utils/scripts/time.js';
@@ -101,26 +102,47 @@ const _URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
 
 /**
  * Update the weather
+ * @param {boolean} force - if true, force update
  * @returns {Promise<void>}
  */
-export async function update() {
+export async function update(force) {
   const METHOD = 'Weather.update';
   const ERR_TITLE = ChromeLocale.localize('err_weather_update');
+
   const showWeather = ChromeStorage.get('showCurrentWeather', false);
   const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
-  if (!showWeather || !SSController.isActive()) {
-    // don't update if not showing or screensaver is not active
-    return Promise.resolve();
+
+  if (!force) {
+    // don't ignore screensaver state
+    
+    // is the screensaver running
+    let response = null;
+    try {
+      response = await ChromeMsg.send(MyMsg.SS_IS_SHOWING);
+    } catch (err) {
+      // ignore
+    }
+
+    if ((!showWeather || !response)) {
+      // don't update if user hasn't selected weather of if the screensaver is
+      // not showing
+      console.log('screensaver not showing');
+      return Promise.resolve();
+    }
   }
 
+  console.log('wants update');
+  
   const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
   const lastTime = curWeather.time;
   const time = Date.now();
   if ((time - lastTime) < MIN_CALL_FREQ) {
     // don't update faster than this
+    console.log('too soon');
+
     return Promise.resolve();
   }
-
+  
   // first, try to update location
   let location;
   try {
@@ -175,6 +197,8 @@ export async function update() {
     }
 
     ChromeStorage.set('currentWeather', curWeather);
+
+    console.log('updated');
 
     return Promise.resolve();
   } catch (err) {

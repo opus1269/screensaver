@@ -4,20 +4,21 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as MyMsg from './my_msg.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeLocale
-  from './chrome-extension-utils/scripts/locales.js';
+  from '../chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
-  from './chrome-extension-utils/scripts/log.js';
+  from '../chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
-  from './chrome-extension-utils/scripts/msg.js';
+  from '../chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
-  from './chrome-extension-utils/scripts/storage.js';
-import ChromeTime from './chrome-extension-utils/scripts/time.js';
+  from '../chrome-extension-utils/scripts/storage.js';
+import ChromeTime from '../chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
-  from './chrome-extension-utils/scripts/utils.js';
-import './chrome-extension-utils/scripts/ex_handler.js';
+  from '../chrome-extension-utils/scripts/utils.js';
+import '../chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Controller for the screen saver
@@ -64,11 +65,27 @@ export function isActive() {
  * @param {boolean} single - if true, only show on one display
  */
 export function display(single) {
-  if (!single && ChromeStorage.getBool('allDisplays')) {
-    _openOnAllDisplays();
-  } else {
-    _open(null);
-  }
+  let started = false;
+  
+  // try to update weather
+  Weather.update(true).then(() => {
+    if (!single && ChromeStorage.getBool('allDisplays')) {
+      _openOnAllDisplays();
+    } else {
+      _open(null);
+    }
+    started = true;
+    return null;
+  }).catch(() => {
+    // start anyway
+    if (!started) {
+      if (!single && ChromeStorage.getBool('allDisplays')) {
+        _openOnAllDisplays();
+      } else {
+        _open(null);
+      }
+    }
+  });
 }
 
 /**

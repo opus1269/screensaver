@@ -5,8 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as AppData from './data.js';
-
-import * as SSController from '../../scripts/ss_controller.js';
+import * as SSController from './ss_controller.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
