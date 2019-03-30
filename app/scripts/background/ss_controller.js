@@ -5,7 +5,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import * as MyMsg from '../../scripts/my_msg.js';
-import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeLocale
   from '../chrome-extension-utils/scripts/locales.js';
@@ -65,27 +64,11 @@ export function isActive() {
  * @param {boolean} single - if true, only show on one display
  */
 export function display(single) {
-  let started = false;
-  
-  // try to update weather
-  Weather.update(true).then(() => {
-    if (!single && ChromeStorage.getBool('allDisplays')) {
-      _openOnAllDisplays();
-    } else {
-      _open(null);
-    }
-    started = true;
-    return null;
-  }).catch(() => {
-    // start anyway
-    if (!started) {
-      if (!single && ChromeStorage.getBool('allDisplays')) {
-        _openOnAllDisplays();
-      } else {
-        _open(null);
-      }
-    }
-  });
+  if (!single && ChromeStorage.getBool('allDisplays', false)) {
+    _openOnAllDisplays();
+  } else {
+    _open(null);
+  }
 }
 
 /**
@@ -206,10 +189,10 @@ function _openOnAllDisplays() {
 
 /**
  * Event: Fired when the system changes to an active, idle or locked state.
- * The event fires with "locked" if the screen is locked or the [built in] screensaver
- * activates, "idle" if the system is unlocked and the user has not
- * generated any input for a specified number of seconds, and "active"
- * when the user generates input on an idle system.
+ * The event fires with "locked" if the screen is locked or the [built in]
+ * screensaver activates, "idle" if the system is unlocked and the user has not
+ * generated any input for a specified number of seconds, and "active" when the
+ * user generates input on an idle system.
  * @see https://developer.chrome.com/extensions/idle#event-onStateChanged
  * @param {string} state - current state of computer
  * @private
@@ -229,7 +212,8 @@ function _onIdleStateChanged(state) {
         if (!isTrue) {
           // Windows 10 Creators triggers an 'active' state
           // when the window is created, so we have to skip closing here.
-          // Wouldn't need this at all if ChromeOS handled keyboard (or focus?) right
+          // Wouldn't need this at all if ChromeOS handled keyboard (or focus?)
+          // right
           close();
         }
         return null;
