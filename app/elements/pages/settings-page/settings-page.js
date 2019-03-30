@@ -174,13 +174,13 @@ Polymer({
                         disabled$="[[!enabled]]" on-tap="_onShowWeatherTapped"></setting-toggle>
         <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]" items="[[_computeTempUnitMenu()]]"
                           value="[[weatherTempUnitValue]]" disabled$="[[!enabled]]" indent=""></setting-dropdown>
-        <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
-                        disabled$="[[!enabled]]"></setting-toggle>
         <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[_computeTimeFormatMenu()]]"
                           value="[[showTimeValue]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
                         disabled$="[[_computeLargeTimeDisabled(enabled, showTimeValue)]]">
         </setting-toggle>
+        <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
         <setting-background name="background" main-label="[[localize('setting_bg')]]"
                             secondary-label="[[localize('setting_bg_desc')]]" noseparator=""
                             disabled$="[[!enabled]]"></setting-background>
