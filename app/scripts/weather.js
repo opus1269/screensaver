@@ -32,11 +32,11 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * Current weather conditions
  * @typedef {{}} module:weather.CurrentWeather
  * @property {int} time - call time
+ * @property {int} id - weather id
  * @property {number} tempValue - temperature value in K
  * @property {string} temp - temperature string
  * @property {string} city - city name
  * @property {string} description - weather description
- * @property {string} iconUrl - iconUrl
  */
 
 /**
@@ -46,10 +46,10 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 export const DEF_WEATHER = {
   time: 0,
+  id: 0,
   tempValue: 0.0,
   temp: '',
   description: '',
-  iconUrl: '',
   city: '',
 };
 
@@ -170,9 +170,8 @@ export async function update() {
     if (weather[0].description) {
       curWeather.description = weather[0].description;
     }
-    if (weather[0].icon) {
-      curWeather.iconUrl =
-          'http://openweathermap.org/img/w/' + weather[0].icon + '.png';
+    if (weather[0].id) {
+      curWeather.id = weather[0].id;
     }
 
     ChromeStorage.set('currentWeather', curWeather);

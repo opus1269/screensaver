@@ -33,16 +33,14 @@ import * as Weather from '../../scripts/weather.js';
  */
 const WeatherElement = Polymer({
   // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
+  _template: html`<link rel="stylesheet" href="../../css/weather-icons.min.css">
+
+<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
 <style>
   :host {
     display: block;
     position: relative;
-  }
-
-  :host .image {
-    height: 6vh;
   }
 
   :host .temp {
@@ -51,13 +49,21 @@ const WeatherElement = Polymer({
     margin: 0;
     padding: 0 0 0 16px;
   }
+  
+  :host .icon {
+    font-size: 5.25vh;
+    font-weight: 200;
+    margin: 0;
+    padding: 0;
+  }
 
 </style>
 
 <div class="horizontal layout center" hidden$="[[!show]]">
   <!--suppress HtmlUnknownTarget -->
   <!--suppress HtmlRequiredAltAttribute -->
-  <img class="image" src="[[weather.iconUrl]]">
+  <!--<img class="image" src="[[weather.iconUrl]]">-->
+  <i id="weatherIcon" class="icon wi"></i>
   <paper-item class="temp">[[weather.temp]]</paper-item>
 </div>
 
@@ -83,9 +89,36 @@ const WeatherElement = Polymer({
     weather: {
       type: Object,
       value: Weather.DEF_WEATHER,
-      notify: true,
+      observer: '_weatherChanged',
     },
 
+  },
+
+  /**
+   * Observer: Current weather changed
+   * @param {?module:weather.CurrentWeather} newValue
+   * @param {?module:weather.CurrentWeather} oldValue
+   * @private
+   */
+  _weatherChanged: function(newValue, oldValue) {
+    const PREFIX = 'wi-owm-';
+    let oldClass;
+    let newClass;
+
+    if (oldValue !== undefined) {
+      oldClass = PREFIX + oldValue.id;
+    }
+
+    if (newValue !== undefined) {
+      newClass = PREFIX + newValue.id;
+      if (oldClass) {
+        // noinspection JSUnresolvedVariable
+        this.$.weatherIcon.classList.replace(oldClass, newClass);
+      } else {
+        // noinspection JSUnresolvedVariable
+        this.$.weatherIcon.classList.add(newClass);
+      }
+    }
   },
 
 });
