@@ -49,6 +49,8 @@ import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
 import '../../elements/confirm-dialog/confirm-dialog.js';
 
+import '../../elements/shared-styles.js';
+
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
@@ -211,52 +213,11 @@ let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomProperty -->
-<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+<style include="shared-styles iron-flex iron-flex-alignment">
 
   :host {
     display: block;
     position: relative;
-  }
-
-  /* General styles */
-
-  paper-listbox iron-icon {
-    margin-right: 20px;
-    opacity: 0.54;
-  }
-
-  paper-listbox paper-item {
-    --paper-item: {
-      color: var(--menu-link-color);
-      text-rendering: optimizeLegibility;
-      cursor: pointer;
-    };
-    --paper-item-selected: {
-      color: var(--dark-primary-color);
-      background-color: var(--selected-color);
-      text-rendering: optimizeLegibility;
-      cursor: pointer;
-    };
-    --paper-item-focused-before: {
-      background-color: transparent;
-    };
-  }
-
-  app-drawer-layout:not([narrow]) [drawer-toggle] {
-    display: none;
-  }
-
-  app-drawer {
-    --app-drawer-content-container: {
-      border-right: var(--drawer-toolbar-border-color);
-    }
-  }
-
-  paper-dialog {
-    min-width: 25vw;
-    max-width: 50vw;
   }
 
   .main-toolbar {
