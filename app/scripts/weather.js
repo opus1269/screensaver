@@ -203,17 +203,16 @@ export function updateUnits() {
  * @throws An error if we failed to get location
  * @returns {Promise<module:weather.Location>}
  */
-export function getLocation(options = DEF_LOC_OPTIONS) {
-  return new Promise((resolve, reject) => {
+export async function getLocation(options = DEF_LOC_OPTIONS) {
+  let position = await new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  }).then((position) => {
-    const ret = {
-      lat: position.coords.latitude,
-      lon: position.coords.longitude,
-    };
-    ChromeStorage.set('location', ret);
-    return Promise.resolve(ret);
   });
+  const ret = {
+    lat: position.coords.latitude,
+    lon: position.coords.longitude,
+  };
+  ChromeStorage.set('location', ret);
+  return Promise.resolve(ret);
 }
 
 /**
