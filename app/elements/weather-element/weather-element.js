@@ -49,16 +49,16 @@ const WeatherElement = Polymer({
     font-size: 5.25vh;
     font-weight: 200;
     margin: 0;
-    padding: 0 24px 0 0;
+    padding: 0 0 0 16px;
   }
 
 </style>
 
 <div class="horizontal layout center" hidden$="[[!show]]">
-  <paper-item class="temp">[[weather.temp]]</paper-item>
   <!--suppress HtmlUnknownTarget -->
   <!--suppress HtmlRequiredAltAttribute -->
   <img class="image" src="[[weather.iconUrl]]">
+  <paper-item class="temp">[[weather.temp]]</paper-item>
 </div>
 
 <app-localstorage-document key="currentWeather" data="{{weather}}" storage="window.localStorage">

@@ -71,7 +71,7 @@ class SSViewLetterbox extends SSView {
     locationStyle.width = imgWidthPer - .5 + 'vw';
     
     weatherStyle.left = (right + 1) + 'vw';
-    weatherStyle.bottom = (bottom + 1) + 'vh';
+    weatherStyle.bottom = (bottom + 3.5) + 'vh';
     weatherStyle.width = imgWidthPer - .5 + 'vw';
     
     timeStyle.right = (right + 1) + 'vw';

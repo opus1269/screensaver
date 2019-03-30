@@ -158,6 +158,8 @@ const Screensaver = Polymer({
   }
 
   .weather {
+    font-size: 5.25vh;
+    font-weight: 200;
     position: fixed;
     left: 1vw;
     bottom: 3.5vh;
