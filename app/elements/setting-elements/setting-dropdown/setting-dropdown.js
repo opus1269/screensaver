@@ -46,6 +46,11 @@ const SettingDropdown = Polymer({
     pointer-events: none;
   }
 
+
+  :host([indent]) .setting-label {
+    padding-left: 8px;
+  }
+  
   :host > paper-item {
     padding-top: 10px;
     padding-bottom: 10px;
