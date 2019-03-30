@@ -8,6 +8,8 @@
 
 #### [Keep Awake questions](#keep-awake)
 
+#### [Weather questions](#weather)
+
 #### [Features questions](#features)
 
   ***
@@ -173,6 +175,14 @@
   The Keep Awake features are requests to the computer and do not have to be honored.
   The display request is almost always honored, but the system request isn't. In
   particular, many PC's will put the computer to sleep if you have them set to do this.
+
+### Weather
+
+* **I am getting the error "You have not allowed location sharing". How do I fix that?**
+
+  There is a bug in Chrome that prevents re-displaying the dialog that
+  prompts you to allow location sharing if you closed it by clicking on the
+  "X". [See here](../help/settings.html#location_bug) for instructions on how to fix it.
 
 ### Features
 

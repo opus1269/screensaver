@@ -9,31 +9,31 @@ The album contents are updated daily by the extension.
 Shared albums that were created by others will not be available.
 Videos are not supported and are filtered out of the album.
 
-![alt text](./assets/google_photos_albums.png)
+> ![alt text](./assets/google_photos_albums.png)
 
 Toolbar Icons:
 
-![alt text](./assets/baseline_photo_album_black_18dp.png)
+> ![alt text](./assets/baseline_photo_album_black_18dp.png)
 Switch to photo selection mode. You will be prompted to confirm the switch,
 since you will lose your current album selections.
 
-![alt text](./assets/baseline_check_box_black_18dp.png)
+> ![alt text](./assets/baseline_check_box_black_18dp.png)
 Select the maximum number of albums. The current limit is 100. This will 
 load the photos for each album up to a maximum of 2,000. This can be a lengthy operation.
 There is also a maximum total number of photos that you can select. The current value
 for this is 20,000.
 
-![alt text](./assets/baseline_check_box_outline_blank_black_18dp.png)
+> ![alt text](./assets/baseline_check_box_outline_blank_black_18dp.png)
 Deselect all the currently selected albums
 
-![alt text](./assets/baseline_refresh_black_18dp.png)
+> ![alt text](./assets/baseline_refresh_black_18dp.png)
 Refresh the list of albums from your Google Photos account. This will not reload
 the photos for selected albums.
 
-![alt text](./assets/baseline_help_black_18dp.png)
+> ![alt text](./assets/baseline_help_black_18dp.png)
 Display this page.
 
-![alt text](./assets/icons8-toggle-on-filled-50.png)
+> ![alt text](./assets/icons8-toggle-on-filled-50.png)
 If the toggle is off, the screensaver will not use your Google Photos and
 will not update them daily, but your album selections will remain.
 If you toggle it on, the screensaver will use the photos
@@ -66,21 +66,21 @@ Videos are not supported and are filtered out.
 If you want more control over which photos are used, you should create
 one or more albums in Google Photos and select them in the extension.
 
-![alt text](./assets/google_photos_photos.png)
+> ![alt text](./assets/google_photos_photos.png)
 
 Toolbar Icons:
 
-![alt text](./assets/baseline_insert_photo_black_18dp.png)
+> ![alt text](./assets/baseline_insert_photo_black_18dp.png)
 Switch to album selection mode. You will be prompted to confirm the switch,
 since you will lose your current photo selections.
 
-![alt text](./assets/baseline_refresh_black_18dp.png)
+> ![alt text](./assets/baseline_refresh_black_18dp.png)
 Refresh the photo selections from Google Photos. This can be a lengthy operation.
 
-![alt text](./assets/baseline_help_black_18dp.png)
+> ![alt text](./assets/baseline_help_black_18dp.png)
 Display this page.
 
-![alt text](./assets/icons8-toggle-on-filled-50.png)
+> ![alt text](./assets/icons8-toggle-on-filled-50.png)
 If the toggle is off, the screensaver will not use your Google Photos and
 will not update them daily, but your photo selections will remain.
 If you toggle it on, the screensaver will use the photos
@@ -89,17 +89,17 @@ This can be a lengthy operation.
 
 Main UI:
 
-![alt text](./assets/google_photos_photos_needs_refresh.png)
+> ![alt text](./assets/google_photos_photos_needs_refresh.png)
 
 If the "NEEDS REFRESH" button is active, the information on the stored photos
 is out of date and need to be refreshed. This can be a lengthy operation.
 
-![alt text](./assets/google_photos_photos_all_photos.png)
+> ![alt text](./assets/google_photos_photos_all_photos.png)
 
 If this is selected, the extension will retrieve all of your most recent
 photos up to the maximum. These are automatically updated once a day.
 
-![alt text](./assets/google_photos_photos_cats.png)
+> ![alt text](./assets/google_photos_photos_cats.png)
 
 If the "All photos" option is not enabled, the extension will retrieve your
 most recent photos that are labeled with one or more of the selected
