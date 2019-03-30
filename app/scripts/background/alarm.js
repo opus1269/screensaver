@@ -7,11 +7,14 @@
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
+import * as MyMsg from '../../scripts/my_msg.js';
 import * as Weather from '../../scripts/weather.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeMsg
+  from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeLog
   from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage
@@ -202,6 +205,28 @@ function _setBadgeText() {
 }
 
 /**
+ * Update the weather
+ * @throws An error if update failed
+ * @returns {Promise<void>}
+ * @private
+ */
+async function _updateWeather() {
+  // is the screensaver running
+  let response = null;
+  try {
+    response = await ChromeMsg.send(MyMsg.SS_IS_SHOWING);
+  } catch (err) {
+    // ignore - means no screensaver around
+  }
+  
+  if (response) {
+    await Weather.update();
+  }
+  
+  return Promise.resolve();
+}
+
+/**
  * Event: Fired when an alarm has elapsed.
  * @see https://developer.chrome.com/apps/alarms#event-onAlarm
  * @param {Object} alarm - details on alarm
@@ -228,7 +253,7 @@ function _onAlarm(alarm) {
       break;
     case _ALARMS.WEATHER:
       // update the weather
-      Weather.update(false).catch(() => {});
+      _updateWeather().catch(() => {});
       break;
     default:
       break;

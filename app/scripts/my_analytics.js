@@ -38,6 +38,7 @@ const _TRACKING_ID = 'UA-61314754-1';
  * @property {ChromeGA.Event} PHOTOS_LIMITED - did not load all photos in album
  * @property {ChromeGA.Event} ALBUMS_LIMITED - limited photo selections
  * @property {ChromeGA.Event} VIEW_PHOTO - view original source of photo
+ * @property {ChromeGA.Event} WEATHER_UPDATED - weather updated from web
  * @const
  */
 export const EVENT = {
@@ -104,6 +105,11 @@ export const EVENT = {
   VIEW_PHOTO: {
     eventCategory: 'ui',
     eventAction: 'viewPhoto',
+    eventLabel: '',
+  },
+  WEATHER_UPDATED: {
+    eventCategory: 'weather',
+    eventAction: 'updatedWeather',
     eventLabel: '',
   },
 };

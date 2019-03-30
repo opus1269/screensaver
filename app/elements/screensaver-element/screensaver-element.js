@@ -38,7 +38,7 @@ import '../../elements/setting-elements/setting-time/setting-time.js';
 import '../../elements/setting-elements/setting-text/setting-text.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
-import '../../scripts/screensaver/ss_events.js';
+import * as Weather from '../../scripts/weather.js';
 import '../../scripts/screensaver/ss_events.js';
 import '../../scripts/screensaver/ss_history.js';
 import '../../scripts/screensaver/ss_photo.js';
@@ -436,7 +436,9 @@ const Screensaver = Polymer({
   _launch: async function(delay = 1000) {
     const hasPhotos = await SSBuilder.build();
     if (hasPhotos) {
-      // kick off the slide show if there are photos selected
+      // update the weather
+      Weather.update().catch(() => {});
+      // kick off the slide show
       SSRunner.start(delay);
     }
   },

@@ -282,13 +282,6 @@ Polymer({
   },
 
   /**
-   * Element is ready
-   */
-  ready: function() {
-    this.set('selectedTab', 0);
-  },
-
-  /**
    * Deselect the given {@link module:sources/photo_source}
    * @param {string} useName - Name of <setting-toggle>
    */
@@ -460,7 +453,7 @@ Polymer({
           throw new Error(ERR_TEXT);
         } else {
           // update the weather
-          await Weather.update(true);
+          await Weather.update();
         }
       } else {
         // not showing weather
@@ -474,10 +467,7 @@ Polymer({
       }
       
       // now update the alarm
-      const msg = ChromeJSON.shallowCopy(MyMsg.UPDATE_WEATHER_ALARM);
-      msg.key = 'showCurrentWeather';
-      msg.value = false;
-      const response = await ChromeMsg.send(msg);
+      const response = await ChromeMsg.send(MyMsg.UPDATE_WEATHER_ALARM);
       if (response.errorMessage) {
         // noinspection ExceptionCaughtLocallyJS
         throw new Error(response.errorMessage);
@@ -488,16 +478,13 @@ Polymer({
       
       try {
         // set to false
-        let msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+        const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
         msg.key = 'showCurrentWeather';
         msg.value = false;
         await ChromeMsg.send(msg);
 
         // update the alarm
-        msg = ChromeJSON.shallowCopy(MyMsg.UPDATE_WEATHER_ALARM);
-        msg.key = 'showCurrentWeather';
-        msg.value = false;
-        await ChromeMsg.send(msg);
+        await ChromeMsg.send(MyMsg.UPDATE_WEATHER_ALARM);
 
         await Permissions.remove(Permissions.WEATHER);
       } catch (err) {
