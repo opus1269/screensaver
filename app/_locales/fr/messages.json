@@ -603,6 +603,28 @@
   "removed_album": {
     "message": "Album supprimé"
   },
+  "setting_weather": {
+    "message": "Afficher la météo actuelle, si disponible"
+  },
+  "setting_weather_desc": {
+    "message": "Vous serez invité à autoriser l'affichage de votre position et l'accès à l'API météo."
+  },
+  "setting_temp_unit": {
+    "message": "Unidad de temperatura"
+  },
+  "err_weather_perm": {
+    "message": "Les informations météorologiques ne seront pas disponibles"
+  },
+  "err_geolocation_perm": {
+    "message": "Vous n'avez pas autorisé le partage de position"
+  },
+  "err_weather_update": {
+    "message": "Impossible de mettre à jour la météo"
+  },
+  "temp_unit": {
+    "message": "C",
+    "description": "Set to F for Fahrenheit C for Celsius"
+  },
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
