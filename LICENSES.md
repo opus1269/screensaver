@@ -7,3 +7,7 @@
 ## Snoocore
 
 ### [License](https://snoocore.readme.io/docs/license)
+
+## Weather Icons
+
+### [License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL)
