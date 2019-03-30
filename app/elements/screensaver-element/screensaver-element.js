@@ -160,7 +160,7 @@ const Screensaver = Polymer({
   .weather {
     position: fixed;
     left: 1vw;
-    bottom: 1vh;
+    bottom: 3.5vh;
     padding: 0;
     margin: 0;
     color: white;

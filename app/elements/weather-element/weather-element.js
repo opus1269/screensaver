@@ -41,43 +41,24 @@ const WeatherElement = Polymer({
     position: relative;
   }
 
-  :host .weather paper-item {
-    margin: 0;
-    padding: 0;
-  }
-
   :host .image {
-    height: 4vh;
-  }
-
-  :host .description {
-    font-size: 2vh;
-    font-weight: 200;
-  }
-
-  :host .city {
-    font-size: 2vh;
-    font-weight: 200;
+    height: 6vh;
   }
 
   :host .temp {
-    font-size: 3.5vh;
+    font-size: 5.25vh;
     font-weight: 200;
+    margin: 0;
+    padding: 0 24px 0 0;
   }
 
 </style>
 
-<div class="weather vertical layout" hidden$="[[!show]]">
-  <div class="horizontal layout center">
-    <!--suppress HtmlUnknownTarget -->
-<!--suppress HtmlRequiredAltAttribute -->
-<img
-        class="image"
-        src="[[weather.iconUrl]]">
-    <paper-item class="description">[[weather.description]]</paper-item>
-  </div>
+<div class="horizontal layout center" hidden$="[[!show]]">
   <paper-item class="temp">[[weather.temp]]</paper-item>
-  <paper-item class="city">[[weather.city]]</paper-item>
+  <!--suppress HtmlUnknownTarget -->
+  <!--suppress HtmlRequiredAltAttribute -->
+  <img class="image" src="[[weather.iconUrl]]">
 </div>
 
 <app-localstorage-document key="currentWeather" data="{{weather}}" storage="window.localStorage">
@@ -105,12 +86,6 @@ const WeatherElement = Polymer({
       notify: true,
     },
 
-  },
-
-  /**
-   * Element is ready
-   */
-  ready: function() {
   },
 
 });
