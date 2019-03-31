@@ -26,6 +26,8 @@ const path = {
   assets: `${base.src}assets/`,
   lib: `${base.src}lib/`,
   locales: `${base.src}_locales/`,
+  css: `${base.src}css/`,
+  font: `${base.src}font/`,
 };
 const files = {
   manifest: `${base.src}manifest.json`,
@@ -36,6 +38,8 @@ const files = {
   assets: `${path.assets}*.*`,
   lib: `${path.lib}**/*.*`,
   locales: `${path.locales}**/*.*`,
+  css: `${path.css}**/*.*`,
+  font: `${path.font}**/*.*`,
 };
 files.js = [files.scripts, files.elements, `${base.src}*.js`];
 files.lintdevjs = ['../gulpfile.js'];
@@ -166,6 +170,7 @@ function buildPolymer() {
         // load them.
         buildStream = buildStream.pipe(polymerProject.bundler({
           inlineScripts: false,
+          inlineCss: false,
         }));
 
         // now lets minify for production
@@ -209,6 +214,8 @@ gulp.task('incrementalBuild', (cb) => {
     '_assets',
     '_lib',
     '_locales',
+    '_css',
+    '_font',
   ], cb);
 });
 
@@ -367,6 +374,26 @@ gulp.task('_lib', () => {
 // locales
 gulp.task('_locales', () => {
   const input = files.locales;
+  watchOpts.name = currentTaskName;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(plumber()).
+      pipe(gulp.dest(base.dev));
+});
+
+// css
+gulp.task('_css', () => {
+  const input = files.css;
+  watchOpts.name = currentTaskName;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(plumber()).
+      pipe(gulp.dest(base.dev));
+});
+
+// font
+gulp.task('_font', () => {
+  const input = files.font;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
