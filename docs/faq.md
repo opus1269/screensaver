@@ -182,7 +182,7 @@
 
   There is a bug in Chrome that prevents re-displaying the dialog that
   prompts you to allow location sharing if you closed it by clicking on the
-  "X". [See here](help/settings.html#location_bug) for instructions on how to fix it.
+  "X". [See here](./help/settings.html#location_bug) for instructions on how to fix it.
 
 ### Features
 
