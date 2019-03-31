@@ -18,6 +18,8 @@ import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog
+  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
@@ -33,14 +35,19 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Display the options tab
+ * @returns {Promise<void>}
  * @private
  */
-function _showOptionsTab() {
+async function _showOptionsTab() {
   // send message to the option tab to focus it.
-  ChromeMsg.send(ChromeMsg.HIGHLIGHT).catch(() => {
+  try {
+    await ChromeMsg.send(ChromeMsg.HIGHLIGHT);
+  } catch (e) {
     // no one listening, create it
     chrome.tabs.create({url: '/html/options.html'});
-  });
+  }
+
+  return Promise.resolve();
 }
 
 /**
@@ -51,25 +58,32 @@ function _showOptionsTab() {
  * @param {Object} details - type of event
  * @param {string} details.reason - reason for install
  * @param {string} details.previousVersion - old version if 'update' reason
+ * @returns {Promise<void>}
  * @private
  */
-function _onInstalled(details) {
+async function _onInstalled(details) {
   if (details.reason === 'install') {
     // initial install
+
     ChromeGA.event(ChromeGA.EVENT.INSTALLED, ChromeUtils.getVersion());
-    AppData.initialize().then(() => {
-      _showOptionsTab();
-      return null;
-    }).catch(() => {});
+
+    try {
+      await AppData.initialize();
+      await _showOptionsTab();
+    } catch (err) {
+      ChromeLog.error(err.message, 'Bg.onInstalled');
+    }
+
   } else if (details.reason === 'update') {
     // extension updated
+
     if (!MyUtils.DEBUG) {
       const oldVer = details.previousVersion;
       const version = ChromeUtils.getVersion();
       if (version === oldVer) {
         // spurious update: 
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481
-        return;
+        return Promise.resolve();
       }
       // TODO clean this up
       let showThreeInfo = false;
@@ -81,7 +95,14 @@ function _onInstalled(details) {
         chrome.tabs.create({url: '/html/update3.html'});
       }
     }
-    AppData.update();
+
+    try {
+      await AppData.update();
+    } catch (err) {
+      ChromeLog.error(err.message, 'Bg.onUpdated');
+    }
+    
+    return Promise.resolve();
   }
 }
 
@@ -89,20 +110,35 @@ function _onInstalled(details) {
  * Event: Fired when a profile that has this extension installed first
  * starts up
  * @see https://developer.chrome.com/extensions/runtime#event-onStartup
+ * @returns {Promise<void>}
  * @private
  */
-function _onStartup() {
+async function _onStartup() {
   ChromeGA.page('/background.html');
-  AppData.processState().catch(() => {});
+
+  try {
+    await AppData.processState();
+  } catch (err) {
+    ChromeLog.error(err.message, 'Bg._onStartup');
+  }
+
+  return Promise.resolve();
 }
 
 /**
  * Event: Fired when a browser action icon is clicked.
  * @see https://goo.gl/abVwKu
+ * @returns {Promise<void>}
  * @private
  */
-function _onIconClicked() {
-  _showOptionsTab();
+async function _onIconClicked() {
+  try {
+    await _showOptionsTab();
+  } catch (err) {
+    ChromeLog.error(err.message, 'Bg._onIconClicked');
+  }
+
+  return Promise.resolve();
 }
 
 /**
@@ -110,10 +146,17 @@ function _onIconClicked() {
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/storage
  * @param {Event} event - StorageEvent
  * @param {string} event.key - storage item that changed
+ * @returns {Promise<void>}
  * @private
  */
-function _onStorageChanged(event) {
-  AppData.processState(event.key).catch(() => {});
+async function _onStorageChanged(event) {
+  try {
+    await AppData.processState(event.key);
+  } catch (err) {
+    ChromeLog.error(err.message, 'Bg._onStorageChanged');
+  }
+
+  return Promise.resolve();
 }
 
 // noinspection JSUnusedLocalSymbols
@@ -146,9 +189,9 @@ function _onChromeMessage(request, sender, response) {
     // noinspection JSUnresolvedVariable
     GoogleSource.loadAlbum(request.id, request.name, true, true).
         then((album) => {
-      response(album);
-      return null;
-    }).catch((err) => {
+          response(album);
+          return null;
+        }).catch((err) => {
       response({message: err.message});
     });
   } else if (request.message === MyMsg.LOAD_ALBUMS.message) {
