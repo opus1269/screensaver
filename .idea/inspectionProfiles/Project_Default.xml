@@ -4,6 +4,8 @@
     <inspection_tool class="Annotator" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="CssMissingSemicolon" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CssUnusedSymbol" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ES6CheckImport" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ES6MissingAwait" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="ES6ModulesDependencies" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="Eslint" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
@@ -76,7 +78,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="71">
+          <list size="79">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -148,6 +150,14 @@
             <item index="68" class="java.lang.String" itemvalue="app-toolbar" />
             <item index="69" class="java.lang.String" itemvalue="app-header-layout" />
             <item index="70" class="java.lang.String" itemvalue="app-header" />
+            <item index="71" class="java.lang.String" itemvalue="app-localstorage-document" />
+            <item index="72" class="java.lang.String" itemvalue="photo-cat" />
+            <item index="73" class="java.lang.String" itemvalue="weather-element" />
+            <item index="74" class="java.lang.String" itemvalue="screensaver-element" />
+            <item index="75" class="java.lang.String" itemvalue="albums-view" />
+            <item index="76" class="java.lang.String" itemvalue="slot" />
+            <item index="77" class="java.lang.String" itemvalue="photos-view" />
+            <item index="78" class="java.lang.String" itemvalue="app-main" />
           </list>
         </value>
       </option>

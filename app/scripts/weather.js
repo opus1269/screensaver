@@ -33,7 +33,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Current weather conditions
  * @typedef {{}} module:weather.CurrentWeather
- * @property {int} time - call time UTC millisec
+ * @property {int} time - call time UTC milli sec
  * @property {int} id - weather id
  * @property {string} dayNight - day night prefix ('', 'day-', 'night-")
  * @property {number} tempValue - temperature value in K

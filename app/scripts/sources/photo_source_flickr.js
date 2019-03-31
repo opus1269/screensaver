@@ -96,7 +96,7 @@ class FlickrSource extends PhotoSource {
             height = parseInt(photo.height_k, 10);
           }
           const asp = width / height;
-          let pt = null;
+          let pt = '';
           if (photo.latitude && photo.longitude) {
             pt = PhotoSource.createPoint(photo.latitude, photo.longitude);
           }

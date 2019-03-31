@@ -16,7 +16,7 @@ import './ex_handler.js';
 
 /**
  * Http configuration
- * @typedef {?{}} module:chrome/http.Config
+ * @typedef {{}} module:chrome/http.Config
  * @property {boolean} [isAuth=false] - if true, authorization required
  * @property {boolean} [retryToken=false] - if true, retry with new token
  * @property {boolean} [interactive=false] - user initiated, if true
@@ -80,10 +80,10 @@ export const CONFIG = {
 /**
  * Perform GET request
  * @param {string} url - server request
- * @param {?module:chrome/http.Config} [conf=null] - configuration
+ * @param {module:chrome/http.Config} [conf=CONFIG] - configuration
  * @returns {Promise.<JSON>} response from server
  */
-export function doGet(url, conf = null) {
+export function doGet(url, conf = CONFIG) {
   const opts = {method: 'GET', headers: new Headers({})};
   return _doIt(url, opts, conf);
 }
@@ -91,10 +91,10 @@ export function doGet(url, conf = null) {
 /**
  * Perform POST request
  * @param {string} url - server request
- * @param {?module:chrome/http.Config} [conf=null] - configuration
+ * @param {module:chrome/http.Config} [conf=CONFIG] - configuration
  * @returns {Promise.<JSON>} response from server
  */
-export function doPost(url, conf = null) {
+export function doPost(url, conf = CONFIG) {
   const opts = {method: 'POST', headers: new Headers({})};
   return _doIt(url, opts, conf);
 }
