@@ -9,9 +9,9 @@
   ],
   "extraDependencies": [
     "node_modules/web-animations-js/web-animations-next.min.js",
-    "css/weather-icons.min.css",
-    "font/*",
     "manifest.json",
+    "font/*",
+    "css/*",
     "html/**/*",
     "_locales/**/*",
     "assets/**/*",

@@ -33,7 +33,11 @@ import * as Weather from '../../scripts/weather.js';
  */
 const WeatherElement = Polymer({
   // language=HTML format=false
-  _template: html`<link rel="stylesheet" href="../../css/weather-icons.min.css">
+  _template: html`<!--
+  Need to include globally too
+  see: https://bugs.chromium.org/p/chromium/issues/detail?id=336876
+  -->
+<link rel="stylesheet" href="../../css/weather-icons.min.css">
 
 <style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
