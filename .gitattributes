@@ -11,3 +11,14 @@
 *.XCF binary
 *.ico binary
 *.ICO binary
+*.eot binary
+*.EOT binary
+*.ttf binary
+*.TTF binary
+*.woff binary
+*.WOFF binary
+*.woff2 binary
+*.WOFF2 binary
+
+
+
