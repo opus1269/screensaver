@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Source: my_analytics.js</title>
+	<title>Documentation Source: weather-element/weather-element.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,7 +79,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: my_analytics.js</h1>
+		<h1 class="page-title">Source: weather-element/weather-element.js</h1>
     
 <section>
     <article>
@@ -90,123 +90,130 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeGA
-  from '../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeUtils
-  from '../scripts/chrome-extension-utils/scripts/utils.js';
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import '../../node_modules/@polymer/polymer/polymer-legacy.js';
+import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
+import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+
+import '../../node_modules/@polymer/paper-styles/typography.js';
+import '../../node_modules/@polymer/paper-styles/color.js';
+
+import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
+import * as Weather from '../../scripts/weather.js';
 
 /**
- * Manage Google Analytics tracking
- * @module analytics
+ * Module for the Weather Element
+ * @module els/weather_element
  */
 
 /**
- * Tracking ID
- * @type {string}
- * @const
- * @private
- */
-const _TRACKING_ID = 'UA-61314754-1';
-
-/**
- * Event types
+ * Polymer element to display the current weather
  * @type {{}}
- * @property {ChromeGA.Event} CHROME_SIGN_OUT - Chrome sign out
- * @property {ChromeGA.Event} LOAD_ALBUM_LIST - album list
- * @property {ChromeGA.Event} SELECT_ALBUM - user selected album
- * @property {ChromeGA.Event} LOAD_ALBUM - album
- * @property {ChromeGA.Event} LOAD_PHOTO - photo
- * @property {ChromeGA.Event} LOAD_PHOTOS - photos
- * @property {ChromeGA.Event} LOAD_FILTERED_PHOTOS - filtered photos
- * @property {ChromeGA.Event} FETCH_ALBUMS - update albums from web
- * @property {ChromeGA.Event} FETCH_PHOTOS - update photos from web
- * @property {ChromeGA.Event} PHOTOS_LIMITED - did not load all photos in album
- * @property {ChromeGA.Event} ALBUMS_LIMITED - limited photo selections
- * @property {ChromeGA.Event} VIEW_PHOTO - view original source of photo
- * @property {ChromeGA.Event} WEATHER_UPDATED - weather updated from web
- * @const
+ * @alias module:els/weather_element.WeatherElement
+ * @PolymerElement
  */
-export const EVENT = {
-  CHROME_SIGN_OUT: {
-    eventCategory: 'user',
-    eventAction: 'chromeSignOut',
-    eventLabel: '',
-  },
-  LOAD_ALBUM_LIST: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'loadAlbumList',
-    eventLabel: '',
-  },
-  SELECT_ALBUM: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'selectAlbum',
-    eventLabel: '',
-  },
-  LOAD_ALBUM: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'loadAlbum',
-    eventLabel: '',
-  },
-  LOAD_PHOTO: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'loadPhoto',
-    eventLabel: '',
-  },
-  LOAD_PHOTOS: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'loadPhotos',
-    eventLabel: '',
-  },
-  LOAD_FILTERED_PHOTOS: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'loadFilteredPhotos',
-    eventLabel: '',
-  },
-  FETCH_ALBUMS: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'fetchAlbums',
-    eventLabel: '',
-  },
-  FETCH_PHOTOS: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'fetchPhotos',
-    eventLabel: '',
-  },
-  PHOTOS_LIMITED: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'limitedAlbumPhotos',
-    eventLabel: '',
-  },
-  ALBUMS_LIMITED: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'limitedAlbums',
-    eventLabel: '',
-  },
-  PHOTO_SELECTIONS_LIMITED: {
-    eventCategory: 'googlePhotosAPI',
-    eventAction: 'limitedTotalPhotos',
-    eventLabel: '',
-  },
-  VIEW_PHOTO: {
-    eventCategory: 'ui',
-    eventAction: 'viewPhoto',
-    eventLabel: '',
-  },
-  WEATHER_UPDATED: {
-    eventCategory: 'weather',
-    eventAction: 'updatedWeather',
-    eventLabel: '',
-  },
-};
+const WeatherElement = Polymer({
+  // language=HTML format=false
+  _template: html`&lt;!--
+  Need to include globally too
+  see: https://bugs.chromium.org/p/chromium/issues/detail?id=336876
+  -->
+&lt;link rel="stylesheet" href="../../css/weather-icons.min.css">
 
-/**
- * Initialize analytics
- */
-export function initialize() {
-  ChromeGA.initialize(_TRACKING_ID, 'Photo Screensaver',
-      'screensaver', ChromeUtils.getVersion());
-}
+&lt;style include="iron-flex iron-flex-alignment">&lt;/style>
+&lt;style include="shared-styles">&lt;/style>
+&lt;style>
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .temp {
+    font-size: 5.25vh;
+    font-weight: 200;
+    margin: 0;
+    padding: 0 0 0 16px;
+  }
+  
+  :host .icon {
+    font-size: 5.25vh;
+    font-weight: 200;
+    margin: 0;
+    padding: 0;
+  }
+
+&lt;/style>
+
+&lt;div class="horizontal layout center" hidden$="[[!show]]">
+  &lt;!--suppress HtmlUnknownTarget -->
+  &lt;!--suppress HtmlRequiredAltAttribute -->
+  &lt;!--&lt;img class="image" src="[[weather.iconUrl]]">-->
+  &lt;i id="weatherIcon" class="icon wi">&lt;/i>
+  &lt;paper-item class="temp">[[weather.temp]]&lt;/paper-item>
+&lt;/div>
+
+&lt;app-localstorage-document key="currentWeather" data="{{weather}}" storage="window.localStorage">
+&lt;/app-localstorage-document>
+&lt;app-localstorage-document key="showCurrentWeather" data="{{show}}" storage="window.localStorage">
+&lt;/app-localstorage-document>
+
+`,
+
+  is: 'weather-element',
+
+  properties: {
+
+    /** Should we be shown */
+    show: {
+      type: Boolean,
+      value: false,
+      notify: true,
+    },
+
+    /** Current weather */
+    weather: {
+      type: Object,
+      value: Weather.DEF_WEATHER,
+      observer: '_weatherChanged',
+    },
+
+  },
+
+  /**
+   * Observer: Current weather changed
+   * @param {?module:weather.CurrentWeather} newValue
+   * @param {?module:weather.CurrentWeather} oldValue
+   * @private
+   */
+  _weatherChanged: function(newValue, oldValue) {
+    const PREFIX = 'wi-owm-';
+    let oldClass = null;
+
+    if (oldValue !== undefined) {
+      oldClass = PREFIX + oldValue.dayNight + oldValue.id;
+    }
+
+    if (newValue !== undefined) {
+      const newClass = PREFIX + newValue.dayNight + newValue.id;
+      if (oldClass) {
+        // noinspection JSUnresolvedVariable
+        this.$.weatherIcon.classList.replace(oldClass, newClass);
+      } else {
+        // noinspection JSUnresolvedVariable
+        this.$.weatherIcon.classList.add(newClass);
+      }
+    }
+  },
+
+});
+
+export default WeatherElement;
+
 </pre>
     </article>
 </section>
