@@ -2,7 +2,7 @@
 
 This extension displays a screensaver composed of a slide show of photos from multiple sources. Supported photo sources include:
 
-* Your Google Photos - Note: Shared Albums are not supported
+* Your Google Photos and Albums - Note: Shared Albums are not supported
 * Some background photos used by Chromecast
 * Several sources from reddit
 * Interesting photos from Flickr
@@ -18,6 +18,7 @@ Many options are available to control the appearance of the slide show, includin
 * A scheduler to control when the screensaver, display, and computer should remain on
 * Do not display over full screen Chrome windows (e.g., YouTube, Netflix)
 * Show on all displays
+* Display current weather
 * Display time
 
 Works great on all platforms but may be especially useful for your Chromebook.

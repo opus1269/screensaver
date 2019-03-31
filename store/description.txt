@@ -18,6 +18,7 @@ Many options are available to control the appearance of the slide show, includin
 * Do not display over full screen Chrome windows (e.g., YouTube, Netflix)
 * Show on all displays
 * Display time
+* Display weather
 
 Works great on all platforms but may be especially useful for your Chromebook.
 
