@@ -35,6 +35,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @typedef {{}} module:weather.CurrentWeather
  * @property {int} time - call time
  * @property {int} id - weather id
+ * @property {string} dayNight - day night prefix ('', 'day-', 'night-")
  * @property {number} tempValue - temperature value in K
  * @property {string} temp - temperature string
  * @property {string} city - city name
@@ -49,6 +50,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 export const DEF_WEATHER = {
   time: 0,
   id: 0,
+  dayNight: '',
   tempValue: 0.0,
   temp: '',
   description: '',
@@ -143,7 +145,7 @@ export async function update() {
     let url = _URL_BASE;
     url += `?lat=${location.lat}&lon=${location.lon}&APPID=${_KEY}`;
 
-    /** @type {{cod, name, main, weather}} */
+    /** @type {{cod, name, sys, main, weather}} */
     const response = await ChromeHttp.doGet(url, conf);
 
     if (response.cod !== 200) {
@@ -157,6 +159,16 @@ export async function update() {
 
     if (response.name) {
       curWeather.city = response.name;
+    }
+
+    /** @type {{sunrise, sunset}} */
+    const sys = response.sys;
+    if (sys && sys.sunrise && sys.sunset) {
+      if ((curWeather.time > sys.sunrise) && (curWeather.time < sys.sunset)) {
+        curWeather.dayNight = 'day-';
+      } else {
+        curWeather.dayNight = 'night-';
+      }
     }
 
     const main = response.main;

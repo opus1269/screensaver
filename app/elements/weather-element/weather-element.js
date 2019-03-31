@@ -106,15 +106,14 @@ const WeatherElement = Polymer({
    */
   _weatherChanged: function(newValue, oldValue) {
     const PREFIX = 'wi-owm-';
-    let oldClass;
-    let newClass;
+    let oldClass = null;
 
     if (oldValue !== undefined) {
-      oldClass = PREFIX + oldValue.id;
+      oldClass = PREFIX + oldValue.dayNight + oldValue.id;
     }
 
     if (newValue !== undefined) {
-      newClass = PREFIX + newValue.id;
+      const newClass = PREFIX + newValue.dayNight + newValue.id;
       if (oldClass) {
         // noinspection JSUnresolvedVariable
         this.$.weatherIcon.classList.replace(oldClass, newClass);
