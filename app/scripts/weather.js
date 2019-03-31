@@ -33,7 +33,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Current weather conditions
  * @typedef {{}} module:weather.CurrentWeather
- * @property {int} time - call time
+ * @property {int} time - call time UTC millisec
  * @property {int} id - weather id
  * @property {string} dayNight - day night prefix ('', 'day-', 'night-")
  * @property {number} tempValue - temperature value in K
@@ -164,7 +164,9 @@ export async function update() {
     /** @type {{sunrise, sunset}} */
     const sys = response.sys;
     if (sys && sys.sunrise && sys.sunset) {
-      if ((curWeather.time > sys.sunrise) && (curWeather.time < sys.sunset)) {
+      // sys time is UTC in seconds
+      const time = curWeather.time / 1000;
+      if ((time > sys.sunrise) && (time < sys.sunset)) {
         curWeather.dayNight = 'day-';
       } else {
         curWeather.dayNight = 'night-';
