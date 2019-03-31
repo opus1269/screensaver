@@ -9,7 +9,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="62">
+          <list size="58">
             <item index="0" class="java.lang.String" itemvalue="include" />
             <item index="1" class="java.lang.String" itemvalue="disabled$" />
             <item index="2" class="java.lang.String" itemvalue="on-tap" />
@@ -68,10 +68,6 @@
             <item index="55" class="java.lang.String" itemvalue="file" />
             <item index="56" class="java.lang.String" itemvalue="iswaiting" />
             <item index="57" class="java.lang.String" itemvalue="is-waiting" />
-            <item index="58" class="java.lang.String" itemvalue="hidden\$" />
-            <item index="59" class="java.lang.String" itemvalue="disabled\$" />
-            <item index="60" class="java.lang.String" itemvalue="secondary" />
-            <item index="61" class="java.lang.String" itemvalue="style\$" />
           </list>
         </value>
       </option>
@@ -80,7 +76,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="82">
+          <list size="71">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -145,24 +141,13 @@
             <item index="61" class="java.lang.String" itemvalue="waiter-element" />
             <item index="62" class="java.lang.String" itemvalue="confirm-dialog" />
             <item index="63" class="java.lang.String" itemvalue="backup-row" />
-            <item index="64" class="java.lang.String" itemvalue="slot" />
+            <item index="64" class="java.lang.String" itemvalue="dom-bind" />
             <item index="65" class="java.lang.String" itemvalue="custom-style" />
-            <item index="66" class="java.lang.String" itemvalue="array-selector" />
-            <item index="67" class="java.lang.String" itemvalue="dom-bind" />
-            <item index="68" class="java.lang.String" itemvalue="app-drawer-layout" />
-            <item index="69" class="java.lang.String" itemvalue="app-drawer" />
-            <item index="70" class="java.lang.String" itemvalue="app-toolbar" />
-            <item index="71" class="java.lang.String" itemvalue="app-header-layout" />
-            <item index="72" class="java.lang.String" itemvalue="app-header" />
-            <item index="73" class="java.lang.String" itemvalue="app-localstorage-document" />
-            <item index="74" class="java.lang.String" itemvalue="paper-radio-group" />
-            <item index="75" class="java.lang.String" itemvalue="paper-radio-button" />
-            <item index="76" class="java.lang.String" itemvalue="albums-view" />
-            <item index="77" class="java.lang.String" itemvalue="photo-cat" />
-            <item index="78" class="java.lang.String" itemvalue="app-main" />
-            <item index="79" class="java.lang.String" itemvalue="photos-view" />
-            <item index="80" class="java.lang.String" itemvalue="screensaver-element" />
-            <item index="81" class="java.lang.String" itemvalue="weather-element" />
+            <item index="66" class="java.lang.String" itemvalue="app-drawer-layout" />
+            <item index="67" class="java.lang.String" itemvalue="app-drawer" />
+            <item index="68" class="java.lang.String" itemvalue="app-toolbar" />
+            <item index="69" class="java.lang.String" itemvalue="app-header-layout" />
+            <item index="70" class="java.lang.String" itemvalue="app-header" />
           </list>
         </value>
       </option>
