@@ -111,8 +111,8 @@ Polymer({
   _onCheckedChange: function(ev) {
     // noinspection JSUnresolvedVariable
     ChromeGA.event(ChromeGA.EVENT.CHECK,
-        `${this.id}: ${ev.srcElement.checked}`);
+        `${this.id}: ${ev.target.checked}`);
     // noinspection JSUnresolvedVariable
-    this.fire('value-changed', {value: ev.srcElement.checked});
+    this.fire('value-changed', {value: ev.target.checked});
     },
 });

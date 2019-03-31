@@ -135,7 +135,7 @@ class RedditSource extends PhotoSource {
    */
   static _getSize(title) {
     const ret = {width: -1, height: -1};
-    const regex = /\[(\d*)\D*(\d*)\]/;
+    const regex = /\[(\d*)\D*(\d*)]/;
     const res = title.match(regex);
     if (res) {
       ret.width = parseInt(res[1], 10);

@@ -811,7 +811,7 @@ class GoogleSource extends PhotoSource {
    * @param {module:sources/photo_source_google.mediaItem} mediaItem - object from Google
    *     Photos API call
    * @param {string} albumName - Album name
-   * @returns {module:sources/photo_source.Photo} Photo, null if error
+   * @returns {?module:sources/photo_source.Photo} Photo, null if error
    * @static
    * @private
    */

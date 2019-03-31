@@ -50,10 +50,8 @@ const _DATA_VERSION = 24;
  * @property {string} permBackground - optional permission to run in bg
  * @property {string} permWeather - optional permission to show weather
  * @property {boolean} allowBackground - run Chrome in background
- * @property {module:els/setting/slider.SettingSlider.UnitValue} idleTime
- * - idle time to display screensaver
- * @property {module:els/setting/slider.SettingSlider.UnitValue} transitionTime
- * - time between photos
+ * @property {{}} idleTime - idle time to display screensaver
+ * @property {{}} transitionTime - time between photos
  * @property {boolean} skip - ignore extreme aspect ratio photos
  * @property {boolean} shuffle - randomize photo order
  * @property {int} photoSizing - photo display type
@@ -84,8 +82,7 @@ const _DATA_VERSION = 24;
  * @property {boolean} useGooglePhotos - use this photo source
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
- * @property {module:sources/photo_source_google.GoogleSource.DEF_FILTER}
- * googlePhotosFilter - filter for retrieving google photos
+ * @property {{}} googlePhotosFilter - filter for retrieving google photos
  * @property {module:weather.Location} location - geo location
  * @property {boolean} showCurrentWeather - display weather
  * @property {int} weatherTempUnit - temp unit (0 == C 1 == F)

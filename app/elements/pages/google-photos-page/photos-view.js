@@ -349,7 +349,7 @@ Polymer({
    * @private
    */
   _onPhotoCatChanged: function(ev) {
-    const cat = ev.srcElement.id;
+    const cat = ev.target.id;
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter',
         GoogleSource.DEF_FILTER);

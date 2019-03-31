@@ -11,7 +11,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="58">
+          <list size="59">
             <item index="0" class="java.lang.String" itemvalue="include" />
             <item index="1" class="java.lang.String" itemvalue="disabled$" />
             <item index="2" class="java.lang.String" itemvalue="on-tap" />
@@ -70,6 +70,7 @@
             <item index="55" class="java.lang.String" itemvalue="file" />
             <item index="56" class="java.lang.String" itemvalue="iswaiting" />
             <item index="57" class="java.lang.String" itemvalue="is-waiting" />
+            <item index="58" class="java.lang.String" itemvalue="secondary" />
           </list>
         </value>
       </option>

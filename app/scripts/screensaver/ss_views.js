@@ -27,7 +27,7 @@ import * as SSViewFactory from './views/ss_view_factory.js';
  * Enum for view type
  * @typedef {int} module:ss/views.Type
  * @readonly
- * @enum {int}
+ * @enum {int} module:ss/views.Type
  */
 export const Type = {
   UNDEFINED: -1,
@@ -64,7 +64,7 @@ let _pages = null;
 
 /**
  * The view type
- * @type {module:ss/views.Type}
+ * @type {module:ss/views.Type|int}
  * @private
  */
 let _type = Type.UNDEFINED;

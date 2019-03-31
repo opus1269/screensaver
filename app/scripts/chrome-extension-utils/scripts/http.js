@@ -271,7 +271,7 @@ function _fetch(url, opts, conf, attempt) {
  * @private
  */
 function _doIt(url, opts, conf) {
-  conf = (conf === null) ? CONFIG : conf;
+  conf = conf || CONFIG;
   if (conf.isAuth) {
     opts.headers.set(_AUTH_HEADER, `${_BEARER} unknown`);
   }
