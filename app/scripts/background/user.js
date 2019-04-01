@@ -28,13 +28,20 @@ import * as MyGA from '../../scripts/my_analytics.js';
  * @param {boolean} signedIn - true if signedIn
  * @private
  */
-function _onSignInChanged(account, signedIn) {
+async function _onSignInChanged(account, signedIn) {
   ChromeStorage.set('signedInToChrome', signedIn);
   if (!signedIn) {
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
-    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
-    ChromeStorage.asyncSet('googleImages', []).catch(() => {});
-    const type = ChromeStorage.get('permPicasa');
+    
+    // remove Google Photo selections
+    try {
+      await ChromeStorage.asyncSet('albumSelections', []);
+      await ChromeStorage.asyncSet('googleImages', []);
+    } catch (e) {
+      // ignore
+    }
+    
+    const type = ChromeStorage.get('permPicasa', 'notSet');
     if (type === 'allowed') {
       ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),
           'User._onSignInChanged');
