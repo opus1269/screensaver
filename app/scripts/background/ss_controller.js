@@ -142,7 +142,7 @@ async function _isShowing() {
 
 /**
  * Open a screen saver window on the given display
- * @param {?Object} display - a connected display
+ * @param {?{bounds}} display - a connected display
  * @returns {Promise<void>}
  * @private
  */
@@ -163,17 +163,17 @@ async function _open(display) {
     if (!display) {
       winOpts.state = 'fullscreen';
     } else {
-      const left = display.bounds.left;
-      const top = display.bounds.top;
-      winOpts.left = left;
-      winOpts.top = top;
+      winOpts.left = display.bounds.left;
+      winOpts.top = display.bounds.top;
       winOpts.width = display.bounds.width;
       winOpts.height = display.bounds.height;
     }
 
     const win = await chromep.windows.create(winOpts);
     if (win) {
-      await chromep.windows.update(win.id, {state: 'fullscreen'});
+      if (display) {
+        await chromep.windows.update(win.id, {state: 'fullscreen'});
+      }
       await chromep.windows.update(win.id, {focused: true});
     }
     
