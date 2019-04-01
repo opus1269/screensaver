@@ -65,7 +65,7 @@ export const DEF_WEATHER = {
  */
 export const DEF_LOC_OPTIONS = {
   enableHighAccuracy: false,
-  timeout: 30000,
+  timeout: 60000,
   maximumAge: 0,
 };
 
