@@ -621,6 +621,9 @@
   "err_weather_update": {
     "message": "Update van het weer is mislukt"
   },
+  "err_geolocation_title": {
+    "message": "Het is niet gelukt om uw huidige locatie bij te werken"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

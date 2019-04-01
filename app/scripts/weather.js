@@ -131,7 +131,6 @@ export async function update() {
   try {
     location = await getLocation();
   } catch (err) {
-    ChromeLog.error(err.message, METHOD, ERR_TITLE);
     // use last location
     location = ChromeStorage.get('location', _DEF_LOC);
   } finally {
@@ -218,14 +217,31 @@ export function updateUnits() {
 
 /**
  * Get the current geo location. Will prompt if needed
- * @param {?{}} options
+ * @param {{}} [options=DEF_LOC_OPTIONS]
  * @throws An error if we failed to get location
  * @returns {Promise<module:weather.Location>}
  */
 export async function getLocation(options = DEF_LOC_OPTIONS) {
-  let position = await new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  });
+  const METHOD = 'Weather.getLocation';
+  const ERR_TITLE = ChromeLocale.localize('err_geolocation_title');
+
+  // this will at least ensure the LAN is connected
+  // may get false positives for other failures
+  if (!navigator.onLine) {
+    throw new Error(ChromeLocale.localize('err_network'));
+  }
+  
+  let position;
+  try {
+    position = await new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  } catch (err) {
+    // log and rethrow
+    ChromeLog.error(err.message, METHOD, ERR_TITLE);
+    throw err;
+  }
+  
   const ret = {
     lat: position.coords.latitude,
     lon: position.coords.longitude,

@@ -621,6 +621,9 @@
   "err_weather_update": {
     "message": "Impossible de mettre à jour la météo"
   },
+  "err_geolocation_title": {
+    "message": "Impossible de mettre à jour votre position actuelle"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

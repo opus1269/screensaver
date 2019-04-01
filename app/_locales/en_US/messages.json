@@ -621,6 +621,9 @@
   "err_weather_update": {
     "message": "Failed to update weather"
   },
+  "err_geolocation_title": {
+    "message": "Failed to update your current location"
+  },
   "temp_unit": {
     "message": "F",
     "description": "Set to F for Fahrenheit C for Celsius"
