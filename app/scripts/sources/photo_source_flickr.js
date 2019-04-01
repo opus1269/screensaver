@@ -68,7 +68,7 @@ class FlickrSource extends PhotoSource {
    * Extract the photos into an Array
    * @param {{photos}} response - server response
    * @throws An error if we failed to process photos
-   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
+   * @returns {module:sources/photo_source.Photo[]} Array of photos
    * @private
    */
   static _processPhotos(response) {
@@ -105,7 +105,7 @@ class FlickrSource extends PhotoSource {
         }
       }
     }
-    return Promise.resolve(photos);
+    return photos;
   }
 
   /**
@@ -137,7 +137,10 @@ class FlickrSource extends PhotoSource {
       throw new Error(response.message);
     }
     
-    return FlickrSource._processPhotos(response);
+    // convert to our format
+    const photos = FlickrSource._processPhotos(response);
+    
+    return Promise.resolve(photos);
   }
 }
 
