@@ -39,17 +39,17 @@ class CCSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
-   * @returns {Promise<PhotoSource.Photo[]>} Array of photos
+   * @throws An error if fetch failed
+   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
-  fetchPhotos() {
+  async fetchPhotos() {
     const url = '/assets/chromecast.json';
-    return ChromeHttp.doGet(url).then((photos) => {
-      photos = photos || [];
-      for (const photo of photos) {
-        photo.asp = 1.78;
-      }
-      return Promise.resolve(photos);
-    });
+    let photos = await ChromeHttp.doGet(url);
+    photos = photos || [];
+    for (const photo of photos) {
+      photo.asp = 1.78;
+    }
+    return Promise.resolve(photos);
   }
 }
 

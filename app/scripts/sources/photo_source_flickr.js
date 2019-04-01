@@ -66,14 +66,14 @@ class FlickrSource extends PhotoSource {
 
   /**
    * Extract the photos into an Array
-   * @param {JSON} response - server response
+   * @param {{photos}} response - server response
+   * @throws An error if we failed to process photos
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    * @private
    */
   static _processPhotos(response) {
     if (!response.photos || !response.photos.photo) {
-      const err = new Error(ChromeLocale.localize('err_photo_source_title'));
-      return Promise.reject(err);
+      throw new Error(ChromeLocale.localize('err_photo_source_title'));
     }
 
     /** @type {module:sources/photo_source.Photo[]} */
@@ -110,9 +110,10 @@ class FlickrSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
+   * @throws An error if fetch failed
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
-  fetchPhotos() {
+  async fetchPhotos() {
     let url;
     if (this._loadArg) {
       // my photos
@@ -131,12 +132,12 @@ class FlickrSource extends PhotoSource {
           '&format=json&nojsoncallback=1';
     }
 
-    return ChromeHttp.doGet(url).then((response) => {
-      if (response.stat !== 'ok') {
-        return Promise.reject(new Error(response.message));
-      }
-      return FlickrSource._processPhotos(response);
-    });
+    const response = await ChromeHttp.doGet(url);
+    if (response.stat !== 'ok') {
+      throw new Error(response.message);
+    }
+    
+    return FlickrSource._processPhotos(response);
   }
 }
 
