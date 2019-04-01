@@ -111,8 +111,9 @@
 
     There is a daily limit to the number of times the extension can
     access Google Photos. To prevent exceeding this limit, the extension
-    limits the number of albums you can select and the number of photos
-    that are retrieved for each album.
+    limits the number of albums you can select, the number of photos
+    that are retrieved for each album, and the total number of photos
+    you can use.
     
   ***
 

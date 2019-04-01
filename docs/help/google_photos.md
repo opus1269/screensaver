@@ -18,10 +18,10 @@ Switch to photo selection mode. You will be prompted to confirm the switch,
 since you will lose your current album selections.
 
 > ![alt text](./assets/baseline_check_box_black_18dp.png)
-Select the maximum number of albums. The current limit is 100. This will 
-load the photos for each album up to a maximum of 2,000. This can be a lengthy operation.
-There is also a maximum total number of photos that you can select. The current value
-for this is 20,000.
+Select the maximum number of albums. The current limit is 200. This will 
+load the photos for each album up to a maximum of 2,000.
+This can be a lengthy operation. There is also a maximum total number
+of photos that you can select. The current value for this is 30,000.
 
 > ![alt text](./assets/baseline_check_box_outline_blank_black_18dp.png)
 Deselect all the currently selected albums
