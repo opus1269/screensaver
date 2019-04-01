@@ -23,18 +23,35 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @module bg/context_menus
  */
 
+/**
+ * Unique id of the display screensaver menu
+ * @type {string}
+ * @const
+ * @private
+ */
 const _DISPLAY_MENU = 'DISPLAY_MENU';
+
+/**
+ * Unique id of the enable screensaver menu
+ * @type {string}
+ * @const
+ * @private
+ */
 const _ENABLE_MENU = 'ENABLE_MENU';
 
 /**
  * Toggle enabled state of the screen saver
+ * @returns {Promise<void>}
  * @private
  */
-function _toggleEnabled() {
+async function _toggleEnabled() {
   const oldState = ChromeStorage.getBool('enabled', true);
   ChromeStorage.set('enabled', !oldState);
+  
   // storage changed event not fired on same page as the change
-  AppData.processState('enabled').catch(() => {});
+  await AppData.processState('enabled');
+  
+  return Promise.resolve();
 }
 
 // noinspection JSUnusedLocalSymbols
@@ -90,14 +107,14 @@ function _onInstalled(details) {
  * @param {Object} info.menuItemId - menu name
  * @private
  */
-function _onMenuClicked(info) {
+async function _onMenuClicked(info) {
   if (info.menuItemId === _DISPLAY_MENU) {
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
     SSController.display(false);
   } else if (info.menuItemId === _ENABLE_MENU) {
     const isEnabled = ChromeStorage.getBool('enabled');
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
-    _toggleEnabled();
+    await _toggleEnabled();
   }
 }
 
@@ -108,10 +125,10 @@ function _onMenuClicked(info) {
  * @param {string} cmd - keyboard command
  * @private
  */
-function _onKeyCommand(cmd) {
+async function _onKeyCommand(cmd) {
   if (cmd === 'toggle-enabled') {
     ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
-    _toggleEnabled();
+    await _toggleEnabled();
   } else if (cmd === 'show-screensaver') {
     ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
     SSController.display(false);
