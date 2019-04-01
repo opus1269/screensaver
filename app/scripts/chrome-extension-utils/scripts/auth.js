@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
 
 /**
@@ -20,65 +21,61 @@ const chromep = new ChromePromise();
  * token the first time, so you need to always get it with those scopes
  * and remove the cached one with the scopes.
  * @param {boolean} interactive - if true may block
- * @param {string[]|null} [scopes=null] - optional scopes to use, overrides
+ * @param {string[]} [scopes=[]] - optional scopes to use, overrides
  * those in the manifest
+ * @throws An error if we failed to get token
  * @returns {Promise<string>} An access token
  */
-export function getToken(interactive = false, scopes = null) {
+export async function getToken(interactive = false, scopes = []) {
   const request = {
     interactive: interactive,
   };
   if (scopes && scopes.length) {
     request.scopes = scopes;
   }
-  return chromep.identity.getAuthToken(request).then((token) => {
-    return Promise.resolve(token);
-  });
+  const token = await chromep.identity.getAuthToken(request);
+  return Promise.resolve(token);
 }
 
 /**
  * Remove a cached OAuth2.0 token
- * @param {boolean} interactive - if true may block
- * @param {string|null} [curToken=null] token to remove
- * @param {string[]|null} [scopes=null] - optional scopes to use, overrides
+ * @param {boolean} [interactive=false] - if true may block
+ * @param {string} [curToken=''] token to remove
+ * @param {string[]} [scopes=[]] - optional scopes to use, overrides
  * those in the manifest
- * @returns {Promise.<string>} the old token
+ * @throws An error if we failed to remove token
+ * @returns {Promise<string>} the old token
  */
-export function removeCachedToken(interactive = false, curToken = null,
-                                  scopes = null) {
-  let oldToken = null;
-  if (curToken === null) {
-    return getToken(interactive, scopes).then((token) => {
-      oldToken = token;
-      return chromep.identity.removeCachedAuthToken({token: token});
-    }).then(() => {
-      return Promise.resolve(oldToken);
-    });
-  } else {
-    oldToken = curToken;
-    return chromep.identity.removeCachedAuthToken({
-      'token': curToken,
-    }).then(() => {
-      return Promise.resolve(oldToken);
-    });
+export async function removeCachedToken(interactive = false, curToken = '',
+                                        scopes = []) {
+  let oldToken = curToken;
+
+  if (ChromeUtils.isWhiteSpace(oldToken)) {
+    oldToken = await getToken(interactive, scopes);
   }
+
+  await chromep.identity.removeCachedAuthToken({token: oldToken});
+
+  return Promise.resolve(oldToken);
 }
 
 /**
  * Is a user signed in to Chrome
  * @returns {Promise<boolean>} true if signed in
  */
-export function isSignedIn() {
+export async function isSignedIn() {
   let ret = true;
+
   // try to get a token and check failure message
-  return chromep.identity.getAuthToken({interactive: false}).then(() => {
-    return Promise.resolve(ret);
-  }).catch((err) => {
+  try {
+    await chromep.identity.getAuthToken({interactive: false});
+  } catch (err) {
     if (err.message.match(/not signed in/)) {
       ret = false;
     }
-    return Promise.resolve(ret);
-  });
+  }
+
+  return Promise.resolve(ret);
 }
 
 /**
@@ -86,15 +83,17 @@ export function isSignedIn() {
  * scopes
  * @returns {Promise<boolean>} true if no valid token
  */
-export function isRevoked() {
+export async function isRevoked() {
   let ret = false;
+
   // try to get a token and check failure message
-  return chromep.identity.getAuthToken({interactive: false}).then(() => {
-    return Promise.resolve(ret);
-  }).catch((err) => {
+  try {
+    await chromep.identity.getAuthToken({interactive: false});
+  } catch (err) {
     if (err.message.match(/OAuth2 not granted or revoked/)) {
       ret = true;
     }
-    return Promise.resolve(ret);
-  });
+  }
+
+  return Promise.resolve(ret);
 }
