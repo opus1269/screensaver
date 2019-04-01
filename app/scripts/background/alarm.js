@@ -166,7 +166,7 @@ async function _setActiveState() {
     let state = await chromep.idle.queryState(interval);
     // display screensaver if enabled and the idle time criteria is met
     if (enabled && (state === 'idle')) {
-      SSController.display(false);
+      await SSController.display(false);
     }
   } catch (err) {
     ChromeLog.error(err.message, 'Alarm._setActiveState');

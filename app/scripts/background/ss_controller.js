@@ -61,17 +61,25 @@ export function isActive() {
 }
 
 /**
- * Display the screen saver(s)
+ * Display the screensaver(s)
  * !Important: Always request screensaver through this call
  * @param {boolean} single - if true, only show on one display
+ * @returns {Promise<void>}
  */
-export function display(single) {
-  const all = ChromeStorage.getBool('allDisplays', AppData.DEFS.allDisplays);
-  if (!single && all) {
-    _openOnAllDisplays();
-  } else {
-    _open(null);
+export async function display(single) {
+  
+  try {
+    const all = ChromeStorage.getBool('allDisplays', AppData.DEFS.allDisplays);
+    if (!single && all) {
+      await _openOnAllDisplays();
+    } else {
+      await _open(null);
+    }
+  } catch (err) {
+    ChromeLog.error(err.message, 'SSControl.display');
   }
+  
+  return Promise.resolve();
 }
 
 /**
@@ -134,67 +142,68 @@ async function _isShowing() {
 
 /**
  * Open a screen saver window on the given display
- * @param {Object} display - a connected display
+ * @param {?Object} display - a connected display
+ * @returns {Promise<void>}
  * @private
  */
-function _open(display) {
+async function _open(display) {
   // window creation options
   const winOpts = {
     url: _SS_URL,
     type: 'popup',
   };
-  _hasFullscreen(display).then((isTrue) => {
-    if (isTrue) {
+
+  try {
+    const hasFullScreen = await _hasFullscreen(display);
+    if (hasFullScreen) {
       // don't display if there is a fullscreen window
-      return null;
+      return Promise.resolve();
     }
 
-    if (ChromeUtils.getChromeVersion() >= 44 && !display) {
-      // Chrome supports fullscreen option on create since version 44
+    if (!display) {
       winOpts.state = 'fullscreen';
     } else {
-      const left = display ? display.bounds.left : 0;
-      const top = display ? display.bounds.top : 0;
+      const left = display.bounds.left;
+      const top = display.bounds.top;
       winOpts.left = left;
       winOpts.top = top;
-      winOpts.width = 1;
-      winOpts.height = 1;
+      winOpts.width = display.bounds.width;
+      winOpts.height = display.bounds.height;
     }
 
-    return chromep.windows.create(winOpts);
-  }).then((win) => {
-    if (win && (winOpts.state !== 'fullscreen')) {
-      chrome.windows.update(win.id, {state: 'fullscreen'});
-    }
-    return win;
-  }).then((win) => {
-    // force focus
+    const win = await chromep.windows.create(winOpts);
     if (win) {
-      chrome.windows.update(win.id, {focused: true});
+      await chromep.windows.update(win.id, {state: 'fullscreen'});
+      await chromep.windows.update(win.id, {focused: true});
     }
-    return null;
-  }).catch((err) => {
+    
+  } catch (err) {
     ChromeLog.error(err.message, 'SSControl._open', _ERR_SHOW);
-  });
+  }
+  
+  return Promise.resolve();
 }
 
 /**
  * Open a screensaver on every display
+ * @returns {Promise<void>}
  * @private
  */
-function _openOnAllDisplays() {
-  chromep.system.display.getInfo().then((displayArr) => {
+async function _openOnAllDisplays() {
+  try {
+    let displayArr = await chromep.system.display.getInfo();
     if (displayArr.length === 1) {
-      _open(null);
+      await _open(null);
     } else {
       for (const display of displayArr) {
-        _open(display);
+        await _open(display);
       }
     }
-    return null;
-  }).catch((err) => {
+  } catch (err) {
     ChromeLog.error(err.message, 'SSControl._openOnAllDisplays', _ERR_SHOW);
-  });
+  }
+
+  return Promise.resolve();
 }
 
 /**
@@ -207,32 +216,29 @@ function _openOnAllDisplays() {
  * @param {string} state - current state of computer
  * @private
  */
-function _onIdleStateChanged(state) {
-  _isShowing().then((isShowing) => {
+async function _onIdleStateChanged(state) {
+  try {
+    let isShowing = await _isShowing();
     if (state === 'idle') {
       if (isActive() && !isShowing) {
-        display(false);
+        await display(false);
       }
     } else if (state === 'locked') {
       // close on screen lock
       close();
     } else {
-      // eslint-disable-next-line promise/no-nesting
-      return ChromeUtils.isWindows().then((isTrue) => {
-        if (!isTrue) {
-          // Windows 10 Creators triggers an 'active' state
-          // when the window is created, so we have to skip closing here.
-          // Wouldn't need this at all if ChromeOS handled keyboard (or focus?)
-          // right
-          close();
-        }
-        return null;
-      });
+      let isWindows = await ChromeUtils.isWindows();
+      if (!isWindows) {
+        // Windows 10 Creators triggers an 'active' state
+        // when the window is created, so we have to skip closing here.
+        // Wouldn't need this at all if ChromeOS handled keyboard (or focus?)
+        // right
+        close();
+      }
     }
-    return null;
-  }).catch((err) => {
+  } catch (err) {
     ChromeLog.error(err.message, 'SSControl._isShowing', _ERR_SHOW);
-  });
+  }
 }
 
 // noinspection JSUnusedLocalSymbols
@@ -247,11 +253,13 @@ function _onIdleStateChanged(state) {
  * @private
  */
 function _onChromeMessage(request, sender, response) {
+  let ret = false;
   if (request.message === MyMsg.SS_SHOW.message) {
+    ret = true; // async
     // preview the screensaver
-    display(true);
+    display(false).catch(() => {});
   }
-  return false;
+  return ret;
 }
 
 // listen for changes to the idle state of the computer

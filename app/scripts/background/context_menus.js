@@ -110,7 +110,7 @@ function _onInstalled(details) {
 async function _onMenuClicked(info) {
   if (info.menuItemId === _DISPLAY_MENU) {
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
-    SSController.display(false);
+    await SSController.display(false);
   } else if (info.menuItemId === _ENABLE_MENU) {
     const isEnabled = ChromeStorage.getBool('enabled');
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
@@ -131,7 +131,7 @@ async function _onKeyCommand(cmd) {
     await _toggleEnabled();
   } else if (cmd === 'show-screensaver') {
     ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
-    SSController.display(false);
+    await SSController.display(false);
   }
 }
 
