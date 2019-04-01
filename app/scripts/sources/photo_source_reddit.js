@@ -19,8 +19,7 @@ import PhotoSource from './photo_source.js';
  * @const
  * @private
  */
-const _REDIRECT_URI =
-    `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
+const _REDIRECT_URI = `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
 
 // noinspection SpellCheckingInspection
 /**
@@ -35,16 +34,14 @@ const _KEY = 'bATkDOUNW_tOlg';
  * Max photos to return
  * @type {int}
  * @const
- * @default
  * @private
  */
-const _MAX_PHOTOS = 100;
+const _MAX_PHOTOS = 200;
 
 /**
  * Min size of photo to use
  * @type {int}
  * @const
- * @default
  * @private
  */
 const _MIN_SIZE = 750;
@@ -53,7 +50,6 @@ const _MIN_SIZE = 750;
  * Max size of photo to use
  * @type {int}
  * @const
- * @default
  * @private
  */
 const _MAX_SIZE = 3500;
@@ -85,45 +81,6 @@ class RedditSource extends PhotoSource {
   constructor(useKey, photosKey, type, desc, isDaily, isArray,
               loadArg = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
-  }
-
-  /**
-   * Wait for snoocore library
-   * @see  https://stackoverflow.com/a/30506051/4468645
-   * @returns {Promise} resolves when snoocore library loads
-   */
-  static _waitForLib() {
-    const WAIT_MILLIS = 100;
-    const MAX_WAIT_COUNT = 100; // 10 secs max
-    let ct = 0;
-    return new Promise(function(resolve, reject) {
-      (function waiter() {
-        if (ct === MAX_WAIT_COUNT) {
-          reject(new Error('snoocore library timed out'));
-        } else if (_snoocore) {
-          // already have our instance
-          return resolve();
-        } else if (window.Snoocore) {
-          // library loaded, get our instance
-          const Snoocore = window.Snoocore;
-          _snoocore = new Snoocore({
-            userAgent: 'photo-screen-saver',
-            throttle: 0,
-            oauth: {
-              type: 'implicit',
-              key: _KEY,
-              redirectUri: _REDIRECT_URI,
-              scope: ['read'],
-            },
-          });
-          return resolve();
-        } else {
-          // wait then check again
-          ct++;
-        }
-        setTimeout(waiter, WAIT_MILLIS);
-      })();
-    });
   }
 
   /**
@@ -197,38 +154,73 @@ class RedditSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
+   * @throws An error if fetch failed
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
-  fetchPhotos() {
+  async fetchPhotos() {
     let photos = [];
+    const SRC = `${this._loadArg}hot`;
 
-    // wait for library to initialize
-    return RedditSource._waitForLib().then(() => {
-      // web request to get photos
-      return _snoocore(`${this._loadArg}hot`).listing({
-        limit: _MAX_PHOTOS,
+    const Snoocore = window.Snoocore;
+    if (Snoocore === undefined) {
+      throw new Error('Reddit library failed to load');
+    }
+
+    try {
+
+      _snoocore = new Snoocore({
+        userAgent: 'photo-screen-saver',
+        throttle: 0,
+        oauth: {
+          type: 'implicit',
+          key: _KEY,
+          redirectUri: _REDIRECT_URI,
+          scope: ['read'],
+        },
       });
-    }).then((slice) => {
-      photos =
-          photos.concat(RedditSource._processChildren(slice.children));
-      return slice.next();
-    }).then((slice) => {
-      photos =
-          photos.concat(RedditSource._processChildren(slice.children));
-      return Promise.resolve(photos);
-    }).catch((err) => {
+
+      // web request to get first batch of results
+      let slice = await _snoocore(SRC).listing({limit: _MAX_PHOTOS});
+      let slicePhotos;
+      if (slice && slice.children && slice.children.length) {
+        slicePhotos = RedditSource._processChildren(slice.children);
+        slicePhotos = slicePhotos || [];
+        photos = photos.concat(slicePhotos);
+      } else {
+        return Promise.reject(new Error('No reddit photos found'));
+      }
+
+      // continue while there are more photos and we haven't reached the max
+      while (photos.length < _MAX_PHOTOS) {
+        slice = await slice.next();
+        if (slice && slice.children && slice.children.length) {
+          slicePhotos = RedditSource._processChildren(slice.children);
+          slicePhotos = slicePhotos || [];
+          if (slicePhotos.length) {
+            photos = photos.concat(slicePhotos);
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+
+    } catch (err) {
       let msg = err.message;
       if (msg) {
         // extract first sentence
-        const idx = msg.indexOf('.');
+        const idx = msg.indexOf('\n');
         if (idx !== -1) {
           msg = msg.substring(0, idx + 1);
         }
       } else {
         msg = 'Unknown Error';
       }
-      return Promise.reject(new Error(msg));
-    });
+      throw new Error(msg);
+    }
+
+    return Promise.resolve(photos);
   }
 }
 
