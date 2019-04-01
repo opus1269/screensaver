@@ -136,10 +136,8 @@ const _DATA_VERSION = 24;
  * @property {string} permBackground - optional permission to run in bg
  * @property {string} permWeather - optional permission to show weather
  * @property {boolean} allowBackground - run Chrome in background
- * @property {module:els/setting/slider.SettingSlider.UnitValue} idleTime
- * - idle time to display screensaver
- * @property {module:els/setting/slider.SettingSlider.UnitValue} transitionTime
- * - time between photos
+ * @property {{}} idleTime - idle time to display screensaver
+ * @property {{}} transitionTime - time between photos
  * @property {boolean} skip - ignore extreme aspect ratio photos
  * @property {boolean} shuffle - randomize photo order
  * @property {int} photoSizing - photo display type
@@ -170,8 +168,7 @@ const _DATA_VERSION = 24;
  * @property {boolean} useGooglePhotos - use this photo source
  * @property {boolean} signedInToChrome - state of Chrome signin
  * @property {boolean} googlePhotosNoFilter - don't filter photos
- * @property {module:sources/photo_source_google.GoogleSource.DEF_FILTER}
- * googlePhotosFilter - filter for retrieving google photos
+ * @property {{}} googlePhotosFilter - filter for retrieving google photos
  * @property {module:weather.Location} location - geo location
  * @property {boolean} showCurrentWeather - display weather
  * @property {int} weatherTempUnit - temp unit (0 == C 1 == F)
@@ -232,6 +229,7 @@ export const DEFS = {
 
 /**
  * Initialize the data saved in localStorage
+ * @returns {Promise&lt;void>}
  */
 export async function initialize() {
   try {
@@ -252,18 +250,21 @@ export async function initialize() {
 
     // set temp unit based on locale
     ChromeStorage.set('weatherTempUnit', _getTempUnit());
-    
+
     // update state
     await processState();
   } catch (err) {
-    // ignore
+    ChromeLog.error(err.message, 'AppData.initialize');
   }
+
+  return Promise.resolve();
 }
 
 /**
  * Update the data saved in localStorage
+ * @returns {Promise&lt;void>}
  */
-export function update() {
+export async function update() {
   // New items, changes, and removal of unused items can take place
   // here when the version changes
   let oldVersion = ChromeStorage.getInt('version');
@@ -311,10 +312,11 @@ export function update() {
       ChromeStorage.set('permPicasa', 'notSet');
 
       // Remove cached Auth token
-      ChromeAuth.removeCachedToken(false, null, null).catch(() => {
+      try {
+        await ChromeAuth.removeCachedToken(false, null, null);
+      } catch (e) {
         // nice to remove but not critical
-        return null;
-      });
+      }
 
       // Google Photos API not compatible with Picasa API album id's
       ChromeStorage.set('albumSelections', []);
@@ -333,10 +335,12 @@ export function update() {
 
   if (oldVersion &lt; 20) {
     // set signin state
-    ChromeAuth.isSignedIn().then((signedIn) => {
+    try {
+      const signedIn = await ChromeAuth.isSignedIn();
       ChromeStorage.set('signedInToChrome', signedIn);
-      return null;
-    }).catch(() => {});
+    } catch (e) {
+      // ignore
+    }
 
     // change minimum transition time
     const trans = ChromeStorage.get('transitionTime', DEFS.transitionTime);
@@ -348,7 +352,11 @@ export function update() {
   }
 
   if (oldVersion &lt; 21) {
-    _updateToChromeLocaleStorage().catch(() => {});
+    try {
+      await _updateToChromeLocaleStorage();
+    } catch (e) {
+      // ignore
+    }
   }
 
   if (oldVersion &lt; 22) {
@@ -368,7 +376,13 @@ export function update() {
   _addDefaults();
 
   // update state
-  processState().catch(() => {});
+  try {
+    await processState();
+  } catch (e) {
+    // ignore
+  }
+
+  return Promise.resolve();
 }
 
 /**
@@ -404,94 +418,98 @@ export function restoreDefaults() {
  * @returns {Promise&lt;void>}
  */
 export async function processState(key = 'all') {
-  if (key === 'all') {
-    // update everything
+  try {
+    if (key === 'all') {
+      // update everything
 
-    _processEnabled();
-    _processKeepAwake();
-    _processIdleTime();
-    await Alarm.updatePhotoAlarm();
-    await Alarm.updateWeatherAlarm();
+      _processEnabled();
+      _processKeepAwake();
+      _processIdleTime();
+      await Alarm.updatePhotoAlarm();
+      await Alarm.updateWeatherAlarm();
 
-    // process photo SOURCES
-    PhotoSources.processAll(false);
+      // process photo SOURCES
+      PhotoSources.processAll(false);
 
-    // set os, if not already
-    if (!ChromeStorage.get('os')) {
-      await _setOS();
-    }
-  } else {
-    // individual change
-
-    if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
-      // photo source usage or full resolution google photos changed
-      let useKey = key;
-      if (key === 'fullResGoogle') {
-        // full res photo state changed update albums or photos
-        const isAlbums =
-            ChromeStorage.getBool('useGoogleAlbums', DEFS.useGoogleAlbums);
-        if (isAlbums) {
-          // update albums
-          useKey = 'useGoogleAlbums';
-          try {
-            await PhotoSources.process(useKey);
-          } catch (err) {
-            const msg = MyMsg.PHOTO_SOURCE_FAILED;
-            msg.key = useKey;
-            msg.error = err.message;
-            ChromeMsg.send(msg).catch(() => {});
-          }
-        }
-        const isPhotos =
-            ChromeStorage.getBool('useGooglePhotos', DEFS.useGooglePhotos);
-        if (isPhotos) {
-          // update photos
-          useKey = 'useGooglePhotos';
-          try {
-            await PhotoSources.process(useKey);
-          } catch (err) {
-            const msg = MyMsg.PHOTO_SOURCE_FAILED;
-            msg.key = useKey;
-            msg.error = err.message;
-            ChromeMsg.send(msg).catch(() => {});
-          }
-        }
-      } else if ((key !== 'useGoogleAlbums') &amp;&amp; (key !== 'useGooglePhotos')) {
-        // update photo source - skip Google sources as they are handled 
-        // by the UI when the mode changes
-        try {
-          await PhotoSources.process(useKey);
-        } catch (err) {
-          const msg = MyMsg.PHOTO_SOURCE_FAILED;
-          msg.key = useKey;
-          msg.error = err.message;
-          ChromeMsg.send(msg).catch(() => {});
-        }
+      // set os, if not already
+      if (!ChromeStorage.get('os')) {
+        await _setOS();
       }
     } else {
-      switch (key) {
-        case 'enabled':
-          _processEnabled();
-          break;
-        case 'idleTime':
-          _processIdleTime();
-          break;
-        case 'keepAwake':
-        case 'activeStart':
-        case 'activeStop':
-        case 'allowSuspend':
-          _processKeepAwake();
-          break;
-        case 'weatherTempUnit':
-          await Weather.updateUnits();
-          break;
-        default:
-          break;
+      // individual change
+
+      if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
+        // photo source usage or full resolution google photos changed
+        let useKey = key;
+        if (key === 'fullResGoogle') {
+          // full res photo state changed update albums or photos
+          const isAlbums =
+              ChromeStorage.getBool('useGoogleAlbums', DEFS.useGoogleAlbums);
+          if (isAlbums) {
+            // update albums
+            useKey = 'useGoogleAlbums';
+            try {
+              await PhotoSources.process(useKey);
+            } catch (err) {
+              const msg = MyMsg.PHOTO_SOURCE_FAILED;
+              msg.key = useKey;
+              msg.error = err.message;
+              ChromeMsg.send(msg).catch(() => {});
+            }
+          }
+          const isPhotos =
+              ChromeStorage.getBool('useGooglePhotos', DEFS.useGooglePhotos);
+          if (isPhotos) {
+            // update photos
+            useKey = 'useGooglePhotos';
+            try {
+              await PhotoSources.process(useKey);
+            } catch (err) {
+              const msg = MyMsg.PHOTO_SOURCE_FAILED;
+              msg.key = useKey;
+              msg.error = err.message;
+              ChromeMsg.send(msg).catch(() => {});
+            }
+          }
+        } else if ((key !== 'useGoogleAlbums') &amp;&amp; (key !== 'useGooglePhotos')) {
+          // update photo source - skip Google sources as they are handled 
+          // by the UI when the mode changes
+          try {
+            await PhotoSources.process(useKey);
+          } catch (err) {
+            const msg = MyMsg.PHOTO_SOURCE_FAILED;
+            msg.key = useKey;
+            msg.error = err.message;
+            ChromeMsg.send(msg).catch(() => {});
+          }
+        }
+      } else {
+        switch (key) {
+          case 'enabled':
+            _processEnabled();
+            break;
+          case 'idleTime':
+            _processIdleTime();
+            break;
+          case 'keepAwake':
+          case 'activeStart':
+          case 'activeStop':
+          case 'allowSuspend':
+            _processKeepAwake();
+            break;
+          case 'weatherTempUnit':
+            await Weather.updateUnits();
+            break;
+          default:
+            break;
+        }
       }
     }
+  } catch (err) {
+    ChromeLog.error(err.message, 'AppData.processState');
   }
 
-  return null;
+  return Promise.resolve();
 }
 
 /**
@@ -554,6 +572,7 @@ function _processKeepAwake() {
   keepAwake
       ? chrome.power.requestKeepAwake('display')
       : chrome.power.releaseKeepAwake();
+  
   Alarm.updateKeepAwakeAlarm();
 }
 
@@ -599,7 +618,7 @@ async function _setOS() {
     ChromeStorage.set('os', 'unknown');
   }
 
-  return null;
+  return Promise.resolve();
 }
 
 /**
@@ -676,7 +695,7 @@ function _convertSliderValue(key) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on March 31st 2019, 2:21:44 am
+		on April 1st 2019, 5:06:05 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
