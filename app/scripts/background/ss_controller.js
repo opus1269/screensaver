@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as AppData from './data.js';
+
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as ChromeLocale
@@ -64,7 +66,8 @@ export function isActive() {
  * @param {boolean} single - if true, only show on one display
  */
 export function display(single) {
-  if (!single && ChromeStorage.getBool('allDisplays', false)) {
+  const all = ChromeStorage.getBool('allDisplays', AppData.DEFS.allDisplays);
+  if (!single && all) {
     _openOnAllDisplays();
   } else {
     _open(null);
@@ -86,10 +89,15 @@ export function close() {
  * window on the display
  * @private
  */
-function _hasFullscreen(display) {
-  if (ChromeStorage.getBool('chromeFullscreen')) {
-    return chromep.windows.getAll({populate: false}).then((wins) => {
-      let ret = false;
+async function _hasFullscreen(display) {
+  let ret = false;
+  const fullScreen =
+      ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
+  
+  try {
+    if (fullScreen) {
+      // see if there is a Chrome window that is in full screen mode
+      let wins = await chromep.windows.getAll({populate: false});
       const left = display ? display.bounds.left : 0;
       const top = display ? display.bounds.top : 0;
       for (let i = 0; i < wins.length; i++) {
@@ -100,26 +108,28 @@ function _hasFullscreen(display) {
           break;
         }
       }
-      return Promise.resolve(ret);
-    });
-  } else {
-    return Promise.resolve(false);
+    }
+  } catch (err) {
+    ChromeLog.error(err.message, 'SSController._hasFullscreen');
   }
+
+  return Promise.resolve(ret);
 }
 
 /**
- * Determine if the screen saver is currently showing
+ * Determine if a screensaver is currently showing
  * @returns {Promise<boolean>} true if showing
  * @private
  */
-function _isShowing() {
-  // send message to the screensaver to see if he is around
-  return ChromeMsg.send(MyMsg.SS_IS_SHOWING).then(() => {
+async function _isShowing() {
+  // send message to the screensaver's to see if any are around
+  try {
+    await ChromeMsg.send(MyMsg.SS_IS_SHOWING);
     return Promise.resolve(true);
-  }).catch(() => {
+  } catch (err) {
     // no one listening
     return Promise.resolve(false);
-  });
+  }
 }
 
 /**
