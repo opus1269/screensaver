@@ -108,6 +108,7 @@ class PhotoSource {
   /**
    * Fetch the photos for this source - override
    * @abstract
+   * @throws An error if fetch failed
    * @returns {Promise<Object>} could be array of photos or albums
    */
   fetchPhotos() {
