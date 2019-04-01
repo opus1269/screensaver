@@ -67,6 +67,7 @@ export function updateKeepAwakeAlarm() {
       delayInMinutes: startDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
+    
     chrome.alarms.create(_ALARMS.DEACTIVATE, {
       delayInMinutes: stopDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
@@ -91,7 +92,8 @@ export function updateKeepAwakeAlarm() {
  */
 export async function updatePhotoAlarm() {
   // Add daily alarm to update photo sources that request this
-  return chromep.alarms.get(_ALARMS.UPDATE_PHOTOS).then((alarm) => {
+  try {
+    const alarm = await chromep.alarms.get(_ALARMS.UPDATE_PHOTOS);
     if (!alarm) {
       chrome.alarms.create(_ALARMS.UPDATE_PHOTOS, {
         when: Date.now() + ChromeTime.MSEC_IN_DAY,
@@ -99,10 +101,11 @@ export async function updatePhotoAlarm() {
       });
     }
     return Promise.resolve();
-  }).catch((err) => {
+  } catch (err) {
     ChromeLog.error(err.message, 'Alarm.updatePhotoAlarm');
-    return Promise.resolve();
-  });
+  }
+
+  return Promise.resolve();
 }
 
 /**
@@ -110,28 +113,29 @@ export async function updatePhotoAlarm() {
  * @returns {Promise<void>}
  */
 export async function updateWeatherAlarm() {
-  const weather = ChromeStorage.getBool('showCurrentWeather',
+  const showWeather = ChromeStorage.getBool('showCurrentWeather',
       AppData.DEFS.showCurrentWeather);
-  if (weather) {
+  if (showWeather) {
     // Add repeating alarm to update current weather
     // Trigger it every ten minutes, even though weather won't
     // update that often
-    return chromep.alarms.get(_ALARMS.WEATHER).then((alarm) => {
+    try {
+      const alarm = await chromep.alarms.get(_ALARMS.WEATHER);
       if (!alarm) {
+        // doesn't exist, create it
         chrome.alarms.create(_ALARMS.WEATHER, {
           when: Date.now(),
           periodInMinutes: 10,
         });
       }
-      return Promise.resolve();
-    }).catch((err) => {
+    } catch (err) {
       ChromeLog.error(err.message, 'Alarm.updateWeatherAlarm');
-      return Promise.resolve();
-    });
+    }
   } else {
     chrome.alarms.clear(_ALARMS.WEATHER);
-    return Promise.resolve();
   }
+  
+  return Promise.resolve();
 }
 
 /**
@@ -149,25 +153,28 @@ export function updateBadgeText() {
  * @returns {Promise<void>}
  * @private
  */
-function _setActiveState() {
+async function _setActiveState() {
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
   const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
   if (keepAwake) {
     chrome.power.requestKeepAwake('display');
   }
+  
+  // determine if we should show screensaver
   const interval = AppData.getIdleSeconds();
-  return chromep.idle.queryState(interval).then((state) => {
+  try {
+    let state = await chromep.idle.queryState(interval);
     // display screensaver if enabled and the idle time criteria is met
     if (enabled && (state === 'idle')) {
       SSController.display(false);
     }
-    updateBadgeText();
-    return Promise.resolve();
-  }).catch((err) => {
+  } catch (err) {
     ChromeLog.error(err.message, 'Alarm._setActiveState');
-    updateBadgeText();
-    return Promise.resolve();
-  });
+  }
+  
+  updateBadgeText();
+
+  return Promise.resolve();
 }
 
 /**
@@ -227,36 +234,40 @@ async function _updateWeather() {
 }
 
 /**
- * Event: Fired when an alarm has elapsed.
+ * Event: Fired when an alarm has triggered.
  * @see https://developer.chrome.com/apps/alarms#event-onAlarm
  * @param {Object} alarm - details on alarm
  * @private
  */
-function _onAlarm(alarm) {
-
-  switch (alarm.name) {
-    case _ALARMS.ACTIVATE:
-      // entering active time range of keep awake
-      _setActiveState().catch(() => {});
-      break;
-    case _ALARMS.DEACTIVATE:
-      // leaving active time range of keep awake
-      _setInactiveState();
-      break;
-    case _ALARMS.UPDATE_PHOTOS:
-      // get the latest for the live photo streams
-      PhotoSources.processDaily();
-      break;
-    case _ALARMS.BADGE_TEXT:
-      // set the icons text
-      _setBadgeText();
-      break;
-    case _ALARMS.WEATHER:
-      // update the weather
-      _updateWeather().catch(() => {});
-      break;
-    default:
-      break;
+async function _onAlarm(alarm) {
+  
+  try {
+    switch (alarm.name) {
+      case _ALARMS.ACTIVATE:
+        // entering active time range of keep awake
+        await _setActiveState();
+        break;
+      case _ALARMS.DEACTIVATE:
+        // leaving active time range of keep awake
+        _setInactiveState();
+        break;
+      case _ALARMS.UPDATE_PHOTOS:
+        // get the latest for the live photo streams
+        PhotoSources.processDaily();
+        break;
+      case _ALARMS.BADGE_TEXT:
+        // set the icons text
+        _setBadgeText();
+        break;
+      case _ALARMS.WEATHER:
+        // update the weather
+        await _updateWeather();
+        break;
+      default:
+        break;
+    }
+  } catch (err) {
+    ChromeLog.error(err.message, 'Alarm._onAlarm');
   }
 }
 
