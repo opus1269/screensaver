@@ -67,7 +67,7 @@ export function updateKeepAwakeAlarm() {
       delayInMinutes: startDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
-    
+
     chrome.alarms.create(_ALARMS.DEACTIVATE, {
       delayInMinutes: stopDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
@@ -134,7 +134,7 @@ export async function updateWeatherAlarm() {
   } else {
     chrome.alarms.clear(_ALARMS.WEATHER);
   }
-  
+
   return Promise.resolve();
 }
 
@@ -159,7 +159,7 @@ async function _setActiveState() {
   if (keepAwake) {
     chrome.power.requestKeepAwake('display');
   }
-  
+
   // determine if we should show screensaver
   const interval = AppData.getIdleSeconds();
   try {
@@ -171,7 +171,7 @@ async function _setActiveState() {
   } catch (err) {
     ChromeLog.error(err.message, 'Alarm._setActiveState');
   }
-  
+
   updateBadgeText();
 
   return Promise.resolve();
@@ -225,11 +225,11 @@ async function _updateWeather() {
   } catch (err) {
     // ignore - means no screensaver around
   }
-  
+
   if (response) {
     await Weather.update();
   }
-  
+
   return Promise.resolve();
 }
 
@@ -240,7 +240,7 @@ async function _updateWeather() {
  * @private
  */
 async function _onAlarm(alarm) {
-  
+
   try {
     switch (alarm.name) {
       case _ALARMS.ACTIVATE:
@@ -260,8 +260,13 @@ async function _onAlarm(alarm) {
         _setBadgeText();
         break;
       case _ALARMS.WEATHER:
-        // update the weather
-        await _updateWeather();
+        // try to update the weather
+        try {
+          await _updateWeather();
+        } catch (err) {
+          const ERR_TITLE = ChromeLocale.localize('err_weather_update');
+          ChromeLog.error(err.message, 'Alarm._onAlarm', ERR_TITLE, alarm.name);
+        }
         break;
       default:
         break;

@@ -453,13 +453,11 @@ Polymer({
           throw new Error(ERR_TEXT);
         } else {
           // update the weather
-          await Weather.update();
+          await Weather.update(true);
         }
       } else {
         // not showing weather
-        
-        // reset current weather to default
-        ChromeStorage.set('currentWeather', Weather.DEF_WEATHER);
+
         // remove weather permission
         await Permissions.remove(Permissions.WEATHER);
         // revoke geolocation permission - not implemented in Chrome

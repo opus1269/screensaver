@@ -105,9 +105,11 @@ const _URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
 
 /**
  * Update the weather
+ * @param  {boolean} [force=false] if true, force update
+ * @throws An error if update failed
  * @returns {Promise<void>}
  */
-export async function update() {
+export async function update(force = false) {
   const METHOD = 'Weather.update';
   const ERR_TITLE = ChromeLocale.localize('err_weather_update');
 
@@ -118,12 +120,14 @@ export async function update() {
     return Promise.resolve();
   }
 
-  const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
-  const lastTime = curWeather.time;
-  const time = Date.now();
-  if ((time - lastTime) < MIN_CALL_FREQ) {
-    // don't update faster than this
-    return Promise.resolve();
+  if (!force) {
+    const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
+    const lastTime = curWeather.time;
+    const time = Date.now();
+    if ((time - lastTime) < MIN_CALL_FREQ) {
+      // don't update faster than this
+      return Promise.resolve();
+    }
   }
 
   // first, try to update location
@@ -197,7 +201,7 @@ export async function update() {
     return Promise.resolve();
   } catch (err) {
     ChromeLog.error(err.message, METHOD, ERR_TITLE);
-    return Promise.resolve();
+    throw err;
   }
 }
 
