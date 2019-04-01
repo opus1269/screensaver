@@ -228,7 +228,9 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
   // this will at least ensure the LAN is connected
   // may get false positives for other failures
   if (!navigator.onLine) {
-    throw new Error(ChromeLocale.localize('err_network'));
+    const msg = ChromeLocale.localize('err_network');
+    ChromeLog.error(msg, METHOD, ERR_TITLE);
+    throw new Error(msg);
   }
   
   let position;
