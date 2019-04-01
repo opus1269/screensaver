@@ -26,13 +26,14 @@ const _DEBUG = false;
  * @param {string} os - os short name
  * @returns {Promise.<boolean>} true if the given os
  */
-function _isOS(os) {
-  return chromep.runtime.getPlatformInfo().then((info) => {
+async function _isOS(os) {
+  try {
+    const info = await chromep.runtime.getPlatformInfo();
     return Promise.resolve((info.os === os));
-  }).catch(() => {
+  } catch (e) {
     // something went wrong - linux seems to fail this call sometimes
     return Promise.resolve(false);
-  });
+  }
 }
 
 /**
@@ -81,10 +82,12 @@ export function getFullChromeVersion() {
  * Get the OS as a human readable string
  * @returns {Promise.<string>} OS name
  */
-export function getPlatformOS() {
+export async function getPlatformOS() {
   let output = 'Unknown';
-  return chromep.runtime.getPlatformInfo().then((info) => {
+  try {
+    const info = await chromep.runtime.getPlatformInfo();
     const os = info.os;
+    
     switch (os) {
       case 'win':
         output = 'MS Windows';
@@ -107,11 +110,11 @@ export function getPlatformOS() {
       default:
         break;
     }
-    return Promise.resolve(output);
-  }).catch(() => {
+  } catch (e) {
     // something went wrong - linux seems to fail this call sometimes
-    return Promise.resolve(output);
-  });
+  }
+
+  return Promise.resolve(output);
 }
 
 /**
