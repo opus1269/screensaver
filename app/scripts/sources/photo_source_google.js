@@ -123,7 +123,6 @@ class GoogleSource extends PhotoSource {
    * @param {boolean} isDaily - Should the source be updated daily
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
-   * @constructor
    */
   constructor(useKey, photosKey, type, desc, isDaily, isArray, loadArg = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
@@ -172,7 +171,7 @@ class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_ALBUMS() {
-    return 100;
+    return 200;
   }
 
   /**
@@ -190,11 +189,11 @@ class GoogleSource extends PhotoSource {
    * @static
    */
   static get MAX_PHOTOS() {
-    return 20000;
+    return 30000;
   }
 
   /**
-   * Max photos google images mode
+   * Max photos for google images mode
    * @returns {int} value
    * @static
    */
