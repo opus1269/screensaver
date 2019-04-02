@@ -275,7 +275,7 @@ Polymer({
         const title = ChromeLocale.localize('err_load_photos');
         const text = ChromeLocale.localize('err_auth_picasa');
         showErrorDialog(title, text, METHOD);
-        return null;
+        return Promise.resolve();
       }
 
       this.set('waitForLoad', true);

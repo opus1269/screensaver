@@ -129,9 +129,9 @@ export async function request(type) {
     });
 
     if (granted) {
-      _setState(type, _STATE.allowed);
+      await _setState(type, _STATE.allowed);
     } else {
-      _setState(type, _STATE.denied);
+      await _setState(type, _STATE.denied);
       try {
         // try to remove if it has been previously granted
         await remove(type);
@@ -150,6 +150,7 @@ export async function request(type) {
 /**
  * Remove the optional permissions
  * @param {module:permissions.Type} type - permission type
+ * @throws An error if failed to remove
  * @returns {Promise<boolean>} true if removed
  */
 export async function remove(type) {
@@ -164,7 +165,7 @@ export async function remove(type) {
   }
 
   if (removed) {
-    _setState(type, _STATE.notSet);
+    await _setState(type, _STATE.notSet);
   }
 
   return Promise.resolve(removed);
@@ -173,6 +174,7 @@ export async function remove(type) {
 /**
  * Remove and deny the optional permissions
  * @param {module:permissions.Type} type - permission type
+ * @throws An error if failed to deny
  * @returns {Promise<boolean>} true if removed
  */
 export async function deny(type) {
@@ -180,13 +182,14 @@ export async function deny(type) {
   const removed = await remove(type);
 
   // set to denied regardless of whether it was removed
-  _setState(type, _STATE.denied);
+  await _setState(type, _STATE.denied);
 
   return Promise.resolve(removed);
 }
 
 /**
  * Remove, deny, and clear photo selections for Google Photos
+ * @throws An error on failure
  * @returns {Promise<void>}
  */
 export async function removeGooglePhotos() {
@@ -204,31 +207,39 @@ export async function removeGooglePhotos() {
     // nice to remove but not critical
   }
 
-  return null;
+  return Promise.resolve();
 }
 
 /**
  * Persist the state of an {@link module:permissions.Type}
  * @param {module:permissions.Type} type - permission type
  * @param {string} value - permission state
+ * @returns {Promise<void>}
  * @private
  */
-function _setState(type, value) {
-  // send message to store value so items that are bound
-  // to it will get storage event
-  const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
-  msg.key = type.name;
-  msg.value = value;
-  ChromeMsg.send(msg).catch(() => {});
+async function _setState(type, value) {
+  try {
+    // send message to store value so items that are bound
+    // to it will get storage event
+    const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+    msg.key = type.name;
+    msg.value = value;
+    await ChromeMsg.send(msg);
+  } catch (err) {
+    // ignore
+  }
+  
+  return Promise.resolve();
 }
 
 /**
- * Determine if we have the optional permissions
+ * Determine if we have an optional permission
  * @param {module:permissions.Type} type - permission type
- * @returns {Promise<boolean>} true if we have permissions
+ * @throws An error if failed to get status
+ * @returns {Promise<boolean>} true if we have the permission
  */
-function _contains(type) {
-  return chromep.permissions.contains({
+async function _contains(type) {
+  return await chromep.permissions.contains({
     permissions: type.permissions,
     origins: type.origins,
   });

@@ -272,7 +272,7 @@ Polymer({
         const title = ERR_TITLE;
         const text = ChromeLocale.localize('err_auth_picasa');
         showErrorDialog(title, text, METHOD);
-        return null;
+        return Promise.resolve();
       }
 
       // get the list of user's albums
@@ -286,7 +286,7 @@ Polymer({
         ChromeLog.error(text, METHOD, ERR_TITLE);
         // fire event to let others know
         this.fire('no-albums');
-        return null;
+        return Promise.resolve();
       }
 
       if (updatePhotos) {
@@ -332,7 +332,7 @@ Polymer({
       this.set('waitForLoad', false);
     }
 
-    return null;
+    return Promise.resolve();
   },
 
   /**
@@ -387,7 +387,7 @@ Polymer({
       // ignore
     }
 
-    return null;
+    return Promise.resolve();
   },
 
   // noinspection JSUnusedLocalSymbols

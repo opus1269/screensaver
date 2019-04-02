@@ -89,7 +89,7 @@ export function clear() {
 
 /**
  * Backup one slide
- * @returns {?null} {@link module:ss/views.Views} index to step to
+ * @returns {?int} {@link module:ss/views.Views} index to step to
  */
 export function back() {
   if (_history.idx <= 0) {
