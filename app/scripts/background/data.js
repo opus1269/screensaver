@@ -343,7 +343,11 @@ export async function processState(key = 'all') {
       await Alarm.updateWeatherAlarm();
 
       // process photo SOURCES
-      PhotoSources.processAll(false);
+      try {
+        await PhotoSources.processAll(false);
+      } catch (err) {
+        // ignore
+      }
 
       // set os, if not already
       if (!ChromeStorage.get('os')) {

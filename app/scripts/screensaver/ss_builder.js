@@ -21,6 +21,7 @@ import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 /**
  * Build everything related to a {@link module:els/screensaver.Screensaver}
+ * @throws an error if we failed to build show
  * @returns {Promise<boolean>} true if there are photos for the show
  */
 export async function build() {
@@ -32,29 +33,27 @@ export async function build() {
     // initialize the photo finder
     SSFinder.initialize();
   }
-  return hasPhotos;
+
+  return Promise.resolve(hasPhotos);
 }
 
 /**
  * Build the {@link module:ss/photos.Photos} that will be displayed
+ * @throws An error if we failed to get photos
  * @returns {Promise<boolean>} true if there is at least one photo
  * @private
  */
 async function _loadPhotos() {
-  try {
-    let sources = await PhotoSources.getSelectedPhotos();
-    sources = sources || [];
-    for (const source of sources) {
-      SSPhotos.addFromSource(source);
-    }
+  let sources = await PhotoSources.getSelectedPhotos();
+  sources = sources || [];
 
-    if (!SSPhotos.getCount()) {
-      // No usable photos
-      Screensaver.setNoPhotos();
-      return Promise.resolve(false);
-    }
-  } catch (err) {
-    // TODO log error
+  for (const source of sources) {
+    SSPhotos.addFromSource(source);
+  }
+
+  if (!SSPhotos.getCount()) {
+    // No usable photos
+    Screensaver.setNoPhotos();
     return Promise.resolve(false);
   }
 

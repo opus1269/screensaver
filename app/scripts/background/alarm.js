@@ -11,12 +11,12 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as Weather from '../../scripts/weather.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
@@ -38,6 +38,10 @@ const chromep = new ChromePromise();
  * @property {string} UPDATE_PHOTOS - photo sources should be updated
  * @property {string} BADGE_TEXT - icon's Badge text should be set
  * @property {string} WEATHER - try to update current weather
+ */
+
+/**
+ * Alarms triggered by chrome.alarms
  * @type {module:bg/alarm.Alarms}
  * @const
  * @private
@@ -102,7 +106,7 @@ export async function updatePhotoAlarm() {
     }
     return Promise.resolve();
   } catch (err) {
-    ChromeLog.error(err.message, 'Alarm.updatePhotoAlarm');
+    ChromeGA.error(err.message, 'Alarm.updatePhotoAlarm');
   }
 
   return Promise.resolve();
@@ -129,7 +133,7 @@ export async function updateWeatherAlarm() {
         });
       }
     } catch (err) {
-      ChromeLog.error(err.message, 'Alarm.updateWeatherAlarm');
+      ChromeGA.error(err.message, 'Alarm.updateWeatherAlarm');
     }
   } else {
     chrome.alarms.clear(_ALARMS.WEATHER);
@@ -169,7 +173,7 @@ async function _setActiveState() {
       await SSController.display(false);
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'Alarm._setActiveState');
+    ChromeGA.error(err.message, 'Alarm._setActiveState');
   }
 
   updateBadgeText();
@@ -252,8 +256,12 @@ async function _onAlarm(alarm) {
         _setInactiveState();
         break;
       case _ALARMS.UPDATE_PHOTOS:
-        // get the latest for the live photo streams
-        PhotoSources.processDaily();
+        // get the latest for the daily photo streams
+        try {
+          await PhotoSources.processDaily();
+        } catch (err) {
+          ChromeGA.error(err.message, 'Alarm._onAlarm');
+        }
         break;
       case _ALARMS.BADGE_TEXT:
         // set the icons text
@@ -264,15 +272,14 @@ async function _onAlarm(alarm) {
         try {
           await _updateWeather();
         } catch (err) {
-          const ERR_TITLE = ChromeLocale.localize('err_weather_update');
-          ChromeLog.error(err.message, 'Alarm._onAlarm', ERR_TITLE, alarm.name);
+          ChromeGA.error(err.message, 'Alarm._onAlarm');
         }
         break;
       default:
         break;
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'Alarm._onAlarm');
+    ChromeGA.error(err.message, 'Alarm._onAlarm');
   }
 }
 

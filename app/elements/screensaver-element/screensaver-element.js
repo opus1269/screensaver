@@ -341,8 +341,9 @@ const Screensaver = Polymer({
       
       this._setupPhotoTransitions();
       
-      // start screensaver
-      this._launch();
+      // start slide show
+      this._launch().catch(() => {});
+      
     }, 0);
   },
 
@@ -431,17 +432,26 @@ const Screensaver = Polymer({
 
   /**
    * Launch the slide show
-   * @param {int} [delay=1000] - delay in milli sec before start
+   * @param {int} [delay=2000] - delay in milli sec before start
+   * @returns {Promise<void>}
    * @private
    */
-  _launch: async function(delay = 1000) {
-    const hasPhotos = await SSBuilder.build();
-    if (hasPhotos) {
-      // update the weather
-      Weather.update().catch(() => {});
-      // kick off the slide show
-      SSRunner.start(delay);
+  _launch: async function(delay = 2000) {
+    try {
+      const hasPhotos = await SSBuilder.build();
+      if (hasPhotos) {
+        // update the weather - don't wait as can slow
+        Weather.update().catch(() => {});
+        
+        // kick off the slide show
+        SSRunner.start(delay);
+      }
+    } catch (err) {
+      ChromeLog.error(err.message, 'SS._launch');
+      setNoPhotos();
     }
+    
+    return Promise.resolve();
   },
 
   /**

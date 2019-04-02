@@ -88,24 +88,29 @@ export function isUseKey(keyName) {
 /**
  * Process the given photo source and save to localStorage.
  * @param {string} useKey - The photo source to retrieve
- * @returns {Promise<void>} void
+ * @throws An error if processing failed
+ * @returns {Promise<void>}
  */
-export function process(useKey) {
+export async function process(useKey) {
   try {
     const source = PhotoSourceFactory.create(useKey);
     if (source) {
-      return source.process();
+      await source.process();
     }
-  } catch (ex) {
-    ChromeGA.exception(ex, `${useKey} failed to load`, false);
-    return Promise.reject(ex);
+  } catch (err) {
+    ChromeGA.error(err, `${useKey} failed to load`);
+    throw err;
   }
+
+  return Promise.resolve();
 }
 
 /**
  * Get all the photos from all selected sources. These will be
  * used by the screensaver.
- * @returns {Promise<module:sources/photo_source.Photos[]>} Array of sources photos
+ * @throws An error if we failed to get photos
+ * @returns {Promise<module:sources/photo_source.Photos[]>} Array of sources
+ *     photos
  */
 export async function getSelectedPhotos() {
   const sources = getSelectedSources();
@@ -114,6 +119,7 @@ export async function getSelectedPhotos() {
     const photos = await source.getPhotos();
     ret.push(photos);
   }
+  
   return Promise.resolve(ret);
 }
 
@@ -121,8 +127,9 @@ export async function getSelectedPhotos() {
  * Process all the selected photo sources.
  * This normally requires a https call and may fail for various reasons
  * @param {boolean} doGoogle=false - update user's Google Photos too
+ * @returns {Promise<void>}
  */
-export function processAll(doGoogle = false) {
+export async function processAll(doGoogle = false) {
   const sources = getSelectedSources();
   for (const source of sources) {
     let skip = false;
@@ -131,21 +138,32 @@ export function processAll(doGoogle = false) {
       skip = !doGoogle;
     }
     if (!skip) {
-      source.process().catch(() => {});
+      try {
+        await source.process();
+      } catch (err) {
+        // ignore
+      }
     }
   }
+  
+  return Promise.resolve();
 }
 
 /**
- * Process all the selected photo sources that are to be
- * updated every day.
- * This normally requires a https call and may fail for various reasons
+ * Process all the selected photo sources that are to be update daily
+ * @returns {Promise<void>}
  */
-export function processDaily() {
+export async function processDaily() {
   const sources = getSelectedSources();
   for (const source of sources) {
     if (source.isDaily()) {
-      source.process().catch(() => {});
+      try {
+        await source.process();
+      } catch (err) {
+        // ignore
+      }
     }
   }
+
+  return Promise.resolve();
 }
