@@ -18,7 +18,7 @@ import '../node_modules/@polymer/polymer/polymer-element.js';
 const sharedStyles = document.createElement('dom-module');
 
 // language=HTML format=false
-sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet -->
+sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnresolvedCustomProperty -->
 <template>
   <style>
     .page-title {
