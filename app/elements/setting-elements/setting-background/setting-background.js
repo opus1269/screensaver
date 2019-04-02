@@ -193,6 +193,7 @@ const SettingBackground = Polymer({
    * @private
    */
   _onTap: function() {
+    // noinspection JSUnresolvedVariable
     this.$.dialog.open();
   },
 

@@ -441,6 +441,7 @@ Polymer({
   _loadAlbum: async function(album, wait = true) {
     const METHOD = 'AlbumViews._loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
+    /** @type {Error} */
     let error = null;
     let ret = false;
 

@@ -265,6 +265,7 @@ Polymer({
    */
   loadPhotos: async function() {
     const METHOD = 'PhotosView.loadPhotos';
+    /** @type {Error} */
     let error = null;
     try {
       const granted = await Permissions.request(Permissions.PICASA);
@@ -349,6 +350,7 @@ Polymer({
    * @private
    */
   _onPhotoCatChanged: function(ev) {
+    // noinspection JSUnresolvedVariable
     const cat = ev.target.id;
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter',
