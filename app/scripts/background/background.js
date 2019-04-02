@@ -173,7 +173,8 @@ async function _onStorageChanged(event) {
 function _onChromeMessage(request, sender, response) {
   let ret = false;
   if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
-    AppData.restoreDefaults();
+    ret = true;
+    AppData.restoreDefaults().catch(() => {});
   } else if (request.message === ChromeMsg.STORE.message) {
     ChromeStorage.set(request.key, request.value);
   } else if (request.message === MyMsg.LOAD_FILTERED_PHOTOS.message) {

@@ -227,8 +227,8 @@ export async function update() {
 
       // Remove cached Auth token
       try {
-        await ChromeAuth.removeCachedToken(false, null, null);
-      } catch (e) {
+        await ChromeAuth.removeCachedToken(false);
+      } catch (err) {
         // nice to remove but not critical
       }
 
@@ -301,8 +301,9 @@ export async function update() {
 
 /**
  * Restore default values for data saved in localStorage
+ * @returns {Promise<void>}
  */
-export function restoreDefaults() {
+export async function restoreDefaults() {
   Object.keys(DEFS).forEach((key) => {
     // skip Google Photos settings
     if (!key.includes('useGoogle') &&
@@ -322,8 +323,14 @@ export function restoreDefaults() {
   // restore default temp unit based on locale
   ChromeStorage.set('weatherTempUnit', _getTempUnit());
 
-  // update state
-  processState().catch(() => {});
+  try {
+    // update state
+    await processState();
+  } catch (err) {
+    // ignore
+  }
+  
+  return Promise.resolve();
 }
 
 /**

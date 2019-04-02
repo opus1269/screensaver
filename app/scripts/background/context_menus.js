@@ -47,10 +47,10 @@ const _ENABLE_MENU = 'ENABLE_MENU';
 async function _toggleEnabled() {
   const oldState = ChromeStorage.getBool('enabled', true);
   ChromeStorage.set('enabled', !oldState);
-  
+
   // storage changed event not fired on same page as the change
   await AppData.processState('enabled');
-  
+
   return Promise.resolve();
 }
 
@@ -63,41 +63,46 @@ async function _toggleEnabled() {
  * @param {Object} details - type of event
  * @private
  */
-function _onInstalled(details) {
+async function _onInstalled(details) {
   const chromep = new ChromePromise();
 
-  // create menus on the right click menu of the extension icon
-  chromep.contextMenus.create({
-    type: 'normal',
-    id: _DISPLAY_MENU,
-    title: ChromeLocale.localize('display_now'),
-    contexts: ['browser_action'],
-  }).catch((err) => {
+  try {
+    await chromep.contextMenus.create({
+      type: 'normal',
+      id: _DISPLAY_MENU,
+      title: ChromeLocale.localize('display_now'),
+      contexts: ['browser_action'],
+    });
+  } catch (err) {
     if (!err.message.includes('duplicate id')) {
       ChromeLog.error(err.message, 'chromep.contextMenus.create');
     }
-  });
+  }
 
-  chromep.contextMenus.create({
-    type: 'normal',
-    id: _ENABLE_MENU,
-    title: ChromeLocale.localize('disable'),
-    contexts: ['browser_action'],
-  }).catch((err) => {
+  try {
+    await chromep.contextMenus.create({
+      type: 'normal',
+      id: _ENABLE_MENU,
+      title: ChromeLocale.localize('disable'),
+      contexts: ['browser_action'],
+    });
+  } catch (err) {
     if (!err.message.includes('duplicate id')) {
       ChromeLog.error(err.message, 'chromep.contextMenus.create');
     }
-  });
+  }
 
-  chromep.contextMenus.create({
-    type: 'separator',
-    id: 'SEP_MENU',
-    contexts: ['browser_action'],
-  }).catch((err) => {
+  try {
+    await chromep.contextMenus.create({
+      type: 'separator',
+      id: 'SEP_MENU',
+      contexts: ['browser_action'],
+    });
+  } catch (err) {
     if (!err.message.includes('duplicate id')) {
       ChromeLog.error(err.message, 'chromep.contextMenus.create');
     }
-  });
+  }
 }
 
 /**

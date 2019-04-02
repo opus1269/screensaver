@@ -199,7 +199,7 @@ export async function removeGooglePhotos() {
     await ChromeStorage.asyncSet('googleImages', []);
 
     // remove cached Auth token
-    await ChromeAuth.removeCachedToken(false, null, null);
+    await ChromeAuth.removeCachedToken(false);
   } catch (err) {
     // nice to remove but not critical
   }

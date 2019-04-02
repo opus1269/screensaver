@@ -238,7 +238,7 @@ async function _retry(url, opts, conf, attempt) {
 async function _retryToken(url, opts, conf, attempt) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
   
-  await ChromeAuth.removeCachedToken(conf.interactive, conf.token, null);
+  await ChromeAuth.removeCachedToken(conf.interactive, conf.token);
   
   conf.token = null;
   conf.retryToken = false;
