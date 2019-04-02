@@ -81,66 +81,76 @@ export const CONFIG = {
  * Perform GET request
  * @param {string} url - server request
  * @param {module:chrome/http.Config} [conf=CONFIG] - configuration
+ * @throws An error if GET fails
  * @returns {Promise.<JSON>} response from server
  */
-export function doGet(url, conf = CONFIG) {
+export async function doGet(url, conf = CONFIG) {
   const opts = {method: 'GET', headers: new Headers({})};
-  return _doIt(url, opts, conf);
+  
+  const json = await _doIt(url, opts, conf);
+  return Promise.resolve(json);
 }
 
 /**
  * Perform POST request
  * @param {string} url - server request
  * @param {module:chrome/http.Config} [conf=CONFIG] - configuration
+ * @throws An error if POST fails
  * @returns {Promise.<JSON>} response from server
  */
-export function doPost(url, conf = CONFIG) {
+export async function doPost(url, conf = CONFIG) {
   const opts = {method: 'POST', headers: new Headers({})};
-  return _doIt(url, opts, conf);
+
+  const json = await _doIt(url, opts, conf);
+  return Promise.resolve(json);
 }
 
 /**
- * Check response and act accordingly
+ * Check response and act accordingly, including retrying
  * @param {module:chrome/http.Response} response - server response
  * @param {string} url - server
  * @param {Object} opts - fetch options
  * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
+ * @throws An error if fetch ultimately fails
  * @returns {Promise.<JSON>} response from server
  * @private
  */
-function _processResponse(response, url, opts, conf, attempt) {
+async function _processResponse(response, url, opts, conf, attempt) {
   if (response.ok) {
     // request succeeded - woo hoo!
-    return response.json();
+    return Promise.resolve(response.json());
   }
 
   if (attempt >= conf.maxRetries) {
     // request still failed after maxRetries
-    return Promise.reject(_getError(response));
+    throw _getError(response);
   }
 
   const status = response.status;
 
   if (conf.backoff && (status >= 500) && (status < 600)) {
     // temporary server error, maybe. Retry with backoff
-    return _retry(url, opts, conf, attempt);
+    const response = await _retry(url, opts, conf, attempt);
+    return Promise.resolve(response);
   }
 
   if (conf.isAuth && conf.token && conf.retryToken && (status === 401)) {
     // could be expired token. Remove cached one and try again
-    return _retryToken(url, opts, conf, attempt);
+    const response = await _retryToken(url, opts, conf, attempt);
+    return Promise.resolve(response);
   }
 
   if (conf.isAuth && conf.interactive && conf.token && conf.retryToken &&
       (status === 403)) {
     // user may have revoked access to extension at some point
     // If interactive, retry so they can authorize again
-    return _retryToken(url, opts, conf, attempt);
+    const response = await _retryToken(url, opts, conf, attempt);
+    return Promise.resolve(response);
   }
 
   // request failed
-  return Promise.reject(_getError(response));
+  throw _getError(response);
 }
 
 /**
@@ -164,25 +174,28 @@ function _getError(response) {
  * Get authorization token
  * @param {boolean} isAuth - if true, authorization required
  * @param {boolean} interactive - if true, user initiated
- * @returns {Promise.<string>} auth token
+ * @throws An error if we failed to get token
+ * @returns {Promise.<string|null>} auth token
  * @private
  */
-function _getAuthToken(isAuth, interactive) {
+async function _getAuthToken(isAuth, interactive) {
   if (isAuth) {
-    return ChromeAuth.getToken(interactive).then((token) => {
+    try {
+      const token = await ChromeAuth.getToken(interactive);
       return Promise.resolve(token);
-    }).catch((err) => {
+    } catch (err) {
       if (interactive && (err.message.includes('revoked') ||
           err.message.includes('Authorization page could not be loaded'))) {
         // try one more time non-interactively
         // Always returns Authorization page error
         // when first registering, Not sure why
         // Other message is if user revoked access to extension
-        return ChromeAuth.getToken(false);
+        const token = await ChromeAuth.getToken(false);
+        return Promise.resolve(token);
       } else {
-        return Promise.reject(err);
+        throw err;
       }
-    });
+    }
   } else {
     // non-authorization branch
     return Promise.resolve(null);
@@ -195,18 +208,21 @@ function _getAuthToken(isAuth, interactive) {
  * @param {Object} opts - fetch options
  * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
+ * @throws An error if fetch failed
  * @returns {Promise.<JSON>} response from server
  * @private
  */
-function _retry(url, opts, conf, attempt) {
+async function _retry(url, opts, conf, attempt) {
   attempt++;
-  // eslint-disable-next-line promise/avoid-new
-  return new Promise((resolve, reject) => {
-    const delay = (Math.pow(2, attempt) - 1) * _DELAY;
-    setTimeout(() => {
-      return _fetch(url, opts, conf, attempt).then(resolve, reject);
-    }, delay);
-  });
+  const delay = (Math.pow(2, attempt) - 1) * _DELAY;
+
+  // wait function
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  await wait(delay);
+  
+  const response = await _fetch(url, opts, conf, attempt);
+  
+  return Promise.resolve(response);
 }
 
 /**
@@ -215,17 +231,19 @@ function _retry(url, opts, conf, attempt) {
  * @param {Object} opts - fetch options
  * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
+ * @throws An error if fetch failed
  * @returns {Promise.<JSON>} response from server
  * @private
  */
-function _retryToken(url, opts, conf, attempt) {
+async function _retryToken(url, opts, conf, attempt) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
-  return ChromeAuth.removeCachedToken(
-      conf.interactive, conf.token, null).then(() => {
-    conf.token = null;
-    conf.retryToken = false;
-    return _fetch(url, opts, conf, attempt);
-  });
+  
+  await ChromeAuth.removeCachedToken(conf.interactive, conf.token, null);
+  
+  conf.token = null;
+  conf.retryToken = false;
+  const response = await _fetch(url, opts, conf, attempt);
+  return Promise.resolve(response);
 }
 
 /**
@@ -234,11 +252,13 @@ function _retryToken(url, opts, conf, attempt) {
  * @param {Object} opts - fetch options
  * @param {module:chrome/http.Config} conf - configuration
  * @param {int} attempt - the retry attempt we are on
+ * @throws an error if the fetch failed
  * @returns {Promise.<JSON>} response from server
  * @private
  */
-function _fetch(url, opts, conf, attempt) {
-  return _getAuthToken(conf.isAuth, conf.interactive).then((authToken) => {
+async function _fetch(url, opts, conf, attempt) {
+  try {
+    const authToken = await _getAuthToken(conf.isAuth, conf.interactive);
     if (conf.isAuth) {
       conf.token = authToken;
       opts.headers.set(_AUTH_HEADER, `${_BEARER} ${conf.token}`);
@@ -246,10 +266,15 @@ function _fetch(url, opts, conf, attempt) {
     if (conf.body) {
       opts.body = JSON.stringify(conf.body);
     }
-    return fetch(url, opts);
-  }).then((response) => {
-    return _processResponse(response, url, opts, conf, attempt);
-  }).catch((err) => {
+    
+    // do the actual fetch
+    const response = await fetch(url, opts);
+    
+    // process and possibly retry
+    const ret = await _processResponse(response, url, opts, conf, attempt);
+    return Promise.resolve(ret);
+    
+  } catch (err) {
     let msg = err.message;
     if (msg === 'Failed to fetch') {
       msg = ChromeLocale.localize('err_network');
@@ -258,8 +283,8 @@ function _fetch(url, opts, conf, attempt) {
         msg = 'Network error';
       }
     }
-    return Promise.reject(new Error(msg));
-  });
+    throw new Error(msg);
+  }
 }
 
 /**
@@ -267,14 +292,16 @@ function _fetch(url, opts, conf, attempt) {
  * @param {string} url - server request
  * @param {Object} opts - fetch options
  * @param {module:chrome/http.Config} conf - configuration
+ * @throws An error if request failed
  * @returns {Promise.<JSON>} response from server
  * @private
  */
-function _doIt(url, opts, conf) {
+async function _doIt(url, opts, conf) {
   conf = conf || CONFIG;
   if (conf.isAuth) {
     opts.headers.set(_AUTH_HEADER, `${_BEARER} unknown`);
   }
   let attempt = 0;
-  return _fetch(url, opts, conf, attempt);
+  const response = await _fetch(url, opts, conf, attempt);
+  return Promise.resolve(response);
 }
