@@ -246,7 +246,8 @@ class GoogleSource extends PhotoSource {
   /**
    * Retrieve the user's list of albums
    * @throws An error if the album list failed to load.
-   * @returns {Promise<Array<module:sources/photo_source_google.Album>>} Array of albums
+   * @returns {Promise<Array<module:sources/photo_source_google.Album>>} Array
+   *     of albums
    * @static
    * @async
    */
@@ -342,7 +343,11 @@ class GoogleSource extends PhotoSource {
         const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
         msg.name = name;
         msg.count = photos.length;
-        ChromeMsg.send(msg).catch(() => {});
+        try {
+          await ChromeMsg.send(msg);
+        } catch (err) {
+          // ignore
+        }
       }
 
       /** @type {{nextPageToken, mediaItems}} */
@@ -499,7 +504,11 @@ class GoogleSource extends PhotoSource {
           // notify listeners of our current progress
           const msg = ChromeJSON.shallowCopy(MyMsg.FILTERED_PHOTOS_COUNT);
           msg.count = newPhotos.length;
-          ChromeMsg.send(msg).catch(() => {});
+          try {
+            await ChromeMsg.send(msg);
+          } catch (err) {
+            // ignore
+          }
         }
 
         /** @type {{nextPageToken, mediaItems}} */
@@ -737,7 +746,8 @@ class GoogleSource extends PhotoSource {
   /**
    * Fetch the most recent state for the selected albums
    * @throws An error if we could not load an album
-   * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]>} Array of albums
+   * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]>}
+   *     Array of albums
    * @static
    * @async
    */
@@ -763,8 +773,8 @@ class GoogleSource extends PhotoSource {
   }
 
   /** Determine if a mediaEntry is an image
-   * @param {module:sources/photo_source_google.mediaItem} mediaItem - Google Photos media
-   *     object
+   * @param {module:sources/photo_source_google.mediaItem} mediaItem - Google
+   *     Photos media object
    * @returns {boolean} true if entry is a photo
    * @static
    * @private
@@ -807,8 +817,8 @@ class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {module:sources/photo_source_google.mediaItem} mediaItem - object from Google
-   *     Photos API call
+   * @param {module:sources/photo_source_google.mediaItem} mediaItem - object
+   *     from Google Photos API call
    * @param {string} albumName - Album name
    * @returns {?module:sources/photo_source.Photo} Photo, null if error
    * @static
