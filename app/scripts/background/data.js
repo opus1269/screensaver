@@ -13,6 +13,8 @@ import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import ChromeLastError
   from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale
@@ -168,7 +170,7 @@ export async function initialize() {
     // update state
     await processState();
   } catch (err) {
-    ChromeLog.error(err.message, 'AppData.initialize');
+    ChromeGA.error(err.message, 'AppData.initialize');
   }
 
   return Promise.resolve();
@@ -435,7 +437,7 @@ export async function processState(key = 'all') {
       }
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'AppData.processState');
+    ChromeGA.error(err.message, 'AppData.processState');
   }
 
   return Promise.resolve();

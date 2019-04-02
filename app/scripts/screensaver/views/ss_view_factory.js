@@ -4,8 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeLog
-  from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeGA
+  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSViewZoom from './ss_view_zoom.js';
@@ -36,7 +36,7 @@ export function create(photo, type) {
     case SSViews.Type.FULL:
       return new SSViewFull(photo);
     default:
-      ChromeLog.error(`Bad SSView type: ${type}`, 'SSView.createView');
+      ChromeGA.error(`Bad SSView type: ${type}`, 'SSView.createView');
       return new SSViewLetterbox(photo);
   }
 }

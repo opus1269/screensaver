@@ -424,7 +424,7 @@ const Screensaver = Polymer({
         chrome.tabs.setZoom(1.0);
       }
     } catch (err) {
-      ChromeLog.error(err.message, 'SS._setZoom');
+      ChromeGA.error(err.message, 'SS._setZoom');
     }
     
     return Promise.resolve();

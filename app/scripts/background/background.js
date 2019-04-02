@@ -18,8 +18,6 @@ import GoogleSource from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg
   from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage
@@ -71,7 +69,7 @@ async function _onInstalled(details) {
       await AppData.initialize();
       await _showOptionsTab();
     } catch (err) {
-      ChromeLog.error(err.message, 'Bg.onInstalled');
+      ChromeGA.error(err.message, 'Bg.onInstalled');
     }
 
   } else if (details.reason === 'update') {
@@ -99,7 +97,7 @@ async function _onInstalled(details) {
     try {
       await AppData.update();
     } catch (err) {
-      ChromeLog.error(err.message, 'Bg.onUpdated');
+      ChromeGA.error(err.message, 'Bg.onUpdated');
     }
     
     return Promise.resolve();
@@ -119,7 +117,7 @@ async function _onStartup() {
   try {
     await AppData.processState();
   } catch (err) {
-    ChromeLog.error(err.message, 'Bg._onStartup');
+    ChromeGA.error(err.message, 'Bg._onStartup');
   }
 
   return Promise.resolve();
@@ -135,7 +133,7 @@ async function _onIconClicked() {
   try {
     await _showOptionsTab();
   } catch (err) {
-    ChromeLog.error(err.message, 'Bg._onIconClicked');
+    ChromeGA.error(err.message, 'Bg._onIconClicked');
   }
 
   return Promise.resolve();
@@ -153,7 +151,7 @@ async function _onStorageChanged(event) {
   try {
     await AppData.processState(event.key);
   } catch (err) {
-    ChromeLog.error(err.message, 'Bg._onStorageChanged');
+    ChromeGA.error(err.message, 'Bg._onStorageChanged');
   }
 
   return Promise.resolve();

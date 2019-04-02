@@ -8,6 +8,8 @@ import * as AppData from './data.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 
+import * as ChromeGA
+  from '../chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
   from '../chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
@@ -118,7 +120,7 @@ async function _hasFullscreen(display) {
       }
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'SSController._hasFullscreen');
+    ChromeGA.error(err.message, 'SSController._hasFullscreen');
   }
 
   return Promise.resolve(ret);
@@ -237,7 +239,7 @@ async function _onIdleStateChanged(state) {
       }
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'SSControl._isShowing', _ERR_SHOW);
+    ChromeGA.error(err.message, 'SSControl._isShowing');
   }
 }
 

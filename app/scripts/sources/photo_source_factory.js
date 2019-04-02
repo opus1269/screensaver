@@ -4,10 +4,10 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeGA
+  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import CCSource from './photo_source_chromecast.js';
@@ -64,7 +64,7 @@ export function create(useKey) {
           ChromeLocale.localize('setting_reddit_animal'),
           true, false, 'r/animalporn/');
     default:
-      ChromeLog.error(`Bad PhotoSource type: ${useKey}`,
+      ChromeGA.error(`Bad PhotoSource type: ${useKey}`,
           'PhotoSourceFactory.create');
       return null;
   }
