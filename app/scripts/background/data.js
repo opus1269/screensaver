@@ -252,7 +252,7 @@ export async function update() {
     try {
       const signedIn = await ChromeAuth.isSignedIn();
       ChromeStorage.set('signedInToChrome', signedIn);
-    } catch (e) {
+    } catch (err) {
       // ignore
     }
 
@@ -268,7 +268,7 @@ export async function update() {
   if (oldVersion < 21) {
     try {
       await _updateToChromeLocaleStorage();
-    } catch (e) {
+    } catch (err) {
       // ignore
     }
   }
@@ -343,10 +343,14 @@ export async function processState(key = 'all') {
     if (key === 'all') {
       // update everything
 
-      _processEnabled();
+      await _processEnabled();
+      
       _processKeepAwake();
+      
       _processIdleTime();
+      
       await Alarm.updatePhotoAlarm();
+      
       await Alarm.updateWeatherAlarm();
 
       // process photo SOURCES
@@ -411,7 +415,7 @@ export async function processState(key = 'all') {
       } else {
         switch (key) {
           case 'enabled':
-            _processEnabled();
+            await _processEnabled();
             break;
           case 'idleTime':
             _processIdleTime();
@@ -474,18 +478,26 @@ async function _updateToChromeLocaleStorage() {
  * Note: this does not effect the keep awake settings so you could
  * use the extension as a display keep awake scheduler without
  * using the screensaver
+ * @returns {Promise<void>}
  * @private
  */
-function _processEnabled() {
+async function _processEnabled() {
   Alarm.updateBadgeText();
+  
   const isEnabled = ChromeStorage.getBool('enabled', DEFS.enabled);
-  // update context menu text
-  const label = isEnabled
-      ? ChromeLocale.localize('disable')
-      : ChromeLocale.localize('enable');
-  chromep.contextMenus.update('ENABLE_MENU', {
-    title: label,
-  }).catch(() => {});
+  
+  try {
+    // update context menu text
+    const label = isEnabled
+        ? ChromeLocale.localize('disable')
+        : ChromeLocale.localize('enable');
+    
+    await chromep.contextMenus.update('ENABLE_MENU', {title: label});
+  } catch (err) {
+    // ignore
+  }
+  
+  return Promise.resolve();
 }
 
 /**
