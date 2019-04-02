@@ -68,7 +68,7 @@ export async function send(type) {
   // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
   try {
-    // noinspection JSUnresolvedFunction
+    // noinspection JSUnresolvedFunction, JSUnresolvedVariable
     const response = await chromep.runtime.sendMessage(type, null);
     return Promise.resolve(response);
   } catch (err) {
