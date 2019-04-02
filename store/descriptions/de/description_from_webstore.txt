@@ -18,6 +18,7 @@ Viele Optionen stehen zur Verfügung, um das Aussehen der Diashow zu bestimmen, 
 * Nicht über Vollbildschirm-Chrome-Fenster anzeigen (z. B. YouTube, Netflix)
 * Anzeigen auf allen Displays
 * Anzeigezeit
+* Anzeigewetter
 
 Funktioniert auf allen Plattformen, kann aber besonders nützlich für Ihr Chromebook sein.
 

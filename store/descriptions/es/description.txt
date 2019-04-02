@@ -18,6 +18,7 @@ Hay muchas opciones disponibles para controlar la apariencia de la presentación
 * No mostrar en pantalla completa las ventanas de Chrome (por ejemplo, YouTube, Netflix)
 * Mostrar en todas las pantallas
 * Tiempo de visualización
+* Clima de visualización
 
 Funciona muy bien en todas las plataformas, pero puede ser especialmente útil para tu Chromebook.
 

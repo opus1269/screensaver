@@ -18,6 +18,7 @@ Er zijn veel opties beschikbaar om de weergave van de slideshow te bepalen, met 
 * Niet weergeven in volledig scherm Chrome-vensters (Bijv. YouTube, Netflix)
 * Toon op alle weergaven
 * Weergavetijd
+* Weergave weer
 
 Werkt prima op alle platforms, maar kan vooral nuttig zijn voor uw Chromebook.
 

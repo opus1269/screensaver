@@ -18,6 +18,7 @@ Pour configurer le diaporama, de nombreuses options sont proposées :
 * Ne pas afficher sur les fenêtres Chrome en plein écran (YouTube, Netflix...)
 * Afficher sur tous les écrans
 * Temps d’affichage
+* Météo d’affichage
 
 Cette extension fonctionne très bien sur toutes les plateformes, mais elle peut être particulièrement utile sur votre Chromebook.
 

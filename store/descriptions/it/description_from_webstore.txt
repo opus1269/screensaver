@@ -18,6 +18,7 @@ Sono disponibili molte opzioni per controllare l'aspetto della proiezione delle 
 * Non visualizzato oltre le finestre di Chrome a schermo intero (ad es. YouTube, Netflix)
 * Visualizzazione su tutti gli schermi
 * Tempo di visualizzazione
+* Metereologico di visualizzazione
 
 Funziona perfettamente su tutte le piattaforme, ma può essere particolarmente utile per il Chromebook.
 
