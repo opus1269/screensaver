@@ -28,8 +28,10 @@ import './ex_handler.js';
  * Chrome Messages
  * @type {{}}
  * @property {module:chrome/msg.Message} HIGHLIGHT - highlight a tab
- * @property {module:chrome/msg.Message} RESTORE_DEFAULTS - restore default settings
- * @property {module:chrome/msg.Message} STORAGE_EXCEEDED - local storage save failed
+ * @property {module:chrome/msg.Message} RESTORE_DEFAULTS - restore default
+ *     settings
+ * @property {module:chrome/msg.Message} STORAGE_EXCEEDED - local storage save
+ *     failed
  * @property {module:chrome/msg.Message} STORE - save value to storage
  * @const
  * @private
@@ -59,23 +61,25 @@ export const STORE = _MSG.STORE;
 /**
  * Send a chrome message
  * @param {module:chrome/msg.Message} type - type of message
+ * @throws An error if we failed to connect to the extension
  * @returns {Promise<JSON|Array>} response JSON
  */
-export function send(type) {
+export async function send(type) {
   // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
-  // noinspection JSUnresolvedFunction
-  return chromep.runtime.sendMessage(type, null).then((response) => {
+  try {
+    // noinspection JSUnresolvedFunction
+    const response = await chromep.runtime.sendMessage(type, null);
     return Promise.resolve(response);
-  }).catch((err) => {
+  } catch (err) {
     if (err.message &&
         !err.message.includes('port closed') &&
         !err.message.includes('Receiving end does not exist')) {
       const msg = `type: ${type.message}, ${err.message}`;
       ChromeGA.error(msg, 'Msg.send');
     }
-    return Promise.reject(err);
-  });
+    throw err;
+  }
 }
 
 /**

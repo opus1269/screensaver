@@ -15,6 +15,7 @@ const chromep = new ChromePromise();
  * @module chrome/last_error
  */
 
+// noinspection JSClosureCompilerSyntax
 /**
  * A custom error that can be persisted
  * Usage: const err = new ChromeLastError(title, message)
@@ -49,16 +50,15 @@ class ChromeLastError extends Error {
    * @throws If we failed to get the error
    * @returns {Promise<ChromeLastError>} last error
    */
-  static load() {
-    return chromep.storage.local.get('lastError').then((value) => {
-      const details = value.lastError;
-      if (details) {
-        const lastError = new ChromeLastError(details.title, details.message);
-        lastError.stack = details.stack;
-        return lastError;
-      }
-      return new ChromeLastError();
-    });
+  static async load() {
+    const value = await chromep.storage.local.get('lastError');
+    const details = value.lastError;
+    if (details) {
+      const lastError = new ChromeLastError(details.title, details.message);
+      lastError.stack = details.stack;
+      return Promise.resolve(lastError);
+    }
+    return Promise.resolve(new ChromeLastError());
   }
 
   /**
@@ -69,6 +69,7 @@ class ChromeLastError extends Error {
    * @returns {Promise<void>} void
    */
   static save(lastError) {
+    // noinspection JSUnresolvedVariable
     const value = {
       'title': lastError.title || '',
       'message': lastError.message || '',

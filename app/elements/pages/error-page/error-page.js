@@ -143,24 +143,29 @@ const ErrorPage = Polymer({
    * Element is ready
    */
   ready: function() {
-    ChromeLastError.load().then((lastError) => {
-      this.set('lastError', lastError);
-      return null;
-    }).catch((err) => {
-      ChromeGA.error(err.message, 'ErrorPage.ready');
-    });
-     
-    // listen for changes to lastError
-    // noinspection JSUnresolvedVariable
-    chrome.storage.onChanged.addListener((changes) => {
-      for (const key of Object.keys(changes)) {
-        if (key === 'lastError') {
-          const change = changes[key];
-          this.set('lastError', change.newValue);
-          break;
-        }
+    
+    setTimeout( async () => {
+      
+      try {
+        // initialize lastError
+        const lastError = await ChromeLastError.load();
+        this.set('lastError', lastError);
+      } catch (err) {
+        ChromeGA.error(err.message, 'ErrorPage.ready');
       }
-    });
+      
+      // listen for changes to lastError
+      // noinspection JSUnresolvedVariable
+      chrome.storage.onChanged.addListener((changes) => {
+        for (const key of Object.keys(changes)) {
+          if (key === 'lastError') {
+            const change = changes[key];
+            this.set('lastError', change.newValue);
+            break;
+          }
+        }
+      });
+    }, 0);
   },
 
   /**

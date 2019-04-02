@@ -333,11 +333,12 @@ const Screensaver = Polymer({
     setTimeLabel = this.setTimeLabel.bind(this);
     setPaused = this.setPaused.bind(this);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
       
-      this._setZoom();
+      await this._setZoom();
+      
       this._setupPhotoTransitions();
       
       // start screensaver
@@ -408,24 +409,24 @@ const Screensaver = Polymer({
 
   /**
    * Set the window zoom factor to 1.0
+   * @returns {Promise<void>}
    * @private
    */
-  _setZoom: function() {
-    if (ChromeUtils.getChromeVersion() >= 42) {
-      // override zoom factor to 1.0 - chrome 42 and later
-      // noinspection JSUnresolvedFunction
-      const chromep = new ChromePromise();
-      // noinspection JSUnresolvedFunction
-      chromep.tabs.getZoom().then((zoomFactor) => {
-        if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
-          // noinspection JSUnresolvedFunction
-          chrome.tabs.setZoom(1.0);
-        }
-        return null;
-      }).catch((err) => {
-        ChromeLog.error(err.message, 'chromep.tabs.getZoom');
-      });
+  _setZoom: async function() {
+    // noinspection JSUnresolvedFunction
+    const chromep = new ChromePromise();
+    try {
+      // noinspection JSUnresolvedFunction,JSUnresolvedVariable
+      const zoomFactor = await chromep.tabs.getZoom();
+      if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
+        // noinspection JSUnresolvedFunction,JSUnresolvedVariable
+        chrome.tabs.setZoom(1.0);
+      }
+    } catch (err) {
+      ChromeLog.error(err.message, 'SS._setZoom');
     }
+    
+    return Promise.resolve();
   },
 
   /**
@@ -589,10 +590,14 @@ const Screensaver = Polymer({
       return;
     }
     if (newValue) {
+      // noinspection JSUnresolvedVariable
       this.$.pauseImage.classList.add('fadeOut');
+      // noinspection JSUnresolvedVariable
       this.$.playImage.classList.remove('fadeOut');
     } else {
+      // noinspection JSUnresolvedVariable
       this.$.playImage.classList.add('fadeOut');
+      // noinspection JSUnresolvedVariable
       this.$.pauseImage.classList.remove('fadeOut');
     }
   },

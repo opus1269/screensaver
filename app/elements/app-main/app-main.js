@@ -447,9 +447,9 @@ Polymer({
       }
     }, false);
 
-    setTimeout(() => {
+    setTimeout(async () => {
       // initialize menu enabled states
-      this._setErrorMenuState();
+      await this._setErrorMenuState();
       this._setGooglePhotosMenuState();
     }, 0);
   },
@@ -535,30 +535,38 @@ Polymer({
 
   /**
    * Event: Clicked on accept permissions dialog button
+   * @returns {Promise<void>}
    * @private
    */
-  _onAcceptPermissionsClicked: function() {
+  _onAcceptPermissionsClicked: async function() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
-    Permissions.request(Permissions.PICASA).then((granted) => {
+    try {
+      // try to get permission - may prompt
+      let granted = await Permissions.request(Permissions.PICASA);
       if (!granted) {
-        return Permissions.removeGooglePhotos();
-      } else {
-        return null;
+        await Permissions.removeGooglePhotos();
       }
-    }).catch((err) => {
+    } catch (err) {
       ChromeLog.error(err.message, 'AppMain._onAcceptPermissionsClicked');
-    });
+    }
+
+    return Promise.resolve();
   },
 
   /**
    * Event: Clicked on deny permission dialog button
+   * @returns {Promise<void>}
    * @private
    */
-  _onDenyPermissionsClicked: function() {
+  _onDenyPermissionsClicked: async function() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
-    Permissions.removeGooglePhotos().catch((err) => {
+    try {
+      await Permissions.removeGooglePhotos();
+    } catch (err) {
       ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
-    });
+    }
+    
+    return Promise.resolve();
   },
 
   /**
@@ -679,22 +687,27 @@ Polymer({
 
   /**
    * Set enabled state of Error Viewer menu item
+   * @returns {Promise<void>}
    * @private
    */
-  _setErrorMenuState: function() {
+  _setErrorMenuState: async function() {
     // disable error-page if no lastError
-    ChromeLastError.load().then((lastError) => {
+    try {
+      const lastError = await ChromeLastError.load();
+      
       const idx = this._getPageIdx('page-error');
-      const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
+      const route = pages[idx].route;
+      const el = this.shadowRoot.querySelector(`#${route}`);
       if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
         el.removeAttribute('disabled');
       } else if (el) {
         el.setAttribute('disabled', 'true');
       }
-      return null;
-    }).catch((err) => {
+    } catch (err) {
       ChromeGA.error(err.message, 'AppMain._setErrorMenuState');
-    });
+    }
+
+    return Promise.resolve();
   },
 
   // noinspection JSUnusedLocalSymbols
