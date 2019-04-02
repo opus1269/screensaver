@@ -194,7 +194,7 @@ class ChromeTime {
    * @private
    */
   _parse(timeString) {
-    if (timeString) {
+    if (!timeString) {
       const date = new Date();
       this._hr = date.getHours();
       this._min = date.getMinutes();
