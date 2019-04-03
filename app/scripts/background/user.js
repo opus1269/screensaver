@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import * as ChromeAuth
+  from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
@@ -26,13 +28,24 @@ import * as MyGA from '../../scripts/my_analytics.js';
  * @see https://developer.chrome.com/apps/identity#event-onSignInChanged
  * @param {Object} account - chrome AccountInfo
  * @param {boolean} signedIn - true if signedIn
+ * @returns {Promise<void>}
  * @private
  */
 async function _onSignInChanged(account, signedIn) {
-  ChromeStorage.set('signedInToChrome', signedIn);
   if (!signedIn) {
+
+    // clearing browsing data can trigger this even though still signed in
+    const isSignedIn = await ChromeAuth.isSignedIn();
+    if (isSignedIn) {
+      ChromeGA.error('False positive Chrome signout',
+          'User._onSignInChanged');
+      return Promise.resolve();
+    }
+
+    ChromeStorage.set('signedInToChrome', signedIn);
+
     ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
-    
+
     // remove Google Photo selections
     try {
       await ChromeStorage.asyncSet('albumSelections', []);
@@ -40,13 +53,17 @@ async function _onSignInChanged(account, signedIn) {
     } catch (e) {
       // ignore
     }
-    
+
     const type = ChromeStorage.get('permPicasa', 'notSet');
     if (type === 'allowed') {
       ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),
           'User._onSignInChanged');
     }
+  } else {
+    ChromeStorage.set('signedInToChrome', signedIn);
   }
+
+  return Promise.resolve();
 }
 
 // Listen for changes to Browser sign-in
