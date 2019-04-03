@@ -4,15 +4,11 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as PhotoSourceFactory from './photo_source_factory.js';
-
-window.app = window.app || {};
 
 /**
  * Manage the {@link module:sources/photo_source.PhotoSource} objects
@@ -42,15 +38,13 @@ export const UseKey = {
  */
 export function getSelectedSources() {
   let ret = [];
-  for (const useKey of Object.values(UseKey)) {
-    if (ChromeStorage.getBool(useKey, false)) {
-      try {
-        const source = PhotoSourceFactory.create(useKey);
-        if (source) {
-          ret.push(source);
-        }
-      } catch (ex) {
-        ChromeGA.exception(ex, `${useKey} failed to load`, false);
+  const useKeys = getUseKeys();
+  for (const useKey of useKeys) {
+    const isSelected = ChromeStorage.getBool(useKey, false);
+    if (isSelected) {
+      const source = PhotoSourceFactory.create(useKey);
+      if (source) {
+        ret.push(source);
       }
     }
   }
@@ -92,14 +86,9 @@ export function isUseKey(keyName) {
  * @returns {Promise<void>}
  */
 export async function process(useKey) {
-  try {
-    const source = PhotoSourceFactory.create(useKey);
-    if (source) {
-      await source.process();
-    }
-  } catch (err) {
-    ChromeGA.error(err, `${useKey} failed to load`);
-    throw err;
+  const source = PhotoSourceFactory.create(useKey);
+  if (source) {
+    await source.process();
   }
 
   return Promise.resolve();
@@ -119,7 +108,7 @@ export async function getSelectedPhotos() {
     const photos = await source.getPhotos();
     ret.push(photos);
   }
-  
+
   return Promise.resolve(ret);
 }
 
@@ -145,7 +134,7 @@ export async function processAll(doGoogle = false) {
       }
     }
   }
-  
+
   return Promise.resolve();
 }
 

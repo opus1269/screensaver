@@ -326,10 +326,10 @@ Polymer({
    * @private
    */
   _setPhotoSourcesChecked: function(state) {
-    const useNames = PhotoSources.getUseKeys();
-    useNames.forEach((useName) => {
-      this._setPhotoSourceChecked(useName, state);
-    });
+    const useKeys = PhotoSources.getUseKeys();
+    for (const useKey of useKeys) {
+      this._setPhotoSourceChecked(useKey, state);
+    }
   },
 
   /**

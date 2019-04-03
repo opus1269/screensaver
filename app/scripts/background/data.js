@@ -306,7 +306,7 @@ export async function update() {
  * @returns {Promise<void>}
  */
 export async function restoreDefaults() {
-  Object.keys(DEFS).forEach((key) => {
+  for (const key of Object.keys(DEFS)) {
     // skip Google Photos settings
     if (!key.includes('useGoogle') &&
         (key !== 'useGoogleAlbums') &&
@@ -317,7 +317,7 @@ export async function restoreDefaults() {
         (key !== 'permPicasa')) {
       ChromeStorage.set(key, DEFS[key]);
     }
-  });
+  }
 
   // restore default time format based on locale
   ChromeStorage.set('showTime', _getTimeFormat());
@@ -566,11 +566,11 @@ async function _setOS() {
  * @private
  */
 function _addDefaults() {
-  Object.keys(DEFS).forEach(function(key) {
+  for (const key of Object.keys(DEFS)) {
     if (ChromeStorage.get(key) === null) {
       ChromeStorage.set(key, DEFS[key]);
     }
-  });
+  }
 }
 
 /**
