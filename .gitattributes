@@ -3,6 +3,8 @@
 
 *.png binary
 *.PNG binary
+*.jpg binary
+*.jpg binary
 *.zip binary
 *.ZIP binary
 *.7z binary
