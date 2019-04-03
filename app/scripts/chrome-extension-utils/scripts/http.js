@@ -220,6 +220,8 @@ async function _retry(url, opts, conf, attempt) {
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   await wait(delay);
   
+  ChromeGA.error(`Retry fetch, attempt: ${attempt}`, 'ChromeHttp._retry');
+  
   const response = await _fetch(url, opts, conf, attempt);
   
   return Promise.resolve(response);
