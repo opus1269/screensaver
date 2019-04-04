@@ -66,9 +66,10 @@ let isProdTest = false;
 const gulp = require('gulp');
 const exec = require('child_process').exec;
 const del = require('del');
-const runSequence = require('run-sequence');
 const If = require('gulp-if');
-const util = require('gulp-util');
+const eslint = require('gulp-eslint');
+const imagemin = require('gulp-imagemin');
+const noop = require('gulp-noop');
 const watch = require('gulp-watch');
 const plumber = require('gulp-plumber');
 
@@ -109,151 +110,112 @@ function waitFor(stream) {
 }
 
 // Runs equivalent of 'polymer build'
+/**
+ *
+ * @returns {Promise<T | never>}
+ */
 function buildPolymer() {
-  return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
 
-    // Lets create some inline code splitters in case you need them later in
-    // your build.
-    let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
-    let dependenciesStreamSplitter = new polymerBuild.HtmlSplitter();
+  // Lets create some inline code splitters in case you need them later in
+  // your build.
+  let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
+  let dependenciesStreamSplitter = new polymerBuild.HtmlSplitter();
 
-    // Okay, so first thing we do is clear the build directory
-    console.log(`Deleting ${buildDirectory} directory...`);
-    del([buildDirectory]).then(() => {
+  // Okay, so first thing we do is clear the build directory
+  console.log(`Deleting ${buildDirectory} directory...`);
+  return del([buildDirectory]).then(() => {
 
-      // Let's start by getting your source files. These are all the files
-      // in your `src/` directory, or those that match your polymer.json
-      // "sources"  property if you provided one.
-      let sourcesStream = polymerProject.sources()
+    // Let's start by getting your source files. These are all the files
+    // in your `src/` directory, or those that match your polymer.json
+    // "sources"  property if you provided one.
+    let sourcesStream = polymerProject.sources()
 
-      // If you want to optimize, minify, compile, or otherwise process
-      // any of your source code for production, you can do so here before
-      // merging your sources and dependencies together.
-          .pipe(If(/\.(png|gif|jpg|svg)$/, plugins.imagemin()))
+    // If you want to optimize, minify, compile, or otherwise process
+    // any of your source code for production, you can do so here before
+    // merging your sources and dependencies together.
+        .pipe(If(/\.(png|gif|jpg|svg)$/, imagemin()))
 
-          // The `sourcesStreamSplitter` created above can be added here to
-          // pull any inline styles and scripts out of their HTML files and
-          // into separate CSS and JS files in the build stream. Just be sure
-          // to rejoin those files with the `.rejoin()` method when you're done.
-          .pipe(sourcesStreamSplitter.split())
+        // The `sourcesStreamSplitter` created above can be added here to
+        // pull any inline styles and scripts out of their HTML files and
+        // into separate CSS and JS files in the build stream. Just be sure
+        // to rejoin those files with the `.rejoin()` method when you're done.
+        .pipe(sourcesStreamSplitter.split())
 
-          // Uncomment these lines to add a few more example optimizations to
-          // your source files, but these are not included by default. For
-          // installation, see the require statements at the beginning.
-          // .pipe(If(/\.js$/, minify(minifyOpts)))
-          // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
-          // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
-          // to use
+        // Uncomment these lines to add a few more example optimizations to
+        // your source files, but these are not included by default. For
+        // installation, see the require statements at the beginning.
+        // .pipe(If(/\.js$/, minify(minifyOpts)))
+        // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
+        // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
+        // to use
 
-          // Remember, you need to rejoin any split inline code when you're
-          // done.
-          .pipe(sourcesStreamSplitter.rejoin());
+        // Remember, you need to rejoin any split inline code when you're
+        // done.
+        .pipe(sourcesStreamSplitter.rejoin());
 
-      // Similarly, you can get your dependencies separately and perform
-      // any dependency-only optimizations here as well.
-      let dependenciesStream = polymerProject.dependencies().
-          pipe(dependenciesStreamSplitter.split())
-          // Add any dependency optimizations here.
-          .pipe(dependenciesStreamSplitter.rejoin());
+    // Similarly, you can get your dependencies separately and perform
+    // any dependency-only optimizations here as well.
+    let dependenciesStream = polymerProject.dependencies().
+        pipe(dependenciesStreamSplitter.split())
+        // Add any dependency optimizations here.
+        .pipe(dependenciesStreamSplitter.rejoin());
 
-      // Okay, now let's merge your sources & dependencies together into a
-      // single build stream.
-      let buildStream = mergeStream(sourcesStream, dependenciesStream).
-          once('data', () => {
-            console.log('Analyzing build dependencies...');
-          });
+    // Okay, now let's merge your sources & dependencies together into a
+    // single build stream.
+    let buildStream = mergeStream(sourcesStream, dependenciesStream).
+        once('data', () => {
+          console.log('Analyzing build dependencies...');
+        });
 
-      if (isProd || isProdTest) {
-        
-        // If you want bundling, pass the stream to polymerProject.bundler.
-        // This will bundle dependencies into your fragments so you can lazy
-        // load them.
-        buildStream = buildStream.pipe(polymerProject.bundler({
-          inlineScripts: false,
-          inlineCss: false,
-        }));
+    if (isProd || isProdTest) {
 
-        // now lets minify for production
-        buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
-        
-      }
+      // If you want bundling, pass the stream to polymerProject.bundler.
+      // This will bundle dependencies into your fragments so you can lazy
+      // load them.
+      // buildStream = buildStream.pipe(polymerProject.bundler({
+      //   inlineScripts: false,
+      //   inlineCss: false,
+      // }));
 
-      // Okay, time to pipe to the build directory
-      buildStream = buildStream.pipe(gulp.dest(buildDirectory));
+      // now lets minify for production
+      buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
 
-      // waitFor the buildStream to complete
-      return waitFor(buildStream);
-    }).then(() => {
-      // You did it!
-      console.log('Build complete!');
-      resolve();
-      return null;
-    }).catch((err) => {
-      console.log('buildPolymer\n' + err);
-    });
+    }
+
+    console.log(buildDirectory);
+    // Okay, time to pipe to the build directory
+    buildStream = buildStream.pipe(gulp.dest(buildDirectory));
+
+    // waitFor the buildStream to complete
+    return waitFor(buildStream);
+  }).then(() => {
+    // You did it!
+    console.log('Build complete!');
+    return Promise.resolve();
+  }).catch((err) => {
+    console.log('buildPolymer\n' + err);
   });
 }
 
-// Default - watch for changes in development
-gulp.task('default', ['incrementalBuild']);
-
-// Incremental Development build
-gulp.task('incrementalBuild', (cb) => {
-
-  // change working directory to app
-  // eslint-disable-next-line no-undef
-  process.chdir('app');
-
-  isWatch = true;
-  runSequence('lint', [
-    '_manifest',
-    '_html',
-    'lintdevjs',
-    '_scripts',
-    '_images',
-    '_assets',
-    '_lib',
-    '_locales',
-    '_css',
-    '_font',
-  ], cb);
-});
-
-// Development build
-gulp.task('dev', (cb) => {
-
-  console.log('running polymer build...');
-  // run polymer build
-  exec('polymer build', (err, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-    // change working directory to app
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-    // to set DEBUG status
-    runSequence('_scripts');
-    cb(err);
-  });
-});
-
-// Production build
-gulp.task('prod', (cb) => {
-  isProd = true;
-  isProdTest = false;
-  buildDirectory = 'build/prod';
-  runSequence('_poly_build', [
-    '_manifest',
-    'docs',
-  ], '_zip', cb);
-});
-
-// Production test build Only diff is it does not have key removed
-gulp.task('prodTest', (cb) => {
-  isProd = true;
-  isProdTest = true;
-  buildDirectory = 'build/prodTest';
-  runSequence('_poly_build', '_zip', cb);
-});
+//
+// // Production build
+// gulp.task('buildProd', (cb) => {
+//   isProd = true;
+//   isProdTest = false;
+//   buildDirectory = 'build/prod';
+//   runSequence('_poly_build', [
+//     '_manifest',
+//     'docs',
+//   ], '_zip', cb);
+// });
+//
+// // Production test build Only diff is it does not have key removed
+// gulp.task('prodTest', (cb) => {
+//   isProd = true;
+//   isProdTest = true;
+//   buildDirectory = 'build/prodTest';
+//   runSequence('_poly_build', '_zip', cb);
+// });
 
 // Generate JSDoc
 gulp.task('docs', (cb) => {
@@ -282,10 +244,10 @@ gulp.task('lintdevjs', () => {
   const input = files.lintdevjs;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failOnError());
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
+      pipe(eslint()).
+      pipe(eslint.formatEach()).
+      pipe(eslint.failOnError());
 });
 
 // lint scripts
@@ -293,9 +255,9 @@ gulp.task('lint', () => {
   const input = files.js;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failAfterError());
+      pipe(eslint()).
+      pipe(eslint.formatEach()).
+      pipe(eslint.failAfterError());
 });
 
 // manifest.json
@@ -311,9 +273,9 @@ gulp.task('_manifest', () => {
   const input = files.manifest;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
-      pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : util.noop()).
+      pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : noop()).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
@@ -322,12 +284,12 @@ gulp.task('_scripts', () => {
   const input = files.js;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(plugins.replace('const _DEBUG = false', 'const _DEBUG = true')).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failAfterError()).
+      pipe(eslint()).
+      pipe(eslint.formatEach()).
+      pipe(eslint.failAfterError()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -336,7 +298,7 @@ gulp.task('_html', () => {
   const input = files.html;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -346,7 +308,7 @@ gulp.task('_images', () => {
   const input = files.images;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -356,7 +318,7 @@ gulp.task('_assets', () => {
   const input = files.assets;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -366,7 +328,7 @@ gulp.task('_lib', () => {
   const input = files.lib;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -376,7 +338,7 @@ gulp.task('_locales', () => {
   const input = files.locales;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -386,7 +348,7 @@ gulp.task('_css', () => {
   const input = files.css;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -396,7 +358,7 @@ gulp.task('_font', () => {
   const input = files.font;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -419,7 +381,80 @@ gulp.task('_zip', () => {
           `../${buildDirectory}`));
 });
 
-// run polymer build with gulp, basically
-gulp.task('_poly_build', buildPolymer);
+gulp.task('_build_dev', (cb) => {
 
+  console.log('running polymer build...');
+  // run polymer build
+  exec('polymer build', (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    // change working directory to app
+    // eslint-disable-next-line no-undef
+    process.chdir('app');
+    // to set DEBUG status
+    // runSequence('_scripts');
+    cb(err);
+  });
+});
+
+// run polymer build with gulp, basically
+gulp.task('_poly_build', () => {
+  isProd = true;
+  isProdTest = true;
+  buildDirectory = 'build/prodTest';
+  return buildPolymer();
+});
+
+// Development build
+gulp.task('buildDev',
+    gulp.series('_build_dev', '_scripts', (done) => {
+      done();
+    }),
+);
+
+// Production test build Only diff is it does not have key removed
+gulp.task('buildProdTest',
+    gulp.series('_poly_build', function prodTest(done) {
+      isProd = true;
+      isProdTest = true;
+      buildDirectory = 'build/prodTest';
+      done();
+    }),
+);
+
+function chDir(dir) {
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir(dir);
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+}
+
+// setup watch
+gulp.task('_watch', (done) => {
+  chDir('app');
+  isWatch = true;
+
+  done();
+});
+
+// Incremental Development build
+gulp.task('incrementalBuild',
+    gulp.series('_watch', gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts', '_images',
+        '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
+          done();
+        },
+    ));
+
+// Default - watch for changes in development
+gulp.task('default', gulp.series('incrementalBuild', (done) => {
+  done();
+}));
+
+// Default - watch for changes in development
+gulp.task('default', gulp.series('incrementalBuild', (done) => {
+  done();
+}));
 
