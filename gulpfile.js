@@ -49,6 +49,7 @@ const watchOpts = {
   verbose: true,
   base: '.',
 };
+
 const minifyOpts = {
   output: {
     beautify: true,
@@ -72,13 +73,17 @@ const imagemin = require('gulp-imagemin');
 const noop = require('gulp-noop');
 const watch = require('gulp-watch');
 const plumber = require('gulp-plumber');
+const jsdoc3 = require('gulp-jsdoc3');
+const stripLine = require('gulp-strip-line');
+const replace = require('gulp-replace');
+const zip = require('gulp-zip');
 
 // for ECMA6
 const uglifyjs = require('uglify-es');
 const composer = require('gulp-uglify/composer');
 const minify = composer(uglifyjs, console);
 
-// for polymer
+// for Polymer
 // see:
 // https://github.com/PolymerElements/generator-polymer-init-custom-build/blob/master/generators/app/gulpfile.js
 const mergeStream = require('merge-stream');
@@ -87,12 +92,6 @@ const polymerJson = require('./polymer.json');
 const polymerProject = new polymerBuild.PolymerProject(polymerJson);
 let buildDirectory = 'build/prod';
 
-// load the rest
-const plugins = require('gulp-load-plugins')({
-  pattern: ['gulp-*', 'gulp.*'],
-  replaceString: /\bgulp[-.]/,
-});
-
 // to get the current task name
 let currentTaskName = '';
 gulp.Gulp.prototype.__runTask = gulp.Gulp.prototype._runTask;
@@ -100,6 +99,16 @@ gulp.Gulp.prototype._runTask = function(task) {
   currentTaskName = task.name;
   this.__runTask(task);
 };
+
+function chDir(dir) {
+  // change working directory to app
+  try {
+    // eslint-disable-next-line no-undef
+    process.chdir(dir);
+  } catch (err) {
+    console.log('no need to change directory');
+  }
+}
 
 // Waits for the given ReadableStream
 function waitFor(stream) {
@@ -209,24 +218,12 @@ function buildPolymer() {
 //   ], '_zip', cb);
 // });
 //
-// // Production test build Only diff is it does not have key removed
-// gulp.task('prodTest', (cb) => {
-//   isProd = true;
-//   isProdTest = true;
-//   buildDirectory = 'build/prodTest';
-//   runSequence('_poly_build', '_zip', cb);
-// });
 
 // Generate JSDoc
 gulp.task('docs', (cb) => {
 
   // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
+  chDir('app');
 
   const config = require('./jsdoc.json');
   const README = '../README.md';
@@ -236,7 +233,7 @@ gulp.task('docs', (cb) => {
     files.elements,
   ], {read: true}).
       pipe(gulp.dest(base.tmp_docs)).
-      pipe(plugins.jsdoc3(config, cb));
+      pipe(jsdoc3(config, cb));
 });
 
 // lint development js files
@@ -263,19 +260,14 @@ gulp.task('lint', () => {
 // manifest.json
 gulp.task('_manifest', () => {
   // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
+  chDir('app');
 
   const input = files.manifest;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
-      pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : noop()).
+      pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
@@ -286,7 +278,7 @@ gulp.task('_scripts', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
-      pipe(plugins.replace('const _DEBUG = false', 'const _DEBUG = true')).
+      pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
       pipe(eslint()).
       pipe(eslint.formatEach()).
       pipe(eslint.failAfterError()).
@@ -367,20 +359,24 @@ gulp.task('_font', () => {
 gulp.task('_zip', () => {
 
   // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
+  chDir('app');
 
   return gulp.src(`../${buildDirectory}/app/**`).
-      pipe(!isProdTest ? plugins.zip('store.zip') : plugins.zip(
+      pipe(!isProdTest ? zip('store.zip') : zip(
           'store-test.zip')).
       pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(
           `../${buildDirectory}`));
 });
 
+// setup watch
+gulp.task('_setupWatch', (done) => {
+  chDir('app');
+  isWatch = true;
+
+  done();
+});
+
+// run polymer build
 gulp.task('_build_dev', (cb) => {
 
   console.log('running polymer build...');
@@ -422,36 +418,13 @@ gulp.task('buildProdTest',
     }),
 );
 
-function chDir(dir) {
-  // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir(dir);
-  } catch (err) {
-    console.log('no need to change directory');
-  }
-}
-
-// setup watch
-gulp.task('_watch', (done) => {
-  chDir('app');
-  isWatch = true;
-
-  done();
-});
-
 // Incremental Development build
 gulp.task('incrementalBuild',
-    gulp.series('_watch', gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts', '_images',
+    gulp.series('_setupWatch', gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts', '_images',
         '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
           done();
         },
     ));
-
-// Default - watch for changes in development
-gulp.task('default', gulp.series('incrementalBuild', (done) => {
-  done();
-}));
 
 // Default - watch for changes in development
 gulp.task('default', gulp.series('incrementalBuild', (done) => {
