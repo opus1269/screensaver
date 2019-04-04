@@ -181,10 +181,10 @@ function buildPolymer() {
       // If you want bundling, pass the stream to polymerProject.bundler.
       // This will bundle dependencies into your fragments so you can lazy
       // load them.
-      // buildStream = buildStream.pipe(polymerProject.bundler({
-      //   inlineScripts: false,
-      //   inlineCss: false,
-      // }));
+      buildStream = buildStream.pipe(polymerProject.bundler({
+        inlineScripts: false,
+        inlineCss: false,
+      }));
 
       // now lets minify for production
       buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
