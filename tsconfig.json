@@ -1,0 +1,20 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "es6",
+    "noImplicitAny": true,
+    "allowJs": true,
+    "typeRoots": [
+      "./app/node_modules/@types"
+    ],
+    "types": [
+      "chrome"
+    ],
+    "lib": [
+      "es2018",
+      "dom",
+      "dom.iterable"
+    ]
+  }
+}

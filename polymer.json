@@ -5,6 +5,8 @@
   "sources": [
     "elements/**/*.js",
     "scripts/**/*.js",
+    "elements/**/*.ts",
+    "scripts/**/*.ts",
     "images/**/*"
   ],
   "extraDependencies": [

@@ -32,8 +32,10 @@ const path = {
 const files = {
   manifest: `${base.src}manifest.json`,
   scripts: `${path.scripts}**/*.js`,
+  scripts_ts: `${path.scripts}**/*.ts`,
   html: `${path.html}**/*.html`,
   elements: `${path.elements}**/*.js`,
+  elements_ts: `${path.elements}**/*.ts`,
   images: `${path.images}*.*`,
   assets: `${path.assets}*.*`,
   lib: `${path.lib}**/*.*`,
@@ -43,6 +45,7 @@ const files = {
 };
 files.js = [files.scripts, files.elements, `${base.src}*.js`];
 files.lintdevjs = ['../gulpfile.js'];
+files.ts = [files.scripts_ts, files.elements_ts, `${base.src}*.ts`];
 
 // command options
 const watchOpts = {
@@ -67,7 +70,7 @@ let isProdTest = false;
 const gulp = require('gulp');
 const exec = require('child_process').exec;
 const del = require('del');
-const If = require('gulp-if');
+const gulpif = require('gulp-if');
 const eslint = require('gulp-eslint');
 const imagemin = require('gulp-imagemin');
 const noop = require('gulp-noop');
@@ -77,6 +80,10 @@ const jsdoc3 = require('gulp-jsdoc3');
 const stripLine = require('gulp-strip-line');
 const replace = require('gulp-replace');
 const zip = require('gulp-zip');
+const debug = require('gulp-debug');
+
+const ts = require('gulp-typescript');
+const tsProject = ts.createProject('tsconfig.json');
 
 // for ECMA6
 const uglifyjs = require('uglify-es');
@@ -142,7 +149,7 @@ function buildPolymer() {
     // If you want to optimize, minify, compile, or otherwise process
     // any of your source code for production, you can do so here before
     // merging your sources and dependencies together.
-        .pipe(If(/\.(png|gif|jpg|svg)$/, imagemin()))
+        .pipe(gulpif(/\.(png|gif|jpg|svg)$/, imagemin()))
 
         // The `sourcesStreamSplitter` created above can be added here to
         // pull any inline styles and scripts out of their HTML files and
@@ -153,9 +160,9 @@ function buildPolymer() {
         // Uncomment these lines to add a few more example optimizations to
         // your source files, but these are not included by default. For
         // installation, see the require statements at the beginning.
-        // .pipe(If(/\.js$/, minify(minifyOpts)))
-        // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
-        // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
+        // .pipe(gulpif(/\.js$/, minify(minifyOpts)))
+        // .pipe(gulpif(/\.css$/, cssSlam())) // Install css-slam to use
+        // .pipe(gulpif(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
         // to use
 
         // Remember, you need to rejoin any split inline code when you're
@@ -187,7 +194,7 @@ function buildPolymer() {
       }));
 
       // now lets minify for production
-      buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
+      buildStream = buildStream.pipe(gulpif(/\.js$/, minify(minifyOpts)));
 
     }
 
@@ -249,6 +256,9 @@ gulp.task('lintdevjs', () => {
 
 // lint scripts
 gulp.task('lint', () => {
+
+  chDir('app');
+
   const input = files.js;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -273,6 +283,8 @@ gulp.task('_manifest', () => {
 
 // scripts
 gulp.task('_scripts', () => {
+  chDir('app');
+
   const input = files.js;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -282,6 +294,19 @@ gulp.task('_scripts', () => {
       pipe(eslint()).
       pipe(eslint.formatEach()).
       pipe(eslint.failAfterError()).
+      pipe(gulp.dest(base.dev));
+});
+
+// type
+gulp.task('_ts', () => {
+  chDir('app');
+
+  const input = files.ts;
+  watchOpts.name = currentTaskName;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
+      pipe(plumber()).
+      pipe(tsProject()).js.
       pipe(gulp.dest(base.dev));
 });
 
@@ -403,7 +428,7 @@ gulp.task('_poly_build', () => {
 
 // Development build
 gulp.task('buildDev',
-    gulp.series('_build_dev', '_scripts', (done) => {
+    gulp.series('_build_dev', '_scripts', '_ts', (done) => {
       done();
     }),
 );
@@ -420,8 +445,9 @@ gulp.task('buildProdTest',
 
 // Incremental Development build
 gulp.task('incrementalBuild',
-    gulp.series('_setupWatch', gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts', '_images',
-        '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
+    gulp.series('_setupWatch',
+        gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts', '_ts', '_images',
+            '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
           done();
         },
     ));

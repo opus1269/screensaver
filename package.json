@@ -19,8 +19,9 @@
   },
   "homepage": "https://opus1269.github.io/screensaver/",
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "merge2": "^1.2.3",
+    "typescript": "^3.4.1",
     "del": "^4.1.0",
     "eslint": "^4.10.0",
     "eslint-config-google": "^0.9.1",
@@ -39,6 +40,7 @@
     "gulp-replace": "^0.6.1",
     "gulp-size": "^2.1.0",
     "gulp-strip-line": "0.0.1",
+    "gulp-typescript": "^5.0.1",
     "gulp-uglify": "^3.0.2",
     "gulp-watch": "^4.3.11",
     "gulp-zip": "^4.0.0",
