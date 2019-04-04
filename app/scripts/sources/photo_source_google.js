@@ -313,7 +313,7 @@ class GoogleSource extends PhotoSource {
    * @param {boolean} interactive=true - interactive mode for permissions
    * @param {boolean} notify=false - notify listeners of status
    * @throws An error if the album failed to load.
-   * @returns {module:sources/photo_source_google.Album} Album
+   * @returns {Promise<module:sources/photo_source_google.Album>} Album
    * @static
    * @async
    */
@@ -385,7 +385,7 @@ class GoogleSource extends PhotoSource {
 
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
-    return album;
+    return Promise.resolve(album);
   }
 
   /**
