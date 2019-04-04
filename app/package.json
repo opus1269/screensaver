@@ -41,6 +41,7 @@
     "@polymer/polymer": "^3.1.0",
     "@types/chrome": "0.0.81",
     "@webcomponents/webcomponentsjs": "^2.2.7",
+    "chrome-promise": "^3.0.4",
     "web-animations-js": "^2.3.1"
   },
   "devDependencies": {}

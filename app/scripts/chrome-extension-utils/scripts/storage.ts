@@ -66,7 +66,7 @@ export function getBool(key: string, def: boolean = null) {
  * @param {string} key - key to set value for
  * @param {?Object} [value=null] - new value, if null remove item
  */
-export function set(key: string, value: JSON | string| number | boolean | null = null) {
+export function set(key: string, value: object | [] | string| number | boolean | null = null) {
   if (value === null) {
     localStorage.removeItem(key);
   } else {

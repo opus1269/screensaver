@@ -32,7 +32,7 @@ export function parse(jsonString: string) {
  * @param object - object to copy
  * @returns shallow copy of input, null on error
  */
-export function shallowCopy(object: JSON) {
+export function shallowCopy(object: object) {
   let ret = null;
   const jsonString = JSON.stringify(object);
   if (typeof (jsonString) !== 'undefined') {

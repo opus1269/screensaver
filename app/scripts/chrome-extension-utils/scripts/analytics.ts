@@ -16,6 +16,7 @@ declare var ga: any;
 
 /**
  * Google Analytics Event
+ * @typedef {JSON}
  * @property eventCategory - category
  * @property eventAction - action
  * @property eventLabel - label
