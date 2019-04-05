@@ -162,8 +162,8 @@ function buildPolymer() {
         // installation, see the require statements at the beginning.
         // .pipe(gulpif(/\.js$/, minify(minifyOpts)))
         // .pipe(gulpif(/\.css$/, cssSlam())) // Install css-slam to use
-        // .pipe(gulpif(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
-        // to use
+        // .pipe(gulpif(/\.html$/, htmlMinifier())) // Install
+        // gulp-html-minifier to use
 
         // Remember, you need to rejoin any split inline code when you're
         // done.
@@ -289,6 +289,7 @@ gulp.task('_scripts', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
+      pipe(debug()).
       pipe(plumber()).
       pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
       pipe(eslint()).
@@ -297,17 +298,11 @@ gulp.task('_scripts', () => {
       pipe(gulp.dest(base.dev));
 });
 
-// type
-gulp.task('_ts', () => {
+gulp.task('_watch_ts', function() {
   chDir('app');
 
   const input = files.ts;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
-      pipe(tsProject()).js.
-      pipe(gulp.dest(base.dev));
+  gulp.watch(input, gulp.series(['_tsWatch']));
 });
 
 // html
@@ -401,19 +396,51 @@ gulp.task('_setupWatch', (done) => {
   done();
 });
 
+// TypeScript
+gulp.task('_tsWatch', () => {
+  chDir('app');
+
+  isWatch = true;
+  watchOpts.name = currentTaskName;
+  const input = files.ts;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
+      pipe(plumber()).
+      pipe(debug()).
+      pipe(tsProject()).
+      pipe(plumber()).
+      pipe(debug()).
+      pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
+      pipe(gulp.dest(base.dev));
+  
+});
+
+// compile the typescript to js in place
+gulp.task('_build_js', () => {
+  const input = files.ts;
+
+  const SEARCH = 'const _DEBUG = false';
+  const REPLACE = 'const _DEBUG = true';
+
+  chDir('app');
+
+  return gulp.src(input, {base: '.'}).
+      pipe(plumber()).
+      pipe(tsProject()).js.
+      pipe(debug()).
+      pipe(replace(SEARCH, REPLACE, noop())).
+      pipe(gulp.dest(base.src), noop());
+});
+
 // run polymer build
-gulp.task('_build_dev', (cb) => {
+gulp.task('_poly_build_dev', (cb) => {
+  chDir('../');
 
   console.log('running polymer build...');
   // run polymer build
   exec('polymer build', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
-    // change working directory to app
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-    // to set DEBUG status
-    // runSequence('_scripts');
     cb(err);
   });
 });
@@ -426,9 +453,10 @@ gulp.task('_poly_build', () => {
   return buildPolymer();
 });
 
+// TODO make sure _DEBUG is taken care of
 // Development build
 gulp.task('buildDev',
-    gulp.series('_build_dev', '_scripts', '_ts', (done) => {
+    gulp.series('_build_js', '_poly_build_dev', (done) => {
       done();
     }),
 );
@@ -445,8 +473,9 @@ gulp.task('buildProdTest',
 
 // Incremental Development build
 gulp.task('incrementalBuild',
-    gulp.series('_setupWatch',
-        gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts', '_ts', '_images',
+    gulp.series('_setupWatch', '_tsWatch', 
+        gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts',
+            '_images',
             '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
           done();
         },
