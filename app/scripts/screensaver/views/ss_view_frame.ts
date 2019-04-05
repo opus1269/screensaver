@@ -84,6 +84,7 @@ class SSViewFrame extends SSView {
     const timeStyle = this.time.style;
     const image = this.image;
     const imageStyle = image.style;
+    // @ts-ignore
     const img: any = image.$.img;
     const imgStyle = img.style;
     const photo = this.photo;
@@ -106,7 +107,9 @@ class SSViewFrame extends SSView {
     imgStyle.height = height + 'px';
     imgStyle.width = width + 'px';
 
+    // @ts-ignore
     image.height = height;
+    // @ts-ignore
     image.width = width;
     imageStyle.top = (screen.height - frHeight) / 2 + 'px';
     imageStyle.left = (screen.width - frWidth) / 2 + 'px';

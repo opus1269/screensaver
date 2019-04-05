@@ -15,7 +15,6 @@ import * as ChromeUtils
   from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import SSPhoto from "../ss_photo.js";
-import {IronImageElement} from "../../../node_modules/@polymer/iron-image/iron-image.js";
 
 // TODO add back
 // import * as Geo from '../geo.js';
@@ -48,7 +47,7 @@ const _SCREEN_AR = screen.width / screen.height;
  */
 abstract class SSView {
   photo: SSPhoto;
-  image: IronImageElement;
+  image: HTMLElement;
   author: HTMLElement;
   time: HTMLElement;
   location: HTMLElement;
@@ -267,7 +266,7 @@ abstract class SSView {
    * @param {Element} weather - weather-element weather
    * @param {Object} model - template item model
    */
-  setElements(image: IronImageElement, author: HTMLElement, time: HTMLElement, location: HTMLElement, weather: HTMLElement, model: any) {
+  setElements(image: HTMLElement, author: HTMLElement, time: HTMLElement, location: HTMLElement, weather: HTMLElement, model: any) {
     this.image = image;
     this.author = author;
     this.time = time;
@@ -301,6 +300,7 @@ abstract class SSView {
    * @returns {boolean} true if image load failed
    */
   isError() {
+    //@ts-ignore
     return !this.image || this.image.error;
   }
 
@@ -309,6 +309,7 @@ abstract class SSView {
    * @returns {boolean} true if image is loaded
    */
   isLoaded() {
+    //@ts-ignore
     return !!this.image && this.image.loaded;
   }
 }
