@@ -52,7 +52,7 @@ export function getEmailBody() {
  * @param {string} body - email body
  * @returns {string} encoded url
  */
-export function getEmailUrl(subject, body) {
+export function getEmailUrl(subject: string, body: string) {
   const email = encodeURIComponent(getEmail());
   const sub = encodeURIComponent(subject);
   const bod = encodeURIComponent(body);

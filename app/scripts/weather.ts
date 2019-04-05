@@ -237,7 +237,7 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
     throw new Error(msg);
   }
   
-  let position;
+  let position: any;
   try {
     position = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, options);
@@ -262,7 +262,7 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
  * @returns {string}
  * @private
  */
-function _kToF(temp) {
+function _kToF(temp: number) {
   const value = (temp - 273.17) * 9.0 / 5.0 + 32.0;
   return `${value.toFixed(0)} \u00b0F`;
 }
@@ -273,7 +273,7 @@ function _kToF(temp) {
  * @returns {string}
  * @private
  */
-function _kToC(temp) {
+function _kToC(temp: number) {
   const value = temp - 273.17;
   return `${value.toFixed(0)} \u00b0C`;
 }
