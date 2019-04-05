@@ -48,7 +48,7 @@ const SpinDownAnimation = Polymer({
    * @param {Object} config - configuration object
    * @returns {KeyframeEffect} new key frame effect
    */
-  configure: function(config) {
+  configure: function(config: any) {
     const node = config.node;
 
     if (config.transformOrigin) {
