@@ -20,6 +20,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A photo for the {@link module:els/screensaver.Screensaver}
+ * @alias module:ss/photo.SSPhoto
  */
 class SSPhoto {
   _id: number;
