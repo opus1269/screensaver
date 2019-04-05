@@ -286,7 +286,8 @@ export class GoogleSource extends PhotoSource {
     for (const gAlbum of gAlbums) {
       if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
 
-        let album: Album;
+        //@ts-ignore
+        let album: Album = {};
         album.index = ct;
         album.uid = 'album' + ct;
         album.name = gAlbum.title;
@@ -372,7 +373,8 @@ export class GoogleSource extends PhotoSource {
 
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    let album: Album;
+    //@ts-ignore
+    let album: Album = {};
     album.index = 0;
     album.uid = 'album' + 0;
     album.name = name;
