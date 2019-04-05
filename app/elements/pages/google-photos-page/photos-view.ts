@@ -236,7 +236,7 @@ Polymer({
    */
   ready: function() {
     // listen for chrome messages
-    ChromeMsg.listen(this._onMessage.bind(this));
+    ChromeMsg.listen(this._onChromeMessage.bind(this));
 
     setTimeout(() => {
       this.setPhotoCount().catch(() => {});
