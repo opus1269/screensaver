@@ -21,7 +21,6 @@
  * @property {?string} id
  * @property {?string} name
  * @property {?int} count
- * @interface
  */
 
 import * as ChromeGA from './analytics.js';
@@ -68,10 +67,10 @@ const _MSG = {
   },
 };
 
-export const HIGHLIGHT = _MSG.HIGHLIGHT;
-export const RESTORE_DEFAULTS = _MSG.RESTORE_DEFAULTS;
-export const STORAGE_EXCEEDED = _MSG.STORAGE_EXCEEDED;
-export const STORE = _MSG.STORE;
+export const HIGHLIGHT: MsgType = _MSG.HIGHLIGHT;
+export const RESTORE_DEFAULTS: MsgType = _MSG.RESTORE_DEFAULTS;
+export const STORAGE_EXCEEDED: MsgType = _MSG.STORAGE_EXCEEDED;
+export const STORE: MsgType = _MSG.STORE;
 
 /**
  * Send a chrome message
