@@ -8,7 +8,7 @@ import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import PhotoSource from './photo_source.js';
+import {PhotoSource} from './photo_source.js';
 
 /**
  * A source of photos from Chromecast
@@ -32,8 +32,8 @@ class CCSource extends PhotoSource {
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
    */
-  constructor(useKey, photosKey, type, desc, isDaily, isArray,
-              loadArg = null) {
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+                        loadArg: any = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 

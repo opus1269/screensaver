@@ -7,7 +7,7 @@
 import * as Alarm from './alarm.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
-import GoogleSource from '../../scripts/sources/photo_source_google.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as Weather from '../../scripts/weather.js';
 

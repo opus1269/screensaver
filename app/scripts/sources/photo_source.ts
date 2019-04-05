@@ -24,13 +24,6 @@ declare var ChromePromise: any;
 /**
  * A photo from a {@link module:sources/photo_source.PhotoSource}
  * This is the photo information that is persisted.
- *
- * @typedef {{}} module:sources/photo_source.Photo
- * @property {string} url - The url to the photo
- * @property {string} author - The photographer
- * @property {number} asp - The aspect ratio of the photo
- * @property {Object} [ex] - Additional information about the photo
- * @property {string} [point] - geolocation 'lat lon'
  */
 export interface Photo {
   url: string,
@@ -42,11 +35,6 @@ export interface Photo {
 
 /**
  * The photos for a {@link module:sources/photo_source.PhotoSource}
- *
- * @typedef {{}} module:sources/photo_source.Photos
- * @property {string} type - type of
- *     {@link module:sources/photo_source.PhotoSource}
- * @property {module:sources/photo_source.Photo[]} photos - The photos
  */
 export interface Photos {
   type: string,
@@ -58,7 +46,7 @@ export interface Photos {
  * A source of photos for the screen saver
  * @alias module:sources/photo_source.PhotoSource
  */
-abstract class PhotoSource {
+export abstract class PhotoSource {
   _useKey: string;
   _photosKey: string;
   _type: string;
@@ -132,7 +120,7 @@ abstract class PhotoSource {
    * @throws An error if fetch failed
    * @returns {Promise<Object>} could be array of photos or albums
    */
-  abstract fetchPhotos() : Photo[];
+  abstract fetchPhotos() : Promise<Photo[]>;
 
   /**
    * Get the source type
@@ -277,5 +265,3 @@ abstract class PhotoSource {
     return ret;
   }
 }
-
-export default PhotoSource;

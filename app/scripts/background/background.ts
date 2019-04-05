@@ -14,7 +14,7 @@ import * as Alarm from './alarm.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
-import GoogleSource from '../../scripts/sources/photo_source_google.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';

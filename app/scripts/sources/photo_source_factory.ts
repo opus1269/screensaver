@@ -12,7 +12,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import CCSource from './photo_source_chromecast.js';
 import FlickrSource from './photo_source_flickr.js';
-import GoogleSource from './photo_source_google.js';
+import {GoogleSource} from './photo_source_google.js';
 import RedditSource from './photo_source_reddit.js';
 import * as PhotoSources from './photo_sources.js';
 
@@ -26,7 +26,7 @@ import * as PhotoSources from './photo_sources.js';
  * @param {string} useKey {@link module:sources/photo_sources.UseKey}
  * @returns {?module:sources/photo_source.PhotoSource} a new PhotoSource or subclass
  */
-export function create(useKey) {
+export function create(useKey: string) {
   switch (useKey) {
     case PhotoSources.UseKey.ALBUMS_GOOGLE:
       return new GoogleSource(useKey, 'albumSelections', 'Google User',

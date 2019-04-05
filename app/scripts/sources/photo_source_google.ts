@@ -23,7 +23,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
-import PhotoSource from './photo_source.js';
+import {PhotoSource, Photo} from './photo_source.js';
 import * as PhotoSources from './photo_sources.js';
 
 /**
@@ -33,36 +33,36 @@ import * as PhotoSources from './photo_sources.js';
 
 /**
  * A Google Photo Album
- * @typedef {Object} module:sources/photo_source_google.Album
- * @property {int} index - Array index
- * @property {string} uid - unique identifier
- * @property {string} name - album name
- * @property {string} id - Google album Id
- * @property {string} thumb - thumbnail url
- * @property {boolean} checked - is album selected
- * @property {int} ct - number of photos
- * @property {module:sources/photo_source.Photo[]} photos - Array of photos
  */
+export interface Album {
+  index: number;
+  uid: string;
+  name: string;
+  id: string;
+  thumb: string;
+  checked: boolean;
+  ct: number;
+  photos: Photo[];
+}
 
 /**
  * A Selected Google Photo Album, this is persisted
- * @typedef {Object} module:sources/photo_source_google.SelectedAlbum
- * @property {string} id - Google album Id
- * @property {string} name - Google album name
- * @property {module:sources/photo_source.Photo[]} photos - Array of photos
  */
+export interface SelectedAlbum {
+  id: string;
+  name: string;
+}
 
 /**
  * Google Photos API representation of a photo
- * @typedef {{}} module:sources/photo_source_google.mediaItem
- * @property {{}} id
- * @property {{}} mimeType
- * @property {{}} baseUrl
- * @property {{}} productUrl
- * @property {{}} mediaMetadata
- * @property {{}} mediaMetadata.width
- * @property {{}} mediaMetadata.height
  */
+interface GPhotosAlbum {
+  id: string;
+  mimeType: string;
+  baseUrl: string;
+  productUrl: string;
+  mediaMetadata: any;
+}
 
 /**
  * Path to Google Photos API
@@ -112,7 +112,7 @@ const _MEDIA_ITEMS_RESULTS_FIELDS =
  * @extends module:sources/photo_source.PhotoSource
  * @alias module:sources/photo_source_google.GoogleSource
  */
-class GoogleSource extends PhotoSource {
+export class GoogleSource extends PhotoSource {
 
   /**
    * Create a new photo source
@@ -124,7 +124,8 @@ class GoogleSource extends PhotoSource {
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
    */
-  constructor(useKey, photosKey, type, desc, isDaily, isArray, loadArg = null) {
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 
@@ -221,21 +222,21 @@ class GoogleSource extends PhotoSource {
   // }
 
   /**
-   * Is the error due to a revoked auth token
-   * @param {Error} err - info on image
-   * @param {string} name - calling method
-   * @returns {boolean} true if OAuth2 not granted or revoked
-   * @static
+   * Has the Google auth token been revoked
+   * @param err
+   * @param name
    */
-  static isAuthRevokedError(err, name) {
+  static isAuthRevokedError(err: Error, name: string) {
     let ret = false;
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
       // eslint-disable-next-line promise/no-promise-in-callback
-      ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+      ChromeStorage.asyncSet('albumSelections', []).catch(() => {
+      });
       // eslint-disable-next-line promise/no-promise-in-callback
-      ChromeStorage.asyncSet('googleImages', []).catch(() => {});
+      ChromeStorage.asyncSet('googleImages', []).catch(() => {
+      });
       ChromeLog.error(err.message, name,
           ChromeLocale.localize('err_auth_revoked'));
       ret = true;
@@ -253,9 +254,8 @@ class GoogleSource extends PhotoSource {
    */
   static async loadAlbumList() {
     let nextPageToken;
-    /** @type {Array<{mediaItemsCount, coverPhotoBaseUrl}>} */
-    let gAlbums = [];
-    let albums = [];
+    let gAlbums: any[] = [];
+    let albums: Album[] = [];
     let ct = 0;
     const baseUrl = `${_URL_BASE}albums/${_ALBUMS_QUERY}`;
     let url = baseUrl;
@@ -268,7 +268,6 @@ class GoogleSource extends PhotoSource {
 
     // Loop while there is a nextPageToken to load more items.
     do {
-      /** @type {{nextPageToken, albums}} */
       let response = await ChromeHttp.doGet(url, conf);
 
       response = response || {};
@@ -285,8 +284,7 @@ class GoogleSource extends PhotoSource {
     for (const gAlbum of gAlbums) {
       if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
 
-        /** @type {module:sources/photo_source_google.Album} */
-        const album = {};
+        let album: Album;
         album.index = ct;
         album.uid = 'album' + ct;
         album.name = gAlbum.title;
@@ -317,11 +315,11 @@ class GoogleSource extends PhotoSource {
    * @static
    * @async
    */
-  static async loadAlbum(id, name, interactive = true, notify = false) {
+  static async loadAlbum(id: string, name: string, interactive = true, notify = false) {
     // max items in search call
     const MAX_QUERIES = 100;
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
-    const body = {
+    const body: any = {
       'pageSize': MAX_QUERIES,
     };
     body.albumId = id;
@@ -332,7 +330,7 @@ class GoogleSource extends PhotoSource {
     conf.interactive = interactive;
     conf.body = body;
     let nextPageToken;
-    let photos = [];
+    let photos: Photo[] = [];
 
     // Loop while there is a nextPageToken to load more items and we
     // haven't loaded greater than MAX_ALBUM_PHOTOS.
@@ -372,8 +370,7 @@ class GoogleSource extends PhotoSource {
 
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    /** @type {module:sources/photo_source_google.Album} */
-    const album = {};
+    let album: Album;
     album.index = 0;
     album.uid = 'album' + 0;
     album.name = name;
@@ -410,13 +407,12 @@ class GoogleSource extends PhotoSource {
       const album = albums[i] || [];
       let newAlbum = null;
       try {
-        newAlbum = await GoogleSource.
-            loadAlbum(album.id, album.name, interactive, notify);
+        newAlbum = await GoogleSource.loadAlbum(album.id, album.name, interactive, notify);
       } catch (err) {
         if (err.message.match(/404/)) {
           // album likely deleted in Google Photos
           let msg = ChromeLocale.localize('removed_album');
-          msg+= `: ${album.name}`;
+          msg += `: ${album.name}`;
           ChromeLog.error(msg, METHOD);
           // delete it
           albums.splice(i, 1);
@@ -493,8 +489,7 @@ class GoogleSource extends PhotoSource {
     conf.body = body;
 
     let nextPageToken;
-    /** @type {module:sources/photo_source.Photo[]} */
-    let newPhotos = [];
+    let newPhotos: Photo[] = [];
 
     try {
       // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
@@ -549,9 +544,9 @@ class GoogleSource extends PhotoSource {
    * @static
    * @async
    */
-  static async loadPhotos(ids) {
+  static async loadPhotos(ids: string[]) {
     ids = ids || [];
-    let photos = [];
+    let photos: Photo[] = [];
     // max items in getBatch call
     const MAX_QUERIES = 50;
 
@@ -615,7 +610,7 @@ class GoogleSource extends PhotoSource {
    * @returns {boolean} false if couldn't persist albumSelections
    * @static
    */
-  static async updateBaseUrls(photos) {
+  static async updateBaseUrls(photos: Photo[]) {
     let ret = true;
 
     photos = photos || [];
@@ -644,7 +639,7 @@ class GoogleSource extends PhotoSource {
    * @private
    * @static
    */
-  static async _updateAlbumsBaseUrls(photos) {
+  static async _updateAlbumsBaseUrls(photos: Photo[]) {
     let ret = true;
 
     photos = photos || [];
@@ -662,7 +657,7 @@ class GoogleSource extends PhotoSource {
       // loop on all the albums
       for (const album of albums) {
         const albumPhotos = album.photos;
-        const index = albumPhotos.findIndex((e) => {
+        const index = albumPhotos.findIndex((e: Photo) => {
           return e.ex.id === photo.ex.id;
         });
         if (index >= 0) {
@@ -691,7 +686,7 @@ class GoogleSource extends PhotoSource {
    * @private
    * @static
    */
-  static async _updatePhotosBaseUrls(photos) {
+  static async _updatePhotosBaseUrls(photos: Photo[]) {
     let ret = true;
 
     photos = photos || [];
@@ -706,7 +701,7 @@ class GoogleSource extends PhotoSource {
 
     // loop on all the photos
     for (const photo of photos) {
-      const index = savedPhotos.findIndex((e) => {
+      const index = savedPhotos.findIndex((e: Photo) => {
         return e.ex.id === photo.ex.id;
       });
       if (index >= 0) {
@@ -725,6 +720,7 @@ class GoogleSource extends PhotoSource {
 
     return ret;
   }
+
   /**
    * Return true if we should be fetching from Google
    * trying to minimize Google Photos API usage
@@ -779,7 +775,7 @@ class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _isImage(mediaItem) {
+  static _isImage(mediaItem: any) {
     return mediaItem &&
         mediaItem.mimeType &&
         mediaItem.mimeType.startsWith('image/') &&
@@ -794,9 +790,9 @@ class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _getImageSize(mediaMetadata) {
+  static _getImageSize(mediaMetadata: any) {
     const MAX_SIZE = 1920;
-    const ret = {};
+    const ret: any = {};
     ret.width = parseInt(mediaMetadata.width);
     ret.height = parseInt(mediaMetadata.height);
     if (!ChromeStorage.getBool('fullResGoogle')) {
@@ -820,12 +816,11 @@ class GoogleSource extends PhotoSource {
    * @param {module:sources/photo_source_google.mediaItem} mediaItem - object
    *     from Google Photos API call
    * @param {string} albumName - Album name
-   * @returns {?module:sources/photo_source.Photo} Photo, null if error
    * @static
    * @private
    */
-  static _processPhoto(mediaItem, albumName) {
-    let photo = null;
+  static _processPhoto(mediaItem: any, albumName: string) {
+    let photo: Photo = null;
     if (mediaItem && mediaItem.mediaMetadata) {
       if (this._isImage(mediaItem)) {
         const mediaMetadata = mediaItem.mediaMetadata;
@@ -833,7 +828,9 @@ class GoogleSource extends PhotoSource {
         const width = size.width;
         const height = size.height;
 
+        //@ts-ignore
         photo = {};
+        
         photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
         photo.asp = width / height;
         // use album name instead
@@ -858,13 +855,14 @@ class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _processPhotos(mediaItems, albumName = '') {
-    const photos = [];
+  static _processPhotos(mediaItems: any, albumName = '') {
+    
+    const photos: Photo[] = [];
     if (!mediaItems) {
       return photos;
     }
     for (const mediaItem of mediaItems) {
-      const photo = this._processPhoto(mediaItem, albumName);
+      const photo: Photo = this._processPhoto(mediaItem, albumName);
       if (photo) {
         this.addPhoto(photos, photo.url, photo.author, photo.asp,
             photo.ex, photo.point);
@@ -906,5 +904,3 @@ class GoogleSource extends PhotoSource {
     }
   }
 }
-
-export default GoogleSource;

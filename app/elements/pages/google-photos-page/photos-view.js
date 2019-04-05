@@ -33,7 +33,7 @@ import '../../../elements/shared-styles.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
-import GoogleSource from '../../../scripts/sources/photo_source_google.js';
+import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';

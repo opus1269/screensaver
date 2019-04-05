@@ -68,7 +68,7 @@ export function getUseKeys() {
  * @param {string} keyName - key to check
  * @returns {boolean} true if photo source
  */
-export function isUseKey(keyName) {
+export function isUseKey(keyName: string) {
   let ret = false;
   for (const useKey of Object.values(UseKey)) {
     if (useKey === keyName) {
@@ -85,7 +85,7 @@ export function isUseKey(keyName) {
  * @throws An error if processing failed
  * @returns {Promise<void>}
  */
-export async function process(useKey) {
+export async function process(useKey: string) {
   const source = PhotoSourceFactory.create(useKey);
   if (source) {
     await source.process();

@@ -6,7 +6,7 @@
  */
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import PhotoSource from './photo_source.js';
+import {PhotoSource, Photo} from './photo_source.js';
 
 /**
  * A source of photos from reddit
@@ -78,8 +78,8 @@ class RedditSource extends PhotoSource {
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
    */
-  constructor(useKey, photosKey, type, desc, isDaily, isArray,
-              loadArg = null) {
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 
@@ -90,7 +90,7 @@ class RedditSource extends PhotoSource {
    * @returns {{width: int, height: int}} Photo size
    * @private
    */
-  static _getSize(title) {
+  static _getSize(title: string) {
     const ret = {width: -1, height: -1};
     const regex = /\[(\d*)\D*(\d*)]/;
     const res = title.match(regex);
@@ -107,8 +107,8 @@ class RedditSource extends PhotoSource {
    * @returns {module:sources/photo_source.Photo[]} Array of photos
    * @private
    */
-  static _processChildren(children) {
-    const photos = [];
+  static _processChildren(children: any[]) {
+    const photos: Photo[] = [];
     let url;
     let width = 1;
     let height = 1;
@@ -158,9 +158,10 @@ class RedditSource extends PhotoSource {
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
   async fetchPhotos() {
-    let photos = [];
+    let photos: Photo[] = [];
     const SRC = `${this._loadArg}hot`;
 
+    //@ts-ignore
     const Snoocore = window.Snoocore;
     if (Snoocore === undefined) {
       throw new Error('Reddit library failed to load');

@@ -10,7 +10,7 @@ import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import PhotoSource from './photo_source.js';
+import {PhotoSource, Photo} from './photo_source.js';
 
 /**
  * A source of photos from Flickr
@@ -59,8 +59,8 @@ class FlickrSource extends PhotoSource {
    * @param {?Object} [loadArg=null] - optional arg for load function
    * @constructor
    */
-  constructor(useKey, photosKey, type, desc, isDaily, isArray,
-              loadArg = null) {
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 
@@ -71,13 +71,12 @@ class FlickrSource extends PhotoSource {
    * @returns {module:sources/photo_source.Photo[]} Array of photos
    * @private
    */
-  static _processPhotos(response) {
+  static _processPhotos(response: any) {
     if (!response.photos || !response.photos.photo) {
       throw new Error(ChromeLocale.localize('err_photo_source_title'));
     }
 
-    /** @type {module:sources/photo_source.Photo[]} */
-    const photos = [];
+    const photos: Photo[] = [];
     
     for (const photo of response.photos.photo) {
       let url = null;
