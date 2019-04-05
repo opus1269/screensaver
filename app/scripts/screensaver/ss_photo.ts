@@ -5,11 +5,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * A photo for the {@link module:els/screensaver.Screensaver}
- * @module ss/photo
- */
-
 import {Photo} from "../sources/photo_source.js";
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -19,7 +14,13 @@ import * as ChromeGA
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
+ * Module for a screensaver photo
+ * @module ss/photo
+ */
+
+/**
  * A photo for the {@link module:els/screensaver.Screensaver}
+ * @property {int} _id - unique id
  * @alias module:ss/photo.SSPhoto
  */
 class SSPhoto {
@@ -175,6 +176,6 @@ class SSPhoto {
       chrome.tabs.create({url: url});
     }
   }
-}
+};
 
 export default SSPhoto;
