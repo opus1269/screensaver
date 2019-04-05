@@ -25,7 +25,7 @@ class SSPhoto {
   _url: string;
   _photographer: string;
   _type: string;
-  _aspectRatio: number | string;
+  _aspectRatio: number;
   _ex: any | null;
   _point: string | null;
   _isBad: boolean;

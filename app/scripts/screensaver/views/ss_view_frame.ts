@@ -7,6 +7,7 @@
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSView from './ss_view.js';
+import SSPhoto from "../ss_photo.js";
 
 /**
  * Frame view
@@ -25,7 +26,7 @@ class SSViewFrame extends SSView {
    * @param {module:ss/photo.SSPhoto} photo
    * @constructor
    */
-  constructor(photo) {
+  constructor(photo: SSPhoto) {
     super(photo);
   }
 
@@ -38,7 +39,7 @@ class SSViewFrame extends SSView {
    * @static
    * @private
    */
-  static _setLabelStyle(style, width, height, isLeft) {
+  static _setLabelStyle(style: any, width: number, height: number, isLeft: boolean) {
     style.textOverflow = 'ellipsis';
     style.whiteSpace = 'nowrap';
     style.color = 'black';
@@ -83,10 +84,8 @@ class SSViewFrame extends SSView {
     const timeStyle = this.time.style;
     const image = this.image;
     const imageStyle = image.style;
-    // noinspection JSUnresolvedVariable
-    const img = image.$.img;
+    const img: any = image.$.img;
     const imgStyle = img.style;
-    /** @type {module:ss/photo.SSPhoto} */
     const photo = this.photo;
     const ar = photo.getAspectRatio();
 

@@ -13,6 +13,7 @@ import SSViewFrame from './ss_view_frame.js';
 import SSViewFull from './ss_view_full.js';
 import SSViewLetterbox from './ss_view_letterbox.js';
 import * as SSViews from '../ss_views.js';
+import SSPhoto from "../ss_photo.js";
 
 /**
  * Factory to create {@link module:ss/views/view.SSView} instances
@@ -25,7 +26,7 @@ import * as SSViews from '../ss_views.js';
  * @param {module:ss/views.Type} type - photo sizing type
  * @returns {Object} a new {@link module:ss/views/view.SSView} subclass of the given type
  */
-export function create(photo, type) {
+export function create(photo: SSPhoto, type: number) {
   switch (type) {
     case SSViews.Type.LETTERBOX:
       return new SSViewLetterbox(photo);

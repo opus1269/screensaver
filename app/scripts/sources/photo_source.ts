@@ -35,7 +35,7 @@ declare var ChromePromise: any;
 export interface Photo {
   url: string,
   author: string,
-  asp: number| string,
+  asp: number,
   ex?: any,
   point?: string,
 }
@@ -102,7 +102,7 @@ abstract class PhotoSource {
     const photo: Photo = {
       url: url,
       author: author,
-      asp: asp.toPrecision(3),
+      asp: asp,
     };
     if (ex) {
       photo.ex = ex;

@@ -14,6 +14,8 @@ import * as ChromeStorage
 import * as ChromeUtils
   from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import SSPhoto from "../ss_photo.js";
+import {IronImageElement} from "../../../node_modules/@polymer/iron-image/iron-image.js";
 
 // TODO add back
 // import * as Geo from '../geo.js';
@@ -44,13 +46,23 @@ const _SCREEN_AR = screen.width / screen.height;
  * @property {string} locationLabel - location text, binding
  * @alias module:ss/views/view.SSView
  */
-class SSView {
+abstract class SSView {
+  photo: SSPhoto;
+  image: IronImageElement;
+  author: HTMLElement;
+  time: HTMLElement;
+  location: HTMLElement;
+  weather: HTMLElement;
+  model: any;
+  url: string;
+  authorLabel: string;
+  locationLabel: string;
 
   /**
    * Create a new SSView
    * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
    */
-  constructor(photo) {
+  protected constructor(photo: SSPhoto) {
     this.photo = photo;
     this.image = null;
     this.author = null;
@@ -70,7 +82,7 @@ class SSView {
    * @param {Object} value - property value
    * @private
    */
-  static _dirtySet(model, prop, value) {
+  static _dirtySet(model: any, prop: string, value: any) {
     model.set(prop, value);
     model.notifyPath(prop);
   }
@@ -82,7 +94,7 @@ class SSView {
    * from the screens'
    * @private
    */
-  static _isBadAspect(asp) {
+  static _isBadAspect(asp: number) {
     // arbitrary
     const CUT_OFF = 0.5;
     return (asp < _SCREEN_AR - CUT_OFF) || (asp > _SCREEN_AR + CUT_OFF);
@@ -94,7 +106,7 @@ class SSView {
    * @param {int} photoSizing - the sizing type
    * @returns {boolean} true if the aspect ratio should be ignored
    */
-  static ignore(asp, photoSizing) {
+  static ignore(asp: number, photoSizing: number) {
     let ret = false;
     const skip = ChromeStorage.getBool('skip');
 
@@ -165,7 +177,7 @@ class SSView {
   _setTimeStyle() {
     if (ChromeStorage.getBool('largeTime')) {
       this.time.style.fontSize = '8.5vh';
-      this.time.style.fontWeight = 300;
+      this.time.style.fontWeight = '300';
     }
   }
 
@@ -173,7 +185,7 @@ class SSView {
    * Set the url
    * @param {?string} url to use if not null
    */
-  setUrl(url = null) {
+  setUrl(url: string = null) {
     this.url = url || this.photo.getUrl();
     SSView._dirtySet(this.model, 'view.url', this.url);
   }
@@ -255,7 +267,7 @@ class SSView {
    * @param {Element} weather - weather-element weather
    * @param {Object} model - template item model
    */
-  setElements(image, author, time, location, weather, model) {
+  setElements(image: IronImageElement, author: HTMLElement, time: HTMLElement, location: HTMLElement, weather: HTMLElement, model: any) {
     this.image = image;
     this.author = author;
     this.time = time;
@@ -271,10 +283,10 @@ class SSView {
    * Set the photo
    * @param {module:ss/photo.SSPhoto} photo - a photo to render
    */
-  setPhoto(photo) {
+  setPhoto(photo: SSPhoto) {
     this.photo = photo;
     this.setUrl();
-    this._setAuthorLabel(false);
+    this._setAuthorLabel();
     this._setLocationLabel();
   }
 

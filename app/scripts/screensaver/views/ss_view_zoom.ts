@@ -7,25 +7,26 @@
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSView from './ss_view.js';
+import SSPhoto from "../ss_photo.js";
 
 /**
- * Full view
- * @module ss/views/view_full
+ * Zoom view
+ * @module ss/views/view_zoom
  */
 
 /**
- * Full view
+ * Zoom view
  * @extends module:ss/views/view.SSView
- * @alias module:ss/views/view_full.SSViewFull
+ * @alias module:ss/views/view_zoom.SSViewZoom
  */
-class SSViewFull extends SSView {
+class SSViewZoom extends SSView {
 
   /**
    * Create new SSViewFull
    * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
    * @constructor
    */
-  constructor(photo) {
+  constructor(photo: SSPhoto) {
     super(photo);
   }
 
@@ -34,14 +35,7 @@ class SSViewFull extends SSView {
    */
   render() {
     super.render();
-
-    // noinspection JSUnresolvedVariable
-    const img = this.image.$.img;
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'fill';
   }
 }
 
-export default SSViewFull;
-
+export default SSViewZoom;

@@ -7,6 +7,7 @@
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSView from './ss_view.js';
+import SSPhoto from "../ss_photo.js";
 
 /**
  * Letterbox view
@@ -33,7 +34,7 @@ class SSViewLetterbox extends SSView {
    * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
    * @constructor
    */
-  constructor(photo) {
+  constructor(photo: SSPhoto) {
     super(photo);
   }
 
