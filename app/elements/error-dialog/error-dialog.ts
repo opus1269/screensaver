@@ -97,7 +97,7 @@ const ErrorDialog = Polymer({
    * @param {string} text
    * @private
    */
-  open: function(title, text) {
+  open: function(title: string, text: string) {
     title = title || 'Unknown';
     text = text || 'Unknown';
     text = text.replace(/\n/g, '<br/>');

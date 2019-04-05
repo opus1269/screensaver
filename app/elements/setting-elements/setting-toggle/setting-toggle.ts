@@ -139,7 +139,7 @@ const SettingToggle = Polymer({
    * Set the checked state of the toggle
    * @param {boolean} checked - checked state
    */
-  setChecked: function(checked) {
+  setChecked: function(checked: boolean) {
     this.set('checked', checked);
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
   },
@@ -157,7 +157,7 @@ const SettingToggle = Polymer({
    * @param {Event} ev
    * @private
    */
-  _onTap: function(ev) {
+  _onTap: function(ev: Event) {
     // so tap events only get called once.
     ev.stopPropagation();
   },

@@ -162,13 +162,13 @@ const SettingText = Polymer({
 
   /**
    * Event: keyup - fire setting-text-changed event on 'Enter'
-   * @param {Event} event - key event
-   * @param {int} event.keyCode - key code
+   * @param {Event} ev - key event
+   * @param {int} ev.keyCode - key code
    * @private
    */
-  _onKeyUp: function(event) {
+  _onKeyUp: function(ev: KeyboardEvent) {
     // check if 'Enter' was pressed
-    if (event.keyCode === 13) {
+    if (ev.keyCode === 13) {
       ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
       this.fire('setting-text-changed', {value: this.value});
     }

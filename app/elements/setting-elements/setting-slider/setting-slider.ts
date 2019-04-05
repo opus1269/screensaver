@@ -31,21 +31,23 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A unit type
- * @typedef {{}} module:els/setting/slider.UnitType
- * @property {string} name - descriptive name
- * @property {int} min - min value
- * @property {int} max - max value
- * @property {int} step - increment of changes
- * @property {number} mult - multiplier of a base
  */
+interface UnitType {
+  name: string;
+  min: number;
+  max: number;
+  step: number
+  mult: number;
+}
 
 /**
  * A number and associated units
- * @typedef {{}} module:els/setting/slider.UnitValue
- * @property {number} base - value in base unit
- * @property {number} display - value in display unit
- * @property {int} unit - display unit
  */
+interface UnitValue {
+  base: number;
+  display: number;
+  unit: number
+}
 
 /**
  * Polymer element for a url link
@@ -171,7 +173,7 @@ const SettingSlider = Polymer({
     /** Array of {@link module:els/setting/slider.SettingSlider.UnitType} */
     units: {
       type: Array,
-      value: function() {
+      value: function() : UnitType[] {
         return [];
       },
     },
@@ -209,7 +211,7 @@ const SettingSlider = Polymer({
    * @param {number} newValue
    * @private
    */
-  _unitIdxChanged: function(newValue) {
+  _unitIdxChanged: function(newValue: number) {
     if (newValue !== undefined) {
       this.set('value.unit', newValue);
       this._setBase();
@@ -221,13 +223,9 @@ const SettingSlider = Polymer({
 
   /**
    * Observer: Value changed
-   * @param {number} newValue
-   * @param {number} oldValue
-   * @param {number} newValue.unit
-   * @param {number} oldValue.unit
    * @private
    */
-  _valueChanged: function(newValue, oldValue) {
+  _valueChanged: function(newValue: UnitValue, oldValue: UnitValue) {
     if (newValue !== undefined) {
       if (oldValue !== undefined) {
         if (newValue.unit !== oldValue.unit) {
@@ -252,7 +250,7 @@ const SettingSlider = Polymer({
    * @param {Event} ev - tap event
    * @private
    */
-  _onUnitMenuSelected: function(ev) {
+  _onUnitMenuSelected: function(ev: Event) {
     const model = this.$.t.modelForElement(ev.target);
     if (model) {
       const label = `${this.name}: ${JSON.stringify(model.unit)}`;

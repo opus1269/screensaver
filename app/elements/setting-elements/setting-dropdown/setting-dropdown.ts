@@ -110,7 +110,7 @@ const SettingDropdown = Polymer({
     /** Array of Menu item labels */
     items: {
       type: Array,
-      value: function() {
+      value: function() : string[] {
         return [];
       },
     },
@@ -139,7 +139,7 @@ const SettingDropdown = Polymer({
    * @param {Event} ev - tap event
    * @private
    */
-  _onItemSelected: function(ev) {
+  _onItemSelected: function(ev: Event) {
     const model = this.$.t.modelForElement(ev.target);
     if (model) {
       ChromeGA.event(ChromeGA.EVENT.MENU,
