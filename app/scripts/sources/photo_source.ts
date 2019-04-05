@@ -14,6 +14,8 @@ import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+declare var ChromePromise: any;
+
 /**
  * A source of photos for the screen saver
  * @module sources/photo_source
@@ -30,6 +32,13 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {Object} [ex] - Additional information about the photo
  * @property {string} [point] - geolocation 'lat lon'
  */
+export interface Photo {
+  url: string,
+  author: string,
+  asp: number| string,
+  ex?: any,
+  point?: string,
+}
 
 /**
  * The photos for a {@link module:sources/photo_source.PhotoSource}
@@ -39,12 +48,25 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  *     {@link module:sources/photo_source.PhotoSource}
  * @property {module:sources/photo_source.Photo[]} photos - The photos
  */
+export interface Photos {
+  type: string,
+  photos: Photo[],
+}
+
 
 /**
  * A source of photos for the screen saver
  * @alias module:sources/photo_source.PhotoSource
  */
-class PhotoSource {
+abstract class PhotoSource {
+  _useKey: string;
+  _photosKey: string;
+  _type: string;
+  _desc: string;
+  _isDaily: boolean;
+  _isArray: boolean;
+  _loadArg: any;
+
 
   /**
    * Create a new photo source
@@ -56,8 +78,8 @@ class PhotoSource {
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
    */
-  constructor(useKey, photosKey, type, desc, isDaily, isArray,
-              loadArg = null) {
+  protected constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
     this._useKey = useKey;
     this._photosKey = photosKey;
     this._type = type;
@@ -76,8 +98,8 @@ class PhotoSource {
    * @param {Object} [ex] - Additional information about the photo
    * @param {string} [point=''] - 'lat lon'
    */
-  static addPhoto(photos, url, author, asp, ex, point = '') {
-    const photo = {
+  static addPhoto(photos: Photo[], url: string, author: string, asp: number, ex: any, point: string = '') {
+    const photo: Photo = {
       url: url,
       author: author,
       asp: asp.toPrecision(3),
@@ -97,7 +119,7 @@ class PhotoSource {
    * @param {number} lon - longitude
    * @returns {string} 'lat lon'
    */
-  static createPoint(lat, lon) {
+  static createPoint(lat: number, lon: number) {
     if ((typeof lat === 'number') && (typeof lon === 'number')) {
       return `${lat.toFixed(6)} ${lon.toFixed(6)}`;
     } else {
@@ -107,12 +129,10 @@ class PhotoSource {
 
   /**
    * Fetch the photos for this source - override
-   * @abstract
    * @throws An error if fetch failed
    * @returns {Promise<Object>} could be array of photos or albums
    */
-  fetchPhotos() {
-  }
+  abstract fetchPhotos() : Photo[];
 
   /**
    * Get the source type
@@ -159,12 +179,12 @@ class PhotoSource {
    * @returns {Promise<module:sources/photo_source.Photos>} the photos
    */
   async getPhotos() {
-    let ret = {
+    let ret: Photos = {
       type: this._type,
       photos: [],
     };
     if (this.use()) {
-      let photos = [];
+      let photos: Photo[] = [];
       if (this._isArray) {
         let items = await ChromeStorage.asyncGet(this._photosKey);
         // could be that items have not been retrieved yet
@@ -212,7 +232,7 @@ class PhotoSource {
       }
     } else {
       // remove the source
-      
+
       // HACK so we don't delete album or photos when Google Photos
       // page is disabled
       const useGoogle = ChromeStorage.getBool('useGoogle', true);
@@ -221,7 +241,7 @@ class PhotoSource {
           (this._photosKey === 'googleImages')) {
         isGoogleKey = true;
       }
-      
+
       if (!(isGoogleKey && !useGoogle)) {
         try {
           // noinspection JSUnresolvedFunction
@@ -232,10 +252,11 @@ class PhotoSource {
         }
       }
     }
-    
+
     return Promise.resolve();
   }
 
+  // TODO add | albums when converted
   /**
    * Save the photos to chrome.storage.local in a safe manner
    * @param {Object} photos - could be array of
@@ -243,7 +264,7 @@ class PhotoSource {
    * @returns {Promise<?string>} non-null on error
    * @private
    */
-  async _savePhotos(photos) {
+  async _savePhotos(photos: Photo[]) {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {

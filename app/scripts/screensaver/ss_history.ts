@@ -23,6 +23,12 @@ import * as SSRunner from './ss_runner.js';
  * @property {int} photoId - {@link module:ss/photo.SSPhoto} id
  * @property {int} photosPos - pointer into {@link module:ss/photos.Photos}
  */
+interface Item {
+  viewsIdx: number,
+  replaceIdx: number,
+  photoId: number,
+  photosPos: number,
+}
 
 /**
  * Slide show history
@@ -32,7 +38,21 @@ import * as SSRunner from './ss_runner.js';
  * @const
  * @private
  */
-const _history = {
+interface History {
+  arr: Item[],
+  idx: number,
+  max: number,
+}
+
+/**
+ * Slide show history
+ * @property {Array<module:ss/history.Item>} arr - history items
+ * @property {int} idx - pointer into arr
+ * @property {int} max - max length of arr, it will actually have 1 item more
+ * @const
+ * @private
+ */
+const _history: History = {
   arr: [],
   idx: -1,
   max: 10,
@@ -51,7 +71,7 @@ export function initialize() {
  * @param {int} selected - the current selection
  * @param {int} replaceIdx - the replace index
  */
-export function add(newIdx, selected, replaceIdx) {
+export function add(newIdx: number | null, selected: number, replaceIdx: number) {
   if (newIdx === null) {
     const view = SSViews.get(selected);
     const idx = _history.idx;

@@ -17,6 +17,7 @@ import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
 import './views/ss_view.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
+import SSPhoto from "./ss_photo.js";
 
 /**
  * Collection of {@link module:ss/views/view.SSView} objects
@@ -46,6 +47,7 @@ export const Type = {
  */
 const _MAX_VIEWS = 10;
 
+// TODO fix any dont get circular reference
 /**
  * The array of views
  * @typedef {Array<module:ss/views/view.SSView>} module:ss/views.Views
@@ -53,14 +55,15 @@ const _MAX_VIEWS = 10;
  * @const
  * @private
  */
-const _views = [];
+const _views: any = [];
 
+// TODO fix any
 /**
  * The neon-animated-pages
  * @type {Element|null}
  * @private
  */
-let _pages = null;
+let _pages: any = null;
 
 /**
  * The view type
@@ -99,11 +102,12 @@ function _setViewType() {
   Screensaver.setSizingType(type);
 }
 
+// TODO fix any
 /**
  * Create the {@link module:ss/views/view.SSView} pages
  * @param {PolymerElement} t
  */
-export function create(t) {
+export function create(t: any) {
   _pages = t.$.pages;
   _setViewType();
 
@@ -119,8 +123,8 @@ export function create(t) {
   t.set('_views', _views);
   t.$.repeatTemplate.render();
 
-  // set the Elements of each view
-  _views.forEach((view, index) => {
+  // set the Elements of each view TODO fix any
+  _views.forEach((view: any, index: number) => {
     const el = _pages.querySelector('#view' + index);
     const image = el.querySelector('.image');
     const author = el.querySelector('.author');
@@ -156,7 +160,7 @@ export function getCount() {
  * @param {int} idx - The index
  * @returns {module:ss/views/view.SSView}
  */
-export function get(idx) {
+export function get(idx: number) {
   return _views[idx];
 }
 
@@ -177,7 +181,7 @@ export function getSelectedIndex() {
  * Set the selected index
  * @param {int} selected
  */
-export function setSelectedIndex(selected) {
+export function setSelectedIndex(selected: number) {
   _pages.selected = selected;
 }
 
@@ -186,7 +190,7 @@ export function setSelectedIndex(selected) {
  * @param {int} idx - index into {@link module:ss/views.Views}
  * @returns {boolean} true if selected
  */
-export function isSelectedIndex(idx) {
+export function isSelectedIndex(idx: number) {
   let ret = false;
   // noinspection JSUnresolvedVariable
   if (_pages && (idx === _pages.selected)) {
@@ -200,7 +204,7 @@ export function isSelectedIndex(idx) {
  * @param {module:ss/photo.SSPhoto} photo
  * @returns {boolean} true if in {@link module:ss/views.Views}
  */
-export function hasPhoto(photo) {
+export function hasPhoto(photo: SSPhoto) {
   let ret = false;
   for (const view of _views) {
     if (view.photo.getId() === photo.getId()) {
@@ -257,7 +261,7 @@ export function replaceAll() {
  * @param {int} idx - index into {@link module:ss/views.Views}
  * @returns {int} index into {@link module:ss/views.Views}, -1 if none are loaded
  */
-export function findLoadedPhoto(idx) {
+export function findLoadedPhoto(idx: number) {
   if (!hasUsable()) {
     // replace the photos
     replaceAll();

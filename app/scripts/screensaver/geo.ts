@@ -35,6 +35,10 @@ const _GEOCODE_API =
  * @property {string} loc - descriptive location
  * @property {string} point - geo location 'lat lon'
  */
+export interface Location {
+  loc: string,
+  point: string
+}
 
 /**
  * Location cache
@@ -43,7 +47,16 @@ const _GEOCODE_API =
  * @property {int} maxSize - max entries to cache
  * @private
  */
-const _LOC_CACHE = {
+export interface Cache {
+  entries: Location[],
+  maxSize: number,
+}
+
+/**
+ * Location cache
+ * @private
+ */
+const _LOC_CACHE: Cache = {
   entries: [],
   maxSize: 100,
 };
@@ -53,7 +66,7 @@ const _LOC_CACHE = {
  * @param {string} point - 'lat,long'
  * @returns {Promise<string>} geolocation as string
  */
-export function get(point) {
+export function get(point: string) {
   if (!ChromeStorage.getBool('showLocation')) {
     return Promise.reject(new Error('showLocation is off'));
   } else if (ChromeUtils.isWhiteSpace(point)) {
@@ -92,7 +105,7 @@ export function get(point) {
  * @returns {module:ss/geo.Location|undefined} location, undefined if not cached
  * @private
  */
-function _getFromCache(point) {
+function _getFromCache(point: string) {
   return _LOC_CACHE.entries.find((element) => {
     return (element.point === point);
   });
@@ -104,7 +117,7 @@ function _getFromCache(point) {
  * @param {string} location - description
  * @private
  */
-function _addToCache(point, location) {
+function _addToCache(point: string, location: string) {
   _LOC_CACHE.entries.push({
     loc: location,
     point: point,
@@ -121,7 +134,7 @@ function _addToCache(point, location) {
  * @returns {string} 'lat,lng' fixed point notation
  * @private
  */
-function _cleanPoint(point) {
+function _cleanPoint(point: string) {
   let ret = point;
   try {
     const stringArray = point.split(' ');

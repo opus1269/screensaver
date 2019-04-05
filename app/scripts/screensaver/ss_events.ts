@@ -28,7 +28,18 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @const
  * @private
  */
-const _MOUSE_START = {x: null, y: null};
+interface MousePosition {
+  x: number | number,
+  y: number | null,
+}
+
+/**
+ * Starting mouse position
+ * @type {{x: ?int, y: ?int}}
+ * @const
+ * @private
+ */
+const _MOUSE_START: MousePosition = {x: null, y: null};
 
 /**
  * Close ourselves
@@ -50,7 +61,7 @@ function _close() {
  * @param {string} cmd - keyboard command
  * @private
  */
-function _onKeyCommand(cmd) {
+function _onKeyCommand(cmd: string) {
   if (SSRunner.isInteractive()) {
     if (cmd === 'ss-toggle-paused') {
       ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
@@ -76,7 +87,7 @@ function _onKeyCommand(cmd) {
  * @returns {boolean} true if asynchronous
  * @private
  */
-function _onMessage(request, sender, response) {
+function _onChromeMessage(request: ChromeMsg.MsgType, sender: Object, response: Function) {
   if (request.message === MyMsg.SS_CLOSE.message) {
     _close();
   } else if (request.message === MyMsg.SS_IS_SHOWING.message) {
@@ -92,7 +103,7 @@ function _onMessage(request, sender, response) {
  * @param {KeyboardEvent} ev - KeyboardEvent
  * @private
  */
-function _onKey(ev) {
+function _onKey(ev: KeyboardEvent) {
   const keyName = ev.key;
   if (!SSRunner.isStarted()) {
     _close();
@@ -120,7 +131,7 @@ function _onKey(ev) {
  * @param {MouseEvent} ev - mousemove event
  * @private
  */
-function _onMouseMove(ev) {
+function _onMouseMove(ev: MouseEvent) {
   if (_MOUSE_START.x && _MOUSE_START.y) {
     const deltaX = Math.abs(ev.clientX - _MOUSE_START.x);
     const deltaY = Math.abs(ev.clientY - _MOUSE_START.y);
@@ -152,7 +163,7 @@ function _onMouseClick() {
 }
 
 // listen for chrome messages
-ChromeMsg.listen(_onMessage);
+ChromeMsg.listen(_onChromeMessage);
 
 // listen for key events
 window.addEventListener('keydown', _onKey, false);

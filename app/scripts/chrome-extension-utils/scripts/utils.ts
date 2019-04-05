@@ -187,7 +187,7 @@ export function getRandomInt(min: number, max: number) {
  * Fisher-Yates shuffle algorithm.
  * @param {Array} array - Array to sort
  */
-export function shuffleArray(array: []) {
+export function shuffleArray(array: any[]) {
   const len = array ? array.length : 0;
   for (let i = len - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

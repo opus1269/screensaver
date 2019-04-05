@@ -427,7 +427,6 @@ gulp.task('_build_js', () => {
   return gulp.src(input, {base: '.'}).
       pipe(plumber()).
       pipe(tsProject()).js.
-      pipe(debug()).
       pipe(replace(SEARCH, REPLACE, noop())).
       pipe(gulp.dest(base.src), noop());
 });

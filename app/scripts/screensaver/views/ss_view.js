@@ -90,7 +90,7 @@ class SSView {
 
   /**
    * Determine if a given aspect ratio should be ignored
-   * @param {number} asp - an aspect ratio
+   * @param {number|string} asp - an aspect ratio
    * @param {int} photoSizing - the sizing type
    * @returns {boolean} true if the aspect ratio should be ignored
    */

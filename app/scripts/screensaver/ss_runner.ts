@@ -32,7 +32,29 @@ import * as SSTime from './ss_time.js';
  * @property {number} timeOutId - id of setTimeout
  * @private
  */
-const _VARS = {
+interface Vars {
+  started: boolean;
+  replaceIdx: number;
+  lastSelected: number;
+  waitTime: number;
+  interactive: boolean;
+  paused: boolean;
+  timeOutId: number
+}
+
+/**
+ * Instance variables
+ * @type {Object}
+ * @property {boolean} started - true if slideshow started
+ * @property {int} replaceIdx - page to replace with next photo
+ * @property {int} lastSelected - last selected page
+ * @property {int} waitTime - wait time when looking for photo in milliSecs
+ * @property {boolean} interactive - is interaction allowed
+ * @property {boolean} paused - is screensaver paused
+ * @property {number} timeOutId - id of setTimeout
+ * @private
+ */
+const _VARS: Vars = {
   started: false,
   replaceIdx: -1,
   lastSelected: -1,
@@ -71,7 +93,7 @@ export function getWaitTime() {
  * Set wait time between _runShow calls in milliSecs
  * @param {int} waitTime - wait time for next attempt to get photo
  */
-export function setWaitTime(waitTime) {
+export function setWaitTime(waitTime: number) {
   _VARS.waitTime = waitTime;
   // larger than 32 bit int is bad news
   // see: https://stackoverflow.com/a/3468650/4468645
@@ -82,7 +104,7 @@ export function setWaitTime(waitTime) {
  * Set last selected index
  * @param {int} lastSelected - last index in {@link module:ss/views.Views}
  */
-export function setLastSelected(lastSelected) {
+export function setLastSelected(lastSelected: number) {
   _VARS.lastSelected = lastSelected;
 }
 
@@ -90,7 +112,7 @@ export function setLastSelected(lastSelected) {
  * Set last selected index
  * @param {int} idx - replace index in {@link module:ss/views.Views}
  */
-export function setReplaceIdx(idx) {
+export function setReplaceIdx(idx: number) {
   _VARS.replaceIdx = idx;
 }
 
@@ -123,7 +145,7 @@ export function isPaused() {
  * @param {int} idx - index into {@link module:ss/views.Views}
  * @returns {boolean} if selected or last selected
  */
-export function isCurrentPair(idx) {
+export function isCurrentPair(idx: number) {
   const selected = SSViews.getSelectedIndex();
   return ((idx === selected) || (idx === _VARS.lastSelected));
 }
@@ -132,7 +154,7 @@ export function isCurrentPair(idx) {
  * Toggle paused state of the slideshow
  * @param {?int} [newIdx=null] optional idx to use for current idx
  */
-export function togglePaused(newIdx = null) {
+export function togglePaused(newIdx: number | null = null) {
   if (_VARS.started) {
     _VARS.paused = !_VARS.paused;
     Screensaver.setPaused(_VARS.paused);
@@ -178,7 +200,7 @@ function _stop() {
  * @param {?int} [newIdx=null] optional idx to use for current idx
  * @private
  */
-function _restart(newIdx = null) {
+function _restart(newIdx: number | null = null) {
   const transTime = ChromeStorage.get('transitionTime');
   if (transTime) {
     setWaitTime(transTime.base * 1000);
@@ -191,7 +213,7 @@ function _restart(newIdx = null) {
  * @param {?int} [newIdx=null] optional idx to use for current idx
  * @private
  */
-function _step(newIdx = null) {
+function _step(newIdx: number | null = null) {
   if (isPaused()) {
     togglePaused(newIdx);
     togglePaused();
@@ -206,7 +228,7 @@ function _step(newIdx = null) {
  * @param {?int} [newIdx=null] override selected
  * @private
  */
-function _runShow(newIdx = null) {
+function _runShow(newIdx: number | null = null) {
   if (Screensaver.isNoPhotos()) {
     // no usable photos to show
     return;

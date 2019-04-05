@@ -40,7 +40,7 @@ export function initialize() {
  * @returns {int} next - index into {@link module:ss/views.Views}
  * to display, -1 if none are ready
  */
-export function getNext(idx) {
+export function getNext(idx: number) {
   let ret = SSViews.findLoadedPhoto(idx);
   if (ret === -1) {
     // no photos ready, wait a little, try again
@@ -56,7 +56,7 @@ export function getNext(idx) {
  * Add the next photo from the master array
  * @param {int} idx - {@link module:ss/views.Views} index to replace
  */
-export function replacePhoto(idx) {
+export function replacePhoto(idx: number) {
   if (idx >= 0) {
     _replacePhoto(idx);
   }
@@ -66,7 +66,7 @@ export function replacePhoto(idx) {
  * @param {int} idx - index into {@link module:ss/views.Views}
  * @private
  */
-function _replacePhoto(idx) {
+function _replacePhoto(idx: number) {
   if (SSViews.isSelectedIndex(idx)) {
     return;
   }

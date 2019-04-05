@@ -4,6 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+import {Photo} from "../sources/photo_source.js";
+
 import * as MyGA from '../../scripts/my_analytics.js';
 
 import * as ChromeGA
@@ -17,17 +19,16 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A photo for the {@link module:els/screensaver.Screensaver}
- * @property {int} _id - Unique id
- * @property {string} _url - The url to the photo
- * @property {string} _photographer - The photographer
- * @property {string} _type - type of {@link module:sources/photo_source}
- * @property {number} _aspectRatio - aspect ratio
- * @property {Object} _ex - additional information about the photo
- * @property {string} _point - geolocation 'lat lon'
- * @property {boolean} _isBad - true if url didn't load
- * @alias module:ss/photo.SSPhoto
  */
 class SSPhoto {
+  _id: number;
+  _url: string;
+  _photographer: string;
+  _type: string;
+  _aspectRatio: number | string;
+  _ex: any | null;
+  _point: string | null;
+  _isBad: boolean;
 
   /**
    * Create a new photo
@@ -35,7 +36,7 @@ class SSPhoto {
    * @param {module:sources/photo_source.Photo} source - source photo
    * @param {string} sourceType - type of {@link module:sources/photo_source}
    */
-  constructor(id, source, sourceType) {
+  constructor(id: number, source: Photo, sourceType: string) {
     this._id = id;
     this._url = source.url;
     this._photographer = source.author ? source.author : '';
@@ -58,7 +59,7 @@ class SSPhoto {
    * Set unique id
    * @param {int} id - unique id
    */
-  setId(id) {
+  setId(id: number) {
     this._id = id;
   }
 
@@ -89,7 +90,7 @@ class SSPhoto {
    * Set the url
    * @param {string} url - url to photo
    */
-  setUrl(url) {
+  setUrl(url: string) {
     this._url = url;
     this._isBad = false;
   }

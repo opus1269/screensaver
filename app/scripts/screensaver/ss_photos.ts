@@ -11,6 +11,8 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import SSPhoto from './ss_photo.js';
 import SSView from './views/ss_view.js';
 import * as SSViews from './ss_views.js';
+import {Photos, Photo} from "../sources/photo_source";
+
 
 /**
  * Collection of {@link module:ss/photo.SSPhoto} objects
@@ -24,7 +26,7 @@ import * as SSViews from './ss_views.js';
  * @const
  * @private
  */
-const _photos = [];
+const _photos: SSPhoto[] = [];
 
 /**
  * Current index into {@link module:ss/photos.Photos}
@@ -37,7 +39,7 @@ let _curIdx = 0;
  * Add the photos from an {@link module:sources/photo_source.Photos}
  * @param {module:sources/photo_source.Photos} source
  */
-export function addFromSource(source) {
+export function addFromSource(source: Photos) {
   const type = source.type;
   const viewType = SSViews.getType();
   let ct = 0;
@@ -73,7 +75,7 @@ export function hasUsable() {
  * @param {int} idx - The index
  * @returns {module:ss/photo.SSPhoto} A {@link module:ss/photo.SSPhoto}
  */
-export function get(idx) {
+export function get(idx: number) {
   return _photos[idx];
 }
 
@@ -110,7 +112,7 @@ export function getCurrentIndex() {
  * @param {int} idx - starting index
  * @returns {Array<module:ss/photo.SSPhoto>} array of photos num long or less
  */
-export function getNextGooglePhotos(num, idx) {
+export function getNextGooglePhotos(num: number, idx: number) {
   const photos = [];
   let ct = 0;
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
@@ -131,13 +133,13 @@ export function getNextGooglePhotos(num, idx) {
  * Update the urls of the given photos
  * @param {module:sources/photo_source.Photo[]} photos
  */
-export function updateGooglePhotoUrls(photos) {
+export function updateGooglePhotoUrls(photos: Photo[]) {
   for (let i = _photos.length - 1; i >= 0; i--) {
     if (_photos[i].getType() !== 'Google User') {
       continue;
     }
 
-    const index = photos.findIndex((e) => {
+    const index = photos.findIndex((e: Photo) => {
       return e.ex.id === _photos[i].getEx().id;
     });
     if (index >= 0) {
@@ -150,7 +152,7 @@ export function updateGooglePhotoUrls(photos) {
  * Set current index into {@link _photos}
  * @param {int} idx - The index
  */
-export function setCurrentIndex(idx) {
+export function setCurrentIndex(idx: number) {
   _curIdx = idx;
 }
 
