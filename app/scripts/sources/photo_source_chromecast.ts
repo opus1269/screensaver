@@ -14,7 +14,7 @@ import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import {PhotoSource} from './photo_source.js';
+import {PhotoSource, Photo} from './photo_source.js';
 
 /**
  * A source of photos from Chromecast
@@ -45,10 +45,10 @@ class CCSource extends PhotoSource {
    */
   async fetchPhotos() {
     const url = '/assets/chromecast.json';
-    let photos = await ChromeHttp.doGet(url);
+    let photos: Photo[] = await ChromeHttp.doGet(url);
     photos = photos || [];
     for (const photo of photos) {
-      photo.asp = 1.78;
+      photo.asp = '1.78';
     }
     return Promise.resolve(photos);
   }

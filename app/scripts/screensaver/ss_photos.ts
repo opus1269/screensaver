@@ -44,7 +44,8 @@ export function addFromSource(source: Photos) {
   const viewType = SSViews.getType();
   let ct = 0;
   for (const sourcePhoto of source.photos) {
-    if (!SSView.ignore(sourcePhoto.asp, viewType)) {
+    const asp = parseFloat(sourcePhoto.asp);
+    if (!SSView.ignore(asp, viewType)) {
       const photo = new SSPhoto(ct, sourcePhoto, type);
       _photos.push(photo);
       ct++;

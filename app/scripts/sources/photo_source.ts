@@ -10,6 +10,27 @@
  * @module sources/photo_source
  */
 
+/**
+ * A photo from a {@link module:sources/photo_source.PhotoSource}
+ * This is the photo information that is persisted.
+ *
+ * @typedef {{}} module:sources/photo_source.Photo
+ * @property {string} url - The url to the photo
+ * @property {string} author - The photographer
+ * @property {string} asp - The aspect ratio of the photo
+ * @property {?Object} ex - Additional information about the photo
+ * @property {?string} point - geolocation 'lat lon'
+ */
+
+/**
+ * The photos for a {@link module:sources/photo_source.PhotoSource}
+ *
+ * @typedef {{}} module:sources/photo_source.Photos
+ * @property {string} type - type of
+ *     {@link module:sources/photo_source.PhotoSource}
+ * @property {module:sources/photo_source.Photo[]} photos - The photos
+ */
+
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
@@ -29,7 +50,7 @@ declare var ChromePromise: any;
 export interface Photo {
   url: string,
   author: string,
-  asp: number,
+  asp: string,
   ex?: any,
   point?: string,
 }
@@ -67,8 +88,8 @@ export abstract class PhotoSource {
    * @param {boolean} isArray - Is the source an Array of photo Arrays
    * @param {?Object} [loadArg=null] - optional arg for load function
    */
-  protected constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
-              loadArg: any = null) {
+  protected constructor(useKey: string, photosKey: string, type: string,
+                        desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
     this._useKey = useKey;
     this._photosKey = photosKey;
     this._type = type;
@@ -91,7 +112,7 @@ export abstract class PhotoSource {
     const photo: Photo = {
       url: url,
       author: author,
-      asp: asp,
+      asp: asp.toPrecision(3),
     };
     if (ex) {
       photo.ex = ex;
@@ -121,7 +142,7 @@ export abstract class PhotoSource {
    * @throws An error if fetch failed
    * @returns {Promise<Object>} could be array of photos or albums
    */
-  abstract fetchPhotos() : Promise<Photo[]>;
+  abstract fetchPhotos(): Promise<Photo[]>;
 
   /**
    * Get the source type

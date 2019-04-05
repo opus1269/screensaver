@@ -32,6 +32,7 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {Photo} from "../sources/photo_source";
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
@@ -289,6 +290,25 @@ export async function update() {
   if (oldVersion < 23) {
     // remove unused data
     ChromeStorage.set('googleImages', null);
+  }
+
+  if (oldVersion < 25) {
+    // reload chromecast photos since asp is now a string
+    const key = 'useChromecast';
+    const useChromecast = ChromeStorage.getBool(key, DEFS[key]);
+    if (useChromecast) {
+      try {
+        await PhotoSources.process(key);
+      } catch (err) {
+        ChromeStorage.set(key, false);
+        try {
+          // failed to convert, delete source
+          await chromep.storage.local.remove(this._photosKey);
+        } catch (err) {
+          // ignore
+        }
+      }
+    }
   }
 
   _addDefaults();

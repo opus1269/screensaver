@@ -836,7 +836,7 @@ export class GoogleSource extends PhotoSource {
         photo = {};
         
         photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
-        photo.asp = width / height;
+        photo.asp = (width / height).toPrecision(3);
         // use album name instead
         photo.author = albumName;
         // unique photo id and url to photo in Google Photos
@@ -868,7 +868,8 @@ export class GoogleSource extends PhotoSource {
     for (const mediaItem of mediaItems) {
       const photo: Photo = this._processPhoto(mediaItem, albumName);
       if (photo) {
-        this.addPhoto(photos, photo.url, photo.author, photo.asp,
+        const asp = parseFloat(photo.asp);
+        this.addPhoto(photos, photo.url, photo.author, asp,
             photo.ex, photo.point);
       }
     }

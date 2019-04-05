@@ -44,7 +44,7 @@ class SSPhoto {
     this._url = source.url;
     this._photographer = source.author ? source.author : '';
     this._type = sourceType;
-    this._aspectRatio = source.asp;
+    this._aspectRatio = parseFloat(source.asp);
     this._ex = source.ex;
     this._point = source.point;
     this._isBad = false;
