@@ -91,7 +91,7 @@ const WaiterElement = Polymer({
    * @param {string} label - label
    * @private
    */
-  _statusLabelChanged: function(label) {
+  _statusLabelChanged: function(label: string) {
     if (label !== undefined) {
       this.$.statusLabel.innerHTML = label.replace(/\n/g, '<br/>');
     }

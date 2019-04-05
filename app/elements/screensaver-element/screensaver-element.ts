@@ -68,6 +68,8 @@ import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+declare var ChromePromise: any;
+
 /**
  * Module for a screensaver
  * @module els/screensaver
@@ -94,17 +96,17 @@ let _errHandler = {
 };
 
 /** @type {Function} */
-export let createPages = null;
+export let createPages: Function = null;
 /** @type {Function} */
-export let setSizingType = null;
+export let setSizingType: Function = null;
 /** @type {Function} */
-export let isNoPhotos = null;
+export let isNoPhotos: Function = null;
 /** @type {Function} */
-export let setNoPhotos = null;
+export let setNoPhotos: Function = null;
 /** @type {Function} */
-export let setTimeLabel = null;
+export let setTimeLabel: Function = null;
 /** @type {Function} */
-export let setPaused = null;
+export let setPaused: Function = null;
 
 /**
  * Polymer element to display a screensaver
@@ -358,7 +360,7 @@ const Screensaver = Polymer({
    * Set the sizing type for the paper-image elements
    * @param {string} type The sizing type
    */
-  setSizingType: function(type) {
+  setSizingType: function(type: string) {
     this.set('sizingType', type);
   },
 
@@ -381,7 +383,7 @@ const Screensaver = Polymer({
    * Set the time label
    * @param {string} label - current time
    */
-  setTimeLabel: function(label) {
+  setTimeLabel: function(label: string) {
     this.set('timeLabel', label);
   },
 
@@ -389,7 +391,7 @@ const Screensaver = Polymer({
    * Set the state when slideshow is paused
    * @param {boolean} paused - paused state
    */
-  setPaused: function(paused) {
+  setPaused: function(paused: boolean) {
     this.set('paused', paused);
   },
 
@@ -436,7 +438,7 @@ const Screensaver = Polymer({
    * @returns {Promise<void>}
    * @private
    */
-  _launch: async function(delay = 2000) {
+  _launch: async function(delay: number = 2000) {
     try {
       const hasPhotos = await SSBuilder.build();
       if (hasPhotos) {
@@ -459,7 +461,8 @@ const Screensaver = Polymer({
    * @param {Event} ev - the event object
    * @param {Object} ev.model - template model
    */
-  _onErrorChanged: async function(ev) {
+  _onErrorChanged: async function(ev: Event) {
+    //@ts-ignore
     const isError = ev.detail.value;
 
     if (_errHandler.isUpdating) {
@@ -471,6 +474,7 @@ const Screensaver = Polymer({
       // url failed to load
       _errHandler.isUpdating = true;
 
+      //@ts-ignore
       const model = ev.model;
       const index = model.index;
       const view = this._views[index];
@@ -595,7 +599,7 @@ const Screensaver = Polymer({
    * @private
    * @memberOf SlideAnimatable
    */
-  _pausedChanged: function(newValue, oldValue) {
+  _pausedChanged: function(newValue: boolean, oldValue: boolean) {
     if (typeof oldValue === 'undefined') {
       return;
     }

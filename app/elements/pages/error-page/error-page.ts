@@ -197,24 +197,20 @@ const ErrorPage = Polymer({
   /**
    * Computed Binding
    * @param { ChromeLastError} lastError - the error
-   * @param { ChromeLastError} lastError.message - message title
-   * @param { ChromeLastError} lastError.stack - stack trace
    * @returns {string} stack trace
    * @private
    */
-  _computeStack: function(lastError) {
+  _computeStack: function(lastError: ChromeLastError) {
     return lastError.message ? lastError.stack : '';
   },
 
   /**
    * Computed Binding
    * @param { ChromeLastError} lastError - the error
-   * @param { ChromeLastError} lastError.title - message title
-   * @param { ChromeLastError} lastError.message - message title
    * @returns {string} page title
    * @private
    */
-  _computeTitle: function(lastError) {
+  _computeTitle: function(lastError: ChromeLastError) {
     return lastError.message ? lastError.title : '';
   },
 });

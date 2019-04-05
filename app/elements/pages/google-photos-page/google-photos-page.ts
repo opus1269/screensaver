@@ -205,7 +205,7 @@ const GooglePhotosPage = Polymer({
    * @param {boolean} [doPhotos=false] - if true, reload each album
    * @returns {Promise<null>} always resolves
    */
-  loadAlbumList: function(doPhotos = false) {
+  loadAlbumList: function(doPhotos: boolean = false) {
     if (this.isAlbumMode) {
       return this.$$('#albumsView').loadAlbumList(doPhotos).catch(() => {});
     }
@@ -335,7 +335,7 @@ const GooglePhotosPage = Polymer({
    * @returns {string} page title
    * @private
    */
-  _computeTitle: function(isAlbumMode) {
+  _computeTitle: function(isAlbumMode: boolean) {
     let ret;
     if (isAlbumMode) {
       ret = ChromeLocale.localize('google_title');
@@ -351,7 +351,7 @@ const GooglePhotosPage = Polymer({
    * @param {boolean|undefined} useGoogle - true if using Google Photos
    * @private
    */
-  _stateChanged: function(isAlbumMode, useGoogle) {
+  _stateChanged: function(isAlbumMode: boolean, useGoogle: boolean) {
     if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
       return;
     }
@@ -367,7 +367,7 @@ const GooglePhotosPage = Polymer({
    * @returns {string} an icon
    * @private
    */
-  _computeModeIcon: function(isAlbumMode) {
+  _computeModeIcon: function(isAlbumMode: boolean) {
     return isAlbumMode ? 'myicons:photo-album' : 'myicons:photo';
   },
 
@@ -377,7 +377,7 @@ const GooglePhotosPage = Polymer({
    * @returns {string} page title
    * @private
    */
-  _computeModeTooltip: function(isAlbumMode) {
+  _computeModeTooltip: function(isAlbumMode: boolean) {
     let ret;
     if (isAlbumMode) {
       ret = ChromeLocale.localize('tooltip_google_mode_albums');
@@ -394,7 +394,7 @@ const GooglePhotosPage = Polymer({
    * @returns {boolean} true if album icons should be disabled
    * @private
    */
-  _computeAlbumIconDisabled(useGoogle, isAlbumMode) {
+  _computeAlbumIconDisabled(useGoogle: boolean, isAlbumMode: boolean) {
     return !(useGoogle && isAlbumMode);
   },
 
@@ -404,7 +404,7 @@ const GooglePhotosPage = Polymer({
    * @returns {string} tooltip label
    * @private
    */
-  _computeRefreshTooltip(isAlbumMode) {
+  _computeRefreshTooltip(isAlbumMode: boolean) {
     let label = ChromeLocale.localize('tooltip_refresh');
     if (!isAlbumMode) {
       label = ChromeLocale.localize('tooltip_refresh_photos');

@@ -79,7 +79,7 @@ const SlideAnimatable = Polymer({
    * @param {int} newValue - new animation type
    * @private
    */
-  _aniChanged: function(newValue) {
+  _aniChanged: function(newValue: number) {
     let entry;
     let exit;
     let dur = 2000;

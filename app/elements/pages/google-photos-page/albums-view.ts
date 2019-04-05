@@ -36,7 +36,7 @@ import '../../../elements/shared-styles.js';
 import * as MyGA from '../../../scripts/my_analytics.js';
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
-import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
+import {GoogleSource, Album, SelectedAlbum} from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -78,7 +78,7 @@ const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
  * @type {Array<module:sources/photo_source_google.SelectedAlbum>}
  * @private
  */
-let _selections = [];
+let _selections: SelectedAlbum[] = [];
 
 /**
  * Polymer element to manage Google Photos album selections
@@ -249,7 +249,7 @@ Polymer({
    */
   ready: function() {
     // listen for chrome messages
-    ChromeMsg.listen(this._onMessage.bind(this));
+    ChromeMsg.listen(this._onChromeMessage.bind(this));
   },
 
   /**
@@ -257,7 +257,7 @@ Polymer({
    * @param {boolean} [updatePhotos=false] - if true, reload each selected album
    * @returns {Promise<null>} always resolves
    */
-  loadAlbumList: async function(updatePhotos) {
+  loadAlbumList: async function(updatePhotos: boolean) {
     const METHOD = 'AlbumsView.loadAlbumList';
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
     let albums;
@@ -339,7 +339,7 @@ Polymer({
    * Remove selected albums
    */
   removeSelectedAlbums: function() {
-    this.albums.forEach((album, index) => {
+    this.albums.forEach((album: Album, index: number) => {
       if (album.checked) {
         this.set('albums.' + index + '.checked', false);
       }
@@ -355,8 +355,9 @@ Polymer({
    * @returns {Promise<void>}
    * @private
    */
-  _onAlbumSelectChanged: async function(ev) {
+  _onAlbumSelectChanged: async function(ev: Event) {
     const METHOD = 'AlbumViews._onAlbumSelectChanged';
+    //@ts-ignore
     const album = ev.model.album;
 
     ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
@@ -401,7 +402,7 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onMessage: async function(request, sender, response) {
+  _onChromeMessage: function (request: ChromeMsg.MsgType, sender: Object, response: Function) {
     if (request.message === MyMsg.ALBUM_COUNT.message) {
       // show user status of photo loading
       // noinspection JSUnresolvedVariable
@@ -421,7 +422,7 @@ Polymer({
    * @param {boolean} newValue - state
    * @private
    */
-  _waitForLoadChanged: function(newValue) {
+  _waitForLoadChanged: function(newValue: boolean) {
     if (newValue === false) {
       // noinspection JSUnresolvedVariable
       this.$.ironList._render();
@@ -438,7 +439,7 @@ Polymer({
    * @returns {Promise<boolean>} true, if successful
    * @private
    */
-  _loadAlbum: async function(album, wait = true) {
+  _loadAlbum: async function(album: Album, wait: boolean = true) {
     const METHOD = 'AlbumViews._loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
     /** @type {Error} */
@@ -603,7 +604,7 @@ Polymer({
    * @returns {boolean} true if hidden
    * @private
    */
-  _computeHidden: function(waitForLoad, permPicasa) {
+  _computeHidden: function(waitForLoad: boolean, permPicasa: string) {
     let ret = true;
     if (!waitForLoad && (permPicasa === 'allowed')) {
       ret = false;
@@ -617,7 +618,7 @@ Polymer({
    * @returns {string} i18n label
    * @private
    */
-  _computePhotoLabel: function(count) {
+  _computePhotoLabel: function(count: number) {
     let ret = `${count} ${ChromeLocale.localize('photos')}`;
     if (count === 1) {
       ret = `${count} ${ChromeLocale.localize('photo')}`;

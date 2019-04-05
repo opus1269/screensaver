@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {MsgType} from "./chrome-extension-utils/scripts/msg.js";
 
 /**
  * Wrapper for chrome messages specific to this app
@@ -68,13 +69,13 @@ const _MSG = {
   },
 };
 
-export const SS_SHOW = _MSG.SS_SHOW;
-export const SS_CLOSE = _MSG.SS_CLOSE;
-export const SS_IS_SHOWING = _MSG.SS_IS_SHOWING;
-export const PHOTO_SOURCE_FAILED = _MSG.PHOTO_SOURCE_FAILED;
-export const LOAD_FILTERED_PHOTOS = _MSG.LOAD_FILTERED_PHOTOS;
-export const FILTERED_PHOTOS_COUNT = _MSG.FILTERED_PHOTOS_COUNT;
-export const LOAD_ALBUMS = _MSG.LOAD_ALBUMS;
-export const LOAD_ALBUM = _MSG.LOAD_ALBUM;
-export const ALBUM_COUNT = _MSG.ALBUM_COUNT;
-export const UPDATE_WEATHER_ALARM = _MSG.UPDATE_WEATHER_ALARM;
+export const SS_SHOW: MsgType = _MSG.SS_SHOW;
+export const SS_CLOSE: MsgType = _MSG.SS_CLOSE;
+export const SS_IS_SHOWING: MsgType = _MSG.SS_IS_SHOWING;
+export const PHOTO_SOURCE_FAILED: MsgType = _MSG.PHOTO_SOURCE_FAILED;
+export const LOAD_FILTERED_PHOTOS: MsgType = _MSG.LOAD_FILTERED_PHOTOS;
+export const FILTERED_PHOTOS_COUNT: MsgType = _MSG.FILTERED_PHOTOS_COUNT;
+export const LOAD_ALBUMS: MsgType = _MSG.LOAD_ALBUMS;
+export const LOAD_ALBUM: MsgType = _MSG.LOAD_ALBUM;
+export const ALBUM_COUNT: MsgType = _MSG.ALBUM_COUNT;
+export const UPDATE_WEATHER_ALARM: MsgType = _MSG.UPDATE_WEATHER_ALARM;

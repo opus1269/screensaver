@@ -19,7 +19,7 @@ declare var ChromePromise: any;
  * A Chrome message
  * @typedef {{}} module:chrome/msg.Message
  * @property {string} message - Unique name
- * @property {Error} error - an error
+ * @property {string} error - an error message
  * @property {string|Object} item - a message specific item
  * @property {boolean} updated - item is new or updated
  * @property {string} key - key name
@@ -27,10 +27,12 @@ declare var ChromePromise: any;
  */
 export interface MsgType {
   message: string
+  error?: string
   key?: string
   value?: string
   id?: string
   name?: string
+  count?: number
 }
 
 /**

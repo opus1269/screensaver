@@ -114,7 +114,7 @@ const HelpPage = Polymer({
    * @returns {string} url
    * @private
    */
-  _computeMailToUrl: function(subject) {
+  _computeMailToUrl: function(subject: string) {
     return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
   },
 

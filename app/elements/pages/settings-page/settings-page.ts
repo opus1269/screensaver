@@ -285,7 +285,7 @@ Polymer({
    * Deselect the given {@link module:sources/photo_source}
    * @param {string} useName - Name of <setting-toggle>
    */
-  deselectPhotoSource: function(useName) {
+  deselectPhotoSource: function(useName: string) {
     this._setPhotoSourceChecked(useName, false);
   },
 
@@ -299,7 +299,7 @@ Polymer({
    * @returns {{name: *, min: *, mult: *, max: *, name: *, step: *}}
    * @private
    */
-  _getUnit: function(name, min, max, step, mult) {
+  _getUnit: function(name: string, min: number, max: number, step: number, mult: number) {
     return {
       'name': ChromeLocale.localize(name),
       'min': min, 'max': max, 'step': step, 'mult': mult,
@@ -312,7 +312,7 @@ Polymer({
    * @param {boolean} state - checked state
    * @private
    */
-  _setPhotoSourceChecked: function(useName, state) {
+  _setPhotoSourceChecked: function(useName: string, state: boolean) {
     const query = `[name=${useName}]`;
     const el = this.shadowRoot.querySelector(query);
     if (el && !useName.includes('useGoogle')) {
@@ -325,7 +325,7 @@ Polymer({
    * @param {boolean} state - checked state
    * @private
    */
-  _setPhotoSourcesChecked: function(state) {
+  _setPhotoSourcesChecked: function(state: boolean) {
     const useKeys = PhotoSources.getUseKeys();
     for (const useKey of useKeys) {
       this._setPhotoSourceChecked(useKey, state);
@@ -428,6 +428,7 @@ Polymer({
         // show weather
         
         // see if we have geolocation permission
+        // @ts-ignore
         const permGeo = await navigator.permissions.query(
             {name: 'geolocation'});
 
@@ -499,7 +500,7 @@ Polymer({
    * @returns {boolean} true if menu should be visible
    * @private
    */
-  _computeMenuHidden: function(selectedTab) {
+  _computeMenuHidden: function(selectedTab: number) {
     return (selectedTab !== 2);
   },
 
@@ -510,7 +511,7 @@ Polymer({
    * @returns {boolean} true if disabled
    * @private
    */
-  _computeLargeTimeDisabled: function(enabled, showTimeValue) {
+  _computeLargeTimeDisabled: function(enabled: boolean, showTimeValue: number) {
     let ret = false;
     if (!enabled || (showTimeValue === 0)) {
       ret = true;

@@ -51,6 +51,7 @@ export interface Album {
 export interface SelectedAlbum {
   id: string;
   name: string;
+  photos: Photo[];
 }
 
 /**

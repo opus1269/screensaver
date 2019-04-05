@@ -71,6 +71,8 @@ import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+declare var ChromePromise: any;
+
 /**
  * Module for the main UI
  * @module els/app_main
@@ -80,25 +82,25 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * Function to show a confirm dialog
  * @type {Function}
  */
-export let showConfirmDialog = null;
+export let showConfirmDialog: Function = null;
 
 /**
  * Function to show an error dialog
  * @type {Function}
  */
-export let showErrorDialog = null;
+export let showErrorDialog: Function = null;
 
 /**
  * Function to show an error dialog about failing to store data
  * @type {Function}
  */
-export let showStorageErrorDialog = null;
+export let showStorageErrorDialog: Function = null;
 
 /**
  * Function to call on confirm dialog confirm button click
  * @type {Function}
  */
-let confirmFn = null;
+let confirmFn: Function = null;
 
 /**
  * Manage an html page that is inserted on demand<br />
@@ -159,6 +161,7 @@ const pages = [
   },
   {
     label: ChromeLocale.localize('menu_error'), route: 'page-error',
+    //@ts-ignore
     icon: 'myicons:error', obj: null,
     ready: false, disabled: false, divider: true,
   },
@@ -195,7 +198,7 @@ const pages = [
  * @type {module:els/pgs/google_photos.GooglePhotosPage}
  * @private
  */
-let gPhotosPage;
+let gPhotosPage: any;
 
 /**
  * Chrome sign in state
@@ -424,14 +427,14 @@ Polymer({
     pages[5].obj = this._showHelpPage.bind(this);
 
     // listen for chrome messages
-    ChromeMsg.listen(this._onMessage.bind(this));
+    ChromeMsg.listen(this._onChromeMessage.bind(this));
 
     // listen for changes to chrome.storage
     // noinspection JSUnresolvedVariable
     chrome.storage.onChanged.addListener((changes) => {
       for (const key of Object.keys(changes)) {
         if (key === 'lastError') {
-          this._setErrorMenuState();
+          this._setErrorMenuState().catch(() => {});
           break;
         }
       }
@@ -460,7 +463,7 @@ Polymer({
    * @param {string} text - dialog text
    * @param {?string} [method=null] - optional calling method
    */
-  showErrorDialog: function(title, text, method = null) {
+  showErrorDialog: function(title: string, text: string, method: string = null) {
     if (method) {
       ChromeLog.error(text, method, title);
     }
@@ -471,7 +474,7 @@ Polymer({
    * Display an error dialog about failing to save data
    * @param {string} method - calling method
    */
-  showStorageErrorDialog: function(method) {
+  showStorageErrorDialog: function(method: string) {
     const title = ChromeLocale.localize('err_storage_title');
     const text = ChromeLocale.localize('err_storage_desc');
     ChromeLog.error(text, method, title);
@@ -485,7 +488,7 @@ Polymer({
    * @param {string} confirmLabel - confirm button text
    * @param {Function} fn - function to call on confirm button click
    */
-  showConfirmDialog: function(text, title, confirmLabel, fn) {
+  showConfirmDialog: function(text: string, title: string, confirmLabel: string, fn: Function) {
     confirmFn = fn;
     this.$.confirmDialog.open(text, title, confirmLabel);
   },
@@ -503,10 +506,10 @@ Polymer({
   /**
    * Event: navigation menu selected
    * Route to proper page
-   * @param {Event} event - ClickEvent
+   * @param {Event} ev - ClickEvent
    * @private
    */
-  _onNavMenuItemTapped: function(event) {
+  _onNavMenuItemTapped: function(ev: Event) {
     // Close drawer after menu item is selected if it is in narrow layout
     const appDrawerLayout = this.$$('#appDrawerLayout');
     const appDrawer = this.$$('#appDrawer');
@@ -514,7 +517,8 @@ Polymer({
       appDrawer.close();
     }
 
-    const idx = this._getPageIdx(event.currentTarget.id);
+    //@ts-ignore
+    const idx = this._getPageIdx(ev.currentTarget.id);
 
     ChromeGA.event(ChromeGA.EVENT.MENU, pages[idx].route);
 
@@ -575,7 +579,7 @@ Polymer({
    * @returns {string}
    * @private
    */
-  _computePermissionsStatus: function(permission) {
+  _computePermissionsStatus: function(permission: string) {
     return `${ChromeLocale.localize(
         'permission_status')} ${ChromeLocale.localize(permission)}`;
   },
@@ -586,7 +590,7 @@ Polymer({
    * @returns {int} index into array
    * @private
    */
-  _getPageIdx: function(name) {
+  _getPageIdx: function(name: string) {
     return pages.map(function(e) {
       return e.route;
     }).indexOf(name);
@@ -597,7 +601,7 @@ Polymer({
    * @param {int} index - index into {@link module:els/app_main.pages}
    * @private
    */
-  _showGooglePhotosPage: function(index) {
+  _showGooglePhotosPage: function(index: number) {
     signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
@@ -622,7 +626,7 @@ Polymer({
    * @param {int} index - index into {@link module:els/app_main.pages}
    * @private
    */
-  _showErrorPage: function(index) {
+  _showErrorPage: function(index: number) {
     if (!pages[index].ready) {
       // insert the page the first time
       pages[index].ready = true;
@@ -637,7 +641,7 @@ Polymer({
    * @param {int} index - index into {@link module:els/app_main.pages}
    * @private
    */
-  _showHelpPage: function(index) {
+  _showHelpPage: function(index: number) {
     if (!pages[index].ready) {
       // insert the page the first time
       pages[index].ready = true;
@@ -653,7 +657,7 @@ Polymer({
    * @param {string} prevRoute - last page selected
    * @private
    */
-  _showScreensaverPreview: function(index, prevRoute) {
+  _showScreensaverPreview: function(index: number, prevRoute: string) {
     // reselect previous page - need to delay so tap event is done
     setTimeout(() => this.$.mainMenu.select(prevRoute), 500);
     ChromeMsg.send(MyMsg.SS_SHOW).catch(() => {});
@@ -721,14 +725,14 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onMessage: function(request, sender, response) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: Object, response: Function) {
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab) => {
+      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab) : any => {
         chrome.tabs.update(tab.id, {'highlighted': true});
         return null;
-      }).catch((err) => {
+      }).catch((err: Error) => {
         ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
       });
       response(JSON.stringify({message: 'OK'}));

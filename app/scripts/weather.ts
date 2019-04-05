@@ -29,6 +29,10 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {number} lat - latitude
  * @property {number} lon - longitude
  */
+export interface WeatherLocation {
+  lat: number;
+  lon: number;
+}
 
 /**
  * Current weather conditions
@@ -41,6 +45,16 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {string} city - city name
  * @property {string} description - weather description
  */
+export interface CurrentWeather {
+  time: number;
+  id: number;
+  dayNight: string;
+  tempValue: number;
+  temp: string;
+  city: string;
+  description: string;
+}
+
 
 /**
  * Default weather

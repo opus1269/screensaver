@@ -175,7 +175,6 @@ Polymer({
     cats: {
       type: Array,
       value: _CATS,
-      readonly: true,
     },
 
     /** Do we need to reload the photos */
@@ -337,7 +336,7 @@ Polymer({
 
     for (const el of els) {
       const cat = el.id;
-      const idx = includes.findIndex((e) => {
+      const idx = includes.findIndex((e: string) => {
         return e === cat;
       });
       el.set('checked', (idx !== -1));
@@ -349,15 +348,16 @@ Polymer({
    * @param {Event} ev
    * @private
    */
-  _onPhotoCatChanged: function(ev) {
-    // noinspection JSUnresolvedVariable
+  _onPhotoCatChanged: function(ev: Event) {
+    //@ts-ignore
     const cat = ev.target.id;
+    //@ts-ignore
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter',
         GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
-    const idx = includes.findIndex((e) => {
+    const idx = includes.findIndex((e: string) => {
       return e === cat;
     });
 
@@ -389,7 +389,7 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onMessage: function(request, sender, response) {
+  _onChromeMessage: function (request: ChromeMsg.MsgType, sender: Object, response: Function) {
     if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       // noinspection JSUnresolvedVariable
@@ -412,11 +412,11 @@ Polymer({
 
   /**
    * Observer: noFilter changed
-   * @param {number} newValue
-   * @param {number} oldValue
+   * @param {boolean} newValue
+   * @param {boolean} oldValue
    * @private
    */
-  _noFilterChanged: function(newValue, oldValue) {
+  _noFilterChanged: function(newValue: boolean, oldValue: boolean) {
     if ((newValue !== undefined) && (oldValue !== undefined)) {
       if (newValue !== oldValue) {
         this.set('needsPhotoRefresh', true);
@@ -431,7 +431,7 @@ Polymer({
    * @returns {boolean} true if hidden
    * @private
    */
-  _computeFilterDisabled: function(disabled, noFilter) {
+  _computeFilterDisabled: function(disabled: boolean, noFilter: boolean) {
     return disabled || noFilter;
   },
 
@@ -442,7 +442,7 @@ Polymer({
    * @returns {boolean} true if hidden
    * @private
    */
-  _computeRefreshDisabled: function(disabled, needsPhotoRefresh) {
+  _computeRefreshDisabled: function(disabled: boolean, needsPhotoRefresh: boolean) {
     return disabled || !needsPhotoRefresh;
   },
 
@@ -453,7 +453,7 @@ Polymer({
    * @returns {boolean} true if hidden
    * @private
    */
-  _computeHidden: function(waitForLoad, permPicasa) {
+  _computeHidden: function(waitForLoad: boolean, permPicasa: string) {
     let ret = true;
     if (!waitForLoad && (permPicasa === 'allowed')) {
       ret = false;

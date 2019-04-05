@@ -104,18 +104,13 @@ const ConfirmDialog = Polymer({
    * @param {?string} [confirmLabel]
    * @private
    */
-  open: function(text = 'Continue?',
-                 title = 'This operation cannot be undone',
-                 confirmLabel = null) {
+  open: function(text: string = 'Continue?', title: string = 'This operation cannot be undone', confirmLabel: string = null) {
     if (confirmLabel && (confirmLabel !== '')) {
       this.set('confirmLabel', confirmLabel);
     }
     text = text.replace(/\n/g, '<br/>');
-    // noinspection JSUnresolvedVariable
     this.$.dialogTitle.innerHTML = title;
-    // noinspection JSUnresolvedVariable
     this.$.dialogText.innerHTML = text;
-    // noinspection JSUnresolvedVariable
     this.$.dialog.open();
   },
 
@@ -124,7 +119,6 @@ const ConfirmDialog = Polymer({
    * @private
    */
   close: function() {
-    // noinspection JSUnresolvedVariable
     this.$.dialog.close();
   },
 });

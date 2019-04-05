@@ -108,11 +108,10 @@ Polymer({
    * @param {Event} ev
    * @private
    */
-  _onCheckedChange: function(ev) {
-    // noinspection JSUnresolvedVariable
-    ChromeGA.event(ChromeGA.EVENT.CHECK,
-        `${this.id}: ${ev.target.checked}`);
-    // noinspection JSUnresolvedVariable
+  _onCheckedChange: function (ev: Event) {
+    //@ts-ignore
+    ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
+    //@ts-ignore
     this.fire('value-changed', {value: ev.target.checked});
-    },
+  },
 });

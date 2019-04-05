@@ -104,7 +104,7 @@ const WeatherElement = Polymer({
    * @param {?module:weather.CurrentWeather} oldValue
    * @private
    */
-  _weatherChanged: function(newValue, oldValue) {
+  _weatherChanged: function(newValue: Weather.CurrentWeather | undefined, oldValue: Weather.CurrentWeather | undefined) {
     const PREFIX = 'wi-owm-';
     let oldClass = null;
 
