@@ -5,8 +5,6 @@
   "sources": [
     "elements/**/*.js",
     "scripts/**/*.js",
-    "elements/**/*.ts",
-    "scripts/**/*.ts",
     "images/**/*"
   ],
   "extraDependencies": [
@@ -39,7 +37,7 @@
     {
       "name": "dev",
       "browserCapabilities": [
-        "es2015",
+        "es2018",
         "modules"
       ],
       "js": {
