@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * A source of photos for the screen saver
+ * @module sources/photo_source
+ */
+
 import * as ChromeLocale
   from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog
@@ -15,11 +21,6 @@ import * as ChromeUtils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
-
-/**
- * A source of photos for the screen saver
- * @module sources/photo_source
- */
 
 /**
  * A photo from a {@link module:sources/photo_source.PhotoSource}

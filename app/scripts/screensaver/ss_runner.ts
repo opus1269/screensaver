@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Control the running of a {@link module:els/screensaver.Screensaver}
+ * @module ss/runner
+ */
+
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -14,11 +20,6 @@ import * as SSFinder from './ss_photo_finder.js';
 import * as SSViews from './ss_views.js';
 import * as SSHistory from './ss_history.js';
 import * as SSTime from './ss_time.js';
-
-/**
- * Control the running of a {@link module:els/screensaver.Screensaver}
- * @module ss/runner
- */
 
 /**
  * Instance variables

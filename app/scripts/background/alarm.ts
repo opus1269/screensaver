@@ -4,6 +4,13 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Manage alarms from the chrome.alarms API
+ * @see https://developer.chrome.com/apps/alarms
+ * @module bg/alarm
+ */
+
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
@@ -21,12 +28,6 @@ import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Manage alarms from the chrome.alarms API
- * @see https://developer.chrome.com/apps/alarms
- * @module bg/alarm
- */
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();

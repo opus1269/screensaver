@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeHttp
-  from '../../scripts/chrome-extension-utils/scripts/http.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import {PhotoSource} from './photo_source.js';
 
 /**
  * A source of photos from Chromecast
  * @module sources/photo_source_chromecast
  */
+
+import * as ChromeHttp
+  from '../../scripts/chrome-extension-utils/scripts/http.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import {PhotoSource} from './photo_source.js';
 
 /**
  * A source of photos from Chromecast

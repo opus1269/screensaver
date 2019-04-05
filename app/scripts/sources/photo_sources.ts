@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import * as PhotoSourceFactory from './photo_source_factory.js';
 
 /**
  * Manage the {@link module:sources/photo_source.PhotoSource} objects
  * @module sources/photo_sources
  */
+
+import * as ChromeStorage
+  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as PhotoSourceFactory from './photo_source_factory.js';
 
 /**
  * Enum for {@link module:sources/photo_source.PhotoSource} useKey

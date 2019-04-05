@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Factory to create {@link module:sources/photo_source.PhotoSource} instances
+ * @module sources/photo_source_factory
+ */
+
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale
@@ -15,11 +21,6 @@ import FlickrSource from './photo_source_flickr.js';
 import {GoogleSource} from './photo_source_google.js';
 import RedditSource from './photo_source_reddit.js';
 import * as PhotoSources from './photo_sources.js';
-
-/**
- * Factory to create {@link module:sources/photo_source.PhotoSource} instances
- * @module sources/photo_source_factory
- */
 
 /**
  * Factory Method to create a new {@link module:sources/photo_source.PhotoSource}

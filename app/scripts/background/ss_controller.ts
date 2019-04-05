@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Controller for the screen saver
+ * @module bg/ss_control
+ */
+
 import * as AppData from './data.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -22,11 +28,6 @@ import ChromeTime from '../chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils
   from '../chrome-extension-utils/scripts/utils.js';
 import '../chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Controller for the screen saver
- * @module bg/ss_control
- */
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();

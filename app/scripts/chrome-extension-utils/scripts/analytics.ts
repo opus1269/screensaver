@@ -4,10 +4,6 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeJSON from './json.js';
-import * as ChromeUtils from './utils.js';
-
-declare var ga: any;
 
 /**
  * Google Analytics tracking
@@ -16,11 +12,17 @@ declare var ga: any;
 
 /**
  * Google Analytics Event
- * @typedef {JSON}
- * @property eventCategory - category
- * @property eventAction - action
- * @property eventLabel - label
+ * @typedef {{}} module:chrome/ga.Event
+ * @property {string} eventCategory - category
+ * @property {string} eventAction - action
+ * @property {string} eventLabel - label
  */
+
+import * as ChromeJSON from './json.js';
+import * as ChromeUtils from './utils.js';
+
+declare var ga: any;
+
 export interface EventType {
   eventCategory: string
   eventAction: string
@@ -29,7 +31,7 @@ export interface EventType {
 
 /**
  * Event types
- * @type {{}}
+ * @type {{{module:chrome/ga.Event}}}
  * @property {module:chrome/ga.Event} INSTALLED - extension installed
  * @property {module:chrome/ga.Event} UPDATED - extension updated
  * @property {module:chrome/ga.Event} REFRESHED_AUTH_TOKEN - cached token refreshed

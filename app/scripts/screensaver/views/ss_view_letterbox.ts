@@ -4,15 +4,16 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import SSView from './ss_view.js';
-import SSPhoto from "../ss_photo.js";
 
 /**
  * Letterbox view
  * @module ss/views/view_letterbox
  */
+
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import SSView from './ss_view.js';
+import SSPhoto from "../ss_photo.js";
 
 /**
  * Aspect ratio of screen

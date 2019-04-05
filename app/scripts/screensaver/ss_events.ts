@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Event handling for a {@link module:els/screensaver.Screensaver}
+ * @module ss/events
+ */
+
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as SSViews from './ss_views.js';
@@ -16,11 +22,6 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Event handling for a {@link module:els/screensaver.Screensaver}
- * @module ss/events
- */
 
 /**
  * Starting mouse position

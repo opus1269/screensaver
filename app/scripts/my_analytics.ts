@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeGA
-  from '../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeUtils
-  from '../scripts/chrome-extension-utils/scripts/utils.js';
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Manage Google Analytics tracking
  * @module analytics
  */
+
+import * as ChromeGA
+  from '../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeUtils
+  from '../scripts/chrome-extension-utils/scripts/utils.js';
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Tracking ID

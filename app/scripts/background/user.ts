@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Manage the Chrome sign-in state
+ * @module bg/user
+ */
+
 import * as ChromeAuth
   from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeGA
@@ -17,11 +23,6 @@ import * as ChromeStorage
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
-
-/**
- * Manage the Chrome sign-in state
- * @module bg/user
- */
 
 /**
  * Event: Fired when signin state changes for an act. on the user's profile.

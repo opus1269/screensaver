@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeGA from './analytics.js';
-import * as ChromeLocale from './locales.js';
-import ChromeLastError from './last_error.js';
-import * as ChromeUtils from './utils.js';
-import './ex_handler.js';
 
 /**
  * Log a message. Will also store the LastError to local storage as 'lastError'
  * @module chrome/log
  */
+
+import * as ChromeGA from './analytics.js';
+import * as ChromeLocale from './locales.js';
+import ChromeLastError from './last_error.js';
+import * as ChromeUtils from './utils.js';
+import './ex_handler.js';
 
 /**
  * Log an error

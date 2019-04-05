@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Find a photo that is ready for slideshow
+ * @module ss/photo_finder
+ */
+
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -11,11 +17,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
-
-/**
- * Find a photo that is ready for slideshow
- * @module ss/photo_finder
- */
 
 /**
  * Transition time in milliseconds

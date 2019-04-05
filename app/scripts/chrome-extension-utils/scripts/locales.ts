@@ -4,13 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import './ex_handler.js';
 
 /**
  * Internationalization methods
  * @see https://developer.chrome.com/extensions/i18n
  * @module chrome/locale
  */
+
+import './ex_handler.js';
 
 /**
  * Get the i18n string

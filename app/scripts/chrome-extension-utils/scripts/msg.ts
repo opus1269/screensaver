@@ -4,10 +4,6 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeGA from './analytics.js';
-import './ex_handler.js';
-
-declare var ChromePromise: any;
 
 /**
  * Wrapper for chrome messages
@@ -18,18 +14,26 @@ declare var ChromePromise: any;
 /**
  * A Chrome message
  * @typedef {{}} module:chrome/msg.Message
- * @property {string} message - Unique name
- * @property {string} error - an error message
- * @property {string|Object} item - a message specific item
- * @property {boolean} updated - item is new or updated
+ * @property {string} message - a message
+ * @property {?string} error - an error message
  * @property {string} key - key name
  * @property {?Object} value - value of key
+ * @property {?string} id
+ * @property {?string} name
+ * @property {?int} count
+ * @interface
  */
+
+import * as ChromeGA from './analytics.js';
+import './ex_handler.js';
+
+declare var ChromePromise: any;
+
 export interface MsgType {
   message: string
   error?: string
   key?: string
-  value?: string
+  value?: any
   id?: string
   name?: string
   count?: number

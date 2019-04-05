@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Manage the extension's global data
+ * @module bg/data
+ */
+
 import * as Alarm from './alarm.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -26,11 +32,6 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Manage the extension's global data
- * @module bg/data
- */
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();

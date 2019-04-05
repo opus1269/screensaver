@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Base class for other SSView classes
+ * @module ss/views/view
+ */
+
 // TODO add back
 // import * as ChromeGA
 //   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -18,11 +24,6 @@ import SSPhoto from "../ss_photo.js";
 
 // TODO add back
 // import * as Geo from '../geo.js';
-
-/**
- * Base class for other SSView classes
- * @module ss/views/view
- */
 
 /**
  * Aspect ratio of screen

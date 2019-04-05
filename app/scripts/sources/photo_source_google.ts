@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * A source of photos from Google Photos
+ * @module sources/photo_source_google
+ */
+
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeHttp
@@ -25,11 +31,6 @@ import * as MyMsg from '../../scripts/my_msg.js';
 
 import {PhotoSource, Photo} from './photo_source.js';
 import * as PhotoSources from './photo_sources.js';
-
-/**
- * A source of photos from Google Photos
- * @module sources/photo_source_google
- */
 
 /**
  * A Google Photo Album

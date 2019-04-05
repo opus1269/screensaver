@@ -227,7 +227,7 @@ function buildPolymer() {
 //
 
 // Generate JSDoc
-gulp.task('docs', (cb) => {
+gulp.task('_build_doc', (cb) => {
 
   // change working directory to app
   chDir('app');
@@ -412,7 +412,7 @@ gulp.task('_tsWatch', () => {
       pipe(debug()).
       pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
       pipe(gulp.dest(base.dev));
-  
+
 });
 
 // compile the typescript to js in place
@@ -452,6 +452,11 @@ gulp.task('_poly_build', () => {
   return buildPolymer();
 });
 
+// Generate JSDoc
+gulp.task('docs', gulp.series('_build_js', '_build_doc', (done) => {
+  done();
+}));
+
 // TODO make sure _DEBUG is taken care of
 // Development build
 gulp.task('buildDev',
@@ -472,7 +477,7 @@ gulp.task('buildProdTest',
 
 // Incremental Development build
 gulp.task('incrementalBuild',
-    gulp.series('_setupWatch', '_tsWatch', 
+    gulp.series('_setupWatch', '_tsWatch',
         gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts',
             '_images',
             '_assets', '_lib', '_locales', '_css', '_font'), (done) => {

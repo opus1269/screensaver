@@ -4,6 +4,13 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Manage the Context Menus for the extension
+ * @see https://developer.chrome.com/extensions/contextMenus
+ * @module bg/context_menus
+ */
+
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
@@ -16,12 +23,6 @@ import * as ChromeStorage
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
-
-/**
- * Manage the Context Menus for the extension
- * @see https://developer.chrome.com/extensions/contextMenus
- * @module bg/context_menus
- */
 
 /**
  * Unique id of the display screensaver menu

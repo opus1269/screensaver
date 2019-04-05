@@ -5,6 +5,11 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+/**
+ * The background script for the extension.<br>
+ * @module bg/background
+ */
+
 import '../../scripts/background/context_menus.js';
 import '../../scripts/background/user.js';
 
@@ -25,11 +30,6 @@ import * as ChromeStorage
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * The background script for the extension.<br>
- * @module bg/background
- */
 
 /**
  * Display the options tab

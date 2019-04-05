@@ -4,17 +4,18 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Manage items in storage
+ * @module chrome/storage
+ */
+
 import * as ChromeGA from './analytics.js';
 import * as ChromeJSON from './json.js';
 import * as ChromeMsg from './msg.js';
 import './ex_handler.js';
 
 declare var ChromePromise: any;
-
-/**
- * Manage items in storage
- * @module chrome/storage
- */
 
 /**
  * Get a JSON parsed value from localStorage

@@ -4,14 +4,15 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeUtils from './utils.js';
-import './ex_handler.js';
 
 /**
  * Google Oauth2.0 utilities
  * @see https://developer.chrome.com/apps/identity
  * @module chrome/auth
  */
+
+import * as ChromeUtils from './utils.js';
+import './ex_handler.js';
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();

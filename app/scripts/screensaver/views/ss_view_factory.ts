@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Factory to create {@link module:ss/views/view.SSView} instances
+ * @module ss/views/view_factory
+ */
+
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -14,11 +20,6 @@ import SSViewFull from './ss_view_full.js';
 import SSViewLetterbox from './ss_view_letterbox.js';
 import * as SSViews from '../ss_views.js';
 import SSPhoto from "../ss_photo.js";
-
-/**
- * Factory to create {@link module:ss/views/view.SSView} instances
- * @module ss/views/view_factory
- */
 
 /**
  * Factory Method to create a new {@link module:ss/views/view.SSView} subclass

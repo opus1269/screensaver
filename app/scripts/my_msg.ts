@@ -4,14 +4,15 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import {MsgType} from "./chrome-extension-utils/scripts/msg.js";
 
 /**
  * Wrapper for chrome messages specific to this app
  * @see https://developer.chrome.com/extensions/messaging
  * @module msg
  */
+
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {MsgType} from "./chrome-extension-utils/scripts/msg.js";
 
 /**
  * Chrome Messages for this app

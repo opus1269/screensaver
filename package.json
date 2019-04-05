@@ -6,7 +6,8 @@
   "scripts": {
     "update_savedev": "npm update --save-dev",
     "prune": "npm prune",
-    "delete_all": "rmdir node_modules /s /q"
+    "delete_all": "rmdir node_modules /s /q",
+    "serve_docs": "bundle exec jekyll serve"
   },
   "repository": {
     "type": "git",

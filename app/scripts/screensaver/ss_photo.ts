@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * A photo for the {@link module:els/screensaver.Screensaver}
+ * @module ss/photo
+ */
+
 import {Photo} from "../sources/photo_source.js";
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -11,11 +17,6 @@ import * as MyGA from '../../scripts/my_analytics.js';
 import * as ChromeGA
   from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * A photo for the {@link module:els/screensaver.Screensaver}
- * @module ss/photo
- */
 
 /**
  * A photo for the {@link module:els/screensaver.Screensaver}

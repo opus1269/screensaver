@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Builder for a {@link module:els/screensaver.Screensaver}
+ * @module ss/builder
+ */
+
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -13,11 +19,6 @@ import * as Screensaver
 import * as SSFinder from './ss_photo_finder.js';
 import * as SSPhotos from './ss_photos.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
-
-/**
- * Builder for a {@link module:els/screensaver.Screensaver}
- * @module ss/builder
- */
 
 /**
  * Build everything related to a {@link module:els/screensaver.Screensaver}

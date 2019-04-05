@@ -4,13 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeLog from './log.js';
 
 /**
  * Google Oauth2.0 utilities
  * @see https://developer.chrome.com/apps/identity
  * @module chrome/exception
  */
+
+import * as ChromeLog from './log.js';
 
 /**
  * Replace global error handler for logging with Google Analytics.

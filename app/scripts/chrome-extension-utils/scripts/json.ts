@@ -4,13 +4,15 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeGA from './analytics.js';
-import './ex_handler.js';
 
 /**
  * JSON utilities
  * @module chrome/json
  */
+
+import * as ChromeGA from './analytics.js';
+import './ex_handler.js';
+
 
 /**
  * Parse JSON, with exception handling

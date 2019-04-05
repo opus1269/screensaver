@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import './ex_handler.js';
-
-declare var ChromePromise: any;
-const chromep = new ChromePromise();
 
 /**
  * A custom error that can be persisted
  * Usage: const err = new ChromeLastError(title, message)
  * @module chrome/last_error
  */
+
+import './ex_handler.js';
+
+declare var ChromePromise: any;
+const chromep = new ChromePromise();
 
 /**
  * A custom error that can be persisted

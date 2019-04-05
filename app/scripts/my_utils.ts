@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeStorage
-  from '../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../scripts/chrome-extension-utils/scripts/utils.js';
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Misc. utility methods
  * @module utils
  */
+
+import * as ChromeStorage
+  from '../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils
+  from '../scripts/chrome-extension-utils/scripts/utils.js';
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * True if development build

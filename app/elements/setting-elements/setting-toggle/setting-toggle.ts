@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Module for the SettingToggle
+ * @module els/setting/toggle
+ */
+
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
@@ -24,11 +30,6 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Module for the SettingToggle
- * @module els/setting/toggle
- */
 
 /**
  * Polymer element for a toggle button

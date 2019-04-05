@@ -4,15 +4,16 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Time Class module
+ * @module chrome/time
+ */
+
 import * as ChromeLocale from './locales.js';
 import * as ChromeStorage from './storage.js';
 import * as ChromeUtils from './utils.js';
 import './ex_handler.js';
-
-/**
- * Time Class
- * @module chrome/time
- */
 
 /**
  * Time Class

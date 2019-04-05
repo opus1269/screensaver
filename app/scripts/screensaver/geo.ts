@@ -4,6 +4,19 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Handle interaction the Google maps geocode API
+ * @module ss/geo
+ */
+
+/**
+ * A Geo location
+ * @typedef {Object} module:ss/geo.Location
+ * @property {string} loc - descriptive location
+ * @property {string} point - geo location 'lat lon'
+ */
+
 import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON
@@ -15,11 +28,6 @@ import * as ChromeUtils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Handle interaction the Google maps geocode API
- * @module ss/geo
- */
-
-/**
  * Path to Google's geocode api
  * @type {string}
  * @const
@@ -29,12 +37,6 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 const _GEOCODE_API =
     'http://maps.googleapis.com/maps/api/geocode/json';
 
-/**
- * A Geo location
- * @typedef {Object} module:ss/geo.Location
- * @property {string} loc - descriptive location
- * @property {string} point - geo location 'lat lon'
- */
 export interface Location {
   loc: string,
   point: string

@@ -6,13 +6,14 @@
  */
 import './ex_handler.js';
 
+declare var ChromePromise: any;
+const chromep = new ChromePromise();
+
+
 /**
  * Utility methods
  * @module chrome/utils
  */
-
-declare var ChromePromise: any;
-const chromep = new ChromePromise();
 
 /**
  * Set to true if development build

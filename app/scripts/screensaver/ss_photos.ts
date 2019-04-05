@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Collection of {@link module:ss/photo.SSPhoto} objects
+ * @module ss/photos
+ */
+
 import * as ChromeUtils
   from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -12,12 +18,6 @@ import SSPhoto from './ss_photo.js';
 import SSView from './views/ss_view.js';
 import * as SSViews from './ss_views.js';
 import {Photos, Photo} from "../sources/photo_source";
-
-
-/**
- * Collection of {@link module:ss/photo.SSPhoto} objects
- * @module ss/photos
- */
 
 /**
  * The array of photos

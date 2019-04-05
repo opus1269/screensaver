@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * A source of photos from Flickr
+ * @module sources/photo_source_flickr
+ */
+
 import * as ChromeHttp
   from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeLocale
@@ -11,11 +17,6 @@ import * as ChromeLocale
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import {PhotoSource, Photo} from './photo_source.js';
-
-/**
- * A source of photos from Flickr
- * @module sources/photo_source_flickr
- */
 
 /**
  * Flickr rest API

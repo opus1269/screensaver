@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Collection of {@link module:ss/views/view.SSView} objects
+ * @module ss/views
+ */
+
 import * as ChromeStorage
   from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils
@@ -18,11 +24,6 @@ import * as SSPhotos from './ss_photos.js';
 import './views/ss_view.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
 import SSPhoto from "./ss_photo.js";
-
-/**
- * Collection of {@link module:ss/views/view.SSView} objects
- * @module ss/views
- */
 
 /**
  * Enum for view type

@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import * as ChromeAuth from './auth.js';
-import * as ChromeGA from './analytics.js';
-import * as ChromeLocale from './locales.js';
-import './ex_handler.js';
-import FetchProperties = chrome.extension.FetchProperties;
 
 /**
  * Fetch with authentication and exponential back-off
  * @module chrome/http
  */
+
+import * as ChromeAuth from './auth.js';
+import * as ChromeGA from './analytics.js';
+import * as ChromeLocale from './locales.js';
+import './ex_handler.js';
+import FetchProperties = chrome.extension.FetchProperties;
 
 /**
  * Http configuration

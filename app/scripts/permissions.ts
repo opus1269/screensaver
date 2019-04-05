@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Handle optional permissions
+ *  @module permissions
+ */
+
 import * as ChromeAuth
   from '../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON
@@ -15,11 +21,6 @@ import * as ChromeMsg
 import * as ChromeStorage
   from '../scripts/chrome-extension-utils/scripts/storage.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Handle optional permissions
- *  @module permissions
- */
 
 /**
  * A permission state enum

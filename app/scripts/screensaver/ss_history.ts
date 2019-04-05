@@ -4,16 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import * as SSPhotos from './ss_photos.js';
-import * as SSViews from './ss_views.js';
-import * as SSRunner from './ss_runner.js';
 
 /**
  * Track the recent traversal history of a {@link module:els/screensaver.Screensaver}
  * @module ss/history
  */
+
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as SSPhotos from './ss_photos.js';
+import * as SSViews from './ss_views.js';
+import * as SSRunner from './ss_runner.js';
 
 /**
  * History item

@@ -4,6 +4,12 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Manage weather information
+ * @module weather
+ */
+
 import * as MyGA from '../scripts/my_analytics.js';
 
 import * as ChromeGA
@@ -19,13 +25,8 @@ import ChromeTime from '../scripts/chrome-extension-utils/scripts/time.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Manage weather information
- * @module weather
- */
-
-/**
  * A geo location
- * @typedef {{}} module:weather.Location
+ * @typedef {{}} WeatherLocation
  * @property {number} lat - latitude
  * @property {number} lon - longitude
  */
@@ -36,7 +37,7 @@ export interface WeatherLocation {
 
 /**
  * Current weather conditions
- * @typedef {{}} module:weather.CurrentWeather
+ * @typedef {{}} CurrentWeather
  * @property {int} time - call time UTC milli sec
  * @property {int} id - weather id
  * @property {string} dayNight - day night prefix ('', 'day-', 'night-")
@@ -59,9 +60,9 @@ export interface CurrentWeather {
 /**
  * Default weather
  * @readonly
- * @type {module:weather.CurrentWeather}
+ * @type {CurrentWeather}
  */
-export const DEF_WEATHER = {
+export const DEF_WEATHER: CurrentWeather = {
   time: 0,
   id: 0,
   dayNight: '',
@@ -96,9 +97,9 @@ const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
  * Default geolocation options
  * @readonly
  * @const
- * @type {module:weather.Location}
+ * @type {WeatherLocation}
  */
-const _DEF_LOC = {
+const _DEF_LOC: WeatherLocation = {
   lat: 0.0,
   lon: 0.0,
 };
@@ -235,9 +236,9 @@ export function updateUnits() {
 
 /**
  * Get the current geo location. Will prompt if needed
- * @param {{}} [options=DEF_LOC_OPTIONS]
+ * @param {WeatherLocation} [options=DEF_LOC_OPTIONS]
  * @throws An error if we failed to get location
- * @returns {Promise<module:weather.Location>}
+ * @returns {Promise<WeatherLocation>}
  */
 export async function getLocation(options = DEF_LOC_OPTIONS) {
   const METHOD = 'Weather.getLocation';

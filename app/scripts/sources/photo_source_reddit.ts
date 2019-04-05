@@ -4,14 +4,15 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import {PhotoSource, Photo} from './photo_source.js';
 
 /**
  * A source of photos from reddit
  * @module sources/photo_source_reddit
  */
+
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import {PhotoSource, Photo} from './photo_source.js';
 
 /**
  * Extension's redirect uri

@@ -4,6 +4,30 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Module for a SettingSlider
+ * @module els/setting/slider
+ */
+
+/**
+ * A unit type
+ * @typedef {{}} module:els/setting/slider.UnitType
+ * @property {string} name - descriptive name
+ * @property {int} min - min value
+ * @property {int} max - max value
+ * @property {int} step - increment of changes
+ * @property {number} mult - multiplier of a base
+ */
+
+/**
+ * A number and associated units
+ * @typedef {{}} module:els/setting/slider.UnitValue
+ * @property {number} base - value in base unit
+ * @property {number} display - value in display unit
+ * @property {int} unit - display unit
+ */
+
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
@@ -24,14 +48,6 @@ import * as ChromeGA
   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/**
- * Module for a SettingSlider
- * @module els/setting/slider
- */
-
-/**
- * A unit type
- */
 interface UnitType {
   name: string;
   min: number;
@@ -40,9 +56,6 @@ interface UnitType {
   mult: number;
 }
 
-/**
- * A number and associated units
- */
 interface UnitValue {
   base: number;
   display: number;
