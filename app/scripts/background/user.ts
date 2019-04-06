@@ -68,5 +68,4 @@ async function _onSignInChanged(account: chrome.identity.AccountInfo, signedIn: 
 }
 
 // Listen for changes to Browser sign-in
-// noinspection JSUnresolvedVariable
 chrome.identity.onSignInChanged.addListener(_onSignInChanged);

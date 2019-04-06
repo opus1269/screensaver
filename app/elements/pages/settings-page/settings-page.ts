@@ -337,7 +337,6 @@ Polymer({
    * @private
    */
   _onEnabledChanged: function() {
-    // noinspection JSUnresolvedVariable
     const enabled = this.$.settingsToggle.checked;
     ChromeGA.event(ChromeGA.EVENT.TOGGLE,
         `screensaverEnabled: ${enabled}`);
@@ -364,7 +363,6 @@ Polymer({
         break;
     }
     const url = `${MyUtils.getGithubPagesPath()}help/settings.html#${anchor}`;
-    // noinspection JSUnresolvedVariable
     chrome.tabs.create({url: url});
   },
 
@@ -434,7 +432,6 @@ Polymer({
 
         if (permGeo.state === 'denied') {
           // user has denied it
-          // noinspection ExceptionCaughtLocallyJS
           throw new Error(ChromeLocale.localize('err_geolocation_perm'));
         } else if (permGeo.state === 'prompt') {
           // try to get location so we will get prompt
@@ -450,7 +447,6 @@ Polymer({
         const granted = await Permissions.request(Permissions.WEATHER);
 
         if (!granted) {
-          // noinspection ExceptionCaughtLocallyJS
           throw new Error(ERR_TEXT);
         } else {
           // update the weather
@@ -468,7 +464,6 @@ Polymer({
       // now update the alarm
       const response = await ChromeMsg.send(MyMsg.UPDATE_WEATHER_ALARM);
       if (response.errorMessage) {
-        // noinspection ExceptionCaughtLocallyJS
         throw new Error(response.errorMessage);
       }
 

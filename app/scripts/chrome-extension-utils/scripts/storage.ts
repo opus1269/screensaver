@@ -118,7 +118,6 @@ export function safeSet(key: string, value: JSON, keyBool: string = null) {
  */
 export async function asyncGet(key: string, def: object | [] = null) {
   let ret = null;
-  // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
   try {
     const res = await chromep.storage.local.get([key]);
@@ -150,7 +149,6 @@ export async function asyncGet(key: string, def: object | [] = null) {
 export async function asyncSet(key: string, value: object | [], keyBool: string = null) {
   // TODO what about keyBool?
   let ret = true;
-  // noinspection JSUnresolvedFunction
   const chromep = new ChromePromise();
   const obj = {
     [key]: value,

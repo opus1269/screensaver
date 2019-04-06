@@ -416,13 +416,10 @@ const Screensaver = Polymer({
    * @private
    */
   _setZoom: async function() {
-    // noinspection JSUnresolvedFunction
     const chromep = new ChromePromise();
     try {
-      // noinspection JSUnresolvedFunction,JSUnresolvedVariable
       const zoomFactor = await chromep.tabs.getZoom();
       if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
-        // noinspection JSUnresolvedFunction,JSUnresolvedVariable
         chrome.tabs.setZoom(1.0);
       }
     } catch (err) {
@@ -604,14 +601,10 @@ const Screensaver = Polymer({
       return;
     }
     if (newValue) {
-      // noinspection JSUnresolvedVariable
       this.$.pauseImage.classList.add('fadeOut');
-      // noinspection JSUnresolvedVariable
       this.$.playImage.classList.remove('fadeOut');
     } else {
-      // noinspection JSUnresolvedVariable
       this.$.playImage.classList.add('fadeOut');
-      // noinspection JSUnresolvedVariable
       this.$.pauseImage.classList.remove('fadeOut');
     }
   },

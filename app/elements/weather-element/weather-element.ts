@@ -115,10 +115,8 @@ const WeatherElement = Polymer({
     if (newValue !== undefined) {
       const newClass = PREFIX + newValue.dayNight + newValue.id;
       if (oldClass) {
-        // noinspection JSUnresolvedVariable
         this.$.weatherIcon.classList.replace(oldClass, newClass);
       } else {
-        // noinspection JSUnresolvedVariable
         this.$.weatherIcon.classList.add(newClass);
       }
     }

@@ -157,7 +157,6 @@ async function _onStorageChanged(ev: StorageEvent) {
   return Promise.resolve();
 }
 
-// noinspection JSUnusedLocalSymbols
 /**
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
@@ -186,7 +185,6 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: Object, response: 
     });
   } else if (request.message === MyMsg.LOAD_ALBUM.message) {
     ret = true;
-    // noinspection JSUnresolvedVariable
     GoogleSource.loadAlbum(request.id, request.name, true, true).then((album) => {
       response(album);
       return null;

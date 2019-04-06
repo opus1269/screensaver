@@ -48,7 +48,6 @@ export function create(useKey: string) {
           ChromeLocale.localize('setting_flickr_int'),
           true, false, false);
     case PhotoSources.UseKey.AUTHOR:
-      // noinspection JSCheckFunctionSignatures
       return new FlickrSource(useKey, 'authorImages', 'flickr',
           ChromeLocale.localize('setting_mine'),
           false, false, true);

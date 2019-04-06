@@ -83,7 +83,6 @@ function _setViewType() {
     // pick random sizing
     _type = ChromeUtils.getRandomInt(0, 3);
   }
-  /** @type {?string} */
   let type = 'contain';
 
   switch (_type) {
@@ -171,10 +170,8 @@ export function get(idx: number) {
  */
 export function getSelectedIndex() {
   if (_pages) {
-    // noinspection JSUnresolvedVariable
     return _pages.selected;
   }
-  // noinspection UnnecessaryReturnStatementJS
   return;
 }
 
@@ -193,7 +190,6 @@ export function setSelectedIndex(selected: number) {
  */
 export function isSelectedIndex(idx: number) {
   let ret = false;
-  // noinspection JSUnresolvedVariable
   if (_pages && (idx === _pages.selected)) {
     ret = true;
   }

@@ -289,7 +289,6 @@ const GooglePhotosPage = Polymer({
     ChromeGA.event(ChromeGA.EVENT.ICON, 'googlePhotosHelp');
     const anchor = this.isAlbumMode ? 'albums' : 'photos';
     const url = `${MyUtils.getGithubPagesPath()}help/google_photos.html#${anchor}`;
-    // noinspection JSUnresolvedVariable
     chrome.tabs.create({url: url});
   },
 
@@ -316,7 +315,6 @@ const GooglePhotosPage = Polymer({
    * @private
    */
   _onUseGoogleChanged: function() {
-    // noinspection JSUnresolvedVariable
     const useGoogle = this.$.googlePhotosToggle.checked;
     if (useGoogle) {
       // Switching to enabled, refresh photos from web

@@ -135,19 +135,16 @@ export const EVENT = {
  */
 export function initialize(trackingId: string, appName: string , appId: string , appVersion: string) {
   // Standard Google Universal Analytics code
-  // noinspection OverlyComplexFunctionJS
   // @ts-ignore
   (function(i, s, o, g, r, a, m) {
     // @ts-ignore
     i['GoogleAnalyticsObject'] = r;
     // @ts-ignore
-    // noinspection CommaExpressionJS
     i[r] = i[r] || function() {
       // @ts-ignore
       (i[r].q = i[r].q || []).push(arguments);
       // @ts-ignore
     }, i[r].l = 1 * new Date();
-    // noinspection CommaExpressionJS
     a = s.createElement(o),
         m = s.getElementsByTagName(o)[0];
     a.async = 1;

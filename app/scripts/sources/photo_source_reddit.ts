@@ -129,9 +129,7 @@ class RedditSource extends PhotoSource {
             // too big. get the largest reduced resolution image
             item = item.resolutions[item.resolutions.length - 1];
             url = item.url.replace(/&amp;/g, '&');
-            // noinspection JSCheckFunctionSignatures
             width = parseInt(item.width, 10);
-            // noinspection JSCheckFunctionSignatures
             height = parseInt(item.height, 10);
           }
         } else if (data.title) {

@@ -245,7 +245,6 @@ Polymer({
       this._setPhotoCats();
       
       // listen for changes to chrome.storage
-      // noinspection JSUnresolvedVariable
       chrome.storage.onChanged.addListener((changes) => {
         for (const key of Object.keys(changes)) {
           if (key === 'googleImages') {
@@ -378,7 +377,6 @@ Polymer({
     ChromeStorage.set('googlePhotosFilter', filter);
   },
 
-  // noinspection JSUnusedLocalSymbols
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
@@ -392,7 +390,6 @@ Polymer({
   _onChromeMessage: function (request: ChromeMsg.MsgType, sender: Object, response: Function) {
     if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
-      // noinspection JSUnresolvedVariable
       const count = request.count || 0;
       let msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
       this.set('waiterStatus', msg);

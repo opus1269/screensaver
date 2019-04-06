@@ -101,11 +101,8 @@ const ErrorDialog = Polymer({
     title = title || 'Unknown';
     text = text || 'Unknown';
     text = text.replace(/\n/g, '<br/>');
-    // noinspection JSUnresolvedVariable
     this.$.dialogTitle.innerHTML = title;
-    // noinspection JSUnresolvedVariable
     this.$.dialogText.innerHTML = text;
-    // noinspection JSUnresolvedVariable
     this.$.dialog.open();
   },
 
@@ -114,7 +111,6 @@ const ErrorDialog = Polymer({
    * @private
    */
   close: function() {
-    // noinspection JSUnresolvedVariable
     this.$.dialog.close();
   },
 });

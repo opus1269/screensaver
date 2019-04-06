@@ -254,7 +254,6 @@ export abstract class PhotoSource {
 
       if (!(isGoogleKey && !useGoogle)) {
         try {
-          // noinspection JSUnresolvedFunction
           const chromep = new ChromePromise();
           await chromep.storage.local.remove(this._photosKey);
         } catch (e) {

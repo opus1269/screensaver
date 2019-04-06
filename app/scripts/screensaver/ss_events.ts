@@ -77,7 +77,6 @@ function _onKeyCommand(cmd: string) {
   }
 }
 
-// noinspection JSUnusedLocalSymbols
 /**
  * Event: Fired when a message is sent from either an extension<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
@@ -176,5 +175,4 @@ window.addEventListener('mousemove', _onMouseMove, false);
 window.addEventListener('click', _onMouseClick, false);
 
 // listen for special keyboard commands
-// noinspection JSUnresolvedVariable
 chrome.commands.onCommand.addListener(_onKeyCommand);

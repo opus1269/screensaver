@@ -33,7 +33,6 @@ class ChromeLastError extends Error {
   constructor(title = 'An error occurred', ...params: string[]) {
     // Pass remaining arguments (including vendor specific ones)
     // to parent constructor
-    // noinspection JSCheckFunctionSignatures
     super(...params);
 
     // Maintains proper stack trace for where our error was thrown
@@ -72,7 +71,6 @@ class ChromeLastError extends Error {
    * @returns {Promise<void>} void
    */
   static save(lastError: ChromeLastError) {
-    // noinspection JSUnresolvedVariable
     const value = {
       'title': lastError.title || '',
       'message': lastError.message || '',

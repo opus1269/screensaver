@@ -155,7 +155,6 @@ const ErrorPage = Polymer({
       }
       
       // listen for changes to lastError
-      // noinspection JSUnresolvedVariable
       chrome.storage.onChanged.addListener((changes) => {
         for (const key of Object.keys(changes)) {
           if (key === 'lastError') {
@@ -181,7 +180,6 @@ const ErrorPage = Polymer({
 
     const url = MyUtils.getEmailUrl('Last Error', body);
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
-    // noinspection JSUnresolvedVariable
     chrome.tabs.create({url: url});
   },
 

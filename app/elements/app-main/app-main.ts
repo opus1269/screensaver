@@ -430,7 +430,6 @@ Polymer({
     ChromeMsg.listen(this._onChromeMessage.bind(this));
 
     // listen for changes to chrome.storage
-    // noinspection JSUnresolvedVariable
     chrome.storage.onChanged.addListener((changes) => {
       for (const key of Object.keys(changes)) {
         if (key === 'lastError') {
@@ -714,7 +713,6 @@ Polymer({
     return Promise.resolve();
   },
 
-  // noinspection JSUnusedLocalSymbols
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).

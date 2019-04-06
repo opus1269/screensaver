@@ -37,7 +37,6 @@ class SSViewFull extends SSView {
   render() {
     super.render();
 
-    // noinspection JSUnresolvedVariable
     // @ts-ignore
     const img: any = this.image.$.img;
     img.style.width = '100%';

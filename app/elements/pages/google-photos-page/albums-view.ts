@@ -391,7 +391,6 @@ Polymer({
     return Promise.resolve();
   },
 
-  // noinspection JSUnusedLocalSymbols
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
@@ -405,9 +404,7 @@ Polymer({
   _onChromeMessage: function (request: ChromeMsg.MsgType, sender: Object, response: Function) {
     if (request.message === MyMsg.ALBUM_COUNT.message) {
       // show user status of photo loading
-      // noinspection JSUnresolvedVariable
       const name = request.name || '';
-      // noinspection JSUnresolvedVariable
       const count = request.count || 0;
       let msg = `${name}\n${ChromeLocale.localize(
           'photo_count')} ${count.toString()}`;
@@ -424,7 +421,6 @@ Polymer({
    */
   _waitForLoadChanged: function(newValue: boolean) {
     if (newValue === false) {
-      // noinspection JSUnresolvedVariable
       this.$.ironList._render();
       if (this.waiterStatus !== undefined) {
         this.set('waiterStatus', '');

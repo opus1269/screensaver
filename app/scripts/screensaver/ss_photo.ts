@@ -172,7 +172,6 @@ class SSPhoto {
     }
     if (url !== null) {
       ChromeGA.event(MyGA.EVENT.VIEW_PHOTO, this._type);
-      // noinspection JSUnresolvedVariable
       chrome.tabs.create({url: url});
     }
   }

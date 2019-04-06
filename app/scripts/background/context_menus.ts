@@ -55,7 +55,6 @@ async function _toggleEnabled() {
   return Promise.resolve();
 }
 
-// noinspection JSUnusedLocalSymbols
 /**
  * Event: Fired when the extension is first installed,<br />
  * when the extension is updated to a new version,<br />

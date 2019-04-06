@@ -245,7 +245,6 @@ async function _onIdleStateChanged(state: string) {
   }
 }
 
-// noinspection JSUnusedLocalSymbols
 /**
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
