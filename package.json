@@ -6,29 +6,29 @@
   "scripts": {
     "update_savedev": "npm update --save-dev",
     "prune": "npm prune",
-    "delete_all": "rmdir node_modules /s /q",
-    "serve_docs": "bundle exec jekyll serve"
+    "delete_all": "rmdir node_modules /s /q"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/opus1269/screensaver.git"
+    "url": "https://github.com/opus1269/photo-screen-saver.git"
   },
   "author": "Michael Updike <igreilly1269@gmail.com>",
   "license": "BSD 3-Clause",
   "bugs": {
-    "url": "https://github.com/opus1269/screensaver/issues"
+    "url": "https://github.com/opus1269/photo-screen-saver/issues"
   },
-  "homepage": "https://opus1269.github.io/screensaver/",
+  "homepage": "https://github.com/opus1269/photo-screen-saver",
   "private": true,
+  "dependencies": {
+    "typescript": "^3.4.2"
+  },
   "devDependencies": {
-    "merge2": "^1.2.3",
-    "typescript": "^3.4.1",
-    "del": "^4.1.0",
+    "del": "^3.0.0",
     "eslint": "^4.10.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-html": "^3.2.2",
     "eslint-plugin-promise": "^3.6.0",
-    "gulp": "^4.0.0",
+    "gulp": "^3.9.1",
     "gulp-changed": "^3.1.1",
     "gulp-debug": "^3.1.0",
     "gulp-eslint": "^4.0.0",
@@ -36,17 +36,18 @@
     "gulp-imagemin": "^3.4.0",
     "gulp-jsdoc3": "^1.0.1",
     "gulp-load-plugins": "^1.5.0",
-    "gulp-noop": "^1.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-replace": "^0.6.1",
     "gulp-size": "^2.1.0",
     "gulp-strip-line": "0.0.1",
     "gulp-typescript": "^5.0.1",
-    "gulp-uglify": "^3.0.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
     "gulp-watch": "^4.3.11",
     "gulp-zip": "^4.0.0",
     "merge-stream": "^1.0.1",
-    "polymer-build": "^3.1.3",
+    "polymer-build": "^3.1.1",
+    "run-sequence": "^2.2.1",
     "uglify-es": "^3.3.10"
   },
   "false": {}
