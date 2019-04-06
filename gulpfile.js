@@ -396,22 +396,28 @@ gulp.task('_setupWatch', (done) => {
   done();
 });
 
-// TypeScript
-gulp.task('_tsWatch', () => {
-  chDir('app');
+function tsComp() {
+  console.log('ts called');
+  
+  const SEARCH = 'const _DEBUG = false';
+  const REPLACE = 'const _DEBUG = true';
 
-  isWatch = true;
-  watchOpts.name = currentTaskName;
+  chDir('app');
+  
   const input = files.ts;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : noop()).
+
+  return gulp.src(input, {base: '.', since: gulp.lastRun(tsComp)}).
       pipe(plumber()).
       pipe(tsProject()).
-      pipe(plumber()).
       pipe(debug()).
-      pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
+      pipe(replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.dev));
+}
 
+// watch changes
+gulp.task('watcher', () => {
+  const input = files.ts;
+  gulp.watch(input, gulp.parallel('ts'));
 });
 
 // compile the typescript to js in place
@@ -475,10 +481,9 @@ gulp.task('buildProdTest',
 );
 
 // Incremental Development build
-gulp.task('incrementalBuild',
-    gulp.series('_setupWatch',
-        gulp.parallel('_manifest', '_html', 'lintdevjs', '_tsWatch', '_images',
-            '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
+gulp.task('incrementalBuild', gulp.series('_setupWatch',
+    gulp.parallel(watchFiles, '_manifest', '_html', 'lintdevjs', '_images', '_assets',
+        '_lib', '_locales', '_css', '_font'), (done) => {
           done();
         },
     ));
@@ -488,3 +493,8 @@ gulp.task('default', gulp.series('incrementalBuild', (done) => {
   done();
 }));
 
+// Watch files
+function watchFiles() {
+  gulp.watch(files.ts, tsComp);
+  // gulp.watch("./assets/img/**/*", images);
+}
