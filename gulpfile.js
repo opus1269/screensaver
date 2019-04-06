@@ -245,11 +245,13 @@ gulp.task('dev', ['_build_js'], (cb) => {
   exec('polymer build', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
+    
     // change working directory to app
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-    // to set DEBUG status
+    chDir('app');
+    
+    // to set DEBUG status in code
     runSequence('_ts');
+    
     cb(err);
   });
 });
@@ -277,12 +279,7 @@ gulp.task('prodTest', (cb) => {
 gulp.task('docs', (cb) => {
 
   // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
+  chDir('app');
 
   const config = require('./jsdoc.json');
   const README = '../README.md';
@@ -316,12 +313,7 @@ gulp.task('lint', () => {
 // manifest.json
 gulp.task('_manifest', () => {
   // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
+  chDir('app');
 
   const input = files.manifest;
   watchOpts.name = currentTaskName;
@@ -338,9 +330,7 @@ gulp.task('_ts', () => {
   const REPLACE = 'const _DEBUG = true';
 
   const input = files.ts;
-  watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(plugins.debug()).
       pipe(tsProject()).
       pipe(plugins.replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.dev));
