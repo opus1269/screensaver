@@ -70,10 +70,17 @@ const gulp = require('gulp');
 const exec = require('child_process').exec;
 const del = require('del');
 const runSequence = require('run-sequence');
-const If = require('gulp-if');
+const gulpIf = require('gulp-if');
 const util = require('gulp-util');
 const watch = require('gulp-watch');
 const plumber = require('gulp-plumber');
+const imageMin = require('gulp-imagemin');
+const replace = require('gulp-replace');
+const eslint = require('gulp-eslint');
+const stripLine = require('gulp-strip-line');
+const jsdoc3 = require('gulp-jsdoc3');
+const zip = require('gulp-zip');
+// const debug = require('gulp-debug');
 
 // TypeScript
 const ts = require('gulp-typescript');
@@ -92,12 +99,6 @@ const polymerBuild = require('polymer-build');
 const polymerJson = require('./polymer.json');
 const polymerProject = new polymerBuild.PolymerProject(polymerJson);
 let buildDirectory = 'build/prod';
-
-// load the rest
-const plugins = require('gulp-load-plugins')({
-  pattern: ['gulp-*', 'gulp.*'],
-  replaceString: /\bgulp[-.]/,
-});
 
 // to get the current task name
 let currentTaskName = '';
@@ -127,6 +128,7 @@ function waitFor(stream) {
 
 // Runs equivalent of 'polymer build'
 function buildPolymer() {
+  chDir('..');
   return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
 
     // Lets create some inline code splitters in case you need them later in
@@ -146,7 +148,7 @@ function buildPolymer() {
       // If you want to optimize, minify, compile, or otherwise process
       // any of your source code for production, you can do so here before
       // merging your sources and dependencies together.
-          .pipe(If(/\.(png|gif|jpg|svg)$/, plugins.imagemin()))
+          .pipe(gulpIf(/\.(png|gif|jpg|svg)$/, imageMin()))
 
           // The `sourcesStreamSplitter` created above can be added here to
           // pull any inline styles and scripts out of their HTML files and
@@ -157,9 +159,9 @@ function buildPolymer() {
           // Uncomment these lines to add a few more example optimizations to
           // your source files, but these are not included by default. For
           // installation, see the require statements at the beginning.
-          // .pipe(If(/\.js$/, minify(minifyOpts)))
-          // .pipe(If(/\.css$/, cssSlam())) // Install css-slam to use
-          // .pipe(If(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
+          // .pipe(gulpIf(/\.js$/, minify(minifyOpts)))
+          // .pipe(gulpIf(/\.css$/, cssSlam())) // Install css-slam to use
+          // .pipe(gulpIf(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
           // to use
 
           // Remember, you need to rejoin any split inline code when you're
@@ -191,7 +193,7 @@ function buildPolymer() {
         }));
 
         // now lets minify for production
-        buildStream = buildStream.pipe(If(/\.js$/, minify(minifyOpts)));
+        buildStream = buildStream.pipe(gulpIf(/\.js$/, minify(minifyOpts)));
 
       }
 
@@ -289,7 +291,7 @@ gulp.task('docs', (cb) => {
     files.elements,
   ], {read: true}).
       pipe(gulp.dest(base.tmp_docs)).
-      pipe(plugins.jsdoc3(config, cb));
+      pipe(jsdoc3(config, cb));
 });
 
 // lint development js files
@@ -298,9 +300,9 @@ gulp.task('lintdevjs', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failOnError());
+      pipe(eslint()).
+      pipe(eslint.formatEach()).
+      pipe(eslint.failOnError());
 });
 
 // lint scripts
@@ -320,7 +322,7 @@ gulp.task('_manifest', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : util.noop()).
       pipe(plumber()).
-      pipe((isProd && !isProdTest) ? plugins.stripLine('"key":') : util.noop()).
+      pipe((isProd && !isProdTest) ? stripLine('"key":') : util.noop()).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
@@ -332,7 +334,7 @@ gulp.task('_ts', () => {
   const input = files.ts;
   return gulp.src(input, {base: '.'}).
       pipe(tsProject()).
-      pipe(plugins.replace(SEARCH, REPLACE)).
+      pipe(replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -355,7 +357,7 @@ gulp.task('_build_js', () => {
   return gulp.src(input, {base: '.'}).
       pipe(plumber()).
       pipe(tsProject()).js.
-      pipe(plugins.replace(SEARCH, REPLACE, util.noop())).
+      pipe(replace(SEARCH, REPLACE, util.noop())).
       pipe(gulp.dest(base.src), util.noop());
 });
 
@@ -435,7 +437,7 @@ gulp.task('_zip', () => {
   chDir('app');
 
   return gulp.src(`../${buildDirectory}/app/**`).
-      pipe(!isProdTest ? plugins.zip('store.zip') : plugins.zip(
+      pipe(!isProdTest ? zip('store.zip') : zip(
           'store-test.zip')).
       pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(
           `../${buildDirectory}`));
