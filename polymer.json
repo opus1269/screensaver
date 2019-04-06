@@ -12,7 +12,7 @@
     "node_modules/chrome-promise/chrome-promise.js",
     "manifest.json",
     "font/*",
-    "css/weather-icons.min.css",
+    "css/*",
     "html/**/*",
     "_locales/**/*",
     "assets/**/*",
