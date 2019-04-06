@@ -218,15 +218,14 @@ gulp.task('default', ['incrementalBuild']);
 gulp.task('incrementalBuild', (cb) => {
 
   // change working directory to app
-  // eslint-disable-next-line no-undef
-  process.chdir('app');
+  chDir('app');
 
   isWatch = true;
-  runSequence('lint', [
+  // TODO could add lint ts here
+  runSequence('lint', ['_watch_ts'], [
     '_manifest',
     '_html',
     'lintdevjs',
-    '_scripts',
     '_images',
     '_assets',
     '_lib',
@@ -311,10 +310,7 @@ gulp.task('lintdevjs', () => {
 gulp.task('lint', () => {
   const input = files.js;
   watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failAfterError());
+  return gulp.src(input, {base: '.'});
 });
 
 // manifest.json
@@ -336,20 +332,6 @@ gulp.task('_manifest', () => {
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
-// scripts
-gulp.task('_scripts', () => {
-  const input = files.js;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plumber()).
-      pipe(plugins.replace('const _DEBUG = false', 'const _DEBUG = true')).
-      pipe(plugins.eslint()).
-      pipe(plugins.eslint.formatEach()).
-      pipe(plugins.eslint.failAfterError()).
-      pipe(gulp.dest(base.dev));
-});
-
 // TypeScript
 gulp.task('_ts', () => {
   const SEARCH = 'const _DEBUG = false';
@@ -358,11 +340,15 @@ gulp.task('_ts', () => {
   const input = files.ts;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(plumber()).
+      pipe(plugins.debug()).
       pipe(tsProject()).
       pipe(plugins.replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.dev));
+});
+
+gulp.task('_watch_ts', ['_ts'], function() {
+  const input = files.ts;
+  gulp.watch(input, ['_ts']);
 });
 
 // compile the typescript to js in place
@@ -456,13 +442,7 @@ gulp.task('_font', () => {
 // compress for the Chrome Web Store
 gulp.task('_zip', () => {
 
-  // change working directory to app
-  try {
-    // eslint-disable-next-line no-undef
-    process.chdir('app');
-  } catch (err) {
-    console.log('no need to change directory');
-  }
+  chDir('app');
 
   return gulp.src(`../${buildDirectory}/app/**`).
       pipe(!isProdTest ? plugins.zip('store.zip') : plugins.zip(
