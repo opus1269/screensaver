@@ -113,7 +113,7 @@ function chDir(dir) {
     // eslint-disable-next-line no-undef
     process.chdir(dir);
   } catch (err) {
-    console.log('no need to change directory');
+    // ignore
   }
 }
 
@@ -255,17 +255,17 @@ gulp.task('lintdevjs', () => {
 });
 
 // lint scripts
-gulp.task('lint', () => {
-
-  chDir('app');
-
-  const input = files.js;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(eslint()).
-      pipe(eslint.formatEach()).
-      pipe(eslint.failAfterError());
-});
+// gulp.task('lint', () => {
+//
+//   chDir('app');
+//
+//   const input = files.js;
+//   watchOpts.name = currentTaskName;
+//   return gulp.src(input, {base: '.'}).
+//       pipe(eslint()).
+//       pipe(eslint.formatEach()).
+//       pipe(eslint.failAfterError());
+// });
 
 // manifest.json
 gulp.task('_manifest', () => {
@@ -282,21 +282,21 @@ gulp.task('_manifest', () => {
 });
 
 // scripts
-gulp.task('_scripts', () => {
-  chDir('app');
-
-  const input = files.js;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(debug()).
-      pipe(plumber()).
-      pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
-      pipe(eslint()).
-      pipe(eslint.formatEach()).
-      pipe(eslint.failAfterError()).
-      pipe(gulp.dest(base.dev));
-});
+// gulp.task('_scripts', () => {
+//   chDir('app');
+//
+//   const input = files.js;
+//   watchOpts.name = currentTaskName;
+//   return gulp.src(input, {base: '.'}).
+//       pipe(isWatch ? watch(input, watchOpts) : noop()).
+//       pipe(debug()).
+//       pipe(plumber()).
+//       pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
+//       pipe(eslint()).
+//       pipe(eslint.formatEach()).
+//       pipe(eslint.failAfterError()).
+//       pipe(gulp.dest(base.dev));
+// });
 
 gulp.task('_watch_ts', function() {
   chDir('app');
@@ -406,7 +406,6 @@ gulp.task('_tsWatch', () => {
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
-      pipe(debug()).
       pipe(tsProject()).
       pipe(plumber()).
       pipe(debug()).
@@ -436,6 +435,7 @@ gulp.task('_poly_build_dev', (cb) => {
   chDir('../');
 
   console.log('running polymer build...');
+  
   // run polymer build
   exec('polymer build', (err, stdout, stderr) => {
     console.log(stdout);
@@ -457,7 +457,6 @@ gulp.task('docs', gulp.series('_build_js', '_build_doc', (done) => {
   done();
 }));
 
-// TODO make sure _DEBUG is taken care of
 // Development build
 gulp.task('buildDev',
     gulp.series('_build_js', '_poly_build_dev', (done) => {
@@ -477,9 +476,8 @@ gulp.task('buildProdTest',
 
 // Incremental Development build
 gulp.task('incrementalBuild',
-    gulp.series('_setupWatch', '_tsWatch',
-        gulp.parallel('_manifest', '_html', 'lintdevjs', '_scripts',
-            '_images',
+    gulp.series('_setupWatch',
+        gulp.parallel('_manifest', '_html', 'lintdevjs', '_tsWatch', '_images',
             '_assets', '_lib', '_locales', '_css', '_font'), (done) => {
           done();
         },
