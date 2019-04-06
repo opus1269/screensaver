@@ -125,6 +125,31 @@ function waitFor(stream) {
   });
 }
 
+// Increment build of TypeScript files
+function devTs() {
+  console.log('ts called');
+
+  const SEARCH = 'const _DEBUG = false';
+  const REPLACE = 'const _DEBUG = true';
+
+  chDir('app');
+
+  const input = files.ts;
+
+  return gulp.src(input, {base: '.', since: gulp.lastRun(devTs)}).
+      pipe(plumber()).
+      pipe(tsProject()).
+      pipe(debug()).
+      pipe(replace(SEARCH, REPLACE)).
+      pipe(gulp.dest(base.dev));
+}
+
+// Watch TypeScript files
+function watchTs() {
+  gulp.watch(files.ts, devTs);
+  // gulp.watch("./assets/img/**/*", images);
+}
+
 // Runs equivalent of 'polymer build'
 /**
  *
@@ -254,19 +279,6 @@ gulp.task('lintdevjs', () => {
       pipe(eslint.failOnError());
 });
 
-// lint scripts
-// gulp.task('lint', () => {
-//
-//   chDir('app');
-//
-//   const input = files.js;
-//   watchOpts.name = currentTaskName;
-//   return gulp.src(input, {base: '.'}).
-//       pipe(eslint()).
-//       pipe(eslint.formatEach()).
-//       pipe(eslint.failAfterError());
-// });
-
 // manifest.json
 gulp.task('_manifest', () => {
   // change working directory to app
@@ -279,30 +291,6 @@ gulp.task('_manifest', () => {
       pipe(plumber()).
       pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
-});
-
-// scripts
-// gulp.task('_scripts', () => {
-//   chDir('app');
-//
-//   const input = files.js;
-//   watchOpts.name = currentTaskName;
-//   return gulp.src(input, {base: '.'}).
-//       pipe(isWatch ? watch(input, watchOpts) : noop()).
-//       pipe(debug()).
-//       pipe(plumber()).
-//       pipe(replace('const _DEBUG = false', 'const _DEBUG = true')).
-//       pipe(eslint()).
-//       pipe(eslint.formatEach()).
-//       pipe(eslint.failAfterError()).
-//       pipe(gulp.dest(base.dev));
-// });
-
-gulp.task('_watch_ts', function() {
-  chDir('app');
-
-  const input = files.ts;
-  gulp.watch(input, gulp.series(['_tsWatch']));
 });
 
 // html
@@ -388,36 +376,12 @@ gulp.task('_zip', () => {
           `../${buildDirectory}`));
 });
 
-// setup watch
+// setup for watching files
 gulp.task('_setupWatch', (done) => {
   chDir('app');
   isWatch = true;
 
   done();
-});
-
-function tsComp() {
-  console.log('ts called');
-  
-  const SEARCH = 'const _DEBUG = false';
-  const REPLACE = 'const _DEBUG = true';
-
-  chDir('app');
-  
-  const input = files.ts;
-
-  return gulp.src(input, {base: '.', since: gulp.lastRun(tsComp)}).
-      pipe(plumber()).
-      pipe(tsProject()).
-      pipe(debug()).
-      pipe(replace(SEARCH, REPLACE)).
-      pipe(gulp.dest(base.dev));
-}
-
-// watch changes
-gulp.task('watcher', () => {
-  const input = files.ts;
-  gulp.watch(input, gulp.parallel('ts'));
 });
 
 // compile the typescript to js in place
@@ -436,7 +400,7 @@ gulp.task('_build_js', () => {
       pipe(gulp.dest(base.src), noop());
 });
 
-// run polymer build
+// run polymer build for the development build
 gulp.task('_poly_build_dev', (cb) => {
   chDir('../');
 
@@ -481,9 +445,9 @@ gulp.task('buildProdTest',
 );
 
 // Incremental Development build
-gulp.task('incrementalBuild', gulp.series('_setupWatch',
-    gulp.parallel(watchFiles, '_manifest', '_html', 'lintdevjs', '_images', '_assets',
-        '_lib', '_locales', '_css', '_font'), (done) => {
+gulp.task('incrementalBuild', gulp.series('_setupWatch', gulp.parallel(watchTs,
+    '_manifest', '_html', 'lintdevjs', '_images', '_assets',
+    '_lib', '_locales', '_css', '_font'), (done) => {
           done();
         },
     ));
@@ -493,8 +457,3 @@ gulp.task('default', gulp.series('incrementalBuild', (done) => {
   done();
 }));
 
-// Watch files
-function watchFiles() {
-  gulp.watch(files.ts, tsComp);
-  // gulp.watch("./assets/img/**/*", images);
-}
