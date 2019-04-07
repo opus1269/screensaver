@@ -35,22 +35,22 @@ export function error(msg: string = null, meth: string = null,
 
 /**
  * Log an exception
- * @param {Error} exception - the exception
+ * @param {Error} err - the exception
  * @param {?string} [msg=null] - the error message
  * @param {boolean} [fatal=true] - true if fatal
  * @param {?string} [title=null] - a title for the exception
  */
-export function exception(exception: Error, msg: string = null, fatal = false,
+export function exception(err: Error, msg: string = null, fatal = false,
                           title: string = null) {
   try {
     let errMsg = msg;
-    if (!errMsg && exception && exception.message) {
-      errMsg = exception.message;
+    if (!errMsg && err && err.message) {
+      errMsg = err.message;
     }
     title = title ||
         ChromeLocale.localize('err_exception', 'An exception occurred');
     ChromeLastError.save(new ChromeLastError(title, errMsg)).catch(() => {});
-    ChromeGA.exception(exception, msg, fatal);
+    ChromeGA.exception(err, msg, fatal);
   } catch (err) {
     ChromeUtils.noop();
   }

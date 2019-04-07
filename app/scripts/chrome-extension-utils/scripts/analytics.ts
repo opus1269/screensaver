@@ -165,25 +165,25 @@ export function initialize(trackingId: string, appName: string , appId: string ,
 
 /**
  * Send a page
- * @param {string} page - page path
+ * @param {string} url - page path
  */
-export function page(page: string) {
-  if (page) {
+export function page(url: string) {
+  if (url) {
     if (!ChromeUtils.DEBUG) {
-      ga('send', 'pageview', page);
+      ga('send', 'pageview', url);
     }
   }
 }
 
 /**
  * Send an event
- * @param {module:chrome/ga.Event} event - the event type
+ * @param {module:chrome/ga.Event} theEvent - the event type
  * @param {?string} [label=null] - override label
  * @param {?string} [action=null] - override action
  */
-export function event(event: EventType, label: string = null, action: string = null) {
-  if (event) {
-    const ev = ChromeJSON.shallowCopy(event);
+export function event(theEvent: EventType, label: string = null, action: string = null) {
+  if (theEvent) {
+    const ev = ChromeJSON.shallowCopy(theEvent);
     ev.hitType = 'event';
     ev.eventLabel = label ? label : ev.eventLabel;
     ev.eventAction = action ? action : ev.eventAction;
@@ -216,20 +216,20 @@ export function error(label = 'unknown', action = 'unknownMethod') {
 
 /**
  * Send an exception
- * @param {Error} exception - the exception
+ * @param {Error} theError - the exception
  * @param {?string} [message=null] - the error message
  * @param {boolean} [fatal=true] - true if fatal
  */
-export function exception(exception: Error, message: string = null, fatal = false) {
+export function exception(theError: Error, message: string = null, fatal = false) {
   try {
     let msg = 'Unknown';
     if (message) {
       msg = message;
-    } else if (exception.message) {
-      msg = exception.message;
+    } else if (theError.message) {
+      msg = theError.message;
     }
-    if (exception.stack) {
-      msg += `\n\n${exception.stack}`;
+    if (theError.stack) {
+      msg += `\n\n${theError.stack}`;
     }
     const ex = {
       hitType: 'exception',

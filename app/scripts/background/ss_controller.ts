@@ -90,12 +90,12 @@ export function close() {
 
 /**
  * Determine if there is a full screen chrome window running on a display
- * @param display - a connected display
+ * @param disp - a connected display
  * @returns {Promise<boolean>} true if there is a full screen
  * window on the display
  * @private
  */
-async function _hasFullscreen(display: chrome.system.display.DisplayInfo) {
+async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
   let ret = false;
   const fullScreen = ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
 
@@ -103,10 +103,10 @@ async function _hasFullscreen(display: chrome.system.display.DisplayInfo) {
     if (fullScreen) {
       // see if there is a Chrome window that is in full screen mode
       const wins = await chromep.windows.getAll({populate: false});
-      const left = display ? display.bounds.left : 0;
-      const top = display ? display.bounds.top : 0;
+      const left = disp ? disp.bounds.left : 0;
+      const top = disp ? disp.bounds.top : 0;
       for (const win of wins) {
-        if ((win.state === 'fullscreen') && (!display || (win.top === top && win.left === left))) {
+        if ((win.state === 'fullscreen') && (!disp || (win.top === top && win.left === left))) {
           ret = true;
           break;
         }
@@ -137,11 +137,11 @@ async function _isShowing() {
 
 /**
  * Open a screen saver window on the given display
- * @param {?{bounds}} display - a connected display
+ * @param {?{bounds}} disp - a connected display
  * @returns {Promise<void>}
  * @private
  */
-async function _open(display: chrome.system.display.DisplayInfo) {
+async function _open(disp: chrome.system.display.DisplayInfo | null) {
   // window creation options
   const winOpts: chrome.windows.CreateData = {
     url: _SS_URL,
@@ -149,24 +149,24 @@ async function _open(display: chrome.system.display.DisplayInfo) {
   };
 
   try {
-    const hasFullScreen = await _hasFullscreen(display);
+    const hasFullScreen = await _hasFullscreen(disp);
     if (hasFullScreen) {
       // don't display if there is a fullscreen window
       return Promise.resolve();
     }
 
-    if (!display) {
+    if (!disp) {
       winOpts.state = 'fullscreen';
     } else {
-      winOpts.left = display.bounds.left;
-      winOpts.top = display.bounds.top;
-      winOpts.width = display.bounds.width;
-      winOpts.height = display.bounds.height;
+      winOpts.left = disp.bounds.left;
+      winOpts.top = disp.bounds.top;
+      winOpts.width = disp.bounds.width;
+      winOpts.height = disp.bounds.height;
     }
 
     const win = await chromep.windows.create(winOpts);
     if (win) {
-      if (display) {
+      if (disp) {
         await chromep.windows.update(win.id, {state: 'fullscreen'});
       }
       await chromep.windows.update(win.id, {focused: true});
@@ -190,8 +190,8 @@ async function _openOnAllDisplays() {
     if (displayArr.length === 1) {
       await _open(null);
     } else {
-      for (const display of displayArr) {
-        await _open(display);
+      for (const disp of displayArr) {
+        await _open(disp);
       }
     }
   } catch (err) {

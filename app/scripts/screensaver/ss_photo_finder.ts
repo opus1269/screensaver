@@ -58,15 +58,6 @@ export function getNext(idx: number) {
  */
 export function replacePhoto(idx: number) {
   if (idx >= 0) {
-    _replacePhoto(idx);
-  }
-
-  /**
-   * Add the next photo from the master array
-   * @param {int} idx - index into {@link module:ss/views.Views}
-   * @private
-   */
-  function _replacePhoto(idx: number) {
     if (SSViews.isSelectedIndex(idx)) {
       return;
     }

@@ -35,5 +35,5 @@ export class ExHandler {
 
 }
 
-new ExHandler();
+new ExHandler(); // tslint:disable-line no-unused-expression
 
