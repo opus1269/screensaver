@@ -53,7 +53,7 @@ class SSPhoto {
    * Get unique id
    * @returns {int} id
    */
-  getId() {
+  public getId() {
     return this._id;
   }
 
@@ -61,7 +61,7 @@ class SSPhoto {
    * Set unique id
    * @param {int} id - unique id
    */
-  setId(id: number) {
+  public setId(id: number) {
     this._id = id;
   }
 
@@ -69,14 +69,14 @@ class SSPhoto {
    * Is photo bad
    * @returns {boolean} true if bad
    */
-  isBad() {
+  public isBad() {
     return this._isBad;
   }
 
   /**
    * Mark photo unusable
    */
-  markBad() {
+  public markBad() {
     this._isBad = true;
   }
 
@@ -84,7 +84,7 @@ class SSPhoto {
    * Get photo url
    * @returns {string} url
    */
-  getUrl() {
+  public getUrl() {
     return this._url;
   }
 
@@ -92,7 +92,7 @@ class SSPhoto {
    * Set the url
    * @param {string} url - url to photo
    */
-  setUrl(url: string) {
+  public setUrl(url: string) {
     this._url = url;
     this._isBad = false;
   }
@@ -101,7 +101,7 @@ class SSPhoto {
    * Get photo source type
    * @returns {string} type
    */
-  getType() {
+  public getType() {
     return this._type;
   }
 
@@ -109,7 +109,7 @@ class SSPhoto {
    * Get photographer
    * @returns {string} photographer
    */
-  getPhotographer() {
+  public getPhotographer() {
     return this._photographer;
   }
 
@@ -117,7 +117,7 @@ class SSPhoto {
    * Get photo aspect ratio
    * @returns {number} aspect ratio
    */
-  getAspectRatio() {
+  public getAspectRatio() {
     return this._aspectRatio;
   }
 
@@ -125,7 +125,7 @@ class SSPhoto {
    * Get geo location point
    * @returns {?string} point
    */
-  getPoint() {
+  public getPoint() {
     return this._point;
   }
 
@@ -133,7 +133,7 @@ class SSPhoto {
    * Get extra information
    * @returns {?Object} extra object
    */
-  getEx() {
+  public getEx() {
     return this._ex;
   }
 
@@ -141,7 +141,7 @@ class SSPhoto {
    * Create a new tab with a link to the
    * original source of the photo, if possible
    */
-  showSource() {
+  public showSource() {
     let regex;
     let id;
     let url = null;

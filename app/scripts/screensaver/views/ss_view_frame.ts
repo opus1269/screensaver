@@ -23,15 +23,6 @@ import SSPhoto from '../ss_photo.js';
 class SSViewFrame extends SSView {
 
   /**
-   * Create new SSViewFrame
-   * @param {module:ss/photo.SSPhoto} photo
-   * @constructor
-   */
-  constructor(photo: SSPhoto) {
-    super(photo);
-  }
-
-  /**
    * Set style info for a label
    * @param {Object} style - element.style object
    * @param {int} width - frame width
@@ -40,7 +31,7 @@ class SSViewFrame extends SSView {
    * @static
    * @private
    */
-  static _setLabelStyle(style: any, width: number, height: number, isLeft: boolean) {
+  private static _setLabelStyle(style: any, width: number, height: number, isLeft: boolean) {
     style.textOverflow = 'ellipsis';
     style.whiteSpace = 'nowrap';
     style.color = 'black';
@@ -74,9 +65,18 @@ class SSViewFrame extends SSView {
   }
 
   /**
+   * Create new SSViewFrame
+   * @param {module:ss/photo.SSPhoto} photo
+   * @constructor
+   */
+  constructor(photo: SSPhoto) {
+    super(photo);
+  }
+
+  /**
    * Render the page for display
    */
-  render() {
+  public render() {
     super.render();
 
     const authorStyle = this.author.style;

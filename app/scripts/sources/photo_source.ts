@@ -36,6 +36,7 @@ import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js'
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {SelectedAlbum} from './photo_source_google';
 
 declare var ChromePromise: any;
 
@@ -75,6 +76,44 @@ export abstract class PhotoSource {
 
 
   /**
+   * Add a {@link module:sources/photo_source.Photo} to an existing Array
+   * @param {Array} photos - {@link module:sources/photo_source.Photo} Array
+   * @param {string} url - The url to the photo
+   * @param {string} author - The photographer
+   * @param {number} asp - The aspect ratio of the photo
+   * @param {Object} [ex] - Additional information about the photo
+   * @param {string} [point=''] - 'lat lon'
+   */
+  public static addPhoto(photos: Photo[], url: string, author: string, asp: number, ex: any, point: string = '') {
+    const photo: Photo = {
+      url: url,
+      author: author,
+      asp: asp.toPrecision(3),
+    };
+    if (ex) {
+      photo.ex = ex;
+    }
+    if (point && !ChromeUtils.isWhiteSpace(point)) {
+      photo.point = point;
+    }
+    photos.push(photo);
+  }
+
+  /**
+   * Create a geo point string from a latitude and longitude
+   * @param {number} lat - latitude
+   * @param {number} lon - longitude
+   * @returns {string} 'lat lon'
+   */
+  public static createPoint(lat: number, lon: number) {
+    if ((typeof lat === 'number') && (typeof lon === 'number')) {
+      return `${lat.toFixed(6)} ${lon.toFixed(6)}`;
+    } else {
+      return `${lat} ${lon}`;
+    }
+  }
+
+  /**
    * Create a new photo source
    * @param {string} useKey - The key for if the source is selected
    * @param {string} photosKey - The key for the collection of photos
@@ -96,55 +135,17 @@ export abstract class PhotoSource {
   }
 
   /**
-   * Add a {@link module:sources/photo_source.Photo} to an existing Array
-   * @param {Array} photos - {@link module:sources/photo_source.Photo} Array
-   * @param {string} url - The url to the photo
-   * @param {string} author - The photographer
-   * @param {number} asp - The aspect ratio of the photo
-   * @param {Object} [ex] - Additional information about the photo
-   * @param {string} [point=''] - 'lat lon'
-   */
-  static addPhoto(photos: Photo[], url: string, author: string, asp: number, ex: any, point: string = '') {
-    const photo: Photo = {
-      url: url,
-      author: author,
-      asp: asp.toPrecision(3),
-    };
-    if (ex) {
-      photo.ex = ex;
-    }
-    if (point && !ChromeUtils.isWhiteSpace(point)) {
-      photo.point = point;
-    }
-    photos.push(photo);
-  }
-
-  /**
-   * Create a geo point string from a latitude and longitude
-   * @param {number} lat - latitude
-   * @param {number} lon - longitude
-   * @returns {string} 'lat lon'
-   */
-  static createPoint(lat: number, lon: number) {
-    if ((typeof lat === 'number') && (typeof lon === 'number')) {
-      return `${lat.toFixed(6)} ${lon.toFixed(6)}`;
-    } else {
-      return `${lat} ${lon}`;
-    }
-  }
-
-  /**
    * Fetch the photos for this source - override
    * @throws An error if fetch failed
    * @returns {Promise<Object>} could be array of photos or albums
    */
-  abstract fetchPhotos(): Promise<Photo[]>;
+  public abstract fetchPhotos(): Promise<Photo[]>;
 
   /**
    * Get the source type
    * @returns {string} the source type
    */
-  getType() {
+  public getType() {
     return this._type;
   }
 
@@ -152,7 +153,7 @@ export abstract class PhotoSource {
    * Get if the photos key that is persisted
    * @returns {string} the photos key
    */
-  getPhotosKey() {
+  public getPhotosKey() {
     return this._photosKey;
   }
 
@@ -160,7 +161,7 @@ export abstract class PhotoSource {
    * Get a human readable description
    * @returns {string} the photos key
    */
-  getDesc() {
+  public getDesc() {
     return this._desc;
   }
 
@@ -168,7 +169,7 @@ export abstract class PhotoSource {
    * Get use key name
    * @returns {string} the source type
    */
-  getUseKey() {
+  public getUseKey() {
     return this._useKey;
   }
 
@@ -176,7 +177,7 @@ export abstract class PhotoSource {
    * Get use extra argument
    * @returns
    */
-  getLoadArg() {
+  public getLoadArg() {
     return this._loadArg;
   }
 
@@ -184,7 +185,7 @@ export abstract class PhotoSource {
    * Get if we should update daily
    * @returns {boolean} if true, update daily
    */
-  isDaily() {
+  public isDaily() {
     return this._isDaily;
   }
 
@@ -192,7 +193,7 @@ export abstract class PhotoSource {
    * Get the photos from local storage
    * @returns {Promise<module:sources/photo_source.Photos>} the photos
    */
-  async getPhotos() {
+  public async getPhotos() {
     const ret: Photos = {
       type: this._type,
       photos: [],
@@ -220,7 +221,7 @@ export abstract class PhotoSource {
    * Determine if this source has been selected for display
    * @returns {boolean} true if selected
    */
-  use() {
+  public use() {
     return ChromeStorage.getBool(this._useKey);
   }
 
@@ -228,7 +229,7 @@ export abstract class PhotoSource {
    * Process the photo source.
    * @returns {Promise<void>} void
    */
-  async process() {
+  public async process() {
     if (this.use()) {
       // add the source
       try {
@@ -277,7 +278,7 @@ export abstract class PhotoSource {
    * @returns {Promise<?string>} non-null on error
    * @private
    */
-  async _savePhotos(photos: Photo[]) {
+  private async _savePhotos(photos: Photo[] | SelectedAlbum[]) {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {

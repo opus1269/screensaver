@@ -48,29 +48,13 @@ const _MAX_PHOTOS = 250;
 class FlickrSource extends PhotoSource {
 
   /**
-   * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
-   * @constructor
-   */
-  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
-              loadArg: any = null) {
-    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
-  }
-
-  /**
    * Extract the photos into an Array
    * @param {{photos}} response - server response
    * @throws An error if we failed to process photos
    * @returns {module:sources/photo_source.Photo[]} Array of photos
    * @private
    */
-  static _processPhotos(response: any) {
+  private static _processPhotos(response: any) {
     if (!response.photos || !response.photos.photo) {
       throw new Error(ChromeLocale.localize('err_photo_source_title'));
     }
@@ -107,11 +91,27 @@ class FlickrSource extends PhotoSource {
   }
 
   /**
+   * Create a new photo source
+   * @param {string} useKey - The key for if the source is selected
+   * @param {string} photosKey - The key for the collection of photos
+   * @param {string} type - A descriptor of the photo source
+   * @param {string} desc - A human readable description of the source
+   * @param {boolean} isDaily - Should the source be updated daily
+   * @param {boolean} isArray - Is the source an Array of photo Arrays
+   * @param {?Object} [loadArg=null] - optional arg for load function
+   * @constructor
+   */
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
+    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
+  }
+
+  /**
    * Fetch the photos for this source
    * @throws An error if fetch failed
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
-  async fetchPhotos() {
+  public async fetchPhotos() {
     let url;
     if (this.getLoadArg()) {
       // my photos

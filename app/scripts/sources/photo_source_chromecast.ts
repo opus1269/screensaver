@@ -42,7 +42,7 @@ class CCSource extends PhotoSource {
    * @throws An error if fetch failed
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
-  async fetchPhotos() {
+  public async fetchPhotos() {
     const url = '/assets/chromecast.json';
     let photos: Photo[] = await ChromeHttp.doGet(url);
     photos = photos || [];

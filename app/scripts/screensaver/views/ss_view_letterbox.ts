@@ -42,7 +42,7 @@ class SSViewLetterbox extends SSView {
   /**
    * Render the page for display
    */
-  render() {
+  public render() {
     super.render();
 
     const ar = this.photo.getAspectRatio();

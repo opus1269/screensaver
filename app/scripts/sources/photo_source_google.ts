@@ -221,7 +221,7 @@ export class GoogleSource extends PhotoSource {
    * @param err
    * @param name
    */
-  static isAuthRevokedError(err: Error, name: string) {
+  public static isAuthRevokedError(err: Error, name: string) {
     let ret = false;
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
@@ -243,7 +243,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @async
    */
-  static async loadAlbumList() {
+  public static async loadAlbumList() {
     let nextPageToken;
     let gAlbums: any[] = [];
     const albums: Album[] = [];
@@ -307,7 +307,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @async
    */
-  static async loadAlbum(id: string, name: string, interactive = true, notify = false) {
+  public static async loadAlbum(id: string, name: string, interactive = true, notify = false) {
     // max items in search call
     const MAX_QUERIES = 100;
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
@@ -385,7 +385,7 @@ export class GoogleSource extends PhotoSource {
    * @throws An error if the albums could not be updated
    * @returns {Promise<module:sources/photo_source_google.Album[]>}
    */
-  static async loadAlbums(interactive = false, notify = false) {
+  public static async loadAlbums(interactive = false, notify = false) {
     const METHOD = 'GoogleSource.loadAlbums';
 
     /** @type {module:sources/photo_source_google.SelectedAlbum[]} */
@@ -448,7 +448,7 @@ export class GoogleSource extends PhotoSource {
    * @async
    * @static
    */
-  static async loadFilteredPhotos(force = false, notify = false) {
+  public static async loadFilteredPhotos(force = false, notify = false) {
     const curPhotos = await ChromeStorage.asyncGet('googleImages', []);
     if (!force && !this._isFetch()) {
       // no need to change - save on api calls
@@ -537,7 +537,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @async
    */
-  static async loadPhotos(ids: string[]) {
+  public static async loadPhotos(ids: string[]) {
     ids = ids || [];
     let photos: Photo[] = [];
     // max items in getBatch call
@@ -603,7 +603,7 @@ export class GoogleSource extends PhotoSource {
    * @returns {boolean} false if couldn't persist albumSelections
    * @static
    */
-  static async updateBaseUrls(photos: Photo[]) {
+  public static async updateBaseUrls(photos: Photo[]) {
     let ret = true;
 
     photos = photos || [];
@@ -632,7 +632,7 @@ export class GoogleSource extends PhotoSource {
    * @private
    * @static
    */
-  static async _updateAlbumsBaseUrls(photos: Photo[]) {
+  private static async _updateAlbumsBaseUrls(photos: Photo[]) {
     let ret = true;
 
     photos = photos || [];
@@ -679,7 +679,7 @@ export class GoogleSource extends PhotoSource {
    * @private
    * @static
    */
-  static async _updatePhotosBaseUrls(photos: Photo[]) {
+  private static async _updatePhotosBaseUrls(photos: Photo[]) {
     let ret = true;
 
     photos = photos || [];
@@ -720,7 +720,7 @@ export class GoogleSource extends PhotoSource {
    * @returns {boolean} true if we should fetch
    * @static
    */
-  static _isFetch() {
+  private static _isFetch() {
     /* only fetch new photos if all are true:
      api is authorized
      screensaver is enabled
@@ -740,7 +740,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @async
    */
-  static async _fetchAlbums() {
+  private static async _fetchAlbums() {
     if (!this._isFetch()) {
       // no need to change - save on api calls
       const curAlbums = await ChromeStorage.asyncGet('albumSelections', []);
@@ -768,7 +768,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _isImage(mediaItem: any) {
+  private static _isImage(mediaItem: any) {
     return mediaItem &&
         mediaItem.mimeType &&
         mediaItem.mimeType.startsWith('image/') &&
@@ -783,7 +783,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _getImageSize(mediaMetadata: any) {
+  private static _getImageSize(mediaMetadata: any) {
     const MAX_SIZE = 1920;
     const ret: any = {};
     ret.width = parseInt(mediaMetadata.width, 10);
@@ -812,7 +812,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _processPhoto(mediaItem: any, albumName: string) {
+  private static _processPhoto(mediaItem: any, albumName: string) {
     let photo: Photo = null;
     if (mediaItem && mediaItem.mediaMetadata) {
       if (this._isImage(mediaItem)) {
@@ -848,7 +848,7 @@ export class GoogleSource extends PhotoSource {
    * @static
    * @private
    */
-  static _processPhotos(mediaItems: any, albumName = '') {
+  private static _processPhotos(mediaItems: any, albumName = '') {
 
     const photos: Photo[] = [];
     if (!mediaItems) {
@@ -871,7 +871,7 @@ export class GoogleSource extends PhotoSource {
    * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]|module:sources/photo_source.Photo[]>}
    * - array of albums or array of photos
    */
-  async fetchPhotos() {
+  public async fetchPhotos() {
     const METHOD = 'GoogleSource.fetchPhotos';
 
     // this will at least ensure the LAN is connected

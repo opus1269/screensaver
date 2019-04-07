@@ -44,16 +44,16 @@ const _SCREEN_AR = screen.width / screen.height;
  * @alias module:ss/views/view.SSView
  */
 abstract class SSView {
-  photo: SSPhoto;
-  image: HTMLElement;
-  author: HTMLElement;
-  time: HTMLElement;
-  location: HTMLElement;
-  weather: HTMLElement;
-  model: any;
-  url: string;
-  authorLabel: string;
-  locationLabel: string;
+  public photo: SSPhoto;
+  public image: HTMLElement;
+  public author: HTMLElement;
+  public time: HTMLElement;
+  public location: HTMLElement;
+  public weather: HTMLElement;
+  public model: any;
+  public url: string;
+  public authorLabel: string;
+  public locationLabel: string;
 
   /**
    * Call notifyPath after set because dirty checking doesn't always work
@@ -86,7 +86,7 @@ abstract class SSView {
    * @param {int} photoSizing - the sizing type
    * @returns {boolean} true if the aspect ratio should be ignored
    */
-  static ignore(asp: number, photoSizing: number) {
+  public static ignore(asp: number, photoSizing: number) {
     let ret = false;
     const skip = ChromeStorage.getBool('skip');
 
@@ -105,7 +105,7 @@ abstract class SSView {
    * @returns {boolean} true if we should show the location
    * @static
    */
-  static _showLocation() {
+  private static _showLocation() {
     return ChromeStorage.getBool('showLocation');
   }
 
@@ -114,7 +114,7 @@ abstract class SSView {
    * @returns {boolean} true if we should show the time
    * @static
    */
-  static showTime() {
+  public static showTime() {
     return ChromeStorage.getBool('showTime');
   }
 

@@ -22,8 +22,8 @@ import './ex_handler.js';
  * @alias module:chrome/time.ChromeTime
  */
 class ChromeTime {
-  _hr: number;
-  _min: number;
+  private _hr: number;
+  private _min: number;
 
   /**
    * Create a new Time
@@ -87,7 +87,7 @@ class ChromeTime {
    * @private
    * @static
    */
-  static _is24Hr(frmt: number = null) {
+  private static _is24Hr(frmt: number = null) {
     let ret = false;
     let format = ChromeStorage.getInt('showTime', 0);
     if (frmt !== null) {
@@ -110,7 +110,7 @@ class ChromeTime {
    * @returns {int} time in milliSeconds from epoch
    * @static
    */
-  static getTime(timeString: string) {
+  public static getTime(timeString: string) {
     const date = new Date();
     const time = new ChromeTime(timeString);
     date.setHours(time._hr);
@@ -126,7 +126,7 @@ class ChromeTime {
    * @returns {int} time delta in minutes
    * @static
    */
-  static getTimeDelta(timeString: string) {
+  public static getTimeDelta(timeString: string) {
     const curTime = Date.now();
     const time = ChromeTime.getTime(timeString);
     let delayMin = (time - curTime) / 1000 / 60;
@@ -144,7 +144,7 @@ class ChromeTime {
    * @returns {boolean} true if in the given range
    * @static
    */
-  static isInRange(start: string, stop: string) {
+  public static isInRange(start: string, stop: string) {
     const curTime = Date.now();
     const startTime = ChromeTime.getTime(start);
     const stopTime = ChromeTime.getTime(stop);
@@ -171,7 +171,7 @@ class ChromeTime {
    * @returns {!string} display string
    * @static
    */
-  static getStringFull(timeString: string, frmt: number = null) {
+  public static getStringFull(timeString: string, frmt: number = null) {
     const time = new ChromeTime(timeString);
     return time.toString(frmt);
   }
@@ -181,7 +181,7 @@ class ChromeTime {
    * @returns {!string} display string
    * @static
    */
-  static getStringShort() {
+  public static getStringShort() {
     const time = new ChromeTime();
     let timeString = time.toString();
     // strip off all non-digits but :
@@ -197,7 +197,7 @@ class ChromeTime {
    * @param {string} timeString - in '00:00' format
    * @private
    */
-  _parse(timeString: string) {
+  private _parse(timeString: string) {
     if (!timeString) {
       const date = new Date();
       this._hr = date.getHours();
@@ -213,7 +213,7 @@ class ChromeTime {
    * @param {?int} [frmt=null] - optional format, overrides storage value
    * @returns {string} As string
    */
-  toString(frmt: number = null) {
+  public toString(frmt: number = null) {
     const date = new Date();
     date.setHours(this._hr, this._min);
     date.setSeconds(0);

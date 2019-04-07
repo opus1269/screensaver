@@ -70,28 +70,13 @@ let _snoocore;
 class RedditSource extends PhotoSource {
 
   /**
-   * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
-   */
-  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
-              loadArg: any = null) {
-    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
-  }
-
-  /**
    * Parse the size from the submission title.
    * this is the old way reddit did it
    * @param {string} title - submission title
    * @returns {{width: int, height: int}} Photo size
    * @private
    */
-  static _getSize(title: string) {
+  private static _getSize(title: string) {
     const ret = {width: -1, height: -1};
     const regex = /\[(\d*)\D*(\d*)]/;
     const res = title.match(regex);
@@ -108,7 +93,7 @@ class RedditSource extends PhotoSource {
    * @returns {module:sources/photo_source.Photo[]} Array of photos
    * @private
    */
-  static _processChildren(children: any[]) {
+  private static _processChildren(children: any[]) {
     const photos: Photo[] = [];
     let url;
     let width = 1;
@@ -152,11 +137,26 @@ class RedditSource extends PhotoSource {
   }
 
   /**
+   * Create a new photo source
+   * @param {string} useKey - The key for if the source is selected
+   * @param {string} photosKey - The key for the collection of photos
+   * @param {string} type - A descriptor of the photo source
+   * @param {string} desc - A human readable description of the source
+   * @param {boolean} isDaily - Should the source be updated daily
+   * @param {boolean} isArray - Is the source an Array of photo Arrays
+   * @param {?Object} [loadArg=null] - optional arg for load function
+   */
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
+    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
+  }
+
+  /**
    * Fetch the photos for this source
    * @throws An error if fetch failed
    * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
    */
-  async fetchPhotos() {
+  public async fetchPhotos() {
     let photos: Photo[] = [];
     const SRC = `${this.getLoadArg()}hot`;
 

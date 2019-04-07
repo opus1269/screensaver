@@ -23,7 +23,51 @@ const chromep = new ChromePromise();
  * @alias module:chrome/last_error.LastError
  */
 class ChromeLastError extends Error {
-  title: string;
+  public title: string;
+
+  /**
+   * Get the LastError from chrome.storage.local
+   * @throws If we failed to get the error
+   * @returns {Promise<ChromeLastError>} last error
+   */
+  public static async load() {
+    const value = await chromep.storage.local.get('lastError');
+    const details = value.lastError;
+    if (details) {
+      const lastError = new ChromeLastError(details.title, details.message);
+      lastError.stack = details.stack;
+      return Promise.resolve(lastError);
+    }
+    return Promise.resolve(new ChromeLastError());
+  }
+
+  /**
+   * Save the LastError to chrome.storage.local
+   * @see https://developer.chrome.com/apps/storage
+   * @param {module:chrome/last_error.ChromeLastError} lastError
+   * @throws If the error failed to save
+   * @returns {Promise<void>} void
+   */
+  public static save(lastError: ChromeLastError) {
+    const value = {
+      title: lastError.title || '',
+      message: lastError.message || '',
+      stack: lastError.stack || '',
+    };
+
+    // persist
+    return chromep.storage.local.set({lastError: value});
+  }
+
+  /**
+   * Set the LastError to an empty message in chrome.storage.local
+   * @throws If the error failed to clear
+   * @returns {Promise<void>} void
+   */
+  public static reset() {
+    // Save it using the Chrome storage API.
+    return chromep.storage.local.set({lastError: new ChromeLastError()});
+  }
 
   /**
    * Create a new LastError
@@ -45,50 +89,6 @@ class ChromeLastError extends Error {
 
     // Custom information
     this.title = title;
-  }
-
-  /**
-   * Get the LastError from chrome.storage.local
-   * @throws If we failed to get the error
-   * @returns {Promise<ChromeLastError>} last error
-   */
-  static async load() {
-    const value = await chromep.storage.local.get('lastError');
-    const details = value.lastError;
-    if (details) {
-      const lastError = new ChromeLastError(details.title, details.message);
-      lastError.stack = details.stack;
-      return Promise.resolve(lastError);
-    }
-    return Promise.resolve(new ChromeLastError());
-  }
-
-  /**
-   * Save the LastError to chrome.storage.local
-   * @see https://developer.chrome.com/apps/storage
-   * @param {module:chrome/last_error.ChromeLastError} lastError
-   * @throws If the error failed to save
-   * @returns {Promise<void>} void
-   */
-  static save(lastError: ChromeLastError) {
-    const value = {
-      title: lastError.title || '',
-      message: lastError.message || '',
-      stack: lastError.stack || '',
-    };
-
-    // persist
-    return chromep.storage.local.set({lastError: value});
-  }
-
-  /**
-   * Set the LastError to an empty message in chrome.storage.local
-   * @throws If the error failed to clear
-   * @returns {Promise<void>} void
-   */
-  static reset() {
-    // Save it using the Chrome storage API.
-    return chromep.storage.local.set({lastError: new ChromeLastError()});
   }
 }
 

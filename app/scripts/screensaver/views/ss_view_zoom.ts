@@ -34,7 +34,7 @@ class SSViewZoom extends SSView {
   /**
    * Render the page for display
    */
-  render() {
+  public render() {
     super.render();
   }
 }
