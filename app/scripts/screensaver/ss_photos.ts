@@ -10,14 +10,13 @@
  * @module ss/photos
  */
 
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSPhoto from './ss_photo.js';
 import SSView from './views/ss_view.js';
 import * as SSViews from './ss_views.js';
-import {Photos, Photo} from "../sources/photo_source";
+import {Photos, Photo} from '../sources/photo_source';
 
 /**
  * The array of photos

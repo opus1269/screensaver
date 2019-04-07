@@ -18,8 +18,7 @@ import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.j
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -50,7 +49,7 @@ const SettingDropdown = Polymer({
   :host([indent]) .setting-label {
     padding-left: 8px;
   }
-  
+
   :host > paper-item {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -110,7 +109,7 @@ const SettingDropdown = Polymer({
     /** Array of Menu item labels */
     items: {
       type: Array,
-      value: function() : string[] {
+      value: (): string[] => {
         return [];
       },
     },

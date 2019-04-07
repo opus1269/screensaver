@@ -23,10 +23,8 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import './photo_cat.js';
 
-import {LocalizeBehavior} from
-      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import {showErrorDialog, showStorageErrorDialog} from
-      '../../../elements/app-main/app-main.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/shared-styles.js';
@@ -35,14 +33,10 @@ import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeMsg
-  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -143,7 +137,7 @@ Polymer({
                   checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
 
   <div class="section-title">[[localize('photo_cat_title')]]</div>
-  
+
   <template is="dom-repeat" items="[[cats]]" as="cat">
     <photo-cat id="[[cat.name]]"
                label="[[cat.label]]"
@@ -239,16 +233,18 @@ Polymer({
     ChromeMsg.listen(this._onChromeMessage.bind(this));
 
     setTimeout(() => {
-      this.setPhotoCount().catch(() => {});
+      this.setPhotoCount().catch(() => {/* ignore */
+      });
 
       // set state of photo categories
       this._setPhotoCats();
-      
+
       // listen for changes to chrome.storage
       chrome.storage.onChanged.addListener((changes) => {
         for (const key of Object.keys(changes)) {
           if (key === 'googleImages') {
-            this.setPhotoCount().catch(() => {});
+            this.setPhotoCount().catch(() => {
+            });
             this.set('needsPhotoRefresh', true);
             break;
           }
@@ -348,9 +344,9 @@ Polymer({
    * @private
    */
   _onPhotoCatChanged: function(ev: Event) {
-    //@ts-ignore
+    // @ts-ignore
     const cat = ev.target.id;
-    //@ts-ignore
+    // @ts-ignore
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter',
         GoogleSource.DEF_FILTER);
@@ -387,11 +383,11 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function (request: ChromeMsg.MsgType, sender: Object, response: Function) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: object, response: Function) {
     if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;
-      let msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
+      const msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
       this.set('waiterStatus', msg);
       response(JSON.stringify({message: 'OK'}));
     }
@@ -403,7 +399,8 @@ Polymer({
    * @private
    */
   _onRefreshPhotosClicked: function() {
-    this.loadPhotos().catch(() => {});
+    this.loadPhotos().catch(() => {
+    });
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
   },
 

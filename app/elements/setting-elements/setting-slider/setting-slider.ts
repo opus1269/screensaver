@@ -44,22 +44,21 @@ import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.j
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 interface UnitType {
   name: string;
   min: number;
   max: number;
-  step: number
+  step: number;
   mult: number;
 }
 
 interface UnitValue {
   base: number;
   display: number;
-  unit: number
+  unit: number;
 }
 
 /**
@@ -149,8 +148,7 @@ const SettingSlider = Polymer({
       value: 'unknown',
     },
 
-    /**
-     * Description */
+    /** Description */
     label: {
       type: String,
       value: '',
@@ -161,7 +159,7 @@ const SettingSlider = Polymer({
       type: Object,
       notify: true,
       value: function() {
-        return {'base': 10, 'display': 10, 'unit': 0};
+        return {base: 10, display: 10, unit: 0};
       },
       observer: '_valueChanged',
     },
@@ -171,7 +169,7 @@ const SettingSlider = Polymer({
       type: Object,
       notify: true,
       value: function() {
-        return {'name': 'unknown', 'min': 1, 'max': 10, 'step': 1, 'mult': 1};
+        return {name: 'unknown', min: 1, max: 10, step: 1, 'mult': 1};
       },
     },
 
@@ -186,7 +184,7 @@ const SettingSlider = Polymer({
     /** Array of {@link module:els/setting/slider.SettingSlider.UnitType} */
     units: {
       type: Array,
-      value: function() : UnitType[] {
+      value: function(): UnitType[] {
         return [];
       },
     },

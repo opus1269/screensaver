@@ -10,13 +10,11 @@
  * @module ss/time
  */
 
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver
-  from '../../elements/screensaver-element/screensaver-element.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 
 /**

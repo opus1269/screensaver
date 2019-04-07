@@ -14,19 +14,13 @@ import * as AppData from './data.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 
-import * as ChromeGA
-  from '../chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../chrome-extension-utils/scripts/time.js';
-import * as ChromeUtils
-  from '../chrome-extension-utils/scripts/utils.js';
+import * as ChromeUtils from '../chrome-extension-utils/scripts/utils.js';
 import '../chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -71,7 +65,7 @@ export function isActive() {
  * @returns {Promise<void>}
  */
 export async function display(single: boolean) {
-  
+
   try {
     const all = ChromeStorage.getBool('allDisplays', AppData.DEFS.allDisplays);
     if (!single && all) {
@@ -82,7 +76,7 @@ export async function display(single: boolean) {
   } catch (err) {
     ChromeLog.error(err.message, 'SSControl.display');
   }
-  
+
   return Promise.resolve();
 }
 
@@ -103,19 +97,16 @@ export function close() {
  */
 async function _hasFullscreen(display: chrome.system.display.DisplayInfo) {
   let ret = false;
-  const fullScreen =
-      ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
-  
+  const fullScreen = ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
+
   try {
     if (fullScreen) {
       // see if there is a Chrome window that is in full screen mode
-      let wins = await chromep.windows.getAll({populate: false});
+      const wins = await chromep.windows.getAll({populate: false});
       const left = display ? display.bounds.left : 0;
       const top = display ? display.bounds.top : 0;
-      for (let i = 0; i < wins.length; i++) {
-        const win = wins[i];
-        if ((win.state === 'fullscreen') &&
-            (!display || (win.top === top && win.left === left))) {
+      for (const win of wins) {
+        if ((win.state === 'fullscreen') && (!display || (win.top === top && win.left === left))) {
           ret = true;
           break;
         }
@@ -180,11 +171,11 @@ async function _open(display: chrome.system.display.DisplayInfo) {
       }
       await chromep.windows.update(win.id, {focused: true});
     }
-    
+
   } catch (err) {
     ChromeLog.error(err.message, 'SSControl._open', _ERR_SHOW);
   }
-  
+
   return Promise.resolve();
 }
 
@@ -195,7 +186,7 @@ async function _open(display: chrome.system.display.DisplayInfo) {
  */
 async function _openOnAllDisplays() {
   try {
-    let displayArr = await chromep.system.display.getInfo();
+    const displayArr = await chromep.system.display.getInfo();
     if (displayArr.length === 1) {
       await _open(null);
     } else {
@@ -222,7 +213,7 @@ async function _openOnAllDisplays() {
  */
 async function _onIdleStateChanged(state: string) {
   try {
-    let isShowing = await _isShowing();
+    const isShowing = await _isShowing();
     if (state === 'idle') {
       if (isActive() && !isShowing) {
         await display(false);
@@ -231,7 +222,7 @@ async function _onIdleStateChanged(state: string) {
       // close on screen lock
       close();
     } else {
-      let isWindows = await ChromeUtils.isWindows();
+      const isWindows = await ChromeUtils.isWindows();
       if (!isWindows) {
         // Windows 10 Creators triggers an 'active' state
         // when the window is created, so we have to skip closing here.

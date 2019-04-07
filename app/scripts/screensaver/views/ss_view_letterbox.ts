@@ -13,7 +13,7 @@
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSView from './ss_view.js';
-import SSPhoto from "../ss_photo.js";
+import SSPhoto from '../ss_photo.js';
 
 /**
  * Aspect ratio of screen
@@ -54,11 +54,11 @@ class SSViewLetterbox extends SSView {
     // percent of the screen width of image
     let imgWidthPer = ((ar / _SCREEN_AR * 100));
     imgWidthPer = Math.min(imgWidthPer, 100.0);
-    let right = (100 - imgWidthPer) / 2;
+    const right = (100 - imgWidthPer) / 2;
     // percent of the screen height of image
     let imgHeightPer = ((_SCREEN_AR / ar * 100));
     imgHeightPer = Math.min(imgHeightPer, 100.0);
-    let bottom = (100 - imgHeightPer) / 2;
+    const bottom = (100 - imgHeightPer) / 2;
 
     authorStyle.textAlign = 'right';
     locationStyle.textAlign = 'left';
@@ -67,15 +67,15 @@ class SSViewLetterbox extends SSView {
     authorStyle.right = (right + 1) + 'vw';
     authorStyle.bottom = (bottom + 1) + 'vh';
     authorStyle.width = imgWidthPer - .5 + 'vw';
-    
+
     locationStyle.left = (right + 1) + 'vw';
     locationStyle.bottom = (bottom + 1) + 'vh';
     locationStyle.width = imgWidthPer - .5 + 'vw';
-    
+
     weatherStyle.left = (right + 1) + 'vw';
     weatherStyle.bottom = (bottom + 3.5) + 'vh';
     weatherStyle.width = imgWidthPer - .5 + 'vw';
-    
+
     timeStyle.right = (right + 1) + 'vw';
     timeStyle.bottom = (bottom + 3.5) + 'vh';
 
@@ -86,7 +86,7 @@ class SSViewLetterbox extends SSView {
     }
 
     // percent of half the width of image
-    let maxWidth = imgWidthPer / 2;
+    const maxWidth = imgWidthPer / 2;
     if (this._hasLocationLabel()) {
       // limit author width if we also have a location
       authorStyle.maxWidth = maxWidth - 1.1 + 'vw';

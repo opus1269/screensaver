@@ -31,14 +31,10 @@
  * @property {module:sources/photo_source.Photo[]} photos - The photos
  */
 
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -48,19 +44,19 @@ declare var ChromePromise: any;
  * This is the photo information that is persisted.
  */
 export interface Photo {
-  url: string,
-  author: string,
-  asp: string,
-  ex?: any,
-  point?: string,
+  url: string;
+  author: string;
+  asp: string;
+  ex?: any;
+  point?: string;
 }
 
 /**
  * The photos for a {@link module:sources/photo_source.PhotoSource}
  */
 export interface Photos {
-  type: string,
-  photos: Photo[],
+  type: string;
+  photos: Photo[];
 }
 
 
@@ -69,13 +65,13 @@ export interface Photos {
  * @alias module:sources/photo_source.PhotoSource
  */
 export abstract class PhotoSource {
-  _useKey: string;
-  _photosKey: string;
-  _type: string;
-  _desc: string;
-  _isDaily: boolean;
-  _isArray: boolean;
-  _loadArg: any;
+  private _useKey: string;
+  private _photosKey: string;
+  private _type: string;
+  private _desc: string;
+  private _isDaily: boolean;
+  private _isArray: boolean;
+  private _loadArg: any;
 
 
   /**
@@ -177,6 +173,14 @@ export abstract class PhotoSource {
   }
 
   /**
+   * Get use extra argument
+   * @returns
+   */
+  getLoadArg() {
+    return this._loadArg;
+  }
+
+  /**
    * Get if we should update daily
    * @returns {boolean} if true, update daily
    */
@@ -189,7 +193,7 @@ export abstract class PhotoSource {
    * @returns {Promise<module:sources/photo_source.Photos>} the photos
    */
   async getPhotos() {
-    let ret: Photos = {
+    const ret: Photos = {
       type: this._type,
       photos: [],
     };

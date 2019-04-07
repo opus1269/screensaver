@@ -13,14 +13,11 @@
 // TODO add back
 // import * as ChromeGA
 //   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeStorage
-  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import SSPhoto from "../ss_photo.js";
+import SSPhoto from '../ss_photo.js';
 
 // TODO add back
 // import * as Geo from '../geo.js';
@@ -59,30 +56,13 @@ abstract class SSView {
   locationLabel: string;
 
   /**
-   * Create a new SSView
-   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
-   */
-  protected constructor(photo: SSPhoto) {
-    this.photo = photo;
-    this.image = null;
-    this.author = null;
-    this.time = null;
-    this.location = null;
-    this.weather = null;
-    this.model = null;
-    this.url = photo.getUrl();
-    this.authorLabel = '';
-    this.locationLabel = '';
-  }
-
-  /**
    * Call notifyPath after set because dirty checking doesn't always work
    * @param {Object} model - model to change
    * @param {string} prop - property name
    * @param {Object} value - property value
    * @private
    */
-  static _dirtySet(model: any, prop: string, value: any) {
+  private static _dirtySet(model: any, prop: string, value: any) {
     model.set(prop, value);
     model.notifyPath(prop);
   }
@@ -94,7 +74,7 @@ abstract class SSView {
    * from the screens'
    * @private
    */
-  static _isBadAspect(asp: number) {
+  private static _isBadAspect(asp: number) {
     // arbitrary
     const CUT_OFF = 0.5;
     return (asp < _SCREEN_AR - CUT_OFF) || (asp > _SCREEN_AR + CUT_OFF);
@@ -139,10 +119,27 @@ abstract class SSView {
   }
 
   /**
+   * Create a new SSView
+   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
+   */
+  protected constructor(photo: SSPhoto) {
+    this.photo = photo;
+    this.image = null;
+    this.author = null;
+    this.time = null;
+    this.location = null;
+    this.weather = null;
+    this.model = null;
+    this.url = photo.getUrl();
+    this.authorLabel = '';
+    this.locationLabel = '';
+  }
+
+  /**
    * Does a photo have an author label to show
    * @returns {boolean} true if we should show the author
    */
-  _hasAuthor() {
+  protected _hasAuthor() {
     const photographer = this.photo.getPhotographer();
     return !ChromeUtils.isWhiteSpace(photographer);
   }
@@ -151,7 +148,7 @@ abstract class SSView {
    * Does a view have an author label set
    * @returns {boolean} true if author label is not empty
    */
-  _hasAuthorLabel() {
+  protected _hasAuthorLabel() {
     return !ChromeUtils.isWhiteSpace(this.authorLabel);
   }
 
@@ -159,7 +156,7 @@ abstract class SSView {
    * Does a photo have a geolocation
    * @returns {boolean} true if geolocation point is non-null
    */
-  _hasLocation() {
+  protected _hasLocation() {
     return !!this.photo.getPoint();
   }
 
@@ -167,14 +164,14 @@ abstract class SSView {
    * Does a view have an location label set
    * @returns {boolean} true if location label is not empty
    */
-  _hasLocationLabel() {
+  protected _hasLocationLabel() {
     return !ChromeUtils.isWhiteSpace(this.locationLabel);
   }
 
   /**
    * Set the style for the time label
    */
-  _setTimeStyle() {
+  protected _setTimeStyle() {
     if (ChromeStorage.getBool('largeTime')) {
       this.time.style.fontSize = '8.5vh';
       this.time.style.fontWeight = '300';
@@ -185,7 +182,7 @@ abstract class SSView {
    * Set the url
    * @param {?string} url to use if not null
    */
-  setUrl(url: string = null) {
+  public setUrl(url: string = null) {
     this.url = url || this.photo.getUrl();
     SSView._dirtySet(this.model, 'view.url', this.url);
   }
@@ -193,7 +190,7 @@ abstract class SSView {
   /**
    * Flag the photo in this view to bad
    */
-  markPhotoBad() {
+  public markPhotoBad() {
     if (this.photo) {
       this.photo.markBad();
     }
@@ -202,7 +199,7 @@ abstract class SSView {
   /**
    * Set the author text
    */
-  _setAuthorLabel() {
+  protected _setAuthorLabel() {
     this.authorLabel = '';
     SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
 
@@ -233,7 +230,7 @@ abstract class SSView {
   /**
    * Set the geolocation text
    */
-  _setLocationLabel() {
+  protected _setLocationLabel() {
     this.locationLabel = '';
     SSView._dirtySet(this.model, 'view.locationLabel', this.locationLabel);
 
@@ -267,7 +264,8 @@ abstract class SSView {
    * @param {Element} weather - weather-element weather
    * @param {Object} model - template item model
    */
-  setElements(image: HTMLElement, author: HTMLElement, time: HTMLElement, location: HTMLElement, weather: HTMLElement, model: any) {
+  public setElements(image: HTMLElement, author: HTMLElement, time: HTMLElement, location: HTMLElement,
+                     weather: HTMLElement, model: any) {
     this.image = image;
     this.author = author;
     this.time = time;
@@ -283,7 +281,7 @@ abstract class SSView {
    * Set the photo
    * @param {module:ss/photo.SSPhoto} photo - a photo to render
    */
-  setPhoto(photo: SSPhoto) {
+  public setPhoto(photo: SSPhoto) {
     this.photo = photo;
     this.setUrl();
     this._setAuthorLabel();
@@ -294,14 +292,15 @@ abstract class SSView {
    * Render the page for display - the default CSS is for our view
    * subclasses override this to determine the look of photo
    */
-  render() {}
+  public render() {
+  }
 
   /**
    * Determine if a photo failed to load (usually 404 or 403 error)
    * @returns {boolean} true if image load failed
    */
-  isError() {
-    //@ts-ignore
+  public isError() {
+    // @ts-ignore
     return !this.image || this.image.error;
   }
 
@@ -309,8 +308,8 @@ abstract class SSView {
    * Determine if a photo has finished loading
    * @returns {boolean} true if image is loaded
    */
-  isLoaded() {
-    //@ts-ignore
+  public isLoaded() {
+    // @ts-ignore
     return !!this.image && this.image.loaded;
   }
 }

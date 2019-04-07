@@ -14,12 +14,9 @@
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;

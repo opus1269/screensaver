@@ -89,7 +89,7 @@ const SettingTime = Polymer({
   ],
 
   properties: {
-    
+
     /** Local storage key */
     name: {
       type: String,

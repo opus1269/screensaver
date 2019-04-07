@@ -24,9 +24,9 @@ import * as ChromeUtils from './utils.js';
 declare var ga: any;
 
 export interface EventType {
-  eventCategory: string
-  eventAction: string
-  eventLabel: string
+  eventCategory: string;
+  eventAction: string;
+  eventLabel: string;
 }
 
 /**
@@ -138,7 +138,7 @@ export function initialize(trackingId: string, appName: string , appId: string ,
   // @ts-ignore
   (function(i, s, o, g, r, a, m) {
     // @ts-ignore
-    i['GoogleAnalyticsObject'] = r;
+    i['GoogleAnalyticsObject'] = r; // tslint:disable-line no-string-literal
     // @ts-ignore
     i[r] = i[r] || function() {
       // @ts-ignore
@@ -190,8 +190,7 @@ export function event(event: EventType, label: string = null, action: string = n
     if (!ChromeUtils.DEBUG) {
       ga('send', ev);
     } else {
-      // eslint-disable-next-line no-console
-      console.log(ev);
+      console.log(ev); // tslint:disable-line no-console
     }
   }
 }

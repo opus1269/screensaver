@@ -10,8 +10,7 @@
  * @module sources/photo_sources
  */
 
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as PhotoSourceFactory from './photo_source_factory.js';
@@ -38,7 +37,7 @@ export const UseKey = {
  * @returns {Array<module:sources/photo_source.PhotoSource>} Array of sources
  */
 export function getSelectedSources() {
-  let ret = [];
+  const ret = [];
   const useKeys = getUseKeys();
   for (const useKey of useKeys) {
     const isSelected = ChromeStorage.getBool(useKey, false);
@@ -57,7 +56,7 @@ export function getSelectedSources() {
  * @returns {string[]} Array of usage keys
  */
 export function getUseKeys() {
-  let ret = [];
+  const ret = [];
   for (const useKey of Object.values(UseKey)) {
     ret.push(useKey);
   }
@@ -103,8 +102,9 @@ export async function process(useKey: string) {
  *     photos
  */
 export async function getSelectedPhotos() {
+  const ret = [];
+
   const sources = getSelectedSources();
-  let ret = [];
   for (const source of sources) {
     const photos = await source.getPhotos();
     ret.push(photos);

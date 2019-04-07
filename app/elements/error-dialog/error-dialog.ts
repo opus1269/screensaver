@@ -20,8 +20,7 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
-import {LocalizeBehavior} from
-      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -59,7 +58,8 @@ const ErrorDialog = Polymer({
   </paper-dialog-scrollable>
   <div class="buttons">
     <paper-button dialog-dismiss="" autofocus="">[[localize('close', 'CLOSE')]]</paper-button>
-    <paper-button dialog-confirm="" hidden$="[[!showConfirmButton]]" on-tap="_onConfirmTapped">[[localize('ok', 'OK')]]</paper-button>
+    <paper-button dialog-confirm="" hidden$="[[!showConfirmButton]]"
+                  on-tap="_onConfirmTapped">[[localize('ok', 'OK')]]</paper-button>
   </div>
 </paper-dialog>
 `,
@@ -75,7 +75,7 @@ const ErrorDialog = Polymer({
      * Fired when the confirm button is tapped
      * @event confirm-tap
      */
-    
+
     /** Display confirm button state */
     showConfirmButton: {
       type: Boolean,

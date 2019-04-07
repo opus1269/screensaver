@@ -17,14 +17,10 @@
  * @property {string} point - geo location 'lat lon'
  */
 
-import * as ChromeHttp
-  from '../../scripts/chrome-extension-utils/scripts/http.js';
-import * as ChromeJSON
-  from '../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
+import * as ChromeJSON from '../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -38,8 +34,8 @@ const _GEOCODE_API =
     'http://maps.googleapis.com/maps/api/geocode/json';
 
 export interface Location {
-  loc: string,
-  point: string
+  loc: string;
+  point: string;
 }
 
 /**
@@ -50,8 +46,8 @@ export interface Location {
  * @private
  */
 export interface Cache {
-  entries: Location[],
-  maxSize: number,
+  entries: Location[];
+  maxSize: number;
 }
 
 /**

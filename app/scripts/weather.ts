@@ -12,15 +12,12 @@
 
 import * as MyGA from '../scripts/my_analytics.js';
 
-import * as ChromeGA
-  from '../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeHttp from '../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLocale
-  from '../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLocale from '../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeStorage
-  from '../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../scripts/chrome-extension-utils/scripts/time.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -251,7 +248,7 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
     ChromeLog.error(msg, METHOD, ERR_TITLE);
     throw new Error(msg);
   }
-  
+
   let position: any;
   try {
     position = await new Promise((resolve, reject) => {
@@ -262,7 +259,7 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
     ChromeLog.error(err.message, METHOD, ERR_TITLE);
     throw err;
   }
-  
+
   const ret = {
     lat: position.coords.latitude,
     lon: position.coords.longitude,

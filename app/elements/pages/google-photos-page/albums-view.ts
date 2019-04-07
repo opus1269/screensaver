@@ -25,11 +25,9 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {showErrorDialog, showStorageErrorDialog} from
-      '../../../elements/app-main/app-main.js';
+import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
-import {LocalizeBehavior} from
-      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
@@ -38,18 +36,12 @@ import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
 import {GoogleSource, Album, SelectedAlbum} from '../../../scripts/sources/photo_source_google.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeJSON
-  from '../../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLocale
-  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -282,7 +274,7 @@ Polymer({
 
       if (albums.length === 0) {
         // no albums
-        let text = ChromeLocale.localize('err_no_albums');
+        const text = ChromeLocale.localize('err_no_albums');
         ChromeLog.error(text, METHOD, ERR_TITLE);
         // fire event to let others know
         this.fire('no-albums');
@@ -293,13 +285,13 @@ Polymer({
         // update the saved selections
         await this._updateSavedAlbums();
       }
-      
+
       // set selections based on those that are currently saved
       await this._selectSavedAlbums();
-      
+
     } catch (err) {
       // handle errors ourselves
-      let text = err.message;
+      const text = err.message;
       showErrorDialog(ERR_TITLE, text, METHOD);
     } finally {
       this.set('waitForLoad', false);
@@ -315,8 +307,7 @@ Polymer({
     this.set('waitForLoad', true);
 
     try {
-      for (let i = 0; i < this.albums.length; i++) {
-        const album = this.albums[i];
+      for (const album of this.albums) {
         if (!album.checked) {
           this.set('albums.' + album.index + '.checked', true);
           const loaded = await this._loadAlbum(album, false);
@@ -345,7 +336,8 @@ Polymer({
       }
     });
     _selections = [];
-    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+    ChromeStorage.asyncSet('albumSelections', []).catch(() => {
+    });
   },
 
   /**
@@ -357,7 +349,7 @@ Polymer({
    */
   _onAlbumSelectChanged: async function(ev: Event) {
     const METHOD = 'AlbumViews._onAlbumSelectChanged';
-    //@ts-ignore
+    // @ts-ignore
     const album = ev.model.album;
 
     ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
@@ -401,13 +393,12 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function (request: ChromeMsg.MsgType, sender: Object, response: Function) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: object, response: Function) {
     if (request.message === MyMsg.ALBUM_COUNT.message) {
       // show user status of photo loading
       const name = request.name || '';
       const count = request.count || 0;
-      let msg = `${name}\n${ChromeLocale.localize(
-          'photo_count')} ${count.toString()}`;
+      const msg = `${name}\n${ChromeLocale.localize('photo_count')} ${count.toString()}`;
       this.set('waiterStatus', msg);
       response({message: 'OK'});
     }
@@ -438,8 +429,7 @@ Polymer({
   _loadAlbum: async function(album: Album, wait: boolean = true) {
     const METHOD = 'AlbumViews._loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
-    /** @type {Error} */
-    let error = null;
+    let error: Error = null;
     let ret = false;
 
     try {
@@ -455,8 +445,7 @@ Polymer({
       const photoCt = await this._getTotalPhotoCount();
       if (photoCt >= _MAX_PHOTOS) {
         // reached max number of photos
-        ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED,
-            `limit: ${photoCt}`);
+        ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${photoCt}`);
         this.set('albums.' + album.index + '.checked', false);
         const text = ChromeLocale.localize('err_max_photos');
         showErrorDialog(ERR_TITLE, text, METHOD);
@@ -480,12 +469,10 @@ Polymer({
           name: response.name,
           photos: response.photos,
         });
-        
-        ChromeGA.event(MyGA.EVENT.SELECT_ALBUM,
-            `maxPhotos: ${album.ct}, actualPhotosLoaded: ${response.ct}`);
 
-        const set = await ChromeStorage.asyncSet('albumSelections',
-            _selections, 'useGoogleAlbums');
+        ChromeGA.event(MyGA.EVENT.SELECT_ALBUM, `maxPhotos: ${album.ct}, actualPhotosLoaded: ${response.ct}`);
+
+        const set = await ChromeStorage.asyncSet('albumSelections', _selections, 'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
           _selections.pop();
@@ -493,7 +480,7 @@ Polymer({
           showStorageErrorDialog(METHOD);
           return Promise.resolve(ret);
         }
-        
+
         this.set('albums.' + album.index + '.ct', response.ct);
       } else {
         // error loading album
@@ -524,18 +511,16 @@ Polymer({
    */
   _updateSavedAlbums: async function() {
     const METHOD = 'AlbumViews._updateSavedAlbums';
-    
+
     try {
 
       // send message to background page to do the work
       const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUMS);
-      /** @type {(module:sources/photo_source_google.SelectedAlbum[]|{message})} */
-      const response = await ChromeMsg.send(msg);
-      
+      const response: SelectedAlbum[] | ChromeMsg.MsgType = await ChromeMsg.send(msg);
+
       if (Array.isArray(response)) {
         // try to save
-        const set = await ChromeStorage.asyncSet('albumSelections', response,
-            'useGoogleAlbums');
+        const set = await ChromeStorage.asyncSet('albumSelections', response, 'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits - use old
           _selections = await ChromeStorage.asyncGet('albumSelections', []);
@@ -582,11 +567,10 @@ Polymer({
   _selectSavedAlbums: async function() {
     _selections = await ChromeStorage.asyncGet('albumSelections', []);
     for (let i = 0; i < this.albums.length; i++) {
-      for (let j = 0; j < _selections.length; j++) {
-        if (this.albums[i].id === _selections[j].id) {
+      for (const selection of _selections) {
+        if (this.albums[i].id === selection.id) {
           this.set('albums.' + i + '.checked', true);
-          // update photo count
-          this.set('albums.' + i + '.ct', _selections[j].photos.length);
+          this.set('albums.' + i + '.ct', selection.photos.length);
           break;
         }
       }

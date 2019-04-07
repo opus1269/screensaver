@@ -31,8 +31,7 @@ import '../../../elements/setting-elements/setting-slider/setting-slider.js';
 import '../../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
 import '../../../elements/setting-elements/setting-background/setting-background.js';
 import '../../../elements/setting-elements/setting-time/setting-time.js';
-import {LocalizeBehavior} from
-      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
@@ -44,18 +43,12 @@ import * as Permissions from '../../../scripts/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 import * as Weather from '../../../scripts/weather.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeJSON
-  from '../../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLocale
-  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -172,8 +165,9 @@ Polymer({
         <setting-toggle name="showCurrentWeather" main-label="[[localize('setting_weather')]]"
                         secondary-label="[[localize('setting_weather_desc')]]"
                         disabled$="[[!enabled]]" on-tap="_onShowWeatherTapped"></setting-toggle>
-        <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]" items="[[_computeTempUnitMenu()]]"
-                          value="[[weatherTempUnitValue]]" disabled$="[[!enabled]]" indent=""></setting-dropdown>
+        <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]"
+                          items="[[_computeTempUnitMenu()]]" value="[[weatherTempUnitValue]]"
+                          disabled$="[[!enabled]]" indent=""></setting-dropdown>
         <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[_computeTimeFormatMenu()]]"
                           value="[[showTimeValue]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
@@ -424,7 +418,7 @@ Polymer({
     try {
       if (isShow) {
         // show weather
-        
+
         // see if we have geolocation permission
         // @ts-ignore
         const permGeo = await navigator.permissions.query(
@@ -460,7 +454,7 @@ Polymer({
         // revoke geolocation permission - not implemented in Chrome
         // await navigator.permissions.revoke({name: 'geolocation'});
       }
-      
+
       // now update the alarm
       const response = await ChromeMsg.send(MyMsg.UPDATE_WEATHER_ALARM);
       if (response.errorMessage) {
@@ -469,7 +463,7 @@ Polymer({
 
     } catch (err) {
       // something weird happened
-      
+
       try {
         // set to false
         const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
@@ -484,7 +478,7 @@ Polymer({
       } catch (err) {
         // ignore
       }
-      
+
       showErrorDialog(ERR_TITLE, err.message, METHOD);
     }
   },

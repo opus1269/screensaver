@@ -13,7 +13,7 @@
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSView from './ss_view.js';
-import SSPhoto from "../ss_photo.js";
+import SSPhoto from '../ss_photo.js';
 
 /**
  * Frame view
@@ -49,11 +49,11 @@ class SSViewFrame extends SSView {
     style.fontWeight = 400;
 
     // percent of screen width for label padding
-    let padPer = 0.5;
+    const padPer = 0.5;
     // percent of screen width of image
-    let imgWidthPer = (width / screen.width) * 100;
+    const imgWidthPer = (width / screen.width) * 100;
     // percent of screen width on each side of image
-    let sidePer = (100 - imgWidthPer) / 2;
+    const sidePer = (100 - imgWidthPer) / 2;
 
     if (isLeft) {
       style.left = sidePer + padPer + 'vw';
@@ -67,9 +67,9 @@ class SSViewFrame extends SSView {
     style.width = imgWidthPer - 2 * padPer + 'vw';
 
     // percent of screen height of image
-    let imgHtPer = (height / screen.height) * 100;
+    const imgHtPer = (height / screen.height) * 100;
     // percent of screen height on each side of image
-    let topPer = (100 - imgHtPer) / 2;
+    const topPer = (100 - imgHtPer) / 2;
     style.bottom = topPer + 1.1 + 'vh';
   }
 
@@ -123,13 +123,13 @@ class SSViewFrame extends SSView {
     SSViewFrame._setLabelStyle(locationStyle, frWidth, frHeight, true);
 
     // percent of screen height of image
-    let imgHtPer = (frHeight / screen.height) * 100;
+    const imgHtPer = (frHeight / screen.height) * 100;
     // percent of screen height on each side of image
-    let topPer = (100 - imgHtPer) / 2;
+    const topPer = (100 - imgHtPer) / 2;
     // percent of screen width of image
-    let imgWidthPer = (frWidth / screen.width) * 100;
+    const imgWidthPer = (frWidth / screen.width) * 100;
     // percent of screen width on each side of image
-    let sidePer = (100 - imgWidthPer) / 2;
+    const sidePer = (100 - imgWidthPer) / 2;
 
     timeStyle.right = sidePer + 1.0 + 'vw';
     timeStyle.textAlign = 'right';
@@ -140,7 +140,7 @@ class SSViewFrame extends SSView {
     weatherStyle.bottom = topPer + 6.5 + 'vh';
 
     // percent of half the width of image
-    let maxWidth = imgWidthPer / 2;
+    const maxWidth = imgWidthPer / 2;
     if (this._hasLocationLabel()) {
       // limit author width if we also have a location
       authorStyle.maxWidth = maxWidth - 1 + 'vw';

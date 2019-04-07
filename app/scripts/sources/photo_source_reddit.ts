@@ -158,9 +158,9 @@ class RedditSource extends PhotoSource {
    */
   async fetchPhotos() {
     let photos: Photo[] = [];
-    const SRC = `${this._loadArg}hot`;
+    const SRC = `${this.getLoadArg()}hot`;
 
-    //@ts-ignore
+    // @ts-ignore
     const Snoocore = window.Snoocore;
     if (Snoocore === undefined) {
       throw new Error('Reddit library failed to load');

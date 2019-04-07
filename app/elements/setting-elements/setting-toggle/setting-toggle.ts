@@ -27,8 +27,7 @@ import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.j
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -77,8 +76,8 @@ const SettingToggle = Polymer({
       </div>
       <paper-ripple center=""></paper-ripple>
     </paper-item-body>
-    <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}" on-change="_onChange" on-tap="_onTap"
-                         disabled$="[[disabled]]">
+    <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}"
+                         on-change="_onChange" on-tap="_onTap" disabled$="[[disabled]]">
     </paper-toggle-button>
   </paper-item>
 </iron-label>

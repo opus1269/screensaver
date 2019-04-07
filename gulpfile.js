@@ -85,6 +85,7 @@ const zip = require('gulp-zip');
 // TypeScript
 const ts = require('gulp-typescript');
 const tsProject = ts.createProject('tsconfig.json');
+const tslint = require('gulp-tslint');
 
 // for ECMA6
 const uglifyjs = require('uglify-es');
@@ -161,8 +162,8 @@ function buildPolymer() {
           // installation, see the require statements at the beginning.
           // .pipe(gulpIf(/\.js$/, minify(minifyOpts)))
           // .pipe(gulpIf(/\.css$/, cssSlam())) // Install css-slam to use
-          // .pipe(gulpIf(/\.html$/, htmlMinifier())) // Install gulp-html-minifier
-          // to use
+          // .pipe(gulpIf(/\.html$/, htmlMinifier())) // Install
+          // gulp-html-minifier to use
 
           // Remember, you need to rejoin any split inline code when you're
           // done.
@@ -223,8 +224,7 @@ gulp.task('incrementalBuild', (cb) => {
   chDir('app');
 
   isWatch = true;
-  // TODO could add lint ts here
-  runSequence('lint', ['_watch_ts'], [
+  runSequence('_lint', ['_watch_ts'], [
     '_manifest',
     '_html',
     'lintdevjs',
@@ -239,7 +239,7 @@ gulp.task('incrementalBuild', (cb) => {
 
 // Development build
 gulp.task('dev', ['_build_js'], (cb) => {
-  
+
   chDir('..');
 
   console.log('running polymer build...');
@@ -247,13 +247,13 @@ gulp.task('dev', ['_build_js'], (cb) => {
   exec('polymer build', (err, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
-    
+
     // change working directory to app
     chDir('app');
-    
+
     // to set DEBUG status in code
     runSequence('_ts');
-    
+
     cb(err);
   });
 });
@@ -305,11 +305,17 @@ gulp.task('lintdevjs', () => {
       pipe(eslint.failOnError());
 });
 
-// lint scripts
-gulp.task('lint', () => {
-  const input = files.js;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'});
+// lint ts scripts
+gulp.task('_lint', () => {
+  chDir('app');
+
+  const input = files.ts;
+  return gulp.src(input, {base: '.'}).
+      pipe(tslint({
+        formatter: 'verbose',
+      })).
+      pipe(tslint.report());
+
 });
 
 // manifest.json
@@ -346,7 +352,7 @@ gulp.task('_watch_ts', ['_ts'], function() {
 // compile the typescript to js in place
 gulp.task('_build_js', () => {
   console.log('compiling ts...');
-  
+
   const input = files.ts;
 
   const SEARCH = 'const _DEBUG = false';

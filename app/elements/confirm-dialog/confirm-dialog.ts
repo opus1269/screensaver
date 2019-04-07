@@ -21,16 +21,13 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
-import {LocalizeBehavior} from
-      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/** 
+/**
  * Module for ConfirmDialog
  * @module els/confirm_dialog
  */
@@ -80,7 +77,7 @@ const ConfirmDialog = Polymer({
      * Fired when the confirm button is tapped
      * @event confirm-tap
      */
-    
+
     /** Label for confirm button */
     confirmLabel: {
       type: String,

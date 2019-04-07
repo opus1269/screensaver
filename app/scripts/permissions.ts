@@ -10,16 +10,11 @@
  *  @module permissions
  */
 
-import * as ChromeAuth
-  from '../scripts/chrome-extension-utils/scripts/auth.js';
-import * as ChromeJSON
-  from '../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLog
-  from '../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeAuth from '../scripts/chrome-extension-utils/scripts/auth.js';
+import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -38,9 +33,9 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property {string[]} origins - array of origins
  */
 export interface Type {
-  name: string,
-  permissions: string[],
-  origins: string[],
+  name: string;
+  permissions: string[];
+  origins: string[];
 }
 
 declare var ChromePromise: any;
@@ -233,7 +228,7 @@ async function _setState(type: Type, value: string) {
   } catch (err) {
     // ignore
   }
-  
+
   return Promise.resolve();
 }
 

@@ -21,12 +21,10 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {LocalizeBehavior} from
-      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -59,7 +57,8 @@ Polymer({
 
 <paper-item class="center horizontal layout">
   <div id="label" class="setting-label flex" tabindex="-1">[[label]]</div>
-  <paper-checkbox name="include" checked="{{checked}}" on-change="_onCheckedChange" disabled$="[[disabled]]">[[localize('include')]]
+  <paper-checkbox name="include" checked="{{checked}}" on-change="_onCheckedChange"
+                  disabled$="[[disabled]]">[[localize('include')]]
   </paper-checkbox>
 </paper-item>
 `,
@@ -108,10 +107,10 @@ Polymer({
    * @param {Event} ev
    * @private
    */
-  _onCheckedChange: function (ev: Event) {
-    //@ts-ignore
+  _onCheckedChange: function(ev: Event) {
+    // @ts-ignore
     ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
-    //@ts-ignore
+    // @ts-ignore
     this.fire('value-changed', {value: ev.target.checked});
   },
 });

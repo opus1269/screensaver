@@ -10,12 +10,10 @@
  * @module ss/builder
  */
 
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver
-  from '../../elements/screensaver-element/screensaver-element.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSFinder from './ss_photo_finder.js';
 import * as SSPhotos from './ss_photos.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';

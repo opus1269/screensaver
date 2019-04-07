@@ -10,20 +10,17 @@
  * @module ss/views
  */
 
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver
-  from '../../elements/screensaver-element/screensaver-element.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
 import './views/ss_view.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
-import SSPhoto from "./ss_photo.js";
+import SSPhoto from './ss_photo.js';
 
 /**
  * Enum for view type

@@ -15,12 +15,9 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -30,8 +27,8 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @private
  */
 interface MousePosition {
-  x: number | number,
-  y: number | null,
+  x: number | number;
+  y: number | null;
 }
 
 /**
@@ -87,7 +84,7 @@ function _onKeyCommand(cmd: string) {
  * @returns {boolean} true if asynchronous
  * @private
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: Object, response: Function) {
+function _onChromeMessage(request: ChromeMsg.MsgType, sender: object, response: Function) {
   if (request.message === MyMsg.SS_CLOSE.message) {
     _close();
   } else if (request.message === MyMsg.SS_IS_SHOWING.message) {

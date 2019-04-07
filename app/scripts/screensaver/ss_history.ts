@@ -25,24 +25,24 @@ import * as SSRunner from './ss_runner.js';
  * @property {int} photosPos - pointer into {@link module:ss/photos.Photos}
  */
 interface Item {
-  viewsIdx: number,
-  replaceIdx: number,
-  photoId: number,
-  photosPos: number,
+  viewsIdx: number;
+  replaceIdx: number;
+  photoId: number;
+  photosPos: number;
 }
 
 /**
  * Slide show history
  * @property {Array<module:ss/history.Item>} arr - history items
  * @property {int} idx - pointer into arr
- * @property {int} max - max length of arr, it will actually have 1 item more
+ * @property {int} max - max length of arr; it will actually have 1 item more
  * @const
  * @private
  */
 interface History {
-  arr: Item[],
-  idx: number,
-  max: number,
+  arr: Item[];
+  idx: number;
+  max: number;
 }
 
 /**

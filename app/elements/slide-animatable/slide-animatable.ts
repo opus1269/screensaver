@@ -8,8 +8,7 @@ import '../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import {NeonAnimatableBehavior} from
-      '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
+import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -47,7 +46,7 @@ const SlideAnimatable = Polymer({
       type: Object,
       value: function() {
         return {
-          'entry': {
+          entry: {
             name: 'fade-in-animation',
             node: this,
             timing: {
@@ -55,7 +54,7 @@ const SlideAnimatable = Polymer({
               easing: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)',
             },
           },
-          'exit': {
+          exit: {
             name: 'fade-out-animation',
             node: this,
             timing: {

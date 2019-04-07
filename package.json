@@ -20,6 +20,7 @@
   "homepage": "https://github.com/opus1269/photo-screen-saver",
   "private": true,
   "dependencies": {
+    "tslint": "^5.15.0",
     "typescript": "^3.4.2"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "gulp-replace": "^0.6.1",
     "gulp-size": "^2.1.0",
     "gulp-strip-line": "0.0.1",
+    "gulp-tslint": "^8.1.4",
     "gulp-typescript": "^5.0.1",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",

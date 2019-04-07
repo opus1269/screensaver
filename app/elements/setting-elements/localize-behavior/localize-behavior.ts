@@ -6,8 +6,7 @@
  */
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import * as ChromeLocale
-  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -24,11 +23,11 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 export const LocalizeBehavior = {
 
   properties: {
-    
+
     /** Get an internationalized string */
     localize: {
       type: Function,
-      value: function() {
+      value: () => {
         return function() {
           const messageName = arguments[0];
           const def = arguments[1];

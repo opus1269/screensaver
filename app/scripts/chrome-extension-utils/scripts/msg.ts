@@ -29,13 +29,13 @@ import './ex_handler.js';
 declare var ChromePromise: any;
 
 export interface MsgType {
-  message: string
-  error?: string
-  key?: string
-  value?: any
-  id?: string
-  name?: string
-  count?: number
+  message: string;
+  error?: string;
+  key?: string;
+  value?: any;
+  id?: string;
+  name?: string;
+  count?: number;
 }
 
 /**

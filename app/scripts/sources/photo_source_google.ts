@@ -10,20 +10,13 @@
  * @module sources/photo_source_google
  */
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeHttp
-  from '../../scripts/chrome-extension-utils/scripts/http.js';
-import * as ChromeJSON
-  from '../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
+import * as ChromeJSON from '../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
@@ -138,13 +131,13 @@ export class GoogleSource extends PhotoSource {
    */
   static get DEF_FILTER() {
     return {
-      'mediaTypeFilter': {
-        'mediaTypes': [
+      mediaTypeFilter: {
+        mediaTypes: [
           'PHOTO',
         ],
       },
-      'contentFilter': {
-        'includedContentCategories': [
+      contentFilter: {
+        includedContentCategories: [
           'LANDSCAPES',
           'CITYSCAPES',
           'LANDMARKS',
@@ -160,8 +153,8 @@ export class GoogleSource extends PhotoSource {
    */
   static get NO_FILTER() {
     return {
-      'mediaTypeFilter': {
-        'mediaTypes': [
+      mediaTypeFilter: {
+        mediaTypes: [
           'PHOTO',
         ],
       },
@@ -233,12 +226,8 @@ export class GoogleSource extends PhotoSource {
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
-      // eslint-disable-next-line promise/no-promise-in-callback
-      ChromeStorage.asyncSet('albumSelections', []).catch(() => {
-      });
-      // eslint-disable-next-line promise/no-promise-in-callback
-      ChromeStorage.asyncSet('googleImages', []).catch(() => {
-      });
+      ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+      ChromeStorage.asyncSet('googleImages', []).catch(() => {});
       ChromeLog.error(err.message, name,
           ChromeLocale.localize('err_auth_revoked'));
       ret = true;
@@ -257,7 +246,7 @@ export class GoogleSource extends PhotoSource {
   static async loadAlbumList() {
     let nextPageToken;
     let gAlbums: any[] = [];
-    let albums: Album[] = [];
+    const albums: Album[] = [];
     let ct = 0;
     const baseUrl = `${_URL_BASE}albums/${_ALBUMS_QUERY}`;
     let url = baseUrl;
@@ -286,8 +275,8 @@ export class GoogleSource extends PhotoSource {
     for (const gAlbum of gAlbums) {
       if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
 
-        //@ts-ignore
-        let album: Album = {};
+        // @ts-ignore
+        const album: Album = {};
         album.index = ct;
         album.uid = 'album' + ct;
         album.name = gAlbum.title;
@@ -373,8 +362,8 @@ export class GoogleSource extends PhotoSource {
 
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    //@ts-ignore
-    let album: Album = {};
+    // @ts-ignore
+    const album: Album = {};
     album.index = 0;
     album.uid = 'album' + 0;
     album.name = name;
@@ -429,7 +418,7 @@ export class GoogleSource extends PhotoSource {
 
       const photos = newAlbum.photos || [];
 
-      // replace 
+      // replace
       albums.splice(i, 1, {
         id: album.id,
         name: newAlbum.name,
@@ -460,10 +449,10 @@ export class GoogleSource extends PhotoSource {
    * @static
    */
   static async loadFilteredPhotos(force = false, notify = false) {
-    const photos = await ChromeStorage.asyncGet('googleImages', []);
+    const curPhotos = await ChromeStorage.asyncGet('googleImages', []);
     if (!force && !this._isFetch()) {
       // no need to change - save on api calls
-      return Promise.resolve(photos);
+      return Promise.resolve(curPhotos);
     }
 
     const MAX_PHOTOS = GoogleSource.MAX_FILTERED_PHOTOS;
@@ -735,7 +724,7 @@ export class GoogleSource extends PhotoSource {
     /* only fetch new photos if all are true:
      api is authorized
      screensaver is enabled
-     using google photos   
+     using google photos
      */
     const auth = ChromeStorage.get('permPicasa', 'notSet') === 'allowed';
     const enabled = ChromeStorage.getBool('enabled', true);
@@ -754,8 +743,8 @@ export class GoogleSource extends PhotoSource {
   static async _fetchAlbums() {
     if (!this._isFetch()) {
       // no need to change - save on api calls
-      const albums = await ChromeStorage.asyncGet('albumSelections', []);
-      return Promise.resolve(albums);
+      const curAlbums = await ChromeStorage.asyncGet('albumSelections', []);
+      return Promise.resolve(curAlbums);
     }
 
     let ct = 0;
@@ -797,8 +786,8 @@ export class GoogleSource extends PhotoSource {
   static _getImageSize(mediaMetadata: any) {
     const MAX_SIZE = 1920;
     const ret: any = {};
-    ret.width = parseInt(mediaMetadata.width);
-    ret.height = parseInt(mediaMetadata.height);
+    ret.width = parseInt(mediaMetadata.width, 10);
+    ret.height = parseInt(mediaMetadata.height, 10);
     if (!ChromeStorage.getBool('fullResGoogle')) {
       // limit size of image to download
       const max = Math.max(MAX_SIZE, ret.width, ret.height);
@@ -832,9 +821,9 @@ export class GoogleSource extends PhotoSource {
         const width = size.width;
         const height = size.height;
 
-        //@ts-ignore
+        // @ts-ignore
         photo = {};
-        
+
         photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
         photo.asp = (width / height).toPrecision(3);
         // use album name instead
@@ -860,7 +849,7 @@ export class GoogleSource extends PhotoSource {
    * @private
    */
   static _processPhotos(mediaItems: any, albumName = '') {
-    
+
     const photos: Photo[] = [];
     if (!mediaItems) {
       return photos;

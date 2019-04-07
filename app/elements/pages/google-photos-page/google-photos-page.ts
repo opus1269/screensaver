@@ -25,19 +25,15 @@ import './albums-view.js';
 import './photos-view.js';
 
 import {showConfirmDialog} from '../../../elements/app-main/app-main.js';
-import {LocalizeBehavior} from
-      '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeStorage
-  from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -277,7 +273,7 @@ const GooglePhotosPage = Polymer({
     } else {
       this._loadPhotos().catch(() => {});
     }
-    let lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
+    const lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
     ChromeGA.event(ChromeGA.EVENT.ICON, lbl);
   },
 

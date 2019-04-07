@@ -10,10 +10,8 @@
  * @module sources/photo_source_flickr
  */
 
-import * as ChromeHttp
-  from '../../scripts/chrome-extension-utils/scripts/http.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import {PhotoSource, Photo} from './photo_source.js';
@@ -78,7 +76,7 @@ class FlickrSource extends PhotoSource {
     }
 
     const photos: Photo[] = [];
-    
+
     for (const photo of response.photos.photo) {
       let url = null;
       let width;
@@ -115,7 +113,7 @@ class FlickrSource extends PhotoSource {
    */
   async fetchPhotos() {
     let url;
-    if (this._loadArg) {
+    if (this.getLoadArg()) {
       // my photos
       const userId = '86149994@N06';
       url =
@@ -136,10 +134,10 @@ class FlickrSource extends PhotoSource {
     if (response.stat !== 'ok') {
       throw new Error(response.message);
     }
-    
+
     // convert to our format
     const photos = FlickrSource._processPhotos(response);
-    
+
     return Promise.resolve(photos);
   }
 }

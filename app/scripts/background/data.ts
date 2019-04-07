@@ -17,22 +17,14 @@ import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as Weather from '../../scripts/weather.js';
 
-import * as ChromeAuth
-  from '../../scripts/chrome-extension-utils/scripts/auth.js';
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import ChromeLastError
-  from '../../scripts/chrome-extension-utils/scripts/last_error.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import ChromeLastError from '../../scripts/chrome-extension-utils/scripts/last_error.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import {Photo} from "../sources/photo_source";
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
@@ -186,7 +178,7 @@ export async function initialize() {
 export async function update() {
   // New items, changes, and removal of unused items can take place
   // here when the version changes
-  let oldVersion = ChromeStorage.getInt('version');
+  const oldVersion = ChromeStorage.getInt('version');
 
   if (Number.isNaN(oldVersion) || (_DATA_VERSION > oldVersion)) {
     // update version number
@@ -353,7 +345,7 @@ export async function restoreDefaults() {
   } catch (err) {
     // ignore
   }
-  
+
   return Promise.resolve();
 }
 
@@ -368,13 +360,13 @@ export async function processState(key = 'all') {
       // update everything
 
       await _processEnabled();
-      
+
       _processKeepAwake();
-      
+
       _processIdleTime();
-      
+
       await Alarm.updatePhotoAlarm();
-      
+
       await Alarm.updateWeatherAlarm();
 
       // process photo SOURCES
@@ -407,7 +399,8 @@ export async function processState(key = 'all') {
               const msg = MyMsg.PHOTO_SOURCE_FAILED;
               msg.key = useKey;
               msg.error = err.message;
-              ChromeMsg.send(msg).catch(() => {});
+              ChromeMsg.send(msg).catch(() => {
+              });
             }
           }
           const isPhotos =
@@ -421,11 +414,12 @@ export async function processState(key = 'all') {
               const msg = MyMsg.PHOTO_SOURCE_FAILED;
               msg.key = useKey;
               msg.error = err.message;
-              ChromeMsg.send(msg).catch(() => {});
+              ChromeMsg.send(msg).catch(() => {
+              });
             }
           }
         } else if ((key !== 'useGoogleAlbums') && (key !== 'useGooglePhotos')) {
-          // update photo source - skip Google sources as they are handled 
+          // update photo source - skip Google sources as they are handled
           // by the UI when the mode changes
           try {
             await PhotoSources.process(useKey);
@@ -433,7 +427,8 @@ export async function processState(key = 'all') {
             const msg = MyMsg.PHOTO_SOURCE_FAILED;
             msg.key = useKey;
             msg.error = err.message;
-            ChromeMsg.send(msg).catch(() => {});
+            ChromeMsg.send(msg).catch(() => {
+            });
           }
         }
       } else {
@@ -507,20 +502,20 @@ async function _updateToChromeLocaleStorage() {
  */
 async function _processEnabled() {
   Alarm.updateBadgeText();
-  
+
   const isEnabled = ChromeStorage.getBool('enabled', DEFS.enabled);
-  
+
   try {
     // update context menu text
     const label = isEnabled
         ? ChromeLocale.localize('disable')
         : ChromeLocale.localize('enable');
-    
+
     await chromep.contextMenus.update('ENABLE_MENU', {title: label});
   } catch (err) {
     // ignore
   }
-  
+
   return Promise.resolve();
 }
 
@@ -533,7 +528,7 @@ function _processKeepAwake() {
   keepAwake
       ? chrome.power.requestKeepAwake('display')
       : chrome.power.releaseKeepAwake();
-  
+
   Alarm.updateKeepAwakeAlarm();
 }
 

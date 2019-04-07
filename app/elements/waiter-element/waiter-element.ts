@@ -41,7 +41,7 @@ const WaiterElement = Polymer({
   :host .waiter {
     margin: 40px auto;
   }
-  
+
   /*noinspection CssUnresolvedCustomPropertySet*/
   :host .waiter paper-item {
     @apply --paper-font-title;

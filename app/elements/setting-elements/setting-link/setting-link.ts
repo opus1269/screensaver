@@ -17,8 +17,7 @@ import '../../../node_modules/@polymer/iron-icon/iron-icon.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -82,7 +81,7 @@ const SettingLink = Polymer({
   is: 'setting-link',
 
   properties: {
-    
+
     /** Element name */
     name: {
       type: String,

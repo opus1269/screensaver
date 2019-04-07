@@ -12,7 +12,7 @@
  */
 
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import {MsgType} from "./chrome-extension-utils/scripts/msg.js";
+import {MsgType} from './chrome-extension-utils/scripts/msg.js';
 
 /**
  * Chrome Messages for this app

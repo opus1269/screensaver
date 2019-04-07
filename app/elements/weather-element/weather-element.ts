@@ -53,7 +53,7 @@ const WeatherElement = Polymer({
     margin: 0;
     padding: 0 0 0 16px;
   }
-  
+
   :host .icon {
     font-size: 5.25vh;
     font-weight: 200;
@@ -104,7 +104,8 @@ const WeatherElement = Polymer({
    * @param {?module:weather.CurrentWeather} oldValue
    * @private
    */
-  _weatherChanged: function(newValue: Weather.CurrentWeather | undefined, oldValue: Weather.CurrentWeather | undefined) {
+  _weatherChanged: function(newValue: Weather.CurrentWeather | undefined,
+                            oldValue: Weather.CurrentWeather | undefined) {
     const PREFIX = 'wi-owm-';
     let oldClass = null;
 

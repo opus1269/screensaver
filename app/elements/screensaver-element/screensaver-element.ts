@@ -27,8 +27,7 @@ import '../../elements/pages/error-page/error-page.js';
 import '../../elements/pages/help-page/help-page.js';
 import '../../elements/pages/google-photos-page/google-photos-page.js';
 
-import {LocalizeBehavior} from
-      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
 import '../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../elements/setting-elements/setting-slider/setting-slider.js';
@@ -57,15 +56,11 @@ import * as SSViews from '../../scripts/screensaver/ss_views.js';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -87,7 +82,7 @@ declare var ChromePromise: any;
  * @property {int} lastTime - last time called
  * @private
  */
-let _errHandler = {
+const _errHandler = {
   MAX_COUNT: 168, // about a weeks worth, if all goes well
   count: 0,
   isUpdating: false,
@@ -338,14 +333,14 @@ const Screensaver = Polymer({
     setTimeout(async () => {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
-      
+
       await this._setZoom();
-      
+
       this._setupPhotoTransitions();
-      
+
       // start slide show
       this._launch().catch(() => {});
-      
+
     }, 0);
   },
 
@@ -425,7 +420,7 @@ const Screensaver = Polymer({
     } catch (err) {
       ChromeGA.error(err.message, 'SS._setZoom');
     }
-    
+
     return Promise.resolve();
   },
 
@@ -441,7 +436,7 @@ const Screensaver = Polymer({
       if (hasPhotos) {
         // update the weather - don't wait as can slow
         Weather.update().catch(() => {});
-        
+
         // kick off the slide show
         SSRunner.start(delay);
       }
@@ -449,7 +444,7 @@ const Screensaver = Polymer({
       ChromeLog.error(err.message, 'SS._launch');
       setNoPhotos();
     }
-    
+
     return Promise.resolve();
   },
 
@@ -459,7 +454,7 @@ const Screensaver = Polymer({
    * @param {Object} ev.model - template model
    */
   _onErrorChanged: async function(ev: Event) {
-    //@ts-ignore
+    // @ts-ignore
     const isError = ev.detail.value;
 
     if (_errHandler.isUpdating) {
@@ -471,13 +466,13 @@ const Screensaver = Polymer({
       // url failed to load
       _errHandler.isUpdating = true;
 
-      //@ts-ignore
+      // @ts-ignore
       const model = ev.model;
-      const index = model.index;
-      const view = this._views[index];
-      const photo = view.photo;
-      const type = photo.getType();
-      if ('Google User' === type) {
+      const theIndex = model.index;
+      const theView = this._views[theIndex];
+      const thePhoto = theView.photo;
+      const theType = thePhoto.getType();
+      if ('Google User' === theType) {
         // Google baseUrl may have expired, try to update some photos
 
         // TODO have to use cors to get status code
@@ -508,7 +503,7 @@ const Screensaver = Polymer({
           _errHandler.isUpdating = false;
           return;
         }
-        
+
         // limit max number of calls to Google API per screensaver session
         // in case something weird happens
         _errHandler.count++;
@@ -536,7 +531,7 @@ const Screensaver = Polymer({
         }
 
         // get max of nPhotos Google Photo ids starting at this one
-        const photos = SSPhotos.getNextGooglePhotos(nPhotos, photo.getId());
+        const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
         const ids = [];
         for (const photo of photos) {
           // unique ids only - required for batchGet call
@@ -561,8 +556,7 @@ const Screensaver = Polymer({
         SSPhotos.updateGooglePhotoUrls(newPhotos);
 
         // update any views with the new google photos
-        for (let i = 0; i < this._views.length; i++) {
-          const view = this._views[i];
+        for (const view of this._views) {
           const photo = view.photo;
           const type = photo.getType();
           if (type === 'Google User') {

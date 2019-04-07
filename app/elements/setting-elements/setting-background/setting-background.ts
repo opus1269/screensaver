@@ -24,8 +24,7 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import { LocalizeBehavior } from '../localize-behavior/localize-behavior.js';
 
-import * as ChromeGA
-  from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -136,7 +135,7 @@ const SettingBackground = Polymer({
   ],
 
   properties: {
-    
+
     /** Local storage key */
     name: {
       type: String,

@@ -28,13 +28,13 @@ import FetchProperties = chrome.extension.FetchProperties;
  * @property {json} [body=null] - body of request
  */
 export interface Config {
-  isAuth: boolean,
-  retryToken: boolean,
-  interactive: boolean,
-  token: string | null,
-  backoff: boolean,
-  maxRetries: number,
-  body: JSON,
+  isAuth: boolean;
+  retryToken: boolean;
+  interactive: boolean;
+  token: string | null;
+  backoff: boolean;
+  maxRetries: number;
+  body: JSON;
 }
 
 /**
@@ -46,10 +46,10 @@ export interface Config {
  * @property {string} statusText - HTTP response message
  */
 export interface Response {
-  ok: boolean,
-  json: Function,
-  status: number,
-  statusText: string,
+  ok: boolean;
+  json: Function;
+  status: number;
+  statusText: string;
 }
 
 /**
@@ -92,7 +92,7 @@ export const CONFIG: Config = {
   token: null,
   backoff: true,
   maxRetries: _MAX_RETRIES,
-  body: null
+  body: null,
 };
 
 /**
@@ -104,7 +104,7 @@ export const CONFIG: Config = {
  */
 export async function doGet(url: string, conf = CONFIG) {
   const opts = {method: 'GET', headers: new Headers({})};
-  
+
   const json = await _doIt(url, opts, conf);
   return Promise.resolve(json);
 }
@@ -149,22 +149,22 @@ async function _processResponse(response: Response, url: string, opts: FetchProp
 
   if (conf.backoff && (status >= 500) && (status < 600)) {
     // temporary server error, maybe. Retry with backoff
-    const response: Response = await _retry(url, opts, conf, attempt);
-    return Promise.resolve(response);
+    const newResponse: Response = await _retry(url, opts, conf, attempt);
+    return Promise.resolve(newResponse);
   }
 
   if (conf.isAuth && conf.token && conf.retryToken && (status === 401)) {
     // could be expired token. Remove cached one and try again
-    const response: Response = await _retryToken(url, opts, conf, attempt);
-    return Promise.resolve(response);
+    const newResponse: Response = await _retryToken(url, opts, conf, attempt);
+    return Promise.resolve(newResponse);
   }
 
   if (conf.isAuth && conf.interactive && conf.token && conf.retryToken &&
       (status === 403)) {
     // user may have revoked access to extension at some point
     // If interactive, retry so they can authorize again
-    const response: Response = await _retryToken(url, opts, conf, attempt);
-    return Promise.resolve(response);
+    const newResponse: Response = await _retryToken(url, opts, conf, attempt);
+    return Promise.resolve(newResponse);
   }
 
   // request failed
@@ -179,9 +179,8 @@ async function _processResponse(response: Response, url: string, opts: FetchProp
  */
 function _getError(response: Response) {
   let msg = 'Unknown error.';
-  if (response && response.status &&
-      (typeof (response.statusText) !== 'undefined')) {
-    let statusMsg = ChromeLocale.localize('err_status', 'Status');
+  if (response && response.status && (typeof (response.statusText) !== 'undefined')) {
+    const statusMsg = ChromeLocale.localize('err_status', 'Status');
     msg = `${statusMsg}: ${response.status}`;
     msg += `\n${response.statusText}`;
   }
@@ -237,11 +236,11 @@ async function _retry(url: string, opts: any,  conf: Config, attempt: number) {
   // wait function
   const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   await wait(delay);
-  
+
   ChromeGA.error(`Retry fetch, attempt: ${attempt}`, 'ChromeHttp._retry');
-  
+
   const response = await _fetch(url, opts, conf, attempt);
-  
+
   return Promise.resolve(response);
 }
 
@@ -257,9 +256,9 @@ async function _retry(url: string, opts: any,  conf: Config, attempt: number) {
  */
 async function _retryToken(url: string, opts: any,  conf: Config, attempt: number) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
-  
+
   await ChromeAuth.removeCachedToken(conf.interactive, conf.token);
-  
+
   conf.token = null;
   conf.retryToken = false;
   const response = await _fetch(url, opts, conf, attempt);
@@ -286,14 +285,14 @@ async function _fetch(url: string, opts: any,  conf: Config, attempt: number) {
     if (conf.body) {
       opts.body = JSON.stringify(conf.body);
     }
-    
+
     // do the actual fetch
     const response = await fetch(url, opts);
-    
+
     // process and possibly retry
     const ret = await _processResponse(response, url, opts, conf, attempt);
     return Promise.resolve(ret);
-    
+
   } catch (err) {
     let msg = err.message;
     if (msg === 'Failed to fetch') {
@@ -321,7 +320,6 @@ async function _doIt(url: string, opts: any,  conf: Config) {
   if (conf.isAuth) {
     opts.headers.set(_AUTH_HEADER, `${_BEARER} unknown`);
   }
-  let attempt = 0;
-  const response = await _fetch(url, opts, conf, attempt);
+  const response = await _fetch(url, opts, conf, 0);
   return Promise.resolve(response);
 }

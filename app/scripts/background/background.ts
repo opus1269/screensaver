@@ -21,14 +21,10 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -79,7 +75,7 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
       const oldVer = details.previousVersion;
       const version = ChromeUtils.getVersion();
       if (version === oldVer) {
-        // spurious update: 
+        // spurious update:
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481
         return Promise.resolve();
       }
@@ -167,7 +163,7 @@ async function _onStorageChanged(ev: StorageEvent) {
  * @returns {boolean} true if asynchronous
  * @private
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: Object, response: Function) {
+function _onChromeMessage(request: ChromeMsg.MsgType, sender: object, response: Function) {
   let ret = false;
   if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
     ret = true;

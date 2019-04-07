@@ -24,7 +24,7 @@ export function parse(jsonString: string) {
   try {
     ret = JSON.parse(jsonString);
   } catch (err) {
-    ChromeGA.exception(err,`Caught: JSONUtils.parse: ${err.message}`,false);
+    ChromeGA.exception(err, `Caught: JSONUtils.parse: ${err.message}`, false);
   }
   return ret;
 }

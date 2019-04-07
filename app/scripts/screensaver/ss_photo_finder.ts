@@ -10,8 +10,7 @@
  * @module ss/photo_finder
  */
 
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as SSPhotos from './ss_photos.js';
@@ -42,7 +41,7 @@ export function initialize() {
  * to display, -1 if none are ready
  */
 export function getNext(idx: number) {
-  let ret = SSViews.findLoadedPhoto(idx);
+  const ret = SSViews.findLoadedPhoto(idx);
   if (ret === -1) {
     // no photos ready, wait a little, try again
     SSRunner.setWaitTime(500);
@@ -63,25 +62,25 @@ export function replacePhoto(idx: number) {
   }
 
   /**
- * Add the next photo from the master array
- * @param {int} idx - index into {@link module:ss/views.Views}
- * @private
- */
-function _replacePhoto(idx: number) {
-  if (SSViews.isSelectedIndex(idx)) {
-    return;
-  }
+   * Add the next photo from the master array
+   * @param {int} idx - index into {@link module:ss/views.Views}
+   * @private
+   */
+  function _replacePhoto(idx: number) {
+    if (SSViews.isSelectedIndex(idx)) {
+      return;
+    }
 
-  const viewLength = SSViews.getCount();
-  const photoLen = SSPhotos.getCount();
-  if (photoLen <= viewLength) {
-    return;
-  }
+    const viewLength = SSViews.getCount();
+    const photoLen = SSPhotos.getCount();
+    if (photoLen <= viewLength) {
+      return;
+    }
 
-  const photo = SSPhotos.getNextUsable();
-  if (photo) {
-    const view = SSViews.get(idx);
-    view.setPhoto(photo);
+    const photo = SSPhotos.getNextUsable();
+    if (photo) {
+      const view = SSViews.get(idx);
+      view.setPhoto(photo);
+    }
   }
-}
 }

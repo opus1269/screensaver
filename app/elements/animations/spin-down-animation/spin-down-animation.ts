@@ -7,8 +7,7 @@
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 
-import {NeonAnimationBehavior} from
-      '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
+import {NeonAnimationBehavior} from '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 

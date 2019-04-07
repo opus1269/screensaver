@@ -17,7 +17,7 @@ import * as ChromeLog from './log.js';
  * Replace global error handler for logging with Google Analytics.
  */
 export class ExHandler {
-  
+
   /**
    * Replace window.onerror
    * @constructor

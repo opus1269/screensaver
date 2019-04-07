@@ -38,10 +38,8 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import '../../elements/pages/settings-page/settings-page.js';
-import {LocalizeBehavior} from
-      '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import GooglePhotosPage from
-      '../../elements/pages/google-photos-page/google-photos-page.js';
+import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import GooglePhotosPage from '../../elements/pages/google-photos-page/google-photos-page.js';
 import ErrorPage from '../../elements/pages/error-page/error-page.js';
 import HelpPage from '../../elements/pages/help-page/help-page.js';
 
@@ -55,20 +53,13 @@ import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import ChromeLastError
-  from '../../scripts/chrome-extension-utils/scripts/last_error.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog
-  from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils
-  from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import ChromeLastError from '../../scripts/chrome-extension-utils/scripts/last_error.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -161,7 +152,7 @@ const pages = [
   },
   {
     label: ChromeLocale.localize('menu_error'), route: 'page-error',
-    //@ts-ignore
+    // @ts-ignore
     icon: 'myicons:error', obj: null,
     ready: false, disabled: false, divider: true,
   },
@@ -370,7 +361,7 @@ Polymer({
     </div>
 
   </app-header-layout>
-  
+
   <app-localstorage-document key="permPicasa" data="{{permission}}" storage="window.localStorage">
   </app-localstorage-document>
 
@@ -516,7 +507,7 @@ Polymer({
       appDrawer.close();
     }
 
-    //@ts-ignore
+    // @ts-ignore
     const idx = this._getPageIdx(ev.currentTarget.id);
 
     ChromeGA.event(ChromeGA.EVENT.MENU, pages[idx].route);
@@ -545,7 +536,7 @@ Polymer({
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
     try {
       // try to get permission - may prompt
-      let granted = await Permissions.request(Permissions.PICASA);
+      const granted = await Permissions.request(Permissions.PICASA);
       if (!granted) {
         await Permissions.removeGooglePhotos();
       }
@@ -568,7 +559,7 @@ Polymer({
     } catch (err) {
       ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
     }
-    
+
     return Promise.resolve();
   },
 
@@ -697,7 +688,7 @@ Polymer({
     // disable error-page if no lastError
     try {
       const lastError = await ChromeLastError.load();
-      
+
       const idx = this._getPageIdx('page-error');
       const route = pages[idx].route;
       const el = this.shadowRoot.querySelector(`#${route}`);
@@ -723,11 +714,11 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: Object, response: Function) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: object, response: Function) {
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab) : any => {
+      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): any => {
         chrome.tabs.update(tab.id, {'highlighted': true});
         return null;
       }).catch((err: Error) => {

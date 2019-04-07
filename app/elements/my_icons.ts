@@ -12,7 +12,6 @@ import '../node_modules/@polymer/iron-iconset-svg/iron-iconset-svg.js';
  * @module els/icons
  */
 
-// eslint-disable-next-line camelcase
 const $_documentContainer = document.createElement('template');
 
 // language=HTML format=false

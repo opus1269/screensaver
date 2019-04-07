@@ -89,7 +89,7 @@ export async function getPlatformOS() {
   try {
     const info = await chromep.runtime.getPlatformInfo();
     const os = info.os;
-    
+
     switch (os) {
       case 'win':
         output = 'MS Windows';
@@ -146,7 +146,8 @@ export function isMac() {
 /**
  * No operation
  */
-export function noop() {}
+export function noop() {
+}
 
 /**
  * Determine if a String is null or whitespace only

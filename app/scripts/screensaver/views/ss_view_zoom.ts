@@ -13,7 +13,7 @@
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSView from './ss_view.js';
-import SSPhoto from "../ss_photo.js";
+import SSPhoto from '../ss_photo.js';
 
 /**
  * Zoom view

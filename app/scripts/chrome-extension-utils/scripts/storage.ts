@@ -25,8 +25,8 @@ declare var ChromePromise: any;
  *     key does not exist
  */
 export function get(key: string, def: any = null) {
+  const item = localStorage.getItem(key);
   let value = def;
-  let item = localStorage.getItem(key);
   if (item !== null) {
     value = ChromeJSON.parse(item);
   }
@@ -40,7 +40,7 @@ export function get(key: string, def: any = null) {
  * @returns {int} value as integer, NaN on error
  */
 export function getInt(key: string, def: number = null) {
-  let item = localStorage.getItem(key);
+  const item = localStorage.getItem(key);
   let value = parseInt(item, 10);
   if (Number.isNaN(value)) {
     value = (def === null) ? value : def;
@@ -128,12 +128,12 @@ export async function asyncGet(key: string, def: object | [] = null) {
     }
     // TODO handle error
   }
-  
+
   if (ret === undefined) {
     // probably not in storage
     ret = def;
   }
-  
+
   return ret;
 }
 

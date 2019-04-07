@@ -10,12 +10,10 @@
  * @module ss/runner
  */
 
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver
-  from '../../elements/screensaver-element/screensaver-element.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSFinder from './ss_photo_finder.js';
 import * as SSViews from './ss_views.js';
 import * as SSHistory from './ss_history.js';
@@ -40,7 +38,7 @@ interface Vars {
   waitTime: number;
   interactive: boolean;
   paused: boolean;
-  timeOutId: number
+  timeOutId: number;
 }
 
 /**
@@ -73,7 +71,7 @@ export function start(delay = 2000) {
   const transTime = ChromeStorage.get('transitionTime',
       {'base': 30, 'display': 30, 'unit': 0});
   setWaitTime(transTime.base * 1000);
-  
+
   _VARS.interactive = ChromeStorage.getBool('interactive', false);
 
   SSHistory.initialize();

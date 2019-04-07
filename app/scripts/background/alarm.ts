@@ -18,14 +18,10 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as Weather from '../../scripts/weather.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale
-  from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeMsg
-  from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage
-  from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -49,11 +45,11 @@ const chromep = new ChromePromise();
  * @private
  */
 const _ALARMS = {
-  'ACTIVATE': 'ACTIVATE',
-  'DEACTIVATE': 'DEACTIVATE',
-  'UPDATE_PHOTOS': 'UPDATE_PHOTOS',
-  'BADGE_TEXT': 'BADGE_TEXT',
-  'WEATHER': 'WEATHER',
+  ACTIVATE: 'ACTIVATE',
+  DEACTIVATE: 'DEACTIVATE',
+  UPDATE_PHOTOS: 'UPDATE_PHOTOS',
+  BADGE_TEXT: 'BADGE_TEXT',
+  WEATHER: 'WEATHER',
 };
 
 /**
@@ -169,7 +165,7 @@ async function _setActiveState() {
   // determine if we should show screensaver
   const interval = AppData.getIdleSeconds();
   try {
-    let state = await chromep.idle.queryState(interval);
+    const state = await chromep.idle.queryState(interval);
     // display screensaver if enabled and the idle time criteria is met
     if (enabled && (state === 'idle')) {
       await SSController.display(false);
@@ -287,4 +283,4 @@ async function _onAlarm(alarm: chrome.alarms.Alarm) {
 
 // Listen for alarms
 chrome.alarms.onAlarm.addListener(_onAlarm);
-  
+

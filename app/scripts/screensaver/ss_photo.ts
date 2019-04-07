@@ -5,12 +5,11 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {Photo} from "../sources/photo_source.js";
+import {Photo} from '../sources/photo_source.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 
-import * as ChromeGA
-  from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -24,14 +23,14 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @alias module:ss/photo.SSPhoto
  */
 class SSPhoto {
-  _id: number;
-  _url: string;
-  _photographer: string;
-  _type: string;
-  _aspectRatio: number;
-  _ex: any | null;
-  _point: string | null;
-  _isBad: boolean;
+  private _id: number;
+  private _url: string;
+  private _photographer: string;
+  private _type: string;
+  private _aspectRatio: number;
+  private _ex: any | null;
+  private _point: string | null;
+  private _isBad: boolean;
 
   /**
    * Create a new photo
@@ -175,6 +174,6 @@ class SSPhoto {
       chrome.tabs.create({url: url});
     }
   }
-};
+}
 
 export default SSPhoto;
