@@ -48,8 +48,7 @@ export async function getToken(interactive = false, scopes: string[] = null) {
  * @throws An error if we failed to remove token
  * @returns {Promise<string>} the old token
  */
-export async function removeCachedToken(interactive = false, curToken = '',
-                                        scopes: string[] = null) {
+export async function removeCachedToken(interactive = false, curToken = '', scopes: string[] = null) {
   let oldToken = curToken;
 
   if (ChromeUtils.isWhiteSpace(oldToken)) {
