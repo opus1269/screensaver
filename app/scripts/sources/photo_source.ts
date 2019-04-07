@@ -66,14 +66,6 @@ export interface Photos {
  * @alias module:sources/photo_source.PhotoSource
  */
 export abstract class PhotoSource {
-  private _useKey: string;
-  private _photosKey: string;
-  private _type: string;
-  private _desc: string;
-  private _isDaily: boolean;
-  private _isArray: boolean;
-  private _loadArg: any;
-
 
   /**
    * Add a {@link module:sources/photo_source.Photo} to an existing Array
@@ -112,6 +104,14 @@ export abstract class PhotoSource {
       return `${lat} ${lon}`;
     }
   }
+
+  private _useKey: string;
+  private _photosKey: string;
+  private _type: string;
+  private _desc: string;
+  private _isDaily: boolean;
+  private _isArray: boolean;
+  private _loadArg: any;
 
   /**
    * Create a new photo source

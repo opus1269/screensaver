@@ -22,19 +22,6 @@ import './ex_handler.js';
  * @alias module:chrome/time.ChromeTime
  */
 class ChromeTime {
-  private _hr: number;
-  private _min: number;
-
-  /**
-   * Create a new Time
-   * @param {?string} [timeString=null] - in '00:00' format, if null
-   * use current Date
-   */
-  constructor(timeString: string = null) {
-    this._hr = null;
-    this._parse(timeString);
-  }
-
   /**
    * Milliseconds in minute
    * @returns {int} value
@@ -78,30 +65,6 @@ class ChromeTime {
    */
   static get MSEC_IN_DAY() {
     return ChromeTime.MIN_IN_DAY * 60 * 1000;
-  }
-
-  /**
-   * Determine if user wants 24 hr time
-   * @param {?int} [frmt=null] - optional format, overrides storage value
-   * @returns {boolean} true for 24 hour time
-   * @private
-   * @static
-   */
-  private static _is24Hr(frmt: number = null) {
-    let ret = false;
-    let format = ChromeStorage.getInt('showTime', 0);
-    if (frmt !== null) {
-      format = frmt;
-    }
-    const localeTime = ChromeLocale.localize('time_format');
-    if (format === 2) {
-      // time display 24hr
-      ret = true;
-    } else if ((format === 0) && (localeTime === '24')) {
-      // time display off, locale time 24
-      ret = true;
-    }
-    return ret;
   }
 
   /**
@@ -193,19 +156,40 @@ class ChromeTime {
   }
 
   /**
-   * Parse time string
-   * @param {string} timeString - in '00:00' format
+   * Determine if user wants 24 hr time
+   * @param {?int} [frmt=null] - optional format, overrides storage value
+   * @returns {boolean} true for 24 hour time
    * @private
+   * @static
    */
-  private _parse(timeString: string) {
-    if (!timeString) {
-      const date = new Date();
-      this._hr = date.getHours();
-      this._min = date.getMinutes();
-    } else {
-      this._hr = parseInt(timeString.substr(0, 2), 10);
-      this._min = parseInt(timeString.substr(3, 2), 10);
+  private static _is24Hr(frmt: number = null) {
+    let ret = false;
+    let format = ChromeStorage.getInt('showTime', 0);
+    if (frmt !== null) {
+      format = frmt;
     }
+    const localeTime = ChromeLocale.localize('time_format');
+    if (format === 2) {
+      // time display 24hr
+      ret = true;
+    } else if ((format === 0) && (localeTime === '24')) {
+      // time display off, locale time 24
+      ret = true;
+    }
+    return ret;
+  }
+
+  private _hr: number;
+  private _min: number;
+
+  /**
+   * Create a new Time
+   * @param {?string} [timeString=null] - in '00:00' format, if null
+   * use current Date
+   */
+  constructor(timeString: string = null) {
+    this._hr = null;
+    this._parse(timeString);
   }
 
   /**
@@ -236,6 +220,22 @@ class ChromeTime {
       ChromeUtils.noop();
     }
     return ret;
+  }
+
+  /**
+   * Parse time string
+   * @param {string} timeString - in '00:00' format
+   * @private
+   */
+  private _parse(timeString: string) {
+    if (!timeString) {
+      const date = new Date();
+      this._hr = date.getHours();
+      this._min = date.getMinutes();
+    } else {
+      this._hr = parseInt(timeString.substr(0, 2), 10);
+      this._min = parseInt(timeString.substr(3, 2), 10);
+    }
   }
 }
 

@@ -23,7 +23,6 @@ const chromep = new ChromePromise();
  * @alias module:chrome/last_error.LastError
  */
 class ChromeLastError extends Error {
-  public title: string;
 
   /**
    * Get the LastError from chrome.storage.local
@@ -68,6 +67,9 @@ class ChromeLastError extends Error {
     // Save it using the Chrome storage API.
     return chromep.storage.local.set({lastError: new ChromeLastError()});
   }
+
+  public title: string;
+
 
   /**
    * Create a new LastError

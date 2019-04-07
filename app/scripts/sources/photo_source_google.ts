@@ -110,21 +110,6 @@ const _MEDIA_ITEMS_RESULTS_FIELDS =
 export class GoogleSource extends PhotoSource {
 
   /**
-   * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
-   */
-  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
-              loadArg: any = null) {
-    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
-  }
-
-  /**
    * Default photo filter
    * @returns {{}} value
    * @static
@@ -863,6 +848,21 @@ export class GoogleSource extends PhotoSource {
       }
     }
     return photos;
+  }
+
+  /**
+   * Create a new photo source
+   * @param {string} useKey - The key for if the source is selected
+   * @param {string} photosKey - The key for the collection of photos
+   * @param {string} type - A descriptor of the photo source
+   * @param {string} desc - A human readable description of the source
+   * @param {boolean} isDaily - Should the source be updated daily
+   * @param {boolean} isArray - Is the source an Array of photo Arrays
+   * @param {?Object} [loadArg=null] - optional arg for load function
+   */
+  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
+              loadArg: any = null) {
+    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 
   /**

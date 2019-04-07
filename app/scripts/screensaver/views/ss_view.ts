@@ -44,16 +44,44 @@ const _SCREEN_AR = screen.width / screen.height;
  * @alias module:ss/views/view.SSView
  */
 abstract class SSView {
-  public photo: SSPhoto;
-  public image: HTMLElement;
-  public author: HTMLElement;
-  public time: HTMLElement;
-  public location: HTMLElement;
-  public weather: HTMLElement;
-  public model: any;
-  public url: string;
-  public authorLabel: string;
-  public locationLabel: string;
+  /**
+   * Should we show the time
+   * @returns {boolean} true if we should show the time
+   * @static
+   */
+  public static showTime() {
+    return ChromeStorage.getBool('showTime');
+  }
+
+  /**
+   * Determine if a given aspect ratio should be ignored
+   * @param {number|string} asp - an aspect ratio
+   * @param {int} photoSizing - the sizing type
+   * @returns {boolean} true if the aspect ratio should be ignored
+   */
+  public static ignore(asp: number, photoSizing: number) {
+    let ret = false;
+    const skip = ChromeStorage.getBool('skip');
+
+    if ((!asp || isNaN(asp)) ||
+        (skip && ((photoSizing === 1) || (photoSizing === 3)) &&
+            SSView._isBadAspect(asp))) {
+      // ignore photos that don't have aspect ratio
+      // or would look bad with cropped or stretched sizing options
+      ret = true;
+    }
+    return ret;
+  }
+
+  // TODO add back for geolocation
+  // /**
+  //  * Should we show the location, if available
+  //  * @returns {boolean} true if we should show the location
+  //  * @static
+  //  */
+  // private static _showLocation() {
+  //   return ChromeStorage.getBool('showLocation');
+  // }
 
   /**
    * Call notifyPath after set because dirty checking doesn't always work
@@ -80,43 +108,16 @@ abstract class SSView {
     return (asp < _SCREEN_AR - CUT_OFF) || (asp > _SCREEN_AR + CUT_OFF);
   }
 
-  /**
-   * Determine if a given aspect ratio should be ignored
-   * @param {number|string} asp - an aspect ratio
-   * @param {int} photoSizing - the sizing type
-   * @returns {boolean} true if the aspect ratio should be ignored
-   */
-  public static ignore(asp: number, photoSizing: number) {
-    let ret = false;
-    const skip = ChromeStorage.getBool('skip');
-
-    if ((!asp || isNaN(asp)) ||
-        (skip && ((photoSizing === 1) || (photoSizing === 3)) &&
-            SSView._isBadAspect(asp))) {
-      // ignore photos that don't have aspect ratio
-      // or would look bad with cropped or stretched sizing options
-      ret = true;
-    }
-    return ret;
-  }
-
-  /**
-   * Should we show the location, if available
-   * @returns {boolean} true if we should show the location
-   * @static
-   */
-  private static _showLocation() {
-    return ChromeStorage.getBool('showLocation');
-  }
-
-  /**
-   * Should we show the time
-   * @returns {boolean} true if we should show the time
-   * @static
-   */
-  public static showTime() {
-    return ChromeStorage.getBool('showTime');
-  }
+  public photo: SSPhoto;
+  public image: HTMLElement;
+  public author: HTMLElement;
+  public time: HTMLElement;
+  public location: HTMLElement;
+  public weather: HTMLElement;
+  public model: any;
+  public url: string;
+  public authorLabel: string;
+  public locationLabel: string;
 
   /**
    * Create a new SSView
@@ -133,6 +134,82 @@ abstract class SSView {
     this.url = photo.getUrl();
     this.authorLabel = '';
     this.locationLabel = '';
+  }
+
+  /**
+   * Set the url
+   * @param {?string} url to use if not null
+   */
+  public setUrl(url: string = null) {
+    this.url = url || this.photo.getUrl();
+    SSView._dirtySet(this.model, 'view.url', this.url);
+  }
+
+  /**
+   * Flag the photo in this view to bad
+   */
+  public markPhotoBad() {
+    if (this.photo) {
+      this.photo.markBad();
+    }
+  }
+
+  /**
+   * Set the elements of the view
+   * @param {Element} image - paper-image, photo
+   * @param {Element} author - div, photographer
+   * @param {Element} time - div, current time
+   * @param {Element} location - div, geolocation text
+   * @param {Element} weather - weather-element weather
+   * @param {Object} model - template item model
+   */
+  public setElements(image: HTMLElement, author: HTMLElement, time: HTMLElement, location: HTMLElement,
+                     weather: HTMLElement, model: any) {
+    this.image = image;
+    this.author = author;
+    this.time = time;
+    this.location = location;
+    this.weather = weather;
+    this.model = model;
+
+    this._setTimeStyle();
+    this.setPhoto(this.photo);
+  }
+
+  /**
+   * Set the photo
+   * @param {module:ss/photo.SSPhoto} photo - a photo to render
+   */
+  public setPhoto(photo: SSPhoto) {
+    this.photo = photo;
+    this.setUrl();
+    this._setAuthorLabel();
+    this._setLocationLabel();
+  }
+
+  /**
+   * Render the page for display - the default CSS is for our view
+   * subclasses override this to determine the look of photo
+   */
+  public render() {
+  }
+
+  /**
+   * Determine if a photo failed to load (usually 404 or 403 error)
+   * @returns {boolean} true if image load failed
+   */
+  public isError() {
+    // @ts-ignore
+    return !this.image || this.image.error;
+  }
+
+  /**
+   * Determine if a photo has finished loading
+   * @returns {boolean} true if image is loaded
+   */
+  public isLoaded() {
+    // @ts-ignore
+    return !!this.image && this.image.loaded;
   }
 
   /**
@@ -175,24 +252,6 @@ abstract class SSView {
     if (ChromeStorage.getBool('largeTime')) {
       this.time.style.fontSize = '8.5vh';
       this.time.style.fontWeight = '300';
-    }
-  }
-
-  /**
-   * Set the url
-   * @param {?string} url to use if not null
-   */
-  public setUrl(url: string = null) {
-    this.url = url || this.photo.getUrl();
-    SSView._dirtySet(this.model, 'view.url', this.url);
-  }
-
-  /**
-   * Flag the photo in this view to bad
-   */
-  public markPhotoBad() {
-    if (this.photo) {
-      this.photo.markBad();
     }
   }
 
@@ -253,64 +312,6 @@ abstract class SSView {
     //     }
     //   });
     // }
-  }
-
-  /**
-   * Set the elements of the view
-   * @param {Element} image - paper-image, photo
-   * @param {Element} author - div, photographer
-   * @param {Element} time - div, current time
-   * @param {Element} location - div, geolocation text
-   * @param {Element} weather - weather-element weather
-   * @param {Object} model - template item model
-   */
-  public setElements(image: HTMLElement, author: HTMLElement, time: HTMLElement, location: HTMLElement,
-                     weather: HTMLElement, model: any) {
-    this.image = image;
-    this.author = author;
-    this.time = time;
-    this.location = location;
-    this.weather = weather;
-    this.model = model;
-
-    this._setTimeStyle();
-    this.setPhoto(this.photo);
-  }
-
-  /**
-   * Set the photo
-   * @param {module:ss/photo.SSPhoto} photo - a photo to render
-   */
-  public setPhoto(photo: SSPhoto) {
-    this.photo = photo;
-    this.setUrl();
-    this._setAuthorLabel();
-    this._setLocationLabel();
-  }
-
-  /**
-   * Render the page for display - the default CSS is for our view
-   * subclasses override this to determine the look of photo
-   */
-  public render() {
-  }
-
-  /**
-   * Determine if a photo failed to load (usually 404 or 403 error)
-   * @returns {boolean} true if image load failed
-   */
-  public isError() {
-    // @ts-ignore
-    return !this.image || this.image.error;
-  }
-
-  /**
-   * Determine if a photo has finished loading
-   * @returns {boolean} true if image is loaded
-   */
-  public isLoaded() {
-    // @ts-ignore
-    return !!this.image && this.image.loaded;
   }
 }
 
