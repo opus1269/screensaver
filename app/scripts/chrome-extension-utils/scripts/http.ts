@@ -14,7 +14,6 @@ import * as ChromeAuth from './auth.js';
 import * as ChromeGA from './analytics.js';
 import * as ChromeLocale from './locales.js';
 import './ex_handler.js';
-import FetchProperties = chrome.extension.FetchProperties;
 
 /**
  * Http configuration
@@ -47,7 +46,7 @@ export interface Config {
  */
 export interface Response {
   ok: boolean;
-  json: Function; // tslint:disable-line ban-types // TODO figure out setting of this something weird response vs json
+  json: () => any;
   status: number;
   statusText: string;
 }
@@ -83,7 +82,7 @@ const _DELAY = 1000;
 
 /**
  * Configuration object
- * @type {module:chrome/http.Config}
+ * @type {{}}
  */
 export const CONFIG: Config = {
   isAuth: false,
@@ -98,9 +97,9 @@ export const CONFIG: Config = {
 /**
  * Perform GET request
  * @param {string} url - server request
- * @param {module:chrome/http.Config} [conf=CONFIG] - configuration
+ * @param {{}} [conf=CONFIG] - configuration
  * @throws An error if GET fails
- * @returns {Promise.<JSON>} response from server
+ * @returns {Promise.<{}>} response from server
  */
 export async function doGet(url: string, conf = CONFIG) {
   const opts = {method: 'GET', headers: new Headers({})};
@@ -112,9 +111,9 @@ export async function doGet(url: string, conf = CONFIG) {
 /**
  * Perform POST request
  * @param {string} url - server request
- * @param {module:chrome/http.Config} [conf=CONFIG] - configuration
+ * @param {{}} [conf=CONFIG] - configuration
  * @throws An error if POST fails
- * @returns {Promise.<JSON>} response from server
+ * @returns {Promise.<{}>} response from server
  */
 export async function doPost(url: string, conf = CONFIG) {
   const opts = {method: 'POST', headers: new Headers({})};
@@ -125,16 +124,17 @@ export async function doPost(url: string, conf = CONFIG) {
 
 /**
  * Check response and act accordingly, including retrying
- * @param {module:chrome/http.Response} response - server response
+ * @param {{}} response - server response
  * @param {string} url - server
  * @param {Object} opts - fetch options
- * @param {module:chrome/http.Config} conf - configuration
+ * @param {{}} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @throws An error if fetch ultimately fails
  * @returns {Promise.<Response>} response from server
  * @private
  */
-async function _processResponse(response: Response, url: string, opts: FetchProperties, conf: Config, attempt: number) {
+async function _processResponse(response: Response, url: string, opts: chrome.extension.FetchProperties,
+                                conf: Config, attempt: number) {
   if (response.ok) {
     // request succeeded - woo hoo!
     return Promise.resolve(response.json());
@@ -173,7 +173,7 @@ async function _processResponse(response: Response, url: string, opts: FetchProp
 
 /**
  * Get Error message
- * @param {module:chrome/http.Response} response - server response
+ * @param {{}} response - server response
  * @returns {Error}
  * @private
  */
@@ -223,13 +223,13 @@ async function _getAuthToken(isAuth: boolean, interactive: boolean) {
  * Retry authorized fetch with exponential back-off
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:chrome/http.Config} conf - configuration
+ * @param {{}} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @throws An error if fetch failed
- * @returns {Promise.<JSON>} response from server
+ * @returns {Promise.<{}>} response from server
  * @private
  */
-async function _retry(url: string, opts: any,  conf: Config, attempt: number) {
+async function _retry(url: string, opts: any, conf: Config, attempt: number) {
   attempt++;
   const delay = (Math.pow(2, attempt) - 1) * _DELAY;
 
@@ -248,13 +248,13 @@ async function _retry(url: string, opts: any,  conf: Config, attempt: number) {
  * Retry fetch after removing cached auth token
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:chrome/http.Config} conf - configuration
+ * @param {{}} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @throws An error if fetch failed
- * @returns {Promise.<JSON>} response from server
+ * @returns {Promise.<{}>} response from server
  * @private
  */
-async function _retryToken(url: string, opts: any,  conf: Config, attempt: number) {
+async function _retryToken(url: string, opts: any, conf: Config, attempt: number) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
 
   await ChromeAuth.removeCachedToken(conf.interactive, conf.token);
@@ -269,13 +269,13 @@ async function _retryToken(url: string, opts: any,  conf: Config, attempt: numbe
  * Perform fetch, optionally using authorization and exponential back-off
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:chrome/http.Config} conf - configuration
+ * @param {{}} conf - configuration
  * @param {int} attempt - the retry attempt we are on
  * @throws an error if the fetch failed
- * @returns {Promise.<JSON>} response from server
+ * @returns {Promise.<{}>} response from server
  * @private
  */
-async function _fetch(url: string, opts: any,  conf: Config, attempt: number) {
+async function _fetch(url: string, opts: any, conf: Config, attempt: number) {
   try {
     const authToken = await _getAuthToken(conf.isAuth, conf.interactive);
     if (conf.isAuth) {
@@ -310,12 +310,12 @@ async function _fetch(url: string, opts: any,  conf: Config, attempt: number) {
  * Do a server request
  * @param {string} url - server request
  * @param {Object} opts - fetch options
- * @param {module:chrome/http.Config} conf - configuration
+ * @param {{}} conf - configuration
  * @throws An error if request failed
- * @returns {Promise.<JSON>} response from server
+ * @returns {Promise.<{}>} response from server
  * @private
  */
-async function _doIt(url: string, opts: any,  conf: Config) {
+async function _doIt(url: string, opts: any, conf: Config) {
   conf = conf || CONFIG;
   if (conf.isAuth) {
     opts.headers.set(_AUTH_HEADER, `${_BEARER} unknown`);
