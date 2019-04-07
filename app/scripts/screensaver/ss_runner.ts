@@ -68,8 +68,7 @@ const _VARS: Vars = {
  * @param {int} [delay=2000] - delay before start
  */
 export function start(delay = 2000) {
-  const transTime = ChromeStorage.get('transitionTime',
-      {'base': 30, 'display': 30, 'unit': 0});
+  const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
   setWaitTime(transTime.base * 1000);
 
   _VARS.interactive = ChromeStorage.getBool('interactive', false);

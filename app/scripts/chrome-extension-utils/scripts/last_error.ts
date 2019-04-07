@@ -72,13 +72,13 @@ class ChromeLastError extends Error {
    */
   static save(lastError: ChromeLastError) {
     const value = {
-      'title': lastError.title || '',
-      'message': lastError.message || '',
-      'stack': lastError.stack || '',
+      title: lastError.title || '',
+      message: lastError.message || '',
+      stack: lastError.stack || '',
     };
 
     // persist
-    return chromep.storage.local.set({'lastError': value});
+    return chromep.storage.local.set({lastError: value});
   }
 
   /**
@@ -88,7 +88,7 @@ class ChromeLastError extends Error {
    */
   static reset() {
     // Save it using the Chrome storage API.
-    return chromep.storage.local.set({'lastError': new ChromeLastError()});
+    return chromep.storage.local.set({lastError: new ChromeLastError()});
   }
 }
 

@@ -51,13 +51,12 @@ const SpinDownAnimation = Polymer({
     const node = config.node;
 
     if (config.transformOrigin) {
-      this.setPrefixedProperty(node, 'transformOrigin',
-          config.transformOrigin);
+      this.setPrefixedProperty(node, 'transformOrigin', config.transformOrigin);
     }
 
     this._effect = new KeyframeEffect(node, [
-      {'transform': 'scale(1) rotate(1.0turn)'},
-      {'transform': 'scale(0) rotate(0)'},
+      {transform: 'scale(1) rotate(1.0turn)'},
+      {transform: 'scale(0) rotate(0)'},
     ], this.timingFromConfig(config));
 
     return this._effect;

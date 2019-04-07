@@ -719,7 +719,7 @@ Polymer({
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
       chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): any => {
-        chrome.tabs.update(tab.id, {'highlighted': true});
+        chrome.tabs.update(tab.id, {highlighted: true});
         return null;
       }).catch((err: Error) => {
         ChromeLog.error(err.message, 'chromep.tabs.getCurrent');

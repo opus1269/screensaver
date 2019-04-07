@@ -169,7 +169,7 @@ const SettingSlider = Polymer({
       type: Object,
       notify: true,
       value: function() {
-        return {name: 'unknown', min: 1, max: 10, step: 1, 'mult': 1};
+        return {name: 'unknown', min: 1, max: 10, step: 1, mult: 1};
       },
     },
 

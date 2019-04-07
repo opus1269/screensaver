@@ -295,8 +295,8 @@ Polymer({
    */
   _getUnit: function(name: string, min: number, max: number, step: number, mult: number) {
     return {
-      'name': ChromeLocale.localize(name),
-      'min': min, 'max': max, 'step': step, 'mult': mult,
+      name: ChromeLocale.localize(name),
+      min: min, max: max, step: step, mult: mult,
     };
   },
 

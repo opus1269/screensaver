@@ -58,8 +58,8 @@ const SpinUpAnimation = Polymer({
     }
 
     this._effect = new KeyframeEffect(node, [
-      {'transform': 'scale(0) rotate(0)'},
-      {'transform': 'scale(1) rotate(1.0turn)'},
+      {transform: 'scale(0) rotate(0)'},
+      {transform: 'scale(1) rotate(1.0turn)'},
     ], this.timingFromConfig(config));
 
     return this._effect;

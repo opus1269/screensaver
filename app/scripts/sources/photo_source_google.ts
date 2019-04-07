@@ -312,7 +312,7 @@ export class GoogleSource extends PhotoSource {
     const MAX_QUERIES = 100;
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
     const body: any = {
-      'pageSize': MAX_QUERIES,
+      pageSize: MAX_QUERIES,
     };
     body.albumId = id;
 
@@ -468,8 +468,8 @@ export class GoogleSource extends PhotoSource {
     }
 
     const body = {
-      'pageSize': MAX_QUERIES,
-      'filters': filters,
+      pageSize: MAX_QUERIES,
+      filters: filters,
     };
 
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
@@ -830,8 +830,8 @@ export class GoogleSource extends PhotoSource {
         photo.author = albumName;
         // unique photo id and url to photo in Google Photos
         photo.ex = {
-          'id': mediaItem.id,
-          'url': mediaItem.productUrl,
+          id: mediaItem.id,
+          url: mediaItem.productUrl,
         };
         photo.point = null;
       }

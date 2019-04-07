@@ -93,49 +93,49 @@ const _DATA_VERSION = 24;
  * @readonly
  */
 export const DEFS = {
-  'version': _DATA_VERSION,
-  'enabled': true,
-  'permPicasa': 'notSet', // enum: notSet allowed denied
-  'permBackground': 'notSet', // enum: notSet allowed denied
-  'permWeather': 'notSet', // enum: notSet allowed denied
-  'allowBackground': false,
-  'idleTime': {'base': 5, 'display': 5, 'unit': 0}, // minutes
-  'transitionTime': {'base': 30, 'display': 30, 'unit': 0}, // seconds
-  'skip': true,
-  'shuffle': true,
-  'photoSizing': 0,
-  'photoTransition': 1,
-  'interactive': false,
-  'showTime': 2, // 24 hr format
-  'largeTime': false,
-  'showPhotog': true,
-  'showLocation': true,
-  'background': 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
-  'keepAwake': false,
-  'chromeFullscreen': true,
-  'allDisplays': false,
-  'activeStart': '00:00', // 24 hr time
-  'activeStop': '00:00', // 24 hr time
-  'allowSuspend': false,
-  'allowPhotoClicks': true,
-  'useSpaceReddit': false,
-  'useEarthReddit': false,
-  'useAnimalReddit': false,
-  'useInterestingFlickr': false,
-  'useChromecast': true,
-  'useAuthors': false,
-  'fullResGoogle': false,
-  'isAlbumMode': true,
-  'useGoogle': true,
-  'useGoogleAlbums': true,
-  'useGooglePhotos': false,
-  'signedInToChrome': true,
-  'googlePhotosNoFilter': true,
-  'googlePhotosFilter': GoogleSource.DEF_FILTER,
-  'location': {lat: 0, lon: 0},
-  'showCurrentWeather': false,
-  'weatherTempUnit': 0,
-  'currentWeather': Weather.DEF_WEATHER,
+  version: _DATA_VERSION,
+  enabled: true,
+  permPicasa: 'notSet', // enum: notSet allowed denied
+  permBackground: 'notSet', // enum: notSet allowed denied
+  permWeather: 'notSet', // enum: notSet allowed denied
+  allowBackground: false,
+  idleTime: {base: 5, display: 5, unit: 0}, // minutes
+  transitionTime: {base: 30, display: 30, unit: 0}, // seconds
+  skip: true,
+  shuffle: true,
+  photoSizing: 0,
+  photoTransition: 1,
+  interactive: false,
+  showTime: 2, // 24 hr format
+  largeTime: false,
+  showPhotog: true,
+  showLocation: true,
+  background: 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
+  keepAwake: false,
+  chromeFullscreen: true,
+  allDisplays: false,
+  activeStart: '00:00', // 24 hr time
+  activeStop: '00:00', // 24 hr time
+  allowSuspend: false,
+  allowPhotoClicks: true,
+  useSpaceReddit: false,
+  useEarthReddit: false,
+  useAnimalReddit: false,
+  useInterestingFlickr: false,
+  useChromecast: true,
+  useAuthors: false,
+  fullResGoogle: false,
+  isAlbumMode: true,
+  useGoogle: true,
+  useGoogleAlbums: true,
+  useGooglePhotos: false,
+  signedInToChrome: true,
+  googlePhotosNoFilter: true,
+  googlePhotosFilter: GoogleSource.DEF_FILTER,
+  location: {lat: 0, lon: 0},
+  showCurrentWeather: false,
+  weatherTempUnit: 0,
+  currentWeather: Weather.DEF_WEATHER,
 };
 
 /**
