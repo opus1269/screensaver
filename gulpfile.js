@@ -228,7 +228,7 @@ gulp.task('incrementalBuild', (cb) => {
   runSequence('_lint', ['_watch_ts'], [
     '_manifest',
     '_html',
-    'lintdevjs',
+    '_lintdevjs',
     '_images',
     '_assets',
     '_lib',
@@ -252,10 +252,12 @@ gulp.task('buildProd', (cb) => {
   isProd = true;
   isProdTest = false;
   buildDirectory = 'build/prod';
-  runSequence('_build_js', '_poly_build', [
-    '_manifest',
-    'docs',
-  ], '_zip', cb);
+  runSequence(
+      '_build_js',
+      '_poly_build', [
+        '_manifest',
+        'docs',
+      ], '_zip', cb);
 });
 
 // Production test build Only diff is it does not have key removed
@@ -263,13 +265,15 @@ gulp.task('buildProdTest', (cb) => {
   isProd = true;
   isProdTest = true;
   buildDirectory = 'build/prodTest';
-  runSequence('_build_js', '_poly_build', '_zip', cb);
+  runSequence(
+      '_build_js',
+      '_poly_build',
+      '_zip', cb);
 });
 
 // Generate JSDoc
 gulp.task('docs', (cb) => {
 
-  // change working directory to app
   chDir('app');
 
   const config = require('./jsdoc.json');
@@ -281,17 +285,6 @@ gulp.task('docs', (cb) => {
   ], {read: true}).
       pipe(gulp.dest(base.tmp_docs)).
       pipe(jsdoc3(config, cb));
-});
-
-// lint development js files
-gulp.task('lintdevjs', () => {
-  const input = files.lintdevjs;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
-      pipe(eslint()).
-      pipe(eslint.formatEach()).
-      pipe(eslint.failOnError());
 });
 
 // run polymer build for the debug build
@@ -309,6 +302,20 @@ gulp.task('_poly_build_dev', (cb) => {
   });
 });
 
+// run polymer build with gulp, basically
+gulp.task('_poly_build', buildPolymer);
+
+// lint development js files
+gulp.task('_lintdevjs', () => {
+  const input = files.lintdevjs;
+  watchOpts.name = currentTaskName;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(eslint()).
+      pipe(eslint.formatEach()).
+      pipe(eslint.failOnError());
+});
+
 // lint ts scripts
 gulp.task('_lint', () => {
   chDir('app');
@@ -324,7 +331,6 @@ gulp.task('_lint', () => {
 
 // manifest.json
 gulp.task('_manifest', () => {
-  // change working directory to app
   chDir('app');
 
   const input = files.manifest;
@@ -348,7 +354,7 @@ gulp.task('_ts', () => {
       pipe(gulp.dest(base.dev));
 });
 
-gulp.task('_watch_ts', ['_ts'], function() {
+gulp.task('_watch_ts', ['_ts'], () => {
   const input = files.ts;
   gulp.watch(input, ['_ts']);
 });
@@ -443,7 +449,6 @@ gulp.task('_font', () => {
 
 // compress for the Chrome Web Store
 gulp.task('_zip', () => {
-
   chDir('app');
 
   return gulp.src(`../${buildDirectory}/app/**`).
@@ -452,8 +457,5 @@ gulp.task('_zip', () => {
       pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(
           `../${buildDirectory}`));
 });
-
-// run polymer build with gulp, basically
-gulp.task('_poly_build', buildPolymer);
 
 
