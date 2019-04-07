@@ -51,12 +51,24 @@ export interface SelectedAlbum {
 /**
  * Google Photos API representation of a photo
  */
+// interface GPhotosPhoto {
+//   id: string;
+//   mimeType: string;
+//   baseUrl: string;
+//   productUrl: string;
+//   mediaMetadata: any;
+// }
+
+/**
+ * Google Photos API representation of an album
+ */
 interface GPhotosAlbum {
   id: string;
-  mimeType: string;
-  baseUrl: string;
+  title: string;
   productUrl: string;
-  mediaMetadata: any;
+  mediaItemsCount: number;
+  coverPhotoBaseUrl: string;
+  coverPhotoMediaItemId: string;
 }
 
 /**
@@ -211,10 +223,11 @@ export class GoogleSource extends PhotoSource {
     const errMsg = 'OAuth2 not granted or revoked';
     if (err.message.includes(errMsg)) {
       // We have lost authorization to Google Photos
-      ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
-      ChromeStorage.asyncSet('googleImages', []).catch(() => {});
-      ChromeLog.error(err.message, name,
-          ChromeLocale.localize('err_auth_revoked'));
+      ChromeStorage.asyncSet('albumSelections', []).catch(() => {
+      });
+      ChromeStorage.asyncSet('googleImages', []).catch(() => {
+      });
+      ChromeLog.error(err.message, name, ChromeLocale.localize('err_auth_revoked'));
       ret = true;
     }
     return ret;
@@ -223,14 +236,11 @@ export class GoogleSource extends PhotoSource {
   /**
    * Retrieve the user's list of albums
    * @throws An error if the album list failed to load.
-   * @returns {Promise<Array<module:sources/photo_source_google.Album>>} Array
-   *     of albums
-   * @static
-   * @async
+   * @returns {Promise<Array>} Array of albums
    */
   public static async loadAlbumList() {
-    let nextPageToken;
-    let gAlbums: any[] = [];
+    let nextPageToken: string;
+    let gAlbums: GPhotosAlbum[] = [];
     const albums: Album[] = [];
     let ct = 0;
     const baseUrl = `${_URL_BASE}albums/${_ALBUMS_QUERY}`;
@@ -256,20 +266,21 @@ export class GoogleSource extends PhotoSource {
       url = `${baseUrl}&pageToken=${nextPageToken}`;
     } while (nextPageToken);
 
-    // Create the array of module:sources/photo_source_google.Album
+    // Create the array of albums
     for (const gAlbum of gAlbums) {
       if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
 
-        // @ts-ignore
-        const album: Album = {};
-        album.index = ct;
-        album.uid = 'album' + ct;
-        album.name = gAlbum.title;
-        album.id = gAlbum.id;
-        album.ct = gAlbum.mediaItemsCount;
-        album.thumb = `${gAlbum.coverPhotoBaseUrl}=w76-h76`;
-        album.checked = false;
-        album.photos = [];
+        const album: Album = {
+          index: ct,
+          uid: 'album' + ct,
+          name: gAlbum.title,
+          id: gAlbum.id,
+          ct: gAlbum.mediaItemsCount,
+          thumb: `${gAlbum.coverPhotoBaseUrl}=w76-h76`,
+          checked: false,
+          photos: [],
+        };
+
         albums.push(album);
 
         ct++;
@@ -288,7 +299,7 @@ export class GoogleSource extends PhotoSource {
    * @param {boolean} interactive=true - interactive mode for permissions
    * @param {boolean} notify=false - notify listeners of status
    * @throws An error if the album failed to load.
-   * @returns {Promise<module:sources/photo_source_google.Album>} Album
+   * @returns {Promise<{}>} Album
    * @static
    * @async
    */
@@ -306,7 +317,8 @@ export class GoogleSource extends PhotoSource {
     conf.retryToken = true;
     conf.interactive = interactive;
     conf.body = body;
-    let nextPageToken;
+
+    let nextPageToken: string;
     let photos: Photo[] = [];
 
     // Loop while there is a nextPageToken to load more items and we
@@ -339,24 +351,23 @@ export class GoogleSource extends PhotoSource {
 
       // don't go over MAX_ALBUM_PHOTOS
       if (photos.length > this.MAX_ALBUM_PHOTOS) {
-        ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED,
-            `nPhotos: ${this.MAX_ALBUM_PHOTOS}`);
+        ChromeGA.event(MyGA.EVENT.PHOTOS_LIMITED, `nPhotos: ${this.MAX_ALBUM_PHOTOS}`);
         const delCt = photos.length - this.MAX_ALBUM_PHOTOS;
         photos.splice(this.MAX_ALBUM_PHOTOS, delCt);
       }
 
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    // @ts-ignore
-    const album: Album = {};
-    album.index = 0;
-    album.uid = 'album' + 0;
-    album.name = name;
-    album.id = id;
-    album.thumb = '';
-    album.checked = true;
-    album.photos = photos;
-    album.ct = photos.length;
+    const album: Album = {
+      index: 0,
+      uid: 'album' + 0,
+      name: name,
+      id: id,
+      thumb: '',
+      checked: true,
+      photos: photos,
+      ct: photos.length,
+    };
 
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
@@ -368,12 +379,11 @@ export class GoogleSource extends PhotoSource {
    * @param {boolean} interactive=true - interactive mode for permissions
    * @param {boolean} notify=false - notify listeners of status
    * @throws An error if the albums could not be updated
-   * @returns {Promise<module:sources/photo_source_google.Album[]>}
+   * @returns {Promise<[]>}
    */
   public static async loadAlbums(interactive = false, notify = false) {
     const METHOD = 'GoogleSource.loadAlbums';
 
-    /** @type {module:sources/photo_source_google.SelectedAlbum[]} */
     const albums = await ChromeStorage.asyncGet('albumSelections', []);
     if ((albums.length === 0)) {
       return Promise.resolve(albums);
@@ -720,34 +730,32 @@ export class GoogleSource extends PhotoSource {
   /**
    * Fetch the most recent state for the selected albums
    * @throws An error if we could not load an album
-   * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]>}
-   *     Array of albums
+   * @returns {Promise<[]>} Array of albums
    * @static
    * @async
    */
   private static async _fetchAlbums() {
     if (!this._isFetch()) {
       // no need to change - save on api calls
-      const curAlbums = await ChromeStorage.asyncGet('albumSelections', []);
+      const curAlbums: Album[] = await ChromeStorage.asyncGet('albumSelections', []);
       return Promise.resolve(curAlbums);
     }
 
     let ct = 0;
-    const albums = await this.loadAlbums(false, false);
+    const albums: Album[] = await this.loadAlbums(false, false);
     for (const album of albums) {
       ct += album.photos.length;
     }
 
     if ((albums.length > 0)) {
-      ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS,
-          `nAlbums: ${albums.length} nPhotos: ${ct}`);
+      ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS, `nAlbums: ${albums.length} nPhotos: ${ct}`);
     }
 
     return Promise.resolve(albums);
   }
 
   /** Determine if a mediaEntry is an image
-   * @param {module:sources/photo_source_google.mediaItem} mediaItem - Google
+   * @param {{}} mediaItem - Google
    *     Photos media object
    * @returns {boolean} true if entry is a photo
    * @static
@@ -791,7 +799,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {module:sources/photo_source_google.mediaItem} mediaItem - object
+   * @param {{}} mediaItem - object
    *     from Google Photos API call
    * @param {string} albumName - Album name
    * @static
@@ -868,7 +876,7 @@ export class GoogleSource extends PhotoSource {
   /**
    * Fetch the albums or photos for this source
    * @throws An error if we couldn't update
-   * @returns {Promise<module:sources/photo_source_google.SelectedAlbum[]|module:sources/photo_source.Photo[]>}
+   * @returns {Promise<Array>}
    * - array of albums or array of photos
    */
   public async fetchPhotos() {
