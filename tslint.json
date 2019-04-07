@@ -11,6 +11,7 @@
       "check-format",
       "allow-leading-underscore"
     ],
+    "no-trailing-whitespace": false,
     "only-arrow-functions": false,
     "interface-name": false,
     "ordered-imports": false,
