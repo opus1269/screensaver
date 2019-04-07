@@ -44,7 +44,6 @@ const files = {
   css: `${path.css}**/*.*`,
   font: `${path.font}**/*.*`,
 };
-files.js = [files.scripts, files.elements, `${base.src}*.js`];
 files.ts = [files.scripts_ts, files.elements_ts];
 files.lintdevjs = ['../gulpfile.js'];
 
@@ -81,7 +80,8 @@ const eslint = require('gulp-eslint');
 const stripLine = require('gulp-strip-line');
 const jsdoc3 = require('gulp-jsdoc3');
 const zip = require('gulp-zip');
-// const debug = require('gulp-debug');
+/* eslint-disable-next-line no-unused-vars */
+const debug = require('gulp-debug');
 
 // TypeScript
 const ts = require('gulp-typescript');
@@ -224,6 +224,8 @@ gulp.task('incrementalBuild', (cb) => {
   // change working directory to app
   chDir('app');
 
+  isProd = false;
+  isProdTest = false;
   isWatch = true;
   runSequence('_lint', ['_watch_ts'], [
     '_manifest',
@@ -240,24 +242,10 @@ gulp.task('incrementalBuild', (cb) => {
 
 // Development build
 gulp.task('buildDev', (cb) => {
-  runSequence(
-      '_lint',
-      '_build_js',
-      '_poly_build_dev',
-      '_ts', cb);
-});
-
-// Production build
-gulp.task('buildProd', (cb) => {
-  isProd = true;
+  isProd = false;
   isProdTest = false;
-  buildDirectory = 'build/prod';
-  runSequence(
-      '_build_js',
-      '_poly_build', [
-        '_manifest',
-        'docs',
-      ], '_zip', cb);
+
+  runSequence('_lint', '_build_js', '_poly_build_dev', cb);
 });
 
 // Production test build Only diff is it does not have key removed
@@ -265,10 +253,17 @@ gulp.task('buildProdTest', (cb) => {
   isProd = true;
   isProdTest = true;
   buildDirectory = 'build/prodTest';
-  runSequence(
-      '_build_js',
-      '_poly_build',
-      '_zip', cb);
+
+  runSequence('_build_js', '_poly_build', '_zip', cb);
+});
+
+// Production build
+gulp.task('buildProd', (cb) => {
+  isProd = true;
+  isProdTest = false;
+  buildDirectory = 'build/prod';
+
+  runSequence('_build_js', '_poly_build', '_manifest', '_zip', cb);
 });
 
 // Generate JSDoc
@@ -326,7 +321,6 @@ gulp.task('_lint', () => {
         formatter: 'verbose',
       })).
       pipe(tslint.report());
-
 });
 
 // manifest.json
@@ -349,8 +343,10 @@ gulp.task('_ts', () => {
 
   const input = files.ts;
   return gulp.src(input, {base: '.'}).
-      pipe(tsProject()).
-      pipe(replace(SEARCH, REPLACE)).
+      pipe(tsProject(ts.reporter.longReporter())).
+      on('error', () => {/* Ignore compiler errors */}).
+      pipe(plumber()).
+      pipe((isProd || isProdTest) ? util.noop() : replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -361,19 +357,18 @@ gulp.task('_watch_ts', ['_ts'], () => {
 
 // compile the typescript to js in place
 gulp.task('_build_js', () => {
-  console.log('compiling ts to js...');
-
-  const input = files.ts;
-
   const SEARCH = 'const _DEBUG = false';
   const REPLACE = 'const _DEBUG = true';
 
+  console.log('compiling ts to js...');
+
   chDir('app');
 
+  const input = files.ts;
   return gulp.src(input, {base: '.'}).
       pipe(plumber()).
-      pipe(tsProject()).js.
-      pipe(replace(SEARCH, REPLACE, util.noop())).
+      pipe(tsProject(ts.reporter.longReporter())).js.
+      pipe((isProd || isProdTest) ? util.noop() : replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.src), util.noop());
 });
 
