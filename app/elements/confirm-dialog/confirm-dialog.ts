@@ -101,7 +101,8 @@ const ConfirmDialog = Polymer({
    * @param {?string} [confirmLabel]
    * @private
    */
-  open: function(text: string = 'Continue?', title: string = 'This operation cannot be undone', confirmLabel: string = null) {
+  open: function(text: string = 'Continue?', title: string = 'This operation cannot be undone',
+                 confirmLabel: string = null) {
     if (confirmLabel && (confirmLabel !== '')) {
       this.set('confirmLabel', confirmLabel);
     }
