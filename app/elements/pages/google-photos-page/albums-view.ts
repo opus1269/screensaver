@@ -65,13 +65,15 @@ const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
  */
 const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
+// noinspection JSValidateJSDoc
 /**
- * The array of {@link module:sources/photo_source_google.SelectedAlbum}
+ * The array of selected albums
  * @type {Array<module:sources/photo_source_google.SelectedAlbum>}
  * @private
  */
 let _selections: SelectedAlbum[] = [];
 
+// noinspection JSValidateJSDoc,JSValidateJSDoc,JSUnusedLocalSymbols
 /**
  * Polymer element to manage Google Photos album selections
  * @type {{}}
@@ -343,14 +345,13 @@ Polymer({
   /**
    * Event: Album checkbox state changed
    * @param {Event} ev - checkbox state changed
-   * @param {module:sources/photo_source_google.Album} ev.model.album - the album
+   * @param {{}} ev.model.album - the album
    * @returns {Promise<void>}
    * @private
    */
-  _onAlbumSelectChanged: async function(ev: Event) {
+  _onAlbumSelectChanged: async function(ev: any) {
     const METHOD = 'AlbumViews._onAlbumSelectChanged';
-    // @ts-ignore
-    const album = ev.model.album;
+    const album: Album = ev.model.album;
 
     ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
 
