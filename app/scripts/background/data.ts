@@ -83,7 +83,7 @@ const _DATA_VERSION = 24;
  * @property {module:weather.Location} location - geo location
  * @property {boolean} showCurrentWeather - display weather
  * @property {int} weatherTempUnit - temp unit (0 == C 1 == F)
- * @property {module:weather.CurrentWeather} currentWeather - weather
+ * @property {{}} currentWeather - weather
  */
 
 /**
