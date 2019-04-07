@@ -11,13 +11,8 @@
       "check-format",
       "allow-leading-underscore"
     ],
-    "max-line-length": false,
-    "ban-types": false,
-    "member-access": false,
-    "object-literal-key-quotes": false,
     "only-arrow-functions": false,
     "interface-name": false,
-    "member-ordering": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "object-literal-shorthand": false,
