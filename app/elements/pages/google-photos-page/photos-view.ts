@@ -383,13 +383,14 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: object, response: Function) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                             response: (arg0: object) => void) {
     if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;
       const msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
       this.set('waiterStatus', msg);
-      response(JSON.stringify({message: 'OK'}));
+      response({message: 'OK'});
     }
     return false;
   },

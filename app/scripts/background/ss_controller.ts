@@ -246,7 +246,8 @@ async function _onIdleStateChanged(state: string) {
  * @returns {boolean} true if asynchronous
  * @private
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender, response: Function) {
+function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                          response: (arg0: object) => void) {
   let ret = false;
   if (request.message === MyMsg.SS_SHOW.message) {
     ret = true; // async

@@ -91,17 +91,17 @@ const _errHandler = {
 };
 
 /** @type {Function} */
-export let createPages: Function = null;
+export let createPages: () => void = null;
 /** @type {Function} */
-export let setSizingType: Function = null;
+export let setSizingType: (arg0: string) => void = null;
 /** @type {Function} */
-export let isNoPhotos: Function = null;
+export let isNoPhotos: () => boolean = null;
 /** @type {Function} */
-export let setNoPhotos: Function = null;
+export let setNoPhotos: () => void = null;
 /** @type {Function} */
-export let setTimeLabel: Function = null;
+export let setTimeLabel: (arg0: string) => void = null;
 /** @type {Function} */
-export let setPaused: Function = null;
+export let setPaused: (arg0: boolean) => void = null;
 
 /**
  * Polymer element to display a screensaver

@@ -47,7 +47,7 @@ export interface Config {
  */
 export interface Response {
   ok: boolean;
-  json: Function;
+  json: Function; // tslint:disable-line ban-types // TODO figure out setting of this something weird response vs json
   status: number;
   statusText: string;
 }

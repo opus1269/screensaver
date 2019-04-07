@@ -84,7 +84,8 @@ function _onKeyCommand(cmd: string) {
  * @returns {boolean} true if asynchronous
  * @private
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: object, response: Function) {
+function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                          response: (arg0: object) => void) {
   if (request.message === MyMsg.SS_CLOSE.message) {
     _close();
   } else if (request.message === MyMsg.SS_IS_SHOWING.message) {

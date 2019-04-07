@@ -73,25 +73,25 @@ declare var ChromePromise: any;
  * Function to show a confirm dialog
  * @type {Function}
  */
-export let showConfirmDialog: Function = null;
+export let showConfirmDialog: (arg0: string, arg1: string, arg2: string, arg3: () => void) => void = null;
 
 /**
  * Function to show an error dialog
  * @type {Function}
  */
-export let showErrorDialog: Function = null;
+export let showErrorDialog: (arg0: string, arg1: string, arg2: string) => void = null;
 
 /**
  * Function to show an error dialog about failing to store data
  * @type {Function}
  */
-export let showStorageErrorDialog: Function = null;
+export let showStorageErrorDialog: (arg0: string) => void = null;
 
 /**
  * Function to call on confirm dialog confirm button click
  * @type {Function}
  */
-let confirmFn: Function = null;
+let confirmFn: () => void = null;
 
 /**
  * Manage an html page that is inserted on demand<br />
@@ -478,7 +478,7 @@ Polymer({
    * @param {string} confirmLabel - confirm button text
    * @param {Function} fn - function to call on confirm button click
    */
-  showConfirmDialog: function(text: string, title: string, confirmLabel: string, fn: Function) {
+  showConfirmDialog: function(text: string, title: string, confirmLabel: string, fn: () => void) {
     confirmFn = fn;
     this.$.confirmDialog.open(text, title, confirmLabel);
   },
@@ -714,7 +714,8 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: object, response: Function) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                             response: (arg0: object) => void) {
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
@@ -724,7 +725,7 @@ Polymer({
       }).catch((err: Error) => {
         ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
       });
-      response(JSON.stringify({message: 'OK'}));
+      response({message: 'OK'});
     } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
       // Display Error Dialog if a save action exceeded the
       // localStorage limit

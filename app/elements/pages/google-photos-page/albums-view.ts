@@ -393,7 +393,8 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: object, response: Function) {
+  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                             response: (arg0: object) => void) {
     if (request.message === MyMsg.ALBUM_COUNT.message) {
       // show user status of photo loading
       const name = request.name || '';
