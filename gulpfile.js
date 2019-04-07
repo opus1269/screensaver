@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+/* tslint:disable */
 'use strict';
 /* eslint no-console: 0 */
 /* eslint require-jsdoc: 0 */
@@ -238,28 +239,16 @@ gulp.task('incrementalBuild', (cb) => {
 });
 
 // Development build
-gulp.task('dev', ['_build_js'], (cb) => {
-
-  chDir('..');
-
-  console.log('running polymer build...');
-  // run polymer build
-  exec('polymer build', (err, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-
-    // change working directory to app
-    chDir('app');
-
-    // to set DEBUG status in code
-    runSequence('_ts');
-
-    cb(err);
-  });
+gulp.task('buildDev', (cb) => {
+  runSequence(
+      '_lint',
+      '_build_js',
+      '_poly_build_dev',
+      '_ts', cb);
 });
 
 // Production build
-gulp.task('prod', (cb) => {
+gulp.task('buildProd', (cb) => {
   isProd = true;
   isProdTest = false;
   buildDirectory = 'build/prod';
@@ -270,7 +259,7 @@ gulp.task('prod', (cb) => {
 });
 
 // Production test build Only diff is it does not have key removed
-gulp.task('prodTest', (cb) => {
+gulp.task('buildProdTest', (cb) => {
   isProd = true;
   isProdTest = true;
   buildDirectory = 'build/prodTest';
@@ -303,6 +292,21 @@ gulp.task('lintdevjs', () => {
       pipe(eslint()).
       pipe(eslint.formatEach()).
       pipe(eslint.failOnError());
+});
+
+// run polymer build for the debug build
+gulp.task('_poly_build_dev', (cb) => {
+
+  chDir('..');
+
+  console.log('running polymer build...');
+
+  // run polymer build
+  exec('polymer build', (err, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
 });
 
 // lint ts scripts
@@ -351,7 +355,7 @@ gulp.task('_watch_ts', ['_ts'], function() {
 
 // compile the typescript to js in place
 gulp.task('_build_js', () => {
-  console.log('compiling ts...');
+  console.log('compiling ts to js...');
 
   const input = files.ts;
 
