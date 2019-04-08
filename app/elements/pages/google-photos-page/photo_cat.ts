@@ -107,10 +107,8 @@ Polymer({
    * @param {Event} ev
    * @private
    */
-  _onCheckedChange: function(ev: Event) {
-    // @ts-ignore
+  _onCheckedChange: function(ev: any) {
     ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
-    // @ts-ignore
     this.fire('value-changed', {value: ev.target.checked});
   },
 });

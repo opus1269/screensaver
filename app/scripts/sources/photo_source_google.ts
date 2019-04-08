@@ -799,34 +799,32 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {{}} mediaItem - object
-   *     from Google Photos API call
+   * @param {{}} mediaItem - object from Google Photos API call
    * @param {string} albumName - Album name
    * @static
    * @private
    */
   private static _processPhoto(mediaItem: any, albumName: string) {
     let photo: Photo = null;
+
     if (mediaItem && mediaItem.mediaMetadata) {
       if (this._isImage(mediaItem)) {
+
         const mediaMetadata = mediaItem.mediaMetadata;
         const size = this._getImageSize(mediaMetadata);
         const width = size.width;
         const height = size.height;
 
-        // @ts-ignore
-        photo = {};
-
-        photo.url = `${mediaItem.baseUrl}=w${width}-h${height}`;
-        photo.asp = (width / height).toPrecision(3);
-        // use album name instead
-        photo.author = albumName;
-        // unique photo id and url to photo in Google Photos
-        photo.ex = {
-          id: mediaItem.id,
-          url: mediaItem.productUrl,
+        photo = {
+          url: `${mediaItem.baseUrl}=w${width}-h${height}`,
+          asp: (width / height).toPrecision(3),
+          author: albumName,
+          ex: {
+            id: mediaItem.id,
+            url: mediaItem.productUrl,
+          },
+          point: null,
         };
-        photo.point = null;
       }
     }
 

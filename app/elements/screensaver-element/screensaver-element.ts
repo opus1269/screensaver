@@ -466,7 +466,6 @@ const Screensaver = Polymer({
       // url failed to load
       _errHandler.isUpdating = true;
 
-      // @ts-ignore
       const model = ev.model;
       const theIndex = model.index;
       const theView = this._views[theIndex];
