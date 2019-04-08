@@ -3,7 +3,6 @@
     "target": "es2018",
     "module": "esnext",
     "noImplicitAny": true,
-    "allowJs": true,
     "watch": false,
     "typeRoots": [
       "./app/node_modules/@types"
@@ -17,5 +16,5 @@
       "dom.iterable"
     ]
   }
- 
+
 }
