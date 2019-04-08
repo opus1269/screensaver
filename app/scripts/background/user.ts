@@ -30,11 +30,9 @@ import * as MyGA from '../../scripts/my_analytics.js';
 async function _onSignInChanged(account: chrome.identity.AccountInfo, signedIn: boolean) {
   if (!signedIn) {
 
-    // clearing browsing data can trigger this even though still signed in
+    // clearing browsing data (other stuff?) can trigger this even though still signed in
     const isSignedIn = await ChromeAuth.isSignedIn();
     if (isSignedIn) {
-      ChromeGA.error('False positive Chrome signout',
-          'User._onSignInChanged');
       return Promise.resolve();
     }
 
