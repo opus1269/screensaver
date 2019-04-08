@@ -315,7 +315,7 @@ Polymer({
                       class="center horizontal layout"
                       on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
             <iron-icon icon="[[item.icon]]"></iron-icon>
-            <span>[[item.label]]</span>
+            <span class="flex">[[item.label]]</span>
           </paper-item>
         </template>
       </paper-listbox>
