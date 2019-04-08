@@ -22,19 +22,8 @@ import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/slide-animatable/slide-animatable.js';
 import '../../elements/weather-element/weather-element.js';
 
-import '../../elements/pages/settings-page/settings-page.js';
-import '../../elements/pages/error-page/error-page.js';
-import '../../elements/pages/help-page/help-page.js';
-import '../../elements/pages/google-photos-page/google-photos-page.js';
-
 import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import '../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
-import '../../elements/setting-elements/setting-toggle/setting-toggle.js';
-import '../../elements/setting-elements/setting-slider/setting-slider.js';
-import '../../elements/setting-elements/setting-link/setting-link.js';
-import '../../elements/setting-elements/setting-background/setting-background.js';
-import '../../elements/setting-elements/setting-time/setting-time.js';
-import '../../elements/setting-elements/setting-text/setting-text.js';
+import '../../elements/shared-styles.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -229,7 +218,9 @@ const Screensaver = Polymer({
     </template>
   </neon-animated-pages>
 </div>
+
 <div class="noPhotos" hidden$="[[!noPhotos]]">[[localize('no_photos')]]</div>
+
 <iron-image id="pauseImage" class="vcr" src="../images/pause.png" sizing="contain" preload
             hidden$="[[!paused]]"></iron-image>
 <iron-image id="playImage" class="vcr" src="../images/play.png" sizing="contain" preload
@@ -245,7 +236,7 @@ const Screensaver = Polymer({
   properties: {
 
     /**
-     * Array of {@link module:ss/views/view.SSView} objects
+     * Array of {@link SSView} objects
      */
     _views: {
       type: Array,
@@ -346,7 +337,7 @@ const Screensaver = Polymer({
   },
 
   /**
-   * Create the {@link module:ss/views.Views} that will be animated
+   * Create the {@link SSViews} that will be animated
    */
   createPages: function() {
     SSViews.create(this);
