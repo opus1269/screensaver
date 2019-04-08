@@ -10,44 +10,29 @@
  * @module ss/views/view
  */
 
-// TODO add back
-// import * as ChromeGA
-//   from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import SSPhoto from '../ss_photo.js';
+
+import {IronImageElement} from '../../../node_modules/@polymer/iron-image/iron-image.js';
+import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import SSPhoto from '../ss_photo.js';
-
-// TODO add back
-// import * as Geo from '../geo.js';
 
 /**
  * Aspect ratio of screen
- * @type {number}
- * @private
- * @const
  */
 const _SCREEN_AR = screen.width / screen.height;
 
 /**
  * Base class for other SSView classes
- * @property {Element} image - paper-image
- * @property {Element} author - label
- * @property {Element} time - label
- * @property {Element} location - Geo location
- * @property {Element} weather - current weather
- * @property {Object} model - template item model
- * @property {string} url - photo url, binding
- * @property {string} authorLabel - author text, binding
- * @property {string} locationLabel - location text, binding
- * @alias module:ss/views/view.SSView
  */
-abstract class SSView {
+export default abstract class SSView {
+
   /**
    * Should we show the time
-   * @returns {boolean} true if we should show the time
-   * @static
+   * @returns true if we should show the time
    */
   public static showTime() {
     return ChromeStorage.getBool('showTime');
@@ -55,9 +40,9 @@ abstract class SSView {
 
   /**
    * Determine if a given aspect ratio should be ignored
-   * @param {number|string} asp - an aspect ratio
-   * @param {int} photoSizing - the sizing type
-   * @returns {boolean} true if the aspect ratio should be ignored
+   * @param asp - an aspect ratio
+   * @param photoSizing - the sizing type
+   * @returns true if the aspect ratio should be ignored
    */
   public static ignore(asp: number, photoSizing: number) {
     let ret = false;
@@ -73,33 +58,22 @@ abstract class SSView {
     return ret;
   }
 
-  // TODO add back for geolocation
-  // /**
-  //  * Should we show the location, if available
-  //  * @returns {boolean} true if we should show the location
-  //  * @static
-  //  */
-  // private static _showLocation() {
-  //   return ChromeStorage.getBool('showLocation');
-  // }
-
   /**
    * Call notifyPath after set because dirty checking doesn't always work
-   * @param {Object} model - model to change
-   * @param {string} prop - property name
-   * @param {Object} value - property value
+   * @param model - model to change
+   * @param prop - property name
+   * @param value - property value
    * @private
    */
-  private static _dirtySet(model: any, prop: string, value: any) {
+  private static _dirtySet(model: PolymerElement, prop: string, value: any) {
     model.set(prop, value);
     model.notifyPath(prop);
   }
 
   /**
-   * Determine if a photo would look bad zoomed or stretched on the screen
-   * @param {number} asp - an aspect ratio
-   * @returns {boolean} true if a photo aspect ratio differs substantially
-   * from the screens'
+   * Determine if a photo would look bad zoomed or stretched at the given aspect ration
+   * @param asp - an aspect ratio
+   * @returns true if a photo aspect ratio differs substantially from the screens'
    * @private
    */
   private static _isBadAspect(asp: number) {
@@ -108,20 +82,39 @@ abstract class SSView {
     return (asp < _SCREEN_AR - CUT_OFF) || (asp > _SCREEN_AR + CUT_OFF);
   }
 
+  /** The photo we are viewing */
   public photo: SSPhoto;
-  public image: HTMLElement;
-  public author: HTMLElement;
-  public time: HTMLElement;
-  public location: HTMLElement;
-  public weather: HTMLElement;
-  public model: any;
+
+  /** The element to render the photo */
+  public image: IronImageElement;
+
+  /** The element to render the photographers name */
+  public author: HTMLDivElement;
+
+  /** The element to render the current time */
+  public time: HTMLDivElement;
+
+  /** The element to render the location the photo was taken */
+  public location: HTMLDivElement;
+
+  /** The element to render the current weather */
+  public weather: PolymerElement;
+
+  /** The element for our instance */
+  public model: PolymerElement;
+
+  /** The url to the photo */
   public url: string;
+
+  /** The name of the photographer */
   public authorLabel: string;
+
+  /** The description of the location where the photo was taken */
   public locationLabel: string;
 
   /**
    * Create a new SSView
-   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
+   * @param photo - The SSPhoto to view
    */
   protected constructor(photo: SSPhoto) {
     this.photo = photo;
@@ -138,7 +131,7 @@ abstract class SSView {
 
   /**
    * Set the url
-   * @param {?string} url to use if not null
+   * @param url - The url of the SSPhoto
    */
   public setUrl(url: string = null) {
     this.url = url || this.photo.getUrl();
@@ -156,15 +149,15 @@ abstract class SSView {
 
   /**
    * Set the elements of the view
-   * @param {Element} image - paper-image, photo
-   * @param {Element} author - div, photographer
-   * @param {Element} time - div, current time
-   * @param {Element} location - div, geolocation text
-   * @param {Element} weather - weather-element weather
-   * @param {Object} model - template item model
+   * @param image - iron-image of the photo
+   * @param author - div, photographer
+   * @param time - div, current time
+   * @param location - div, geolocation text
+   * @param weather - weather-element weather
+   * @param model - template item model
    */
-  public setElements(image: HTMLElement, author: HTMLElement, time: HTMLElement, location: HTMLElement,
-                     weather: HTMLElement, model: any) {
+  public setElements(image: IronImageElement, author: HTMLDivElement, time: HTMLDivElement, location: HTMLDivElement,
+                     weather: PolymerElement, model: PolymerElement) {
     this.image = image;
     this.author = author;
     this.time = time;
@@ -178,7 +171,7 @@ abstract class SSView {
 
   /**
    * Set the photo
-   * @param {module:ss/photo.SSPhoto} photo - a photo to render
+   * @param photo - the photo to view
    */
   public setPhoto(photo: SSPhoto) {
     this.photo = photo;
@@ -188,33 +181,30 @@ abstract class SSView {
   }
 
   /**
-   * Render the page for display - the default CSS is for our view
-   * subclasses override this to determine the look of photo
+   * Render the page for display - subclasses override this to determine the look of photo
    */
   public render() {
   }
 
   /**
    * Determine if a photo failed to load (usually 404 or 403 error)
-   * @returns {boolean} true if image load failed
+   * @returns true if image load failed
    */
   public isError() {
-    // @ts-ignore
     return !this.image || this.image.error;
   }
 
   /**
    * Determine if a photo has finished loading
-   * @returns {boolean} true if image is loaded
+   * @returns true if image is loaded
    */
   public isLoaded() {
-    // @ts-ignore
     return !!this.image && this.image.loaded;
   }
 
   /**
    * Does a photo have an author label to show
-   * @returns {boolean} true if we should show the author
+   * @returns true if we should show the author
    */
   protected _hasAuthor() {
     const photographer = this.photo.getPhotographer();
@@ -223,7 +213,7 @@ abstract class SSView {
 
   /**
    * Does a view have an author label set
-   * @returns {boolean} true if author label is not empty
+   * @returns true if author label is not empty
    */
   protected _hasAuthorLabel() {
     return !ChromeUtils.isWhiteSpace(this.authorLabel);
@@ -231,7 +221,7 @@ abstract class SSView {
 
   /**
    * Does a photo have a geolocation
-   * @returns {boolean} true if geolocation point is non-null
+   * @returns true if geolocation point is non-null
    */
   protected _hasLocation() {
     return !!this.photo.getPoint();
@@ -239,7 +229,7 @@ abstract class SSView {
 
   /**
    * Does a view have an location label set
-   * @returns {boolean} true if location label is not empty
+   * @returns true if location label is not empty
    */
   protected _hasLocationLabel() {
     return !ChromeUtils.isWhiteSpace(this.locationLabel);
@@ -314,6 +304,4 @@ abstract class SSView {
     // }
   }
 }
-
-export default SSView;
 

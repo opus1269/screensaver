@@ -18,25 +18,39 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  */
 
 /**
- * A photo for the {@link module:els/screensaver.Screensaver}
- * @property {int} _id - unique id
- * @alias module:ss/photo.SSPhoto
+ * A photo for the screensaver
  */
-class SSPhoto {
+export default class SSPhoto {
+
+  /** The person that took the photo */
   private readonly _photographer: string;
+
+  /** The PhotoSource type the photo came from */
   private readonly _type: string;
+
+  /** The aspect ratio of the photo */
   private readonly _aspectRatio: number;
+
+  /** Extra information about the photo */
   private readonly _ex: any | null;
+
+  /** The location where the photo was taken */
   private readonly _point: string | null;
+
+  /** A unique id for the photo */
   private _id: number;
+
+  /** The url to the photo */
   private _url: string;
+
+  /** Indicates if the photo is not usable for some reason */
   private _isBad: boolean;
 
   /**
    * Create a new photo
-   * @param {int} id - unique id
-   * @param {module:sources/photo_source.Photo} source - source photo
-   * @param {string} sourceType - type of {@link module:sources/photo_source}
+   * @param id - unique id
+   * @param source - persisted source photo
+   * @param sourceType - the PhotoSource type this photo is from
    */
   constructor(id: number, source: Photo, sourceType: string) {
     this._id = id;
@@ -51,7 +65,6 @@ class SSPhoto {
 
   /**
    * Get unique id
-   * @returns {int} id
    */
   public getId() {
     return this._id;
@@ -59,7 +72,6 @@ class SSPhoto {
 
   /**
    * Set unique id
-   * @param {int} id - unique id
    */
   public setId(id: number) {
     this._id = id;
@@ -67,7 +79,6 @@ class SSPhoto {
 
   /**
    * Is photo bad
-   * @returns {boolean} true if bad
    */
   public isBad() {
     return this._isBad;
@@ -82,7 +93,6 @@ class SSPhoto {
 
   /**
    * Get photo url
-   * @returns {string} url
    */
   public getUrl() {
     return this._url;
@@ -90,7 +100,7 @@ class SSPhoto {
 
   /**
    * Set the url
-   * @param {string} url - url to photo
+   * @param url to photo
    */
   public setUrl(url: string) {
     this._url = url;
@@ -99,7 +109,6 @@ class SSPhoto {
 
   /**
    * Get photo source type
-   * @returns {string} type
    */
   public getType() {
     return this._type;
@@ -107,7 +116,6 @@ class SSPhoto {
 
   /**
    * Get photographer
-   * @returns {string} photographer
    */
   public getPhotographer() {
     return this._photographer;
@@ -115,7 +123,6 @@ class SSPhoto {
 
   /**
    * Get photo aspect ratio
-   * @returns {number} aspect ratio
    */
   public getAspectRatio() {
     return this._aspectRatio;
@@ -123,7 +130,6 @@ class SSPhoto {
 
   /**
    * Get geo location point
-   * @returns {?string} point
    */
   public getPoint() {
     return this._point;
@@ -131,15 +137,13 @@ class SSPhoto {
 
   /**
    * Get extra information
-   * @returns {?Object} extra object
    */
   public getEx() {
     return this._ex;
   }
 
   /**
-   * Create a new tab with a link to the
-   * original source of the photo, if possible
+   * Create a new tab with a link to the original source of the photo, if possible
    */
   public showSource() {
     let regex;
@@ -175,5 +179,3 @@ class SSPhoto {
     }
   }
 }
-
-export default SSPhoto;
