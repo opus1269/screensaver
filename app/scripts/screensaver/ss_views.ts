@@ -6,27 +6,28 @@
  */
 
 /**
- * Collection of {@link module:ss/views/view.SSView} objects
+ * Collection of {@link SSView} objects
  * @module ss/views
  */
+
+import {PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image.js';
+import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+import SSView from './views/ss_view.js';
+import SSPhoto from './ss_photo.js';
 import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
-import './views/ss_view.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
-import SSPhoto from './ss_photo.js';
 
 /**
  * Enum for view type
- * @typedef {int} module:ss/views.Type
- * @readonly
- * @enum {int} module:ss/views.Type
  */
 export const Type = {
   UNDEFINED: -1,
@@ -45,28 +46,18 @@ export const Type = {
  */
 const _MAX_VIEWS = 10;
 
-// TODO fix any dont get circular reference
 /**
  * The array of views
- * @typedef {Array<module:ss/views/view.SSView>} module:ss/views.Views
- * @type module:ss/views.Views
- * @const
- * @private
  */
-const _views: any = [];
+const _views: SSView[] = [];
 
-// TODO fix any
 /**
  * The neon-animated-pages
- * @type {Element|null}
- * @private
  */
-let _pages: any = null;
+let _pages: NeonAnimatedPagesElement = null;
 
 /**
  * The view type
- * @type {module:ss/views.Type|int}
- * @private
  */
 let _type = Type.UNDEFINED;
 
@@ -101,11 +92,11 @@ function _setViewType() {
 
 // TODO fix any
 /**
- * Create the {@link module:ss/views/view.SSView} pages
- * @param {PolymerElement} t
+ * Create the {@link _views} array
+ * @param element - The screensaver element
  */
-export function create(t: any) {
-  _pages = t.$.pages;
+export function create(element: any) {
+  _pages = element.$.pages;
   _setViewType();
 
   const len = Math.min(SSPhotos.getCount(), _MAX_VIEWS);
@@ -117,25 +108,25 @@ export function create(t: any) {
   SSPhotos.setCurrentIndex(len);
 
   // set and force render of animated pages
-  t.set('_views', _views);
-  t.$.repeatTemplate.render();
+  element.set('_views', _views);
+  element.$.repeatTemplate.render();
 
-  // set the Elements of each view TODO fix any
-  _views.forEach((view: any, index: number) => {
+  // set the Elements of each view
+  _views.forEach((view: SSView, index: number) => {
     const el = _pages.querySelector('#view' + index);
-    const image = el.querySelector('.image');
-    const author = el.querySelector('.author');
-    const time = el.querySelector('.time');
-    const location = el.querySelector('.location');
-    const weather = el.querySelector('.weather');
-    const model = t.$.repeatTemplate.modelForElement(el);
+    const image: IronImageElement = el.querySelector('.image');
+    const author: HTMLDivElement = el.querySelector('.author');
+    const time: HTMLDivElement = el.querySelector('.time');
+    const location: HTMLDivElement = el.querySelector('.location');
+    const weather: PolymerElement = el.querySelector('.weather');
+    const model = element.$.repeatTemplate.modelForElement(el);
     view.setElements(image, author, time, location, weather, model);
   });
 }
 
 /**
  * Get the type of view
- * @returns {module:ss/views.Type}
+ * @returns The PhotoSource type
  */
 export function getType() {
   if (_type === Type.UNDEFINED) {
@@ -153,9 +144,9 @@ export function getCount() {
 }
 
 /**
- * Get the {@link module:ss/views/view.SSView} at the given index
- * @param {int} idx - The index
- * @returns {module:ss/views/view.SSView}
+ * Get the {@link SSView} at the given index
+ * @param idx - The index
+ * @returns The SSView
  */
 export function get(idx: number) {
   return _views[idx];
@@ -163,18 +154,24 @@ export function get(idx: number) {
 
 /**
  * Get the selected index
- * @returns {int|undefined} The index
+ * @returns The index of the current view
  */
 export function getSelectedIndex() {
   if (_pages) {
-    return _pages.selected;
+    let selected: number;
+    if (typeof _pages.selected === 'string') {
+      selected = parseInt(_pages.selected, 10);
+    } else {
+      selected = _pages.selected;
+    }
+    return selected;
   }
   return;
 }
 
 /**
  * Set the selected index
- * @param {int} selected
+ * @param selected - The index of the views
  */
 export function setSelectedIndex(selected: number) {
   _pages.selected = selected;
@@ -182,8 +179,8 @@ export function setSelectedIndex(selected: number) {
 
 /**
  * Is the given idx the selected index
- * @param {int} idx - index into {@link module:ss/views.Views}
- * @returns {boolean} true if selected
+ * @param idx - index into {@link _views}
+ * @returns true if selected
  */
 export function isSelectedIndex(idx: number) {
   let ret = false;
@@ -194,9 +191,9 @@ export function isSelectedIndex(idx: number) {
 }
 
 /**
- * Is the given {@link module:ss/photo.SSPhoto} in one of the {@link module:ss/views.Views}
- * @param {module:ss/photo.SSPhoto} photo
- * @returns {boolean} true if in {@link module:ss/views.Views}
+ * Is the given {@link SSPhoto} in one of the {@link _views}
+ * @param photo - The photo to check
+ * @returns true if in {@link _views}
  */
 export function hasPhoto(photo: SSPhoto) {
   let ret = false;
@@ -211,7 +208,7 @@ export function hasPhoto(photo: SSPhoto) {
 
 /**
  * Do we have a view with a usable photo
- * @returns {boolean} true if at least one photo is valid
+ * @returns true if at least one photo is valid
  */
 export function hasUsable() {
   let ret = false;
@@ -252,8 +249,8 @@ export function replaceAll() {
 
 /**
  * Try to find a photo that has finished loading
- * @param {int} idx - index into {@link module:ss/views.Views}
- * @returns {int} index into {@link module:ss/views.Views}, -1 if none are loaded
+ * @param idx - index into {@link _views}
+ * @returns index into {@link _views}, -1 if none are loaded
  */
 export function findLoadedPhoto(idx: number) {
   if (!hasUsable()) {
