@@ -69,6 +69,17 @@ declare var ChromePromise: any;
  * @module els/app_main
  */
 
+interface Page {
+  label: string;
+  route: string;
+  icon: string;
+  fn: (arg0: number, arg1: string) => void;
+  url: string;
+  ready: boolean;
+  disabled: boolean;
+  divider: boolean;
+}
+
 /**
  * Function to show a confirm dialog
  * @type {Function}
@@ -130,57 +141,49 @@ const PUSHY_URI =
  * Array of pages
  * @type {module:els/app_main.Page[]}
  */
-const pages = [
+const pages: Page[] = [
   {
     label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
-    icon: 'myicons:settings', obj: null, ready: true, divider: false,
+    icon: 'myicons:settings', fn: null, url: null, ready: true, disabled: false, divider: false,
   },
   {
     label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
-    icon: 'myicons:pageview', obj: null, ready: true,
-    divider: false,
+    icon: 'myicons:pageview', fn: null, url: null, ready: true, disabled: false, divider: false,
   },
   {
-    label: ChromeLocale.localize('menu_google'),
-    route: 'page-google-photos', icon: 'myicons:cloud',
-    obj: null, ready: false, divider: true,
+    label: ChromeLocale.localize('menu_google'), route: 'page-google-photos',
+    icon: 'myicons:cloud', fn: null, url: null, ready: false, divider: true, disabled: false,
   },
   {
-    label: ChromeLocale.localize('menu_permission'),
-    route: 'page-permission', icon: 'myicons:perm-data-setting',
-    obj: null, ready: true, divider: false,
+    label: ChromeLocale.localize('menu_permission'), route: 'page-permission',
+    icon: 'myicons:perm-data-setting', fn: null, url: null, ready: true, divider: false, disabled: false,
   },
   {
     label: ChromeLocale.localize('menu_error'), route: 'page-error',
-    // @ts-ignore
-    icon: 'myicons:error', obj: null,
-    ready: false, disabled: false, divider: true,
+    icon: 'myicons:error', fn: null, url: null, ready: false, disabled: false, divider: true,
   },
   {
     label: ChromeLocale.localize('menu_help'), route: 'page-help',
-    icon: 'myicons:help', obj: null, ready: false,
-    divider: false,
+    icon: 'myicons:help', fn: null, url: null, ready: false, divider: false, disabled: false,
   },
   {
     label: ChromeLocale.localize('help_faq'), route: 'page-faq',
-    icon: 'myicons:help',
-    obj: 'https://opus1269.github.io/screensaver/faq.html',
-    ready: true, divider: false,
+    icon: 'myicons:help', fn: null, url: 'https://opus1269.github.io/screensaver/faq.html', ready: true,
+    divider: false, disabled: false,
   },
   {
     label: ChromeLocale.localize('menu_support'), route: 'page-support',
-    icon: 'myicons:help', obj: `${EXT_URI}support`, ready: true,
-    divider: false,
+    icon: 'myicons:help', fn: null, url: `${EXT_URI}support`, ready: true,
+    divider: false, disabled: false,
   },
   {
     label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
-    icon: 'myicons:grade', obj: `${EXT_URI}reviews`, ready: true,
-    divider: false,
+    icon: 'myicons:grade', fn: null, url: `${EXT_URI}reviews`, ready: true,
+    divider: false, disabled: false,
   },
   {
     label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
-    icon: 'myicons:extension', obj: PUSHY_URI, ready: true,
-    divider: true,
+    icon: 'myicons:extension', fn: null, url: PUSHY_URI, ready: true, divider: true, disabled: false,
   },
 ];
 
@@ -411,11 +414,11 @@ Polymer({
     showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
 
     // initialize page functions
-    pages[1].obj = this._showScreensaverPreview.bind(this);
-    pages[2].obj = this._showGooglePhotosPage.bind(this);
-    pages[3].obj = this._showPermissionsDialog.bind(this);
-    pages[4].obj = this._showErrorPage.bind(this);
-    pages[5].obj = this._showHelpPage.bind(this);
+    pages[1].fn = this._showScreensaverPreview.bind(this);
+    pages[2].fn = this._showGooglePhotosPage.bind(this);
+    pages[3].fn = this._showPermissionsDialog.bind(this);
+    pages[4].fn = this._showErrorPage.bind(this);
+    pages[5].fn = this._showHelpPage.bind(this);
 
     // listen for chrome messages
     ChromeMsg.listen(this._onChromeMessage.bind(this));
@@ -507,23 +510,24 @@ Polymer({
       appDrawer.close();
     }
 
-    // @ts-ignore
-    const idx = this._getPageIdx(ev.currentTarget.id);
-
-    ChromeGA.event(ChromeGA.EVENT.MENU, pages[idx].route);
-
     const prevRoute = this.route;
 
-    if (!pages[idx].obj) {
-      // some pages are just pages
-      this.set('route', pages[idx].route);
-    } else if (typeof pages[idx].obj === 'string') {
+    // @ts-ignore
+    const idx = this._getPageIdx(ev.currentTarget.id);
+    const page = pages[idx];
+
+    ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
+
+    if (page.url) {
       // some pages are url links
       this.$.mainMenu.select(prevRoute);
-      chrome.tabs.create({url: pages[idx].obj});
-    } else {
+      chrome.tabs.create({url: page.url});
+    } else if (page.fn) {
       // some pages have functions to view them
-      pages[idx].obj(idx, prevRoute);
+      page.fn(idx, prevRoute);
+    } else {
+      // some pages are just pages
+      this.set('route', page.route);
     }
   },
 
@@ -589,9 +593,10 @@ Polymer({
   /**
    * Show the Google Photos page
    * @param {int} index - index into {@link module:els/app_main.pages}
+   * @param {string} [prevRoute] - last page selected
    * @private
    */
-  _showGooglePhotosPage: function(index: number) {
+  _showGooglePhotosPage: function(index: number, prevRoute: string) {
     signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
@@ -614,9 +619,10 @@ Polymer({
   /**
    * Show the error viewer page
    * @param {int} index - index into {@link module:els/app_main.pages}
+   * @param {string} prevRoute - last page selected
    * @private
    */
-  _showErrorPage: function(index: number) {
+  _showErrorPage: function(index: number, prevRoute: string) {
     if (!pages[index].ready) {
       // insert the page the first time
       pages[index].ready = true;
@@ -629,9 +635,10 @@ Polymer({
   /**
    * Show the help page
    * @param {int} index - index into {@link module:els/app_main.pages}
+   * @param {string} prevRoute - last page selected
    * @private
    */
-  _showHelpPage: function(index: number) {
+  _showHelpPage: function(index: number, prevRoute: string) {
     if (!pages[index].ready) {
       // insert the page the first time
       pages[index].ready = true;
