@@ -139,7 +139,7 @@ const PUSHY_URI =
 
 /**
  * Array of pages
- * @type {module:els/app_main.Page[]}
+ * @type {Page[]}
  */
 const pages: Page[] = [
   {
@@ -189,8 +189,6 @@ const pages: Page[] = [
 
 /**
  * Google Photos Page
- * @type {module:els/pgs/google_photos.GooglePhotosPage}
- * @private
  */
 let gPhotosPage: any;
 
@@ -726,7 +724,7 @@ Polymer({
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): any => {
+      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): chrome.tabs.Tab => {
         chrome.tabs.update(tab.id, {highlighted: true});
         return null;
       }).catch((err: Error) => {

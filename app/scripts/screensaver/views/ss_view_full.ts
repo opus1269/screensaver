@@ -17,14 +17,13 @@ import SSPhoto from '../ss_photo.js';
 
 /**
  * Full view
- * @extends module:ss/views/view.SSView
  * @alias module:ss/views/view_full.SSViewFull
  */
-class SSViewFull extends SSView {
+export default class SSViewFull extends SSView {
 
   /**
    * Create new SSViewFull
-   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
+   * @param photo - An {@link SSPhoto}
    * @constructor
    */
   constructor(photo: SSPhoto) {
@@ -37,13 +36,10 @@ class SSViewFull extends SSView {
   public render() {
     super.render();
 
-    // @ts-ignore
     const img: any = this.image.$.img;
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.objectFit = 'fill';
   }
 }
-
-export default SSViewFull;
 

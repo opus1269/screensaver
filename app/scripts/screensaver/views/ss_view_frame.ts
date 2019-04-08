@@ -17,10 +17,8 @@ import SSPhoto from '../ss_photo.js';
 
 /**
  * Frame view
- * @extends module:ss/views/view.SSView
- * @alias module:ss/views/view_frame.SSViewFrame
  */
-class SSViewFrame extends SSView {
+export default class SSViewFrame extends SSView {
 
   /**
    * Set style info for a label
@@ -31,13 +29,13 @@ class SSViewFrame extends SSView {
    * @static
    * @private
    */
-  private static _setLabelStyle(style: any, width: number, height: number, isLeft: boolean) {
+  private static _setLabelStyle(style: CSSStyleDeclaration, width: number, height: number, isLeft: boolean) {
     style.textOverflow = 'ellipsis';
     style.whiteSpace = 'nowrap';
     style.color = 'black';
-    style.opacity = 1.0;
+    style.opacity = '1.0';
     style.fontSize = '2.5vh';
-    style.fontWeight = 400;
+    style.fontWeight = '400';
 
     // percent of screen width for label padding
     const padPer = 0.5;
@@ -66,7 +64,7 @@ class SSViewFrame extends SSView {
 
   /**
    * Create new SSViewFrame
-   * @param {module:ss/photo.SSPhoto} photo
+   * @param photo - the photo to render
    * @constructor
    */
   constructor(photo: SSPhoto) {
@@ -85,7 +83,6 @@ class SSViewFrame extends SSView {
     const timeStyle = this.time.style;
     const image = this.image;
     const imageStyle = image.style;
-    // @ts-ignore
     const img: any = image.$.img;
     const imgStyle = img.style;
     const photo = this.photo;
@@ -152,6 +149,4 @@ class SSViewFrame extends SSView {
     }
   }
 }
-
-export default SSViewFrame;
 

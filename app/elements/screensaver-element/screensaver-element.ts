@@ -442,8 +442,7 @@ const Screensaver = Polymer({
 
   /**
    * Event: Error state changed for a photo view
-   * @param {Event} ev - the event object
-   * @param {Object} ev.model - template model
+   * @param ev - the event object
    */
   _onErrorChanged: async function(ev: any) {
     const isError: boolean = ev.detail.value;
