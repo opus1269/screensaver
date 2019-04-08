@@ -721,7 +721,8 @@ Polymer({
    * @returns {boolean} true if asynchronous
    * @private
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+  _onChromeMessage: function(request: ChromeMsg.MsgType,
+                             sender: chrome.runtime.MessageSender,
                              response: (arg0: object) => void) {
     if (request.message === ChromeMsg.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
