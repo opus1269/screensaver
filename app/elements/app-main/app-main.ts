@@ -502,7 +502,7 @@ Polymer({
    * @param {Event} ev - ClickEvent
    * @private
    */
-  _onNavMenuItemTapped: function(ev: Event) {
+  _onNavMenuItemTapped: function(ev: any) {
     // Close drawer after menu item is selected if it is in narrow layout
     const appDrawerLayout = this.$$('#appDrawerLayout');
     const appDrawer = this.$$('#appDrawer');
@@ -512,7 +512,6 @@ Polymer({
 
     const prevRoute = this.route;
 
-    // @ts-ignore
     const idx = this._getPageIdx(ev.currentTarget.id);
     const page = pages[idx];
 
