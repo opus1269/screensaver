@@ -31,6 +31,7 @@ import {MsgType} from './chrome-extension-utils/scripts/msg.js';
  * @property {module:chrome/msg.Message} ALBUM_PHOTOS_COUNT - number of photos
  * loaded so far
  * @property {module:chrome/msg.Message} UPDATE_WEATHER_ALARM
+ * @property {module:chrome/msg.Message} UPDATE_WEATHER - update current weather
  * @const
  */
 const _MSG = {
@@ -68,6 +69,9 @@ const _MSG = {
   UPDATE_WEATHER_ALARM: {
     message: 'updateWeatherAlarm',
   },
+  UPDATE_WEATHER: {
+    message: 'updateWeather',
+  },
 };
 
 export const SS_SHOW: MsgType = _MSG.SS_SHOW;
@@ -80,3 +84,4 @@ export const LOAD_ALBUMS: MsgType = _MSG.LOAD_ALBUMS;
 export const LOAD_ALBUM: MsgType = _MSG.LOAD_ALBUM;
 export const ALBUM_COUNT: MsgType = _MSG.ALBUM_COUNT;
 export const UPDATE_WEATHER_ALARM: MsgType = _MSG.UPDATE_WEATHER_ALARM;
+export const UPDATE_WEATHER: MsgType = _MSG.UPDATE_WEATHER;

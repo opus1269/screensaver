@@ -20,6 +20,7 @@ import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
@@ -204,7 +205,16 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
     }).catch((err) => {
       response({errorMessage: err.message});
     });
+  } else if (request.message === MyMsg.UPDATE_WEATHER.message) {
+    ret = true;
+    Weather.update().then(() => {
+      response({message: 'OK'});
+      return null;
+    }).catch((err) => {
+      response({errorMessage: err.message});
+    });
   }
+
   return ret;
 }
 

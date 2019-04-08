@@ -37,7 +37,8 @@ import '../../elements/setting-elements/setting-time/setting-time.js';
 import '../../elements/setting-elements/setting-text/setting-text.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
-import * as Weather from '../../scripts/weather.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+
 import '../../scripts/screensaver/ss_events.js';
 import '../../scripts/screensaver/ss_history.js';
 import '../../scripts/screensaver/ss_photo.js';
@@ -58,6 +59,7 @@ import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -319,8 +321,7 @@ const Screensaver = Polymer({
 
     // set selected background image
     document.body.style.background = ChromeStorage.get('background',
-        'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').
-        substring(11);
+        'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
     // Initialize exports
     createPages = this.createPages.bind(this);
@@ -434,8 +435,8 @@ const Screensaver = Polymer({
     try {
       const hasPhotos = await SSBuilder.build();
       if (hasPhotos) {
-        // update the weather - don't wait as can slow
-        Weather.update().catch(() => {});
+        // send msg to update weather. don't wait can be slow
+        ChromeMsg.send(MyMsg.UPDATE_WEATHER).catch(() => {});
 
         // kick off the slide show
         SSRunner.start(delay);
@@ -453,9 +454,8 @@ const Screensaver = Polymer({
    * @param {Event} ev - the event object
    * @param {Object} ev.model - template model
    */
-  _onErrorChanged: async function(ev: Event) {
-    // @ts-ignore
-    const isError = ev.detail.value;
+  _onErrorChanged: async function(ev: any) {
+    const isError: boolean = ev.detail.value;
 
     if (_errHandler.isUpdating) {
       // another error event is already handling this

@@ -84,9 +84,7 @@ export async function send(type: MsgType) {
     const response = await chromep.runtime.sendMessage(type);
     return Promise.resolve(response);
   } catch (err) {
-    if (err.message &&
-        !err.message.includes('port closed') &&
-        !err.message.includes('Receiving end does not exist')) {
+    if (err.message && !err.message.includes('port closed') && !err.message.includes('Receiving end does not exist')) {
       const msg = `type: ${type.message}, ${err.message}`;
       ChromeGA.error(msg, 'Msg.send');
     }
@@ -94,11 +92,12 @@ export async function send(type: MsgType) {
   }
 }
 
-// TODO how to specify the function type?
 /**
  * Add a listener for chrome messages
  * @param {Function} listener - function to receive messages
  */
-export function listen(listener: any) {
+export function listen(listener: (arg0: MsgType,
+                                  arg1: chrome.runtime.MessageSender,
+                                  arg2: (arg0: object) => void) => boolean) {
   chrome.runtime.onMessage.addListener(listener);
 }
