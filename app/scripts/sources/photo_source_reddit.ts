@@ -60,7 +60,7 @@ const _MAX_SIZE = 3500;
  * @type {Function}
  * @private
  */
-let _snoocore;
+let _snoocore: Function; // tslint:disable-line ban-types
 
 /**
  * A source of photos from reddit
@@ -95,7 +95,7 @@ class RedditSource extends PhotoSource {
    */
   private static _processChildren(children: any[]) {
     const photos: Photo[] = [];
-    let url;
+    let url: string;
     let width = 1;
     let height = 1;
 

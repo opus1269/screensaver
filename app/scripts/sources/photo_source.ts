@@ -105,13 +105,13 @@ export abstract class PhotoSource {
     }
   }
 
-  private _useKey: string;
-  private _photosKey: string;
-  private _type: string;
-  private _desc: string;
-  private _isDaily: boolean;
-  private _isArray: boolean;
-  private _loadArg: any;
+  private readonly _useKey: string;
+  private readonly _photosKey: string;
+  private readonly _type: string;
+  private readonly _desc: string;
+  private readonly _isDaily: boolean;
+  private readonly _isArray: boolean;
+  private readonly _loadArg: any;
 
   /**
    * Create a new photo source

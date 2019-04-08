@@ -140,11 +140,13 @@ export function initialize(trackingId: string, appName: string , appId: string ,
     // @ts-ignore
     i['GoogleAnalyticsObject'] = r; // tslint:disable-line no-string-literal
     // @ts-ignore
+    // noinspection CommaExpressionJS
     i[r] = i[r] || function() {
       // @ts-ignore
       (i[r].q = i[r].q || []).push(arguments);
       // @ts-ignore
     }, i[r].l = 1 * new Date();
+    // noinspection CommaExpressionJS
     a = s.createElement(o),
         m = s.getElementsByTagName(o)[0];
     a.async = 1;

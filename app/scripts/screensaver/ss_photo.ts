@@ -23,13 +23,13 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @alias module:ss/photo.SSPhoto
  */
 class SSPhoto {
+  private readonly _photographer: string;
+  private readonly _type: string;
+  private readonly _aspectRatio: number;
+  private readonly _ex: any | null;
+  private readonly _point: string | null;
   private _id: number;
   private _url: string;
-  private _photographer: string;
-  private _type: string;
-  private _aspectRatio: number;
-  private _ex: any | null;
-  private _point: string | null;
   private _isBad: boolean;
 
   /**

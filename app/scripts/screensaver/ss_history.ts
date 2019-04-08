@@ -10,12 +10,6 @@
  * @module ss/history
  */
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import * as SSPhotos from './ss_photos.js';
-import * as SSViews from './ss_views.js';
-import * as SSRunner from './ss_runner.js';
-
 /**
  * History item
  * @typedef {Object} module:ss/history.Item
@@ -24,6 +18,22 @@ import * as SSRunner from './ss_runner.js';
  * @property {int} photoId - {@link module:ss/photo.SSPhoto} id
  * @property {int} photosPos - pointer into {@link module:ss/photos.Photos}
  */
+
+/**
+ * Slide show history
+ * @typedef {Object} module:ss/history.History
+ * @property {Array<module:ss/history.Item>} arr - history items
+ * @property {int} idx - pointer into arr
+ * @property {int} max - max length of arr; it will actually have 1 item more
+ * @const
+ * @private
+ */
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as SSPhotos from './ss_photos.js';
+import * as SSViews from './ss_views.js';
+import * as SSRunner from './ss_runner.js';
+
 interface Item {
   viewsIdx: number;
   replaceIdx: number;
@@ -31,14 +41,6 @@ interface Item {
   photosPos: number;
 }
 
-/**
- * Slide show history
- * @property {Array<module:ss/history.Item>} arr - history items
- * @property {int} idx - pointer into arr
- * @property {int} max - max length of arr; it will actually have 1 item more
- * @const
- * @private
- */
 interface History {
   arr: Item[];
   idx: number;
@@ -47,9 +49,7 @@ interface History {
 
 /**
  * Slide show history
- * @property {Array<module:ss/history.Item>} arr - history items
- * @property {int} idx - pointer into arr
- * @property {int} max - max length of arr, it will actually have 1 item more
+ * @type{module:ss/history.History}
  * @const
  * @private
  */
