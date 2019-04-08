@@ -19,11 +19,8 @@
   },
   "homepage": "https://github.com/opus1269/photo-screen-saver",
   "private": true,
-  "dependencies": {
-    "tslint": "^5.15.0",
-    "typescript": "^3.4.2"
-  },
   "devDependencies": {
+    "@polymer/gen-typescript-declarations": "^1.6.1",
     "del": "^3.0.0",
     "eslint": "^4.10.0",
     "eslint-config-google": "^0.9.1",
@@ -50,6 +47,8 @@
     "merge-stream": "^1.0.1",
     "polymer-build": "^3.1.1",
     "run-sequence": "^2.2.1",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.2",
     "uglify-es": "^3.3.10"
   },
   "false": {}
