@@ -105,10 +105,9 @@ export default class SSViewFrame extends SSView {
     imgStyle.height = height + 'px';
     imgStyle.width = width + 'px';
 
-    // @ts-ignore
     image.height = height;
-    // @ts-ignore
     image.width = width;
+
     imageStyle.top = (screen.height - frHeight) / 2 + 'px';
     imageStyle.left = (screen.width - frWidth) / 2 + 'px';
     imageStyle.border = 0.5 + 'vh ridge WhiteSmoke';
