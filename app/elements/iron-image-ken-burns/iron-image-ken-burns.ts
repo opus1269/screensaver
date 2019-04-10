@@ -10,7 +10,7 @@ import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn
 import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import {resolveUrl} from '../../node_modules/@polymer/polymer/lib/utils/resolve-url.js';
 
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -139,7 +139,7 @@ Polymer({
 
   properties: {
     /**
-     * Run the "Ken Burns effect on the image
+     * Run the Ken Burns effect on the image
      */
     isAnimate: {
       type: Boolean,
