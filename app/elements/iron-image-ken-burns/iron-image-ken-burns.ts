@@ -79,42 +79,42 @@ Polymer({
 
   @keyframes kenBurns1 {
     100% {
-      transform: scale(1.5) translateX(-5vw) translateY(10vh);
+      transform: scale(1.5) translateX(-1vw) translateY(10vh);
       animation-timing-function: ease-in-out;
     }
   }
-
+  
   @keyframes kenBurns2 {
     100% {
-      transform: scale(1.5) translateX(10vw) translateY(-5vh);
+      transform: scale(1.75) translateX(0vw) translateY(10vh);
       animation-timing-function: ease-in-out;
     }
   }
 
   @keyframes kenBurns3 {
     100% {
+      transform: scale(1.5) translateX(10vw) translateY(-5vh);
+      animation-timing-function: ease-in-out;
+    }
+  }
+
+  @keyframes kenBurns4 {
+    100% {
       transform: scale(1.75) translateX(10vw); translateY(-10vh);
       animation-timing-function: ease-in-out;
     }
   }
   
-  @keyframes kenBurns4 {
+  @keyframes kenBurns5 {
     100% {
       transform: scale(1.5) translateX(-10vw) translateY(5vh);
       animation-timing-function: ease-in-out;
     }
   }
 
-  @keyframes kenBurns5 {
-    100% {
-      transform: scale(1.5) translateX(10vw) translateY(0vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-  
   @keyframes kenBurns6 {
     100% {
-      transform: scale(2.0) translateX(0vw) translateY(5vh);
+      transform: scale(1.5) translateX(10vw) translateY(0vh);
       animation-timing-function: ease-in-out;
     }
   }
@@ -399,7 +399,14 @@ Polymer({
       const aniTime = transTime.base;
       const delayTime = 2;
 
-      const keySuffix = ChromeUtils.getRandomInt(1, 6);
+      let keySuffix = ChromeUtils.getRandomInt(1, 6);
+      if (!this.sizing && this.width && this.height) {
+        const ar = this.width / this.height;
+        if (ar < 1.0) {
+          // limit type for narrow photos
+          keySuffix = ChromeUtils.getRandomInt(1, 2);
+        }
+      }
       const keyFramesName = `kenBurns${keySuffix}`;
       const animationStyle = `${keyFramesName} ${aniTime - delayTime - 1}s ease-in-out ${delayTime}s 1 forwards`;
 

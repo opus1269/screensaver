@@ -256,6 +256,8 @@ function _runShow(newIdx: number | null = null) {
     // setup photo
     const view = SSViews.get(nextIdx);
     view.render();
+    // @ts-ignore
+    view.image.startAnimation();
 
     // track the photo history
     SSHistory.add(newIdx, nextIdx, _VARS.replaceIdx);

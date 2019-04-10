@@ -104,6 +104,8 @@ export default class SSViewFrame extends SSView {
 
     imgStyle.height = height + 'px';
     imgStyle.width = width + 'px';
+    imgStyle.top = screen.height / 2 + 'px';
+    imgStyle.left = screen.width / 2 + 'px';
 
     image.height = height;
     image.width = width;
