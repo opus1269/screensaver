@@ -20,6 +20,7 @@ import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/slide-animatable/slide-animatable.js';
+import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
 import '../../elements/weather-element/weather-element.js';
 
 import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
@@ -200,7 +201,7 @@ const Screensaver = Polymer({
     <template is="dom-repeat" id="repeatTemplate" as="view" items="[[_views]]">
       <slide-animatable ani-type="[[aniType]]" class="fit">
         <section id="view[[index]]">
-          <iron-image
+          <iron-image-ken-burns
               class="image"
               src="[[view.url]]"
               width="[[screenWidth]]"
@@ -208,7 +209,7 @@ const Screensaver = Polymer({
               sizing="[[sizingType]]"
               on-error-changed="_onErrorChanged"
               preload>
-          </iron-image>
+          </iron-image-ken-burns>
           <div class="time">[[timeLabel]]</div>
           <div class="author">[[view.authorLabel]]</div>
           <div class="location">[[view.locationLabel]]</div>

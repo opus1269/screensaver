@@ -25,14 +25,12 @@ const _SCREEN_AR = screen.width / screen.height;
 
 /**
  * Letterbox view
- * @extends module:ss/views/view.SSView
- * @alias module:ss/views/view_letterbox.SSViewLetterbox
  */
 class SSViewLetterbox extends SSView {
 
   /**
    * Create new SSView
-   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
+   * @param photo - The {@link SSPhoto} we will contain initially
    * @constructor
    */
   constructor(photo: SSPhoto) {
@@ -46,6 +44,10 @@ class SSViewLetterbox extends SSView {
     super.render();
 
     const ar = this.photo.getAspectRatio();
+    const image = this.image;
+    const imageStyle = image.style;
+    const img: any = image.$.img;
+    const imgStyle = img.style;
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;
     const weatherStyle = this.weather.style;
@@ -59,6 +61,17 @@ class SSViewLetterbox extends SSView {
     let imgHeightPer = ((_SCREEN_AR / ar * 100));
     imgHeightPer = Math.min(imgHeightPer, 100.0);
     const bottom = (100 - imgHeightPer) / 2;
+
+    // set image size
+    const height = Math.round(imgHeightPer / 100 * screen.height);
+    const width = Math.round(imgWidthPer / 100 * screen.width);
+    image.height = height;
+    image.width = width;
+    imgStyle.height = height + 'px';
+    imgStyle.width = width + 'px';
+    imageStyle.top = (screen.height - height) / 2 + 'px';
+    imageStyle.left = (screen.width - width) / 2 + 'px';
+
 
     authorStyle.textAlign = 'right';
     locationStyle.textAlign = 'left';

@@ -74,12 +74,10 @@ function _setViewType() {
   let type = 'contain';
 
   switch (_type) {
-    case Type.LETTERBOX:
-      type = 'contain';
-      break;
     case Type.ZOOM:
       type = 'cover';
       break;
+    case Type.LETTERBOX:
     case Type.FRAME:
     case Type.FULL:
       type = null;
@@ -87,6 +85,7 @@ function _setViewType() {
     default:
       break;
   }
+
   Screensaver.setSizingType(type);
 }
 
