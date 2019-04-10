@@ -71,7 +71,7 @@ const exec = require('child_process').exec;
 const del = require('del');
 const runSequence = require('run-sequence');
 const gulpIf = require('gulp-if');
-const util = require('gulp-util');
+const noop = require('gulp-noop');
 const watch = require('gulp-watch');
 const plumber = require('gulp-plumber');
 const imageMin = require('gulp-imagemin');
@@ -305,7 +305,7 @@ gulp.task('_lintdevjs', () => {
   const input = files.lintdevjs;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(eslint()).
       pipe(eslint.formatEach()).
       pipe(eslint.failOnError());
@@ -330,9 +330,9 @@ gulp.task('_manifest', () => {
   const input = files.manifest;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
-      pipe((isProd && !isProdTest) ? stripLine('"key":') : util.noop()).
+      pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
@@ -346,7 +346,7 @@ gulp.task('_ts', () => {
       pipe(tsProject(ts.reporter.longReporter())).
       on('error', () => {/* Ignore compiler errors */}).
       pipe(plumber()).
-      pipe((isProd || isProdTest) ? util.noop() : replace(SEARCH, REPLACE)).
+      pipe((isProd || isProdTest) ? noop() : replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -368,8 +368,8 @@ gulp.task('_build_js', () => {
   return gulp.src(input, {base: '.'}).
       pipe(plumber()).
       pipe(tsProject(ts.reporter.longReporter())).js.
-      pipe((isProd || isProdTest) ? util.noop() : replace(SEARCH, REPLACE)).
-      pipe(gulp.dest(base.src), util.noop());
+      pipe((isProd || isProdTest) ? noop() : replace(SEARCH, REPLACE)).
+      pipe(gulp.dest(base.src), noop());
 });
 
 // html
@@ -377,7 +377,7 @@ gulp.task('_html', () => {
   const input = files.html;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -387,7 +387,7 @@ gulp.task('_images', () => {
   const input = files.images;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -397,7 +397,7 @@ gulp.task('_assets', () => {
   const input = files.assets;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -407,7 +407,7 @@ gulp.task('_lib', () => {
   const input = files.lib;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -417,7 +417,7 @@ gulp.task('_locales', () => {
   const input = files.locales;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -427,7 +427,7 @@ gulp.task('_css', () => {
   const input = files.css;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
@@ -437,7 +437,7 @@ gulp.task('_font', () => {
   const input = files.font;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : util.noop()).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
