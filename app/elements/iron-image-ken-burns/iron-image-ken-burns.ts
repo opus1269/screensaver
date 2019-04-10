@@ -79,43 +79,42 @@ Polymer({
 
   @keyframes kenBurns1 {
     100% {
-      transform: scale(1.5) translate(-5vw, 10vh);
+      transform: scale(1.5) translateX(-5vw) translateY(10vh);
       animation-timing-function: ease-in-out;
     }
   }
 
   @keyframes kenBurns2 {
     100% {
-      transform: scale(1.5) translate(10vw, -5vh);
+      transform: scale(1.5) translateX(10vw) translateY(-5vh);
       animation-timing-function: ease-in-out;
     }
   }
 
   @keyframes kenBurns3 {
     100% {
-      transform: scale(1.75) translate(10vw, -10vh);
+      transform: scale(1.75) translateX(10vw); translateY(-10vh);
       animation-timing-function: ease-in-out;
     }
   }
   
   @keyframes kenBurns4 {
     100% {
-      transform: scale(1.5) translate(-10vw, 5vh);
+      transform: scale(1.5) translateX(-10vw) translateY(5vh);
       animation-timing-function: ease-in-out;
     }
   }
 
   @keyframes kenBurns5 {
     100% {
-      transform: scale(1.5) translate(10vw, 0vh);
+      transform: scale(1.5) translateX(10vw) translateY(0vh);
       animation-timing-function: ease-in-out;
     }
   }
-
-
+  
   @keyframes kenBurns6 {
     100% {
-      transform: scale(2.0) translate(0vw, 5vh);
+      transform: scale(2.0) translateX(0vw) translateY(5vh);
       animation-timing-function: ease-in-out;
     }
   }
