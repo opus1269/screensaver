@@ -10,13 +10,21 @@ import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn
 import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import {resolveUrl} from '../../node_modules/@polymer/polymer/lib/utils/resolve-url.js';
 
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 
 /**
  * Polymer element to display an image that can be animated with the "Ken Burns" effect
  * @PolymerElement
  */
 Polymer({
-  _template: html`<style>
+  // language=HTML format=false
+  _template: html`<!--suppress RequiredAttributes -->
+<style>
   :host {
     display: inline-block;
     overflow: hidden;
@@ -69,13 +77,45 @@ Polymer({
     opacity: 0;
   }
 
-  .kenBurns {
-    animation: kenBurns 10s infinite alternate;
-  }
-
-  @keyframes kenBurns {
+  @keyframes kenBurns1 {
     100% {
       transform: scale(1.5) translate(-5vw, 10vh);
+      animation-timing-function: ease-in-out;
+    }
+  }
+
+  @keyframes kenBurns2 {
+    100% {
+      transform: scale(1.5) translate(10vw, -5vh);
+      animation-timing-function: ease-in-out;
+    }
+  }
+
+  @keyframes kenBurns3 {
+    100% {
+      transform: scale(1.75) translate(10vw, -10vh);
+      animation-timing-function: ease-in-out;
+    }
+  }
+  
+  @keyframes kenBurns4 {
+    100% {
+      transform: scale(1.5) translate(-10vw, -10vh);
+      animation-timing-function: ease-in-out;
+    }
+  }
+
+  @keyframes kenBurns5 {
+    100% {
+      transform: scale(1.5) translate(10vw, 0vh);
+      animation-timing-function: ease-in-out;
+    }
+  }
+
+
+  @keyframes kenBurns5 {
+    100% {
+      transform: scale(2.0) translate(0vw, 5vh);
       animation-timing-function: ease-in-out;
     }
   }
@@ -85,20 +125,29 @@ Polymer({
 <a id="baseURIAnchor" href="#"></a>
 <div id="sizedImgDiv" role="img" hidden$="[[_computeImgDivHidden(sizing)]]"
      aria-hidden$="[[_computeImgDivARIAHidden(alt)]]" aria-label$="[[_computeImgDivARIALabel(alt, src)]]"></div>
+<!--suppress HtmlRequiredAltAttribute -->
 <img id="img" alt$="[[alt]]" hidden$="[[_computeImgHidden(sizing)]]" crossorigin$="[[crossorigin]]" on-load="_imgOnLoad"
      on-error="_imgOnError">
 <div id="placeholder" hidden$="[[_computePlaceholderHidden(preload, fade, loading, loaded)]]"
      class$="[[_computePlaceholderClassName(preload, fade, loading, loaded)]]"></div>
+
+<app-localstorage-document key="panAndScan" data="{{isAnimate}}" storage="window.localStorage">
+</app-localstorage-document>
+
 `,
 
   is: 'iron-image-ken-burns',
 
   properties: {
-    // TODO use it or lose it
     /**
      * Run the "Ken Burns effect on the image
      */
-    animate: {type: Boolean, value: true},
+    isAnimate: {
+      type: Boolean,
+      value: false,
+      notify: true,
+      observer: '_isAnimateChanged',
+    },
 
     /**
      * The URL of an image.
@@ -326,5 +375,37 @@ Polymer({
           resolved;
     }
     return resolved;
+  },
+
+  /**
+   * Observer: Animate flag changed
+   */
+  _isAnimateChanged: function(animate: boolean) {
+    if (animate !== undefined) {
+      if (animate) {
+       this.startAnimation();
+      } else {
+        this.$.sizedImgDiv.style.removeProperty('animation');
+        this.$.img.style.removeProperty('animation');
+      }
+    }
+  },
+
+  /**
+   * Setup and start the animation
+   */
+  startAnimation: function() {
+    if (this.isAnimate) {
+      const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+      const aniTime = transTime.base;
+      const delayTime = 2;
+
+      const keySuffix = ChromeUtils.getRandomInt(1, 5);
+      const keyFramesName = `kenBurns${keySuffix}`;
+      const animationStyle = `${keyFramesName} ${aniTime - delayTime - 1}s ease-in-out ${delayTime}s 1 forwards`;
+
+      this.$.sizedImgDiv.style.animation = animationStyle;
+      this.$.img.style.animation = animationStyle;
+    }
   },
 });

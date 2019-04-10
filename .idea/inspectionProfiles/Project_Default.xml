@@ -11,7 +11,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="59">
+          <list size="65">
             <item index="0" class="java.lang.String" itemvalue="include" />
             <item index="1" class="java.lang.String" itemvalue="disabled$" />
             <item index="2" class="java.lang.String" itemvalue="on-tap" />
@@ -71,6 +71,12 @@
             <item index="56" class="java.lang.String" itemvalue="iswaiting" />
             <item index="57" class="java.lang.String" itemvalue="is-waiting" />
             <item index="58" class="java.lang.String" itemvalue="secondary" />
+            <item index="59" class="java.lang.String" itemvalue="aria-hidden$" />
+            <item index="60" class="java.lang.String" itemvalue="aria-label$" />
+            <item index="61" class="java.lang.String" itemvalue="alt$" />
+            <item index="62" class="java.lang.String" itemvalue="crossorigin$" />
+            <item index="63" class="java.lang.String" itemvalue="on-load" />
+            <item index="64" class="java.lang.String" itemvalue="on-error" />
           </list>
         </value>
       </option>

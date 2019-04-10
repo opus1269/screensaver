@@ -184,8 +184,6 @@ export default abstract class SSView {
    * Render the page for display - subclasses override this to determine the look of photo
    */
   public render() {
-    this.image.$.sizedImgDiv.classList.add('kenBurns');
-    this.image.$.img.classList.add('kenBurns');
   }
 
   /**
