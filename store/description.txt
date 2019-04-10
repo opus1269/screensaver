@@ -14,6 +14,7 @@ Many options are available to control the appearance of the slide show, includin
 * Between photo time interval
 * Photo display mode - (e.g., letterbox, fill screen)
 * Photo transition animations - (e.g., fade, scale up)
+* The "Ken Burns" effect.
 * A scheduler to control when the screensaver, display, and computer should remain on
 * Do not display over full screen Chrome windows (e.g., YouTube, Netflix)
 * Show on all displays
