@@ -79,14 +79,14 @@ Polymer({
 
   @keyframes kenBurns1 {
     100% {
-      transform: scale(1.5) translateX(-1vw) translateY(10vh);
+      transform: scale(1.5) translateX(0vw) translateY(10vh);
       animation-timing-function: ease-in-out;
     }
   }
   
   @keyframes kenBurns2 {
     100% {
-      transform: scale(1.75) translateX(0vw) translateY(10vh);
+      transform: scale(1.75) translateX(-5vw) translateY(10vh);
       animation-timing-function: ease-in-out;
     }
   }
@@ -404,7 +404,7 @@ Polymer({
         const ar = this.width / this.height;
         if (ar < 1.0) {
           // limit type for narrow photos
-          keySuffix = ChromeUtils.getRandomInt(1, 2);
+          keySuffix = 1;
         }
       }
       const keyFramesName = `kenBurns${keySuffix}`;
