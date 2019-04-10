@@ -46,6 +46,11 @@ The appearance of the photo.
 
 The animation to be used between photos
 
+> ![alt text](./assets/settings_ss_controls_pan_and_scan.png)
+
+This will give a "live" feel to the current photo by zooming and
+translating while it is being displayed.
+
 > ![alt text](./assets/settings_ss_controls_background.png)
 
 Allows Chrome to startup when you log into your computer and continue to run (invisibly),
