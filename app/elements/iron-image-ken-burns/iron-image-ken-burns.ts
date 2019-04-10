@@ -75,7 +75,7 @@ Polymer({
 
   @keyframes kenBurns {
     100% {
-      transform: scale(1.5) translate(-15vw, 10vh);
+      transform: scale(1.5) translate(-5vw, 10vh);
       animation-timing-function: ease-in-out;
     }
   }

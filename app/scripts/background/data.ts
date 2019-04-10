@@ -31,66 +31,12 @@ const chromep = new ChromePromise();
 
 /**
  * Version of localStorage - update when items are added, removed, changed
- * @type {int}
- * @default
- * @const
  * @private
  */
-const _DATA_VERSION = 24;
+const _DATA_VERSION = 25;
 
 /**
- * Default values in localStorage
- * @typedef {{}} module:bg/data.Defaults
- * @property {int} version - version of data
- * @property {boolean} enabled - is screensaver enabled
- * @property {string} permPicasa - optional permission for Picasa
- * @property {string} permBackground - optional permission to run in bg
- * @property {string} permWeather - optional permission to show weather
- * @property {boolean} allowBackground - run Chrome in background
- * @property {{}} idleTime - idle time to display screensaver
- * @property {{}} transitionTime - time between photos
- * @property {boolean} skip - ignore extreme aspect ratio photos
- * @property {boolean} shuffle - randomize photo order
- * @property {int} photoSizing - photo display type
- * @property {int} photoTransition - transition animation
- * @property {boolean} interactive - vcr controls for screensaver
- * @property {int} showTime - time display format
- * @property {boolean} largeTime - display larger time label
- * @property {boolean} showPhotog - display name on own photos
- * @property {boolean} showLocation - display photo location
- * @property {string} background - background image
- * @property {boolean} keepAwake - manage computer poser settings
- * @property {boolean} chromeFullscreen - don't display over fullscreen
- * @property {boolean} allDisplays - show on all displays
- * @property {string} activeStart - Keep Wake start time '00:00' 24 hr
- * @property {string} activeStop - Keep Wake stop time '00:00' 24 hr
- * @property {boolean} allowSuspend - let computer sleep
- * @property {boolean} allowPhotoClicks - show photo source on left click
- * @property {boolean} useSpaceReddit - use this photo source
- * @property {boolean} useEarthReddit - use this photo source
- * @property {boolean} useAnimalReddit - use this photo source
- * @property {boolean} useInterestingFlickr - use this photo source
- * @property {boolean} useChromecast - use this photo source
- * @property {boolean} useAuthors - use this photo source
- * @property {boolean} fullResGoogle - true for actual size Google photos
- * @property {boolean} isAlbumMode - true if Google Photos album mode
- * @property {boolean} useGoogle - use this photo source
- * @property {boolean} useGoogleAlbums - use this photo source
- * @property {boolean} useGooglePhotos - use this photo source
- * @property {boolean} signedInToChrome - state of Chrome signin
- * @property {boolean} googlePhotosNoFilter - don't filter photos
- * @property {{}} googlePhotosFilter - filter for retrieving google photos
- * @property {module:weather.Location} location - geo location
- * @property {boolean} showCurrentWeather - display weather
- * @property {int} weatherTempUnit - temp unit (0 == C 1 == F)
- * @property {{}} currentWeather - weather
- */
-
-/**
- * Default values in localStorage
- * @type {module:bg/data.Defaults}
- * @const
- * @readonly
+ * App data saved to local storage
  */
 export const DEFS = {
   version: _DATA_VERSION,
@@ -136,6 +82,7 @@ export const DEFS = {
   showCurrentWeather: false,
   weatherTempUnit: 0,
   currentWeather: Weather.DEF_WEATHER,
+  panAndScan: false,
 };
 
 /**
@@ -578,8 +525,7 @@ async function _setOS() {
 }
 
 /**
- * Save the {@link module:bg/data.Defaults} items, if they
- * do not already exist
+ * Save the default value for each item that doesn't exist
  * @private
  */
 function _addDefaults() {

@@ -143,6 +143,9 @@ Polymer({
                           items="[[_computePhotoSizingMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-dropdown name="photoTransition" label="[[localize('setting_photo_transition')]]"
                           items="[[_computePhotoTransitionMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
+        <setting-toggle name="panAndScan" main-label="[[localize('setting_pan_and_scan')]]"
+                        secondary-label="[[localize('setting_pan_and_scan_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="allowBackground" main-label="[[localize('setting_background')]]"
                         secondary-label="[[localize('setting_background_desc')]]" on-tap="_onChromeBackgroundTapped"
                         disabled$="[[!enabled]]"></setting-toggle>

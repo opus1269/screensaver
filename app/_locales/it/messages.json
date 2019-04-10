@@ -624,6 +624,12 @@
   "err_geolocation_title": {
     "message": "Impossibile aggiornare la posizione corrente"
   },
+  "setting_pan_and_scan": {
+    "message": "Analizza e scansiona la foto corrente"
+  },
+  "setting_pan_and_scan_desc": {
+    "message": "Applicare l'effetto \"Ken Burns\" alle foto"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"
