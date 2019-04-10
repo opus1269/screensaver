@@ -100,7 +100,7 @@ Polymer({
   
   @keyframes kenBurns4 {
     100% {
-      transform: scale(1.5) translate(-10vw, -10vh);
+      transform: scale(1.5) translate(-10vw, 5vh);
       animation-timing-function: ease-in-out;
     }
   }
@@ -113,7 +113,7 @@ Polymer({
   }
 
 
-  @keyframes kenBurns5 {
+  @keyframes kenBurns6 {
     100% {
       transform: scale(2.0) translate(0vw, 5vh);
       animation-timing-function: ease-in-out;
@@ -400,7 +400,7 @@ Polymer({
       const aniTime = transTime.base;
       const delayTime = 2;
 
-      const keySuffix = ChromeUtils.getRandomInt(1, 5);
+      const keySuffix = ChromeUtils.getRandomInt(1, 6);
       const keyFramesName = `kenBurns${keySuffix}`;
       const animationStyle = `${keyFramesName} ${aniTime - delayTime - 1}s ease-in-out ${delayTime}s 1 forwards`;
 
