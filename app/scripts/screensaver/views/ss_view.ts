@@ -7,7 +7,6 @@
 
 /**
  * Base class for other SSView classes
- * @module ss/views/view
  */
 
 import SSPhoto from '../ss_photo.js';
@@ -19,11 +18,6 @@ import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/l
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Aspect ratio of screen
- */
-const _SCREEN_AR = screen.width / screen.height;
 
 /**
  * Base class for other SSView classes
@@ -39,47 +33,14 @@ export default abstract class SSView {
   }
 
   /**
-   * Determine if a given aspect ratio should be ignored
-   * @param asp - an aspect ratio
-   * @param photoSizing - the sizing type
-   * @returns true if the aspect ratio should be ignored
-   */
-  public static ignore(asp: number, photoSizing: number) {
-    let ret = false;
-    const skip = ChromeStorage.getBool('skip');
-
-    if ((!asp || isNaN(asp)) ||
-        (skip && ((photoSizing === 1) || (photoSizing === 3)) &&
-            SSView._isBadAspect(asp))) {
-      // ignore photos that don't have aspect ratio
-      // or would look bad with cropped or stretched sizing options
-      ret = true;
-    }
-    return ret;
-  }
-
-  /**
    * Call notifyPath after set because dirty checking doesn't always work
    * @param model - model to change
    * @param prop - property name
    * @param value - property value
-   * @private
    */
   private static _dirtySet(model: PolymerElement, prop: string, value: any) {
     model.set(prop, value);
     model.notifyPath(prop);
-  }
-
-  /**
-   * Determine if a photo would look bad zoomed or stretched at the given aspect ration
-   * @param asp - an aspect ratio
-   * @returns true if a photo aspect ratio differs substantially from the screens'
-   * @private
-   */
-  private static _isBadAspect(asp: number) {
-    // arbitrary
-    const CUT_OFF = 0.5;
-    return (asp < _SCREEN_AR - CUT_OFF) || (asp > _SCREEN_AR + CUT_OFF);
   }
 
   /** The photo we are viewing */

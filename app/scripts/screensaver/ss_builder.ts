@@ -6,8 +6,7 @@
  */
 
 /**
- * Builder for a {@link module:els/screensaver.Screensaver}
- * @module ss/builder
+ * Builder for a {@link Screensaver}
  */
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
@@ -19,9 +18,9 @@ import * as SSPhotos from './ss_photos.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 /**
- * Build everything related to a {@link module:els/screensaver.Screensaver}
+ * Build everything related to a {@link Screensaver}
  * @throws an error if we failed to build show
- * @returns {Promise<boolean>} true if there are photos for the show
+ * @returns true if there are photos for the show
  */
 export async function build() {
   // load the photos for the slide show
@@ -37,17 +36,16 @@ export async function build() {
 }
 
 /**
- * Build the {@link module:ss/photos.Photos} that will be displayed
+ * Build the {@link SSPhotos} that will be displayed
  * @throws An error if we failed to get photos
- * @returns {Promise<boolean>} true if there is at least one photo
- * @private
+ * @returns true if there is at least one photo
  */
 async function _loadPhotos() {
-  let sources = await PhotoSources.getSelectedPhotos();
+  let sources = PhotoSources.getSelectedSources();
   sources = sources || [];
 
   for (const source of sources) {
-    SSPhotos.addFromSource(source);
+    await SSPhotos.addFromSource(source);
   }
 
   if (!SSPhotos.getCount()) {

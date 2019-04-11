@@ -7,7 +7,6 @@
 
 /**
  * Find a photo that is ready for slideshow
- * @module ss/photo_finder
  */
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
@@ -19,8 +18,6 @@ import * as SSRunner from './ss_runner.js';
 
 /**
  * Transition time in milliseconds
- * @type {int}
- * @private
  */
 let _transTime = 30000;
 
@@ -28,17 +25,14 @@ let _transTime = 30000;
  * Initialize the photo finder
  */
 export function initialize() {
-  const transTime = ChromeStorage.get('transitionTime');
-  if (transTime) {
-    _transTime = transTime.base * 1000;
-  }
+  const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+  _transTime = transTime.base * 1000;
 }
 
 /**
- * Get the next photo to display
- * @param {int} idx - index into {@link module:ss/views.Views}
- * @returns {int} next - index into {@link module:ss/views.Views}
- * to display, -1 if none are ready
+ * Get the index of the next view to display
+ * @param idx - index into {@link SSViews} to start search at
+ * @returns The index into {@link SSViews} to display next, -1 if none are ready
  */
 export function getNext(idx: number) {
   const ret = SSViews.findLoadedPhoto(idx);
@@ -53,8 +47,8 @@ export function getNext(idx: number) {
 }
 
 /**
- * Add the next photo from the master array
- * @param {int} idx - {@link module:ss/views.Views} index to replace
+ * Replace the photo in  an SSView at the given index with the next SSPhoto
+ * @param idx - {@link SSViews} index to replace
  */
 export function replacePhoto(idx: number) {
   if (idx >= 0) {
@@ -68,7 +62,7 @@ export function replacePhoto(idx: number) {
       return;
     }
 
-    const photo = SSPhotos.getNextUsable();
+    const photo = SSPhotos.getNextUsable(SSViews.getPhotos());
     if (photo) {
       const view = SSViews.get(idx);
       view.setPhoto(photo);

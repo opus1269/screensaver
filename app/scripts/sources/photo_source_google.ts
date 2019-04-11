@@ -73,19 +73,11 @@ interface GPhotosAlbum {
 
 /**
  * Path to Google Photos API
- * @type {string}
- * @const
- * @default
- * @private
  */
 const _URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
 
 /**
  * Query for list of albums
- * @type {string}
- * @const
- * @default
- * @private
  */
 const _ALBUMS_QUERY =
     '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,' +
@@ -93,10 +85,6 @@ const _ALBUMS_QUERY =
 
 /**
  * Only return stuff we use
- * @type {string}
- * @const
- * @default
- * @private
  */
 const _MEDIA_ITEMS_FIELDS =
     'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,' +
@@ -104,10 +92,6 @@ const _MEDIA_ITEMS_FIELDS =
 
 /**
  * Only return stuff we use
- * @type {string}
- * @const
- * @default
- * @private
  */
 const _MEDIA_ITEMS_RESULTS_FIELDS =
     'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,' +
@@ -116,14 +100,12 @@ const _MEDIA_ITEMS_RESULTS_FIELDS =
 
 /**
  * A source of photos from Google Photos
- * @extends module:sources/photo_source.PhotoSource
- * @alias module:sources/photo_source_google.GoogleSource
  */
 export class GoogleSource extends PhotoSource {
 
   /**
    * Default photo filter
-   * @returns {{}} value
+   * @returns The default photo filter
    * @static
    */
   static get DEF_FILTER() {
@@ -145,7 +127,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * No filtering
-   * @returns {{}} value
+   * @returns The minimal filter - photos only
    * @static
    */
   static get NO_FILTER() {
@@ -160,7 +142,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max albums to use
-   * @returns {int} value
    * @static
    */
   static get MAX_ALBUMS() {
@@ -169,7 +150,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max photos per album to use
-   * @returns {int} value
    * @static
    */
   static get MAX_ALBUM_PHOTOS() {
@@ -178,7 +158,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max photos total to use for album mode
-   * @returns {int} value
    * @static
    */
   static get MAX_PHOTOS() {
@@ -187,7 +166,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max photos for google images mode
-   * @returns {int} value
    * @static
    */
   static get MAX_FILTERED_PHOTOS() {
@@ -196,9 +174,9 @@ export class GoogleSource extends PhotoSource {
 
   // /**
   //  * Is the error due to the Google Photos API quota? Also logs it if true
-  //  * @param {Error} err - info on image
-  //  * @param {string} caller - calling method
-  //  * @returns {boolean} true if 429 error
+  //  * @param err - info on image
+  //  * @param caller - calling method
+  //  * @returns true if 429 error
   //  * @static
   //  */
   // static isQuotaError(err, caller) {
@@ -236,7 +214,7 @@ export class GoogleSource extends PhotoSource {
   /**
    * Retrieve the user's list of albums
    * @throws An error if the album list failed to load.
-   * @returns {Promise<Array>} Array of albums
+   * @returns Array of albums
    */
   public static async loadAlbumList() {
     let nextPageToken: string;
@@ -294,14 +272,12 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Retrieve a Google Photos album
-   * @param {string} id -  Unique Album ID
-   * @param {string} name -  Album name
-   * @param {boolean} interactive=true - interactive mode for permissions
-   * @param {boolean} notify=false - notify listeners of status
+   * @param id -  Unique Album ID
+   * @param name -  Album name
+   * @param interactive=true - interactive mode for permissions
+   * @param notify=false - notify listeners of status
    * @throws An error if the album failed to load.
-   * @returns {Promise<{}>} Album
-   * @static
-   * @async
+   * @returns Album
    */
   public static async loadAlbum(id: string, name: string, interactive = true, notify = false) {
     // max items in search call
@@ -337,7 +313,6 @@ export class GoogleSource extends PhotoSource {
         }
       }
 
-      /** @type {{nextPageToken, mediaItems}} */
       const response = await ChromeHttp.doPost(url, conf);
 
       nextPageToken = response.nextPageToken;
@@ -376,10 +351,10 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Load the saved albums from the Web
-   * @param {boolean} interactive=true - interactive mode for permissions
-   * @param {boolean} notify=false - notify listeners of status
+   * @param interactive=true - interactive mode for permissions
+   * @param notify=false - notify listeners of status
    * @throws An error if the albums could not be updated
-   * @returns {Promise<[]>}
+   * @returns The array of albums
    */
   public static async loadAlbums(interactive = false, notify = false) {
     const METHOD = 'GoogleSource.loadAlbums';
@@ -436,12 +411,10 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Load photos based on a filter
-   * @param {boolean} [force=false] if true, force rpc
-   * @param {boolean} [notify=false] if true, notify listeners of progress
+   * @param force=false - if true, force rpc
+   * @param notify=false - if true, notify listeners of progress
    * @throws An error if we could not load the photos
-   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
-   * @async
-   * @static
+   * @returns The array of photos
    */
   public static async loadFilteredPhotos(force = false, notify = false) {
     const curPhotos = await ChromeStorage.asyncGet('googleImages', []);
@@ -494,7 +467,6 @@ export class GoogleSource extends PhotoSource {
           }
         }
 
-        /** @type {{nextPageToken, mediaItems}} */
         let response = await ChromeHttp.doPost(url, conf);
         response = response || {};
 
@@ -526,11 +498,9 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Load the given array of unique photo id's from Google Photos
-   * @param {string[]} ids array of ids
+   * @param ids - array of ids
    * @throws An error if the photos failed to load
-   * @returns {Promise<module:sources/photo_source.Photo[]>} array of photos
-   * @static
-   * @async
+   * @returns An array of photos
    */
   public static async loadPhotos(ids: string[]) {
     ids = ids || [];
@@ -593,10 +563,9 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Update the baseUrls of the given photos
-   * @param {module:sources/photo_source.Photo[]} photos
+   * @param photos
    * @throws An error on failure
-   * @returns {boolean} false if couldn't persist albumSelections
-   * @static
+   * @returns false if couldn't persist albumSelections
    */
   public static async updateBaseUrls(photos: Photo[]) {
     let ret = true;
@@ -621,11 +590,9 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Update the baseUrls of the given photos in the saved albums
-   * @param {module:sources/photo_source.Photo[]} photos
+   * @param photos
    * @throws An error on failure
-   * @returns {boolean} false if couldn't persist albumSelections
-   * @private
-   * @static
+   * @returns false if couldn't persist albumSelections
    */
   private static async _updateAlbumsBaseUrls(photos: Photo[]) {
     let ret = true;
@@ -668,11 +635,9 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Update the baseUrls of the given photos in the saved photos
-   * @param {module:sources/photo_source.Photo[]} photos
+   * @param photos
    * @throws An error on failure
-   * @returns {boolean} false if couldn't persist googleImages
-   * @private
-   * @static
+   * @returns false if couldn't persist googleImages
    */
   private static async _updatePhotosBaseUrls(photos: Photo[]) {
     let ret = true;
@@ -710,10 +675,8 @@ export class GoogleSource extends PhotoSource {
   }
 
   /**
-   * Return true if we should be fetching from Google
-   * trying to minimize Google Photos API usage
-   * @returns {boolean} true if we should fetch
-   * @static
+   * Return true if we should be fetching from Google: trying to minimize Google Photos API usage
+   * @returns true if we should fetch
    */
   private static _isFetch() {
     /* only fetch new photos if all are true:
@@ -730,9 +693,7 @@ export class GoogleSource extends PhotoSource {
   /**
    * Fetch the most recent state for the selected albums
    * @throws An error if we could not load an album
-   * @returns {Promise<[]>} Array of albums
-   * @static
-   * @async
+   * @returns Array of albums
    */
   private static async _fetchAlbums() {
     if (!this._isFetch()) {
@@ -755,11 +716,8 @@ export class GoogleSource extends PhotoSource {
   }
 
   /** Determine if a mediaEntry is an image
-   * @param {{}} mediaItem - Google
-   *     Photos media object
-   * @returns {boolean} true if entry is a photo
-   * @static
-   * @private
+   * @param mediaItem - Google Photos media object
+   * @returns true if entry is a photo
    */
   private static _isImage(mediaItem: any) {
     return mediaItem &&
@@ -771,10 +729,8 @@ export class GoogleSource extends PhotoSource {
   }
 
   /** Get the image size to retrieve
-   * @param {{}} mediaMetadata - info on image
-   * @returns {{width: int, height: int}} image size
-   * @static
-   * @private
+   * @param mediaMetadata - info on image
+   * @returns image size
    */
   private static _getImageSize(mediaMetadata: any) {
     const MAX_SIZE = 1920;
@@ -799,10 +755,8 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
-   * @param {{}} mediaItem - object from Google Photos API call
-   * @param {string} albumName - Album name
-   * @static
-   * @private
+   * @param mediaItem - object from Google Photos API call
+   * @param albumName - Album name
    */
   private static _processPhoto(mediaItem: any, albumName: string) {
     let photo: Photo = null;
@@ -833,11 +787,9 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Extract the photos into an Array
-   * @param {{}} mediaItems - objects from Google Photos API call
-   * @param {string} [albumName=''] - optional Album name
-   * @returns {module:sources/photo_source.Photo[]} Array of photos
-   * @static
-   * @private
+   * @param mediaItems - objects from Google Photos API call
+   * @param albumName - optional Album name
+   * @returns An array of photos
    */
   private static _processPhotos(mediaItems: any, albumName = '') {
 
@@ -858,13 +810,13 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
+   * @param useKey - The key for if the source is selected
+   * @param photosKey - The key for the collection of photos
+   * @param type - A descriptor of the photo source
+   * @param desc - A human readable description of the source
+   * @param isDaily - Should the source be updated daily
+   * @param isArray - Is the source an Array of photo Arrays
+   * @param loadArg=null - Optional arg for load function
    */
   constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
               loadArg: any = null) {
@@ -874,8 +826,7 @@ export class GoogleSource extends PhotoSource {
   /**
    * Fetch the albums or photos for this source
    * @throws An error if we couldn't update
-   * @returns {Promise<Array>}
-   * - array of albums or array of photos
+   * @returns An array of albums or array of photos
    */
   public async fetchPhotos() {
     const METHOD = 'GoogleSource.fetchPhotos';
@@ -883,7 +834,7 @@ export class GoogleSource extends PhotoSource {
     // this will at least ensure the LAN is connected
     // may get false positives for other failures
     if (!navigator.onLine) {
-      return Promise.reject(new Error(ChromeLocale.localize('err_network')));
+      throw new Error(ChromeLocale.localize('err_network'));
     }
 
     try {

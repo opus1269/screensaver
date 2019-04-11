@@ -7,41 +7,20 @@
 
 /**
  * A source of photos for the screen saver
- * @module sources/photo_source
  */
 
-/**
- * A photo from a {@link module:sources/photo_source.PhotoSource}
- * This is the photo information that is persisted.
- *
- * @typedef {{}} module:sources/photo_source.Photo
- * @property {string} url - The url to the photo
- * @property {string} author - The photographer
- * @property {string} asp - The aspect ratio of the photo
- * @property {?Object} ex - Additional information about the photo
- * @property {?string} point - geolocation 'lat lon'
- */
-
-/**
- * The photos for a {@link module:sources/photo_source.PhotoSource}
- *
- * @typedef {{}} module:sources/photo_source.Photos
- * @property {string} type - type of
- *     {@link module:sources/photo_source.PhotoSource}
- * @property {module:sources/photo_source.Photo[]} photos - The photos
- */
+import {SelectedAlbum} from './photo_source_google';
 
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import {SelectedAlbum} from './photo_source_google';
 
 declare var ChromePromise: any;
 
 /**
- * A photo from a {@link module:sources/photo_source.PhotoSource}
+ * A photo from a {@link PhotoSource}
  * This is the photo information that is persisted.
  */
 export interface Photo {
@@ -53,7 +32,9 @@ export interface Photo {
 }
 
 /**
- * The photos for a {@link module:sources/photo_source.PhotoSource}
+ * The photos for a {@link PhotoSource}
+ * @property type - The type of PhotoSource
+ * @property photos - The array of photos
  */
 export interface Photos {
   type: string;
@@ -63,18 +44,17 @@ export interface Photos {
 
 /**
  * A source of photos for the screen saver
- * @alias module:sources/photo_source.PhotoSource
  */
 export abstract class PhotoSource {
 
   /**
-   * Add a {@link module:sources/photo_source.Photo} to an existing Array
-   * @param {Array} photos - {@link module:sources/photo_source.Photo} Array
-   * @param {string} url - The url to the photo
-   * @param {string} author - The photographer
-   * @param {number} asp - The aspect ratio of the photo
-   * @param {Object} [ex] - Additional information about the photo
-   * @param {string} [point=''] - 'lat lon'
+   * Add a {@link Photo} to an existing Array
+   * @param photos - The array to add to
+   * @param url - The url to the photo
+   * @param author - The photographer
+   * @param asp - The aspect ratio of the photo
+   * @param ex - Additional information about the photo
+   * @param point - An optional geolocation
    */
   public static addPhoto(photos: Photo[], url: string, author: string, asp: number, ex: any, point: string = '') {
     const photo: Photo = {
@@ -93,9 +73,9 @@ export abstract class PhotoSource {
 
   /**
    * Create a geo point string from a latitude and longitude
-   * @param {number} lat - latitude
-   * @param {number} lon - longitude
-   * @returns {string} 'lat lon'
+   * @param lat - latitude
+   * @param lon - longitude
+   * @returns 'lat lon'
    */
   public static createPoint(lat: number, lon: number) {
     if ((typeof lat === 'number') && (typeof lon === 'number')) {
@@ -115,13 +95,13 @@ export abstract class PhotoSource {
 
   /**
    * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
+   * @param useKey - The key for if the source is selected
+   * @param photosKey - The key for the collection of photos
+   * @param type - A descriptor of the photo source
+   * @param desc - A human readable description of the source
+   * @param isDaily - Should the source be updated daily
+   * @param isArray - Is the source an Array of photo Arrays
+   * @param loadArg - optional arg for load function
    */
   protected constructor(useKey: string, photosKey: string, type: string,
                         desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
@@ -135,15 +115,14 @@ export abstract class PhotoSource {
   }
 
   /**
-   * Fetch the photos for this source - override
+   * Fetch the photos for this source
    * @throws An error if fetch failed
-   * @returns {Promise<Object>} could be array of photos or albums
+   * @returns Could be array of photos or albums
    */
-  public abstract fetchPhotos(): Promise<Photo[]>;
+  public abstract fetchPhotos(): Promise<Photo[] | SelectedAlbum[]>;
 
   /**
    * Get the source type
-   * @returns {string} the source type
    */
   public getType() {
     return this._type;
@@ -151,7 +130,6 @@ export abstract class PhotoSource {
 
   /**
    * Get if the photos key that is persisted
-   * @returns {string} the photos key
    */
   public getPhotosKey() {
     return this._photosKey;
@@ -159,7 +137,6 @@ export abstract class PhotoSource {
 
   /**
    * Get a human readable description
-   * @returns {string} the photos key
    */
   public getDesc() {
     return this._desc;
@@ -167,7 +144,6 @@ export abstract class PhotoSource {
 
   /**
    * Get use key name
-   * @returns {string} the source type
    */
   public getUseKey() {
     return this._useKey;
@@ -183,7 +159,6 @@ export abstract class PhotoSource {
 
   /**
    * Get if we should update daily
-   * @returns {boolean} if true, update daily
    */
   public isDaily() {
     return this._isDaily;
@@ -191,13 +166,13 @@ export abstract class PhotoSource {
 
   /**
    * Get the photos from local storage
-   * @returns {Promise<module:sources/photo_source.Photos>} the photos
    */
   public async getPhotos() {
     const ret: Photos = {
       type: this._type,
       photos: [],
     };
+
     if (this.use()) {
       let photos: Photo[] = [];
       if (this._isArray) {
@@ -219,7 +194,7 @@ export abstract class PhotoSource {
 
   /**
    * Determine if this source has been selected for display
-   * @returns {boolean} true if selected
+   * @returns true if selected
    */
   public use() {
     return ChromeStorage.getBool(this._useKey);
@@ -227,14 +202,13 @@ export abstract class PhotoSource {
 
   /**
    * Process the photo source.
-   * @returns {Promise<void>} void
    */
   public async process() {
     if (this.use()) {
       // add the source
       try {
         const photos = await this.fetchPhotos();
-        const errMess = await this._savePhotos(photos);
+        const errMess = await this._save(photos);
         if (!ChromeUtils.isWhiteSpace(errMess)) {
           return Promise.reject(new Error(errMess));
         }
@@ -270,15 +244,12 @@ export abstract class PhotoSource {
     return Promise.resolve();
   }
 
-  // TODO add | albums when converted
   /**
-   * Save the photos to chrome.storage.local in a safe manner
-   * @param {Object} photos - could be array of
-   *     {@link module:sources/photo_source.Photo} or albums
-   * @returns {Promise<?string>} non-null on error
-   * @private
+   * Save the data to chrome.storage.local in a safe manner
+   * @param photos - could be array of photos or albums
+   * @returns An error message if the save failed
    */
-  private async _savePhotos(photos: Photo[] | SelectedAlbum[]) {
+  private async _save(photos: Photo[] | SelectedAlbum[]) {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {

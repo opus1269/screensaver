@@ -40,9 +40,6 @@ export const Type = {
 
 /**
  * Max number of views
- * @type {int}
- * @const
- * @private
  */
 const _MAX_VIEWS = 10;
 
@@ -63,7 +60,6 @@ let _type = Type.UNDEFINED;
 
 /**
  * Process settings related to the photo's appearance
- * @private
  */
 function _setViewType() {
   _type = ChromeStorage.getInt('photoSizing', 0);
@@ -136,7 +132,6 @@ export function getType() {
 
 /**
  * Get number of views
- * @returns {int}
  */
 export function getCount() {
   return _views.length;
@@ -174,6 +169,18 @@ export function getSelectedIndex() {
  */
 export function setSelectedIndex(selected: number) {
   _pages.selected = selected;
+}
+
+/**
+ * Get the photos in all the views
+ * @returns An array of all the SSPhoto's
+ */
+export function getPhotos() {
+  const ret: SSPhoto[] = [];
+  for (const view of _views) {
+    ret.push(view.photo);
+  }
+  return ret;
 }
 
 /**
@@ -226,7 +233,7 @@ export function hasUsable() {
 }
 
 /**
- * Replace all views
+ * Replace the photo in all the views but the current animation pair
  */
 export function replaceAll() {
   for (let i = 0; i < _views.length; i++) {
@@ -235,7 +242,7 @@ export function replaceAll() {
       continue;
     }
     const view = _views[i];
-    const photo = SSPhotos.getNextUsable();
+    const photo = SSPhotos.getNextUsable(getPhotos());
     if (photo) {
       view.setPhoto(photo);
     } else {

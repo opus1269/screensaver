@@ -6,47 +6,40 @@
  */
 
 /**
- * Collection of {@link module:ss/photo.SSPhoto} objects
- * @module ss/photos
+ * Collection of {@link SSPhoto} objects
  */
 
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSPhoto from './ss_photo.js';
-import SSView from './views/ss_view.js';
-import * as SSViews from './ss_views.js';
-import {Photos, Photo} from '../sources/photo_source';
+import {Photo, PhotoSource} from '../sources/photo_source';
 
 /**
  * The array of photos
- * @typedef {Array<module:ss/photo.SSPhoto>} module:ss/photos.Photos
- * @type module:ss/photos.Photos
- * @const
- * @private
  */
 const _photos: SSPhoto[] = [];
 
 /**
- * Current index into {@link module:ss/photos.Photos}
- * @type {int}
- * @private
+ * Current index into {@link _photos}
  */
 let _curIdx = 0;
 
 /**
- * Add the photos from an {@link module:sources/photo_source.Photos}
- * @param {module:sources/photo_source.Photos} source
+ * Add the photos from a {@link PhotoSource}
+ * @throws An error if we failed to add the photos
+ * @param photoSource
  */
-export function addFromSource(source: Photos) {
-  const type = source.type;
-  const viewType = SSViews.getType();
+export async function addFromSource(photoSource: PhotoSource) {
+  const sourcePhotos = await photoSource.getPhotos();
+  const sourceType = sourcePhotos.type;
+
   let ct = 0;
-  for (const sourcePhoto of source.photos) {
-    const asp = parseFloat(sourcePhoto.asp);
-    if (!SSView.ignore(asp, viewType)) {
-      const photo = new SSPhoto(ct, sourcePhoto, type);
-      _photos.push(photo);
+  for (const photo of sourcePhotos.photos) {
+    const asp = parseFloat(photo.asp);
+    if (!SSPhoto.ignore(asp)) {
+      const ssPhoto = new SSPhoto(ct, photo, sourceType);
+      _photos.push(ssPhoto);
       ct++;
     }
   }
@@ -54,7 +47,6 @@ export function addFromSource(source: Photos) {
 
 /**
  * Get number of photos
- * @returns {int} The number of photos
  */
 export function getCount() {
   return _photos.length;
@@ -62,7 +54,7 @@ export function getCount() {
 
 /**
  * Do we have photos that aren't bad
- * @returns {boolean} true if at least one photo is good
+ * @returns true if at least one photo is good
  */
 export function hasUsable() {
   return !_photos.every((photo) => {
@@ -71,25 +63,26 @@ export function hasUsable() {
 }
 
 /**
- * Get the {@link module:ss/photo.SSPhoto} at the given index
- * @param {int} idx - The index
- * @returns {module:ss/photo.SSPhoto} A {@link module:ss/photo.SSPhoto}
+ * Get the {@link SSPhoto} at the given index
+ * @param idx - The index
+ * @returns The SSPhoto
  */
 export function get(idx: number) {
   return _photos[idx];
 }
 
 /**
- * Get the next {@link module:ss/photo.SSPhoto} that is usable
- * @returns {?module:ss/photo.SSPhoto} An {@link module:ss/photo.SSPhoto}
+ * Get the next {@link SSPhoto} that is usable
+ * @param ignores - photos to ignore
+ * @returns An SSPhoto, null if none are usable
  */
-export function getNextUsable() {
+export function getNextUsable(ignores: SSPhoto[]) {
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
   for (let i = 0; i < _photos.length; i++) {
     // find a url that is ok, AFAWK
     const index = (i + _curIdx) % _photos.length;
     const photo = _photos[index];
-    if (!photo.isBad() && !SSViews.hasPhoto(photo)) {
+    if (!photo.isBad() && !ignores.includes(photo)) {
       _curIdx = index;
       incCurrentIndex();
       return photo;
@@ -100,17 +93,16 @@ export function getNextUsable() {
 
 /**
  * Get current index into {@link _photos}
- * @returns {int} index
  */
 export function getCurrentIndex() {
   return _curIdx;
 }
 
 /**
- * Get the next nun google photos
- * @param {int} num - max number to get
- * @param {int} idx - starting index
- * @returns {Array<module:ss/photo.SSPhoto>} array of photos num long or less
+ * Get the next num of google photos
+ * @param num - max number to get
+ * @param idx - starting index
+ * @returns array of photos of max length num
  */
 export function getNextGooglePhotos(num: number, idx: number) {
   const photos = [];
@@ -130,8 +122,8 @@ export function getNextGooglePhotos(num: number, idx: number) {
 }
 
 /**
- * Update the urls of the given photos
- * @param {module:sources/photo_source.Photo[]} photos
+ * Update the urls of the given photos that are of the user's Google Photos
+ * @param photos - The photos to update
  */
 export function updateGooglePhotoUrls(photos: Photo[]) {
   for (let i = _photos.length - 1; i >= 0; i--) {
@@ -150,7 +142,7 @@ export function updateGooglePhotoUrls(photos: Photo[]) {
 
 /**
  * Set current index into {@link _photos}
- * @param {int} idx - The index
+ * @param idx - The index
  */
 export function setCurrentIndex(idx: number) {
   _curIdx = idx;
@@ -158,7 +150,7 @@ export function setCurrentIndex(idx: number) {
 
 /**
  * Increment current index into {@link _photos}
- * @returns {int} new current index
+ * @returns The new current index
  */
 export function incCurrentIndex() {
   return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
