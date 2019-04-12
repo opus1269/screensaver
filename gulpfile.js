@@ -86,9 +86,8 @@ const eslint = require('gulp-eslint');
 const stripLine = require('gulp-strip-line');
 const jsdoc3 = require('gulp-jsdoc3');
 const zip = require('gulp-zip');
-/* eslint-disable-next-line no-unused-vars */
 // noinspection JSUnusedLocalSymbols
-const debug = require('gulp-debug');
+const debug = require('gulp-debug'); // eslint-disable-line no-unused-vars
 
 // TypeScript
 const ts = require('gulp-typescript');
