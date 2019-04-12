@@ -402,7 +402,7 @@ Polymer({
       let keySuffix = ChromeUtils.getRandomInt(1, 6);
       if (!this.sizing && this.width && this.height) {
         const ar = this.width / this.height;
-        if (ar < 1.0) {
+        if (ar < 1.3) {
           // limit type for narrow photos
           keySuffix = 1;
         }
