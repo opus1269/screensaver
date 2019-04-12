@@ -70,6 +70,7 @@ const gulp = require('gulp');
 const exec = require('child_process').exec;
 const del = require('del');
 const runSequence = require('run-sequence');
+const merge = require('merge2');
 const gulpIf = require('gulp-if');
 const noop = require('gulp-noop');
 const watch = require('gulp-watch');
@@ -96,7 +97,6 @@ const minify = composer(uglifyjs, console);
 // for polymer
 // see:
 // https://github.com/PolymerElements/generator-polymer-init-custom-build/blob/master/generators/app/gulpfile.js
-const mergeStream = require('merge-stream');
 const polymerBuild = require('polymer-build');
 const polymerJson = require('./polymer.json');
 const polymerProject = new polymerBuild.PolymerProject(polymerJson);
@@ -179,7 +179,7 @@ function buildPolymer() {
 
       // Okay, now let's merge your sources & dependencies together into a
       // single build stream.
-      let buildStream = mergeStream(sourcesStream, dependenciesStream).
+      let buildStream = merge([sourcesStream, dependenciesStream]).
           once('data', () => {
             console.log('Analyzing build dependencies...');
           });
