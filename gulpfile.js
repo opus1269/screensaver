@@ -44,6 +44,7 @@ const files = {
   css: `${path.css}**/*.*`,
   font: `${path.font}**/*.*`,
 };
+files.tmpJs = [files.scripts, files.elements];
 files.ts = [files.scripts_ts, files.elements_ts];
 files.lintdevjs = ['../gulpfile.js'];
 
@@ -67,9 +68,10 @@ let isProd = false;
 let isProdTest = false;
 
 const gulp = require('gulp');
-const exec = require('child_process').exec;
 const del = require('del');
+const exec = require('child_process').exec;
 const runSequence = require('run-sequence');
+
 const merge = require('merge2');
 const gulpIf = require('gulp-if');
 const noop = require('gulp-noop');
@@ -89,13 +91,12 @@ const ts = require('gulp-typescript');
 const tsProject = ts.createProject('tsconfig.json');
 const tslint = require('gulp-tslint');
 
-// for ECMA6
+// ECMA6
 const uglifyjs = require('uglify-es');
 const composer = require('gulp-uglify/composer');
 const minify = composer(uglifyjs, console);
 
-// for polymer
-// see:
+// Polymer
 // https://github.com/PolymerElements/generator-polymer-init-custom-build/blob/master/generators/app/gulpfile.js
 const polymerBuild = require('polymer-build');
 const polymerJson = require('./polymer.json');
@@ -110,6 +111,7 @@ gulp.Gulp.prototype._runTask = function(task) {
   this.__runTask(task);
 };
 
+// change working directory
 function chDir(dir) {
   // change working directory to app
   try {
@@ -215,7 +217,7 @@ function buildPolymer() {
   });
 }
 
-// Default - watch for changes in development
+// Default - watch for changes during development
 gulp.task('default', ['incrementalBuild']);
 
 // Incremental Development build
@@ -227,6 +229,7 @@ gulp.task('incrementalBuild', (cb) => {
   isProd = false;
   isProdTest = false;
   isWatch = true;
+
   runSequence([
     '_watch_ts',
     '_lintdevjs',
@@ -246,26 +249,30 @@ gulp.task('incrementalBuild', (cb) => {
 gulp.task('buildDev', (cb) => {
   isProd = false;
   isProdTest = false;
+  isWatch = false;
+  buildDirectory = 'build/dev';
 
-  runSequence('_lint', '_build_js', '_poly_build_dev', cb);
+  runSequence('_lint', '_build_js', '_poly_build_dev', '_delete_js', cb);
 });
 
-// Production test build Only diff is it does not have key removed
+// Production test build - Only diff is it does not have key removed
 gulp.task('buildProdTest', (cb) => {
   isProd = true;
   isProdTest = true;
+  isWatch = false;
   buildDirectory = 'build/prodTest';
 
-  runSequence('_build_js', '_poly_build', '_zip', cb);
+  runSequence('_build_js', '_poly_build', '_zip', '_delete_js', cb);
 });
 
 // Production build
 gulp.task('buildProd', (cb) => {
   isProd = true;
   isProdTest = false;
+  isWatch = false;
   buildDirectory = 'build/prod';
 
-  runSequence('_build_js', '_poly_build', '_manifest', '_zip', cb);
+  runSequence('_build_js', '_poly_build', '_manifest', '_zip', '_delete_js', cb);
 });
 
 // Generate JSDoc
@@ -284,7 +291,7 @@ gulp.task('docs', (cb) => {
       pipe(jsdoc3(config, cb));
 });
 
-// run polymer build for the debug build
+// Exec 'polymer build' for the debug build
 gulp.task('_poly_build_dev', (cb) => {
 
   chDir('..');
@@ -299,10 +306,10 @@ gulp.task('_poly_build_dev', (cb) => {
   });
 });
 
-// run polymer build with gulp, basically
+// Run 'polymer build' with gulp, basically
 gulp.task('_poly_build', buildPolymer);
 
-// lint development js files
+// Lint development js files
 gulp.task('_lintdevjs', () => {
   chDir('app');
 
@@ -315,7 +322,7 @@ gulp.task('_lintdevjs', () => {
       pipe(eslint.failOnError());
 });
 
-// lint ts scripts
+// Lint TypeScript files
 gulp.task('_lint', () => {
   chDir('app');
 
@@ -329,21 +336,8 @@ gulp.task('_lint', () => {
       pipe(tslint.report());
 });
 
-// manifest.json
-gulp.task('_manifest', () => {
-  chDir('app');
-
-  const input = files.manifest;
-  watchOpts.name = currentTaskName;
-  return gulp.src(input, {base: '.'}).
-      pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
-      pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
-      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
-});
-
-// TypeScript
-gulp.task('_ts', () => {
+// Build TypeScript for development
+gulp.task('_ts_dev', () => {
   const SEARCH = 'const _DEBUG = false';
   const REPLACE = 'const _DEBUG = true';
 
@@ -356,12 +350,13 @@ gulp.task('_ts', () => {
       pipe(gulp.dest(base.dev));
 });
 
-gulp.task('_watch_ts', ['_ts'], () => {
+// Watch for changes to TypeScript files
+gulp.task('_watch_ts', ['_ts_dev'], () => {
   const input = files.ts;
-  gulp.watch(input, ['_ts']);
+  gulp.watch(input, ['_ts_dev']);
 });
 
-// compile the typescript to js in place
+// Compile the typescript to js in place
 gulp.task('_build_js', () => {
   const SEARCH = 'const _DEBUG = false';
   const REPLACE = 'const _DEBUG = true';
@@ -376,6 +371,31 @@ gulp.task('_build_js', () => {
       pipe(tsProject(ts.reporter.longReporter())).js.
       pipe((isProd || isProdTest) ? noop() : replace(SEARCH, REPLACE)).
       pipe(gulp.dest(base.src), noop());
+});
+
+// Delete local js files
+gulp.task('_delete_js', () => {
+
+  chDir('app');
+
+  const input = files.tmpJs;
+  (async () => {
+    await del(input);
+    console.log('deleted local js files.');
+  })();
+});
+
+// manifest.json
+gulp.task('_manifest', () => {
+  chDir('app');
+
+  const input = files.manifest;
+  watchOpts.name = currentTaskName;
+  return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
+      pipe(plumber()).
+      pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
+      pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
 // html
@@ -448,7 +468,7 @@ gulp.task('_font', () => {
       pipe(gulp.dest(base.dev));
 });
 
-// compress for the Chrome Web Store
+// Compress for the Chrome Web Store
 gulp.task('_zip', () => {
   chDir('app');
 
