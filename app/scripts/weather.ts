@@ -147,10 +147,15 @@ export async function update(force = false) {
   try {
     location = await getLocation();
   } catch (err) {
+    if (err.message.match(/User denied Geolocation/)) {
+      // no longer have permission
+      const msg = ChromeLocale.localize('err_geolocation_perm');
+      ChromeLog.error(msg, METHOD, ERR_TITLE);
+      ChromeStorage.set('showCurrentWeather', false);
+      return Promise.resolve();
+    }
     // use last location
     location = ChromeStorage.get('location', _DEF_LOC);
-  } finally {
-    ChromeStorage.set('location', location);
   }
 
   // now, try to update weather
