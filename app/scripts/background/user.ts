@@ -7,25 +7,21 @@
 
 /**
  * Manage the Chrome sign-in state
- * @module bg/user
  */
 
 import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as MyGA from '../../scripts/my_analytics.js';
 
 /**
  * Event: Fired when signin state changes for an act. on the user's profile.
- * @see https://developer.chrome.com/apps/identity#event-onSignInChanged
- * @param {chrome.identity.AccountInfo} account - chrome AccountInfo
- * @param {boolean} signedIn - true if signedIn
- * @returns {Promise<void>}
- * @private
+ * @link https://developer.chrome.com/apps/identity#event-onSignInChanged
+ *
+ * @param account - chrome AccountInfo
+ * @param signedIn - true if signedIn
  */
 async function _onSignInChanged(account: chrome.identity.AccountInfo, signedIn: boolean) {
   if (!signedIn) {
@@ -37,8 +33,6 @@ async function _onSignInChanged(account: chrome.identity.AccountInfo, signedIn: 
     }
 
     ChromeStorage.set('signedInToChrome', signedIn);
-
-    ChromeGA.event(MyGA.EVENT.CHROME_SIGN_OUT);
 
     // remove Google Photo selections
     try {

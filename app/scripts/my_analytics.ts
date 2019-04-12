@@ -7,45 +7,32 @@
 
 /**
  * Manage Google Analytics tracking
- * @module analytics
  */
 
 import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/**
- * Tracking ID
- * @type {string}
- * @const
- * @private
- */
+/** Tracking ID */
 const _TRACKING_ID = 'UA-61314754-1';
 
 /**
  * Event types
- * @type {{}}
- * @property {ChromeGA.Event} CHROME_SIGN_OUT - Chrome sign out
- * @property {ChromeGA.Event} LOAD_ALBUM_LIST - album list
- * @property {ChromeGA.Event} SELECT_ALBUM - user selected album
- * @property {ChromeGA.Event} LOAD_ALBUM - album
- * @property {ChromeGA.Event} LOAD_PHOTO - photo
- * @property {ChromeGA.Event} LOAD_PHOTOS - photos
- * @property {ChromeGA.Event} LOAD_FILTERED_PHOTOS - filtered photos
- * @property {ChromeGA.Event} FETCH_ALBUMS - update albums from web
- * @property {ChromeGA.Event} FETCH_PHOTOS - update photos from web
- * @property {ChromeGA.Event} PHOTOS_LIMITED - did not load all photos in album
- * @property {ChromeGA.Event} ALBUMS_LIMITED - limited photo selections
- * @property {ChromeGA.Event} VIEW_PHOTO - view original source of photo
- * @property {ChromeGA.Event} WEATHER_UPDATED - weather updated from web
- * @const
+ *
+ * @property LOAD_ALBUM_LIST - album list
+ * @property SELECT_ALBUM - user selected album
+ * @property LOAD_ALBUM - album
+ * @property LOAD_PHOTO - photo
+ * @property LOAD_PHOTOS - photos
+ * @property LOAD_FILTERED_PHOTOS - filtered photos
+ * @property FETCH_ALBUMS - update albums from web
+ * @property FETCH_PHOTOS - update photos from web
+ * @property PHOTOS_LIMITED - did not load all photos in album
+ * @property ALBUMS_LIMITED - limited photo selections
+ * @property VIEW_PHOTO - view original source of photo
+ * @property WEATHER_UPDATED - weather updated from web
  */
 export const EVENT = {
-  CHROME_SIGN_OUT: {
-    eventCategory: 'user',
-    eventAction: 'chromeSignOut',
-    eventLabel: '',
-  },
   LOAD_ALBUM_LIST: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'loadAlbumList',
@@ -117,6 +104,5 @@ export const EVENT = {
  * Initialize analytics
  */
 export function initialize() {
-  ChromeGA.initialize(_TRACKING_ID, 'Photo Screensaver',
-      'screensaver', ChromeUtils.getVersion());
+  ChromeGA.initialize(_TRACKING_ID, 'Photo Screensaver', 'screensaver', ChromeUtils.getVersion());
 }
