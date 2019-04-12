@@ -7,7 +7,6 @@
 
 /**
  * Controller for the screen saver
- * @module bg/ss_control
  */
 
 import * as AppData from './data.js';
@@ -28,23 +27,17 @@ const chromep = new ChromePromise();
 
 /**
  * Screensaver URL
- * @type {string}
- * @const
- * @private
  */
 const _SS_URL = '/html/screensaver.html';
 
 /**
  * Error showing Screensaver
- * @type {string}
- * @const
- * @private
  */
 const _ERR_SHOW = ChromeLocale.localize('err_show_ss');
 
 /**
  * Determine if the screen saver can be displayed
- * @returns {boolean} true, if can display
+ * @returns true if should display the screensaver
  */
 export function isActive() {
   const enabled = ChromeStorage.getBool('enabled');
@@ -60,9 +53,12 @@ export function isActive() {
 
 /**
  * Display the screensaver(s)
- * !Important: Always request screensaver through this call
- * @param {boolean} single - if true, only show on one display
- * @returns {Promise<void>}
+ *
+ * @remarks
+ *
+ * Important: Always request screensaver through this call
+ *
+ * @param single - if true, only show on one display
  */
 export async function display(single: boolean) {
 
@@ -91,9 +87,7 @@ export function close() {
 /**
  * Determine if there is a full screen chrome window running on a display
  * @param disp - a connected display
- * @returns {Promise<boolean>} true if there is a full screen
- * window on the display
- * @private
+ * @returns true if there is a full screen window on the display
  */
 async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
   let ret = false;
@@ -121,8 +115,7 @@ async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
 
 /**
  * Determine if a screensaver is currently showing
- * @returns {Promise<boolean>} true if showing
- * @private
+ * @returns true if showing
  */
 async function _isShowing() {
   // send message to the screensaver's to see if any are around
@@ -137,9 +130,7 @@ async function _isShowing() {
 
 /**
  * Open a screen saver window on the given display
- * @param {?{bounds}} disp - a connected display
- * @returns {Promise<void>}
- * @private
+ * @param disp - a connected display or null for the main display
  */
 async function _open(disp: chrome.system.display.DisplayInfo | null) {
   // window creation options
@@ -181,8 +172,6 @@ async function _open(disp: chrome.system.display.DisplayInfo | null) {
 
 /**
  * Open a screensaver on every display
- * @returns {Promise<void>}
- * @private
  */
 async function _openOnAllDisplays() {
   try {
@@ -207,9 +196,8 @@ async function _openOnAllDisplays() {
  * screensaver activates, "idle" if the system is unlocked and the user has not
  * generated any input for a specified number of seconds, and "active" when the
  * user generates input on an idle system.
- * @see https://developer.chrome.com/extensions/idle#event-onStateChanged
- * @param {string} state - current state of computer
- * @private
+ * @link https://developer.chrome.com/extensions/idle#event-onStateChanged
+ * @param state - current state of computer
  */
 async function _onIdleStateChanged(state: string) {
   try {
@@ -239,12 +227,11 @@ async function _onIdleStateChanged(state: string) {
 /**
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
- * @see https://developer.chrome.com/extensions/runtime#event-onMessage
+ * @link https://developer.chrome.com/extensions/runtime#event-onMessage
  * @param request - details for the message
  * @param sender MessageSender object
  * @param response - function to call once after processing
- * @returns {boolean} true if asynchronous
- * @private
+ * @returns true if asynchronous
  */
 function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                           response: (arg0: object) => void) {

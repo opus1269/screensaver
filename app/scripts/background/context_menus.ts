@@ -7,8 +7,7 @@
 
 /**
  * Manage the Context Menus for the extension
- * @see https://developer.chrome.com/extensions/contextMenus
- * @module bg/context_menus
+ * @link https://developer.chrome.com/extensions/contextMenus
  */
 
 import * as AppData from './data.js';
@@ -23,24 +22,16 @@ declare var ChromePromise: any;
 
 /**
  * Unique id of the display screensaver menu
- * @type {string}
- * @const
- * @private
  */
 const _DISPLAY_MENU = 'DISPLAY_MENU';
 
 /**
  * Unique id of the enable screensaver menu
- * @type {string}
- * @const
- * @private
  */
 const _ENABLE_MENU = 'ENABLE_MENU';
 
 /**
  * Toggle enabled state of the screen saver
- * @returns {Promise<void>}
- * @private
  */
 async function _toggleEnabled() {
   const oldState = ChromeStorage.getBool('enabled', true);
@@ -56,9 +47,8 @@ async function _toggleEnabled() {
  * Event: Fired when the extension is first installed,<br />
  * when the extension is updated to a new version,<br />
  * and when Chrome is updated to a new version.
- * @see https://developer.chrome.com/extensions/runtime#event-onInstalled
- * @param {Object} details - type of event
- * @private
+ * @link https://developer.chrome.com/extensions/runtime#event-onInstalled
+ * @param details - type of event
  */
 async function _onInstalled(details: chrome.runtime.InstalledDetails) {
   const chromep = new ChromePromise();
@@ -104,9 +94,8 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
 
 /**
  * Event: Fired when a context menu item is clicked.
- * @see https://developer.chrome.com/extensions/contextMenus#event-onClicked
- * @param {chrome.contextMenus.OnClickData} info - info. on the clicked menu
- * @private
+ * @link https://developer.chrome.com/extensions/contextMenus#event-onClicked
+ * @param info - info on the clicked menu
  */
 async function _onMenuClicked(info: chrome.contextMenus.OnClickData) {
   if (info.menuItemId === _DISPLAY_MENU) {
@@ -122,9 +111,8 @@ async function _onMenuClicked(info: chrome.contextMenus.OnClickData) {
 /**
  * Event: Fired when a registered command is activated using
  * a keyboard shortcut.
- * @see https://developer.chrome.com/extensions/commands#event-onCommand
- * @param {string} cmd - keyboard command
- * @private
+ * @link https://developer.chrome.com/extensions/commands#event-onCommand
+ * @param cmd - keyboard command
  */
 async function _onKeyCommand(cmd: string) {
   if (cmd === 'toggle-enabled') {

@@ -7,15 +7,15 @@
 
 /**
  * Manage alarms from the chrome.alarms API
- * @see https://developer.chrome.com/apps/alarms
+ * @link https://developer.chrome.com/apps/alarms
  */
 
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
-import * as Weather from '../../scripts/weather.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import * as Weather from '../../scripts/weather.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
@@ -215,8 +215,8 @@ async function _updateWeather() {
 
 /**
  * Event: Fired when an alarm has triggered.
- * @see https://developer.chrome.com/apps/alarms#event-onAlarm
- * @param  alarm - details on the alarm
+ * @link https://developer.chrome.com/apps/alarms#event-onAlarm
+ * @param alarm - details on the alarm
  */
 async function _onAlarm(alarm: chrome.alarms.Alarm) {
 

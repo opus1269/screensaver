@@ -7,13 +7,12 @@
 
 /**
  * Manage the extension's global data
- * @module bg/data
  */
 
 import * as Alarm from './alarm.js';
 
-import * as MyMsg from '../../scripts/my_msg.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import * as MyMsg from '../../scripts/my_msg.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as Weather from '../../scripts/weather.js';
 
@@ -87,7 +86,6 @@ export const DEFS = {
 
 /**
  * Initialize the data saved in localStorage
- * @returns {Promise<void>}
  */
 export async function initialize() {
   try {
@@ -120,7 +118,6 @@ export async function initialize() {
 
 /**
  * Update the data saved in localStorage
- * @returns {Promise<void>}
  */
 export async function update() {
   // New items, changes, and removal of unused items can take place
@@ -264,7 +261,6 @@ export async function update() {
 
 /**
  * Restore default values for data saved in localStorage
- * @returns {Promise<void>}
  */
 export async function restoreDefaults() {
   for (const key of Object.keys(DEFS)) {
@@ -298,8 +294,7 @@ export async function restoreDefaults() {
 
 /**
  * Process changes to localStorage items
- * @param {string} [key='all'] - the item that changed
- * @returns {Promise<void>}
+ * @param key='all' - the item that changed
  */
 export async function processState(key = 'all') {
   try {
@@ -409,7 +404,7 @@ export async function processState(key = 'all') {
 
 /**
  * Get the idle time in seconds
- * @returns {!int} idle time in seconds
+ * @returns idle time in seconds
  */
 export function getIdleSeconds() {
   const idle = ChromeStorage.get('idleTime', DEFS.idleTime);
@@ -417,9 +412,7 @@ export function getIdleSeconds() {
 }
 
 /**
- * Move the currently selected photo sources to chrome.storage.local
- * and delete the old ones
- * @private
+ * Move the currently selected photo sources to chrome.storage.local and delete the old ones
  */
 async function _updateToChromeLocaleStorage() {
   const sources = PhotoSources.getSelectedSources();
@@ -441,11 +434,12 @@ async function _updateToChromeLocaleStorage() {
 
 /**
  * Set state based on screensaver enabled flag
+ *
+ * @remarks
+ *
  * Note: this does not effect the keep awake settings so you could
  * use the extension as a display keep awake scheduler without
  * using the screensaver
- * @returns {Promise<void>}
- * @private
  */
 async function _processEnabled() {
   Alarm.updateBadgeText();
@@ -468,7 +462,6 @@ async function _processEnabled() {
 
 /**
  * Set power scheduling features
- * @private
  */
 function _processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', DEFS.keepAwake);
@@ -481,7 +474,6 @@ function _processKeepAwake() {
 
 /**
  * Set wait time for screen saver display after machine is idle
- * @private
  */
 function _processIdleTime() {
   chrome.idle.setDetectionInterval(getIdleSeconds());
@@ -489,8 +481,7 @@ function _processIdleTime() {
 
 /**
  * Get default time format index based on locale
- * @returns {int} 1 or 2
- * @private
+ * @returns 1 or 2
  */
 function _getTimeFormat() {
   const format = ChromeLocale.localize('time_format', '12');
@@ -499,8 +490,7 @@ function _getTimeFormat() {
 
 /**
  * Get default temperature unit index based on locale
- * @returns {int} 0 or 1
- * @private
+ * @returns 0 or 1
  */
 function _getTempUnit() {
   const unit = ChromeLocale.localize('temp_unit', 'C');
@@ -509,8 +499,6 @@ function _getTempUnit() {
 
 /**
  * Set the 'os' value
- * @returns {Promise<void>}
- * @private
  */
 async function _setOS() {
   try {
@@ -526,7 +514,6 @@ async function _setOS() {
 
 /**
  * Save the default value for each item that doesn't exist
- * @private
  */
 function _addDefaults() {
   for (const key of Object.keys(DEFS)) {
@@ -538,8 +525,7 @@ function _addDefaults() {
 
 /**
  * Convert a setting-slider value due to addition of units
- * @param {!string} key - localStorage key
- * @private
+ * @param key - localStorage key
  */
 function _convertSliderValue(key: string) {
   const value = ChromeStorage.get(key);
