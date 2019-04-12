@@ -8,7 +8,6 @@
 /**
  * Manage alarms from the chrome.alarms API
  * @see https://developer.chrome.com/apps/alarms
- * @module bg/alarm
  */
 
 import * as AppData from './data.js';
@@ -30,19 +29,6 @@ const chromep = new ChromePromise();
 
 /**
  * Alarms triggered by chrome.alarms
- * @typedef {JSON} module:bg/alarm.Alarms
- * @property {string} ACTIVATE - screen saver is active
- * @property {string} DEACTIVATE - screen saver is not activate
- * @property {string} UPDATE_PHOTOS - photo sources should be updated
- * @property {string} BADGE_TEXT - icon's Badge text should be set
- * @property {string} WEATHER - try to update current weather
- */
-
-/**
- * Alarms triggered by chrome.alarms
- * @type {module:bg/alarm.Alarms}
- * @const
- * @private
  */
 const _ALARMS = {
   ACTIVATE: 'ACTIVATE',
@@ -90,7 +76,6 @@ export function updateKeepAwakeAlarm() {
 
 /**
  * Set the repeating daily photo alarm
- * @returns {Promise<void>}
  */
 export async function updatePhotoAlarm() {
   // Add daily alarm to update photo sources that request this
@@ -112,7 +97,6 @@ export async function updatePhotoAlarm() {
 
 /**
  * Set the weather alarm
- * @returns {Promise<void>}
  */
 export async function updateWeatherAlarm() {
   const showWeather = ChromeStorage.getBool('showCurrentWeather',
@@ -152,8 +136,6 @@ export function updateBadgeText() {
 
 /**
  * Set state when the screensaver is in the active time range
- * @returns {Promise<void>}
- * @private
  */
 async function _setActiveState() {
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
@@ -181,7 +163,6 @@ async function _setActiveState() {
 
 /**
  * Set state when the screensaver is in the inactive time range
- * @private
  */
 function _setInactiveState() {
   const allowSuspend = ChromeStorage.getBool('allowSuspend',
@@ -197,7 +178,6 @@ function _setInactiveState() {
 
 /**
  * Set the Badge text on the icon
- * @private
  */
 function _setBadgeText() {
   const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
@@ -216,8 +196,6 @@ function _setBadgeText() {
 /**
  * Update the weather
  * @throws An error if update failed
- * @returns {Promise<void>}
- * @private
  */
 async function _updateWeather() {
   // is the screensaver running
@@ -238,8 +216,7 @@ async function _updateWeather() {
 /**
  * Event: Fired when an alarm has triggered.
  * @see https://developer.chrome.com/apps/alarms#event-onAlarm
- * @param  alarm details on alarm
- * @private
+ * @param  alarm - details on the alarm
  */
 async function _onAlarm(alarm: chrome.alarms.Alarm) {
 
