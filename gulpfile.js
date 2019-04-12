@@ -227,7 +227,8 @@ gulp.task('incrementalBuild', (cb) => {
   isProd = false;
   isProdTest = false;
   isWatch = true;
-  runSequence(['_watch_ts'], [
+  runSequence([
+    '_watch_ts',
     '_lintdevjs',
     '_lint',
     '_manifest',
