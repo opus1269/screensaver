@@ -137,87 +137,42 @@ function waitFor(stream) {
 // Runs equivalent of 'polymer build'
 function buildPolymer() {
   chDir('..');
-  return new Promise((resolve, reject) => { // eslint-disable-line no-unused-vars
 
-    // Lets create some inline code splitters in case you need them later in
-    // your build.
-    let sourcesStreamSplitter = new polymerBuild.HtmlSplitter();
-    let dependenciesStreamSplitter = new polymerBuild.HtmlSplitter();
+  // Okay, so first thing we do is clear the build directory
+  console.log(`Deleting ${buildDirectory} directory...`);
+  return del([buildDirectory]).then(() => {
 
-    // Okay, so first thing we do is clear the build directory
-    console.log(`Deleting ${buildDirectory} directory...`);
-    del([buildDirectory]).then(() => {
+    const sourcesStream =
+        polymerProject.sources().
+        pipe(gulpIf(/\.(png|gif|jpg|svg)$/, imageMin()));
 
-      // Let's start by getting your source files. These are all the files
-      // in your `src/` directory, or those that match your polymer.json
-      // "sources"  property if you provided one.
-      let sourcesStream = polymerProject.sources()
+    const dependenciesStream = polymerProject.dependencies();
 
-      // If you want to optimize, minify, compile, or otherwise process
-      // any of your source code for production, you can do so here before
-      // merging your sources and dependencies together.
-          .pipe(gulpIf(/\.(png|gif|jpg|svg)$/, imageMin()))
+    // merge streams
+    let buildStream = merge([sourcesStream, dependenciesStream]).
+        once('data', () => {
+          console.log('Analyzing build dependencies...');
+        });
 
-          // The `sourcesStreamSplitter` created above can be added here to
-          // pull any inline styles and scripts out of their HTML files and
-          // into separate CSS and JS files in the build stream. Just be sure
-          // to rejoin those files with the `.rejoin()` method when you're done.
-          .pipe(sourcesStreamSplitter.split())
+    if (isProd || isProdTest) {
 
-          // Uncomment these lines to add a few more example optimizations to
-          // your source files, but these are not included by default. For
-          // installation, see the require statements at the beginning.
-          // .pipe(gulpIf(/\.js$/, minify(minifyOpts)))
-          // .pipe(gulpIf(/\.css$/, cssSlam())) // Install css-slam to use
-          // .pipe(gulpIf(/\.html$/, htmlMinifier())) // Install
-          // gulp-html-minifier to use
+      buildStream = buildStream.pipe(polymerProject.bundler({
+        inlineScripts: false,
+        inlineCss: false,
+      })).
+      pipe(gulpIf(/\.js$/, minify(minifyOpts))).
+      pipe(gulp.dest(buildDirectory));
 
-          // Remember, you need to rejoin any split inline code when you're
-          // done.
-          .pipe(sourcesStreamSplitter.rejoin());
+    }
 
-      // Similarly, you can get your dependencies separately and perform
-      // any dependency-only optimizations here as well.
-      let dependenciesStream = polymerProject.dependencies().
-          pipe(dependenciesStreamSplitter.split())
-          // Add any dependency optimizations here.
-          .pipe(dependenciesStreamSplitter.rejoin());
-
-      // Okay, now let's merge your sources & dependencies together into a
-      // single build stream.
-      let buildStream = merge([sourcesStream, dependenciesStream]).
-          once('data', () => {
-            console.log('Analyzing build dependencies...');
-          });
-
-      if (isProd || isProdTest) {
-
-        // If you want bundling, pass the stream to polymerProject.bundler.
-        // This will bundle dependencies into your fragments so you can lazy
-        // load them.
-        buildStream = buildStream.pipe(polymerProject.bundler({
-          inlineScripts: false,
-          inlineCss: false,
-        }));
-
-        // now lets minify for production
-        buildStream = buildStream.pipe(gulpIf(/\.js$/, minify(minifyOpts)));
-
-      }
-
-      // Okay, time to pipe to the build directory
-      buildStream = buildStream.pipe(gulp.dest(buildDirectory));
-
-      // waitFor the buildStream to complete
-      return waitFor(buildStream);
-    }).then(() => {
-      // You did it!
-      console.log('Build complete!');
-      resolve();
-      return null;
-    }).catch((err) => {
-      console.log('buildPolymer\n' + err);
-    });
+    // waitFor the buildStream to complete
+    return waitFor(buildStream);
+  }).then(() => {
+    // You did it!
+    console.log('Build complete!');
+    return Promise.resolve();
+  }).catch((err) => {
+    console.log('buildPolymer\n' + err);
   });
 }
 
