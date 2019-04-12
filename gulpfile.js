@@ -67,12 +67,15 @@ let isProd = false;
 // flag to keep key in production build for testing purposes
 let isProdTest = false;
 
-const gulp = require('gulp');
-const del = require('del');
-const exec = require('child_process').exec;
-const runSequence = require('run-sequence');
+const process = require('process');
+const childProcess = require('child_process');
+const spawn = childProcess.spawn;
 
+const gulp = require('gulp');
+const runSequence = require('run-sequence');
+const del = require('del');
 const merge = require('merge2');
+
 const gulpIf = require('gulp-if');
 const noop = require('gulp-noop');
 const watch = require('gulp-watch');
@@ -84,6 +87,7 @@ const stripLine = require('gulp-strip-line');
 const jsdoc3 = require('gulp-jsdoc3');
 const zip = require('gulp-zip');
 /* eslint-disable-next-line no-unused-vars */
+// noinspection JSUnusedLocalSymbols
 const debug = require('gulp-debug');
 
 // TypeScript
@@ -272,7 +276,8 @@ gulp.task('buildProd', (cb) => {
   isWatch = false;
   buildDirectory = 'build/prod';
 
-  runSequence('_build_js', '_poly_build', '_manifest', '_zip', '_delete_js', cb);
+  runSequence('_build_js', '_poly_build', '_manifest', '_zip', '_delete_js',
+      cb);
 });
 
 // Generate JSDoc
@@ -291,18 +296,29 @@ gulp.task('docs', (cb) => {
       pipe(jsdoc3(config, cb));
 });
 
-// Exec 'polymer build' for the debug build
-gulp.task('_poly_build_dev', (cb) => {
-
+// Spawn a process to run 'polymer build' for the debug build
+gulp.task('_poly_build_dev', (done) => {
   chDir('..');
 
   console.log('running polymer build...');
 
-  // run polymer build
-  exec('polymer build', (err, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-    cb(err);
+  // run 'polymer build'
+  // see: https://stackoverflow.com/a/17537559/4468645
+  const polymer = (process.platform === 'win32') ? 'polymer.cmd' : 'polymer';
+
+  const build = spawn(polymer, ['build']);
+
+  build.stdout.on('data', (data) => {
+    console.log(data.toString());
+  });
+
+  build.stderr.on('data', (data) => {
+    console.log(`stderr: ${data.toString()}`);
+  });
+
+  build.on('exit', (code) => {
+    console.log(`${polymer} exited with code ${code.toString()}`);
+    done();
   });
 });
 
