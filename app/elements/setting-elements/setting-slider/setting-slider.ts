@@ -7,25 +7,6 @@
 
 /**
  * Module for a SettingSlider
- * @module els/setting/slider
- */
-
-/**
- * A unit type
- * @typedef {{}} module:els/setting/slider.UnitType
- * @property {string} name - descriptive name
- * @property {int} min - min value
- * @property {int} max - max value
- * @property {int} step - increment of changes
- * @property {number} mult - multiplier of a base
- */
-
-/**
- * A number and associated units
- * @typedef {{}} module:els/setting/slider.UnitValue
- * @property {number} base - value in base unit
- * @property {number} display - value in display unit
- * @property {int} unit - display unit
  */
 
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
@@ -55,7 +36,7 @@ interface UnitType {
   mult: number;
 }
 
-interface UnitValue {
+export interface UnitValue {
   base: number;
   display: number;
   unit: number;
@@ -63,11 +44,9 @@ interface UnitValue {
 
 /**
  * Polymer element for a url link
- * @type {{}}
- * @alias module:els/setting/slider.SettingSlider
  * @PolymerElement
  */
-const SettingSlider = Polymer({
+export const SettingSlider = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -154,21 +133,21 @@ const SettingSlider = Polymer({
       value: '',
     },
 
-    /** @link {module:els/setting/slider.SettingSlider.UnitValue} */
+    /** @link {UnitValue} */
     value: {
       type: Object,
       notify: true,
-      value: function() {
+      value: (): UnitValue => {
         return {base: 10, display: 10, unit: 0};
       },
       observer: '_valueChanged',
     },
 
-    /** @link {module:els/setting/slider.SettingSlider.UnitType} */
+    /** @link {UnitType} */
     unit: {
       type: Object,
       notify: true,
-      value: function() {
+      value: (): UnitType => {
         return {name: 'unknown', min: 1, max: 10, step: 1, mult: 1};
       },
     },
@@ -181,10 +160,10 @@ const SettingSlider = Polymer({
       observer: '_unitIdxChanged',
     },
 
-    /** Array of {@link module:els/setting/slider.SettingSlider.UnitType} */
+    /** Array of {@link UnitType} */
     units: {
       type: Array,
-      value: function(): UnitType[] {
+      value: (): UnitType[] => {
         return [];
       },
     },
@@ -218,11 +197,33 @@ const SettingSlider = Polymer({
   },
 
   /**
-   * Observer: Unit changed
-   * @param {number} newValue
-   * @private
+   * Event: User changed slider value
    */
-  _unitIdxChanged: function(newValue: number) {
+  _onSliderValueChanged: function() {
+    this._setBase();
+    const label = `${this.name}: ${JSON.stringify(this.value)}`;
+    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
+  },
+
+  /**
+   * Event: unit menu item tapped
+   *
+   * @param ev - tap event
+   */
+  _onUnitMenuSelected: function(ev: Event) {
+    const model = this.$.t.modelForElement(ev.target);
+    if (model) {
+      const label = `${this.name}: ${JSON.stringify(model.unit)}`;
+      ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
+    }
+  },
+
+  /**
+   * Observer: Unit changed
+   *
+   * @param newValue
+   */
+  _unitIdxChanged: function(newValue: number | undefined) {
     if (newValue !== undefined) {
       this.set('value.unit', newValue);
       this._setBase();
@@ -234,9 +235,11 @@ const SettingSlider = Polymer({
 
   /**
    * Observer: Value changed
-   * @private
+   *
+   * @param newValue
+   * @param oldValue
    */
-  _valueChanged: function(newValue: UnitValue, oldValue: UnitValue) {
+  _valueChanged: function(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
     if (newValue !== undefined) {
       if (oldValue !== undefined) {
         if (newValue.unit !== oldValue.unit) {
@@ -247,36 +250,10 @@ const SettingSlider = Polymer({
   },
 
   /**
-   * Event: User changed slider value
-   * @private
-   */
-  _onSliderValueChanged: function() {
-    this._setBase();
-    const label = `${this.name}: ${JSON.stringify(this.value)}`;
-    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
-  },
-
-  /**
-   * Event: unit menu item tapped
-   * @param {Event} ev - tap event
-   * @private
-   */
-  _onUnitMenuSelected: function(ev: Event) {
-    const model = this.$.t.modelForElement(ev.target);
-    if (model) {
-      const label = `${this.name}: ${JSON.stringify(model.unit)}`;
-      ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
-    }
-  },
-
-  /**
    * Set the base value
-   * @private
    */
   _setBase: function() {
     this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
   },
 });
-
-export default SettingSlider;
 

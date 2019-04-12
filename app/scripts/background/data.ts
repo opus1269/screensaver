@@ -9,6 +9,8 @@
  * Manage the extension's global data
  */
 
+import {UnitValue} from '../../elements/setting-elements/setting-slider/setting-slider';
+
 import * as Alarm from './alarm.js';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
@@ -44,8 +46,8 @@ export const DEFS = {
   permBackground: 'notSet', // enum: notSet allowed denied
   permWeather: 'notSet', // enum: notSet allowed denied
   allowBackground: false,
-  idleTime: {base: 5, display: 5, unit: 0}, // minutes
-  transitionTime: {base: 30, display: 30, unit: 0}, // seconds
+  idleTime:  {base: 5, display: 5, unit: 0} as UnitValue, // minutes
+  transitionTime: {base: 30, display: 30, unit: 0} as UnitValue, // seconds
   skip: true,
   shuffle: true,
   photoSizing: 0,
