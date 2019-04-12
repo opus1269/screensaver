@@ -227,10 +227,11 @@ gulp.task('incrementalBuild', (cb) => {
   isProd = false;
   isProdTest = false;
   isWatch = true;
-  runSequence('_lint', ['_watch_ts'], [
+  runSequence(['_watch_ts'], [
+    '_lintdevjs',
+    '_lint',
     '_manifest',
     '_html',
-    '_lintdevjs',
     '_images',
     '_assets',
     '_lib',
@@ -302,6 +303,8 @@ gulp.task('_poly_build', buildPolymer);
 
 // lint development js files
 gulp.task('_lintdevjs', () => {
+  chDir('app');
+
   const input = files.lintdevjs;
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
@@ -316,7 +319,9 @@ gulp.task('_lint', () => {
   chDir('app');
 
   const input = files.ts;
+  watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
+      pipe(isWatch ? watch(input, watchOpts) : noop()).
       pipe(tslint({
         formatter: 'verbose',
       })).
