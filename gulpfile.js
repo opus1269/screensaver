@@ -127,7 +127,7 @@ function chDir(dir) {
 }
 
 // Waits for the given ReadableStream
-function waitFor(stream) {
+async function waitFor(stream) {
   return new Promise((resolve, reject) => {
     stream.on('end', resolve);
     stream.on('error', reject);
@@ -135,15 +135,14 @@ function waitFor(stream) {
 }
 
 // Runs equivalent of 'polymer build'
-function buildPolymer() {
+async function buildPolymer() {
   chDir('..');
 
-  // Okay, so first thing we do is clear the build directory
-  console.log(`Deleting ${buildDirectory} directory...`);
-  return del([buildDirectory]).then(() => {
+  try {
+    console.log(`Deleting ${buildDirectory} directory...`);
+    await del([buildDirectory]);
 
-    const sourcesStream =
-        polymerProject.sources().
+    const sourcesStream = polymerProject.sources().
         pipe(gulpIf(/\.(png|gif|jpg|svg)$/, imageMin()));
 
     const dependenciesStream = polymerProject.dependencies();
@@ -156,24 +155,21 @@ function buildPolymer() {
 
     if (isProd || isProdTest) {
 
-      buildStream = buildStream.pipe(polymerProject.bundler({
-        inlineScripts: false,
-        inlineCss: false,
-      })).
-      pipe(gulpIf(/\.js$/, minify(minifyOpts))).
-      pipe(gulp.dest(buildDirectory));
-
+      buildStream = buildStream.
+          pipe(polymerProject.bundler({
+            inlineScripts: false,
+            inlineCss: false,
+          })).
+          pipe(gulpIf(/\.js$/, minify(minifyOpts))).
+          pipe(gulp.dest(buildDirectory));
     }
 
-    // waitFor the buildStream to complete
-    return waitFor(buildStream);
-  }).then(() => {
-    // You did it!
+    // wait for the buildStream to complete
+    await waitFor(buildStream);
     console.log('Build complete!');
-    return Promise.resolve();
-  }).catch((err) => {
-    console.log('buildPolymer\n' + err);
-  });
+  } catch (err) {
+    console.error('buildPolymer\n' + err);
+  }
 }
 
 // Default - watch for changes during development
