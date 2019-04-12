@@ -625,7 +625,7 @@
     "message": "Impossibile aggiornare la posizione corrente"
   },
   "setting_pan_and_scan": {
-    "message": "Analizza e scansiona la foto corrente"
+    "message": "Pan e zoomare la foto corrente"
   },
   "setting_pan_and_scan_desc": {
     "message": "Applicare l'effetto \"Ken Burns\" alle foto"

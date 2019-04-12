@@ -625,7 +625,7 @@
     "message": "Fehler beim Aktualisieren Ihres aktuellen Standorts"
   },
   "setting_pan_and_scan": {
-    "message": "Aktuelles Foto schwenken und scannen"
+    "message": "Aktuelles Foto schwenken und zoomen"
   },
   "setting_pan_and_scan_desc": {
     "message": "Wenden Sie den Effekt \"Ken Burns\" auf die Fotos an"

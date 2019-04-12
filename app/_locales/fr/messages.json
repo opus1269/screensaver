@@ -625,7 +625,7 @@
     "message": "Impossible de mettre à jour votre position actuelle"
   },
   "setting_pan_and_scan": {
-    "message": "Panoramique et numérisation de la photo en cours"
+    "message": "Panoramique et zoom photo actuelle"
   },
   "setting_pan_and_scan_desc": {
     "message": "Applicare l'effetto \"Ken Burns\" alle foto"

@@ -625,7 +625,7 @@
     "message": "Failed to update your current location"
   },
   "setting_pan_and_scan": {
-    "message": "Pan and scan current photo"
+    "message": "Pan and zoom current photo"
   },
   "setting_pan_and_scan_desc": {
     "message": "Apply the \"Ken Burns\" effect to the photos"

@@ -625,7 +625,7 @@
     "message": "Error al actualizar su ubicación actual"
   },
   "setting_pan_and_scan": {
-    "message": "Panoramizar y escanear la foto actual"
+    "message": "Panorámica y zoom de la foto actual"
   },
   "setting_pan_and_scan_desc": {
     "message": "Aplica el efecto \"Ken Burns\" a las fotos."
