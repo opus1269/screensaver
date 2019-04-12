@@ -7,32 +7,26 @@
 
 /**
  * Wrapper for chrome messages specific to this app
- * @see https://developer.chrome.com/extensions/messaging
- * @module msg
+ * {@link https://developer.chrome.com/extensions/messaging}
  */
 
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import {MsgType} from './chrome-extension-utils/scripts/msg.js';
+import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Chrome Messages for this app
- * @type {{}}
- * @property {module:chrome/msg.Message} SS_SHOW - show screensaver
- * @property {module:chrome/msg.Message} SS_CLOSE - close screensaver
- * @property {module:chrome/msg.Message} SS_IS_SHOWING - is a screensaver showing
- * @property {module:chrome/msg.Message} PHOTO_SOURCE_FAILED - failed to web load
- * @property {module:chrome/msg.Message} LOAD_FILTERED_PHOTOS - request to load
- * the filtered google photos
- * @property {module:chrome/msg.Message} FILTERED_PHOTOS_COUNT - number of photos
- * @property {module:chrome/msg.Message} LOAD_ALBUMS - request to load contents
- * of the saved albums
- * @property {module:chrome/msg.Message} LOAD_ALBUM - request to load
- * the contents of a google photos album
- * @property {module:chrome/msg.Message} ALBUM_PHOTOS_COUNT - number of photos
- * loaded so far
- * @property {module:chrome/msg.Message} UPDATE_WEATHER_ALARM
- * @property {module:chrome/msg.Message} UPDATE_WEATHER - update current weather
- * @const
+ *
+ * @property SS_SHOW - show screensaver
+ * @property SS_CLOSE - close screensaver
+ * @property SS_IS_SHOWING - is a screensaver showing
+ * @property PHOTO_SOURCE_FAILED - failed to web load
+ * @property LOAD_FILTERED_PHOTOS - request to load the filtered google photos
+ * @property FILTERED_PHOTOS_COUNT - number of photos
+ * @property LOAD_ALBUMS - request to load contents of the saved albums
+ * @property LOAD_ALBUM - request to load the contents of a google photos album
+ * @property ALBUM_PHOTOS_COUNT - number of photos loaded so far
+ * @property UPDATE_WEATHER_ALARM
+ * @property UPDATE_WEATHER - update current weather
  */
 const _MSG = {
   SS_SHOW: {

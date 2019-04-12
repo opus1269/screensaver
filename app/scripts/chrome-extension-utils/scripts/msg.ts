@@ -7,27 +7,26 @@
 
 /**
  * Wrapper for chrome messages
- * @see https://developer.chrome.com/extensions/messaging
- * @module chrome/msg
+ * {@link https://developer.chrome.com/extensions/messaging}
  */
 
-/**
- * A Chrome message
- * @typedef {{}} module:chrome/msg.Message
- * @property {string} message - a message
- * @property {?string} error - an error message
- * @property {string} key - key name
- * @property {?Object} value - value of key
- * @property {?string} id
- * @property {?string} name
- * @property {?int} count
- */
 
 import * as ChromeGA from './analytics.js';
 import './ex_handler.js';
 
 declare var ChromePromise: any;
 
+/**
+ * A Chrome message
+ *
+ * @property message - a message
+ * @property error - an error message
+ * @property key - key name
+ * @property value - value of key
+ * @property id
+ * @property name
+ * @property count
+ */
 export interface MsgType {
   message: string;
   error?: string;
@@ -40,15 +39,11 @@ export interface MsgType {
 
 /**
  * Chrome Messages
- * @type {{}}
- * @property {module:chrome/msg.Message} HIGHLIGHT - highlight a tab
- * @property {module:chrome/msg.Message} RESTORE_DEFAULTS - restore default
- *     settings
- * @property {module:chrome/msg.Message} STORAGE_EXCEEDED - local storage save
- *     failed
- * @property {module:chrome/msg.Message} STORE - save value to storage
- * @const
- * @private
+ *
+ * @property HIGHLIGHT - highlight a tab
+ * @property RESTORE_DEFAULTS - restore default settings
+ * @property STORAGE_EXCEEDED - local storage save failed
+ * @property STORE - save value to storage
  */
 const _MSG = {
   HIGHLIGHT: {
@@ -74,9 +69,10 @@ export const STORE: MsgType = _MSG.STORE;
 
 /**
  * Send a chrome message
- * @param {module:chrome/msg.Message} type - type of message
+ *
+ * @param type - type of message
  * @throws An error if we failed to connect to the extension
- * @returns {Promise<JSON|Array>} response JSON
+ * @returns Something that is json
  */
 export async function send(type: MsgType) {
   const chromep = new ChromePromise();
@@ -94,7 +90,8 @@ export async function send(type: MsgType) {
 
 /**
  * Add a listener for chrome messages
- * @param {Function} listener - function to receive messages
+ *
+ * @param listener - function to receive messages
  */
 export function listen(listener: (arg0: MsgType,
                                   arg1: chrome.runtime.MessageSender,

@@ -6,14 +6,13 @@
  */
 
 /**
- * Event handling for a {@link module:els/screensaver.Screensaver}
- * @module ss/events
+ * Event handling for a {@link Screensaver}
  */
-
-import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
+
+import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
@@ -22,26 +21,22 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Starting mouse position
- * @type {{x: ?int, y: ?int}}
- * @const
- * @private
+ *
+ * @property x - screen horizontal position
+ * @property y - screen vertical position
  */
 interface MousePosition {
-  x: number | number;
+  x: number | null;
   y: number | null;
 }
 
 /**
  * Starting mouse position
- * @type {{x: ?int, y: ?int}}
- * @const
- * @private
  */
 const _MOUSE_START: MousePosition = {x: null, y: null};
 
 /**
  * Close ourselves
- * @private
  */
 function _close() {
   // send message to other screen savers to close themselves
@@ -53,11 +48,10 @@ function _close() {
 }
 
 /**
- * Event: Fired when a registered command is activated using
- * a keyboard shortcut.
- * @see https://developer.chrome.com/extensions/commands#event-onCommand
- * @param {string} cmd - keyboard command
- * @private
+ * Event: Fired when a registered command is activated using a keyboard shortcut.
+ * {@link https://developer.chrome.com/extensions/commands#event-onCommand}
+ *
+ * @param cmd - keyboard command
  */
 function _onKeyCommand(cmd: string) {
   if (SSRunner.isInteractive()) {
@@ -77,12 +71,12 @@ function _onKeyCommand(cmd: string) {
 /**
  * Event: Fired when a message is sent from either an extension<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
- * @see https://developer.chrome.com/extensions/runtime#event-onMessage
- * @param {module:chrome/msg.Message} request - details for the message
- * @param {Object} [sender] - MessageSender object
- * @param {Function} [response] - function to call once after processing
- * @returns {boolean} true if asynchronous
- * @private
+ * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+ *
+ * @param request - details for the message
+ * @param sender - MessageSender object
+ * @param response - function to call once after processing
+ * @returns true if asynchronous
  */
 function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                           response: (arg0: object) => void) {
@@ -97,9 +91,9 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
 
 /**
  * Event: KeyboardEvent
- * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
- * @param {KeyboardEvent} ev - KeyboardEvent
- * @private
+ * {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent}
+ *
+ * @param ev - KeyboardEvent
  */
 function _onKey(ev: KeyboardEvent) {
   const keyName = ev.key;
@@ -126,8 +120,8 @@ function _onKey(ev: KeyboardEvent) {
 
 /**
  * Event: mousemove
- * @param {MouseEvent} ev - mousemove event
- * @private
+ *
+ * @param ev - mousemove event
  */
 function _onMouseMove(ev: MouseEvent) {
   if (_MOUSE_START.x && _MOUSE_START.y) {
@@ -146,7 +140,6 @@ function _onMouseMove(ev: MouseEvent) {
 
 /**
  * Event: mouse click
- * @private
  */
 function _onMouseClick() {
   if (SSRunner.isStarted()) {

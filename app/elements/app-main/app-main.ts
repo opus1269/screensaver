@@ -39,8 +39,8 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 
 import '../../elements/pages/settings-page/settings-page.js';
 import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import GooglePhotosPage from '../../elements/pages/google-photos-page/google-photos-page.js';
 import ErrorPage from '../../elements/pages/error-page/error-page.js';
+import GooglePhotosPage from '../../elements/pages/google-photos-page/google-photos-page.js';
 import HelpPage from '../../elements/pages/help-page/help-page.js';
 
 import '../../elements/my_icons.js';
@@ -66,15 +66,26 @@ declare var ChromePromise: any;
 
 /**
  * Module for the main UI
- * @module els/app_main
  */
 
+/**
+ * The pages for our SPA
+ *
+ * @property label - Menu label
+ * @property route - Insertion point
+ * @property icon - Menu icon
+ * @property fn - Function to call when we are selected
+ * @property url - to display when we are selected
+ * @property ready - Have we been loaded a first time
+ * @property disabled - Menu disabled state
+ * @property divider - Should we display a divider along with the Menu item
+ */
 interface Page {
   label: string;
   route: string;
   icon: string;
-  fn: (arg0: number, arg1: string) => void;
-  url: string;
+  fn: (arg0: number, arg1: string) => void | null;
+  url: string | null;
   ready: boolean;
   disabled: boolean;
   divider: boolean;
@@ -82,64 +93,36 @@ interface Page {
 
 /**
  * Function to show a confirm dialog
- * @type {Function}
  */
 export let showConfirmDialog: (arg0: string, arg1: string, arg2: string, arg3: () => void) => void = null;
 
 /**
  * Function to show an error dialog
- * @type {Function}
  */
 export let showErrorDialog: (arg0: string, arg1: string, arg2: string) => void = null;
 
 /**
  * Function to show an error dialog about failing to store data
- * @type {Function}
  */
 export let showStorageErrorDialog: (arg0: string) => void = null;
 
 /**
  * Function to call on confirm dialog confirm button click
- * @type {Function}
  */
 let confirmFn: () => void = null;
 
 /**
- * Manage an html page that is inserted on demand<br />
- * May also be a url link to external site
- * @typedef {{}} module:els/app_main.Page
- * @property {string} label - label for Nav menu
- * @property {string} route - element name route to page
- * @property {string} icon - icon for Nav Menu
- * @property {?Object|Function} obj - something to be done when selected
- * @property {boolean} ready - true if html is inserted
- * @property {boolean} divider - true for divider before item
- */
-
-/**
  * Path to the extension in the Web Store
- * @type {string}
- * @const
- * @private
  */
-const EXT_URI =
-    'https://chrome.google.com/webstore/detail/screensaver/' +
-    chrome.runtime.id + '/';
+const EXT_URI = `https://chrome.google.com/webstore/detail/screensaver/${chrome.runtime.id }/`;
 
 /**
  * Path to my Pushy Clipboard extension
- * @type {string}
- * @const
- * @default
- * @private
  */
-const PUSHY_URI =
-    'https://chrome.google.com/webstore/detail/pushy-clipboard/' +
-    'jemdfhaheennfkehopbpkephjlednffd';
+const PUSHY_URI = 'https://chrome.google.com/webstore/detail/pushy-clipboard/jemdfhaheennfkehopbpkephjlednffd';
 
 /**
  * Array of pages
- * @type {Page[]}
  */
 const pages: Page[] = [
   {
@@ -194,15 +177,11 @@ let gPhotosPage: any;
 
 /**
  * Chrome sign in state
- * @type {boolean}
- * @private
  */
 let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
 /**
  * Polymer element for the main UI
- * @type {{}}
- * @alias module:els/app_main.AppMain
  * @PolymerElement
  */
 Polymer({
@@ -377,14 +356,13 @@ Polymer({
 
   properties: {
 
-    /** Array of {@link module:els/app_main.Page} */
     pages: {
       type: Array,
       value: pages,
       readOnly: true,
     },
 
-    /** Current {@link module:els/app_main.Page} */
+    /** Current {@link Page} */
     route: {
       type: String,
       value: 'page-settings',
@@ -450,9 +428,10 @@ Polymer({
 
   /**
    * Display an error dialog
-   * @param {string} title - dialog title
-   * @param {string} text - dialog text
-   * @param {?string} [method=null] - optional calling method
+   *
+   * @param title - dialog title
+   * @param text - dialog text
+   * @param [method=null] - optional calling method
    */
   showErrorDialog: function(title: string, text: string, method: string = null) {
     if (method) {
@@ -463,7 +442,8 @@ Polymer({
 
   /**
    * Display an error dialog about failing to save data
-   * @param {string} method - calling method
+   *
+   * @param method - calling method
    */
   showStorageErrorDialog: function(method: string) {
     const title = ChromeLocale.localize('err_storage_title');
@@ -474,10 +454,11 @@ Polymer({
 
   /**
    * Display a confirm dialog
-   * @param {string} text - dialog text
-   * @param {string} title - dialog title
-   * @param {string} confirmLabel - confirm button text
-   * @param {Function} fn - function to call on confirm button click
+   *
+   * @param text - dialog text
+   * @param title - dialog title
+   * @param confirmLabel - confirm button text
+   * @param fn - function to call on confirm button click
    */
   showConfirmDialog: function(text: string, title: string, confirmLabel: string, fn: () => void) {
     confirmFn = fn;
@@ -486,7 +467,6 @@ Polymer({
 
   /**
    * Event: Clicked on confirm button of confirm dialog
-   * @private
    */
   _onConfirmDialogTapped: function() {
     if (confirmFn) {
@@ -495,10 +475,8 @@ Polymer({
   },
 
   /**
-   * Event: navigation menu selected
-   * Route to proper page
-   * @param {Event} ev - ClickEvent
-   * @private
+   * Event: Navigation menu selected. Route to proper page
+   * @param ev - ClickEvent
    */
   _onNavMenuItemTapped: function(ev: any) {
     // Close drawer after menu item is selected if it is in narrow layout
@@ -530,8 +508,6 @@ Polymer({
 
   /**
    * Event: Clicked on accept permissions dialog button
-   * @returns {Promise<void>}
-   * @private
    */
   _onAcceptPermissionsClicked: async function() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
@@ -550,8 +526,6 @@ Polymer({
 
   /**
    * Event: Clicked on deny permission dialog button
-   * @returns {Promise<void>}
-   * @private
    */
   _onDenyPermissionsClicked: async function() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
@@ -566,9 +540,9 @@ Polymer({
 
   /**
    * Computed Binding: Determine content script permission status string
-   * @param {string} permission - current setting
-   * @returns {string}
-   * @private
+   *
+   * @param permission - current setting
+   * @returns The current status of the permission
    */
   _computePermissionsStatus: function(permission: string) {
     return `${ChromeLocale.localize(
@@ -576,22 +550,22 @@ Polymer({
   },
 
   /**
-   * Get the index into the {@link module:els/app_main.pages} array
-   * @param {string} name - {@link module:els/app_main.page} route
-   * @returns {int} index into array
-   * @private
+   * Get the index into the {@link #pages} array
+   *
+   * @param name - route to get index for
+   * @returns index into array
    */
   _getPageIdx: function(name: string) {
-    return pages.map(function(e) {
+    return pages.map((e) => {
       return e.route;
     }).indexOf(name);
   },
 
   /**
    * Show the Google Photos page
-   * @param {int} index - index into {@link module:els/app_main.pages}
-   * @param {string} [prevRoute] - last page selected
-   * @private
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
    */
   _showGooglePhotosPage: function(index: number, prevRoute: string) {
     signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
@@ -615,9 +589,9 @@ Polymer({
 
   /**
    * Show the error viewer page
-   * @param {int} index - index into {@link module:els/app_main.pages}
-   * @param {string} prevRoute - last page selected
-   * @private
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
    */
   _showErrorPage: function(index: number, prevRoute: string) {
     if (!pages[index].ready) {
@@ -631,9 +605,9 @@ Polymer({
 
   /**
    * Show the help page
-   * @param {int} index - index into {@link module:els/app_main.pages}
-   * @param {string} prevRoute - last page selected
-   * @private
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
    */
   _showHelpPage: function(index: number, prevRoute: string) {
     if (!pages[index].ready) {
@@ -647,9 +621,9 @@ Polymer({
 
   /**
    * Display a preview of the screen saver
-   * @param {int} index - index into {@link module:els/app_main.pages}
-   * @param {string} prevRoute - last page selected
-   * @private
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
    */
   _showScreensaverPreview: function(index: number, prevRoute: string) {
     // reselect previous page - need to delay so tap event is done
@@ -659,7 +633,6 @@ Polymer({
 
   /**
    * Show the permissions dialog
-   * @private
    */
   _showPermissionsDialog: function() {
     this.$.permissionsDialog.open();
@@ -667,7 +640,6 @@ Polymer({
 
   /**
    * Set enabled state of Google Photos menu item
-   * @private
    */
   _setGooglePhotosMenuState: function() {
     // disable google-page if user hasn't allowed
@@ -685,8 +657,6 @@ Polymer({
 
   /**
    * Set enabled state of Error Viewer menu item
-   * @returns {Promise<void>}
-   * @private
    */
   _setErrorMenuState: async function() {
     // disable error-page if no lastError
@@ -711,12 +681,12 @@ Polymer({
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
-   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
-   * @param {module:chrome/msg.Message} request - details for the message
-   * @param {Object} [sender] - MessageSender object
-   * @param {Function} [response] - function to call once after processing
-   * @returns {boolean} true if asynchronous
-   * @private
+   * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+   *
+   * @param request - details for the message
+   * @param sender - MessageSender object
+   * @param response - function to call once after processing
+   * @returns true if asynchronous
    */
   _onChromeMessage: function(request: ChromeMsg.MsgType,
                              sender: chrome.runtime.MessageSender,

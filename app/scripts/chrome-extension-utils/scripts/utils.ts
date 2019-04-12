@@ -12,21 +12,18 @@ const chromep = new ChromePromise();
 
 /**
  * Utility methods
- * @module chrome/utils
  */
 
 /**
  * Set to true if development build
- * @type {boolean}
- * @private
  */
 const _DEBUG = false;
 
 /**
  * Determine if we are a given operating system
- * @private
- * @param {string} os - os short name
- * @returns {Promise.<boolean>} true if the given os
+ *
+ * @param os - os short name
+ * @returns true if the given os
  */
 async function _isOS(os: string) {
   try {
@@ -40,12 +37,12 @@ async function _isOS(os: string) {
 
 /**
  * True if development build
- * @type {boolean}
  */
 export const DEBUG = _DEBUG;
 
 /** Get the extension's name
- * @returns {string} Extension name
+ *
+ * @returns Extension name
  */
 export function getExtensionName() {
   return `chrome-extension://${chrome.runtime.id}`;
@@ -53,7 +50,8 @@ export function getExtensionName() {
 
 /**
  * Get the Extension version
- * @returns {string} Extension version
+ *
+ * @returns Extension version
  */
 export function getVersion() {
   const manifest = chrome.runtime.getManifest();
@@ -62,8 +60,9 @@ export function getVersion() {
 
 /**
  * Get the Chrome version
- * @see http://stackoverflow.com/a/4900484/4468645
- * @returns {int} Chrome major version
+ * {@link http://stackoverflow.com/a/4900484/4468645}
+ *
+ * @returns Chrome major version
  */
 export function getChromeVersion() {
   const raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
@@ -72,8 +71,9 @@ export function getChromeVersion() {
 
 /**
  * Get the full Chrome version
- * @see https://goo.gl/2ITMNO
- * @returns {string} Chrome version
+ * {@link https://goo.gl/2ITMNO}
+ *
+ * @returns Chrome version
  */
 export function getFullChromeVersion() {
   const raw = navigator.userAgent;
@@ -82,7 +82,8 @@ export function getFullChromeVersion() {
 
 /**
  * Get the OS as a human readable string
- * @returns {Promise.<string>} OS name
+ *
+ * @returns OS name
  */
 export async function getPlatformOS() {
   let output = 'Unknown';
@@ -121,7 +122,8 @@ export async function getPlatformOS() {
 
 /**
  * Determine if we are MS windows
- * @returns {Promise.<boolean>} true if MS Windows
+ *
+ * @returns true if MS Windows
  */
 export function isWindows() {
   return _isOS('win');
@@ -129,7 +131,8 @@ export function isWindows() {
 
 /**
  * Determine if we are Chrome OS
- * @returns {Promise.<boolean>} true if ChromeOS
+ *
+ * @returns true if ChromeOS
  */
 export function isChromeOS() {
   return _isOS('cros');
@@ -137,7 +140,8 @@ export function isChromeOS() {
 
 /**
  * Determine if we are a Mac
- * @returns {Promise.<boolean>} true if Mac
+ *
+ * @returns true if Mac
  */
 export function isMac() {
   return _isOS('mac');
@@ -151,8 +155,9 @@ export function noop() {
 
 /**
  * Determine if a String is null or whitespace only
- * @param {?string} str - string to check
- * @returns {boolean} true is str is whitespace or null
+ *
+ * @param str - string to check
+ * @returns true is str is whitespace or null
  */
 export function isWhiteSpace(str: string | null) {
   return (!str || str.length === 0 || /^\s*$/.test(str));
@@ -160,8 +165,9 @@ export function isWhiteSpace(str: string | null) {
 
 /**
  * Get a random string of the given length
- * @param {int} [len=8] - length of generated string
- * @returns {string} a random string
+ *
+ * @param [len=8] - length of generated string
+ * @returns A pseudo-random string
  */
 export function getRandomString(len = 8) {
   const POSS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
@@ -176,9 +182,10 @@ export function getRandomString(len = 8) {
 
 /**
  * Returns a random integer between min and max inclusive
- * @param {int} min - min value
- * @param {int} max - max value
- * @returns {int} random int
+ *
+ * @param min - min value
+ * @param max - max value
+ * @returns A pseudo-random int
  */
 export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -186,8 +193,12 @@ export function getRandomInt(min: number, max: number) {
 
 /**
  * Randomly sort an Array in place
+ *
+ * @remarks
+ *
  * Fisher-Yates shuffle algorithm.
- * @param {Array} array - Array to sort
+ *
+ * @param array - Array to sort
  */
 export function shuffleArray(array: any[]) {
   const len = array ? array.length : 0;

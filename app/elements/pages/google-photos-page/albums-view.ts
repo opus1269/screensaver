@@ -46,41 +46,27 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Module for the AlbumsView element
- * @module els/pgs/google_photos/albums_view
  */
 
 /**
  * Max number of albums to select
- * @type {int}
- * @const
- * @private
  */
 const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 
 /**
  * Max number of total photos to select
- * @type {int}
- * @const
- * @private
  */
 const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
-// noinspection JSValidateJSDoc
 /**
  * The array of selected albums
- * @type {Array<module:sources/photo_source_google.SelectedAlbum>}
- * @private
  */
 let _selections: SelectedAlbum[] = [];
 
-// noinspection JSValidateJSDoc,JSValidateJSDoc,JSUnusedLocalSymbols
 /**
  * Polymer element to manage Google Photos album selections
- * @type {{}}
- * @alias module:els/pgs/google_photos/photo_cat/albums_view.AlbumsView
  * @PolymerElement
  */
-
 Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomPropertySet CssUnresolvedCustomProperty -->
@@ -196,7 +182,7 @@ Polymer({
      * @event no-albums
      */
 
-    /** The array of all {@link module:sources/photo_source_google.Album} */
+    /** The array of all albums */
     albums: {
       type: Array,
       value: [],
@@ -248,8 +234,7 @@ Polymer({
 
   /**
    * Query Google Photos for the list of the users albums
-   * @param {boolean} [updatePhotos=false] - if true, reload each selected album
-   * @returns {Promise<null>} always resolves
+   * @param updatePhotos - if true, reload each selected album
    */
   loadAlbumList: async function(updatePhotos: boolean) {
     const METHOD = 'AlbumsView.loadAlbumList';
@@ -302,7 +287,6 @@ Polymer({
 
   /**
    * Select as many albums as possible
-   * @returns {Promise<void>}
    */
   selectAllAlbums: async function() {
 
@@ -344,10 +328,7 @@ Polymer({
 
   /**
    * Event: Album checkbox state changed
-   * @param {Event} ev - checkbox state changed
-   * @param {{}} ev.model.album - the album
-   * @returns {Promise<void>}
-   * @private
+   * @param ev - checkbox state changed
    */
   _onAlbumSelectChanged: async function(ev: any) {
     const METHOD = 'AlbumViews._onAlbumSelectChanged';
@@ -387,12 +368,12 @@ Polymer({
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
-   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
-   * @param {module:chrome/msg.Message} request - details for the message
-   * @param {Object} [sender] - MessageSender object
-   * @param {Function} [response] - function to call once after processing
-   * @returns {boolean} true if asynchronous
-   * @private
+   * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+   *
+   * @param request - details for the message
+   * @param sender - MessageSender object
+   * @param response - function to call once after processing
+   * @returns true if asynchronous
    */
   _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                              response: (arg0: object) => void) {
@@ -409,8 +390,7 @@ Polymer({
 
   /**
    * Observer: waiter changed
-   * @param {boolean} newValue - state
-   * @private
+   * @param newValue - state
    */
   _waitForLoadChanged: function(newValue: boolean) {
     if (newValue === false) {
@@ -423,10 +403,9 @@ Polymer({
 
   /**
    * Load an album from the Web
-   * @param {module:sources/photo_source_google.Album} album
-   * @param {boolean} [wait=true] if true handle waiter
-   * @returns {Promise<boolean>} true, if successful
-   * @private
+   * @param album
+   * @param wait=true if true, handle waiter display ourselves
+   * @returns true if successful
    */
   _loadAlbum: async function(album: Album, wait: boolean = true) {
     const METHOD = 'AlbumViews._loadAlbum';
@@ -508,8 +487,7 @@ Polymer({
 
   /**
    * Fetch the photos for all the saved albums
-   * @returns {Promise<boolean>} false if we failed
-   * @private
+   * @returns false if we failed
    */
   _updateSavedAlbums: async function() {
     const METHOD = 'AlbumViews._updateSavedAlbums';
@@ -541,7 +519,11 @@ Polymer({
       }
 
     } catch (err) {
-      // ignore
+      // error
+      const title = ChromeLocale.localize('err_status');
+      const text = err.message;
+      showErrorDialog(title, text, METHOD);
+      return Promise.resolve(false);
     }
 
     return Promise.resolve(true);
@@ -549,8 +531,7 @@ Polymer({
 
   /**
    * Get total photo count that is currently saved
-   * @returns {Promise<int>} Total number of photos saved
-   * @private
+   * @returns Total number of photos saved
    */
   _getTotalPhotoCount: async function() {
     let ct = 0;
@@ -564,7 +545,6 @@ Polymer({
 
   /**
    * Set the checked state based on the currently saved albums
-   * @private
    */
   _selectSavedAlbums: async function() {
     _selections = await ChromeStorage.asyncGet('albumSelections', []);
@@ -581,10 +561,9 @@ Polymer({
 
   /**
    * Computed property: Hidden state of main interface
-   * @param {boolean} waitForLoad - true if loading
-   * @param {string} permPicasa - permission state
-   * @returns {boolean} true if hidden
-   * @private
+   * @param waitForLoad - true if loading
+   * @param permPicasa - permission state
+   * @returns true if hidden
    */
   _computeHidden: function(waitForLoad: boolean, permPicasa: string) {
     let ret = true;
@@ -596,9 +575,8 @@ Polymer({
 
   /**
    * Computed binding: Set photo count label on an album
-   * @param {int} count - number of photos in album
-   * @returns {string} i18n label
-   * @private
+   * @param count - number of photos in album
+   * @returns i18n label
    */
   _computePhotoLabel: function(count: number) {
     let ret = `${count} ${ChromeLocale.localize('photos')}`;

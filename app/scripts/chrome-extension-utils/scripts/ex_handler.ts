@@ -6,22 +6,16 @@
  */
 
 /**
- * Google Oauth2.0 utilities
- * @see https://developer.chrome.com/apps/identity
- * @module chrome/exception
+ * Global exceptions handler
  */
 
 import * as ChromeLog from './log.js';
 
 /**
- * Replace global error handler for logging with Google Analytics.
+ * Replace global error handler with Google Analytics for logging purposes.
  */
 class ExHandler {
 
-  /**
-   * Replace window.onerror
-   * @constructor
-   */
   constructor() {
     if (typeof window.onerror === 'object') {
       // global error handler

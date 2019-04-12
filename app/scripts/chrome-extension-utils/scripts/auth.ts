@@ -7,8 +7,7 @@
 
 /**
  * Google Oauth2.0 utilities
- * @see https://developer.chrome.com/apps/identity
- * @module chrome/auth
+ * {@link https://developer.chrome.com/apps/identity}
  */
 
 import * as ChromeUtils from './utils.js';
@@ -18,15 +17,18 @@ declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
 /**
- * Get an OAuth2.0 token<br />
+ * Get an OAuth2.0 token
+ *
+ * @remarks
+ *
  * Note: Every time you use a different scopes array, you will get a new
  * token the first time, so you need to always get it with those scopes
  * and remove the cached one with the scopes.
- * @param {boolean} interactive - if true may block
- * @param {string[]} [scopes=[]] - optional scopes to use, overrides
- * those in the manifest
+ *
+ * @param interactive - if true may block
+ * @param [scopes=[]] - optional scopes to use, overrides those in the manifest
  * @throws An error if we failed to get token
- * @returns {Promise<string>} An access token
+ * @returns An access token
  */
 export async function getToken(interactive = false, scopes: string[] = null) {
   const request: chrome.identity.TokenDetails = {
@@ -41,12 +43,12 @@ export async function getToken(interactive = false, scopes: string[] = null) {
 
 /**
  * Remove a cached OAuth2.0 token
- * @param {boolean} [interactive=false] - if true may block
- * @param {string} [curToken=''] token to remove
- * @param {string[]} [scopes=[]] - optional scopes to use, overrides
- * those in the manifest
+ *
+ * @param [interactive=false] - if true may block
+ * @param [curToken=''] token to remove
+ * @param [scopes=[]] - optional scopes to use, overrides those in the manifest
  * @throws An error if we failed to remove token
- * @returns {Promise<string>} the old token
+ * @returns The old token
  */
 export async function removeCachedToken(interactive = false, curToken = '', scopes: string[] = null) {
   let oldToken = curToken;
@@ -62,7 +64,8 @@ export async function removeCachedToken(interactive = false, curToken = '', scop
 
 /**
  * Is a user signed in to Chrome
- * @returns {Promise<boolean>} true if signed in
+ *
+ * @returns true if signed in
  */
 export async function isSignedIn() {
   let ret = true;
@@ -80,9 +83,9 @@ export async function isSignedIn() {
 }
 
 /**
- * Has our authorization been revoked (or not granted) for the default
- * scopes
- * @returns {Promise<boolean>} true if no valid token
+ * Has our authorization been revoked (or not granted) for the default scopes
+ *
+ * @returns true if no valid token
  */
 export async function isRevoked() {
   let ret = false;

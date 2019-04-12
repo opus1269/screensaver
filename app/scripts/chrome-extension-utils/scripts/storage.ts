@@ -7,7 +7,6 @@
 
 /**
  * Manage items in storage
- * @module chrome/storage
  */
 
 import * as ChromeGA from './analytics.js';
@@ -19,10 +18,10 @@ declare var ChromePromise: any;
 
 /**
  * Get a JSON parsed value from localStorage
- * @param {!string} key - key to get value for
- * @param {?Object|string} [def=null] - optional default value if key not found
- * @returns {?Object|string|int|boolean|Array} JSON object or string, null if
- *     key does not exist
+ *
+ * @param key - key to get value for
+ * @param [def=null] - optional default value if key not found
+ * @returns JSON object or string, null if key does not exist
  */
 export function get(key: string, def: any = null) {
   const item = localStorage.getItem(key);
@@ -35,9 +34,10 @@ export function get(key: string, def: any = null) {
 
 /**
  * Get integer value from localStorage
- * @param {!string} key - key to get value for
- * @param {?int} [def=null] - optional value to return, if NaN
- * @returns {int} value as integer, NaN on error
+ *
+ * @param key - key to get value for
+ * @param [def=null] - optional value to return, if NaN
+ * @returns value as integer, NaN on error
  */
 export function getInt(key: string, def: number = null) {
   const item = localStorage.getItem(key);
@@ -54,9 +54,10 @@ export function getInt(key: string, def: number = null) {
 
 /**
  * Get boolean value from localStorage
- * @param {string} key - key to get value for
- * @param {?boolean} [def=null] - return value if key not found
- * @returns {?boolean} value as boolean, null if key does not exist
+ *
+ * @param key - key to get value for
+ * @param [def=null] - return value if key not found
+ * @returns value as boolean, null if key does not exist
  */
 export function getBool(key: string, def: boolean = null) {
   return get(key, def);
@@ -64,8 +65,9 @@ export function getBool(key: string, def: boolean = null) {
 
 /**
  * JSON stringify and save a value to localStorage
- * @param {string} key - key to set value for
- * @param {?Object} [value=null] - new value, if null remove item
+ *
+ * @param key - key to set value for
+ * @param [value=null] - new value, if null remove item
  */
 export function set(key: string, value: object | [] | string| number | boolean | null = null) {
   if (value === null) {
@@ -78,11 +80,11 @@ export function set(key: string, value: object | [] | string| number | boolean |
 
 /**
  * Save a value to localStorage only if there is enough room
- * @param {string} key - localStorage Key
- * @param {Object} value - value to save
- * @param {?string} [keyBool=null] - key to a boolean value
- *                 that is true if the primary key has non-empty value
- * @returns {boolean} true if value was set successfully
+ *
+ * @param key - localStorage Key
+ * @param value - value to save
+ * @param [keyBool=null] - key to a boolean value that is true if the primary key has non-empty value
+ * @returns true if value was set successfully
  */
 export function safeSet(key: string, value: JSON, keyBool: string = null) {
   let ret = true;
@@ -111,10 +113,11 @@ export function safeSet(key: string, value: JSON, keyBool: string = null) {
 
 /**
  * Get a value from chrome.storage.local
- * @see  https://developer.chrome.com/apps/storage
- * @param {string} key - data key
- * @param {?Object} [def=null] - default value if not found
- * @returns {Promise<Object|Array>} object from storage, def if not found
+ * {@link  https://developer.chrome.com/apps/storage}
+ *
+ * @param key - data key
+ * @param [def=null] - default value if not found
+ * @returns Object or Array from storage, def if not found
  */
 export async function asyncGet(key: string, def: object | [] = null) {
   let ret = null;
@@ -139,12 +142,12 @@ export async function asyncGet(key: string, def: object | [] = null) {
 
 /**
  * Save a value to chrome.storage.local only if there is enough room
- * @see  https://developer.chrome.com/apps/storage
- * @param {string} key - data key
- * @param {Object} value - data value
- * @param {?string} [keyBool=null] - key to a boolean value
- *                 that is true if the primary key has non-empty value
- * @returns {boolean} true if value was set successfully
+ * {@link  https://developer.chrome.com/apps/storage}
+ *
+ * @param key - data key
+ * @param value - data value
+ * @param [keyBool=null] - key to a boolean value that is true if the primary key has non-empty value
+ * @returns true if value was set successfully
  */
 export async function asyncSet(key: string, value: object | [], keyBool: string = null) {
   // TODO what about keyBool?

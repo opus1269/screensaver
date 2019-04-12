@@ -7,17 +7,17 @@
 
 /**
  * Internationalization methods
- * @see https://developer.chrome.com/extensions/i18n
- * @module chrome/locale
+ * {@link https://developer.chrome.com/extensions/i18n}
  */
 
 import './ex_handler.js';
 
 /**
  * Get the i18n string
+ *
  * @param key - key in messages.json
  * @param def - default if no locales
- * @returns {string} internationalized string
+ * @returns internationalized string
  */
 export function localize(key: string, def = '') {
   let msg = chrome.i18n.getMessage(key);
@@ -30,7 +30,7 @@ export function localize(key: string, def = '') {
 
 /**
  * Get the current locale
- * @returns {string} current locale e.g. en_US
+ * @returns current locale e.g. en_US
  */
 export function getLocale() {
   return chrome.i18n.getMessage('@@ui_locale');

@@ -41,21 +41,10 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Module for selecting Google Photos
- * @module els/pgs/google_photos/photos_view
- */
-
-/**
- * A Google photos category for searches
- * @typedef {{}} module:els/pgs/google_photos/photos_view.PhotoCategory
- * @property {string} name
- * @property {string} label
- * @private
  */
 
 /**
  * Photo categories
- * @type {module:els/pgs/google_photos/photos_view.PhotoCategory[]}
- * @private
  */
 const _CATS = [
   {name: 'LANDSCAPES', label: ChromeLocale.localize('photo_cat_landscapes')},
@@ -64,20 +53,16 @@ const _CATS = [
   {name: 'PEOPLE', label: ChromeLocale.localize('photo_cat_people')},
   {name: 'ANIMALS', label: ChromeLocale.localize('photo_cat_animals')},
   {name: 'PETS', label: ChromeLocale.localize('photo_cat_pets')},
-  {
-    name: 'PERFORMANCES',
-    label: ChromeLocale.localize('photo_cat_performances'),
-  },
+  {name: 'PERFORMANCES', label: ChromeLocale.localize('photo_cat_performances')},
   {name: 'SPORT', label: ChromeLocale.localize('photo_cat_sport')},
   {name: 'FOOD', label: ChromeLocale.localize('photo_cat_food')},
   {name: 'SELFIES', label: ChromeLocale.localize('photo_cat_selfies')},
 ];
 
 /**
- * Polymer element for the Google Photos page
+ * Polymer element for the Google Photos page photos view UI
+ *
  * @PolymerElement
- * @constructor
- * @alias module:els/pgs/google_photos/photos_view.PhotosView
  */
 Polymer({
   // language=HTML format=false
@@ -255,7 +240,6 @@ Polymer({
 
   /**
    * Query Google Photos for the array of user's photos
-   * @returns {Promise<null>} always resolves
    */
   loadPhotos: async function() {
     const METHOD = 'PhotosView.loadPhotos';
@@ -311,7 +295,6 @@ Polymer({
 
   /**
    * Set the photo count that is currently saved
-   * @async
    */
   setPhotoCount: async function() {
     const photos = await ChromeStorage.asyncGet('googleImages', []);
@@ -320,7 +303,6 @@ Polymer({
 
   /**
    * Set the states of the photo-cat elements
-   * @private
    */
   _setPhotoCats: function() {
     const els = this.shadowRoot.querySelectorAll('photo-cat');
@@ -340,8 +322,8 @@ Polymer({
 
   /**
    * Event: Selection of photo-cat changed
-   * @param {Event} ev
-   * @private
+   *
+   * @param ev
    */
   _onPhotoCatChanged: function(ev: any) {
     const cat = ev.target.id;
@@ -374,12 +356,12 @@ Polymer({
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
-   * @see https://developer.chrome.com/extensions/runtime#event-onMessage
-   * @param {module:chrome/msg.Message} request - details for the message
-   * @param {Object} [sender] - MessageSender object
-   * @param {Function} [response] - function to call once after processing
-   * @returns {boolean} true if asynchronous
-   * @private
+   * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+   *
+   * @param request - details for the message
+   * @param sender - MessageSender object
+   * @param response - function to call once after processing
+   * @returns true if asynchronous
    */
   _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                              response: (arg0: object) => void) {
@@ -395,7 +377,6 @@ Polymer({
 
   /**
    * Event: Refresh photos button clicked
-   * @private
    */
   _onRefreshPhotosClicked: function() {
     this.loadPhotos().catch(() => {
@@ -405,11 +386,11 @@ Polymer({
 
   /**
    * Observer: noFilter changed
-   * @param {boolean} newValue
-   * @param {boolean} oldValue
-   * @private
+   *
+   * @param newValue
+   * @param oldValue
    */
-  _noFilterChanged: function(newValue: boolean, oldValue: boolean) {
+  _noFilterChanged: function(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if ((newValue !== undefined) && (oldValue !== undefined)) {
       if (newValue !== oldValue) {
         this.set('needsPhotoRefresh', true);
@@ -419,9 +400,10 @@ Polymer({
 
   /**
    * Computed property: Disabled state of filter ui elements
-   * @param {boolean} disabled - true if whole UI is disabled
-   * @param {boolean} noFilter - true if not filtering
-   * @returns {boolean} true if hidden
+   *
+   * @param disabled - true if whole UI is disabled
+   * @param noFilter - true if not filtering
+   * @returns true if disabled
    * @private
    */
   _computeFilterDisabled: function(disabled: boolean, noFilter: boolean) {
@@ -430,10 +412,10 @@ Polymer({
 
   /**
    * Computed property: Disabled state of filter ui elements
-   * @param {boolean} disabled - true if whole UI is disabled
-   * @param {boolean} needsPhotoRefresh - true if photos need refresh
-   * @returns {boolean} true if hidden
-   * @private
+   *
+   * @param disabled - true if whole UI is disabled
+   * @param needsPhotoRefresh - true if photos need refresh
+   * @returns true if disabled
    */
   _computeRefreshDisabled: function(disabled: boolean, needsPhotoRefresh: boolean) {
     return disabled || !needsPhotoRefresh;
@@ -441,10 +423,10 @@ Polymer({
 
   /**
    * Computed property: Hidden state of main interface
-   * @param {boolean} waitForLoad - true if loading
-   * @param {string} permPicasa - permission state
-   * @returns {boolean} true if hidden
-   * @private
+   *
+   * @param waitForLoad - true if loading
+   * @param permPicasa - permission state
+   * @returns true if hidden
    */
   _computeHidden: function(waitForLoad: boolean, permPicasa: string) {
     let ret = true;
