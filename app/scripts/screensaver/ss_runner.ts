@@ -49,7 +49,7 @@ const VARS = {
 export function start(delay = 2000) {
   const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
   VARS.transTime = transTime.base * 1000;
-  setWaitTime(transTime.base * 1000);
+  _setWaitTime(transTime.base * 1000);
 
   VARS.interactive = ChromeStorage.getBool('interactive', false);
 
@@ -154,18 +154,6 @@ export function back() {
 }
 
 /**
- * Set wait time between _runShow calls in milliSecs
- *
- * @param waitTime - wait time for next attempt to get photo
- */
-function setWaitTime(waitTime: number) {
-  VARS.waitTime = waitTime;
-  // larger than 32 bit int is bad news
-  // see: https://stackoverflow.com/a/3468650/4468645
-  VARS.waitTime = Math.min(2147483647, waitTime);
-}
-
-/**
  * Stop the animation
  */
 function _stop() {
@@ -180,7 +168,7 @@ function _stop() {
 function _restart(newIdx: number | null = null) {
   const transTime = ChromeStorage.get('transitionTime');
   if (transTime) {
-    setWaitTime(transTime.base * 1000);
+    _setWaitTime(transTime.base * 1000);
   }
   _runShow(newIdx);
 }
@@ -262,6 +250,18 @@ function _runShow(newIdx: number | null = null) {
 }
 
 /**
+ * Set wait time between _runShow calls in milliSecs
+ *
+ * @param waitTime - wait time for next attempt to get photo
+ */
+function _setWaitTime(waitTime: number) {
+  VARS.waitTime = waitTime;
+  // larger than 32 bit int is bad news
+  // see: https://stackoverflow.com/a/3468650/4468645
+  VARS.waitTime = Math.min(2147483647, waitTime);
+}
+
+/**
  * Get the index of the next view to display
  *
  * @param idx - index into {@link SSViews} to start search at
@@ -271,10 +271,10 @@ function _getNextViewIdx(idx: number) {
   const ret = SSViews.findLoadedPhoto(idx);
   if (ret === -1) {
     // no photos ready, wait a little, try again
-    setWaitTime(500);
+    _setWaitTime(500);
   } else {
     // photo found, set the waitTime back to transition time
-    setWaitTime(VARS.transTime);
+    _setWaitTime(VARS.transTime);
   }
   return ret;
 }
