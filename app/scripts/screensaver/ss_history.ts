@@ -6,34 +6,23 @@
  */
 
 /**
- * Track the recent traversal history of a {@link module:els/screensaver.Screensaver}
- * @module ss/history
+ * Track the recent traversal history of a {@link Screensaver}
  */
-
-/**
- * History item
- * @typedef {Object} module:ss/history.Item
- * @property {int} viewsIdx - {@link module:ss/views.Views} index
- * @property {int} replaceIdx - {@link module:ss/views.Views} index
- * @property {int} photoId - {@link module:ss/photo.SSPhoto} id
- * @property {int} photosPos - pointer into {@link module:ss/photos.Photos}
- */
-
-/**
- * Slide show history
- * @typedef {Object} module:ss/history.History
- * @property {Array<module:ss/history.Item>} arr - history items
- * @property {int} idx - pointer into arr
- * @property {int} max - max length of arr; it will actually have 1 item more
- * @const
- * @private
- */
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as SSPhotos from './ss_photos.js';
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
 
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+/**
+ * History item
+ *
+ * @property viewsIdx - {@link SSViews} current index
+ * @property replaceIdx - {@link SSViews} next index
+ * @property photoId - {@link SSPhoto} unique id
+ * @property photosPos - index into {@link SSPhotos}
+ */
 interface Item {
   viewsIdx: number;
   replaceIdx: number;
@@ -41,20 +30,15 @@ interface Item {
   photosPos: number;
 }
 
-interface History {
-  arr: Item[];
-  idx: number;
-  max: number;
-}
-
 /**
  * Slide show history
- * @type{module:ss/history.History}
- * @const
- * @private
+ *
+ * @property arr - history items
+ * @property idx - pointer into arr
+ * @property max - max length of arr; it will actually have 1 item more
  */
-const _history: History = {
-  arr: [],
+const HIST = {
+  arr: [] as Item[],
   idx: -1,
   max: 10,
 };
@@ -63,73 +47,77 @@ const _history: History = {
  * Initialize the history
  */
 export function initialize() {
-  _history.max = Math.min(SSPhotos.getCount(), _history.max);
+  HIST.max = Math.min(SSPhotos.getCount(), HIST.max);
 }
 
 /**
  * Add item to the history
- * @param {?int} newIdx - if not null, a request from the back command
- * @param {int} selected - the current selection
- * @param {int} replaceIdx - the replace index
+ *
+ * @param newIdx - if not null, a request from the back command
+ * @param selected - the current index
+ * @param replaceIdx - the replace index
  */
 export function add(newIdx: number | null, selected: number, replaceIdx: number) {
   if (newIdx === null) {
     const view = SSViews.get(selected);
-    const idx = _history.idx;
-    const len = _history.arr.length;
+    const idx = HIST.idx;
+    const len = HIST.arr.length;
     const photoId = view.photo.getId();
     const photosPos = SSPhotos.getCurrentIndex();
-    const historyItem = {
+
+    const item: Item = {
       viewsIdx: selected,
       replaceIdx: replaceIdx,
       photoId: photoId,
       photosPos: photosPos,
     };
+
     if ((idx === len - 1)) {
       // add to end
-      if (_history.arr.length > _history.max) {
+      if (HIST.arr.length > HIST.max) {
         // FIFO delete
-        _history.arr.shift();
-        _history.idx--;
-        _history.idx = Math.max(_history.idx, -1);
+        HIST.arr.shift();
+        HIST.idx--;
+        HIST.idx = Math.max(HIST.idx, -1);
       }
       // add newest photo
-      _history.arr.push(historyItem);
+      HIST.arr.push(item);
     }
   }
-  _history.idx++;
+  HIST.idx++;
 }
 
 /**
  * Reset the slide show history
  */
 export function clear() {
-  _history.arr = [];
-  _history.idx = -1;
+  HIST.arr = [];
+  HIST.idx = -1;
 }
 
 /**
  * Backup one slide
- * @returns {?int} {@link module:ss/views.Views} index to step to
+ *
+ * @returns index to step to, null if at beginning
  */
 export function back() {
-  if (_history.idx <= 0) {
+  if (HIST.idx <= 0) {
     // at beginning
     return null;
   }
 
   let nextStep = null;
   let inc = 2;
-  let idx = _history.idx - inc;
-  _history.idx = idx;
+  let idx = HIST.idx - inc;
+  HIST.idx = idx;
   if (idx < 0) {
-    if ((_history.arr.length > _history.max)) {
+    if ((HIST.arr.length > HIST.max)) {
       // at beginning of history
-      _history.idx += inc;
+      HIST.idx += inc;
       return null;
     } else {
       // at beginning, first time through
-      _history.idx = -1;
+      HIST.idx = -1;
       inc = 1;
       nextStep = -1;
       idx = 0;
@@ -137,13 +125,13 @@ export function back() {
   }
 
   // update state from history
-  const photosPos = _history.arr[idx].photosPos;
-  const replaceIdx = _history.arr[idx + inc].replaceIdx;
+  const photosPos = HIST.arr[idx].photosPos;
+  const replaceIdx = HIST.arr[idx + inc].replaceIdx;
   SSPhotos.setCurrentIndex(photosPos);
   SSRunner.setReplaceIdx(replaceIdx);
 
-  const viewsIdx = _history.arr[idx].viewsIdx;
-  const photoId = _history.arr[idx].photoId;
+  const viewsIdx = HIST.arr[idx].viewsIdx;
+  const photoId = HIST.arr[idx].photoId;
   nextStep = (nextStep === null) ? viewsIdx : nextStep;
   const view = SSViews.get(viewsIdx);
   const photo = SSPhotos.get(photoId);
