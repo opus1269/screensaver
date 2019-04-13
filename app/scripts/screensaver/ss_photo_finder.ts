@@ -9,16 +9,14 @@
  * Find a photo that is ready for slideshow
  */
 
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 import * as SSPhotos from './ss_photos.js';
 import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
 
-/**
- * Transition time in milliseconds
- */
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+/** Transition time in milliseconds */
 let _transTime = 30000;
 
 /**
@@ -31,6 +29,7 @@ export function initialize() {
 
 /**
  * Get the index of the next view to display
+ *
  * @param idx - index into {@link SSViews} to start search at
  * @returns The index into {@link SSViews} to display next, -1 if none are ready
  */
@@ -47,7 +46,8 @@ export function getNext(idx: number) {
 }
 
 /**
- * Replace the photo in  an SSView at the given index with the next SSPhoto
+ * Replace the photo in the SSView at the given index with the next SSPhoto
+ *
  * @param idx - {@link SSViews} index to replace
  */
 export function replacePhoto(idx: number) {

@@ -6,8 +6,7 @@
  */
 
 /**
- * Control the running of a {@link module:els/screensaver.Screensaver}
- * @module ss/runner
+ * Control the running of a {@link Screensaver}
  */
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
@@ -21,15 +20,14 @@ import * as SSTime from './ss_time.js';
 
 /**
  * Instance variables
- * @type {Object}
- * @property {boolean} started - true if slideshow started
- * @property {int} replaceIdx - page to replace with next photo
- * @property {int} lastSelected - last selected page
- * @property {int} waitTime - wait time when looking for photo in milliSecs
- * @property {boolean} interactive - is interaction allowed
- * @property {boolean} paused - is screensaver paused
- * @property {number} timeOutId - id of setTimeout
- * @private
+ *
+ * @property started - true if slideshow started
+ * @property replaceIdx - page to replace with next photo
+ * @property lastSelected - last selected page
+ * @property waitTime - wait time when looking for photo in milliSecs
+ * @property interactive - is interaction allowed
+ * @property paused - is screensaver paused
+ * @property timeOutId - id of setTimeout
  */
 interface Vars {
   started: boolean;
@@ -43,15 +41,6 @@ interface Vars {
 
 /**
  * Instance variables
- * @type {Object}
- * @property {boolean} started - true if slideshow started
- * @property {int} replaceIdx - page to replace with next photo
- * @property {int} lastSelected - last selected page
- * @property {int} waitTime - wait time when looking for photo in milliSecs
- * @property {boolean} interactive - is interaction allowed
- * @property {boolean} paused - is screensaver paused
- * @property {number} timeOutId - id of setTimeout
- * @private
  */
 const _VARS: Vars = {
   started: false,
@@ -65,7 +54,8 @@ const _VARS: Vars = {
 
 /**
  * Start the slideshow
- * @param {int} [delay=2000] - delay before start
+ *
+ * @param delay - delay before start
  */
 export function start(delay = 2000) {
   const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
@@ -81,7 +71,8 @@ export function start(delay = 2000) {
 
 /**
  * Get wait time between _runShow calls
- * @returns {int} current wait time
+ *
+ * @returns current wait time
  */
 export function getWaitTime() {
   return _VARS.waitTime;
@@ -89,7 +80,8 @@ export function getWaitTime() {
 
 /**
  * Set wait time between _runShow calls in milliSecs
- * @param {int} waitTime - wait time for next attempt to get photo
+ *
+ * @param waitTime - wait time for next attempt to get photo
  */
 export function setWaitTime(waitTime: number) {
   _VARS.waitTime = waitTime;
@@ -100,15 +92,17 @@ export function setWaitTime(waitTime: number) {
 
 /**
  * Set last selected index
- * @param {int} lastSelected - last index in {@link module:ss/views.Views}
+ *
+ * @param lastSelected - last index in {@link SSViews}
  */
 export function setLastSelected(lastSelected: number) {
   _VARS.lastSelected = lastSelected;
 }
 
 /**
- * Set last selected index
- * @param {int} idx - replace index in {@link module:ss/views.Views}
+ * Set next selected index
+ *
+ * @param {int} idx - replace index in {@link SSViews}
  */
 export function setReplaceIdx(idx: number) {
   _VARS.replaceIdx = idx;
@@ -116,7 +110,8 @@ export function setReplaceIdx(idx: number) {
 
 /**
  * Has the first page run
- * @returns {boolean} if animation has started
+ *
+ * @returns if animation has started
  */
 export function isStarted() {
   return _VARS.started;
@@ -124,7 +119,8 @@ export function isStarted() {
 
 /**
  * Is interactive mode allowed
- * @returns {boolean} true if allowed
+ *
+ * @returns true if allowed
  */
 export function isInteractive() {
   return _VARS.interactive;
@@ -132,7 +128,8 @@ export function isInteractive() {
 
 /**
  * Are we paused
- * @returns {boolean} true if paused
+ *
+ * @returns true if paused
  */
 export function isPaused() {
   return _VARS.paused;
@@ -140,8 +137,9 @@ export function isPaused() {
 
 /**
  * Is the given idx a part of the current animation pair
- * @param {int} idx - index into {@link module:ss/views.Views}
- * @returns {boolean} if selected or last selected
+ *
+ * @param idx - index into {@link SSViews}
+ * @returns true if selected or last selected
  */
 export function isCurrentPair(idx: number) {
   const selected = SSViews.getSelectedIndex();
@@ -150,7 +148,8 @@ export function isCurrentPair(idx: number) {
 
 /**
  * Toggle paused state of the slideshow
- * @param {?int} [newIdx=null] optional idx to use for current idx
+ *
+ * @param newIdx  - optional idx to use for current idx on restart
  */
 export function togglePaused(newIdx: number | null = null) {
   if (_VARS.started) {
@@ -187,7 +186,6 @@ export function back() {
 
 /**
  * Stop the animation
- * @private
  */
 function _stop() {
   window.clearTimeout(_VARS.timeOutId);
@@ -195,8 +193,8 @@ function _stop() {
 
 /**
  * Restart the slideshow
- * @param {?int} [newIdx=null] optional idx to use for current idx
- * @private
+ *
+ * @param newIdx optional idx to use for current idx
  */
 function _restart(newIdx: number | null = null) {
   const transTime = ChromeStorage.get('transitionTime');
@@ -208,8 +206,8 @@ function _restart(newIdx: number | null = null) {
 
 /**
  * Increment the slide show manually
- * @param {?int} [newIdx=null] optional idx to use for current idx
- * @private
+ *
+ * @param newIdx optional idx to use for current idx
  */
 function _step(newIdx: number | null = null) {
   if (isPaused()) {
@@ -223,8 +221,8 @@ function _step(newIdx: number | null = null) {
 
 /**
  * Self called at fixed time intervals to cycle through the photos
- * @param {?int} [newIdx=null] override selected
- * @private
+ *
+ * @param newIdx - override selected
  */
 function _runShow(newIdx: number | null = null) {
   if (Screensaver.isNoPhotos()) {
@@ -268,13 +266,16 @@ function _runShow(newIdx: number | null = null) {
 
     if (newIdx === null) {
       // load next photo from master array
-      SSFinder.replacePhoto(_VARS.replaceIdx);
-      _VARS.replaceIdx = _VARS.lastSelected;
+      setTimeout(() => {
+        // wait so it doesn't interfere with photo trans animation
+        SSFinder.replacePhoto(_VARS.replaceIdx);
+        _VARS.replaceIdx = _VARS.lastSelected;
+      }, 2000);
     }
   }
 
   // set the next timeout, then call ourselves - runs unless interrupted
-  _VARS.timeOutId = window.setTimeout(() => {
+  _VARS.timeOutId = setTimeout(() => {
     _runShow();
   }, _VARS.waitTime);
 }
