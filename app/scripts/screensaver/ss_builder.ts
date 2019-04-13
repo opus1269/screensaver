@@ -9,16 +9,16 @@
  * Builder for a {@link Screensaver}
  */
 
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
+import * as SSPhotos from './ss_photos.js';
+
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
-import * as SSFinder from './ss_photo_finder.js';
-import * as SSPhotos from './ss_photos.js';
-import * as PhotoSources from '../../scripts/sources/photo_sources.js';
-
 /**
  * Build everything related to a {@link Screensaver}
+ *
  * @throws an error if we failed to build show
  * @returns true if there are photos for the show
  */
@@ -28,8 +28,6 @@ export async function build() {
   if (hasPhotos) {
     // create the animated pages
     Screensaver.createPages();
-    // initialize the photo finder
-    SSFinder.initialize();
   }
 
   return Promise.resolve(hasPhotos);
@@ -37,6 +35,7 @@ export async function build() {
 
 /**
  * Build the {@link SSPhotos} that will be displayed
+ *
  * @throws An error if we failed to get photos
  * @returns true if there is at least one photo
  */
