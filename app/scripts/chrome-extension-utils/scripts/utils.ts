@@ -192,6 +192,17 @@ export function getRandomInt(min: number, max: number) {
 }
 
 /**
+ * Returns a random float between min and max inclusive min, exclusive max
+ *
+ * @param min - min value
+ * @param max - max value
+ * @returns A pseudo-random float
+ */
+export function getRandomFloat(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
+
+/**
  * Randomly sort an Array in place
  *
  * @remarks
