@@ -373,13 +373,15 @@ Polymer({
     const delayTime = 2000;
     const width = this.width;
     const height = this.height;
+    const ar = width / height;
 
     const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
     const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
     const scale = 1.0 + ChromeUtils.getRandomFloat(.5, 1.0);
-    // const scale = 1.5;
-    const deltaX = signX * width * ChromeUtils.getRandomFloat(0, scale * .125);
-    const deltaY = signY * height * ChromeUtils.getRandomFloat(0, scale * .125);
+    // maximum translation based on scale factor
+    const maxDelta = (scale - 1.0) * .25;
+    const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
+    const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
     const translateX = Math.round(deltaX) + 'px';
     const translateY = Math.round(deltaY) + 'px';
 
