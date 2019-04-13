@@ -16,7 +16,7 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import {UnitValue} from '../setting-elements/setting-slider/setting-slider.js';
+import {UnitValue} from '../setting-elements/setting-slider/setting-slider';
 
 
 /**
@@ -370,23 +370,29 @@ Polymer({
 
     const transTime: UnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
     const aniTime = transTime.base * 1000;
-    const delayTime = 2000;
+    let delayTime = 1000;
+
+    // hack for spinup animation since it is slower than the others
+    const photoTransition = ChromeStorage.getInt('photoTransition', 0);
+    if (photoTransition === 4) {
+      delayTime = 2000;
+    }
+
     const width = this.width;
     const height = this.height;
-    const ar = width / height;
 
     const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
     const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
-    const scale = 1.0 + ChromeUtils.getRandomFloat(.5, 1.0);
+    const scale = 1.0 + ChromeUtils.getRandomFloat(.5, .9);
     // maximum translation based on scale factor
-    const maxDelta = (scale - 1.0) * .25;
+    // this could be up to .25, but limit it since we have no idea what the photos are
+    const maxDelta = (scale - 1.0) * .20;
     const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
     const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
     const translateX = Math.round(deltaX) + 'px';
     const translateY = Math.round(deltaY) + 'px';
 
     const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;
-    console.log(width, height, transform);
 
     const keyframes: Keyframe[] = [
       {transform: 'scale(1.0) translateX(0vw) translateY(0vh)'},
