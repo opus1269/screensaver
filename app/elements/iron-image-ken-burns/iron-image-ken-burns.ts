@@ -16,6 +16,8 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+import {UnitValue} from '../setting-elements/setting-slider/setting-slider.js';
+
 
 /**
  * Polymer element to display an image that can be animated with the "Ken Burns" effect
@@ -76,49 +78,6 @@ Polymer({
     transition: opacity 0.5s linear;
     opacity: 0;
   }
-
-  @keyframes kenBurns1 {
-    100% {
-      transform: scale(1.5) translateX(0vw) translateY(10vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-  
-  @keyframes kenBurns2 {
-    100% {
-      transform: scale(1.75) translateX(-5vw) translateY(10vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-
-  @keyframes kenBurns3 {
-    100% {
-      transform: scale(1.5) translateX(10vw) translateY(-5vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-
-  @keyframes kenBurns4 {
-    100% {
-      transform: scale(1.75) translateX(10vw); translateY(-10vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-  
-  @keyframes kenBurns5 {
-    100% {
-      transform: scale(1.5) translateX(-10vw) translateY(5vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-
-  @keyframes kenBurns6 {
-    100% {
-      transform: scale(1.5) translateX(10vw) translateY(0vh);
-      animation-timing-function: ease-in-out;
-    }
-  }
-
 </style>
 
 <a id="baseURIAnchor" href="#"></a>
@@ -138,14 +97,18 @@ Polymer({
   is: 'iron-image-ken-burns',
 
   properties: {
-    /**
-     * Run the Ken Burns effect on the image
-     */
+    /** Run the Ken Burns effect on the image */
     isAnimate: {
       type: Boolean,
       value: false,
       notify: true,
       observer: '_isAnimateChanged',
+    },
+
+    /** The animation object */
+    animation: {
+      type: Object,
+      value: null,
     },
 
     /**
@@ -378,14 +341,16 @@ Polymer({
 
   /**
    * Observer: Animate flag changed
+   *
+   * @param animate - if true, animate the photo
    */
   _isAnimateChanged: function(animate: boolean) {
     if (animate !== undefined) {
-      if (animate) {
-       this.startAnimation();
-      } else {
-        this.$.sizedImgDiv.style.removeProperty('animation');
-        this.$.img.style.removeProperty('animation');
+      if (!animate) {
+        if (this.animation) {
+          this.animation.cancel();
+          this.set('animation', null);
+        }
       }
     }
   },
@@ -394,24 +359,51 @@ Polymer({
    * Setup and start the animation
    */
   startAnimation: function() {
-    if (this.isAnimate) {
-      const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
-      const aniTime = transTime.base;
-      const delayTime = 2;
-
-      let keySuffix = ChromeUtils.getRandomInt(1, 6);
-      if (!this.sizing && this.width && this.height) {
-        const ar = this.width / this.height;
-        if (ar < 1.3) {
-          // limit type for narrow photos
-          keySuffix = 1;
-        }
-      }
-      const keyFramesName = `kenBurns${keySuffix}`;
-      const animationStyle = `${keyFramesName} ${aniTime - delayTime - 1}s ease-in-out ${delayTime}s 1 forwards`;
-
-      this.$.sizedImgDiv.style.animation = animationStyle;
-      this.$.img.style.animation = animationStyle;
+    if (!this.isAnimate) {
+      return;
     }
+
+    if (this.animation) {
+      this.animation.cancel();
+    }
+
+
+    const transTime: UnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+    const aniTime = transTime.base * 1000;
+    const delayTime = 2000;
+    const width = this.width;
+    const height = this.height;
+
+    const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+    const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+    const scale = 1.0 + ChromeUtils.getRandomFloat(.5, 1.0);
+    // const scale = 1.5;
+    const deltaX = signX * width * ChromeUtils.getRandomFloat(0, scale * .125);
+    const deltaY = signY * height * ChromeUtils.getRandomFloat(0, scale * .125);
+    const translateX = Math.round(deltaX) + 'px';
+    const translateY = Math.round(deltaY) + 'px';
+
+    const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;
+    console.log(width, height, transform);
+
+    const keyframes: Keyframe[] = [
+      {transform: 'scale(1.0) translateX(0vw) translateY(0vh)'},
+      {transform: transform},
+    ];
+
+    const timing: KeyframeAnimationOptions = {
+      delay: delayTime,
+      duration: aniTime - delayTime,
+      iterations: 1,
+      easing: 'ease-in-out',
+      fill: 'forwards',
+    };
+
+    let el = this.$.img;
+    if (this.sizing) {
+      el = this.$.sizedImgDiv;
+    }
+
+    this.set('animation', el.animate(keyframes, timing));
   },
 });
