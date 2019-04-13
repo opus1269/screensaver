@@ -15,6 +15,7 @@ import * as Alarm from './alarm.js';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as MyMsg from '../../scripts/my_msg.js';
+import * as Permissions from '../../scripts/permissions.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as Weather from '../../scripts/weather.js';
 
@@ -42,9 +43,9 @@ const _DATA_VERSION = 25;
 export const DEFS = {
   version: _DATA_VERSION,
   enabled: true,
-  permPicasa: 'notSet', // enum: notSet allowed denied
-  permBackground: 'notSet', // enum: notSet allowed denied
-  permWeather: 'notSet', // enum: notSet allowed denied
+  permPicasa: Permissions.STATE.notSet,
+  permBackground: Permissions.STATE.notSet,
+  permWeather: Permissions.STATE.notSet,
   allowBackground: false,
   idleTime:  {base: 5, display: 5, unit: 0} as UnitValue, // minutes
   transitionTime: {base: 30, display: 30, unit: 0} as UnitValue, // seconds

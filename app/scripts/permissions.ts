@@ -6,16 +6,7 @@
  */
 
 /**
- * Handle optional permissions
- *  @module permissions
- */
-
-/**
- * A permission state enum
- * @typedef {{}} module:permissions.State
- * @property {string} notSet - never been allowed or denied
- * @property {string} allowed - user allowed
- * @property {string} denied - user denied
+ * Manage optional permissions
  */
 
 import * as ChromeAuth from '../scripts/chrome-extension-utils/scripts/auth.js';
@@ -25,12 +16,15 @@ import * as ChromeMsg from '../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+declare var ChromePromise: any;
+const chromep = new ChromePromise();
+
 /**
  * A permission type
- * @typedef {{}} module:permissions.Type
- * @property {string} name - name in localStorage
- * @property {string[]} permissions - array of permissions
- * @property {string[]} origins - array of origins
+ *
+ * @property name - key in localStorage
+ * @property permissions - array of permissions
+ * @property origins - array of origins
  */
 export interface Type {
   name: string;
@@ -38,25 +32,19 @@ export interface Type {
   origins: string[];
 }
 
-declare var ChromePromise: any;
-const chromep = new ChromePromise();
+/** Possible states of an permission */
+export enum STATE {
+  notSet = 'notSet',
+  allowed = 'allowed',
+  denied = 'denied',
+}
 
 /**
- * Possible states of an {@link module:permissions.Type}
- * @type {module:permissions.State}
- * @const
- * @private
- */
-const _STATE = {
-  notSet: 'notSet',
-  allowed: 'allowed',
-  denied: 'denied',
-};
-
-/**
- * Permission for access to users' Google Photos
- * @const
- * @type {module:permissions.Type}
+ * Permission for access to the user's Google Photos
+ *
+ * @remarks
+ * Once upon a time, Picasa was the API for access to Google Photos,
+ * hence the name.
  */
 export const PICASA: Type = {
   name: 'permPicasa',
@@ -66,9 +54,9 @@ export const PICASA: Type = {
 
 /**
  * Permission for weather
- * geolocation can't be optional permission, so need to use permissions API
- * @const
- * @type {module:permissions.Type}
+ *
+ * @remarks
+ * geolocation can't be optional permission in chrome, so we need to use the permissions API
  */
 export const WEATHER: Type = {
   name: 'permWeather',
@@ -76,11 +64,7 @@ export const WEATHER: Type = {
   origins: ['https://api.openweathermap.org/'],
 };
 
-/**
- * Permission for running in background
- * @const
- * @type {module:permissions.Type}
- */
+/** Permission for Chrome running in background */
 export const BACKGROUND: Type = {
   name: 'permBackground',
   permissions: ['background'],
@@ -88,37 +72,41 @@ export const BACKGROUND: Type = {
 };
 
 /**
- * Has user mot made a choice on permission
- * @param {module:permissions.Type} type - permission type
- * @returns {boolean} true if notSet
+ * Has user not made a choice on a permission yet
+ *
+ * @param type - permission type
+ * @returns true if notSet
  */
 export function notSet(type: Type) {
-  return ChromeStorage.get(type.name) === _STATE.notSet;
+  return ChromeStorage.get(type.name) === STATE.notSet;
 }
 
 /**
  * Has the user allowed the optional permissions
- * @param {module:permissions.Type} type - permission type
- * @returns {boolean} true if allowed
+ *
+ * @param type - permission type
+ * @returns true if allowed
  */
 export function isAllowed(type: Type) {
-  return ChromeStorage.get(type.name) === _STATE.allowed;
+  return ChromeStorage.get(type.name) === STATE.allowed;
 }
 
 /**
- * Has the user explicitly denied the permission
- * @param {module:permissions.Type} type - permission type
- * @returns {boolean} true if allowed
+ * Has the user denied the permission
+ *
+ * @param type - permission type
+ * @returns true if denied
  */
 export function isDenied(type: Type) {
-  return ChromeStorage.get(type.name) === _STATE.denied;
+  return ChromeStorage.get(type.name) === STATE.denied;
 }
 
 /**
- * Request optional permission - may block
- * @param {module:permissions.Type} type - permission type
+ * Request optional permission
+ *
+ * @param type - permission type
  * @throws An error if request failed
- * @returns {Promise<boolean>} true if permission granted
+ * @returns true if permission granted
  */
 export async function request(type: Type) {
   let granted = false;
@@ -129,9 +117,9 @@ export async function request(type: Type) {
     });
 
     if (granted) {
-      await _setState(type, _STATE.allowed);
+      await _setState(type, STATE.allowed);
     } else {
-      await _setState(type, _STATE.denied);
+      await _setState(type, STATE.denied);
       try {
         // try to remove if it has been previously granted
         await remove(type);
@@ -148,10 +136,14 @@ export async function request(type: Type) {
 }
 
 /**
- * Remove the optional permissions
- * @param {module:permissions.Type} type - permission type
+ * Remove an optional permission
+ *
+ * @remarks
+ * Chrome doesn't actually remove an optional permission once it has been granted
+ *
+ * @param type - permission type
  * @throws An error if failed to remove
- * @returns {Promise<boolean>} true if removed
+ * @returns true if removed
  */
 export async function remove(type: Type) {
   let removed = false;
@@ -165,32 +157,33 @@ export async function remove(type: Type) {
   }
 
   if (removed) {
-    await _setState(type, _STATE.notSet);
+    await _setState(type, STATE.notSet);
   }
 
   return Promise.resolve(removed);
 }
 
 /**
- * Remove and deny the optional permissions
- * @param {module:permissions.Type} type - permission type
+ * Remove and deny an optional permission
+ *
+ * @param type - permission type
  * @throws An error if failed to deny
- * @returns {Promise<boolean>} true if removed
+ * @returns true if removed
  */
 export async function deny(type: Type) {
 
   const removed = await remove(type);
 
   // set to denied regardless of whether it was removed
-  await _setState(type, _STATE.denied);
+  await _setState(type, STATE.denied);
 
   return Promise.resolve(removed);
 }
 
 /**
  * Remove, deny, and clear photo selections for Google Photos
+ *
  * @throws An error on failure
- * @returns {Promise<void>}
  */
 export async function removeGooglePhotos() {
 
@@ -211,13 +204,12 @@ export async function removeGooglePhotos() {
 }
 
 /**
- * Persist the state of an {@link module:permissions.Type}
- * @param {module:permissions.Type} type - permission type
- * @param {string} value - permission state
- * @returns {Promise<void>}
- * @private
+ * Persist the state of a permission
+ *
+ * @param type - permission type
+ * @param value - permission state
  */
-async function _setState(type: Type, value: string) {
+async function _setState(type: Type, value: STATE) {
   try {
     // send message to store value so items that are bound
     // to it will get storage event
@@ -234,9 +226,10 @@ async function _setState(type: Type, value: string) {
 
 /**
  * Determine if we have an optional permission
- * @param {module:permissions.Type} type - permission type
+ *
+ * @param type - permission type
  * @throws An error if failed to get status
- * @returns {Promise<boolean>} true if we have the permission
+ * @returns true if we have the permission
  */
 async function _contains(type: Type) {
   return await chromep.permissions.contains({
