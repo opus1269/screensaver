@@ -7,15 +7,6 @@
 
 /**
  * Google Analytics tracking
- * @module chrome/ga
- */
-
-/**
- * Google Analytics Event
- * @typedef {{}} module:chrome/ga.Event
- * @property {string} eventCategory - category
- * @property {string} eventAction - action
- * @property {string} eventLabel - label
  */
 
 import * as ChromeJSON from './json.js';
@@ -23,6 +14,13 @@ import * as ChromeUtils from './utils.js';
 
 declare var ga: any;
 
+/**
+ * Google Analytics Event type
+ *
+ * @property eventCategory - category
+ * @property eventAction - action
+ * @property eventLabel - label
+ */
 export interface EventType {
   eventCategory: string;
   eventAction: string;
@@ -31,21 +29,21 @@ export interface EventType {
 
 /**
  * Event types
- * @type {{{module:chrome/ga.Event}}}
- * @property {module:chrome/ga.Event} INSTALLED - extension installed
- * @property {module:chrome/ga.Event} UPDATED - extension updated
- * @property {module:chrome/ga.Event} REFRESHED_AUTH_TOKEN - cached token refreshed
- * @property {module:chrome/ga.Event} ALARM - Chrome alarm triggered
- * @property {module:chrome/ga.Event} MENU - menu selected
- * @property {module:chrome/ga.Event} TOGGLE - setting-toggle
- * @property {module:chrome/ga.Event} LINK - setting-link
- * @property {module:chrome/ga.Event} TEXT - setting-text
- * @property {module:chrome/ga.Event} SLIDER_VALUE - setting-slider value
- * @property {module:chrome/ga.Event} SLIDER_UNITS - setting-slider unit
- * @property {module:chrome/ga.Event} BUTTON - button click
- * @property {module:chrome/ga.Event} ICON - toolbar icon click
- * @property {module:chrome/ga.Event} CHECK - checkbox click
- * @property {module:chrome/ga.Event} KEY_COMMAND - keyboard shortcut
+ *
+ * @property INSTALLED - extension installed
+ * @property UPDATED - extension updated
+ * @property REFRESHED_AUTH_TOKEN - cached token refreshed
+ * @property ALARM - Chrome alarm triggered
+ * @property MENU - menu selected
+ * @property TOGGLE - setting-toggle
+ * @property LINK - setting-link
+ * @property TEXT - setting-text
+ * @property SLIDER_VALUE - setting-slider value
+ * @property SLIDER_UNITS - setting-slider unit
+ * @property BUTTON - button click
+ * @property ICON - toolbar icon click
+ * @property CHECK - checkbox click
+ * @property KEY_COMMAND - keyboard shortcut
  * @const
  */
 export const EVENT = {
@@ -53,77 +51,77 @@ export const EVENT = {
     eventCategory: 'extension',
     eventAction: 'installed',
     eventLabel: '',
-  },
+  } as EventType,
   UPDATED: {
     eventCategory: 'extension',
     eventAction: 'updated',
     eventLabel: '',
-  },
+  } as EventType,
   REFRESHED_AUTH_TOKEN: {
     eventCategory: 'user',
     eventAction: 'refreshedAuthToken',
     eventLabel: '',
-  },
+  } as EventType,
   ALARM: {
     eventCategory: 'alarm',
     eventAction: 'triggered',
     eventLabel: '',
-  },
+  } as EventType,
   MENU: {
     eventCategory: 'ui',
     eventAction: 'menuSelect',
     eventLabel: '',
-  },
+  } as EventType,
   TOGGLE: {
     eventCategory: 'ui',
     eventAction: 'toggle',
     eventLabel: '',
-  },
+  } as EventType,
   LINK: {
     eventCategory: 'ui',
     eventAction: 'linkSelect',
     eventLabel: '',
-  },
+  } as EventType,
   TEXT: {
     eventCategory: 'ui',
     eventAction: 'textChanged',
     eventLabel: '',
-  },
+  } as EventType,
   SLIDER_VALUE: {
     eventCategory: 'ui',
     eventAction: 'sliderValueChanged',
     eventLabel: '',
-  },
+  } as EventType,
   SLIDER_UNITS: {
     eventCategory: 'ui',
     eventAction: 'sliderUnitsChanged',
     eventLabel: '',
-  },
+  } as EventType,
   BUTTON: {
     eventCategory: 'ui',
     eventAction: 'buttonClicked',
     eventLabel: '',
-  },
+  } as EventType,
   RADIO_BUTTON: {
     eventCategory: 'ui',
     eventAction: 'radioButtonClicked',
     eventLabel: '',
-  },
+  } as EventType,
   ICON: {
     eventCategory: 'ui',
     eventAction: 'toolbarIconClicked',
     eventLabel: '',
-  },
+  } as EventType,
   CHECK: {
     eventCategory: 'ui',
     eventAction: 'checkBoxClicked',
     eventLabel: '',
-  },
+  } as EventType,
   KEY_COMMAND: {
     eventCategory: 'ui',
     eventAction: 'keyCommand',
     eventLabel: '',
-  },
+  } as EventType,
 };
 
 /**
@@ -179,9 +177,10 @@ export function page(url: string) {
 
 /**
  * Send an event
- * @param {module:chrome/ga.Event} theEvent - the event type
- * @param {?string} [label=null] - override label
- * @param {?string} [action=null] - override action
+ *
+ * @param theEvent - the event type
+ * @param label - override label
+ * @param action - override action
  */
 export function event(theEvent: EventType, label: string = null, action: string = null) {
   if (theEvent) {
@@ -199,8 +198,9 @@ export function event(theEvent: EventType, label: string = null, action: string 
 
 /**
  * Send an error
- * @param {?string} [label='unknown'] - override label
- * @param {?string} [action='unknownMethod'] - override action
+ *
+ * @param label - override label
+ * @param action - override action
  */
 export function error(label = 'unknown', action = 'unknownMethod') {
   const ev = {
@@ -218,9 +218,10 @@ export function error(label = 'unknown', action = 'unknownMethod') {
 
 /**
  * Send an exception
- * @param {Error} theError - the exception
- * @param {?string} [message=null] - the error message
- * @param {boolean} [fatal=true] - true if fatal
+ *
+ * @param theError - the exception
+ * @param message - the error message
+ * @param fatal - true if fatal
  */
 export function exception(theError: Error, message: string = null, fatal = false) {
   try {
@@ -244,6 +245,6 @@ export function exception(theError: Error, message: string = null, fatal = false
       console.error(ex);
     }
   } catch (err) {
-    ChromeUtils.noop();
+    // ignore
   }
 }
