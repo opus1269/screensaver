@@ -85,7 +85,7 @@
     <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="79">
+          <list size="80">
             <item index="0" class="java.lang.String" itemvalue="nobr" />
             <item index="1" class="java.lang.String" itemvalue="noembed" />
             <item index="2" class="java.lang.String" itemvalue="comment" />
@@ -165,6 +165,7 @@
             <item index="76" class="java.lang.String" itemvalue="slot" />
             <item index="77" class="java.lang.String" itemvalue="photos-view" />
             <item index="78" class="java.lang.String" itemvalue="app-main" />
+            <item index="79" class="java.lang.String" itemvalue="iron-image-ken-burns" />
           </list>
         </value>
       </option>

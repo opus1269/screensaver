@@ -7,7 +7,6 @@
 
 /**
  * Full view
- * @module ss/views/view_full
  */
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -17,14 +16,16 @@ import SSPhoto from '../ss_photo.js';
 
 /**
  * Full view
- * @alias module:ss/views/view_full.SSViewFull
+ *
+ * @remarks
+ * The photo will fill the screen and be stretched horizontally or vertically if necessary
  */
 export default class SSViewFull extends SSView {
 
   /**
    * Create new SSViewFull
+   *
    * @param photo - An {@link SSPhoto}
-   * @constructor
    */
   constructor(photo: SSPhoto) {
     super(photo);
@@ -34,7 +35,6 @@ export default class SSViewFull extends SSView {
    * Render the page for display
    */
   public render() {
-    super.render();
 
     const img: any = this.image.$.img;
     img.style.width = '100%';

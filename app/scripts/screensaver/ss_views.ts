@@ -10,6 +10,7 @@
  * @module ss/views
  */
 
+import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
 import {PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image.js';
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
@@ -54,7 +55,7 @@ let _type = Type.UNDEFINED;
  * Process settings related to the photo's appearance
  */
 function _setViewType() {
-  _type = ChromeStorage.getInt('photoSizing', 0);
+  _type = ChromeStorage.getInt('photoSizing', Type.LETTERBOX);
   if (_type === Type.RANDOM) {
     // pick random sizing
     _type = ChromeUtils.getRandomInt(0, 3);
@@ -77,14 +78,13 @@ function _setViewType() {
   Screensaver.setSizingType(type);
 }
 
-// TODO fix any
 /**
  * Initialize the {@link _views} array
  *
- * @param element - The screensaver element
+ * @param pages - The neon-animated-pages
  */
-export function initialize(element: any) {
-  _pages = element.$.pages;
+export function initialize(pages: NeonAnimatedPagesElement) {
+  _pages = pages;
   _setViewType();
 
   const len = Math.min(SSPhotos.getCount(), _MAX_VIEWS);
@@ -96,18 +96,18 @@ export function initialize(element: any) {
   SSPhotos.setCurrentIndex(len);
 
   // set and force render of animated pages
-  element.set('_views', _views);
-  element.$.repeatTemplate.render();
+  Screensaver.setViews(_views);
 
   // set the Elements of each view
   _views.forEach((view: SSView, index: number) => {
-    const el = _pages.querySelector('#view' + index);
+    const el: HTMLElement = _pages.querySelector('#view' + index);
     const image: IronImageElement = el.querySelector('.image');
     const author: HTMLDivElement = el.querySelector('.author');
     const time: HTMLDivElement = el.querySelector('.time');
     const location: HTMLDivElement = el.querySelector('.location');
     const weather: PolymerElement = el.querySelector('.weather');
-    const model = element.$.repeatTemplate.modelForElement(el);
+    const repeatTemplate: DomRepeat = _pages.querySelector('#repeatTemplate');
+    const model = repeatTemplate.modelForElement(el);
     view.setElements(image, author, time, location, weather, model);
   });
 }

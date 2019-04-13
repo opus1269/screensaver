@@ -9,10 +9,11 @@
  * Base class for other SSView classes
  */
 
-import SSPhoto from '../ss_photo.js';
-
+import {TemplateInstanceBase} from '../../../node_modules/@polymer/polymer/lib/utils/templatize.js';
 import {IronImageElement} from '../../../node_modules/@polymer/iron-image/iron-image.js';
 import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+
+import SSPhoto from '../ss_photo.js';
 
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
@@ -38,7 +39,7 @@ export default abstract class SSView {
    * @param prop - property name
    * @param value - property value
    */
-  private static _dirtySet(model: PolymerElement, prop: string, value: any) {
+  private static _dirtySet(model: TemplateInstanceBase, prop: string, value: any) {
     model.set(prop, value);
     model.notifyPath(prop);
   }
@@ -61,8 +62,8 @@ export default abstract class SSView {
   /** The element to render the current weather */
   public weather: PolymerElement;
 
-  /** The element for our instance */
-  public model: PolymerElement;
+  /** The repeat template model for our instance */
+  public model: TemplateInstanceBase;
 
   /** The url to the photo */
   public url: string;
@@ -118,7 +119,7 @@ export default abstract class SSView {
    * @param model - template item model
    */
   public setElements(image: IronImageElement, author: HTMLDivElement, time: HTMLDivElement, location: HTMLDivElement,
-                     weather: PolymerElement, model: PolymerElement) {
+                     weather: PolymerElement, model: TemplateInstanceBase) {
     this.image = image;
     this.author = author;
     this.time = time;
@@ -144,8 +145,7 @@ export default abstract class SSView {
   /**
    * Render the page for display - subclasses override this to determine the look of photo
    */
-  public render() {
-  }
+  public abstract render(): void;
 
   /**
    * Determine if a photo failed to load (usually 404 or 403 error)

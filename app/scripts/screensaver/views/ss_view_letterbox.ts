@@ -7,7 +7,6 @@
 
 /**
  * Letterbox view
- * @module ss/views/view_letterbox
  */
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -17,21 +16,21 @@ import SSPhoto from '../ss_photo.js';
 
 /**
  * Aspect ratio of screen
- * @type {number}
- * @const
- * @private
  */
 const _SCREEN_AR = screen.width / screen.height;
 
 /**
  * Letterbox view
+ *
+ * @remarks
+ * The photo will fit the height or width of the screen and display bars where necessary
  */
-class SSViewLetterbox extends SSView {
+export default class SSViewLetterbox extends SSView {
 
   /**
    * Create new SSView
-   * @param photo - The {@link SSPhoto} we will contain initially
-   * @constructor
+   *
+   * @param photo - An {@link SSPhoto}
    */
   constructor(photo: SSPhoto) {
     super(photo);
@@ -41,7 +40,6 @@ class SSViewLetterbox extends SSView {
    * Render the page for display
    */
   public render() {
-    super.render();
 
     const ar = this.photo.getAspectRatio();
     const image = this.image;
@@ -111,6 +109,4 @@ class SSViewLetterbox extends SSView {
     }
   }
 }
-
-export default SSViewLetterbox;
 

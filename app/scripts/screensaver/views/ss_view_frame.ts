@@ -7,7 +7,6 @@
 
 /**
  * Frame view
- * @module ss/views/view_frame
  */
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -17,17 +16,20 @@ import SSPhoto from '../ss_photo.js';
 
 /**
  * Frame view
+ *
+ * @remarks
+ * The photo will be displayed with its natural aspect ratio, contained in a frame,
+ * and roughly sized to the screen
  */
 export default class SSViewFrame extends SSView {
 
   /**
    * Set style info for a label
-   * @param {Object} style - element.style object
-   * @param {int} width - frame width
-   * @param {int} height - frame height
-   * @param {boolean} isLeft - if true align left, else right
-   * @static
-   * @private
+   *
+   * @param style - element.style object
+   * @param width - frame width
+   * @param height - frame height
+   * @param isLeft - if true align left, else right
    */
   private static _setLabelStyle(style: CSSStyleDeclaration, width: number, height: number, isLeft: boolean) {
     style.textOverflow = 'ellipsis';
@@ -64,8 +66,8 @@ export default class SSViewFrame extends SSView {
 
   /**
    * Create new SSViewFrame
-   * @param photo - the photo to render
-   * @constructor
+   *
+   * @param photo - An {@link SSPhoto}
    */
   constructor(photo: SSPhoto) {
     super(photo);
@@ -75,7 +77,6 @@ export default class SSViewFrame extends SSView {
    * Render the page for display
    */
   public render() {
-    super.render();
 
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;

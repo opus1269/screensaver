@@ -40,6 +40,7 @@ import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as SSTime from '../../scripts/screensaver/ss_time.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
+import SSView from '../../scripts/screensaver/views/ss_view.js';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
@@ -67,6 +68,7 @@ export enum TRANS_TYPE {
 }
 
 export let setSizingType: (arg0: string) => void = null;
+export let setViews: (arg0: SSView[]) => void = null;
 export let isNoPhotos: () => boolean = null;
 export let setNoPhotos: () => void = null;
 export let setTimeLabel: (arg0: string) => void = null;
@@ -289,6 +291,7 @@ Polymer({
 
     // Initialize exports
     setSizingType = this.setSizingType.bind(this);
+    setViews = this.setViews.bind(this);
     isNoPhotos = this.isNoPhotos.bind(this);
     setNoPhotos = this.setNoPhotos.bind(this);
     setTimeLabel = this.setTimeLabel.bind(this);
@@ -315,6 +318,16 @@ Polymer({
    */
   setSizingType: function(type: string) {
     this.set('sizingType', type);
+  },
+
+  /**
+   * Set the views for the photos
+   *
+   * @param views - The array of views
+   */
+  setViews: function(views: SSView[]) {
+    this.set('_views', views);
+    this.$.repeatTemplate.render();
   },
 
   /**
@@ -419,7 +432,7 @@ Polymer({
       const hasPhotos = await this._loadPhotos();
       if (hasPhotos) {
         // initialize the views
-        SSViews.initialize(this);
+        SSViews.initialize(this.$.pages);
 
         // send msg to update weather. don't wait can be slow
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});

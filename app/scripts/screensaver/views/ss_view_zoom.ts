@@ -7,7 +7,6 @@
 
 /**
  * Zoom view
- * @module ss/views/view_zoom
  */
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -17,15 +16,16 @@ import SSPhoto from '../ss_photo.js';
 
 /**
  * Zoom view
- * @extends module:ss/views/view.SSView
- * @alias module:ss/views/view_zoom.SSViewZoom
+ *
+ * @remarks
+ * The photo will fill the screen and be cropped if necessary
  */
-class SSViewZoom extends SSView {
+export default class SSViewZoom extends SSView {
 
   /**
    * Create new SSViewFull
-   * @param {module:ss/photo.SSPhoto} photo - An {@link module:ss/photo.SSPhoto}
-   * @constructor
+   *
+   * @param photo - An {@link SSPhoto}
    */
   constructor(photo: SSPhoto) {
     super(photo);
@@ -35,8 +35,5 @@ class SSViewZoom extends SSView {
    * Render the page for display
    */
   public render() {
-    super.render();
   }
 }
-
-export default SSViewZoom;
