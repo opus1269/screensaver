@@ -34,7 +34,6 @@ import '../../elements/shared-styles.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
-// has no exports
 import '../../scripts/screensaver/ss_events.js';
 
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
@@ -55,6 +54,24 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
 
+export enum TRANS_TYPE {
+  SCALE_UP = 0,
+  FADE,
+  SLIDE_FROM_RIGHT,
+  SLIDE_DOWN,
+  SPIN_UP,
+  SLIDE_UP,
+  SLIDE_FROM_BOTTOM,
+  SLIDE_RIGHT,
+  RANDOM,
+}
+
+export let setSizingType: (arg0: string) => void = null;
+export let isNoPhotos: () => boolean = null;
+export let setNoPhotos: () => void = null;
+export let setTimeLabel: (arg0: string) => void = null;
+export let setPaused: (arg0: boolean) => void = null;
+
 /**
  * Object to handle Google Photos load errors
  *
@@ -72,17 +89,11 @@ const _errHandler = {
   lastTime: 0,
 };
 
-export let setSizingType: (arg0: string) => void = null;
-export let isNoPhotos: () => boolean = null;
-export let setNoPhotos: () => void = null;
-export let setTimeLabel: (arg0: string) => void = null;
-export let setPaused: (arg0: boolean) => void = null;
-
 /**
  * Polymer element to display a screensaver
  * @PolymerElement
  */
-const Screensaver = Polymer({
+Polymer({
   // language=HTML format=false
   _template: html`<!--suppress CssUnresolvedCustomProperty -->
 <style include="iron-flex iron-flex-alignment iron-positioning"></style>
@@ -344,10 +355,10 @@ const Screensaver = Polymer({
    * Process settings related to between photo transitions
    */
   _setupPhotoTransitions: function() {
-    let type = ChromeStorage.getInt('photoTransition', 0);
-    if (type === 8) {
+    let type: TRANS_TYPE = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+    if (type === TRANS_TYPE.RANDOM) {
       // pick random transition
-      type = ChromeUtils.getRandomInt(0, 7);
+      type = ChromeUtils.getRandomInt(0, TRANS_TYPE.RANDOM - 1);
     }
     this.set('aniType', type);
 
@@ -576,6 +587,4 @@ const Screensaver = Polymer({
   },
 
 });
-
-export default Screensaver;
 

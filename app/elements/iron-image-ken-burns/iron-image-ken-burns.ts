@@ -15,6 +15,7 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
 
 import {UnitValue} from '../setting-elements/setting-slider/setting-slider';
 
@@ -367,14 +368,13 @@ Polymer({
       this.animation.cancel();
     }
 
-
     const transTime: UnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
     const aniTime = transTime.base * 1000;
     let delayTime = 1000;
 
     // hack for spinup animation since it is slower than the others
-    const photoTransition = ChromeStorage.getInt('photoTransition', 0);
-    if (photoTransition === 4) {
+    const photoTransition = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+    if (photoTransition === TRANS_TYPE.SPIN_UP) {
       delayTime = 2000;
     }
 

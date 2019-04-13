@@ -29,33 +29,25 @@ import * as SSViewFactory from './views/ss_view_factory.js';
 /**
  * Enum for view type
  */
-export const Type = {
-  UNDEFINED: -1,
-  LETTERBOX: 0,
-  ZOOM: 1,
-  FRAME: 2,
-  FULL: 3,
-  RANDOM: 4,
-};
+export enum Type {
+  UNDEFINED = -1,
+  LETTERBOX,
+  ZOOM,
+  FRAME,
+  FULL,
+  RANDOM,
+}
 
-/**
- * Max number of views
- */
+/** Max number of views */
 const _MAX_VIEWS = 10;
 
-/**
- * The array of views
- */
+/** The array of views */
 const _views: SSView[] = [];
 
-/**
- * The neon-animated-pages
- */
+/** The neon-animated-pages */
 let _pages: NeonAnimatedPagesElement = null;
 
-/**
- * The view type
- */
+/** The view type */
 let _type = Type.UNDEFINED;
 
 /**
@@ -88,6 +80,7 @@ function _setViewType() {
 // TODO fix any
 /**
  * Initialize the {@link _views} array
+ *
  * @param element - The screensaver element
  */
 export function initialize(element: any) {
@@ -121,7 +114,8 @@ export function initialize(element: any) {
 
 /**
  * Get the type of view
- * @returns The PhotoSource type
+ *
+ * @returns The view type
  */
 export function getType() {
   if (_type === Type.UNDEFINED) {
@@ -139,6 +133,7 @@ export function getCount() {
 
 /**
  * Get the {@link SSView} at the given index
+ *
  * @param idx - The index
  * @returns The SSView
  */
@@ -148,6 +143,7 @@ export function get(idx: number) {
 
 /**
  * Get the selected index
+ *
  * @returns The index of the current view
  */
 export function getSelectedIndex() {
@@ -165,6 +161,7 @@ export function getSelectedIndex() {
 
 /**
  * Set the selected index
+ *
  * @param selected - The index of the views
  */
 export function setSelectedIndex(selected: number) {
@@ -173,6 +170,7 @@ export function setSelectedIndex(selected: number) {
 
 /**
  * Get the photos in all the views
+ *
  * @returns An array of all the SSPhoto's
  */
 export function getPhotos() {
@@ -185,6 +183,7 @@ export function getPhotos() {
 
 /**
  * Is the given idx the selected index
+ *
  * @param idx - index into {@link _views}
  * @returns true if selected
  */
@@ -198,6 +197,7 @@ export function isSelectedIndex(idx: number) {
 
 /**
  * Is the given {@link SSPhoto} in one of the {@link _views}
+ *
  * @param photo - The photo to check
  * @returns true if in {@link _views}
  */
@@ -214,6 +214,7 @@ export function hasPhoto(photo: SSPhoto) {
 
 /**
  * Do we have a view with a usable photo
+ *
  * @returns true if at least one photo is valid
  */
 export function hasUsable() {
@@ -255,6 +256,7 @@ export function replaceAll() {
 
 /**
  * Try to find a photo that has finished loading
+ *
  * @param idx - index into {@link _views}
  * @returns index into {@link _views}, -1 if none are loaded
  */
