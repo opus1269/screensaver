@@ -4,6 +4,11 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+/**
+ * Module for a screensaver
+ */
+
 import '../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
@@ -29,23 +34,16 @@ import '../../elements/shared-styles.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
+// has no exports
 import '../../scripts/screensaver/ss_events.js';
-import '../../scripts/screensaver/ss_history.js';
-import '../../scripts/screensaver/ss_photo.js';
-import '../../scripts/screensaver/ss_photo_finder.js';
-import '../../scripts/screensaver/views/ss_view.js';
-import '../../scripts/screensaver/views/ss_view_factory.js';
-import '../../scripts/screensaver/views/ss_view_frame.js';
-import '../../scripts/screensaver/views/ss_view_letterbox.js';
-import '../../scripts/screensaver/views/ss_view_zoom.js';
 
-import * as SSBuilder from '../../scripts/screensaver/ss_builder.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as SSTime from '../../scripts/screensaver/ss_time.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
@@ -56,10 +54,6 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
-
-/**
- * Module for a screensaver
- */
 
 /**
  * Object to handle Google Photos load errors
@@ -78,7 +72,6 @@ const _errHandler = {
   lastTime: 0,
 };
 
-export let createPages: () => void = null;
 export let setSizingType: (arg0: string) => void = null;
 export let isNoPhotos: () => boolean = null;
 export let setNoPhotos: () => void = null;
@@ -284,7 +277,6 @@ const Screensaver = Polymer({
         'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
     // Initialize exports
-    createPages = this.createPages.bind(this);
     setSizingType = this.setSizingType.bind(this);
     isNoPhotos = this.isNoPhotos.bind(this);
     setNoPhotos = this.setNoPhotos.bind(this);
@@ -303,13 +295,6 @@ const Screensaver = Polymer({
       this._launch().catch(() => {});
 
     }, 0);
-  },
-
-  /**
-   * Create the {@link SSViews} that will be animated
-   */
-  createPages: function() {
-    SSViews.create(this);
   },
 
   /**
@@ -387,13 +372,44 @@ const Screensaver = Polymer({
   },
 
   /**
+   * Load the {@link SSPhotos} that will be displayed
+   *
+   * @throws An error if we failed to load photos
+   * @returns true if there is at least one photo
+   */
+  _loadPhotos: async function() {
+    let sources = PhotoSources.getSelectedSources();
+    sources = sources || [];
+
+    for (const source of sources) {
+      await SSPhotos.addFromSource(source);
+    }
+
+    if (!SSPhotos.getCount()) {
+      // No usable photos
+      setNoPhotos();
+      return Promise.resolve(false);
+    }
+
+    if (ChromeStorage.getBool('shuffle')) {
+      // randomize the order
+      SSPhotos.shuffle();
+    }
+    return Promise.resolve(true);
+
+  },
+
+  /**
    * Launch the slide show
    * @param delay - delay in milli sec before start
    */
   _launch: async function(delay: number = 2000) {
     try {
-      const hasPhotos = await SSBuilder.build();
+      const hasPhotos = await this._loadPhotos();
       if (hasPhotos) {
+        // initialize the views
+        SSViews.initialize(this);
+
         // send msg to update weather. don't wait can be slow
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
 

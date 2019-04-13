@@ -87,10 +87,10 @@ function _setViewType() {
 
 // TODO fix any
 /**
- * Create the {@link _views} array
+ * Initialize the {@link _views} array
  * @param element - The screensaver element
  */
-export function create(element: any) {
+export function initialize(element: any) {
   _pages = element.$.pages;
   _setViewType();
 
