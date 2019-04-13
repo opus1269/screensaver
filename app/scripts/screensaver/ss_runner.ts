@@ -235,11 +235,8 @@ function _runShow(newIdx: number | null = null) {
 
     if (newIdx === null) {
       // load next photo from master array
-      setTimeout(() => {
-        // wait so it doesn't interfere with photo trans animation
-        _replacePhoto(VARS.replaceIdx);
-        VARS.replaceIdx = VARS.lastSelected;
-      }, 2000);
+      _replacePhoto(VARS.replaceIdx);
+      VARS.replaceIdx = VARS.lastSelected;
     }
   }
 
