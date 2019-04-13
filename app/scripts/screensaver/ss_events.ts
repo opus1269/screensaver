@@ -40,7 +40,7 @@ const _MOUSE_START: MousePosition = {x: null, y: null};
  */
 function _close() {
   // send message to other screen savers to close themselves
-  ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
+  ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
   setTimeout(() => {
     // delay a little to process events
     window.close();
@@ -49,6 +49,7 @@ function _close() {
 
 /**
  * Event: Fired when a registered command is activated using a keyboard shortcut.
+ *
  * {@link https://developer.chrome.com/extensions/commands#event-onCommand}
  *
  * @param cmd - keyboard command
@@ -71,6 +72,7 @@ function _onKeyCommand(cmd: string) {
 /**
  * Event: Fired when a message is sent from either an extension<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+ *
  * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
  *
  * @param request - details for the message
@@ -80,9 +82,9 @@ function _onKeyCommand(cmd: string) {
  */
 function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                           response: (arg0: object) => void) {
-  if (request.message === MyMsg.SS_CLOSE.message) {
+  if (request.message === MyMsg.TYPE.SS_CLOSE.message) {
     _close();
-  } else if (request.message === MyMsg.SS_IS_SHOWING.message) {
+  } else if (request.message === MyMsg.TYPE.SS_IS_SHOWING.message) {
     // let people know we are here
     response({message: 'OK'});
   }
@@ -91,6 +93,7 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
 
 /**
  * Event: KeyboardEvent
+ *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent}
  *
  * @param ev - KeyboardEvent

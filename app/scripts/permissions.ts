@@ -213,7 +213,7 @@ async function _setState(type: Type, value: STATE) {
   try {
     // send message to store value so items that are bound
     // to it will get storage event
-    const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+    const msg = ChromeJSON.shallowCopy(ChromeMsg.TYPE.STORE);
     msg.key = type.name;
     msg.value = value;
     await ChromeMsg.send(msg);

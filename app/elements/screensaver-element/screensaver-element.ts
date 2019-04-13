@@ -59,20 +59,16 @@ declare var ChromePromise: any;
 
 /**
  * Module for a screensaver
- * @module els/screensaver
  */
 
 /**
  * Object to handle Google Photos load errors
- * @type {Object}
- * @typedef {Object} module:els/screensaver.Screensaver.ErrHandler
- * @property {int} MAX_COUNT - max times to call
- * @property {int} count - count of calls
- * @property {boolean} isUpdating - true if an event is handling an error
- * @property {int} TIME_LIMIT - throttle calls to this fast in case something
- *  weird happens
- * @property {int} lastTime - last time called
- * @private
+ *
+ * @property MAX_COUNT - max times to call
+ * @property count - count of calls
+ * @property isUpdating - true if an event is handling an error
+ * @property TIME_LIMIT - throttle calls to this fast in case something weird happens
+ * @property lastTime - last time called
  */
 const _errHandler = {
   MAX_COUNT: 168, // about a weeks worth, if all goes well
@@ -82,23 +78,15 @@ const _errHandler = {
   lastTime: 0,
 };
 
-/** @type {Function} */
 export let createPages: () => void = null;
-/** @type {Function} */
 export let setSizingType: (arg0: string) => void = null;
-/** @type {Function} */
 export let isNoPhotos: () => boolean = null;
-/** @type {Function} */
 export let setNoPhotos: () => void = null;
-/** @type {Function} */
 export let setTimeLabel: (arg0: string) => void = null;
-/** @type {Function} */
 export let setPaused: (arg0: boolean) => void = null;
 
 /**
  * Polymer element to display a screensaver
- * @type {{}}
- * @alias module:els/screensaver.Screensaver
  * @PolymerElement
  */
 const Screensaver = Polymer({
@@ -236,79 +224,59 @@ const Screensaver = Polymer({
 
   properties: {
 
-    /**
-     * Array of {@link SSView} objects
-     */
+    /** Array of {@link SSView} objects */
     _views: {
       type: Array,
       value: [],
     },
 
-    /**
-     * The way an image is rendered
-     */
+    /** The way an image is rendered */
     sizingType: {
       type: String,
       value: null,
     },
 
-    /**
-     * Type for between photo animation
-     */
+    /** Type for between photo animation */
     aniType: {
       type: Number,
       value: 0,
     },
 
-    /**
-     * Screen width in pixels
-     * @const
-     */
+    /** Screen width in pixels */
     screenWidth: {
       type: Number,
       value: screen.width,
       readOnly: true,
     },
 
-    /**
-     * Screen height in pixels
-     * @const
-     */
+    /** Screen height in pixels */
     screenHeight: {
       type: Number,
       value: screen.height,
       readOnly: true,
     },
 
-    /**
-     * Flag to indicate if slideshow is paused
-     */
+    /** Flag to indicate if slideshow is paused */
     paused: {
       type: Boolean,
       value: false,
       observer: '_pausedChanged',
     },
 
-    /**
-     * Flag to indicate if we have no valid photos
-     */
+    /** Flag to indicate if we have no valid photos */
     noPhotos: {
       type: Boolean,
       value: false,
     },
 
-    /**
-     * Label for current time
-     */
+    /** Label for current time */
     timeLabel: {
       type: String,
       value: '',
     },
   },
 
-  /**
-   * Element is ready
-   */
+  /** Element is ready */
   ready: function() {
 
     // set selected background image
@@ -345,8 +313,9 @@ const Screensaver = Polymer({
   },
 
   /**
-   * Set the sizing type for the paper-image elements
-   * @param {string} type The sizing type
+   * Set the sizing type for the photos
+   *
+   * @param type - The sizing type
    */
   setSizingType: function(type: string) {
     this.set('sizingType', type);
@@ -354,7 +323,8 @@ const Screensaver = Polymer({
 
   /**
    * Do we have usable photos
-   * @returns {boolean} true if all photos are bad
+   *
+   * @returns true if all photos are bad
    */
   isNoPhotos: function() {
     return this.noPhotos;
@@ -369,7 +339,8 @@ const Screensaver = Polymer({
 
   /**
    * Set the time label
-   * @param {string} label - current time
+   *
+   * @param label - current time
    */
   setTimeLabel: function(label: string) {
     this.set('timeLabel', label);
@@ -377,7 +348,8 @@ const Screensaver = Polymer({
 
   /**
    * Set the state when slideshow is paused
-   * @param {boolean} paused - paused state
+   *
+   * @param paused - paused state
    */
   setPaused: function(paused: boolean) {
     this.set('paused', paused);
@@ -385,7 +357,6 @@ const Screensaver = Polymer({
 
   /**
    * Process settings related to between photo transitions
-   * @private
    */
   _setupPhotoTransitions: function() {
     let type = ChromeStorage.getInt('photoTransition', 0);
@@ -400,8 +371,6 @@ const Screensaver = Polymer({
 
   /**
    * Set the window zoom factor to 1.0
-   * @returns {Promise<void>}
-   * @private
    */
   _setZoom: async function() {
     const chromep = new ChromePromise();
@@ -419,16 +388,14 @@ const Screensaver = Polymer({
 
   /**
    * Launch the slide show
-   * @param {int} [delay=2000] - delay in milli sec before start
-   * @returns {Promise<void>}
-   * @private
+   * @param delay - delay in milli sec before start
    */
   _launch: async function(delay: number = 2000) {
     try {
       const hasPhotos = await SSBuilder.build();
       if (hasPhotos) {
         // send msg to update weather. don't wait can be slow
-        ChromeMsg.send(MyMsg.UPDATE_WEATHER).catch(() => {});
+        ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
 
         // kick off the slide show
         SSRunner.start(delay);
@@ -575,12 +542,11 @@ const Screensaver = Polymer({
 
   /**
    * Observer: Paused state changed
-   * @param {boolean} newValue - new value
-   * @param {boolean} oldValue - old value
-   * @private
-   * @memberOf SlideAnimatable
+   *
+   * @param newValue - new value
+   * @param oldValue - old value
    */
-  _pausedChanged: function(newValue: boolean, oldValue: boolean) {
+  _pausedChanged: function(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if (typeof oldValue === 'undefined') {
       return;
     }

@@ -628,7 +628,7 @@ Polymer({
   _showScreensaverPreview: function(index: number, prevRoute: string) {
     // reselect previous page - need to delay so tap event is done
     setTimeout(() => this.$.mainMenu.select(prevRoute), 500);
-    ChromeMsg.send(MyMsg.SS_SHOW).catch(() => {});
+    ChromeMsg.send(MyMsg.TYPE.SS_SHOW).catch(() => {});
   },
 
   /**
@@ -691,7 +691,7 @@ Polymer({
   _onChromeMessage: function(request: ChromeMsg.MsgType,
                              sender: chrome.runtime.MessageSender,
                              response: (arg0: object) => void) {
-    if (request.message === ChromeMsg.HIGHLIGHT.message) {
+    if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
       chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): chrome.tabs.Tab => {
@@ -701,13 +701,13 @@ Polymer({
         ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
       });
       response({message: 'OK'});
-    } else if (request.message === ChromeMsg.STORAGE_EXCEEDED.message) {
+    } else if (request.message === ChromeMsg.TYPE.STORAGE_EXCEEDED.message) {
       // Display Error Dialog if a save action exceeded the
       // localStorage limit
       const title = ChromeLocale.localize('err_storage_title');
       const text = ChromeLocale.localize('err_storage_desc');
       this.$.errorDialog.open(title, text);
-    } else if (request.message === MyMsg.PHOTO_SOURCE_FAILED.message) {
+    } else if (request.message === MyMsg.TYPE.PHOTO_SOURCE_FAILED.message) {
       // failed to load
       this.$.settingsPage.deselectPhotoSource(request.key);
       const title = ChromeLocale.localize('err_photo_source_title');

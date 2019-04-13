@@ -53,13 +53,10 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Module for the Settings Page
- * @module els/pgs/settings
  */
 
 /**
  * Polymer element for the Settings Page
- * @type {{deselectPhotoSource: Function}}
- * @alias module:els/pgs/settings.SettingsPage
  * @PolymerElement
  */
 Polymer({
@@ -279,8 +276,9 @@ Polymer({
   },
 
   /**
-   * Deselect the given {@link module:sources/photo_source}
-   * @param {string} useName - Name of <setting-toggle>
+   * Deselect the given {@link PhotoSource}
+   *
+   * @param useName - key
    */
   deselectPhotoSource: function(useName: string) {
     this._setPhotoSourceChecked(useName, false);
@@ -288,13 +286,13 @@ Polymer({
 
   /**
    * Return a Unit object
-   * @param {string} name
-   * @param {int} min - min value
-   * @param {int} max - max value
-   * @param {int} step - increment
-   * @param {int} mult - multiplier between base and display
-   * @returns {{name: *, min: *, mult: *, max: *, name: *, step: *}}
-   * @private
+   *
+   * @param name
+   * @param min - min value
+   * @param max - max value
+   * @param step - increment
+   * @param mult - multiplier between base and display
+   * @returns A unit object
    */
   _getUnit: function(name: string, min: number, max: number, step: number, mult: number) {
     return {
@@ -304,10 +302,10 @@ Polymer({
   },
 
   /**
-   * Set checked state of a {@link module:sources/photo_source}
-   * @param {string} useName - source name
-   * @param {boolean} state - checked state
-   * @private
+   * Set checked state of a {@link PhotoSource}
+   *
+   * @param useName - source name
+   * @param state - checked state
    */
   _setPhotoSourceChecked: function(useName: string, state: boolean) {
     const query = `[name=${useName}]`;
@@ -318,9 +316,9 @@ Polymer({
   },
 
   /**
-   * Set checked state of all {@link module:sources/photo_source} objects
-   * @param {boolean} state - checked state
-   * @private
+   * Set checked state of all {@link PhotoSource} objects
+   *
+   * @param state - checked state
    */
   _setPhotoSourcesChecked: function(state: boolean) {
     const useKeys = PhotoSources.getUseKeys();
@@ -331,7 +329,6 @@ Polymer({
 
   /**
    * Event: Change enabled state of screensaver
-   * @private
    */
   _onEnabledChanged: function() {
     const enabled = this.$.settingsToggle.checked;
@@ -341,7 +338,6 @@ Polymer({
 
   /**
    * Event: Handle tap on help icon
-   * @private
    */
   _onHelpTapped: function() {
     ChromeGA.event(ChromeGA.EVENT.ICON, 'settingsHelp');
@@ -364,16 +360,14 @@ Polymer({
   },
 
   /**
-   * Event: select all {@link module:sources/photo_source} objects tapped
-   * @private
+   * Event: select all {@link PhotoSource} objects tapped
    */
   _onSelectAllTapped: function() {
     this._setPhotoSourcesChecked(true);
   },
 
   /**
-   * Event: deselect all {@link module:sources/photo_source} objects tapped
-   * @private
+   * Event: deselect all {@link PhotoSource} objects tapped
    */
   _onDeselectAllTapped: function() {
     this._setPhotoSourcesChecked(false);
@@ -381,15 +375,13 @@ Polymer({
 
   /**
    * Event: restore default settings tapped
-   * @private
    */
   _onRestoreDefaultsTapped: function() {
-    ChromeMsg.send(ChromeMsg.RESTORE_DEFAULTS).catch(() => {});
+    ChromeMsg.send(ChromeMsg.TYPE.RESTORE_DEFAULTS).catch(() => {});
   },
 
   /**
    * Event: Process the background
-   * @private
    */
   _onChromeBackgroundTapped: function() {
     const METHOD = 'SettingsPage._onShowWeatherTapped';
@@ -409,7 +401,6 @@ Polymer({
 
   /**
    * Event: Process the weather permission
-   * @private
    */
   _onShowWeatherTapped: async function() {
     const METHOD = 'SettingsPage._onShowWeatherTapped';
@@ -459,7 +450,7 @@ Polymer({
       }
 
       // now update the alarm
-      const response = await ChromeMsg.send(MyMsg.UPDATE_WEATHER_ALARM);
+      const response = await ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER_ALARM);
       if (response.errorMessage) {
         throw new Error(response.errorMessage);
       }
@@ -469,13 +460,13 @@ Polymer({
 
       try {
         // set to false
-        const msg = ChromeJSON.shallowCopy(ChromeMsg.STORE);
+        const msg = ChromeJSON.shallowCopy(ChromeMsg.TYPE.STORE);
         msg.key = 'showCurrentWeather';
         msg.value = false;
         await ChromeMsg.send(msg);
 
         // update the alarm
-        await ChromeMsg.send(MyMsg.UPDATE_WEATHER_ALARM);
+        await ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER_ALARM);
 
         await Permissions.remove(Permissions.WEATHER);
       } catch (err) {
@@ -488,9 +479,9 @@ Polymer({
 
   /**
    * Computed property: Set menu icons visibility
-   * @param {int} selectedTab - the current tab
-   * @returns {boolean} true if menu should be visible
-   * @private
+   *
+   * @param selectedTab - the current tab
+   * @returns true if menu should be visible
    */
   _computeMenuHidden: function(selectedTab: number) {
     return (selectedTab !== 2);
@@ -498,10 +489,10 @@ Polymer({
 
   /**
    * Computed binding: Set disabled state of largeTime toggle
-   * @param {boolean} enabled - enabled state of screensaver
-   * @param {number} showTimeValue - showTime value
-   * @returns {boolean} true if disabled
-   * @private
+   *
+   * @param enabled - enabled state of screensaver
+   * @param showTimeValue - showTime value
+   * @returns true if disabled
    */
   _computeLargeTimeDisabled: function(enabled: boolean, showTimeValue: number) {
     let ret = false;
@@ -513,8 +504,8 @@ Polymer({
 
   /**
    * Computed binding: idle time values
-   * @returns {Array} Array of menu items
-   * @private
+   *
+   * @returns Array of menu items
    */
   _computeWaitTimeUnits: function() {
     return [
@@ -526,8 +517,8 @@ Polymer({
 
   /**
    * Computed binding: transition time values
-   * @returns {Array} Array of menu items
-   * @private
+   *
+   * @returns Array of menu items
    */
   _computeTransitionTimeUnits: function() {
     return [
@@ -540,8 +531,8 @@ Polymer({
 
   /**
    * Computed binding: photo sizing values
-   * @returns {Array} Array of menu items
-   * @private
+   *
+   * @returns Array of menu items
    */
   _computePhotoSizingMenu: function() {
     return [
@@ -555,8 +546,8 @@ Polymer({
 
   /**
    * Computed binding: photo transition values
-   * @returns {Array} Array of menu items
-   * @private
+   *
+   * @returns Array of menu items
    */
   _computePhotoTransitionMenu: function() {
     return [
@@ -574,8 +565,8 @@ Polymer({
 
   /**
    * Computed binding: time format values
-   * @returns {Array} Array of menu items
-   * @private
+   *
+   * @returns Array of menu items
    */
   _computeTimeFormatMenu: function() {
     return [
@@ -587,8 +578,8 @@ Polymer({
 
   /**
    * Computed binding: temperature units
-   * @returns {Array} Array of menu items
-   * @private
+   *
+   * @returns Array of menu items
    */
   _computeTempUnitMenu: function() {
     return [

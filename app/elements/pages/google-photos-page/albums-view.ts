@@ -377,7 +377,7 @@ Polymer({
    */
   _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                              response: (arg0: object) => void) {
-    if (request.message === MyMsg.ALBUM_COUNT.message) {
+    if (request.message === MyMsg.TYPE.ALBUM_COUNT.message) {
       // show user status of photo loading
       const name = request.name || '';
       const count = request.count || 0;
@@ -438,7 +438,7 @@ Polymer({
       }
 
       // send message to background page to do the work
-      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUM);
+      const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.LOAD_ALBUM);
       msg.id = album.id;
       msg.name = album.name;
       const response = await ChromeMsg.send(msg);
@@ -495,7 +495,7 @@ Polymer({
     try {
 
       // send message to background page to do the work
-      const msg = ChromeJSON.shallowCopy(MyMsg.LOAD_ALBUMS);
+      const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.LOAD_ALBUMS);
       const response: SelectedAlbum[] | ChromeMsg.MsgType = await ChromeMsg.send(msg);
 
       if (Array.isArray(response)) {

@@ -37,6 +37,7 @@ const _ERR_SHOW = ChromeLocale.localize('err_show_ss');
 
 /**
  * Determine if the screen saver can be displayed
+ *
  * @returns true if should display the screensaver
  */
 export function isActive() {
@@ -81,11 +82,12 @@ export async function display(single: boolean) {
  */
 export function close() {
   // send message to the screen savers to close themselves
-  ChromeMsg.send(MyMsg.SS_CLOSE).catch(() => {});
+  ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
 }
 
 /**
  * Determine if there is a full screen chrome window running on a display
+ *
  * @param disp - a connected display
  * @returns true if there is a full screen window on the display
  */
@@ -115,12 +117,13 @@ async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
 
 /**
  * Determine if a screensaver is currently showing
+ *
  * @returns true if showing
  */
 async function _isShowing() {
   // send message to the screensaver's to see if any are around
   try {
-    await ChromeMsg.send(MyMsg.SS_IS_SHOWING);
+    await ChromeMsg.send(MyMsg.TYPE.SS_IS_SHOWING);
     return Promise.resolve(true);
   } catch (err) {
     // no one listening
@@ -130,6 +133,7 @@ async function _isShowing() {
 
 /**
  * Open a screen saver window on the given display
+ *
  * @param disp - a connected display or null for the main display
  */
 async function _open(disp: chrome.system.display.DisplayInfo | null) {
@@ -196,7 +200,9 @@ async function _openOnAllDisplays() {
  * screensaver activates, "idle" if the system is unlocked and the user has not
  * generated any input for a specified number of seconds, and "active" when the
  * user generates input on an idle system.
+ *
  * @link https://developer.chrome.com/extensions/idle#event-onStateChanged
+ *
  * @param state - current state of computer
  */
 async function _onIdleStateChanged(state: string) {
@@ -227,7 +233,9 @@ async function _onIdleStateChanged(state: string) {
 /**
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+ *
  * @link https://developer.chrome.com/extensions/runtime#event-onMessage
+ *
  * @param request - details for the message
  * @param sender MessageSender object
  * @param response - function to call once after processing
@@ -236,7 +244,7 @@ async function _onIdleStateChanged(state: string) {
 function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                           response: (arg0: object) => void) {
   let ret = false;
-  if (request.message === MyMsg.SS_SHOW.message) {
+  if (request.message === MyMsg.TYPE.SS_SHOW.message) {
     ret = true; // async
     // preview the screensaver
     display(false).catch(() => {});

@@ -20,7 +20,7 @@ declare var ChromePromise: any;
  * Get a JSON parsed value from localStorage
  *
  * @param key - key to get value for
- * @param [def=null] - optional default value if key not found
+ * @param def - optional default value if key not found
  * @returns JSON object or string, null if key does not exist
  */
 export function get(key: string, def: any = null) {
@@ -36,7 +36,7 @@ export function get(key: string, def: any = null) {
  * Get integer value from localStorage
  *
  * @param key - key to get value for
- * @param [def=null] - optional value to return, if NaN
+ * @param def - optional value to return, if NaN
  * @returns value as integer, NaN on error
  */
 export function getInt(key: string, def: number = null) {
@@ -56,7 +56,7 @@ export function getInt(key: string, def: number = null) {
  * Get boolean value from localStorage
  *
  * @param key - key to get value for
- * @param [def=null] - return value if key not found
+ * @param def - return value if key not found
  * @returns value as boolean, null if key does not exist
  */
 export function getBool(key: string, def: boolean = null) {
@@ -67,9 +67,9 @@ export function getBool(key: string, def: boolean = null) {
  * JSON stringify and save a value to localStorage
  *
  * @param key - key to set value for
- * @param [value=null] - new value, if null remove item
+ * @param value - new value, if null remove item
  */
-export function set(key: string, value: object | [] | string| number | boolean | null = null) {
+export function set(key: string, value: object | [] | string | number | boolean | null = null) {
   if (value === null) {
     localStorage.removeItem(key);
   } else {
@@ -83,7 +83,7 @@ export function set(key: string, value: object | [] | string| number | boolean |
  *
  * @param key - localStorage Key
  * @param value - value to save
- * @param [keyBool=null] - key to a boolean value that is true if the primary key has non-empty value
+ * @param keyBool - key to a boolean value that is true if the primary key has non-empty value
  * @returns true if value was set successfully
  */
 export function safeSet(key: string, value: JSON, keyBool: string = null) {
@@ -106,17 +106,18 @@ export function safeSet(key: string, value: JSON, keyBool: string = null) {
       }
     }
     // notify listeners
-    ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
+    ChromeMsg.send(ChromeMsg.TYPE.STORAGE_EXCEEDED).catch(() => {});
   }
   return ret;
 }
 
 /**
  * Get a value from chrome.storage.local
+ *
  * {@link  https://developer.chrome.com/apps/storage}
  *
  * @param key - data key
- * @param [def=null] - default value if not found
+ * @param def - default value if not found
  * @returns Object or Array from storage, def if not found
  */
 export async function asyncGet(key: string, def: object | [] = null) {
@@ -142,11 +143,12 @@ export async function asyncGet(key: string, def: object | [] = null) {
 
 /**
  * Save a value to chrome.storage.local only if there is enough room
+ *
  * {@link  https://developer.chrome.com/apps/storage}
  *
  * @param key - data key
  * @param value - data value
- * @param [keyBool=null] - key to a boolean value that is true if the primary key has non-empty value
+ * @param keyBool - key to a boolean value that is true if the primary key has non-empty value
  * @returns true if value was set successfully
  */
 export async function asyncSet(key: string, value: object | [], keyBool: string = null) {
@@ -160,7 +162,7 @@ export async function asyncSet(key: string, value: object | [], keyBool: string 
     await chromep.storage.local.set(obj);
   } catch (err) {
     // notify listeners save failed
-    ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
+    ChromeMsg.send(ChromeMsg.TYPE.STORAGE_EXCEEDED).catch(() => {});
     ret = false;
   }
   return ret;
@@ -183,7 +185,7 @@ export async function asyncSet(key: string, value: object | [], keyBool: string 
   //     }
   //   }
   //   // notify listeners
-  //   ChromeMsg.send(ChromeMsg.STORAGE_EXCEEDED).catch(() => {});
+  //   ChromeMsg.send(ChromeMsg.TYPE.STORAGE_EXCEEDED).catch(() => {});
 // }
 
 // return ret;

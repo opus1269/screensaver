@@ -303,7 +303,7 @@ export class GoogleSource extends PhotoSource {
 
       if (notify) {
         // notify listeners of our current progress
-        const msg = ChromeJSON.shallowCopy(MyMsg.ALBUM_COUNT);
+        const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.ALBUM_COUNT);
         msg.name = name;
         msg.count = photos.length;
         try {
@@ -458,7 +458,7 @@ export class GoogleSource extends PhotoSource {
 
         if (notify) {
           // notify listeners of our current progress
-          const msg = ChromeJSON.shallowCopy(MyMsg.FILTERED_PHOTOS_COUNT);
+          const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.FILTERED_PHOTOS_COUNT);
           msg.count = newPhotos.length;
           try {
             await ChromeMsg.send(msg);
@@ -498,6 +498,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Load the given array of unique photo id's from Google Photos
+   *
    * @param ids - array of ids
    * @throws An error if the photos failed to load
    * @returns An array of photos

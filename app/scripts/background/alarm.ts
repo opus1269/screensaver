@@ -201,7 +201,7 @@ async function _updateWeather() {
   // is the screensaver running
   let response = null;
   try {
-    response = await ChromeMsg.send(MyMsg.SS_IS_SHOWING);
+    response = await ChromeMsg.send(MyMsg.TYPE.SS_IS_SHOWING);
   } catch (err) {
     // ignore - means no screensaver around
   }

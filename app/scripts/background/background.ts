@@ -33,7 +33,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 async function _showOptionsTab() {
   // send message to the option tab to focus it.
   try {
-    await ChromeMsg.send(ChromeMsg.HIGHLIGHT);
+    await ChromeMsg.send(ChromeMsg.TYPE.HIGHLIGHT);
   } catch (e) {
     // no one listening, create it
     chrome.tabs.create({url: '/html/options.html'});
@@ -46,7 +46,9 @@ async function _showOptionsTab() {
  * Event: Fired when the extension is first installed,<br />
  * when the extension is updated to a new version,<br />
  * and when Chrome is updated to a new version.
+ *
  * @link https://developer.chrome.com/extensions/runtime#event-onInstalled
+ *
  * @param details - type of event
  */
 async function _onInstalled(details: chrome.runtime.InstalledDetails) {
@@ -96,6 +98,7 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
 
 /**
  * Event: Fired when a profile that has this extension installed first starts up
+ *
  * @link https://developer.chrome.com/extensions/runtime#event-onStartup
  */
 async function _onStartup() {
@@ -112,6 +115,7 @@ async function _onStartup() {
 
 /**
  * Event: Fired when a browser action icon is clicked.
+ *
  * @link https://goo.gl/abVwKu
  */
 async function _onIconClicked() {
@@ -126,7 +130,9 @@ async function _onIconClicked() {
 
 /**
  * Event: Fired when item in localStorage changes
+ *
  * @link https://developer.mozilla.org/en-US/docs/Web/Events/storage
+ *
  * @param ev - StorageEvent
  */
 async function _onStorageChanged(ev: StorageEvent) {
@@ -142,7 +148,9 @@ async function _onStorageChanged(ev: StorageEvent) {
 /**
  * Event: Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+ *
  * @link https://developer.chrome.com/extensions/runtime#event-onMessage
+ *
  * @param request - details for the message
  * @param sender - MessageSender object
  * @param response - function to call once after processing
@@ -151,13 +159,13 @@ async function _onStorageChanged(ev: StorageEvent) {
 function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                           response: (arg0: object) => void) {
   let ret = false;
-  if (request.message === ChromeMsg.RESTORE_DEFAULTS.message) {
+  if (request.message === ChromeMsg.TYPE.RESTORE_DEFAULTS.message) {
     ret = true;
     AppData.restoreDefaults().catch(() => {
     });
-  } else if (request.message === ChromeMsg.STORE.message) {
+  } else if (request.message === ChromeMsg.TYPE.STORE.message) {
     ChromeStorage.set(request.key, request.value);
-  } else if (request.message === MyMsg.LOAD_FILTERED_PHOTOS.message) {
+  } else if (request.message === MyMsg.TYPE.LOAD_FILTERED_PHOTOS.message) {
     ret = true;
     GoogleSource.loadFilteredPhotos(true, true).then((photos) => {
       response(photos);
@@ -165,7 +173,7 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
     }).catch((err) => {
       response({message: err.message});
     });
-  } else if (request.message === MyMsg.LOAD_ALBUM.message) {
+  } else if (request.message === MyMsg.TYPE.LOAD_ALBUM.message) {
     ret = true;
     GoogleSource.loadAlbum(request.id, request.name, true, true).then((album) => {
       response(album);
@@ -173,7 +181,7 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
     }).catch((err) => {
       response({message: err.message});
     });
-  } else if (request.message === MyMsg.LOAD_ALBUMS.message) {
+  } else if (request.message === MyMsg.TYPE.LOAD_ALBUMS.message) {
     ret = true;
     GoogleSource.loadAlbums(true, true).then((albums) => {
       response(albums);
@@ -181,7 +189,7 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
     }).catch((err) => {
       response({message: err.message});
     });
-  } else if (request.message === MyMsg.UPDATE_WEATHER_ALARM.message) {
+  } else if (request.message === MyMsg.TYPE.UPDATE_WEATHER_ALARM.message) {
     ret = true;
     Alarm.updateWeatherAlarm().then(() => {
       response({message: 'OK'});
@@ -189,7 +197,7 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
     }).catch((err) => {
       response({errorMessage: err.message});
     });
-  } else if (request.message === MyMsg.UPDATE_WEATHER.message) {
+  } else if (request.message === MyMsg.TYPE.UPDATE_WEATHER.message) {
     ret = true;
     Weather.update().then(() => {
       response({message: 'OK'});

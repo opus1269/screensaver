@@ -243,8 +243,7 @@ Polymer({
    */
   loadPhotos: async function() {
     const METHOD = 'PhotosView.loadPhotos';
-    /** @type {Error} */
-    let error = null;
+    let error: Error = null;
     try {
       const granted = await Permissions.request(Permissions.PICASA);
 
@@ -261,7 +260,7 @@ Polymer({
       this.set('waiterStatus', '');
 
       // send message to background page to do the work
-      const json = await ChromeMsg.send(MyMsg.LOAD_FILTERED_PHOTOS);
+      const json = await ChromeMsg.send(MyMsg.TYPE.LOAD_FILTERED_PHOTOS);
 
       if (Array.isArray(json)) {
         // photos
@@ -356,6 +355,7 @@ Polymer({
   /**
    * Event: Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+   *
    * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
    *
    * @param request - details for the message
@@ -365,7 +365,7 @@ Polymer({
    */
   _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
                              response: (arg0: object) => void) {
-    if (request.message === MyMsg.FILTERED_PHOTOS_COUNT.message) {
+    if (request.message === MyMsg.TYPE.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;
       const msg = `${ChromeLocale.localize('photo_count')} ${count.toString()}`;
@@ -379,8 +379,7 @@ Polymer({
    * Event: Refresh photos button clicked
    */
   _onRefreshPhotosClicked: function() {
-    this.loadPhotos().catch(() => {
-    });
+    this.loadPhotos().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
   },
 

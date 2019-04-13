@@ -6,8 +6,9 @@
  */
 
 /**
- * Wrapper for chrome messages specific to this app
- * {@link https://developer.chrome.com/extensions/messaging}
+ * Chrome messages specific to this app
+ *
+ * {@link MsgType}
  */
 
 import {MsgType} from './chrome-extension-utils/scripts/msg.js';
@@ -24,58 +25,46 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property FILTERED_PHOTOS_COUNT - number of photos
  * @property LOAD_ALBUMS - request to load contents of the saved albums
  * @property LOAD_ALBUM - request to load the contents of a google photos album
- * @property ALBUM_PHOTOS_COUNT - number of photos loaded so far
- * @property UPDATE_WEATHER_ALARM
+ * @property ALBUM_COUNT - number of photos loaded so far in an album
+ * @property UPDATE_WEATHER_ALARM - update alarm for requesting current weather
  * @property UPDATE_WEATHER - update current weather
  */
-const _MSG = {
+export const TYPE = {
   SS_SHOW: {
     message: 'showScreensaver',
-  },
+  } as MsgType,
   SS_CLOSE: {
     message: 'closeScreensaver',
-  },
+  } as MsgType,
   SS_IS_SHOWING: {
     message: 'isScreensaverShowing',
-  },
+  } as MsgType,
   PHOTO_SOURCE_FAILED: {
     message: 'photoSourceFailed',
     key: '',
     error: '',
-  },
+  } as MsgType,
   LOAD_FILTERED_PHOTOS: {
     message: 'loadFilteredPhotos',
-  },
+  } as MsgType,
   FILTERED_PHOTOS_COUNT: {
     message: 'filteredPhotosCount',
     count: 0,
-  },
+  } as MsgType,
   LOAD_ALBUMS: {
     message: 'loadAlbums',
-  },
+  } as MsgType,
   LOAD_ALBUM: {
     message: 'loadAlbum',
-  },
+  } as MsgType,
   ALBUM_COUNT: {
     message: 'albumCount',
     count: 0,
-  },
+  } as MsgType,
   UPDATE_WEATHER_ALARM: {
     message: 'updateWeatherAlarm',
-  },
+  } as MsgType,
   UPDATE_WEATHER: {
     message: 'updateWeather',
-  },
+  } as MsgType,
 };
-
-export const SS_SHOW: MsgType = _MSG.SS_SHOW;
-export const SS_CLOSE: MsgType = _MSG.SS_CLOSE;
-export const SS_IS_SHOWING: MsgType = _MSG.SS_IS_SHOWING;
-export const PHOTO_SOURCE_FAILED: MsgType = _MSG.PHOTO_SOURCE_FAILED;
-export const LOAD_FILTERED_PHOTOS: MsgType = _MSG.LOAD_FILTERED_PHOTOS;
-export const FILTERED_PHOTOS_COUNT: MsgType = _MSG.FILTERED_PHOTOS_COUNT;
-export const LOAD_ALBUMS: MsgType = _MSG.LOAD_ALBUMS;
-export const LOAD_ALBUM: MsgType = _MSG.LOAD_ALBUM;
-export const ALBUM_COUNT: MsgType = _MSG.ALBUM_COUNT;
-export const UPDATE_WEATHER_ALARM: MsgType = _MSG.UPDATE_WEATHER_ALARM;
-export const UPDATE_WEATHER: MsgType = _MSG.UPDATE_WEATHER;

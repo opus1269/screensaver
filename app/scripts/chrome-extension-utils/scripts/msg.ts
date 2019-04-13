@@ -7,9 +7,9 @@
 
 /**
  * Wrapper for chrome messages
+ *
  * {@link https://developer.chrome.com/extensions/messaging}
  */
-
 
 import * as ChromeGA from './analytics.js';
 import './ex_handler.js';
@@ -45,27 +45,22 @@ export interface MsgType {
  * @property STORAGE_EXCEEDED - local storage save failed
  * @property STORE - save value to storage
  */
-const _MSG = {
+export const TYPE = {
   HIGHLIGHT: {
     message: 'highlightTab',
-  },
+  } as MsgType,
   RESTORE_DEFAULTS: {
     message: 'restoreDefaults',
-  },
+  } as MsgType,
   STORAGE_EXCEEDED: {
     message: 'storageExceeded',
-  },
+  } as MsgType,
   STORE: {
     message: 'store',
     key: '',
     value: '',
-  },
+  } as MsgType,
 };
-
-export const HIGHLIGHT: MsgType = _MSG.HIGHLIGHT;
-export const RESTORE_DEFAULTS: MsgType = _MSG.RESTORE_DEFAULTS;
-export const STORAGE_EXCEEDED: MsgType = _MSG.STORAGE_EXCEEDED;
-export const STORE: MsgType = _MSG.STORE;
 
 /**
  * Send a chrome message

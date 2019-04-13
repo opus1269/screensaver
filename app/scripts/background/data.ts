@@ -9,9 +9,9 @@
  * Manage the extension's global data
  */
 
-import {UnitValue} from '../../elements/setting-elements/setting-slider/setting-slider';
-
 import * as Alarm from './alarm.js';
+
+import {UnitValue} from '../../elements/setting-elements/setting-slider/setting-slider';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -33,7 +33,6 @@ const chromep = new ChromePromise();
 
 /**
  * Version of localStorage - update when items are added, removed, changed
- * @private
  */
 const _DATA_VERSION = 25;
 
@@ -297,7 +296,8 @@ export async function restoreDefaults() {
 
 /**
  * Process changes to localStorage items
- * @param key='all' - the item that changed
+ *
+ * @param key - the item that changed
  */
 export async function processState(key = 'all') {
   try {
@@ -341,7 +341,7 @@ export async function processState(key = 'all') {
             try {
               await PhotoSources.process(useKey);
             } catch (err) {
-              const msg = MyMsg.PHOTO_SOURCE_FAILED;
+              const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
               msg.key = useKey;
               msg.error = err.message;
               ChromeMsg.send(msg).catch(() => {
@@ -356,7 +356,7 @@ export async function processState(key = 'all') {
             try {
               await PhotoSources.process(useKey);
             } catch (err) {
-              const msg = MyMsg.PHOTO_SOURCE_FAILED;
+              const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
               msg.key = useKey;
               msg.error = err.message;
               ChromeMsg.send(msg).catch(() => {
@@ -369,7 +369,7 @@ export async function processState(key = 'all') {
           try {
             await PhotoSources.process(useKey);
           } catch (err) {
-            const msg = MyMsg.PHOTO_SOURCE_FAILED;
+            const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
             msg.key = useKey;
             msg.error = err.message;
             ChromeMsg.send(msg).catch(() => {
@@ -407,6 +407,7 @@ export async function processState(key = 'all') {
 
 /**
  * Get the idle time in seconds
+ *
  * @returns idle time in seconds
  */
 export function getIdleSeconds() {
@@ -484,6 +485,7 @@ function _processIdleTime() {
 
 /**
  * Get default time format index based on locale
+ *
  * @returns 1 or 2
  */
 function _getTimeFormat() {
@@ -493,6 +495,7 @@ function _getTimeFormat() {
 
 /**
  * Get default temperature unit index based on locale
+ *
  * @returns 0 or 1
  */
 function _getTempUnit() {
@@ -528,6 +531,7 @@ function _addDefaults() {
 
 /**
  * Convert a setting-slider value due to addition of units
+ *
  * @param key - localStorage key
  */
 function _convertSliderValue(key: string) {
