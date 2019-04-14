@@ -372,7 +372,7 @@ Polymer({
     if (showTime > 0) {
       this._setTimeLabel();
       // update current time once a minute
-      setInterval(this._setTimeLabel, 61 * 1000);
+      setInterval(this._setTimeLabel.bind(this), 61 * 1000);
     }
   },
 
