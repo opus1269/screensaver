@@ -6,7 +6,7 @@
  */
 
 /**
- * Event handling for a {@link Screensaver}
+ * Event handling for a screensaver
  */
 
 import * as SSViews from './ss_views.js';
