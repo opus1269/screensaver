@@ -811,13 +811,14 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Create a new photo source
+   *
    * @param useKey - The key for if the source is selected
    * @param photosKey - The key for the collection of photos
    * @param type - A descriptor of the photo source
    * @param desc - A human readable description of the source
    * @param isDaily - Should the source be updated daily
    * @param isArray - Is the source an Array of photo Arrays
-   * @param loadArg=null - Optional arg for load function
+   * @param loadArg - optional arg for load function
    */
   constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
               loadArg: any = null) {

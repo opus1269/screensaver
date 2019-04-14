@@ -7,7 +7,6 @@
 
 /**
  * Fetch with authentication and exponential back-off
- * @module chrome/http
  */
 
 import * as ChromeAuth from './auth.js';
@@ -17,14 +16,14 @@ import './ex_handler.js';
 
 /**
  * Http configuration
- * @typedef {{}} module:chrome/http.Config
- * @property {boolean} [isAuth=false] - if true, authorization required
- * @property {boolean} [retryToken=false] - if true, retry with new token
- * @property {boolean} [interactive=false] - user initiated, if true
- * @property {?string} [token=null] - auth token
- * @property {boolean} [backoff=true] - if true, do exponential back-off
- * @property {int} [maxRetries=_MAX_ATTEMPTS] - max retries
- * @property {json} [body=null] - body of request
+ *
+ * @property isAuth - if true, authorization required
+ * @property retryToken - if true, retry with new token
+ * @property interactive - user initiated, if true
+ * @property token - auth token
+ * @property backoff - if true, do exponential back-off
+ * @property maxRetries - max retries
+ * @property body - body of request
  */
 export interface Config {
   isAuth: boolean;
@@ -33,16 +32,16 @@ export interface Config {
   token: string | null;
   backoff: boolean;
   maxRetries: number;
-  body: JSON;
+  body: object;
 }
 
 /**
  * Http response
- * @typedef {{}} module:chrome/http.Response
- * @property {boolean} ok - success flag
- * @property {Function} json - returned data as JSON
- * @property {int} status - HTTP response code
- * @property {string} statusText - HTTP response message
+ *
+ * @property ok - success flag
+ * @property json - returned data as JSON
+ * @property status - HTTP response code
+ * @property statusText - HTTP response message
  */
 export interface Response {
   ok: boolean;
@@ -53,36 +52,26 @@ export interface Response {
 
 /**
  * Authorization header
- * @type {string}
- * @private
- * @memberOf module:chrome/http
  */
 const _AUTH_HEADER = 'Authorization';
 
 /**
  * Bearer parameter for authorized call
- * @type {string}
- * @private
  */
 const _BEARER = 'Bearer';
 
 /**
  * Max retries on 500 errors
- * @type {int}
- * @private
  */
 const _MAX_RETRIES = 4;
 
 /**
  * Delay multiplier for exponential back-off
- * @const
- * @private
  */
 const _DELAY = 1000;
 
 /**
  * Configuration object
- * @type {{}}
  */
 export const CONFIG: Config = {
   isAuth: false,
@@ -96,10 +85,11 @@ export const CONFIG: Config = {
 
 /**
  * Perform GET request
- * @param {string} url - server request
- * @param {{}} [conf=CONFIG] - configuration
+ *
+ * @param url - server request
+ * @param conf - configuration
  * @throws An error if GET fails
- * @returns {Promise.<{}>} response from server
+ * @returns response from server
  */
 export async function doGet(url: string, conf = CONFIG) {
   const opts = {method: 'GET', headers: new Headers({})};
@@ -110,10 +100,11 @@ export async function doGet(url: string, conf = CONFIG) {
 
 /**
  * Perform POST request
- * @param {string} url - server request
- * @param {{}} [conf=CONFIG] - configuration
+ *
+ * @param url - server request
+ * @param conf - configuration
  * @throws An error if POST fails
- * @returns {Promise.<{}>} response from server
+ * @returns response from server
  */
 export async function doPost(url: string, conf = CONFIG) {
   const opts = {method: 'POST', headers: new Headers({})};
@@ -124,14 +115,14 @@ export async function doPost(url: string, conf = CONFIG) {
 
 /**
  * Check response and act accordingly, including retrying
- * @param {{}} response - server response
- * @param {string} url - server
- * @param {Object} opts - fetch options
- * @param {{}} conf - configuration
- * @param {int} attempt - the retry attempt we are on
+ *
+ * @param response - server response
+ * @param url - server
+ * @param opts - fetch options
+ * @param conf - configuration
+ * @param attempt - the retry attempt we are on
  * @throws An error if fetch ultimately fails
- * @returns {Promise.<Response>} response from server
- * @private
+ * @returns response from server
  */
 async function _processResponse(response: Response, url: string, opts: chrome.extension.FetchProperties,
                                 conf: Config, attempt: number) {
@@ -173,9 +164,9 @@ async function _processResponse(response: Response, url: string, opts: chrome.ex
 
 /**
  * Get Error message
- * @param {{}} response - server response
- * @returns {Error}
- * @private
+ *
+ * @param response - server response
+ * @returns Error
  */
 function _getError(response: Response) {
   let msg = 'Unknown error.';
@@ -189,11 +180,11 @@ function _getError(response: Response) {
 
 /**
  * Get authorization token
- * @param {boolean} isAuth - if true, authorization required
- * @param {boolean} interactive - if true, user initiated
+ *
+ * @param isAuth - if true, authorization required
+ * @param interactive - if true, user initiated
  * @throws An error if we failed to get token
- * @returns {Promise.<string|null>} auth token
- * @private
+ * @returns auth token
  */
 async function _getAuthToken(isAuth: boolean, interactive: boolean) {
   if (isAuth) {
@@ -221,13 +212,13 @@ async function _getAuthToken(isAuth: boolean, interactive: boolean) {
 
 /**
  * Retry authorized fetch with exponential back-off
- * @param {string} url - server request
- * @param {Object} opts - fetch options
- * @param {{}} conf - configuration
- * @param {int} attempt - the retry attempt we are on
+ *
+ * @param url - server request
+ * @param opts - fetch options
+ * @param conf - configuration
+ * @param attempt - the retry attempt we are on
  * @throws An error if fetch failed
- * @returns {Promise.<{}>} response from server
- * @private
+ * @returns response from server
  */
 async function _retry(url: string, opts: any, conf: Config, attempt: number) {
   attempt++;
@@ -246,13 +237,13 @@ async function _retry(url: string, opts: any, conf: Config, attempt: number) {
 
 /**
  * Retry fetch after removing cached auth token
- * @param {string} url - server request
- * @param {Object} opts - fetch options
- * @param {{}} conf - configuration
- * @param {int} attempt - the retry attempt we are on
+ *
+ * @param url - server request
+ * @param opts - fetch options
+ * @param conf - configuration
+ * @param attempt - the retry attempt we are on
  * @throws An error if fetch failed
- * @returns {Promise.<{}>} response from server
- * @private
+ * @returns response from server
  */
 async function _retryToken(url: string, opts: any, conf: Config, attempt: number) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
@@ -267,13 +258,13 @@ async function _retryToken(url: string, opts: any, conf: Config, attempt: number
 
 /**
  * Perform fetch, optionally using authorization and exponential back-off
- * @param {string} url - server request
- * @param {Object} opts - fetch options
- * @param {{}} conf - configuration
- * @param {int} attempt - the retry attempt we are on
- * @throws an error if the fetch failed
- * @returns {Promise.<{}>} response from server
- * @private
+ *
+ * @param url - server request
+ * @param opts - fetch options
+ * @param conf - configuration
+ * @param attempt - the retry attempt we are on
+ * @throws An error if fetch failed
+ * @returns response from server
  */
 async function _fetch(url: string, opts: any, conf: Config, attempt: number) {
   try {
@@ -308,12 +299,12 @@ async function _fetch(url: string, opts: any, conf: Config, attempt: number) {
 
 /**
  * Do a server request
- * @param {string} url - server request
- * @param {Object} opts - fetch options
- * @param {{}} conf - configuration
+ *
+ * @param url - server request
+ * @param opts - fetch options
+ * @param conf - configuration
  * @throws An error if request failed
- * @returns {Promise.<{}>} response from server
- * @private
+ * @returns response from server
  */
 async function _doIt(url: string, opts: any, conf: Config) {
   conf = conf || CONFIG;

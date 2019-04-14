@@ -7,74 +7,56 @@
 
 /**
  * A source of photos from reddit
- * @module sources/photo_source_reddit
  */
-
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import {PhotoSource, Photo} from './photo_source.js';
 
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 /**
  * Extension's redirect uri
- * @type {string}
- * @const
- * @private
  */
 const _REDIRECT_URI = `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
 
 // noinspection SpellCheckingInspection
 /**
  * Reddit rest API authorization key
- * @type {string}
- * @const
- * @private
  */
 const _KEY = 'bATkDOUNW_tOlg';
 
 /**
  * Max photos to return
- * @type {int}
- * @const
- * @private
  */
 const _MAX_PHOTOS = 200;
 
 /**
  * Min size of photo to use
- * @type {int}
- * @const
- * @private
  */
 const _MIN_SIZE = 750;
 
 /**
  * Max size of photo to use
- * @type {int}
- * @const
- * @private
  */
 const _MAX_SIZE = 3500;
 
 /**
  * Expose reddit API
- * @type {Function}
- * @private
  */
-let _snoocore: Function; // tslint:disable-line ban-types
+let _snoocore: (arg0: string) => any;
 
 /**
  * A source of photos from reddit
- * @extends module:sources/photo_source.PhotoSource
- * @alias module:sources/photo_source_reddit.RedditSource
  */
-class RedditSource extends PhotoSource {
+export default class RedditSource extends PhotoSource {
 
   /**
    * Parse the size from the submission title.
-   * this is the old way reddit did it
-   * @param {string} title - submission title
-   * @returns {{width: int, height: int}} Photo size
-   * @private
+   *
+   * @remarks
+   * This is the old way reddit did it
+   *
+   * @param title - submission title
+   * @returns Photo size
    */
   private static _getSize(title: string) {
     const ret = {width: -1, height: -1};
@@ -89,9 +71,9 @@ class RedditSource extends PhotoSource {
 
   /**
    * Build the list of photos for one page of items
-   * @param {Array} children - Array of objects from reddit
-   * @returns {module:sources/photo_source.Photo[]} Array of photos
-   * @private
+   *
+   * @param children - Array of objects from reddit
+   * @returns Array of {@link Photo}
    */
   private static _processChildren(children: any[]) {
     const photos: Photo[] = [];
@@ -138,13 +120,14 @@ class RedditSource extends PhotoSource {
 
   /**
    * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
+   *
+   * @param useKey - The key for if the source is selected
+   * @param photosKey - The key for the collection of photos
+   * @param type - A descriptor of the photo source
+   * @param desc - A human readable description of the source
+   * @param isDaily - Should the source be updated daily
+   * @param isArray - Is the source an Array of photo Arrays
+   * @param loadArg - optional arg for load function
    */
   constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
               loadArg: any = null) {
@@ -153,8 +136,9 @@ class RedditSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
+   *
    * @throws An error if fetch failed
-   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
+   * @returns Array of {@link Photo}
    */
   public async fetchPhotos() {
     let photos: Photo[] = [];
@@ -223,6 +207,4 @@ class RedditSource extends PhotoSource {
     return Promise.resolve(photos);
   }
 }
-
-export default RedditSource;
 

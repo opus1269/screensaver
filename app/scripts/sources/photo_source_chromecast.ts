@@ -7,30 +7,28 @@
 
 /**
  * A source of photos from Chromecast
- * @module sources/photo_source_chromecast
  */
+
+import {PhotoSource, Photo} from './photo_source.js';
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import {PhotoSource, Photo} from './photo_source.js';
-
 /**
  * A source of photos from Chromecast
- * @extends module:sources/photo_source.PhotoSource
- * @alias module:sources/photo_source_chromecast.CCSource
  */
-class CCSource extends PhotoSource {
+export default class CCSource extends PhotoSource {
 
   /**
    * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
+   *
+   * @param useKey - The key for if the source is selected
+   * @param photosKey - The key for the collection of photos
+   * @param type - A descriptor of the photo source
+   * @param desc - A human readable description of the source
+   * @param isDaily - Should the source be updated daily
+   * @param isArray - Is the source an Array of photo Arrays
+   * @param loadArg - optional arg for load function
    */
   constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
               loadArg: any = null) {
@@ -39,8 +37,9 @@ class CCSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
+   *
    * @throws An error if fetch failed
-   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
+   * @returns Array of {@link Photo}
    */
   public async fetchPhotos() {
     const url = '/assets/chromecast.json';
@@ -52,5 +51,3 @@ class CCSource extends PhotoSource {
     return Promise.resolve(photos);
   }
 }
-
-export default CCSource;

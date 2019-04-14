@@ -22,6 +22,12 @@ declare var ChromePromise: any;
 /**
  * A photo from a {@link PhotoSource}
  * This is the photo information that is persisted.
+ *
+ * @property url - url of photo
+ * @property author - photographer
+ * @property asp - aspect ration
+ * @property ex - extra info. about the photo
+ * @property point - geolocation
  */
 export interface Photo {
   url: string;
@@ -33,6 +39,7 @@ export interface Photo {
 
 /**
  * The photos for a {@link PhotoSource}
+ *
  * @property type - The type of PhotoSource
  * @property photos - The array of photos
  */
@@ -49,6 +56,7 @@ export abstract class PhotoSource {
 
   /**
    * Add a {@link Photo} to an existing Array
+   *
    * @param photos - The array to add to
    * @param url - The url to the photo
    * @param author - The photographer
@@ -73,6 +81,7 @@ export abstract class PhotoSource {
 
   /**
    * Create a geo point string from a latitude and longitude
+   *
    * @param lat - latitude
    * @param lon - longitude
    * @returns 'lat lon'
@@ -95,6 +104,7 @@ export abstract class PhotoSource {
 
   /**
    * Create a new photo source
+   *
    * @param useKey - The key for if the source is selected
    * @param photosKey - The key for the collection of photos
    * @param type - A descriptor of the photo source
@@ -116,6 +126,7 @@ export abstract class PhotoSource {
 
   /**
    * Fetch the photos for this source
+   *
    * @throws An error if fetch failed
    * @returns Could be array of photos or albums
    */
@@ -194,6 +205,7 @@ export abstract class PhotoSource {
 
   /**
    * Determine if this source has been selected for display
+   *
    * @returns true if selected
    */
   public use() {
@@ -246,6 +258,7 @@ export abstract class PhotoSource {
 
   /**
    * Save the data to chrome.storage.local in a safe manner
+   *
    * @param photos - could be array of photos or albums
    * @returns An error message if the save failed
    */

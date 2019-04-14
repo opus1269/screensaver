@@ -7,7 +7,6 @@
 
 /**
  * A source of photos from Flickr
- * @module sources/photo_source_flickr
  */
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
@@ -18,41 +17,30 @@ import {PhotoSource, Photo} from './photo_source.js';
 
 /**
  * Flickr rest API
- * @type {string}
- * @const
- * @private
  */
 const _URL_BASE = 'https://api.flickr.com/services/rest/';
 
 /**
  * Flickr rest API authorization key
- * @type {string}
- * @const
- * @private
  */
 const _KEY = '1edd9926740f0e0d01d4ecd42de60ac6';
 
 /**
  * Max photos to return
- * @type {int}
- * @const
- * @private
  */
 const _MAX_PHOTOS = 250;
 
 /**
  * A source of photos from Flickr
- * @extends module:sources/photo_source.PhotoSource
- * @alias module:sources/photo_source_flickr.FlickrSource
  */
-class FlickrSource extends PhotoSource {
+export default class FlickrSource extends PhotoSource {
 
   /**
    * Extract the photos into an Array
-   * @param {{photos}} response - server response
+   *
+   * @param response - server response
    * @throws An error if we failed to process photos
-   * @returns {module:sources/photo_source.Photo[]} Array of photos
-   * @private
+   * @returns Array of {@link Photo}
    */
   private static _processPhotos(response: any) {
     if (!response.photos || !response.photos.photo) {
@@ -92,14 +80,14 @@ class FlickrSource extends PhotoSource {
 
   /**
    * Create a new photo source
-   * @param {string} useKey - The key for if the source is selected
-   * @param {string} photosKey - The key for the collection of photos
-   * @param {string} type - A descriptor of the photo source
-   * @param {string} desc - A human readable description of the source
-   * @param {boolean} isDaily - Should the source be updated daily
-   * @param {boolean} isArray - Is the source an Array of photo Arrays
-   * @param {?Object} [loadArg=null] - optional arg for load function
-   * @constructor
+   *
+   * @param useKey - The key for if the source is selected
+   * @param photosKey - The key for the collection of photos
+   * @param type - A descriptor of the photo source
+   * @param desc - A human readable description of the source
+   * @param isDaily - Should the source be updated daily
+   * @param isArray - Is the source an Array of photo Arrays
+   * @param loadArg - optional arg for load function
    */
   constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
               loadArg: any = null) {
@@ -108,8 +96,9 @@ class FlickrSource extends PhotoSource {
 
   /**
    * Fetch the photos for this source
+   *
    * @throws An error if fetch failed
-   * @returns {Promise<module:sources/photo_source.Photo[]>} Array of photos
+   * @returns Array of {@link Photo}
    */
   public async fetchPhotos() {
     let url;
@@ -141,5 +130,3 @@ class FlickrSource extends PhotoSource {
     return Promise.resolve(photos);
   }
 }
-
-export default FlickrSource;

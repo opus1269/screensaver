@@ -6,35 +6,33 @@
  */
 
 /**
- * Manage the {@link module:sources/photo_source.PhotoSource} objects
- * @module sources/photo_sources
+ * Manage the {@link PhotoSource} objects
  */
+
+
+import * as PhotoSourceFactory from './photo_source_factory.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import * as PhotoSourceFactory from './photo_source_factory.js';
-
 /**
- * Enum for {@link module:sources/photo_source.PhotoSource} useKey
- * @typedef {enum} module:sources/photo_sources.UseKey
- * @readonly
- * @enum {string}
+ * Enum for {@link PhotoSource} useKey
  */
-export const UseKey = {
-  ALBUMS_GOOGLE: 'useGoogleAlbums',
-  PHOTOS_GOOGLE: 'useGooglePhotos',
-  CHROMECAST: 'useChromecast',
-  SPACE_RED: 'useSpaceReddit',
-  EARTH_RED: 'useEarthReddit',
-  ANIMAL_RED: 'useAnimalReddit',
-  INT_FLICKR: 'useInterestingFlickr',
-  AUTHOR: 'useAuthors',
-};
+export enum UseKey {
+  ALBUMS_GOOGLE = 'useGoogleAlbums',
+  PHOTOS_GOOGLE = 'useGooglePhotos',
+  CHROMECAST = 'useChromecast',
+  SPACE_RED = 'useSpaceReddit',
+  EARTH_RED = 'useEarthReddit',
+  ANIMAL_RED = 'useAnimalReddit',
+  INT_FLICKR = 'useInterestingFlickr',
+  AUTHOR = 'useAuthors',
+}
 
 /**
  * Get the sources that are marked true in local storage
- * @returns {Array<module:sources/photo_source.PhotoSource>} Array of sources
+ *
+ * @returns Array of sources
  */
 export function getSelectedSources() {
   const ret = [];
@@ -53,7 +51,8 @@ export function getSelectedSources() {
 
 /**
  * Get all the usage keys
- * @returns {string[]} Array of usage keys
+ *
+ * @returns Array of usage keys
  */
 export function getUseKeys() {
   const ret = [];
@@ -65,8 +64,9 @@ export function getUseKeys() {
 
 /**
  * Determine if a given key is a photo source
- * @param {string} keyName - key to check
- * @returns {boolean} true if photo source
+ *
+ * @param keyName - key to check
+ * @returns true if photo source
  */
 export function isUseKey(keyName: string) {
   let ret = false;
@@ -81,11 +81,11 @@ export function isUseKey(keyName: string) {
 
 /**
  * Process the given photo source and save to localStorage.
- * @param {string} useKey - The photo source to retrieve
+ *
+ * @param useKey - The photo source to retrieve
  * @throws An error if processing failed
- * @returns {Promise<void>}
  */
-export async function process(useKey: string) {
+export async function process(useKey: UseKey) {
   const source = PhotoSourceFactory.create(useKey);
   if (source) {
     await source.process();
@@ -95,11 +95,10 @@ export async function process(useKey: string) {
 }
 
 /**
- * Get all the photos from all selected sources. These will be
- * used by the screensaver.
+ * Get all the photos from all selected sources. These will be used by the screensaver.
+ *
  * @throws An error if we failed to get photos
- * @returns {Promise<module:sources/photo_source.Photos[]>} Array of sources
- *     photos
+ * @returns Array of sources
  */
 export async function getSelectedPhotos() {
   const ret = [];
@@ -115,9 +114,8 @@ export async function getSelectedPhotos() {
 
 /**
  * Process all the selected photo sources.
- * This normally requires a https call and may fail for various reasons
- * @param {boolean} doGoogle=false - update user's Google Photos too
- * @returns {Promise<void>}
+ *
+ * @param doGoogle - update user's Google Photos too
  */
 export async function processAll(doGoogle = false) {
   const sources = getSelectedSources();
@@ -141,7 +139,6 @@ export async function processAll(doGoogle = false) {
 
 /**
  * Process all the selected photo sources that are to be update daily
- * @returns {Promise<void>}
  */
 export async function processDaily() {
   const sources = getSelectedSources();

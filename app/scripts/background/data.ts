@@ -46,7 +46,7 @@ export const DEFS = {
   permBackground: Permissions.STATE.notSet,
   permWeather: Permissions.STATE.notSet,
   allowBackground: false,
-  idleTime:  {base: 5, display: 5, unit: 0} as UnitValue, // minutes
+  idleTime: {base: 5, display: 5, unit: 0} as UnitValue, // minutes
   transitionTime: {base: 30, display: 30, unit: 0} as UnitValue, // seconds
   skip: true,
   shuffle: true,
@@ -232,7 +232,7 @@ export async function update() {
 
   if (oldVersion < 25) {
     // reload chromecast photos since asp is now a string
-    const key = 'useChromecast';
+    const key = PhotoSources.UseKey.CHROMECAST;
     const useChromecast = ChromeStorage.getBool(key, DEFS[key]);
     if (useChromecast) {
       try {
@@ -330,50 +330,46 @@ export async function processState(key = 'all') {
 
       if (PhotoSources.isUseKey(key) || (key === 'fullResGoogle')) {
         // photo source usage or full resolution google photos changed
-        let useKey = key;
         if (key === 'fullResGoogle') {
           // full res photo state changed update albums or photos
-          const isAlbums =
-              ChromeStorage.getBool('useGoogleAlbums', DEFS.useGoogleAlbums);
+
+          const isAlbums = ChromeStorage.getBool(PhotoSources.UseKey.ALBUMS_GOOGLE, DEFS.useGoogleAlbums);
           if (isAlbums) {
             // update albums
-            useKey = 'useGoogleAlbums';
+            const useKey = PhotoSources.UseKey.ALBUMS_GOOGLE;
             try {
               await PhotoSources.process(useKey);
             } catch (err) {
               const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
               msg.key = useKey;
               msg.error = err.message;
-              ChromeMsg.send(msg).catch(() => {
-              });
+              ChromeMsg.send(msg).catch(() => {});
             }
           }
-          const isPhotos =
-              ChromeStorage.getBool('useGooglePhotos', DEFS.useGooglePhotos);
+
+          const isPhotos = ChromeStorage.getBool(PhotoSources.UseKey.PHOTOS_GOOGLE, DEFS.useGooglePhotos);
           if (isPhotos) {
             // update photos
-            useKey = 'useGooglePhotos';
+            const useKey = PhotoSources.UseKey.PHOTOS_GOOGLE;
             try {
               await PhotoSources.process(useKey);
             } catch (err) {
               const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
               msg.key = useKey;
               msg.error = err.message;
-              ChromeMsg.send(msg).catch(() => {
-              });
+              ChromeMsg.send(msg).catch(() => {});
             }
           }
-        } else if ((key !== 'useGoogleAlbums') && (key !== 'useGooglePhotos')) {
+        } else if ((key !== PhotoSources.UseKey.ALBUMS_GOOGLE) && (key !== PhotoSources.UseKey.PHOTOS_GOOGLE)) {
           // update photo source - skip Google sources as they are handled
           // by the UI when the mode changes
           try {
-            await PhotoSources.process(useKey);
+            await PhotoSources.process(key as PhotoSources.UseKey);
           } catch (err) {
             const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
-            msg.key = useKey;
+            msg.key = key;
             msg.error = err.message;
-            ChromeMsg.send(msg).catch(() => {
-            });
+            ChromeMsg.send(msg).catch(() => {});
           }
         }
       } else {
