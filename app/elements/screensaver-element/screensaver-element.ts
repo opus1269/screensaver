@@ -37,7 +37,6 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import '../../scripts/screensaver/ss_events.js';
 
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
-import * as SSTime from '../../scripts/screensaver/ss_time.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
 import SSView from '../../scripts/screensaver/views/ss_view.js';
@@ -71,7 +70,6 @@ export let setSizingType: (arg0: string) => void = null;
 export let setViews: (arg0: SSView[]) => void = null;
 export let isNoPhotos: () => boolean = null;
 export let setNoPhotos: () => void = null;
-export let setTimeLabel: (arg0: string) => void = null;
 export let setPaused: (arg0: boolean) => void = null;
 
 /**
@@ -294,7 +292,6 @@ Polymer({
     setViews = this.setViews.bind(this);
     isNoPhotos = this.isNoPhotos.bind(this);
     setNoPhotos = this.setNoPhotos.bind(this);
-    setTimeLabel = this.setTimeLabel.bind(this);
     setPaused = this.setPaused.bind(this);
 
     setTimeout(async () => {
@@ -347,15 +344,6 @@ Polymer({
   },
 
   /**
-   * Set the time label
-   *
-   * @param label - current time
-   */
-  setTimeLabel: function(label: string) {
-    this.set('timeLabel', label);
-  },
-
-  /**
    * Set the state when slideshow is paused
    *
    * @param paused - paused state
@@ -374,8 +362,18 @@ Polymer({
       type = ChromeUtils.getRandomInt(0, TRANS_TYPE.RANDOM - 1);
     }
     this.set('aniType', type);
+  },
 
-    SSTime.initialize();
+  /**
+   * Setup timer for time label
+   */
+  _setupTime: function() {
+    const showTime = ChromeStorage.getInt('showTime', 0);
+    if (showTime > 0) {
+      this._setTimeLabel();
+      // update current time once a minute
+      setInterval(this._setTimeLabel, 61 * 1000);
+    }
   },
 
   /**
@@ -393,6 +391,18 @@ Polymer({
     }
 
     return Promise.resolve();
+  },
+
+  /**
+   * Set the time label
+   */
+  _setTimeLabel: function() {
+    let label = '';
+    const showTime = ChromeStorage.getInt('showTime', 0);
+    if ((showTime !== 0)) {
+      label = ChromeTime.getStringShort();
+      this.set('timeLabel', label);
+    }
   },
 
   /**
@@ -436,6 +446,9 @@ Polymer({
 
         // send msg to update weather. don't wait can be slow
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
+
+        // set time label timer
+        this._setupTime();
 
         // kick off the slide show
         SSRunner.start(delay);

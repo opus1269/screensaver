@@ -12,7 +12,6 @@
 import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSHistory from './ss_history.js';
-import * as SSTime from './ss_time.js';
 import * as SSViews from './ss_views.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
@@ -71,7 +70,7 @@ export function getWaitTime() {
 /**
  * Set next selected index
  *
- * @param {int} idx - replace index in {@link SSViews}
+ * @param idx - replace index in {@link SSViews}
  */
 export function setReplaceIdx(idx: number) {
   VARS.replaceIdx = idx;
@@ -217,7 +216,6 @@ function _runShow(newIdx: number | null = null) {
 
     if (!isStarted()) {
       VARS.started = true;
-      SSTime.setTime();
     }
 
     // setup photo
