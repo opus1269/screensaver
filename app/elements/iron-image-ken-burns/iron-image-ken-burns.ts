@@ -12,13 +12,12 @@ import {resolveUrl} from '../../node_modules/@polymer/polymer/lib/utils/resolve-
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
+import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
+import {UnitValue} from '../setting-elements/setting-slider/setting-slider';
+
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
-
-import {UnitValue} from '../setting-elements/setting-slider/setting-slider';
-
 
 /**
  * Polymer element to display an image that can be animated with the "Ken Burns" effect
@@ -390,6 +389,7 @@ Polymer({
     const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
     const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
     const translateX = Math.round(deltaX) + 'px';
+    // noinspection JSSuspiciousNameCombination
     const translateY = Math.round(deltaY) + 'px';
 
     const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;

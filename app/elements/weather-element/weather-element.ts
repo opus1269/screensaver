@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 import '../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
@@ -22,16 +23,13 @@ import * as Weather from '../../scripts/weather.js';
 
 /**
  * Module for the Weather Element
- * @module els/weather_element
  */
 
 /**
  * Polymer element to display the current weather
- * @type {{}}
- * @alias module:els/weather_element.WeatherElement
  * @PolymerElement
  */
-const WeatherElement = Polymer({
+Polymer({
   // language=HTML format=false
   _template: html`<!--
   Need to include globally too
@@ -100,9 +98,8 @@ const WeatherElement = Polymer({
 
   /**
    * Observer: Current weather changed
-   * @param {?module:weather.CurrentWeather} newValue
-   * @param {?module:weather.CurrentWeather} oldValue
-   * @private
+   * @param newValue
+   * @param oldValue
    */
   _weatherChanged: function(newValue: Weather.CurrentWeather | undefined,
                             oldValue: Weather.CurrentWeather | undefined) {
@@ -124,6 +121,4 @@ const WeatherElement = Polymer({
   },
 
 });
-
-export default WeatherElement;
 
