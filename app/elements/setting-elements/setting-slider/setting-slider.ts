@@ -38,8 +38,6 @@ export interface UnitValue {
 
 /**
  * Polymer element for a url link
- *
- * @PolymerElement
  */
 @customElement('setting-slider')
 export default class SettingSlider extends SettingBase {
@@ -74,7 +72,8 @@ export default class SettingSlider extends SettingBase {
 
   static get template() {
     // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
   }
@@ -104,7 +103,7 @@ export default class SettingSlider extends SettingBase {
   }
 
   :host paper-dropdown-menu {
-    width: 175px;
+    width: 100px;
     padding-right: 16px;
     --paper-input-container-input: {
       text-align: right;
@@ -113,7 +112,8 @@ export default class SettingSlider extends SettingBase {
 
 </style>
 
-<setting-base>
+<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
+  
   <paper-item id="label" class="setting-label" tabindex="-1">
     [[label]]
   </paper-item>
@@ -129,6 +129,7 @@ export default class SettingSlider extends SettingBase {
       </paper-listbox>
     </paper-dropdown-menu>
   </div>
+  
 </setting-base>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">

@@ -17,8 +17,6 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Base class for a family of setting elements
- *
- * @PolymerElement
  */
 @customElement('setting-base')
 export default class SettingBase extends PolymerElement {
@@ -41,9 +39,8 @@ export default class SettingBase extends PolymerElement {
 
   static get template() {
     // language=HTML format=false
-    return html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+    return html`
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;

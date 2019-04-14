@@ -25,8 +25,6 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for a url link
- *
- * @PolymerElement
  */
 @customElement('setting-link')
 class SettingLink extends SettingBase {
@@ -45,9 +43,8 @@ class SettingLink extends SettingBase {
 
   static get template() {
     // language=HTML format=false
-    return html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+    return html`
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;

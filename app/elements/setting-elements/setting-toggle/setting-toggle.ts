@@ -24,8 +24,6 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for a toggle button
- *
- * @PolymerElement
  */
 @customElement('setting-toggle')
 export default class SettingToggle extends SettingBase {
@@ -44,7 +42,8 @@ export default class SettingToggle extends SettingBase {
 
   static get template() {
     // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -65,7 +64,7 @@ export default class SettingToggle extends SettingBase {
   }
 </style>
 
-<setting-base>
+<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
 
   <iron-label for="toggle">
     <paper-item class="center horizontal layout" tabindex="-1">
@@ -94,6 +93,7 @@ export default class SettingToggle extends SettingBase {
 
   /**
    * Set the checked state of the toggle
+   *
    * @param checked - checked state
    */
   public setChecked(checked: boolean) {

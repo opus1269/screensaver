@@ -4,39 +4,51 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, query} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {PaperListboxElement} from '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+import {DomRepeat} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
 
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
 import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
+import SettingBase from '../setting-base/setting-base.js';
+
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for the SettingDropdown
- * @module els/setting/dropdown
- */
-
-/**
  * Polymer element to select an item from a list
- * @type {{}}
- * @alias module:els/setting/dropdown.SettingDropdown
- * @PolymerElement
  */
-const SettingDropdown = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('setting-dropdown')
+export default class SettingDropdown extends SettingBase {
+
+  /** Selected menu item index */
+  @property({type: Number, notify: true})
+  protected value: number = 0;
+
+  /** Descriptive label */
+  @property({type: String})
+  protected label: string;
+
+  /** Array of Menu item labels */
+  @property({type: Array})
+  protected items: string[];
+
+  /** paper-listbox of units */
+  @query('#list')
+  private list: PaperListboxElement;
+
+  /** paper-listbox template */
+  @query('#t')
+  private template: DomRepeat;
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
   }
@@ -50,102 +62,51 @@ const SettingDropdown = Polymer({
     padding-left: 8px;
   }
 
-  :host > paper-item {
+  :host .top {
     padding-top: 10px;
     padding-bottom: 10px;
   }
 
   :host paper-dropdown-menu {
-    width: 175px;
+    width: 100px;
 
     --paper-input-container-input: {
       text-align: right;
     };
   }
+  
 </style>
 
-<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
-  [[sectionTitle]]
-</div>
+<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
 
-<paper-item class="center horizontal layout" tabindex="-1">
-  <div class="setting-label flex">[[label]]</div>
-  <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
-    <paper-listbox slot="dropdown-content" on-tap="_onItemSelected" selected="{{value}}">
-      <template id="t" is="dom-repeat" items="[[items]]">
-        <paper-item>[[item]]</paper-item>
-      </template>
-    </paper-listbox>
-  </paper-dropdown-menu>
-</paper-item>
-<hr hidden$="[[noseparator]]">
+  <paper-item class="top center horizontal layout" tabindex="-1">
+    <div class="setting-label flex">[[label]]</div>
+    <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
+      <paper-listbox slot="dropdown-content" on-tap="_onItemSelected" selected="{{value}}">
+        <template id="t" is="dom-repeat" items="[[items]]">
+          <paper-item>[[item]]</paper-item>
+        </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+  </paper-item>
+  
+</setting-base>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>
-`,
-
-  is: 'setting-dropdown',
-
-  properties: {
-    /** Local storage key */
-    name: {
-      type: String,
-      value: 'store',
-    },
-
-    /** Menu description */
-    label: {
-      type: String,
-      value: '',
-    },
-
-    /** Selected menu item index */
-    value: {
-      type: Number,
-      value: 0,
-      notify: true,
-    },
-
-    /** Array of Menu item labels */
-    items: {
-      type: Array,
-      value: (): string[] => {
-        return [];
-      },
-    },
-
-    /** Optional group title */
-    sectionTitle: {
-      type: String,
-      value: '',
-    },
-
-    /** Disabled state of element */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Visibility state of optional divider */
-    noseparator: {
-      type: Boolean,
-      value: false,
-    },
-  },
+`;
+  }
 
   /**
    * Event: menu item tapped
-   * @param {Event} ev - tap event
-   * @private
+   *
+   * @param ev - tap event
    */
-  _onItemSelected: function(ev: Event) {
-    const model = this.$.t.modelForElement(ev.target);
+  private _onItemSelected(ev: Event) {
+    const model = this.template.modelForElement(ev.target as PaperListboxElement);
     if (model) {
-      ChromeGA.event(ChromeGA.EVENT.MENU,
-          `${this.name}: ${model.index}`);
+      ChromeGA.event(ChromeGA.EVENT.MENU, `${this.name}: ${model.get('index')}`);
     }
-  },
-});
+  }
 
-export default SettingDropdown;
-
+}
