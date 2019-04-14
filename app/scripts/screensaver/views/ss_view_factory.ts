@@ -6,12 +6,8 @@
  */
 
 /**
- * Factory to create {@link module:ss/views/view.SSView} instances
- * @module ss/views/view_factory
+ * Factory to create {@link SSView} instances
  */
-
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import SSViewZoom from './ss_view_zoom.js';
 import SSViewFrame from './ss_view_frame.js';
@@ -20,13 +16,17 @@ import SSViewLetterbox from './ss_view_letterbox.js';
 import * as SSViews from '../ss_views.js';
 import SSPhoto from '../ss_photo.js';
 
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
 /**
- * Factory Method to create a new {@link module:ss/views/view.SSView} subclass
- * @param {module:ss/photo.SSPhoto} photo - An {@link module:module:ss/photo.SSPhoto}
- * @param {module:ss/views.Type} type - photo sizing type
- * @returns {Object} a new {@link module:ss/views/view.SSView} subclass of the given type
+ * Factory Method to create a new {@link SSView} subclass
+ *
+ * @param photo - The initial {@link SSPhoto}
+ * @param type - photo sizing type
+ * @returns a new {@link SSView} subclass of the given type
  */
-export function create(photo: SSPhoto, type: number) {
+export function create(photo: SSPhoto, type: SSViews.Type) {
   switch (type) {
     case SSViews.Type.LETTERBOX:
       return new SSViewLetterbox(photo);

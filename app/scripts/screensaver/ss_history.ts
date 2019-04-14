@@ -6,7 +6,7 @@
  */
 
 /**
- * Track the recent traversal history of a {@link Screensaver}
+ * Track the recent traversal history of a Screensaver
  */
 
 import * as SSPhotos from './ss_photos.js';

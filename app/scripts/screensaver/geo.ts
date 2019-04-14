@@ -7,14 +7,6 @@
 
 /**
  * Handle interaction the Google maps geocode API
- * @module ss/geo
- */
-
-/**
- * A Geo location
- * @typedef {Object} module:ss/geo.Location
- * @property {string} loc - descriptive location
- * @property {string} point - geo location 'lat lon'
  */
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
@@ -24,15 +16,11 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Path to Google's geocode api
- * @type {string}
- * @const
- * @default
- * @private
+ * A Geo location
+ *
+ * @property loc - descriptive location
+ * @property point - geo location 'lat lon'
  */
-const _GEOCODE_API =
-    'http://maps.googleapis.com/maps/api/geocode/json';
-
 export interface Location {
   loc: string;
   point: string;
@@ -40,10 +28,9 @@ export interface Location {
 
 /**
  * Location cache
- * @typedef {Object} module:ss/geo.Cache
- * @property {module:ss/geo.Location[]} entries - Array of locations
- * @property {int} maxSize - max entries to cache
- * @private
+ *
+ * @property entries - Array of locations
+ * @property maxSize - max entries to cache
  */
 export interface Cache {
   entries: Location[];
@@ -52,7 +39,6 @@ export interface Cache {
 
 /**
  * Location cache
- * @private
  */
 const _LOC_CACHE: Cache = {
   entries: [],
@@ -60,9 +46,16 @@ const _LOC_CACHE: Cache = {
 };
 
 /**
+ * Path to Google's geocode api
+ */
+const _GEOCODE_API = 'http://maps.googleapis.com/maps/api/geocode/json';
+
+
+/**
  * Get the location string
- * @param {string} point - 'lat,long'
- * @returns {Promise<string>} geolocation as string
+ *
+ * @param point - 'lat,long'
+ * @returns geolocation as string
  */
 export function get(point: string) {
   if (!ChromeStorage.getBool('showLocation')) {
@@ -98,10 +91,10 @@ export function get(point: string) {
 }
 
 /**
- * Try to get (@link module:ss/geo.Location} from cache
- * @param {string} point - a geolocation
- * @returns {module:ss/geo.Location|undefined} location, undefined if not cached
- * @private
+ * Try to get Location from cache
+ *
+ * @param point - a geolocation
+ * @returns location, undefined if not cached
  */
 function _getFromCache(point: string) {
   return _LOC_CACHE.entries.find((element) => {
@@ -110,10 +103,10 @@ function _getFromCache(point: string) {
 }
 
 /**
- * Try to get (@link module:ss/geo.Location} from cache
- * @param {string} point - a geolocation
- * @param {string} location - description
- * @private
+ * Add Location from cache
+ *
+ * @param point - a geolocation
+ * @param location - description
  */
 function _addToCache(point: string, location: string) {
   _LOC_CACHE.entries.push({
@@ -128,9 +121,9 @@ function _addToCache(point: string, location: string) {
 
 /**
  * Make sure point is in fixed point notation
- * @param {string} point - 'lat lng' may have exponential notation
- * @returns {string} 'lat,lng' fixed point notation
- * @private
+ *
+ * @param point - 'lat lng' may have exponential notation
+ * @returns 'lat,lng' fixed point notation
  */
 function _cleanPoint(point: string) {
   let ret = point;
