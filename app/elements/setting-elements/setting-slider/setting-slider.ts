@@ -5,18 +5,10 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * Module for a SettingSlider
- */
-
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
-
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, query} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {PaperListboxElement} from '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+import {DomRepeat} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
 
 import '../../../node_modules/@polymer/paper-slider/paper-slider.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
@@ -24,6 +16,8 @@ import '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
 import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+
+import SettingBase from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
@@ -44,13 +38,43 @@ export interface UnitValue {
 
 /**
  * Polymer element for a url link
+ *
  * @PolymerElement
  */
-export const SettingSlider = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('setting-slider')
+export default class SettingSlider extends SettingBase {
+
+  /** Unit value */
+  @property({type: Object, notify: true, observer: '_valueChanged'})
+  protected value: UnitValue = {base: 10, display: 10, unit: 0};
+
+  /** Descriptive label */
+  @property({type: String})
+  protected label = '';
+
+  /** The current @link {UnitType} */
+  @property({type: Object, notify: true})
+  protected unit: UnitType = {name: 'unknown', min: 1, max: 10, step: 1, mult: 1};
+
+  /** Current unit array index */
+  @property({type: Number, notify: true, observer: '_unitIdxChanged'})
+  protected unitIdx = 0;
+
+  /** Array of {@link UnitType} */
+  @property({type: Array})
+  protected units: UnitType[] = [];
+
+  /** paper-listbox of units */
+  @query('#list')
+  private list: PaperListboxElement;
+
+  /** paper-listbox template */
+  @query('#t')
+  private template: DomRepeat;
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
   }
@@ -89,11 +113,7 @@ export const SettingSlider = Polymer({
 
 </style>
 
-<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
-  [[sectionTitle]]
-</div>
-
-<div>
+<setting-base>
   <paper-item id="label" class="setting-label" tabindex="-1">
     [[label]]
   </paper-item>
@@ -102,128 +122,53 @@ export const SettingSlider = Polymer({
                   min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled$="[[disabled]]"
                   on-change="_onSliderValueChanged"></paper-slider>
     <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
-      <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}"
-                     on-tap="_onUnitMenuSelected">
+      <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}" on-tap="_onUnitMenuSelected">
         <template id="t" is="dom-repeat" as="unit" items="[[units]]">
           <paper-item>[[unit.name]]</paper-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>
   </div>
-</div>
-<hr hidden$="[[noseparator]]">
+</setting-base>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>
-`,
+`;
+  }
 
-  is: 'setting-slider',
-
-  properties: {
-
-    /** Element name */
-    name: {
-      type: String,
-      value: 'unknown',
-    },
-
-    /** Description */
-    label: {
-      type: String,
-      value: '',
-    },
-
-    /** @link {UnitValue} */
-    value: {
-      type: Object,
-      notify: true,
-      value: (): UnitValue => {
-        return {base: 10, display: 10, unit: 0};
-      },
-      observer: '_valueChanged',
-    },
-
-    /** @link {UnitType} */
-    unit: {
-      type: Object,
-      notify: true,
-      value: (): UnitType => {
-        return {name: 'unknown', min: 1, max: 10, step: 1, mult: 1};
-      },
-    },
-
-    /** Current unit array index */
-    unitIdx: {
-      type: Number,
-      notify: true,
-      value: 0,
-      observer: '_unitIdxChanged',
-    },
-
-    /** Array of {@link UnitType} */
-    units: {
-      type: Array,
-      value: (): UnitType[] => {
-        return [];
-      },
-    },
-
-    /** Optional group title */
-    sectionTitle: {
-      type: String,
-      value: '',
-    },
-
-    /** Disabled state of element */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Visibility state of optional divider */
-    noseparator: {
-      type: Boolean,
-      value: false,
-    },
-  },
-
-  /**
-   * Element is ready
-   */
-  ready: function() {
-    setTimeout(() => {
-      this.$.list.selected = this.value.unit;
-    }, 0);
-  },
-
-  /**
-   * Event: User changed slider value
-   */
-  _onSliderValueChanged: function() {
-    this._setBase();
-    const label = `${this.name}: ${JSON.stringify(this.value)}`;
-    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
-  },
+  public created() {
+    this.list.selected = this.value.unit;
+  }
 
   /**
    * Event: unit menu item tapped
    *
    * @param ev - tap event
    */
-  _onUnitMenuSelected: function(ev: Event) {
-    const model = this.$.t.modelForElement(ev.target);
+  public _onUnitMenuSelected(ev: Event) {
+    const model = this.template.modelForElement(ev.target as PaperListboxElement);
     if (model) {
-      const label = `${this.name}: ${JSON.stringify(model.unit)}`;
+      const unit: UnitValue = model.get('unit');
+      const label = `${this.name}: ${JSON.stringify(unit)}`;
       ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
     }
-  },
+  }
+
+  /**
+   * Event: User changed slider value
+   */
+  private _onSliderValueChanged() {
+    this._setBase();
+    const label = `${this.name}: ${JSON.stringify(this.value)}`;
+    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
+  }
 
   /**
    * Observer: Unit changed
    *
    * @param newValue
    */
-  _unitIdxChanged: function(newValue: number | undefined) {
+  private _unitIdxChanged(newValue: number | undefined) {
     if (newValue !== undefined) {
       this.set('value.unit', newValue);
       this._setBase();
@@ -231,7 +176,7 @@ export const SettingSlider = Polymer({
         this.set('unit', this.units[newValue]);
       }
     }
-  },
+  }
 
   /**
    * Observer: Value changed
@@ -239,21 +184,21 @@ export const SettingSlider = Polymer({
    * @param newValue
    * @param oldValue
    */
-  _valueChanged: function(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
+  private _valueChanged(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
     if (newValue !== undefined) {
       if (oldValue !== undefined) {
         if (newValue.unit !== oldValue.unit) {
-          this.$.list.selected = newValue.unit;
+          this.list.selected = newValue.unit;
         }
       }
     }
-  },
+  }
 
   /**
    * Set the base value
    */
-  _setBase: function() {
+  private _setBase() {
     this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
-  },
-});
+  }
 
+}

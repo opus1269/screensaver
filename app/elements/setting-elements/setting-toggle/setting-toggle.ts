@@ -5,19 +5,9 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * Module for the SettingToggle
- * @module els/setting/toggle
- */
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
-
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
 
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
@@ -27,20 +17,34 @@ import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.j
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
+import SettingBase from '../setting-base/setting-base.js';
+
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for a toggle button
- * @type {{}}
- * @alias module:els/setting/toggle.SettingToggle
+ *
  * @PolymerElement
  */
-const SettingToggle = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('setting-toggle')
+export default class SettingToggle extends SettingBase {
+
+  /** Checked state */
+  @property({type: Boolean, notify: true})
+  protected value: boolean;
+
+  /** Descriptive label */
+  @property({type: String})
+  protected mainLabel: string;
+
+  /** Secondary descriptive label */
+  @property({type: String})
+  protected secondaryLabel: string;
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -61,107 +65,57 @@ const SettingToggle = Polymer({
   }
 </style>
 
-<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
-  [[sectionTitle]]
-</div>
+<setting-base>
 
-<iron-label for="toggle">
-  <paper-item class="center horizontal layout" tabindex="-1">
-    <paper-item-body class="flex" two-line="">
-      <div class="setting-label" hidden$="[[!mainLabel]]">
-        [[mainLabel]]
-      </div>
-      <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
-        [[secondaryLabel]]
-      </div>
-      <paper-ripple center=""></paper-ripple>
-    </paper-item-body>
-    <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}"
-                         on-change="_onChange" on-tap="_onTap" disabled$="[[disabled]]">
-    </paper-toggle-button>
-  </paper-item>
-</iron-label>
-<hr hidden$="[[noseparator]]">
+  <iron-label for="toggle">
+    <paper-item class="center horizontal layout" tabindex="-1">
+      <paper-item-body class="flex" two-line="">
+        <div class="setting-label" hidden$="[[!mainLabel]]">
+          [[mainLabel]]
+        </div>
+        <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+          [[secondaryLabel]]
+        </div>
+        <paper-ripple center=""></paper-ripple>
+      </paper-item-body>
+      <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{value}}"
+                           on-change="onChange" on-tap="onTap" disabled$="[[disabled]]">
+      </paper-toggle-button>
+    </paper-item>
+  </iron-label>
 
-<app-localstorage-document key="[[name]]" data="{{checked}}" storage="window.localStorage">
+</setting-base>
+
+<app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>
-`,
 
-  is: 'setting-toggle',
-
-  properties: {
-
-    /** Local storage key */
-    name: {
-      type: String,
-      value: 'store',
-    },
-
-    /** Toggle checked state */
-    checked: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
-    /** Descriptive label */
-    mainLabel: {
-      type: String,
-      value: '',
-    },
-
-    /** Secondary descriptive label */
-    secondaryLabel: {
-      type: String,
-      value: '',
-    },
-
-    /** Optional group title */
-    sectionTitle: {
-      type: String,
-      value: '',
-    },
-
-    /** Disabled state of element */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Visibility state of optional divider */
-    noseparator: {
-      type: Boolean,
-      value: false,
-    },
-  },
+`;
+  }
 
   /**
    * Set the checked state of the toggle
-   * @param {boolean} checked - checked state
+   * @param checked - checked state
    */
-  setChecked: function(checked: boolean) {
-    this.set('checked', checked);
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
-  },
+  public setChecked(checked: boolean) {
+    this.set('value', checked);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.value}`);
+  }
 
   /**
-   * Event: checked state changed
-   * @private
+   * Event: Checked state changed
    */
-  _onChange: function() {
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
-  },
+  private onChange() {
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.value}`);
+  }
 
   /**
-   * Event: toggle tapped
-   * @param {Event} ev
-   * @private
+   * Event: Item tapped
+   *
+   * @param ev - Tap event
    */
-  _onTap: function(ev: Event) {
+  private onTap(ev: Event) {
     // so tap events only get called once.
     ev.stopPropagation();
-  },
-});
+  }
 
-export default SettingToggle;
-
+}
