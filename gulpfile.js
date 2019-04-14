@@ -299,7 +299,7 @@ gulp.task('_lint', () => {
       pipe(tslint({
         formatter: 'verbose',
       })).
-      pipe(tslint.report());
+      pipe(tslint.report({emitError: false}));
 });
 
 // Build TypeScript for development
