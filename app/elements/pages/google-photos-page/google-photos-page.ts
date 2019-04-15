@@ -65,6 +65,42 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
   @property({type: Boolean, notify: true})
   public useGooglePhotos: boolean = false;
 
+  /** Page title */
+  @computed('isAlbumMode')
+  get pageTitle() {
+    return this.isAlbumMode
+        ? ChromeLocale.localize('google_title')
+        : ChromeLocale.localize('google_title_photos');
+  }
+
+  /** Refresh tooltip label */
+  @computed('isAlbumMode')
+  get refreshTooltipLabel() {
+    return this.isAlbumMode
+        ? ChromeLocale.localize('tooltip_refresh')
+        : ChromeLocale.localize('tooltip_refresh_photos');
+  }
+
+  /** Model tooltip label */
+  @computed('isAlbumMode')
+  get modeTooltipLabel() {
+    return this.isAlbumMode
+        ? ChromeLocale.localize('tooltip_google_mode_albums')
+        : ChromeLocale.localize('tooltip_google_mode_photos');
+  }
+
+  /** Model icon */
+  @computed('isAlbumMode')
+  get modeIcon() {
+    return this.isAlbumMode ? 'myicons:photo-album' : 'myicons:photo';
+  }
+
+  /** Disabled state of icons used by albums */
+  @computed('useGoogle', 'isAlbumMode')
+  get isAlbumIconDisabled() {
+    return !(this.useGoogle && this.isAlbumMode);
+  }
+
   @query('#photosView')
   private photosView: PhotosView;
 
@@ -73,6 +109,7 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
 
   @query('#googlePhotosToggle')
   private googlePhotosToggle: PaperToggleButtonElement;
+
 
   static get template() {
     // language=HTML format=false
@@ -101,29 +138,29 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
   
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
-      <div class="flex">[[_computeTitle(isAlbumMode)]]</div>
+      <div class="flex">[[pageTitle]]</div>
       <paper-icon-button
           id="mode"
-          icon="[[_computeModeIcon(isAlbumMode)]]"
+          icon="[[modeIcon]]"
           on-tap="_onModeTapped"
           disabled$="[[!useGoogle]]"></paper-icon-button>
       <paper-tooltip for="mode" position="left" offset="0">
-        [[_computeModeTooltip(isAlbumMode)]]
+        [[modeTooltipLabel]]
       </paper-tooltip>
       <paper-icon-button id="select" icon="myicons:check-box" on-tap="_onSelectAllTapped"
-                         disabled$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
+                         disabled$="[[isAlbumIconDisabled]]"></paper-icon-button>
       <paper-tooltip for="select" position="left" offset="0">
         [[localize('tooltip_select')]]
       </paper-tooltip>
       <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank" on-tap="_onDeselectAllTapped"
-                         disabled$="[[_computeAlbumIconDisabled(useGoogle, isAlbumMode)]]"></paper-icon-button>
+                         disabled$="[[isAlbumIconDisabled]]"></paper-icon-button>
       <paper-tooltip for="deselect" position="left" offset="0">
         [[localize('tooltip_deselect')]]
       </paper-tooltip>
       <paper-icon-button id="refresh" icon="myicons:refresh" on-tap="_onRefreshTapped"
                          disabled$="[[!useGoogle]]"></paper-icon-button>
       <paper-tooltip for="refresh" position="left" offset="0">
-        [[_computeRefreshTooltip(isAlbumMode)]]
+        [[refreshTooltipLabel]]
       </paper-tooltip>
       <paper-icon-button id="help" icon="myicons:help" on-tap="_onHelpTapped"></paper-icon-button>
       <paper-tooltip for="help" position="left" offset="0">
@@ -192,7 +229,6 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
 
   /**
    * Fetch Google Photos for the array of user's photos
-   *
    */
   private _loadPhotos() {
     if (!this.isAlbumMode && this.useGoogle) {
@@ -213,6 +249,23 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
       this.albumsView.removeSelectedAlbums();
       this.photosView.setPhotoCount().catch(() => {});
     }
+  }
+
+  /**
+   * UI state
+   *
+   * @param isAlbumMode - true if album mode
+   * @param useGoogle - true if using Google Photos
+   */
+  @observe('isAlbumMode, useGoogle')
+  private uiStateChanged(isAlbumMode: boolean, useGoogle: boolean) {
+    if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
+      return;
+    }
+    const useAlbums = (useGoogle && isAlbumMode);
+    const usePhotos = (useGoogle && !isAlbumMode);
+    this.set('useGoogleAlbums', useAlbums);
+    this.set('useGooglePhotos', usePhotos);
   }
 
   /**
@@ -292,22 +345,6 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
   }
 
   /**
-   * Computed binding: Calculate page title
-   *
-   * @param isAlbumMode - true if album mode
-   * @returns page title
-   */
-  private _computeTitle(isAlbumMode: boolean) {
-    let ret;
-    if (isAlbumMode) {
-      ret = ChromeLocale.localize('google_title');
-    } else {
-      ret = ChromeLocale.localize('google_title_photos');
-    }
-    return ret;
-  }
-
-  /**
    * Observer: UI state
    *
    * @param isAlbumMode - true if album mode
@@ -321,56 +358,5 @@ export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
     const usePhotos = (useGoogle && !isAlbumMode);
     this.set('useGoogleAlbums', useAlbums);
     this.set('useGooglePhotos', usePhotos);
-  }
-
-  /**
-   * Computed binding: Calculate mode icon
-   *
-   * @param isAlbumMode - true if album mode
-   * @returns an icon
-   */
-  private _computeModeIcon(isAlbumMode: boolean) {
-    return isAlbumMode ? 'myicons:photo-album' : 'myicons:photo';
-  }
-
-  /**
-   * Computed binding: Calculate mode tooltip
-   *
-   * @param isAlbumMode - true if album mode
-   * @returns page title
-   */
-  private _computeModeTooltip(isAlbumMode: boolean) {
-    let ret;
-    if (isAlbumMode) {
-      ret = ChromeLocale.localize('tooltip_google_mode_albums');
-    } else {
-      ret = ChromeLocale.localize('tooltip_google_mode_photos');
-    }
-    return ret;
-  }
-
-  /**
-   * Computed binding: Calculate disabled state of icons used by albums
-   *
-   * @param useGoogle - true if using Google Photos
-   * @param isAlbumMode - true if album mode
-   * @returns true if album icons should be disabled
-   */
-  private _computeAlbumIconDisabled(useGoogle: boolean, isAlbumMode: boolean) {
-    return !(useGoogle && isAlbumMode);
-  }
-
-  /**
-   * Computed binding: Calculate refresh tooltip
-   *
-   * @param isAlbumMode - true if album mode
-   * @returns tooltip label
-   */
-  private _computeRefreshTooltip(isAlbumMode: boolean) {
-    let label = ChromeLocale.localize('tooltip_refresh');
-    if (!isAlbumMode) {
-      label = ChromeLocale.localize('tooltip_refresh_photos');
-    }
-    return label;
   }
 }
