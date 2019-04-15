@@ -164,12 +164,14 @@ Polymer({
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="showCurrentWeather" main-label="[[localize('setting_weather')]]"
                         secondary-label="[[localize('setting_weather_desc')]]"
+                        checked="{{showWeatherValue}}" 
                         disabled$="[[!enabled]]" on-tap="_onShowWeatherTapped"></setting-toggle>
         <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]"
                           items="[[_computeTempUnitMenu()]]" value="[[weatherTempUnitValue]]"
-                          disabled$="[[!enabled]]" indent=""></setting-dropdown>
+                          disabled$="[[_computeWeatherTempDisabled(enabled, showWeatherValue)]]"
+                          indent=""></setting-dropdown>
         <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[_computeTimeFormatMenu()]]"
-                          value="[[showTimeValue]]" disabled$="[[!enabled]]"></setting-dropdown>
+                          value="{{showTimeValue}}" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
                         disabled$="[[_computeLargeTimeDisabled(enabled, showTimeValue)]]">
         </setting-toggle>
@@ -188,7 +190,7 @@ Polymer({
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle id="keepAwake" name="keepAwake" main-label="[[localize('setting_keep_awake')]]"
                         secondary-label="[[localize('setting_keep_awake_desc')]]"
-                        checked="[[keepEnabled]]"></setting-toggle>
+                        checked="{{keepEnabled}}"></setting-toggle>
         <paper-tooltip for="keepAwake" position="top" offset="0">
           [[localize('tooltip_keep_awake')]]
         </paper-tooltip>
@@ -500,6 +502,21 @@ Polymer({
   _computeLargeTimeDisabled: function(enabled: boolean, showTimeValue: number) {
     let ret = false;
     if (!enabled || (showTimeValue === 0)) {
+      ret = true;
+    }
+    return ret;
+  },
+
+  /**
+   * Computed binding: Set disabled state of weather temperatur
+   *
+   * @param enabled - enabled state of screensaver
+   * @param showWeatherValue - showTime value
+   * @returns true if disabled
+   */
+  _computeWeatherTempDisabled: function(enabled: boolean, showWeatherValue: boolean) {
+    let ret = false;
+    if (!enabled || !showWeatherValue) {
       ret = true;
     }
     return ret;
