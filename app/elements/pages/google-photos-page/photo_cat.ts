@@ -4,9 +4,9 @@
  ~ https://opensource.org/licenses/Apache-2.0
  ~ https://goo.gl/wFvBM1
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+
 
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
@@ -19,31 +19,38 @@ import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
-
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/shared-styles.js';
+import {I8nMixin} from '../../../elements/mixins/i8n_mixin.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for the PhotoCat element
- * @module els/pgs/google_photos/photo_cat
- */
-
-/**
  * Polymer element to include or exclude a Google Photos category
- * @type {{}}
- * @alias module:els/pgs/google_photos/photo_cat.PhotoCat
- * @PolymerElement
  */
-Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<!--suppress CssUnresolvedCustomPropertySet -->
-<style>
+@customElement('photo-cat')
+export default class SettingBase extends I8nMixin(PolymerElement) {
+
+  /** Checked state */
+  @property({type: Boolean, notify: true})
+  protected checked: boolean = false;
+
+  /** Descriptive label */
+  @property({type: String})
+  protected label: string = '';
+
+  /** Optional group title */
+  @property({type: String})
+  protected sectionTitle: string = '';
+
+  /** Disabled state of element */
+  @property({type: Boolean})
+  protected disabled: boolean = false;
+
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -61,54 +68,22 @@ Polymer({
                   disabled$="[[disabled]]">[[localize('include')]]
   </paper-checkbox>
 </paper-item>
-`,
-
-  is: 'photo-cat',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /**
-     * Fired when the user changes the selected state.
-     * @event value-changed
-     */
-
-    /** Descriptive label */
-    label: {
-      type: String,
-      value: '',
-    },
-
-    /** Checked state */
-    checked: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
-    /** Optional group title */
-    sectionTitle: {
-      type: String,
-      value: '',
-    },
-
-    /** Disabled state of element */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-  },
+`;
+  }
 
   /**
    * Event: checkbox tapped
-   * @param {Event} ev
-   * @private
+   *
+   * @param ev
    */
-  _onCheckedChange: function(ev: any) {
+  private _onCheckedChange(ev: any) {
     ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
-    this.fire('value-changed', {value: ev.target.checked});
-  },
-});
+    const customEvent = new CustomEvent('value-changed', {
+      bubbles: true,
+      composed: true,
+      detail: {value: ev.target.checked},
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+}
