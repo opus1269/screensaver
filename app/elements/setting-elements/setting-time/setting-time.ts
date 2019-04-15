@@ -4,14 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
-
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/paper-input/paper-input.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
@@ -19,26 +13,31 @@ import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
+import SettingBase from '../setting-base/setting-base.js';
 
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for the SettingTime
- * @module els/setting/time
- */
-
-/**
  * Polymer element for time entry
- * @type {{}}
- * @alias module:els/setting/time.SettingTime
- * @PolymerElement
  */
-const SettingTime = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('setting-time')
+export default class SettingTime extends SettingBase {
+
+  /** Time value '00:00' 24 hr format */
+  @property({type: String, notify: true})
+  protected value: string = '00:00';
+
+  /** Descriptive label */
+  @property({type: String})
+  protected mainLabel: string = '';
+
+  /** Secondary descriptive label */
+  @property({type: String})
+  protected secondaryLabel: string = '';
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -48,7 +47,7 @@ const SettingTime = Polymer({
     pointer-events: none;
   }
 
-  :host paper-item {
+  :host iron-label {
     display: block;
     position: relative;
     cursor: pointer;
@@ -59,81 +58,28 @@ const SettingTime = Polymer({
   }
 </style>
 
+<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
 
-<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
-  [[sectionTitle]]
-</div>
+  <paper-item class="center horizontal layout" tabindex="-1">
+    <paper-item-body class="flex" two-line="">
+      <div class="setting-label" hidden$="[[!mainLabel]]">
+        [[mainLabel]]
+      </div>
+      <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+        [[secondaryLabel]]
+      </div>
+    </paper-item-body>
+    <paper-input type="time" min="0:00" max="24:00" required
+                 class="setting-label" tabindex="-1" value={{value}} disabled$="[[disabled]]"></paper-input>
+  </paper-item>
+  <hr hidden$="[[noseparator]]">
 
-<paper-item class="center horizontal layout" tabindex="-1">
-  <paper-item-body class="flex" two-line="">
-    <div class="setting-label" hidden$="[[!mainLabel]]">
-      [[mainLabel]]
-    </div>
-    <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
-      [[secondaryLabel]]
-    </div>
-  </paper-item-body>
-  <paper-input type="time" min="0:00" max="24:00" required
-               class="setting-label" tabindex="-1" value={{value}} disabled$="[[disabled]]"></paper-input>
-</paper-item>
-<hr hidden$="[[noseparator]]">
+</setting-base>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>
-`,
 
-  is: 'setting-time',
+`;
+  }
 
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** Local storage key */
-    name: {
-      type: String,
-      value: 'store',
-    },
-
-    /** Time value '00:00' 24 hr format */
-    value: {
-      type: String,
-      value: '00:00',
-    },
-
-    /** Descriptive label */
-    mainLabel: {
-      type: String,
-      value: '',
-    },
-
-    /** Secondary descriptive label */
-    secondaryLabel: {
-      type: String,
-      value: '',
-    },
-
-    /** Optional group title */
-    sectionTitle: {
-      type: String,
-      value: '',
-    },
-
-    /** Disabled state of element */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Visibility state of optional divider */
-    noseparator: {
-      type: Boolean,
-      value: false,
-    },
-  },
-
-});
-
-export default SettingTime;
-
+}

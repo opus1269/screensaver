@@ -10,14 +10,8 @@ import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/l
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for the LocalizeBehavior
- * @module els/setting/localize_behavior
- */
-
-/**
  * Polymer behavior for internationalizing strings
- * @type {{}}
- * @alias module:els/setting/localize_behavior.LocalizeBehavior
+ *
  * @polymerBehavior LocalizeBehavior
  */
 export const LocalizeBehavior = {
