@@ -41,7 +41,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 /**
  * Photo categories
  */
-const _CATS = [
+const CATS = [
   {name: 'LANDSCAPES', label: ChromeLocale.localize('photo_cat_landscapes')},
   {name: 'CITYSCAPES', label: ChromeLocale.localize('photo_cat_cityscapes')},
   {name: 'LANDMARKS', label: ChromeLocale.localize('photo_cat_landmarks')},
@@ -62,7 +62,7 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
 
   /** Array of photo categories */
   @property({type: Array})
-  public cats = _CATS;
+  public cats = CATS;
 
   /** Do we need to reload the photos */
   @property({type: Boolean, notify: true})
