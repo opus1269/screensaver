@@ -4,14 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {
+  customElement,
+  property,
+  computed,
+  observe,
+  query,
+} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
+import {IronListElement} from '../../../node_modules/@polymer/iron-list/iron-list.js';
 
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../../node_modules/@polymer/iron-list/iron-list.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
 import '../../../node_modules/@polymer/iron-image/iron-image.js';
@@ -27,9 +30,9 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
+import {I8nMixin} from '../../../elements/mixins/i8n_mixin.js';
 
 import * as MyGA from '../../../scripts/my_analytics.js';
 import * as MyMsg from '../../../scripts/my_msg.js';
@@ -43,10 +46,6 @@ import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.
 import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Module for the AlbumsView element
- */
 
 /**
  * Max number of albums to select
@@ -65,14 +64,108 @@ let _selections: SelectedAlbum[] = [];
 
 /**
  * Polymer element to manage Google Photos album selections
- * @PolymerElement
  */
-Polymer({
-  // language=HTML format=false
-  _template: html`<!--suppress CssUnresolvedCustomPropertySet CssUnresolvedCustomProperty -->
-<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('albums-view')
+export default class AlbumsView extends I8nMixin(PolymerElement) {
+
+  /**
+   * Fetch the photos for all the saved albums
+   *
+   * @returns false if we failed
+   */
+  private static async _updateSavedAlbums() {
+    const METHOD = 'AlbumViews._updateSavedAlbums';
+
+    try {
+
+      // send message to background page to do the work
+      const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.LOAD_ALBUMS);
+      const response: SelectedAlbum[] | ChromeMsg.MsgType = await ChromeMsg.send(msg);
+
+      if (Array.isArray(response)) {
+        // try to save
+        const set = await ChromeStorage.asyncSet('albumSelections', response, 'useGoogleAlbums');
+        if (!set) {
+          // exceeded storage limits - use old
+          _selections = await ChromeStorage.asyncGet('albumSelections', []);
+          showStorageErrorDialog(METHOD);
+          return Promise.resolve(false);
+        } else {
+          // update selections
+          _selections = response;
+        }
+      } else {
+        // error
+        const title = ChromeLocale.localize('err_status');
+        const text = response.message;
+        showErrorDialog(title, text, METHOD);
+        return Promise.resolve(false);
+      }
+
+    } catch (err) {
+      // error
+      const title = ChromeLocale.localize('err_status');
+      const text = err.message;
+      showErrorDialog(title, text, METHOD);
+      return Promise.resolve(false);
+    }
+
+    return Promise.resolve(true);
+  }
+
+  /**
+   * Get total photo count that is currently saved
+   *
+   * @returns Total number of photos saved
+   */
+  private static async _getTotalPhotoCount() {
+    let ct = 0;
+    const albums = await ChromeStorage.asyncGet('albumSelections', []);
+    for (const album of albums) {
+      album.photos = album.photos || [];
+      ct += album.photos.length;
+    }
+    return Promise.resolve(ct);
+  }
+
+  /** The array of all albums */
+  @property({type: Array, notify: true})
+  public albums: Album[] = [];
+
+  /** Status of the option permission for the Google Photos API */
+  @property({type: String, notify: true})
+  public permPicasa: string = Permissions.STATE.notSet;
+
+  /** Flag to indicate if UI is disabled */
+  @property({type: Boolean})
+  public disabled: boolean = false;
+
+  /** Flag to display the loading... UI */
+  @property({type: Boolean})
+  public waitForLoad: boolean = false;
+
+  /** Status label for waiter */
+  @property({type: Boolean})
+  public waiterStatus: string = '';
+
+  /** Hidden state of the main ui */
+  @computed('waitForLoad', 'permPicasa')
+  get isHidden() {
+    let ret = true;
+    if (!this.waitForLoad && (this.permPicasa === 'allowed')) {
+      ret = false;
+    }
+    return ret;
+  }
+
+  /** iron-list of albums */
+  @query('#ironList')
+  public ironList: IronListElement;
+
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -138,7 +231,7 @@ Polymer({
 <waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
                 status-label="[[waiterStatus]]"></waiter-element>
 
-<div class="list-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+<div class="list-container" hidden$="[[isHidden]]">
   <paper-item class="list-note">
     [[localize('google_shared_albums_note')]]
   </paper-item>
@@ -167,76 +260,25 @@ Polymer({
 
 </div>
 
-`,
-
-  is: 'albums-view',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /**
-     * Fired when there are no albums.
-     * @event no-albums
-     */
-
-    /** The array of all albums */
-    albums: {
-      type: Array,
-      value: [],
-      notify: true,
-    },
-
-    /** Status of the optional permission for the Google Photos API */
-    permPicasa: {
-      type: String,
-      value: 'notSet',
-      notify: true,
-    },
-
-    /** Flag to indicate if UI is disabled */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Flag to display the loading... UI */
-    waitForLoad: {
-      type: Boolean,
-      value: false,
-      notify: true,
-      observer: '_waitForLoadChanged',
-    },
-
-    /** Status label for waiter */
-    waiterStatus: {
-      type: String,
-      value: '',
-      notify: true,
-    },
-
-    /** Flag to determine if main list should be hidden */
-    isHidden: {
-      type: Boolean,
-      computed: '_computeHidden(waitForLoad, permPicasa)',
-    },
-  },
+`;
+  }
 
   /**
    * Element is ready
    */
-  ready: function() {
+  public ready() {
+    super.ready();
+
     // listen for chrome messages
     ChromeMsg.listen(this._onChromeMessage.bind(this));
-  },
+  }
 
   /**
    * Query Google Photos for the list of the users albums
+   *
    * @param updatePhotos - if true, reload each selected album
    */
-  loadAlbumList: async function(updatePhotos: boolean) {
+  public async loadAlbumList(updatePhotos: boolean) {
     const METHOD = 'AlbumsView.loadAlbumList';
     const ERR_TITLE = ChromeLocale.localize('err_load_album_list');
     let albums;
@@ -264,13 +306,17 @@ Polymer({
         const text = ChromeLocale.localize('err_no_albums');
         ChromeLog.error(text, METHOD, ERR_TITLE);
         // fire event to let others know
-        this.fire('no-albums');
+        const customEvent = new CustomEvent('no-albums', {
+          bubbles: true,
+          composed: true,
+        });
+        this.dispatchEvent(customEvent);
         return Promise.resolve();
       }
 
       if (updatePhotos) {
         // update the saved selections
-        await this._updateSavedAlbums();
+        await AlbumsView._updateSavedAlbums();
       }
 
       // set selections based on those that are currently saved
@@ -283,12 +329,12 @@ Polymer({
     } finally {
       this.set('waitForLoad', false);
     }
-  },
+  }
 
   /**
    * Select as many albums as possible
    */
-  selectAllAlbums: async function() {
+  public async selectAllAlbums() {
 
     this.set('waitForLoad', true);
 
@@ -310,27 +356,43 @@ Polymer({
     }
 
     return Promise.resolve();
-  },
+  }
 
   /**
    * Remove selected albums
    */
-  removeSelectedAlbums: function() {
+  public removeSelectedAlbums() {
     this.albums.forEach((album: Album, index: number) => {
       if (album.checked) {
         this.set('albums.' + index + '.checked', false);
       }
     });
     _selections = [];
-    ChromeStorage.asyncSet('albumSelections', []).catch(() => {
-    });
-  },
+    ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
+  }
+
+  /**
+   * Wait for load changed
+   *
+   * @param waitForLoad
+   * @param waiterStatus
+   */
+  @observe('waitForLoad, waiterStatus')
+  private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
+    if (!waitForLoad) {
+      this.ironList._render();
+      if (waiterStatus) {
+        this.set('waiterStatus', '');
+      }
+    }
+  }
 
   /**
    * Event: Album checkbox state changed
+   *
    * @param ev - checkbox state changed
    */
-  _onAlbumSelectChanged: async function(ev: any) {
+  private async _onAlbumSelectChanged(ev: any) {
     const METHOD = 'AlbumViews._onAlbumSelectChanged';
     const album: Album = ev.model.album;
 
@@ -349,8 +411,7 @@ Polymer({
         if (index !== -1) {
           _selections.splice(index, 1);
         }
-        const set = await ChromeStorage.asyncSet('albumSelections', _selections,
-            'useGoogleAlbums');
+        const set = await ChromeStorage.asyncSet('albumSelections', _selections, 'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
           _selections.pop();
@@ -363,7 +424,7 @@ Polymer({
     }
 
     return Promise.resolve();
-  },
+  }
 
   /**
    * Event: Fired when a message is sent from either an extension process<br>
@@ -375,8 +436,8 @@ Polymer({
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                             response: (arg0: object) => void) {
+  private _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                           response: (arg0: object) => void) {
     if (request.message === MyMsg.TYPE.ALBUM_COUNT.message) {
       // show user status of photo loading
       const name = request.name || '';
@@ -386,28 +447,16 @@ Polymer({
       response({message: 'OK'});
     }
     return false;
-  },
-
-  /**
-   * Observer: waiter changed
-   * @param newValue - state
-   */
-  _waitForLoadChanged: function(newValue: boolean) {
-    if (newValue === false) {
-      this.$.ironList._render();
-      if (this.waiterStatus !== undefined) {
-        this.set('waiterStatus', '');
-      }
-    }
-  },
+  }
 
   /**
    * Load an album from the Web
+   *
    * @param album
-   * @param wait=true if true, handle waiter display ourselves
+   * @param wait if true, handle waiter display ourselves
    * @returns true if successful
    */
-  _loadAlbum: async function(album: Album, wait: boolean = true) {
+  private async _loadAlbum(album: Album, wait: boolean = true) {
     const METHOD = 'AlbumViews._loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
     let error: Error = null;
@@ -423,7 +472,7 @@ Polymer({
         return Promise.resolve(ret);
       }
 
-      const photoCt = await this._getTotalPhotoCount();
+      const photoCt = await AlbumsView._getTotalPhotoCount();
       if (photoCt >= _MAX_PHOTOS) {
         // reached max number of photos
         ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${photoCt}`);
@@ -483,70 +532,12 @@ Polymer({
     }
 
     return Promise.resolve(ret);
-  },
-
-  /**
-   * Fetch the photos for all the saved albums
-   * @returns false if we failed
-   */
-  _updateSavedAlbums: async function() {
-    const METHOD = 'AlbumViews._updateSavedAlbums';
-
-    try {
-
-      // send message to background page to do the work
-      const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.LOAD_ALBUMS);
-      const response: SelectedAlbum[] | ChromeMsg.MsgType = await ChromeMsg.send(msg);
-
-      if (Array.isArray(response)) {
-        // try to save
-        const set = await ChromeStorage.asyncSet('albumSelections', response, 'useGoogleAlbums');
-        if (!set) {
-          // exceeded storage limits - use old
-          _selections = await ChromeStorage.asyncGet('albumSelections', []);
-          showStorageErrorDialog(METHOD);
-          return Promise.resolve(false);
-        } else {
-          // update selections
-          _selections = response;
-        }
-      } else {
-        // error
-        const title = ChromeLocale.localize('err_status');
-        const text = response.message;
-        showErrorDialog(title, text, METHOD);
-        return Promise.resolve(false);
-      }
-
-    } catch (err) {
-      // error
-      const title = ChromeLocale.localize('err_status');
-      const text = err.message;
-      showErrorDialog(title, text, METHOD);
-      return Promise.resolve(false);
-    }
-
-    return Promise.resolve(true);
-  },
-
-  /**
-   * Get total photo count that is currently saved
-   * @returns Total number of photos saved
-   */
-  _getTotalPhotoCount: async function() {
-    let ct = 0;
-    const albums = await ChromeStorage.asyncGet('albumSelections', []);
-    for (const album of albums) {
-      album.photos = album.photos || [];
-      ct += album.photos.length;
-    }
-    return Promise.resolve(ct);
-  },
+  }
 
   /**
    * Set the checked state based on the currently saved albums
    */
-  _selectSavedAlbums: async function() {
+  private async _selectSavedAlbums() {
     _selections = await ChromeStorage.asyncGet('albumSelections', []);
     for (let i = 0; i < this.albums.length; i++) {
       for (const selection of _selections) {
@@ -557,32 +548,19 @@ Polymer({
         }
       }
     }
-  },
-
-  /**
-   * Computed property: Hidden state of main interface
-   * @param waitForLoad - true if loading
-   * @param permPicasa - permission state
-   * @returns true if hidden
-   */
-  _computeHidden: function(waitForLoad: boolean, permPicasa: string) {
-    let ret = true;
-    if (!waitForLoad && (permPicasa === 'allowed')) {
-      ret = false;
-    }
-    return ret;
-  },
+  }
 
   /**
    * Computed binding: Set photo count label on an album
+   *
    * @param count - number of photos in album
    * @returns i18n label
    */
-  _computePhotoLabel: function(count: number) {
+  private _computePhotoLabel(count: number) {
     let ret = `${count} ${ChromeLocale.localize('photos')}`;
     if (count === 1) {
       ret = `${count} ${ChromeLocale.localize('photo')}`;
     }
     return ret;
-  },
-});
+  }
+}
