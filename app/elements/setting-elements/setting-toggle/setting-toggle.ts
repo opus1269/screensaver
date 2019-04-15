@@ -30,7 +30,7 @@ export default class SettingToggle extends SettingBase {
 
   /** Checked state */
   @property({type: Boolean, notify: true})
-  protected value: boolean;
+  protected checked: boolean;
 
   /** Descriptive label */
   @property({type: String})
@@ -77,7 +77,7 @@ export default class SettingToggle extends SettingBase {
         </div>
         <paper-ripple center=""></paper-ripple>
       </paper-item-body>
-      <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{value}}"
+      <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}"
                            on-change="onChange" on-tap="onTap" disabled$="[[disabled]]">
       </paper-toggle-button>
     </paper-item>
@@ -85,7 +85,7 @@ export default class SettingToggle extends SettingBase {
 
 </setting-base>
 
-<app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
+<app-localstorage-document key="[[name]]" data="{{checked}}" storage="window.localStorage">
 </app-localstorage-document>
 
 `;
@@ -97,15 +97,15 @@ export default class SettingToggle extends SettingBase {
    * @param checked - checked state
    */
   public setChecked(checked: boolean) {
-    this.set('value', checked);
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.value}`);
+    this.set('checked', checked);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
   }
 
   /**
    * Event: Checked state changed
    */
   private onChange() {
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.value}`);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
   }
 
   /**
