@@ -7,7 +7,6 @@
 import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-
 import '../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../node_modules/@polymer/paper-styles/color.js';
 

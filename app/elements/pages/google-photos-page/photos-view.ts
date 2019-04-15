@@ -4,9 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
@@ -23,11 +22,11 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import './photo_cat.js';
 
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/shared-styles.js';
+import {I8nMixin} from '../../../elements/mixins/i8n_mixin.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
@@ -38,10 +37,6 @@ import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/l
 import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Module for selecting Google Photos
- */
 
 /**
  * Photo categories
@@ -61,15 +56,49 @@ const _CATS = [
 
 /**
  * Polymer element for the Google Photos page photos view UI
- *
- * @PolymerElement
  */
-Polymer({
-  // language=HTML format=false
-  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('photos-view')
+export default class PhotosView extends I8nMixin(PolymerElement) {
+
+  /** Array of photo categories */
+  @property({type: Array})
+  protected cats = _CATS;
+
+  /** Do we need to reload the photos */
+  @property({type: Boolean, notify: true})
+  protected needsPhotoRefresh: boolean = true;
+
+  /** Count for photo mode */
+  @property({type: Number, notify: true})
+  protected photoCount: number = 0;
+
+  /** Flag to indicate if we should not filter photos */
+  @property({type: Boolean, notify: true, observer: '_noFilterChanged'})
+  protected noFilter: boolean = true;
+
+  /** Status of the option permission for the Google Photos API */
+  @property({type: String, notify: true})
+  protected permPicasa: string = Permissions.STATE.notSet;
+
+  /** Flag to indicate if UI is disabled */
+  @property({type: Boolean})
+  protected disabled: boolean = false;
+
+  /** Flag to display the loading... UI */
+  @property({type: Boolean, observer: '_waitForLoadChanged'})
+  protected waitForLoad: boolean = false;
+
+  /** Status label for waiter */
+  @property({type: Boolean})
+  protected waiterStatus: string = '';
+
+  @property({type: Boolean, computed: '_computeHidden(waitForLoad, permPicasa)'})
+  protected isHidden: boolean;
+
+  static get template() {
+    // language=HTML format=false
+    return html`
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -123,7 +152,7 @@ Polymer({
 
   <div class="section-title">[[localize('photo_cat_title')]]</div>
 
-  <template is="dom-repeat" items="[[cats]]" as="cat">
+  <template id="t" is="dom-repeat" items="[[cats]]" as="cat">
     <photo-cat id="[[cat.name]]"
                label="[[cat.label]]"
                on-value-changed="_onPhotoCatChanged"
@@ -140,86 +169,18 @@ Polymer({
   </app-localstorage-document>
 
 </div>
-`,
+`;
+  }
 
-  is: 'photos-view',
+  /** Element is ready */
+  public ready() {
+    super.ready();
 
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** Array of photo categories */
-    cats: {
-      type: Array,
-      value: _CATS,
-    },
-
-    /** Do we need to reload the photos */
-    needsPhotoRefresh: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /** Count for photo mode */
-    photoCount: {
-      type: Number,
-      value: 0,
-      notify: true,
-    },
-
-    /** Flag to indicate if we should not filter photos */
-    noFilter: {
-      type: Boolean,
-      value: true,
-      notify: true,
-      observer: '_noFilterChanged',
-    },
-
-    /** Status of the option permission for the Google Photos API */
-    permPicasa: {
-      type: String,
-      value: 'notSet',
-      notify: true,
-    },
-
-    /** Flag to indicate if UI is disabled */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Flag to display the loading... UI */
-    waitForLoad: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Status label for waiter */
-    waiterStatus: {
-      type: String,
-      value: '',
-    },
-
-    /** Flag to determine if main view should be hidden */
-    isHidden: {
-      type: Boolean,
-      computed: '_computeHidden(waitForLoad, permPicasa)',
-    },
-  },
-
-  /**
-   * Element is ready
-   */
-  ready: function() {
     // listen for chrome messages
     ChromeMsg.listen(this._onChromeMessage.bind(this));
 
     setTimeout(() => {
-      this.setPhotoCount().catch(() => {/* ignore */
-      });
+      this.setPhotoCount().catch(() => {});
 
       // set state of photo categories
       this._setPhotoCats();
@@ -228,20 +189,19 @@ Polymer({
       chrome.storage.onChanged.addListener((changes) => {
         for (const key of Object.keys(changes)) {
           if (key === 'googleImages') {
-            this.setPhotoCount().catch(() => {
-            });
+            this.setPhotoCount().catch(() => {});
             this.set('needsPhotoRefresh', true);
             break;
           }
         }
       });
     }, 0);
-  },
+  }
 
   /**
    * Query Google Photos for the array of user's photos
    */
-  loadPhotos: async function() {
+  public async loadPhotos() {
     const METHOD = 'PhotosView.loadPhotos';
     let error: Error = null;
     try {
@@ -257,7 +217,6 @@ Polymer({
       }
 
       this.set('waitForLoad', true);
-      this.set('waiterStatus', '');
 
       // send message to background page to do the work
       const json = await ChromeMsg.send(MyMsg.TYPE.LOAD_FILTERED_PHOTOS);
@@ -282,7 +241,6 @@ Polymer({
       error = err;
     } finally {
       this.set('waitForLoad', false);
-      this.set('waiterStatus', '');
     }
 
     if (error) {
@@ -290,23 +248,22 @@ Polymer({
       const text = error.message;
       showErrorDialog(title, text, METHOD);
     }
-  },
+  }
 
   /**
    * Set the photo count that is currently saved
    */
-  setPhotoCount: async function() {
+  public async setPhotoCount() {
     const photos = await ChromeStorage.asyncGet('googleImages', []);
     this.set('photoCount', photos.length);
-  },
+  }
 
   /**
    * Set the states of the photo-cat elements
    */
-  _setPhotoCats: function() {
-    const els = this.shadowRoot.querySelectorAll('photo-cat');
-    const filter = ChromeStorage.get('googlePhotosFilter',
-        GoogleSource.DEF_FILTER);
+  private _setPhotoCats() {
+    const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PolymerElement>;
+    const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
 
@@ -317,18 +274,17 @@ Polymer({
       });
       el.set('checked', (idx !== -1));
     }
-  },
+  }
 
   /**
    * Event: Selection of photo-cat changed
    *
    * @param ev
    */
-  _onPhotoCatChanged: function(ev: any) {
+  private _onPhotoCatChanged(ev: any) {
     const cat = ev.target.id;
     const checked = ev.detail.value;
-    const filter = ChromeStorage.get('googlePhotosFilter',
-        GoogleSource.DEF_FILTER);
+    const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
     const idx = includes.findIndex((e: string) => {
@@ -350,7 +306,7 @@ Polymer({
 
     this.set('needsPhotoRefresh', true);
     ChromeStorage.set('googlePhotosFilter', filter);
-  },
+  }
 
   /**
    * Event: Fired when a message is sent from either an extension process<br>
@@ -363,8 +319,8 @@ Polymer({
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  _onChromeMessage: function(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                             response: (arg0: object) => void) {
+  private _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                           response: (arg0: object) => void) {
     if (request.message === MyMsg.TYPE.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;
@@ -373,15 +329,15 @@ Polymer({
       response({message: 'OK'});
     }
     return false;
-  },
+  }
 
   /**
    * Event: Refresh photos button clicked
    */
-  _onRefreshPhotosClicked: function() {
+  private _onRefreshPhotosClicked() {
     this.loadPhotos().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
-  },
+  }
 
   /**
    * Observer: noFilter changed
@@ -389,13 +345,26 @@ Polymer({
    * @param newValue
    * @param oldValue
    */
-  _noFilterChanged: function(newValue: boolean | undefined, oldValue: boolean | undefined) {
+  private _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if ((newValue !== undefined) && (oldValue !== undefined)) {
       if (newValue !== oldValue) {
         this.set('needsPhotoRefresh', true);
       }
     }
-  },
+  }
+
+  /**
+   * Observer: waiter changed
+   *
+   * @param newValue - state
+   */
+  private _waitForLoadChanged(newValue: boolean) {
+    if (newValue === false) {
+      if (this.waiterStatus !== undefined) {
+        this.set('waiterStatus', '');
+      }
+    }
+  }
 
   /**
    * Computed property: Disabled state of filter ui elements
@@ -405,9 +374,9 @@ Polymer({
    * @returns true if disabled
    * @private
    */
-  _computeFilterDisabled: function(disabled: boolean, noFilter: boolean) {
+  private _computeFilterDisabled(disabled: boolean, noFilter: boolean) {
     return disabled || noFilter;
-  },
+  }
 
   /**
    * Computed property: Disabled state of filter ui elements
@@ -416,9 +385,9 @@ Polymer({
    * @param needsPhotoRefresh - true if photos need refresh
    * @returns true if disabled
    */
-  _computeRefreshDisabled: function(disabled: boolean, needsPhotoRefresh: boolean) {
+  private _computeRefreshDisabled(disabled: boolean, needsPhotoRefresh: boolean) {
     return disabled || !needsPhotoRefresh;
-  },
+  }
 
   /**
    * Computed property: Hidden state of main interface
@@ -427,11 +396,12 @@ Polymer({
    * @param permPicasa - permission state
    * @returns true if hidden
    */
-  _computeHidden: function(waitForLoad: boolean, permPicasa: string) {
+  private _computeHidden(waitForLoad: boolean, permPicasa: string) {
     let ret = true;
     if (!waitForLoad && (permPicasa === 'allowed')) {
       ret = false;
     }
     return ret;
-  },
-});
+  }
+
+}
