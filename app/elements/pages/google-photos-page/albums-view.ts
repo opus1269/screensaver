@@ -4,7 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
   customElement,
   property,
@@ -28,11 +28,11 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
+import BaseElement from '../../base-element/base-element.js';
+
 import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/my_icons.js';
-import '../../../elements/shared-styles.js';
-import {I8nMixin} from '../../../elements/mixins/i8n_mixin.js';
 
 import * as MyGA from '../../../scripts/my_analytics.js';
 import * as MyMsg from '../../../scripts/my_msg.js';
@@ -45,28 +45,21 @@ import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/l
 import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/**
- * Max number of albums to select
- */
+/** Max number of albums to select */
 const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 
-/**
- * Max number of total photos to select
- */
+/** Max number of total photos to select */
 const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
-/**
- * The array of selected albums
- */
+/** The array of selected albums */
 let _selections: SelectedAlbum[] = [];
 
 /**
  * Polymer element to manage Google Photos album selections
  */
 @customElement('albums-view')
-export default class AlbumsView extends I8nMixin(PolymerElement) {
+export default class AlbumsView extends BaseElement {
 
   /**
    * Fetch the photos for all the saved albums
@@ -161,7 +154,6 @@ export default class AlbumsView extends I8nMixin(PolymerElement) {
   /** iron-list of albums */
   @query('#ironList')
   public ironList: IronListElement;
-
 
   static get template() {
     // language=HTML format=false

@@ -4,13 +4,17 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, computed, observe} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import PhotoCat from './photo_cat.js';
 
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {
+  customElement,
+  property,
+  computed,
+  observe,
+  listen,
+} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
@@ -20,13 +24,13 @@ import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
+import BaseElement from '../../base-element/base-element.js';
+
 import './photo_cat.js';
 
 import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
-import '../../../elements/shared-styles.js';
-import {I8nMixin} from '../../../elements/mixins/i8n_mixin.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';
@@ -36,7 +40,6 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Photo categories
@@ -58,7 +61,7 @@ const CATS = [
  * Polymer element for the Google Photos page photos view UI
  */
 @customElement('photos-view')
-export default class PhotosView extends I8nMixin(PolymerElement) {
+export default class PhotosView extends BaseElement {
 
   /** Array of photo categories */
   @property({type: Array})
@@ -159,8 +162,7 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
     <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
       <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
     </paper-item>
-    <paper-button raised disabled$="[[isRefreshDisabled]]"
-                  on-click="_onRefreshPhotosClicked">
+    <paper-button id="refreshButton" raised disabled$="[[isRefreshDisabled]]">
       [[localize('button_needs_refresh')]]
     </paper-button>
   </div>
@@ -278,6 +280,15 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
   }
 
   /**
+   * Event: Refresh photos button clicked
+   */
+  @listen('click', 'refreshButton')
+  public onRefreshPhotosClicked() {
+    this.loadPhotos().catch(() => {});
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
+  }
+
+  /**
    * Wait for load changed
    *
    * @param waitForLoad
@@ -308,7 +319,7 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
    * Set the states of the photo-cat elements
    */
   private _setPhotoCats() {
-    const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PolymerElement>;
+    const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PhotoCat>;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
@@ -375,13 +386,5 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
       response({message: 'OK'});
     }
     return false;
-  }
-
-  /**
-   * Event: Refresh photos button clicked
-   */
-  private _onRefreshPhotosClicked() {
-    this.loadPhotos().catch(() => {});
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
   }
 }
