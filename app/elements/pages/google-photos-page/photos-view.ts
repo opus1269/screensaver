@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {customElement, property, computed} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
@@ -62,38 +62,57 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
 
   /** Array of photo categories */
   @property({type: Array})
-  protected cats = _CATS;
+  public cats = _CATS;
 
   /** Do we need to reload the photos */
   @property({type: Boolean, notify: true})
-  protected needsPhotoRefresh: boolean = true;
+  public needsPhotoRefresh: boolean = true;
 
   /** Count for photo mode */
   @property({type: Number, notify: true})
-  protected photoCount: number = 0;
+  public photoCount: number = 0;
 
   /** Flag to indicate if we should not filter photos */
   @property({type: Boolean, notify: true, observer: '_noFilterChanged'})
-  protected noFilter: boolean = true;
+  public noFilter: boolean = true;
 
   /** Status of the option permission for the Google Photos API */
   @property({type: String, notify: true})
-  protected permPicasa: string = Permissions.STATE.notSet;
+  public permPicasa: string = Permissions.STATE.notSet;
 
   /** Flag to indicate if UI is disabled */
   @property({type: Boolean})
-  protected disabled: boolean = false;
+  public disabled: boolean = false;
 
   /** Flag to display the loading... UI */
   @property({type: Boolean, observer: '_waitForLoadChanged'})
-  protected waitForLoad: boolean = false;
+  public waitForLoad: boolean = false;
 
   /** Status label for waiter */
   @property({type: Boolean})
-  protected waiterStatus: string = '';
+  public waiterStatus: string = '';
 
-  @property({type: Boolean, computed: '_computeHidden(waitForLoad, permPicasa)'})
-  protected isHidden: boolean;
+  /** Hidden state of the main ui */
+  @computed('waitForLoad', 'permPicasa')
+  get isHidden() {
+    let ret = true;
+    if (!this.waitForLoad && (this.permPicasa === 'allowed')) {
+      ret = false;
+    }
+    return ret;
+  }
+
+  /** Disabled state of filter ui elements */
+  @computed('disabled', 'noFilter')
+  get isFilterDisabled() {
+    return this.disabled || this.noFilter;
+  }
+
+  /** Disabled state of refresh button */
+  @computed('disabled', 'needsPhotoRefresh')
+  get isRefreshDisabled() {
+    return this.disabled || !this.needsPhotoRefresh;
+  }
 
   static get template() {
     // language=HTML format=false
@@ -135,12 +154,12 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
 <waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
                 status-label="[[waiterStatus]]"></waiter-element>
 
-<div class="photos-container" hidden$="[[_computeHidden(waitForLoad, permPicasa)]]">
+<div class="photos-container" hidden$="[[isHidden]]">
   <div class="photo-count-container horizontal layout">
     <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
       <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
     </paper-item>
-    <paper-button raised disabled$="[[_computeRefreshDisabled(disabled, needsPhotoRefresh)]]"
+    <paper-button raised disabled$="[[isRefreshDisabled]]"
                   on-click="_onRefreshPhotosClicked">
       [[localize('button_needs_refresh')]]
     </paper-button>
@@ -156,7 +175,7 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
     <photo-cat id="[[cat.name]]"
                label="[[cat.label]]"
                on-value-changed="_onPhotoCatChanged"
-               disabled$="[[_computeFilterDisabled(disabled, noFilter)]]"></photo-cat>
+               disabled$="[[isFilterDisabled]]"></photo-cat>
   </template>
 
   <paper-item class="album-note">
@@ -364,44 +383,6 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
         this.set('waiterStatus', '');
       }
     }
-  }
-
-  /**
-   * Computed property: Disabled state of filter ui elements
-   *
-   * @param disabled - true if whole UI is disabled
-   * @param noFilter - true if not filtering
-   * @returns true if disabled
-   * @private
-   */
-  private _computeFilterDisabled(disabled: boolean, noFilter: boolean) {
-    return disabled || noFilter;
-  }
-
-  /**
-   * Computed property: Disabled state of filter ui elements
-   *
-   * @param disabled - true if whole UI is disabled
-   * @param needsPhotoRefresh - true if photos need refresh
-   * @returns true if disabled
-   */
-  private _computeRefreshDisabled(disabled: boolean, needsPhotoRefresh: boolean) {
-    return disabled || !needsPhotoRefresh;
-  }
-
-  /**
-   * Computed property: Hidden state of main interface
-   *
-   * @param waitForLoad - true if loading
-   * @param permPicasa - permission state
-   * @returns true if hidden
-   */
-  private _computeHidden(waitForLoad: boolean, permPicasa: string) {
-    let ret = true;
-    if (!waitForLoad && (permPicasa === 'allowed')) {
-      ret = false;
-    }
-    return ret;
   }
 
 }
