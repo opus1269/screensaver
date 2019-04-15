@@ -4,14 +4,19 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
+import AlbumsView from './albums-view';
+import PhotosView from './photos-view';
+import {PaperToggleButtonElement} from '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button';
 
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {
+  customElement,
+  property,
+  computed,
+  observe,
+  query,
+} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
@@ -25,9 +30,9 @@ import './albums-view.js';
 import './photos-view.js';
 
 import {showConfirmDialog} from '../../../elements/app-main/app-main.js';
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
+import {I8nMixin} from '../../../elements/mixins/i8n_mixin.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
@@ -37,22 +42,41 @@ import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for the Google Photos page
- * @module els/pgs/google_photos
- */
-
-/**
  * Polymer element for the Google Photos page
- * @type {{loadAlbumList: Function}}
- * @alias module:els/pgs/google_photos.GooglePhotosPage
+ *
  * @PolymerElement
  */
-const GooglePhotosPage = Polymer({
-  // language=HTML format=false
-  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('google-photos-page')
+export default class GooglePhotosPage extends I8nMixin(PolymerElement) {
+
+  /** Select by albums or photos */
+  @property({type: Boolean, notify: true})
+  public isAlbumMode: boolean = true;
+
+  /** Should we use the Google Photos in the screensaver */
+  @property({type: Boolean, notify: true})
+  public useGoogle: boolean = true;
+
+  /** Should we use album photos in the screensaver */
+  @property({type: Boolean, notify: true})
+  public useGoogleAlbums: boolean = true;
+
+  /** Should we use google photos in the screensaver */
+  @property({type: Boolean, notify: true})
+  public useGooglePhotos: boolean = false;
+
+  @query('#photosView')
+  private photosView: PhotosView;
+
+  @query('#albumsView')
+  private albumsView: AlbumsView;
+
+  @query('#googlePhotosToggle')
+  private googlePhotosToggle: PaperToggleButtonElement;
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -74,6 +98,7 @@ const GooglePhotosPage = Polymer({
 </style>
 
 <paper-material elevation="1" class="page-container">
+  
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
       <div class="flex">[[_computeTitle(isAlbumMode)]]</div>
@@ -115,18 +140,14 @@ const GooglePhotosPage = Polymer({
   <div class="page-content">
 
     <!-- Albums UI -->
-    <template is="dom-if" if="{{isAlbumMode}}">
-      <div>
-        <albums-view id="albumsView" on-no-albums="_onNoAlbums" disabled$="[[!useGoogle]]"></albums-view>
-      </div>
-    </template>
+    <div hidden$="[[!isAlbumMode]]">
+      <albums-view id="albumsView" on-no-albums="_onNoAlbums" disabled$="[[!useGoogle]]"></albums-view>
+    </div>
 
     <!-- Photos UI -->
-    <template id="photosTemplate" is="dom-if" if="{{!isAlbumMode}}">
-      <div>
-        <photos-view id="photosView" disabled$="[[!useGoogle]]"></photos-view>
-      </div>
-    </template>
+    <div hidden$="[[isAlbumMode]]">
+      <photos-view id="photosView" disabled$="[[!useGoogle]]"></photos-view>
+    </div>
 
   </div>
 
@@ -142,109 +163,62 @@ const GooglePhotosPage = Polymer({
   <slot></slot>
 
 </paper-material>
-`,
-
-  is: 'google-photos-page',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** Select by albums or photos */
-    isAlbumMode: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /** Should we use the Google Photos in the screensaver */
-    useGoogle: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /** Should we use album photos in the screensaver */
-    useGoogleAlbums: {
-      type: Boolean,
-      value: true,
-      notify: true,
-    },
-
-    /** Should we use google photos in the screensaver */
-    useGooglePhotos: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-  },
-
-  observers: [
-    '_stateChanged(isAlbumMode, useGoogle)',
-  ],
+`;
+  }
 
   /**
    * Element is ready
    */
-  ready: function() {
+  public ready() {
+    super.ready();
+
     setTimeout(() => {
       if (this.isAlbumMode) {
         this.loadAlbumList().catch(() => {});
       }
     }, 0);
-  },
+  }
 
   /**
    * Fetch Google Photos albums, optionally fetching the photos too
-   * @param {boolean} [doPhotos=false] - if true, reload each album
-   * @returns {Promise<null>} always resolves
+   *
+   * @param doPhotos - if true, reload each album
    */
-  loadAlbumList: function(doPhotos: boolean = false) {
+  public loadAlbumList(doPhotos: boolean = false) {
     if (this.isAlbumMode) {
-      return this.$$('#albumsView').loadAlbumList(doPhotos).catch(() => {});
+      return this.albumsView.loadAlbumList(doPhotos).catch(() => {});
     }
-  },
+  }
 
   /**
    * Fetch Google Photos for the array of user's photos
-   * @returns {Promise<null>} always resolves
-   * @private
+   *
    */
-  _loadPhotos: function() {
+  private _loadPhotos() {
     if (!this.isAlbumMode && this.useGoogle) {
-      return this.$$('#photosView').loadPhotos().catch(() => {});
+      return this.photosView.loadPhotos().catch(() => {});
     }
-  },
+  }
 
   /**
    * Toggle between album and photo mode
-   * @private
    */
-  _changeMode: function() {
+  private _changeMode() {
     this.set('isAlbumMode', !this.isAlbumMode);
     if (this.isAlbumMode) {
-      // the dom-if may not have been loaded yet
-      setTimeout(() => {
-        ChromeStorage.asyncSet('googleImages', []).catch(() => {});
-        this.loadAlbumList().catch(() => {});
-      }, 0);
+      ChromeStorage.asyncSet('googleImages', []).catch(() => {});
+      this.loadAlbumList().catch(() => {});
     } else {
-      // the dom-if may not have been loaded yet
-      setTimeout(() => {
-        // remove album selections
-        this.$$('#albumsView').removeSelectedAlbums();
-        this.$$('#photosView').setPhotoCount().catch(() => {});
-      }, 0);
+      // remove album selections
+      this.albumsView.removeSelectedAlbums();
+      this.photosView.setPhotoCount().catch(() => {});
     }
-  },
+  }
 
   /**
    * Event: Handle tap on mode icon
-   * @private
    */
-  _onModeTapped: function() {
+  private _onModeTapped() {
     // show a confirm dialog and pass in a callback that will be called
     // if the user confirms the action
     const text = ChromeLocale.localize('desc_mode_switch');
@@ -252,22 +226,20 @@ const GooglePhotosPage = Polymer({
     const button = ChromeLocale.localize('button_mode_switch');
     showConfirmDialog(text, title, button, this._changeMode.bind(this));
     ChromeGA.event(ChromeGA.EVENT.ICON, 'changeGooglePhotosMode');
-  },
+  }
 
   /**
    * Event: Handle event indicating the user has no albums
-   * @private
    */
-  _onNoAlbums: function() {
+  private _onNoAlbums() {
     // force change to photos mode
     this._changeMode();
-  },
+  }
 
   /**
    * Event: Handle tap on refresh album list icon
-   * @private
    */
-  _onRefreshTapped: function() {
+  private _onRefreshTapped() {
     if (this.isAlbumMode) {
       this.loadAlbumList().catch(() => {});
     } else {
@@ -275,43 +247,39 @@ const GooglePhotosPage = Polymer({
     }
     const lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
     ChromeGA.event(ChromeGA.EVENT.ICON, lbl);
-  },
+  }
 
   /**
    * Event: Handle tap on help icon
-   * @private
    */
-  _onHelpTapped: function() {
+  private _onHelpTapped() {
     ChromeGA.event(ChromeGA.EVENT.ICON, 'googlePhotosHelp');
     const anchor = this.isAlbumMode ? 'albums' : 'photos';
     const url = `${MyUtils.getGithubPagesPath()}help/google_photos.html#${anchor}`;
     chrome.tabs.create({url: url});
-  },
+  }
 
   /**
    * Event: Handle tap on deselect all albums icon
-   * @private
    */
-  _onDeselectAllTapped: function() {
-    this.$$('#albumsView').removeSelectedAlbums();
+  private _onDeselectAllTapped() {
+    this.albumsView.removeSelectedAlbums();
     ChromeGA.event(ChromeGA.EVENT.ICON, 'deselectAllGoogleAlbums');
-  },
+  }
 
   /**
    * Event: Handle tap on select all albums icon
-   * @private
    */
-  _onSelectAllTapped: async function() {
-    this.$$('#albumsView').selectAllAlbums().catch(() => {});
+  private async _onSelectAllTapped() {
+    this.albumsView.selectAllAlbums().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'selectAllGoogleAlbums');
-  },
+  }
 
   /**
    * Event: checked state changed on main toggle changed
-   * @private
    */
-  _onUseGoogleChanged: function() {
-    const useGoogle = this.$.googlePhotosToggle.checked;
+  private _onUseGoogleChanged() {
+    const useGoogle = this.googlePhotosToggle.checked;
     if (useGoogle) {
       // Switching to enabled, refresh photos from web
       if (this.isAlbumMode) {
@@ -321,15 +289,15 @@ const GooglePhotosPage = Polymer({
       }
     }
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `useGoogle: ${useGoogle}`);
-  },
+  }
 
   /**
    * Computed binding: Calculate page title
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} page title
-   * @private
+   *
+   * @param isAlbumMode - true if album mode
+   * @returns page title
    */
-  _computeTitle: function(isAlbumMode: boolean) {
+  private _computeTitle(isAlbumMode: boolean) {
     let ret;
     if (isAlbumMode) {
       ret = ChromeLocale.localize('google_title');
@@ -337,15 +305,15 @@ const GooglePhotosPage = Polymer({
       ret = ChromeLocale.localize('google_title_photos');
     }
     return ret;
-  },
+  }
 
   /**
    * Observer: UI state
-   * @param {boolean|undefined} isAlbumMode - true if album mode
-   * @param {boolean|undefined} useGoogle - true if using Google Photos
-   * @private
+   *
+   * @param isAlbumMode - true if album mode
+   * @param useGoogle - true if using Google Photos
    */
-  _stateChanged: function(isAlbumMode: boolean, useGoogle: boolean) {
+  private _stateChanged(isAlbumMode: boolean, useGoogle: boolean) {
     if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
       return;
     }
@@ -353,25 +321,25 @@ const GooglePhotosPage = Polymer({
     const usePhotos = (useGoogle && !isAlbumMode);
     this.set('useGoogleAlbums', useAlbums);
     this.set('useGooglePhotos', usePhotos);
-  },
+  }
 
   /**
    * Computed binding: Calculate mode icon
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} an icon
-   * @private
+   *
+   * @param isAlbumMode - true if album mode
+   * @returns an icon
    */
-  _computeModeIcon: function(isAlbumMode: boolean) {
+  private _computeModeIcon(isAlbumMode: boolean) {
     return isAlbumMode ? 'myicons:photo-album' : 'myicons:photo';
-  },
+  }
 
   /**
    * Computed binding: Calculate mode tooltip
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} page title
-   * @private
+   *
+   * @param isAlbumMode - true if album mode
+   * @returns page title
    */
-  _computeModeTooltip: function(isAlbumMode: boolean) {
+  private _computeModeTooltip(isAlbumMode: boolean) {
     let ret;
     if (isAlbumMode) {
       ret = ChromeLocale.localize('tooltip_google_mode_albums');
@@ -379,33 +347,30 @@ const GooglePhotosPage = Polymer({
       ret = ChromeLocale.localize('tooltip_google_mode_photos');
     }
     return ret;
-  },
+  }
 
   /**
    * Computed binding: Calculate disabled state of icons used by albums
-   * @param {boolean} useGoogle - true if using Google Photos
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {boolean} true if album icons should be disabled
-   * @private
+   *
+   * @param useGoogle - true if using Google Photos
+   * @param isAlbumMode - true if album mode
+   * @returns true if album icons should be disabled
    */
-  _computeAlbumIconDisabled(useGoogle: boolean, isAlbumMode: boolean) {
+  private _computeAlbumIconDisabled(useGoogle: boolean, isAlbumMode: boolean) {
     return !(useGoogle && isAlbumMode);
-  },
+  }
 
   /**
    * Computed binding: Calculate refresh tooltip
-   * @param {boolean} isAlbumMode - true if album mode
-   * @returns {string} tooltip label
-   * @private
+   *
+   * @param isAlbumMode - true if album mode
+   * @returns tooltip label
    */
-  _computeRefreshTooltip(isAlbumMode: boolean) {
+  private _computeRefreshTooltip(isAlbumMode: boolean) {
     let label = ChromeLocale.localize('tooltip_refresh');
     if (!isAlbumMode) {
       label = ChromeLocale.localize('tooltip_refresh_photos');
     }
     return label;
-  },
-
-});
-
-export default GooglePhotosPage;
+  }
+}
