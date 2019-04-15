@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, computed} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {customElement, property, computed, observe} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
@@ -85,7 +85,7 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
   public disabled: boolean = false;
 
   /** Flag to display the loading... UI */
-  @property({type: Boolean, observer: '_waitForLoadChanged'})
+  @property({type: Boolean})
   public waitForLoad: boolean = false;
 
   /** Status label for waiter */
@@ -278,6 +278,33 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
   }
 
   /**
+   * Wait for load changed
+   *
+   * @param waitForLoad
+   * @param waiterStatus
+   */
+  @observe('waitForLoad, waiterStatus')
+  private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
+    if (!waitForLoad && waiterStatus) {
+      this.set('waiterStatus', '');
+    }
+  }
+
+  /**
+   * Simple Observer: noFilter changed
+   *
+   * @param newValue
+   * @param oldValue
+   */
+  private _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
+    if ((newValue !== undefined) && (oldValue !== undefined)) {
+      if (newValue !== oldValue) {
+        this.set('needsPhotoRefresh', true);
+      }
+    }
+  }
+
+  /**
    * Set the states of the photo-cat elements
    */
   private _setPhotoCats() {
@@ -357,32 +384,4 @@ export default class PhotosView extends I8nMixin(PolymerElement) {
     this.loadPhotos().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
   }
-
-  /**
-   * Observer: noFilter changed
-   *
-   * @param newValue
-   * @param oldValue
-   */
-  private _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
-    if ((newValue !== undefined) && (oldValue !== undefined)) {
-      if (newValue !== oldValue) {
-        this.set('needsPhotoRefresh', true);
-      }
-    }
-  }
-
-  /**
-   * Observer: waiter changed
-   *
-   * @param newValue - state
-   */
-  private _waitForLoadChanged(newValue: boolean) {
-    if (newValue === false) {
-      if (this.waiterStatus !== undefined) {
-        this.set('waiterStatus', '');
-      }
-    }
-  }
-
 }
