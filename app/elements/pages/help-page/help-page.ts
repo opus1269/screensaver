@@ -4,39 +4,52 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../../elements/setting-elements/setting-link/setting-link.js';
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import '../../../elements/shared-styles.js';
+
+import BaseElement from '../../base-element/base-element.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
 import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for the Help page
- *
- * @PolymerElement
  */
-const HelpPage = Polymer({
-  // language=HTML format=false
-  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('help-page')
+export default class HelpPage extends BaseElement {
+
+  /** Path to our Github repo */
+  @property({type: String})
+  protected readonly githubPath = MyUtils.getGithubPath();
+
+  /** Path to our Web Site */
+  @property({type: String})
+  protected readonly githubPagesPath = MyUtils.getGithubPagesPath();
+
+  /** Extension version */
+  @property({type: String})
+  protected readonly version = encodeURIComponent(ChromeUtils.getVersion());
+
+  /**
+   * computed binding: Get a mailto url
+   *
+   * @param subject - email subject
+   * @returns url
+   */
+  private _computeMailToUrl(subject: string) {
+    return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
 
   :host {
     display: block;
@@ -77,7 +90,7 @@ const HelpPage = Polymer({
     <setting-link label="{{localize('help_translations')}}" name="translations"
                   icon="myicons:info" url="[[githubPagesPath]]translate.html"></setting-link>
     <setting-link label="{{localize('help_release_notes')}}" name="releaseNotes" icon="myicons:github"
-                  url="[[githubPath]]releases/tag/v[[_computeVersion()]]"></setting-link>
+                  url="[[githubPath]]releases/tag/v[[version]]"></setting-link>
     <setting-link label="{{localize('help_contributors')}}" name="contributors" icon="myicons:github"
                   url="[[githubPath]]blob/master/CONTRIBUTORS.md"></setting-link>
     <setting-link label="{{localize('help_licenses')}}" name="licenses" icon="myicons:github"
@@ -86,55 +99,6 @@ const HelpPage = Polymer({
                   icon="myicons:github" url="[[githubPath]]"></setting-link>
   </div>
 </paper-material>
-`,
-
-  is: 'help-page',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** Path to our Github repo */
-    githubPath: {
-      type: String,
-      value: function() {
-        return MyUtils.getGithubPath();
-      },
-      readOnly: true,
-    },
-
-    /** Path to our Web Site */
-    githubPagesPath: {
-      type: String,
-      value: function() {
-        return MyUtils.getGithubPagesPath();
-      },
-      readOnly: true,
-    },
-  },
-
-  /**
-   * computed binding: Get a mailto url
-   *
-   * @param subject - email subject
-   * @returns url
-   */
-  _computeMailToUrl: function(subject: string) {
-    return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
-  },
-
-  /**
-   * computed binding: Get the extension version
-   *
-   * @returns Version of the extension encoded for url
-   */
-  _computeVersion: function() {
-    const text = ChromeUtils.getVersion();
-    return encodeURIComponent(text);
-  },
-});
-
-export default HelpPage;
-
+`;
+  }
+}
