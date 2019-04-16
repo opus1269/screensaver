@@ -16,7 +16,7 @@ import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation
  * Polymer element to provide an animatable slide
  */
 @customElement('slide-animatable')
-export default class SlideAnimatable extends
+export default class ScreensaverSlide extends
     (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => PolymerElement) {
 
   /** Configuration of the current animation */

@@ -24,7 +24,7 @@ import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
-import '../../elements/slide-animatable/slide-animatable.js';
+import '../../elements/screensaver-slide/screensaver-slide.js';
 import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
 import '../../elements/weather-element/weather-element.js';
 
@@ -191,7 +191,7 @@ Polymer({
 <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
     <template is="dom-repeat" id="repeatTemplate" as="view" items="[[_views]]">
-      <slide-animatable ani-type="[[aniType]]" class="fit">
+      <screensaver-slide ani-type="[[aniType]]" class="fit">
         <section id="view[[index]]">
           <iron-image-ken-burns
               class="image"
@@ -207,7 +207,7 @@ Polymer({
           <div class="location">[[view.locationLabel]]</div>
           <weather-element class="weather"></weather-element>
         </section>
-      </slide-animatable>
+      </screensaver-slide>
     </template>
   </neon-animated-pages>
 </div>
