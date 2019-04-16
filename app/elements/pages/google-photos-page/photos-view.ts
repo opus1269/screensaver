@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import PhotoCat from './photo_cat.js';
+import PhotoCat from './photo_cat';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {

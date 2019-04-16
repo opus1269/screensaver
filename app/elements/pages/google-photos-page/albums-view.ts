@@ -4,6 +4,10 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
+import {IronListElement} from '../../../node_modules/@polymer/iron-list/iron-list';
+import {Album, SelectedAlbum} from '../../../scripts/sources/photo_source_google';
+
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
   customElement,
@@ -12,8 +16,6 @@ import {
   observe,
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
-
-import {IronListElement} from '../../../node_modules/@polymer/iron-list/iron-list.js';
 
 import '../../../node_modules/@polymer/iron-list/iron-list.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
@@ -34,10 +36,11 @@ import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-mai
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/my_icons.js';
 
+import * as Permissions from '../../../scripts/permissions.js';
+import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
+
 import * as MyGA from '../../../scripts/my_analytics.js';
 import * as MyMsg from '../../../scripts/my_msg.js';
-import * as Permissions from '../../../scripts/permissions.js';
-import {GoogleSource, Album, SelectedAlbum} from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';

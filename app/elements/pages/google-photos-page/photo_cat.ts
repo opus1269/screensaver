@@ -4,6 +4,7 @@
  ~ https://opensource.org/licenses/Apache-2.0
  ~ https://goo.gl/wFvBM1
  */
+
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
