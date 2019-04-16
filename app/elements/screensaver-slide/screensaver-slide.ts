@@ -20,6 +20,7 @@ import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
 import '../../elements/weather-element/weather-element.js';
 
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
+import * as SSViews from '../../scripts/screensaver/ss_views.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
@@ -200,8 +201,7 @@ export default class ScreensaverSlide extends
       if ('Google User' === theType) {
         // Google baseUrl may have expired, try to update some photos
 
-        // TODO have to use cors to get status code
-        // TODO so have to have permission from site
+        // TODO have to use cors to get status code, so have to have permission from site
         // first, fetch again and check status - only handle 403 errors
         // const url = photo.getUrl();
         // try {
@@ -281,19 +281,7 @@ export default class ScreensaverSlide extends
         SSPhotos.updateGooglePhotoUrls(newPhotos);
 
         // update any views with the new google photos
-        // TODO fix
-        // for (const view of this._views) {
-        //   const photo = view.photo;
-        //   const type = photo.getType();
-        //   if (type === 'Google User') {
-        //     const index = newPhotos.findIndex((e) => {
-        //       return e.ex.id === photo.getEx().id;
-        //     });
-        //     if (index >= 0) {
-        //       view.setUrl(newPhotos[index].url);
-        //     }
-        //   }
-        // }
+        SSViews.updateAllUrls(newPhotos);
 
         // persist new baseUrls to albumSelections
         const updated = await GoogleSource.updateBaseUrls(newPhotos);

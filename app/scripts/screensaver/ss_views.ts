@@ -14,6 +14,7 @@ import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animati
 import ScreensaverSlide from '../../elements/screensaver-slide/screensaver-slide';
 import SSView from './views/ss_view';
 import SSPhoto from './ss_photo';
+import {Photo} from '../sources/photo_source';
 
 import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
@@ -231,6 +232,25 @@ export function replaceAll() {
     }
   }
   SSHistory.clear();
+}
+/**
+ * Update the url in all the views
+ *
+ * @param photos - Photos whose url's have changed
+ */
+export function updateAllUrls(photos: Photo[]) {
+  for (const view of _views) {
+    const photo = view.photo;
+    const type = photo.getType();
+    if (type === 'Google User') {
+      const index = photos.findIndex((e) => {
+        return e.ex.id === photo.getEx().id;
+      });
+      if (index >= 0) {
+        view.setUrl(photos[index].url);
+      }
+    }
+  }
 }
 
 /**
