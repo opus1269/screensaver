@@ -24,6 +24,8 @@ import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
 import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
+import BaseElement from '../../elements/base-element/base-element.js';
+
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
 import '../../scripts/screensaver/ss_events.js';
@@ -44,7 +46,6 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-import BaseElement from '../base-element/base-element.js';
 
 declare var ChromePromise: any;
 
@@ -87,6 +88,51 @@ export let setPaused: (arg0: boolean) => void = null;
  */
 @customElement('screensaver-element')
 export class ScreensaverElement extends BaseElement {
+
+  /**
+   * Load the {@link SSPhotos} that will be displayed
+   *
+   * @throws An error if we failed to load photos
+   * @returns true if there is at least one photo
+   */
+  private static async _loadPhotos() {
+    let sources = PhotoSources.getSelectedSources();
+    sources = sources || [];
+
+    for (const source of sources) {
+      await SSPhotos.addFromSource(source);
+    }
+
+    if (!SSPhotos.getCount()) {
+      // No usable photos
+      setNoPhotos();
+      return Promise.resolve(false);
+    }
+
+    if (ChromeStorage.getBool('shuffle')) {
+      // randomize the order
+      SSPhotos.shuffle();
+    }
+
+    return Promise.resolve(true);
+  }
+
+  /**
+   * Set the window zoom factor to 1.0
+   */
+  private static async _setZoom() {
+    const chromep = new ChromePromise();
+    try {
+      const zoomFactor = await chromep.tabs.getZoom();
+      if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
+        chrome.tabs.setZoom(1.0);
+      }
+    } catch (err) {
+      ChromeGA.error(err.message, 'SS._setZoom');
+    }
+
+    return Promise.resolve();
+  }
 
   /** Array of {@link SSView} objects */
   @property({type: Array})
@@ -198,7 +244,7 @@ export class ScreensaverElement extends BaseElement {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
 
-      await this._setZoom();
+      await ScreensaverElement._setZoom();
 
       this._setupPhotoTransitions();
 
@@ -268,23 +314,6 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Set the window zoom factor to 1.0
-   */
-  private async _setZoom() {
-    const chromep = new ChromePromise();
-    try {
-      const zoomFactor = await chromep.tabs.getZoom();
-      if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {
-        chrome.tabs.setZoom(1.0);
-      }
-    } catch (err) {
-      ChromeGA.error(err.message, 'SS._setZoom');
-    }
-
-    return Promise.resolve();
-  }
-
-  /**
    * Set the time label
    */
   private _setTimeLabel() {
@@ -297,41 +326,13 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Load the {@link SSPhotos} that will be displayed
-   *
-   * @throws An error if we failed to load photos
-   * @returns true if there is at least one photo
-   */
-  private async _loadPhotos() {
-    let sources = PhotoSources.getSelectedSources();
-    sources = sources || [];
-
-    for (const source of sources) {
-      await SSPhotos.addFromSource(source);
-    }
-
-    if (!SSPhotos.getCount()) {
-      // No usable photos
-      setNoPhotos();
-      return Promise.resolve(false);
-    }
-
-    if (ChromeStorage.getBool('shuffle')) {
-      // randomize the order
-      SSPhotos.shuffle();
-    }
-
-    return Promise.resolve(true);
-  }
-
-  /**
    * Launch the slide show
    *
    * @param delay - delay in milli sec before start
    */
   private async _launch(delay: number = 2000) {
     try {
-      const hasPhotos = await this._loadPhotos();
+      const hasPhotos = await ScreensaverElement._loadPhotos();
       if (hasPhotos) {
         // initialize the views
         SSViews.initialize(this.pages);
