@@ -6,24 +6,24 @@
  */
 
 import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, observe} from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {customElement, property, observe, listen} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
-import SSView from '../../scripts/screensaver/views/ss_view.js';
+
+import SSView from '../../scripts/screensaver/views/ss_view';
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
-import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
-import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import BaseElement from '../base-element/base-element.js';
-
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
 import '../../elements/weather-element/weather-element.js';
 
-import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
+import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 
 /**
  * Object to handle Google Photos load errors
@@ -98,69 +98,10 @@ export default class ScreensaverSlide extends
   @property({type: Number})
   protected aniType = 0;
 
-  /**
-   * Animation type changed
-   *
-   * @param newValue - new type
-   */
-  @observe('aniType')
-  private aniChanged(newValue: number) {
-    let entry;
-    let exit;
-    let dur = 2000;
-
-    switch (newValue) {
-      case 0:
-        entry = 'scale-up-animation';
-        exit = 'scale-down-animation';
-        break;
-      case 1:
-        entry = 'fade-in-animation';
-        exit = 'fade-out-animation';
-        break;
-      case 2:
-        entry = 'slide-from-right-animation';
-        exit = 'slide-left-animation';
-        break;
-      case 3:
-        entry = 'slide-from-top-animation';
-        exit = 'slide-up-animation';
-        break;
-      case 4:
-        entry = 'spin-up-animation';
-        exit = 'spin-down-animation';
-        dur = 3000;
-        break;
-      case 5:
-        entry = 'slide-from-bottom-animation';
-        exit = 'slide-down-animation';
-        break;
-      case 6:
-        entry = 'slide-from-bottom-animation';
-        exit = 'slide-up-animation';
-        break;
-      case 7:
-        entry = 'slide-from-left-animation';
-        exit = 'slide-left-animation';
-        break;
-      default:
-        entry = 'fade-in-animation';
-        exit = 'fade-out-animation';
-        break;
-    }
-
-    this.animationConfig.entry.name = entry;
-    this.animationConfig.entry.timing.duration = dur;
-    this.animationConfig.exit.name = exit;
-    this.animationConfig.exit.timing.duration = dur;
-  }
-
   static get template() {
     // language=HTML format=false
     return html`
-<style include="iron-flex iron-flex-alignment iron-positioning"></style>
-<style include="shared-styles"></style>
-<style>
+<style include="shared-styles iron-flex iron-flex-alignment iron-positioning">
   :host {
     display: block;
   }
@@ -218,12 +159,12 @@ export default class ScreensaverSlide extends
 </style>
 <section id="view[[index]]">
   <iron-image-ken-burns
+      id="ironImage"
       class="image"
       src="[[view.url]]"
       width="[[screenWidth]]"
       height="[[screenHeight]]"
       sizing="[[sizingType]]"
-      on-error-changed="_onErrorChanged"
       preload>
   </iron-image-ken-burns>
   <div class="time">[[timeLabel]]</div>
@@ -235,10 +176,12 @@ export default class ScreensaverSlide extends
   }
 
   /**
-   * Event: Error state changed for a photo view
+   * Event: Error state changed for the iron-image-ken-burns
+   *
    * @param ev - the event object
    */
-  private async _onErrorChanged(ev: any) {
+  @listen('error-changed', 'ironImage')
+  public async onErrorChanged(ev: any) {
     const isError: boolean = ev.detail.value;
 
     if (_errHandler.isUpdating) {
@@ -366,4 +309,60 @@ export default class ScreensaverSlide extends
     }
   }
 
+  /**
+   * Animation type changed
+   *
+   * @param newValue - new type
+   */
+  @observe('aniType')
+  private aniChanged(newValue: number) {
+    let entry;
+    let exit;
+    let dur = 2000;
+
+    switch (newValue) {
+      case 0:
+        entry = 'scale-up-animation';
+        exit = 'scale-down-animation';
+        break;
+      case 1:
+        entry = 'fade-in-animation';
+        exit = 'fade-out-animation';
+        break;
+      case 2:
+        entry = 'slide-from-right-animation';
+        exit = 'slide-left-animation';
+        break;
+      case 3:
+        entry = 'slide-from-top-animation';
+        exit = 'slide-up-animation';
+        break;
+      case 4:
+        entry = 'spin-up-animation';
+        exit = 'spin-down-animation';
+        dur = 3000;
+        break;
+      case 5:
+        entry = 'slide-from-bottom-animation';
+        exit = 'slide-down-animation';
+        break;
+      case 6:
+        entry = 'slide-from-bottom-animation';
+        exit = 'slide-up-animation';
+        break;
+      case 7:
+        entry = 'slide-from-left-animation';
+        exit = 'slide-left-animation';
+        break;
+      default:
+        entry = 'fade-in-animation';
+        exit = 'fade-out-animation';
+        break;
+    }
+
+    this.animationConfig.entry.name = entry;
+    this.animationConfig.entry.timing.duration = dur;
+    this.animationConfig.exit.name = exit;
+    this.animationConfig.exit.timing.duration = dur;
+  }
 }
