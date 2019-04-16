@@ -4,81 +4,53 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+
+import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, observe} from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
+import BaseElement from '../base-element/base-element.js';
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Module for the SlideAnimatable
- * @module els/slide_animatable
- */
-
 /**
  * Polymer element to provide an animatable slide
- * @type {{}}
- * @alias module:els/slide_animatable.SlideAnimatable
- * @PolymerElement
  */
-const SlideAnimatable = Polymer({
-  // language=HTML format=false
-  _template: html`<style>
-  :host {
-    display: block;
-  }
-</style>
-<slot></slot>
-`,
+@customElement('slide-animatable')
+export default class SlideAnimatable extends
+    (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => PolymerElement) {
 
-  is: 'slide-animatable',
-
-  behaviors: [
-    NeonAnimatableBehavior,
-  ],
-
-  properties: {
-
-    /** Configuration of the current animation */
-    animationConfig: {
-      type: Object,
-      value: function() {
-        return {
-          entry: {
-            name: 'fade-in-animation',
-            node: this,
-            timing: {
-              duration: 2000,
-              easing: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)',
-            },
-          },
-          exit: {
-            name: 'fade-out-animation',
-            node: this,
-            timing: {
-              duration: 2000,
-              easing: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)',
-            },
-          },
-        };
+  /** Configuration of the current animation */
+  @property({type: Object})
+  protected animationConfig = {
+    entry: {
+      name: 'fade-in-animation',
+      node: this,
+      timing: {
+        duration: 2000,
+        easing: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)',
       },
     },
-
-    /** Index of animation to use */
-    aniType: {
-      type: Number,
-      observer: '_aniChanged',
+    exit: {
+      name: 'fade-out-animation',
+      node: this,
+      timing: {
+        duration: 2000,
+        easing: 'cubic-bezier(0.455, 0.03, 0.515, 0.955)',
+      },
     },
-  },
+  };
+
+  /** Index of animation to use */
+  @property({type: Number})
+  protected aniType = 0;
 
   /**
-   * Observer: Animation type changed
-   * @param {int} newValue - new animation type
-   * @private
+   * Animation type changed
+   *
+   * @param newValue - new type
    */
-  _aniChanged: function(newValue: number) {
+  @observe('aniType')
+  private aniChanged(newValue: number) {
     let entry;
     let exit;
     let dur = 2000;
@@ -127,8 +99,17 @@ const SlideAnimatable = Polymer({
     this.animationConfig.entry.timing.duration = dur;
     this.animationConfig.exit.name = exit;
     this.animationConfig.exit.timing.duration = dur;
-  },
-});
+  }
 
-export default SlideAnimatable;
+  static get template() {
+    // language=HTML format=false
+    return html`<style>
+  :host {
+    display: block;
+  }
+</style>
+<slot></slot>
+`;
+  }
 
+}
