@@ -51,19 +51,19 @@ export default class GooglePhotosPage extends BaseElement {
 
   /** Select by albums or photos */
   @property({type: Boolean, notify: true})
-  public isAlbumMode: boolean = true;
+  public isAlbumMode = true;
 
   /** Should we use the Google Photos in the screensaver */
   @property({type: Boolean, notify: true})
-  public useGoogle: boolean = true;
+  public useGoogle = true;
 
   /** Should we use album photos in the screensaver */
   @property({type: Boolean, notify: true})
-  public useGoogleAlbums: boolean = true;
+  public useGoogleAlbums = true;
 
   /** Should we use google photos in the screensaver */
   @property({type: Boolean, notify: true})
-  public useGooglePhotos: boolean = false;
+  public useGooglePhotos = false;
 
   /** Page title */
   @computed('isAlbumMode')
@@ -314,7 +314,7 @@ export default class GooglePhotosPage extends BaseElement {
    * @param isAlbumMode - true if album mode
    * @param useGoogle - true if using Google Photos
    */
-  @observe('isAlbumMode, useGoogle')
+  @observe('isAlbumMode', 'useGoogle')
   private uiStateChanged(isAlbumMode: boolean, useGoogle: boolean) {
     if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
       return;

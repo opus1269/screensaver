@@ -131,15 +131,15 @@ export default class AlbumsView extends BaseElement {
 
   /** Flag to indicate if UI is disabled */
   @property({type: Boolean})
-  public disabled: boolean = false;
+  public disabled = false;
 
   /** Flag to display the loading... UI */
   @property({type: Boolean})
-  public waitForLoad: boolean = false;
+  public waitForLoad = false;
 
   /** Status label for waiter */
   @property({type: Boolean})
-  public waiterStatus: string = '';
+  public waiterStatus = '';
 
   /** Hidden state of the main ui */
   @computed('waitForLoad', 'permPicasa')
@@ -369,7 +369,7 @@ export default class AlbumsView extends BaseElement {
    * @param waitForLoad
    * @param waiterStatus
    */
-  @observe('waitForLoad, waiterStatus')
+  @observe('waitForLoad', 'waiterStatus')
   private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
     if (!waitForLoad) {
       this.ironList._render();

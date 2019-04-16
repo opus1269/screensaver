@@ -69,15 +69,15 @@ export default class PhotosView extends BaseElement {
 
   /** Do we need to reload the photos */
   @property({type: Boolean, notify: true})
-  public needsPhotoRefresh: boolean = true;
+  public needsPhotoRefresh = true;
 
   /** Count for photo mode */
   @property({type: Number, notify: true})
-  public photoCount: number = 0;
+  public photoCount = 0;
 
   /** Flag to indicate if we should not filter photos */
   @property({type: Boolean, notify: true, observer: '_noFilterChanged'})
-  public noFilter: boolean = true;
+  public noFilter = true;
 
   /** Status of the option permission for the Google Photos API */
   @property({type: String, notify: true})
@@ -85,15 +85,15 @@ export default class PhotosView extends BaseElement {
 
   /** Flag to indicate if UI is disabled */
   @property({type: Boolean})
-  public disabled: boolean = false;
+  public disabled = false;
 
   /** Flag to display the loading... UI */
   @property({type: Boolean})
-  public waitForLoad: boolean = false;
+  public waitForLoad = false;
 
   /** Status label for waiter */
   @property({type: Boolean})
-  public waiterStatus: string = '';
+  public waiterStatus = '';
 
   /** Hidden state of the main ui */
   @computed('waitForLoad', 'permPicasa')
@@ -294,7 +294,7 @@ export default class PhotosView extends BaseElement {
    * @param waitForLoad
    * @param waiterStatus
    */
-  @observe('waitForLoad, waiterStatus')
+  @observe('waitForLoad', 'waiterStatus')
   private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
     if (!waitForLoad && waiterStatus) {
       this.set('waiterStatus', '');
