@@ -9,7 +9,7 @@
  * Control the running of a {@link Screensaver}
  */
 
-import {Screensaver} from '../../scripts/screensaver/screensaver.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSHistory from './ss_history.js';
 import * as SSViews from './ss_views.js';

@@ -29,6 +29,7 @@ import BaseElement from '../../elements/base-element/base-element.js';
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
 import '../../scripts/screensaver/ss_events.js';
+
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
@@ -47,9 +48,6 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 declare var ChromePromise: any;
 
-/**
- * Transition animation type
- */
 export enum TRANS_TYPE {
   SCALE_UP = 0,
   FADE,
@@ -79,11 +77,44 @@ const _errHandler = {
   lastTime: 0,
 };
 
+export let setViews: (views: SSView[]) => void = null;
+export let isNoPhotos: () => boolean = null;
+export let setNoPhotos: () => void = null;
+export let setPaused: (arg0: boolean) => void = null;
+
 /**
  * Polymer element to display a screensaver
  */
 @customElement('screensaver-element')
-export default class ScreensaverElement extends BaseElement {
+export class ScreensaverElement extends BaseElement {
+
+  /**
+   * Load the {@link SSPhotos} that will be displayed
+   *
+   * @throws An error if we failed to load photos
+   * @returns true if there is at least one photo
+   */
+  private static async _loadPhotos() {
+    let sources = PhotoSources.getSelectedSources();
+    sources = sources || [];
+
+    for (const source of sources) {
+      await SSPhotos.addFromSource(source);
+    }
+
+    if (!SSPhotos.getCount()) {
+      // No usable photos
+      setNoPhotos();
+      return Promise.resolve(false);
+    }
+
+    if (ChromeStorage.getBool('shuffle')) {
+      // randomize the order
+      SSPhotos.shuffle();
+    }
+
+    return Promise.resolve(true);
+  }
 
   /**
    * Set the window zoom factor to 1.0
@@ -138,6 +169,12 @@ export default class ScreensaverElement extends BaseElement {
     document.body.style.background = ChromeStorage.get('background',
         'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
+    // Initialize exports
+    setViews = this.setViews.bind(this);
+    isNoPhotos = this.isNoPhotos.bind(this);
+    setNoPhotos = this.setNoPhotos.bind(this);
+    setPaused = this.setPaused.bind(this);
+
     setTimeout(async () => {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
@@ -188,34 +225,6 @@ export default class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Load the {@link SSPhotos} that will be displayed
-   *
-   * @throws An error if we failed to load photos
-   * @returns true if there is at least one photo
-   */
-  private async _loadPhotos() {
-    let sources = PhotoSources.getSelectedSources();
-    sources = sources || [];
-
-    for (const source of sources) {
-      await SSPhotos.addFromSource(source);
-    }
-
-    if (!SSPhotos.getCount()) {
-      // No usable photos
-      this.setNoPhotos();
-      return Promise.resolve(false);
-    }
-
-    if (ChromeStorage.getBool('shuffle')) {
-      // randomize the order
-      SSPhotos.shuffle();
-    }
-
-    return Promise.resolve(true);
-  }
-
-  /**
    * Process settings related to between photo transitions
    */
   private _setupPhotoTransitions() {
@@ -258,7 +267,7 @@ export default class ScreensaverElement extends BaseElement {
    */
   private async _launch(delay: number = 2000) {
     try {
-      const hasPhotos = await this._loadPhotos();
+      const hasPhotos = await ScreensaverElement._loadPhotos();
       if (hasPhotos) {
         // initialize the views
         SSViews.initialize(this.pages);
@@ -274,7 +283,7 @@ export default class ScreensaverElement extends BaseElement {
       }
     } catch (err) {
       ChromeLog.error(err.message, 'SS._launch');
-      this.setNoPhotos();
+      setNoPhotos();
     }
 
     return Promise.resolve();
@@ -282,14 +291,13 @@ export default class ScreensaverElement extends BaseElement {
 
 
   /**
-   * Simple Observer: Paused state changed
+   * Observer: Paused state changed
    *
    * @param newValue - new value
    * @param oldValue - old value
    */
   private _pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if (typeof oldValue === 'undefined') {
-      // so it doesn't call the first time
       return;
     }
     if (newValue) {

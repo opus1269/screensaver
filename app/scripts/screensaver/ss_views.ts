@@ -16,7 +16,7 @@ import SSView from './views/ss_view';
 import SSPhoto from './ss_photo';
 import {Photo} from '../sources/photo_source';
 
-import {Screensaver} from '../../scripts/screensaver/screensaver.js';
+import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
