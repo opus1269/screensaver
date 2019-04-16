@@ -8,16 +8,68 @@
 import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, observe} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
+import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import BaseElement from '../base-element/base-element.js';
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
+
+import '../../elements/animations/spin-up-animation/spin-up-animation.js';
+import '../../elements/animations/spin-down-animation/spin-down-animation.js';
+import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
+import '../../elements/weather-element/weather-element.js';
+
+import SSView from '../../scripts/screensaver/views/ss_view.js';
+
+/**
+ * Object to handle Google Photos load errors
+ *
+ * @property MAX_COUNT - max times to call
+ * @property count - count of calls
+ * @property isUpdating - true if an event is handling an error
+ * @property TIME_LIMIT - throttle calls to this fast in case something weird happens
+ * @property lastTime - last time called
+ */
+const _errHandler = {
+  MAX_COUNT: 168, // about a weeks worth, if all goes well
+  count: 0,
+  isUpdating: false,
+  TIME_LIMIT: (5 * 60000), // five minutes in milli sec
+  lastTime: 0,
+};
 
 /**
  * Polymer element to provide an animatable slide
  */
 @customElement('screensaver-slide')
 export default class ScreensaverSlide extends
-    (mixinBehaviors(NeonAnimatableBehavior, BaseElement) as new () => PolymerElement) {
+    (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => PolymerElement) {
+
+  /** The SSView we contain */
+  @property({type: Number})
+  protected sizingType = 0;
+
+  /** The SSView we contain */
+  @property({type: Object})
+  protected view: SSView = null;
+
+  /** The index of our view */
+  @property({type: Number})
+  protected index = 0;
+
+  /** Screen width */
+  @property({type: Number})
+  protected readonly screenWidth = screen.width;
+
+  /** Screen height */
+  @property({type: Number})
+  protected readonly screenHeight = screen.height;
+
+  /** Label for current time */
+  @property({type: String})
+  protected timeLabel = '';
 
   /** Configuration of the current animation */
   @property({type: Object})
@@ -101,15 +153,217 @@ export default class ScreensaverSlide extends
     this.animationConfig.exit.timing.duration = dur;
   }
 
+  static get is() { return 'screensaver-slide'; }
+
   static get template() {
     // language=HTML format=false
-    return html`<style>
+    return html`
+<style include="iron-flex iron-flex-alignment iron-positioning"></style>
+<style include="shared-styles"></style>
+<style>
   :host {
     display: block;
   }
+
+  .time {
+    font-size: 5.25vh;
+    font-weight: 200;
+    position: fixed;
+    right: 1vw;
+    bottom: 3.5vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+
+  .weather {
+    font-size: 5.25vh;
+    font-weight: 200;
+    position: fixed;
+    left: 1vw;
+    bottom: 3.5vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+
+  .author {
+    font-size: 2.5vh;
+    font-weight: 300;
+    position: fixed;
+    overflow: hidden;
+    right: 1vw;
+    bottom: 1vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+
+  .location {
+    font-size: 2.5vh;
+    font-weight: 300;
+    position: fixed;
+    overflow: hidden;
+    left: 1vw;
+    bottom: 1vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+  
 </style>
-<slot></slot>
+<section id="view[[index]]">
+  <iron-image-ken-burns
+      class="image"
+      src="[[view.url]]"
+      width="[[screenWidth]]"
+      height="[[screenHeight]]"
+      sizing="[[sizingType]]"
+      on-error-changed="_onErrorChanged"
+      preload>
+  </iron-image-ken-burns>
+  <div class="time">[[timeLabel]]</div>
+  <div class="author">[[view.authorLabel]]</div>
+  <div class="location">[[view.locationLabel]]</div>
+  <weather-element class="weather"></weather-element>
+</section>
 `;
+  }
+
+  /**
+   * Event: Error state changed for a photo view
+   * @param ev - the event object
+   */
+  private async _onErrorChanged(ev: any) {
+    const isError: boolean = ev.detail.value;
+
+    if (_errHandler.isUpdating) {
+      // another error event is already handling this
+      return;
+    }
+
+    if (isError) {
+      // url failed to load
+      _errHandler.isUpdating = true;
+
+      const theIndex = this.index;
+      const theView = this.view;
+      const thePhoto = theView.photo;
+      const theType = thePhoto.getType();
+      if ('Google User' === theType) {
+        // Google baseUrl may have expired, try to update some photos
+
+        // TODO have to use cors to get status code
+        // TODO so have to have permission from site
+        // first, fetch again and check status - only handle 403 errors
+        // const url = photo.getUrl();
+        // try {
+        //   const response = await fetch(url, {
+        //     method: 'get',
+        //   });
+        //   const status = response.status;
+        //   console.log(status);
+        //   if (status !== 403) {
+        //     // some other problem, don't know how to fix it
+        //     _isUpdating = false;
+        //     return;
+        //   }
+        // } catch (err) {
+        //   // some other problem, don't know how to fix it
+        //   console.log(err);
+        //   _isUpdating = false;
+        //   return;
+        // }
+
+        // throttle call rate to Google API per screensaver session
+        // in case something weird happens
+        if ((Date.now() - _errHandler.lastTime) < _errHandler.TIME_LIMIT) {
+          _errHandler.isUpdating = false;
+          return;
+        }
+
+        // limit max number of calls to Google API per screensaver session
+        // in case something weird happens
+        _errHandler.count++;
+        if (_errHandler.count >= _errHandler.MAX_COUNT) {
+          _errHandler.isUpdating = false;
+          return;
+        }
+
+        // update last call time
+        _errHandler.lastTime = Date.now();
+
+        // Calculate an hours worth of photos max
+        const transTime = SSRunner.getWaitTime();
+        let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
+        // do at least 50, still one rpc. will help when displaying
+        // a lot for short times
+        nPhotos = Math.max(nPhotos, 50);
+
+        if (_errHandler.count === 1) {
+          // limit to 50 on first call for quicker starts
+          nPhotos = Math.min(nPhotos, 50);
+        } else {
+          // limit to 300 on subsequent calls
+          nPhotos = Math.min(nPhotos, 300);
+        }
+
+        // get max of nPhotos Google Photo ids starting at this one
+        const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
+        const ids = [];
+        for (const photo of photos) {
+          // unique ids only - required for batchGet call
+          const id = photo.getEx().id;
+          if (ids.indexOf(id) === -1) {
+            ids.push(id);
+          }
+        }
+
+        let newPhotos = [];
+        try {
+          // load the new photos from Google Photos
+          newPhotos = await GoogleSource.loadPhotos(ids);
+        } catch (err) {
+          // major problem, give up for this session
+          _errHandler.count = _errHandler.MAX_COUNT + 1;
+          _errHandler.isUpdating = true;
+          return;
+        }
+
+        // update the Google Photos baseUrls for this screensaver session
+        SSPhotos.updateGooglePhotoUrls(newPhotos);
+
+        // update any views with the new google photos
+        // TODO fix
+        // for (const view of this._views) {
+        //   const photo = view.photo;
+        //   const type = photo.getType();
+        //   if (type === 'Google User') {
+        //     const index = newPhotos.findIndex((e) => {
+        //       return e.ex.id === photo.getEx().id;
+        //     });
+        //     if (index >= 0) {
+        //       view.setUrl(newPhotos[index].url);
+        //     }
+        //   }
+        // }
+
+        // persist new baseUrls to albumSelections
+        const updated = await GoogleSource.updateBaseUrls(newPhotos);
+        if (!updated) {
+          // major problem, give up for this session
+          _errHandler.count = _errHandler.MAX_COUNT + 1;
+          _errHandler.isUpdating = true;
+          return;
+        }
+
+        _errHandler.isUpdating = false;
+      }
+    }
   }
 
 }

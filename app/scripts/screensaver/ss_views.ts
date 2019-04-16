@@ -10,10 +10,11 @@
  * @module ss/views
  */
 
-import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
-import {PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
-import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image.js';
-import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
+import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
+import {PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element';
+import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
+import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
+import ScreensaverSlide from '../../elements/screensaver-slide/screensaver-slide';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -99,15 +100,15 @@ export function initialize(pages: NeonAnimatedPagesElement) {
   Screensaver.setViews(_views);
 
   // set the Elements of each view
+  const repeatTemplate: DomRepeat = _pages.querySelector('#repeatTemplate');
   _views.forEach((view: SSView, index: number) => {
-    const el: HTMLElement = _pages.querySelector('#view' + index);
-    const image: IronImageElement = el.querySelector('.image');
-    const author: HTMLDivElement = el.querySelector('.author');
-    const time: HTMLDivElement = el.querySelector('.time');
-    const location: HTMLDivElement = el.querySelector('.location');
-    const weather: PolymerElement = el.querySelector('.weather');
-    const repeatTemplate: DomRepeat = _pages.querySelector('#repeatTemplate');
-    const model = repeatTemplate.modelForElement(el);
+    const slide: ScreensaverSlide = _pages.querySelector('#view' + index);
+    const image: IronImageElement = slide.shadowRoot.querySelector('.image');
+    const author: HTMLDivElement = slide.shadowRoot.querySelector('.author');
+    const time: HTMLDivElement = slide.shadowRoot.querySelector('.time');
+    const location: HTMLDivElement = slide.shadowRoot.querySelector('.location');
+    const weather: PolymerElement = slide.shadowRoot.querySelector('.weather');
+    const model = repeatTemplate.modelForElement(slide);
     view.setElements(image, author, time, location, weather, model);
   });
 }
