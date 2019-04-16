@@ -158,106 +158,6 @@ export default class AlbumsView extends BaseElement {
   @query('#ironList')
   public ironList: IronListElement;
 
-  static get template() {
-    // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
-  :host {
-    display: block;
-    position: relative;
-  }
-
-  :host .waiter {
-    margin: 40px auto;
-  }
-
-  :host .waiter paper-item {
-    @apply --paper-font-title;
-    margin: 40px auto;
-  }
-
-  :host .list-note {
-    height: 48px;
-    @apply --paper-font-title;
-    border: 1px #CCCCCC;
-    border-bottom-style: solid;
-    padding: 8px 16px 8px 16px;
-    white-space: normal;
-  }
-
-  :host .list-item {
-    position: relative;
-    border: 1px #CCCCCC;
-    border-bottom-style: solid;
-    padding: 0 0 0 5px;
-    cursor: pointer;
-  }
-
-  :host .list-item paper-item-body {
-    padding-left: 10px;
-  }
-
-  :host .list-item paper-item {
-    padding-right: 0;
-  }
-
-  :host .list-item iron-image {
-    height: 72px;
-    width: 72px;
-  }
-
-  :host .list-item[disabled] iron-image {
-    opacity: .2;
-  }
-
-  :host .list-item[disabled] {
-    pointer-events: none;
-  }
-
-  :host .list-item[disabled] .setting-label {
-    color: var(--disabled-text-color);
-  }
-
-  :host #ironList {
-    /* browser viewport height minus both toolbars and note*/
-    height: calc(100vh - 193px);
-  }
-</style>
-
-<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
-                status-label="[[waiterStatus]]"></waiter-element>
-
-<div class="list-container" hidden$="[[isHidden]]">
-  <paper-item class="list-note">
-    [[localize('google_shared_albums_note')]]
-  </paper-item>
-
-  <iron-list id="ironList" mutable-data="true" items="{{albums}}" as="album">
-    <template>
-      <iron-label>
-        <div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
-          <paper-item class="center horizontal layout" tabindex="-1">
-            <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
-                            disabled$="[[disabled]]"></paper-checkbox>
-            <paper-item-body class="flex" two-line="">
-              <div class="setting-label">[[album.name]]</div>
-              <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
-              <paper-ripple center=""></paper-ripple>
-            </paper-item-body>
-            <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]"></iron-image>
-          </paper-item>
-        </div>
-      </iron-label>
-    </template>
-  </iron-list>
-
-  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
-  </app-localstorage-document>
-
-</div>
-
-`;
-  }
-
   /**
    * Element is ready
    */
@@ -557,5 +457,105 @@ export default class AlbumsView extends BaseElement {
       ret = `${count} ${ChromeLocale.localize('photo')}`;
     }
     return ret;
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .waiter {
+    margin: 40px auto;
+  }
+
+  :host .waiter paper-item {
+    @apply --paper-font-title;
+    margin: 40px auto;
+  }
+
+  :host .list-note {
+    height: 48px;
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 8px 16px 8px 16px;
+    white-space: normal;
+  }
+
+  :host .list-item {
+    position: relative;
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 0 0 0 5px;
+    cursor: pointer;
+  }
+
+  :host .list-item paper-item-body {
+    padding-left: 10px;
+  }
+
+  :host .list-item paper-item {
+    padding-right: 0;
+  }
+
+  :host .list-item iron-image {
+    height: 72px;
+    width: 72px;
+  }
+
+  :host .list-item[disabled] iron-image {
+    opacity: .2;
+  }
+
+  :host .list-item[disabled] {
+    pointer-events: none;
+  }
+
+  :host .list-item[disabled] .setting-label {
+    color: var(--disabled-text-color);
+  }
+
+  :host #ironList {
+    /* browser viewport height minus both toolbars and note*/
+    height: calc(100vh - 193px);
+  }
+</style>
+
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
+                status-label="[[waiterStatus]]"></waiter-element>
+
+<div class="list-container" hidden$="[[isHidden]]">
+  <paper-item class="list-note">
+    [[localize('google_shared_albums_note')]]
+  </paper-item>
+
+  <iron-list id="ironList" mutable-data="true" items="{{albums}}" as="album">
+    <template>
+      <iron-label>
+        <div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
+          <paper-item class="center horizontal layout" tabindex="-1">
+            <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
+                            disabled$="[[disabled]]"></paper-checkbox>
+            <paper-item-body class="flex" two-line="">
+              <div class="setting-label">[[album.name]]</div>
+              <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
+              <paper-ripple center=""></paper-ripple>
+            </paper-item-body>
+            <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]"></iron-image>
+          </paper-item>
+        </div>
+      </iron-label>
+    </template>
+  </iron-list>
+
+  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  </app-localstorage-document>
+
+</div>
+
+`;
   }
 }

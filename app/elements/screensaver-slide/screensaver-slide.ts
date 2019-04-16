@@ -75,6 +75,76 @@ export default class ScreensaverSlide extends
     },
   };
 
+  /**
+   * Event: Image loading error
+   */
+  @listen('error-changed', 'ironImage')
+  public onErrorChanged() {
+    const customEvent = new CustomEvent('image-error', {
+      bubbles: true,
+      composed: true,
+      detail: {index: this.index},
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  /**
+   * Animation type changed
+   *
+   * @param newValue - new type
+   */
+  @observe('aniType')
+  private aniChanged(newValue: number) {
+    let entry;
+    let exit;
+    let dur = 2000;
+
+    switch (newValue) {
+      case 0:
+        entry = 'scale-up-animation';
+        exit = 'scale-down-animation';
+        break;
+      case 1:
+        entry = 'fade-in-animation';
+        exit = 'fade-out-animation';
+        break;
+      case 2:
+        entry = 'slide-from-right-animation';
+        exit = 'slide-left-animation';
+        break;
+      case 3:
+        entry = 'slide-from-top-animation';
+        exit = 'slide-up-animation';
+        break;
+      case 4:
+        entry = 'spin-up-animation';
+        exit = 'spin-down-animation';
+        dur = 3000;
+        break;
+      case 5:
+        entry = 'slide-from-bottom-animation';
+        exit = 'slide-down-animation';
+        break;
+      case 6:
+        entry = 'slide-from-bottom-animation';
+        exit = 'slide-up-animation';
+        break;
+      case 7:
+        entry = 'slide-from-left-animation';
+        exit = 'slide-left-animation';
+        break;
+      default:
+        entry = 'fade-in-animation';
+        exit = 'fade-out-animation';
+        break;
+    }
+
+    this.animationConfig.entry.name = entry;
+    this.animationConfig.entry.timing.duration = dur;
+    this.animationConfig.exit.name = exit;
+    this.animationConfig.exit.timing.duration = dur;
+  }
+
   static get template() {
     // language=HTML format=false
     return html`
@@ -151,75 +221,4 @@ export default class ScreensaverSlide extends
 </section>
 `;
   }
-
-  /**
-   * Event: Image loading error
-   */
-  @listen('error-changed', 'ironImage')
-  public onErrorChanged() {
-    const customEvent = new CustomEvent('image-error', {
-      bubbles: true,
-      composed: true,
-      detail: {index: this.index},
-    });
-    this.dispatchEvent(customEvent);
-  }
-
-  /**
-   * Animation type changed
-   *
-   * @param newValue - new type
-   */
-  @observe('aniType')
-  private aniChanged(newValue: number) {
-    let entry;
-    let exit;
-    let dur = 2000;
-
-    switch (newValue) {
-      case 0:
-        entry = 'scale-up-animation';
-        exit = 'scale-down-animation';
-        break;
-      case 1:
-        entry = 'fade-in-animation';
-        exit = 'fade-out-animation';
-        break;
-      case 2:
-        entry = 'slide-from-right-animation';
-        exit = 'slide-left-animation';
-        break;
-      case 3:
-        entry = 'slide-from-top-animation';
-        exit = 'slide-up-animation';
-        break;
-      case 4:
-        entry = 'spin-up-animation';
-        exit = 'spin-down-animation';
-        dur = 3000;
-        break;
-      case 5:
-        entry = 'slide-from-bottom-animation';
-        exit = 'slide-down-animation';
-        break;
-      case 6:
-        entry = 'slide-from-bottom-animation';
-        exit = 'slide-up-animation';
-        break;
-      case 7:
-        entry = 'slide-from-left-animation';
-        exit = 'slide-left-animation';
-        break;
-      default:
-        entry = 'fade-in-animation';
-        exit = 'fade-out-animation';
-        break;
-    }
-
-    this.animationConfig.entry.name = entry;
-    this.animationConfig.entry.timing.duration = dur;
-    this.animationConfig.exit.name = exit;
-    this.animationConfig.exit.timing.duration = dur;
-  }
-
 }

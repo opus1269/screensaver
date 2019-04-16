@@ -48,6 +48,57 @@ export default class ErrorPage extends BaseElement {
     return this.lastError.message ? this.lastError.title : '';
   }
 
+  /**
+   * Element is ready
+   */
+  public ready() {
+    super.ready();
+
+    setTimeout(async () => {
+      try {
+        // initialize lastError
+        const lastError = await ChromeLastError.load();
+        this.set('lastError', lastError);
+      } catch (err) {
+        ChromeGA.error(err.message, 'ErrorPage.ready');
+      }
+
+      // listen for changes to lastError
+      chrome.storage.onChanged.addListener((changes) => {
+        for (const key of Object.keys(changes)) {
+          if (key === 'lastError') {
+            const change = changes[key];
+            this.set('lastError', change.newValue);
+            break;
+          }
+        }
+      });
+    }, 0);
+  }
+
+  /**
+   * Event: Email support
+   */
+  @listen('tap', 'email')
+  public onEmailTapped() {
+    let body = MyUtils.getEmailBody();
+    body += `${this.lastError.title}\n\n${this.lastError.message}\n\n${this.lastError.stack}`;
+    body += body + '\n\nPlease provide any additional info. on what led to the error.\n\n';
+
+    const url = MyUtils.getEmailUrl('Last Error', body);
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
+    chrome.tabs.create({url: url});
+  }
+
+  /**
+   * Event: Remove the error
+   */
+  @listen('tap', 'remove')
+  public onRemoveTapped() {
+    ChromeLastError.reset().catch(() => {});
+    ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
+  }
+
   static get template() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">
@@ -120,54 +171,4 @@ export default class ErrorPage extends BaseElement {
 `;
   }
 
-  /**
-   * Element is ready
-   */
-  public ready() {
-    super.ready();
-
-    setTimeout(async () => {
-      try {
-        // initialize lastError
-        const lastError = await ChromeLastError.load();
-        this.set('lastError', lastError);
-      } catch (err) {
-        ChromeGA.error(err.message, 'ErrorPage.ready');
-      }
-
-      // listen for changes to lastError
-      chrome.storage.onChanged.addListener((changes) => {
-        for (const key of Object.keys(changes)) {
-          if (key === 'lastError') {
-            const change = changes[key];
-            this.set('lastError', change.newValue);
-            break;
-          }
-        }
-      });
-    }, 0);
-  }
-
-  /**
-   * Event: Email support
-   */
-  @listen('tap', 'email')
-  public onEmailTapped() {
-    let body = MyUtils.getEmailBody();
-    body += `${this.lastError.title}\n\n${this.lastError.message}\n\n${this.lastError.stack}`;
-    body += body + '\n\nPlease provide any additional info. on what led to the error.\n\n';
-
-    const url = MyUtils.getEmailUrl('Last Error', body);
-    ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
-    chrome.tabs.create({url: url});
-  }
-
-  /**
-   * Event: Remove the error
-   */
-  @listen('tap', 'remove')
-  public onRemoveTapped() {
-    ChromeLastError.reset().catch(() => {});
-    ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
-  }
 }

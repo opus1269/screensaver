@@ -110,97 +110,6 @@ export default class GooglePhotosPage extends BaseElement {
   @query('#googlePhotosToggle')
   private googlePhotosToggle: PaperToggleButtonElement;
 
-  static get template() {
-    // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
-  :host {
-    display: block;
-    position: relative;
-  }
-
-  :host .page-toolbar {
-    margin: 0;
-  }
-
-  :host .page-container {
-    margin-bottom: 0;
-  }
-
-  :host .page-content {
-    min-height: calc(100vh - 128px);
-    margin: 0;
-  }
-
-</style>
-
-<paper-material elevation="1" class="page-container">
-  
-  <paper-material elevation="1">
-    <app-toolbar class="page-toolbar">
-      <div class="flex">[[pageTitle]]</div>
-      <paper-icon-button
-          id="mode"
-          icon="[[modeIcon]]"
-          disabled$="[[!useGoogle]]"></paper-icon-button>
-      <paper-tooltip for="mode" position="left" offset="0">
-        [[modeTooltipLabel]]
-      </paper-tooltip>
-      <paper-icon-button id="select" icon="myicons:check-box""
-                         disabled$="[[isAlbumIconDisabled]]"></paper-icon-button>
-      <paper-tooltip for="select" position="left" offset="0">
-        [[localize('tooltip_select')]]
-      </paper-tooltip>
-      <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank"
-                         disabled$="[[isAlbumIconDisabled]]"></paper-icon-button>
-      <paper-tooltip for="deselect" position="left" offset="0">
-        [[localize('tooltip_deselect')]]
-      </paper-tooltip>
-      <paper-icon-button id="refresh" icon="myicons:refresh"
-                         disabled$="[[!useGoogle]]"></paper-icon-button>
-      <paper-tooltip for="refresh" position="left" offset="0">
-        [[refreshTooltipLabel]]
-      </paper-tooltip>
-      <paper-icon-button id="help" icon="myicons:help"></paper-icon-button>
-      <paper-tooltip for="help" position="left" offset="0">
-        [[localize('help')]]
-      </paper-tooltip>
-      <paper-toggle-button id="googlePhotosToggle"
-                           checked="{{useGoogle}}"></paper-toggle-button>
-      <paper-tooltip for="googlePhotosToggle" position="left" offset="0">
-        [[localize('tooltip_google_toggle')]]
-      </paper-tooltip>
-    </app-toolbar>
-  </paper-material>
-
-  <div class="page-content">
-
-    <!-- Albums UI -->
-    <div hidden$="[[!isAlbumMode]]">
-      <albums-view id="albumsView" disabled$="[[!useGoogle]]"></albums-view>
-    </div>
-
-    <!-- Photos UI -->
-    <div hidden$="[[isAlbumMode]]">
-      <photos-view id="photosView" disabled$="[[!useGoogle]]"></photos-view>
-    </div>
-
-  </div>
-
-  <app-localstorage-document key="isAlbumMode" data="{{isAlbumMode}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="useGoogle" data="{{useGoogle}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="useGoogleAlbums" data="{{useGoogleAlbums}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="useGooglePhotos" data="{{useGooglePhotos}}" storage="window.localStorage">
-  </app-localstorage-document>
-
-  <slot></slot>
-
-</paper-material>
-`;
-  }
-
   /**
    * Element is ready
    */
@@ -347,5 +256,96 @@ export default class GooglePhotosPage extends BaseElement {
       this.albumsView.removeSelectedAlbums();
       this.photosView.setPhotoCount().catch(() => {});
     }
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .page-toolbar {
+    margin: 0;
+  }
+
+  :host .page-container {
+    margin-bottom: 0;
+  }
+
+  :host .page-content {
+    min-height: calc(100vh - 128px);
+    margin: 0;
+  }
+
+</style>
+
+<paper-material elevation="1" class="page-container">
+  
+  <paper-material elevation="1">
+    <app-toolbar class="page-toolbar">
+      <div class="flex">[[pageTitle]]</div>
+      <paper-icon-button
+          id="mode"
+          icon="[[modeIcon]]"
+          disabled$="[[!useGoogle]]"></paper-icon-button>
+      <paper-tooltip for="mode" position="left" offset="0">
+        [[modeTooltipLabel]]
+      </paper-tooltip>
+      <paper-icon-button id="select" icon="myicons:check-box""
+                         disabled$="[[isAlbumIconDisabled]]"></paper-icon-button>
+      <paper-tooltip for="select" position="left" offset="0">
+        [[localize('tooltip_select')]]
+      </paper-tooltip>
+      <paper-icon-button id="deselect" icon="myicons:check-box-outline-blank"
+                         disabled$="[[isAlbumIconDisabled]]"></paper-icon-button>
+      <paper-tooltip for="deselect" position="left" offset="0">
+        [[localize('tooltip_deselect')]]
+      </paper-tooltip>
+      <paper-icon-button id="refresh" icon="myicons:refresh"
+                         disabled$="[[!useGoogle]]"></paper-icon-button>
+      <paper-tooltip for="refresh" position="left" offset="0">
+        [[refreshTooltipLabel]]
+      </paper-tooltip>
+      <paper-icon-button id="help" icon="myicons:help"></paper-icon-button>
+      <paper-tooltip for="help" position="left" offset="0">
+        [[localize('help')]]
+      </paper-tooltip>
+      <paper-toggle-button id="googlePhotosToggle"
+                           checked="{{useGoogle}}"></paper-toggle-button>
+      <paper-tooltip for="googlePhotosToggle" position="left" offset="0">
+        [[localize('tooltip_google_toggle')]]
+      </paper-tooltip>
+    </app-toolbar>
+  </paper-material>
+
+  <div class="page-content">
+
+    <!-- Albums UI -->
+    <div hidden$="[[!isAlbumMode]]">
+      <albums-view id="albumsView" disabled$="[[!useGoogle]]"></albums-view>
+    </div>
+
+    <!-- Photos UI -->
+    <div hidden$="[[isAlbumMode]]">
+      <photos-view id="photosView" disabled$="[[!useGoogle]]"></photos-view>
+    </div>
+
+  </div>
+
+  <app-localstorage-document key="isAlbumMode" data="{{isAlbumMode}}" storage="window.localStorage">
+  </app-localstorage-document>
+  <app-localstorage-document key="useGoogle" data="{{useGoogle}}" storage="window.localStorage">
+  </app-localstorage-document>
+  <app-localstorage-document key="useGoogleAlbums" data="{{useGoogleAlbums}}" storage="window.localStorage">
+  </app-localstorage-document>
+  <app-localstorage-document key="useGooglePhotos" data="{{useGooglePhotos}}" storage="window.localStorage">
+  </app-localstorage-document>
+
+  <slot></slot>
+
+</paper-material>
+`;
   }
 }

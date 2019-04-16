@@ -5,10 +5,17 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {PaperListboxElement} from '../../../node_modules/@polymer/paper-listbox/paper-listbox';
+import {DomRepeat} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
+
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, query} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
-import {PaperListboxElement} from '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
-import {DomRepeat} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat.js';
+import {
+  customElement,
+  property,
+  observe,
+  query,
+  listen,
+} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/paper-slider/paper-slider.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
@@ -20,8 +27,16 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import SettingBase from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+/**
+ * Unit type
+ *
+ * @property name - type name
+ * @property min - min value
+ * @property max - max value
+ * @property step - value increment
+ * @property mult - conversion value from the base
+ */
 interface UnitType {
   name: string;
   min: number;
@@ -30,6 +45,13 @@ interface UnitType {
   mult: number;
 }
 
+/**
+ * Unit value
+ *
+ * @property base - base value
+ * @property display - display value
+ * @property unit - unit type index
+ */
 export interface UnitValue {
   base: number;
   display: number;
@@ -55,7 +77,7 @@ export default class SettingSlider extends SettingBase {
   protected unit: UnitType = {name: 'unknown', min: 1, max: 10, step: 1, mult: 1};
 
   /** Current unit array index */
-  @property({type: Number, notify: true, observer: '_unitIdxChanged'})
+  @property({type: Number, notify: true})
   protected unitIdx = 0;
 
   /** Array of {@link UnitType} */
@@ -69,6 +91,79 @@ export default class SettingSlider extends SettingBase {
   /** paper-listbox template */
   @query('#t')
   private template: DomRepeat;
+
+  /** Element is ready */
+  public ready() {
+    super.ready();
+
+    setTimeout(() => {
+      this.list.selected = this.value.unit;
+    }, 0);
+  }
+
+  /**
+   * Event: unit menu item tapped
+   *
+   * @param ev - tap event
+   */
+  @listen('tap', 'list')
+  public onUnitMenuSelected(ev: Event) {
+    const model = this.template.modelForElement(ev.target as PaperListboxElement);
+    if (model) {
+      const unit: UnitValue = model.get('unit');
+      const label = `${this.name}: ${JSON.stringify(unit)}`;
+      ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
+    }
+  }
+
+  /**
+   * Event: User changed slider value
+   */
+  @listen('change', 'slider')
+  public onSliderValueChanged() {
+    this._setBase();
+    const label = `${this.name}: ${JSON.stringify(this.value)}`;
+    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
+  }
+
+  /**
+   * Observer: Unit changed
+   *
+   * @param newValue
+   */
+  @observe('unitIdx')
+  private unitIdxChanged(newValue: number | undefined) {
+    if (newValue !== undefined) {
+      this.set('value.unit', newValue);
+      this._setBase();
+      if (this.units !== undefined) {
+        this.set('unit', this.units[newValue]);
+      }
+    }
+  }
+
+  /**
+   * Simple Observer: Value changed
+   *
+   * @param newValue
+   * @param oldValue
+   */
+  private _valueChanged(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
+    if (newValue !== undefined) {
+      if (oldValue !== undefined) {
+        if (newValue.unit !== oldValue.unit) {
+          this.list.selected = newValue.unit;
+        }
+      }
+    }
+  }
+
+  /**
+   * Set the base value
+   */
+  private _setBase() {
+    this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
+  }
 
   static get template() {
     // language=HTML format=false
@@ -118,11 +213,10 @@ export default class SettingSlider extends SettingBase {
     [[label]]
   </paper-item>
   <div class="horizontal layout">
-    <paper-slider class="flex" editable="" value="{{value.display}}"
-                  min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled$="[[disabled]]"
-                  on-change="_onSliderValueChanged"></paper-slider>
+    <paper-slider class="flex" id="slider" editable="" value="{{value.display}}"
+                  min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled$="[[disabled]]"></paper-slider>
     <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
-      <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}" on-tap="_onUnitMenuSelected">
+      <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}">
         <template id="t" is="dom-repeat" as="unit" items="[[units]]">
           <paper-item>[[unit.name]]</paper-item>
         </template>
@@ -136,70 +230,4 @@ export default class SettingSlider extends SettingBase {
 </app-localstorage-document>
 `;
   }
-
-  public created() {
-    this.list.selected = this.value.unit;
-  }
-
-  /**
-   * Event: unit menu item tapped
-   *
-   * @param ev - tap event
-   */
-  public _onUnitMenuSelected(ev: Event) {
-    const model = this.template.modelForElement(ev.target as PaperListboxElement);
-    if (model) {
-      const unit: UnitValue = model.get('unit');
-      const label = `${this.name}: ${JSON.stringify(unit)}`;
-      ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
-    }
-  }
-
-  /**
-   * Event: User changed slider value
-   */
-  private _onSliderValueChanged() {
-    this._setBase();
-    const label = `${this.name}: ${JSON.stringify(this.value)}`;
-    ChromeGA.event(ChromeGA.EVENT.SLIDER_VALUE, label);
-  }
-
-  /**
-   * Observer: Unit changed
-   *
-   * @param newValue
-   */
-  private _unitIdxChanged(newValue: number | undefined) {
-    if (newValue !== undefined) {
-      this.set('value.unit', newValue);
-      this._setBase();
-      if (this.units !== undefined) {
-        this.set('unit', this.units[newValue]);
-      }
-    }
-  }
-
-  /**
-   * Observer: Value changed
-   *
-   * @param newValue
-   * @param oldValue
-   */
-  private _valueChanged(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
-    if (newValue !== undefined) {
-      if (oldValue !== undefined) {
-        if (newValue.unit !== oldValue.unit) {
-          this.list.selected = newValue.unit;
-        }
-      }
-    }
-  }
-
-  /**
-   * Set the base value
-   */
-  private _setBase() {
-    this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
-  }
-
 }

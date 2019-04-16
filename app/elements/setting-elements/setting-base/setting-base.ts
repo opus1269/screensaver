@@ -5,37 +5,32 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {PolymerElement, html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
-
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import BaseElement from '../../base-element/base-element.js';
 
 /**
  * Base class for a family of setting elements
  */
 @customElement('setting-base')
-export default class SettingBase extends PolymerElement {
+export default class SettingBase extends BaseElement {
 
   /** Element name */
   @property({type: String})
-  protected name: string = 'store';
+  protected name = 'store';
 
   /** Optional group title */
   @property({type: String})
-  protected sectionTitle: string = '';
+  protected sectionTitle = '';
 
   /** Disabled state of element */
   @property({type: Boolean})
-  protected disabled: boolean = false;
+  protected disabled = false;
 
   /** Visibility state of optional divider */
   @property({type: Boolean})
-  protected noseparator: boolean = false;
+  protected noseparator = false;
 
   static get template() {
     // language=HTML format=false
@@ -61,6 +56,5 @@ export default class SettingBase extends PolymerElement {
 <hr class="divider" hidden$="[[noseparator]]">
 `;
   }
-
 }
 

@@ -6,7 +6,7 @@
  */
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {customElement, property, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/iron-icon/iron-icon.js';
 
@@ -16,8 +16,6 @@ import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
 import SettingBase from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 
 /**
  * Polymer element for a url link
@@ -27,15 +25,24 @@ class SettingLink extends SettingBase {
 
   /** Description */
   @property({type: String})
-  protected label: string;
+  protected label = '';
 
   /** Icon */
   @property({type: String})
-  protected icon: string;
+  protected icon = '';
 
   /** Link url */
   @property({type: String})
-  protected url: string;
+  protected url = '';
+
+  /**
+   * Event: Item tapped - show url in new tab
+   */
+  @listen('tap', 'item')
+  public onLinkTapped() {
+    ChromeGA.event(ChromeGA.EVENT.LINK, this.name);
+    chrome.tabs.create({url: this.url});
+  }
 
   static get template() {
     // language=HTML format=false
@@ -68,7 +75,7 @@ class SettingLink extends SettingBase {
 
 <setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
 
-  <paper-icon-item on-tap="onLinkTapped" class="flex">
+  <paper-icon-item id="item" class="flex">
     <paper-ripple center=""></paper-ripple>
     <iron-icon class="setting-link-icon" icon="[[icon]]" slot="item-icon"></iron-icon>
     <span class="setting-label">[[label]]</span>
@@ -77,13 +84,4 @@ class SettingLink extends SettingBase {
 </setting-base>
 `;
   }
-
-  /**
-   * Event: Item tapped - show url in new tab
-   */
-  private onLinkTapped() {
-    ChromeGA.event(ChromeGA.EVENT.LINK, this.name);
-    chrome.tabs.create({url: this.url});
-  }
-
 }

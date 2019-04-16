@@ -161,70 +161,6 @@ export class ScreensaverElement extends BaseElement {
   @query('#pages')
   protected pages: NeonAnimatedPagesElement;
 
-  static get template() {
-    // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment iron-positioning">
-  :host {
-    display: block;
-  }
-
-  /* Added programmatically */
-  .fadeOut {
-    animation: fadeOut 1s 2s;
-    animation-fill-mode: both;
-  }
-
-  @keyframes fadeOut {
-    from {
-      opacity: 1.0;
-    }
-    to {
-      opacity: 0.0;
-    }
-  }
-
-  .vcr {
-    position: fixed;
-    width: 15vh;
-    height: 15vh;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.0;
-  }
-
-  .noPhotos {
-    font-size: 5vh;
-    font-weight: 600;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    color: rgba(48, 63, 159, 1);
-    opacity: .8;
-  }
-
-</style>
-
-<div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
-  <neon-animated-pages id="pages" class="fit" animate-initial-selection>
-    <template is="dom-repeat" id="repeatTemplate" as="view" items="[[views]]">
-      <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]"
-                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="_onImageError">
-      </screensaver-slide>
-    </template>
-  </neon-animated-pages>
-</div>
-
-<div class="noPhotos" hidden$="[[!noPhotos]]">[[localize('no_photos')]]</div>
-
-<iron-image id="pauseImage" class="vcr" src="../images/pause.png" sizing="contain" preload
-            hidden$="[[!paused]]"></iron-image>
-<iron-image id="playImage" class="vcr" src="../images/play.png" sizing="contain" preload
-            hidden$="[[paused]]"></iron-image>
-`;
-  }
-
   /** Element is ready */
   public ready() {
     super.ready();
@@ -490,5 +426,69 @@ export class ScreensaverElement extends BaseElement {
 
       _errHandler.isUpdating = false;
     }
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment iron-positioning">
+  :host {
+    display: block;
+  }
+
+  /* Added programmatically */
+  .fadeOut {
+    animation: fadeOut 1s 2s;
+    animation-fill-mode: both;
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1.0;
+    }
+    to {
+      opacity: 0.0;
+    }
+  }
+
+  .vcr {
+    position: fixed;
+    width: 15vh;
+    height: 15vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.0;
+  }
+
+  .noPhotos {
+    font-size: 5vh;
+    font-weight: 600;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(48, 63, 159, 1);
+    opacity: .8;
+  }
+
+</style>
+
+<div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
+  <neon-animated-pages id="pages" class="fit" animate-initial-selection>
+    <template is="dom-repeat" id="repeatTemplate" as="view" items="[[views]]">
+      <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]"
+                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="_onImageError">
+      </screensaver-slide>
+    </template>
+  </neon-animated-pages>
+</div>
+
+<div class="noPhotos" hidden$="[[!noPhotos]]">[[localize('no_photos')]]</div>
+
+<iron-image id="pauseImage" class="vcr" src="../images/pause.png" sizing="contain" preload
+            hidden$="[[!paused]]"></iron-image>
+<iron-image id="playImage" class="vcr" src="../images/play.png" sizing="contain" preload
+            hidden$="[[paused]]"></iron-image>
+`;
   }
 }

@@ -7,15 +7,12 @@
 
 /* tslint:disable:max-line-length */
 
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {PaperDialogElement} from '../../../node_modules/@polymer/paper-dialog/paper-dialog';
 
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, query, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+
 import '../../../node_modules/@polymer/iron-selector/iron-selector.js';
-
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
 
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
@@ -25,27 +22,57 @@ import '../../../node_modules/@polymer/paper-button/paper-button.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import { LocalizeBehavior } from '../localize-behavior/localize-behavior.js';
+import SettingBase from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Module for the SettingBackground
- * @module els/setting/background
- */
 
 /**
  * Polymer element to select a background style
- * @type {{}}
- * @alias module:els/setting/background.SettingBackground
- * @PolymerElement
  */
-const SettingBackground = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('setting-background')
+export default class SettingBackground extends SettingBase {
+
+  /** Selected backed style */
+  @property({type: String, notify: true})
+  protected value = 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)';
+
+  /** Element id of currently selected background style */
+  @property({type: String, notify: true})
+  protected selected = 'b1';
+
+  /** Descriptive label */
+  @property({type: String})
+  protected mainLabel = '';
+
+  /** Secondary descriptive label */
+  @property({type: String})
+  protected secondaryLabel = '';
+
+  /** dialog */
+  @query('#dialog')
+  protected dialog: PaperDialogElement;
+
+  /**
+   * Event: Show dialog on tap
+   */
+  @listen('tap', 'item')
+  public onTap() {
+    this.dialog.open();
+  }
+
+  /**
+   * Event: Set selected background on tap of OK button
+   */
+  @listen('tap', 'confirmButton')
+  public onOK() {
+    const el = this.shadowRoot.getElementById(this.selected);
+    this.set('value', 'background:' + el.style.background);
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, `SettingBackground.OK: ${this.selected}`);
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -103,112 +130,31 @@ const SettingBackground = Polymer({
   </iron-selector>
   <div class="buttons">
     <paper-button dialog-dismiss="">[[localize('cancel')]]</paper-button>
-    <paper-button dialog-confirm="" autofocus="" on-tap="_onOK">
+    <paper-button id="confirmButton" dialog-confirm="" autofocus="">
       [[localize('ok')]]
     </paper-button>
   </div>
 </paper-dialog>
 
-<div class="section-title setting-label" tabindex="-1" hidden$="[[!sectionTitle]]">
-  [[sectionTitle]]
-</div>
+<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
 
-<paper-item class="center horizontal layout" tabindex="-1" on-tap="_onTap">
-  <paper-item-body class="flex" two-line="">
-    <div class="setting-label" hidden$="[[!mainLabel]]">
-      [[mainLabel]]
-    </div>
-    <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
-      [[secondaryLabel]]
-    </div>
-  </paper-item-body>
-  <div class="selected-background" style$="[[value]]" tabindex="0" disabled$="[[disabled]]"></div>
-  <paper-ripple center=""></paper-ripple>
-</paper-item>
-<hr hidden$="[[noseparator]]">
+  <paper-item id="item" class="center horizontal layout" tabindex="-1">
+    <paper-item-body class="flex" two-line="">
+      <div class="setting-label" hidden$="[[!mainLabel]]">
+        [[mainLabel]]
+      </div>
+      <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+        [[secondaryLabel]]
+      </div>
+    </paper-item-body>
+    <div class="selected-background" style$="[[value]]" tabindex="0" disabled$="[[disabled]]"></div>
+    <paper-ripple center=""></paper-ripple>
+  </paper-item>
+  
+</setting-base>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>
-`,
-
-  is: 'setting-background',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** Local storage key */
-    name: {
-      type: String,
-      value: 'store',
-    },
-
-    /** Optional group title */
-    sectionTitle: {
-      type: String,
-      value: '',
-    },
-
-    /** Disabled state of element */
-    disabled: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Visibility state of optional divider */
-    noseparator: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Element id of currently selected background style */
-    selected: {
-      type: String,
-      value: 'b1',
-      notify: true,
-    },
-
-    /** Local storage value of currently selected background style */
-    value: {
-      type: String,
-      value: 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
-      notify: true,
-    },
-
-    /** Item description */
-    mainLabel: {
-      type: String,
-      value: '',
-    },
-
-    /** Item secondary description */
-    secondaryLabel: {
-      type: String,
-      value: '',
-    },
-  },
-
-  /**
-   * Event: Show dialog on tap
-   * @private
-   */
-  _onTap: function() {
-    this.$.dialog.open();
-  },
-
-  /**
-   * Event: Set selected background on tap of OK button
-   * @private
-   */
-  _onOK: function() {
-    const el = this.shadowRoot.getElementById(this.selected);
-    this.set('value', 'background:' + el.style.background);
-    ChromeGA.event(ChromeGA.EVENT.BUTTON,
-        `SettingBackground.OK: ${this.selected}`);
-  },
-});
-
-export default SettingBackground;
-
+`;
+  }
+}

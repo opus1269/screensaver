@@ -40,6 +40,22 @@ export default class PhotoCat extends BaseElement {
   @property({type: Boolean})
   protected disabled = false;
 
+  /**
+   * Event: checkbox tapped
+   *
+   * @param ev
+   */
+  @listen('change', 'checkbox')
+  public onCheckedChange(ev: any) {
+    ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
+    const customEvent = new CustomEvent('value-changed', {
+      bubbles: true,
+      composed: true,
+      detail: {value: ev.target.checked},
+    });
+    this.dispatchEvent(customEvent);
+  }
+
   static get template() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">
@@ -62,21 +78,4 @@ export default class PhotoCat extends BaseElement {
 </paper-item>
 `;
   }
-
-  /**
-   * Event: checkbox tapped
-   *
-   * @param ev
-   */
-  @listen('change', 'checkbox')
-  public onCheckedChange(ev: any) {
-    ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
-    const customEvent = new CustomEvent('value-changed', {
-      bubbles: true,
-      composed: true,
-      detail: {value: ev.target.checked},
-    });
-    this.dispatchEvent(customEvent);
-  }
-
 }

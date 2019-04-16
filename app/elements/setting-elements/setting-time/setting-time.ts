@@ -15,8 +15,6 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import SettingBase from '../setting-base/setting-base.js';
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /**
  * Polymer element for time entry
  */
@@ -25,15 +23,15 @@ export default class SettingTime extends SettingBase {
 
   /** Time value '00:00' 24 hr format */
   @property({type: String, notify: true})
-  protected value: string = '00:00';
+  protected value = '00:00';
 
   /** Descriptive label */
   @property({type: String})
-  protected mainLabel: string = '';
+  protected mainLabel = '';
 
   /** Secondary descriptive label */
   @property({type: String})
-  protected secondaryLabel: string = '';
+  protected secondaryLabel = '';
 
   static get template() {
     // language=HTML format=false
@@ -81,5 +79,4 @@ export default class SettingTime extends SettingBase {
 
 `;
   }
-
 }

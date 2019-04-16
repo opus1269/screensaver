@@ -6,7 +6,7 @@
  */
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {customElement, property, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
 
@@ -20,7 +20,6 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import SettingBase from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element for a toggle button
@@ -39,6 +38,35 @@ export default class SettingToggle extends SettingBase {
   /** Secondary descriptive label */
   @property({type: String})
   protected secondaryLabel: string;
+
+  /**
+   * Set the checked state of the toggle
+   *
+   * @param checked - checked state
+   */
+  public setChecked(checked: boolean) {
+    this.set('checked', checked);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
+  }
+
+  /**
+   * Event: Checked state changed
+   */
+  @listen('change', 'toggle')
+  public onChange() {
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
+  }
+
+  /**
+   * Event: Item tapped
+   *
+   * @param ev - Tap event
+   */
+  @listen('tap', 'toggle')
+  public onTap(ev: Event) {
+    // so tap events only get called once.
+    ev.stopPropagation();
+  }
 
   static get template() {
     // language=HTML format=false
@@ -78,7 +106,7 @@ export default class SettingToggle extends SettingBase {
         <paper-ripple center=""></paper-ripple>
       </paper-item-body>
       <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}"
-                           on-change="onChange" on-tap="onTap" disabled$="[[disabled]]">
+                           disabled$="[[disabled]]">
       </paper-toggle-button>
     </paper-item>
   </iron-label>
@@ -90,32 +118,4 @@ export default class SettingToggle extends SettingBase {
 
 `;
   }
-
-  /**
-   * Set the checked state of the toggle
-   *
-   * @param checked - checked state
-   */
-  public setChecked(checked: boolean) {
-    this.set('checked', checked);
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
-  }
-
-  /**
-   * Event: Checked state changed
-   */
-  private onChange() {
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
-  }
-
-  /**
-   * Event: Item tapped
-   *
-   * @param ev - Tap event
-   */
-  private onTap(ev: Event) {
-    // so tap events only get called once.
-    ev.stopPropagation();
-  }
-
 }

@@ -117,82 +117,6 @@ export default class PhotosView extends BaseElement {
     return this.disabled || !this.needsPhotoRefresh;
   }
 
-  static get template() {
-    // language=HTML format=false
-    return html`
-<style include="shared-styles iron-flex iron-flex-alignment">
-  :host {
-    display: block;
-    position: relative;
-  }
-
-  :host .album-note {
-    @apply --paper-font-title;
-    border: 1px #CCCCCC;
-    border-top-style: solid;
-    padding: 8px 16px 8px 16px;
-    margin-right: 0;
-    white-space: normal;
-  }
-
-  :host .photo-count-container {
-    border: 1px #CCCCCC;
-    border-bottom-style: solid;
-    padding: 16px 0 16px 0;
-    white-space: normal;
-  }
-
-  :host .photo-count-container paper-button {
-    margin: 0 8px 0 0;
-    @apply --paper-font-title;
-  }
-
-  :host .photo-count-container #photoCount {
-    @apply --paper-font-title;
-    padding-right: 0;
-  }
-
-</style>
-
-<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
-                status-label="[[waiterStatus]]"></waiter-element>
-
-<div class="photos-container" hidden$="[[isHidden]]">
-  <div class="photo-count-container horizontal layout">
-    <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
-      <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
-    </paper-item>
-    <paper-button id="refreshButton" raised disabled$="[[isRefreshDisabled]]">
-      [[localize('button_needs_refresh')]]
-    </paper-button>
-  </div>
-
-  <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
-                  secondary-label="{{localize('photo_no_filter_desc')}}"
-                  checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
-
-  <div class="section-title">[[localize('photo_cat_title')]]</div>
-
-  <template id="t" is="dom-repeat" items="[[cats]]" as="cat">
-    <photo-cat id="[[cat.name]]"
-               label="[[cat.label]]"
-               on-value-changed="_onPhotoCatChanged"
-               disabled$="[[isFilterDisabled]]"></photo-cat>
-  </template>
-
-  <paper-item class="album-note">
-    {{localize('note_albums')}}
-  </paper-item>
-
-  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="googlePhotosNoFilter" data="{{noFilter}}" storage="window.localStorage">
-  </app-localstorage-document>
-
-</div>
-`;
-  }
-
   /** Element is ready */
   public ready() {
     super.ready();
@@ -386,5 +310,81 @@ export default class PhotosView extends BaseElement {
       response({message: 'OK'});
     }
     return false;
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`
+<style include="shared-styles iron-flex iron-flex-alignment">
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  :host .album-note {
+    @apply --paper-font-title;
+    border: 1px #CCCCCC;
+    border-top-style: solid;
+    padding: 8px 16px 8px 16px;
+    margin-right: 0;
+    white-space: normal;
+  }
+
+  :host .photo-count-container {
+    border: 1px #CCCCCC;
+    border-bottom-style: solid;
+    padding: 16px 0 16px 0;
+    white-space: normal;
+  }
+
+  :host .photo-count-container paper-button {
+    margin: 0 8px 0 0;
+    @apply --paper-font-title;
+  }
+
+  :host .photo-count-container #photoCount {
+    @apply --paper-font-title;
+    padding-right: 0;
+  }
+
+</style>
+
+<waiter-element active="[[waitForLoad]]" label="[[localize('google_loading')]]"
+                status-label="[[waiterStatus]]"></waiter-element>
+
+<div class="photos-container" hidden$="[[isHidden]]">
+  <div class="photo-count-container horizontal layout">
+    <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
+      <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
+    </paper-item>
+    <paper-button id="refreshButton" raised disabled$="[[isRefreshDisabled]]">
+      [[localize('button_needs_refresh')]]
+    </paper-button>
+  </div>
+
+  <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
+                  secondary-label="{{localize('photo_no_filter_desc')}}"
+                  checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
+
+  <div class="section-title">[[localize('photo_cat_title')]]</div>
+
+  <template id="t" is="dom-repeat" items="[[cats]]" as="cat">
+    <photo-cat id="[[cat.name]]"
+               label="[[cat.label]]"
+               on-value-changed="_onPhotoCatChanged"
+               disabled$="[[isFilterDisabled]]"></photo-cat>
+  </template>
+
+  <paper-item class="album-note">
+    {{localize('note_albums')}}
+  </paper-item>
+
+  <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">
+  </app-localstorage-document>
+  <app-localstorage-document key="googlePhotosNoFilter" data="{{noFilter}}" storage="window.localStorage">
+  </app-localstorage-document>
+
+</div>
+`;
   }
 }
