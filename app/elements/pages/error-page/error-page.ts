@@ -4,14 +4,9 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-
-import '../../../node_modules/@polymer/paper-styles/typography.js';
-import '../../../node_modules/@polymer/paper-styles/color.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, computed, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
@@ -24,31 +19,38 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import {LocalizeBehavior} from '../../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import '../../../elements/shared-styles.js';
+import BaseElement from '../../base-element/base-element.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import ChromeLastError from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
- * Module for the Last Error page
- * @module els/pgs/error
+ * Polymer element for the LastError page
  */
+@customElement('error-page')
+export default class ErrorPage extends BaseElement {
 
-/**
- * Polymer element for the Last Error page
- * @type {{}}
- * @alias module:els/pgs/error.ErrorPage
- * @PolymerElement
- */
-const ErrorPage = Polymer({
-  _template: html`<!--suppress CssUnresolvedCustomPropertySet -->
-<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+  /** Last error */
+  @property({type: Object})
+  public lastError = new ChromeLastError();
+
+  /** Stack trace */
+  @computed('lastError')
+  get stack() {
+    return this.lastError.message ? this.lastError.stack : '';
+  }
+
+  /** Error title */
+  @computed('lastError')
+  get title() {
+    return this.lastError.message ? this.lastError.title : '';
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
 
   :host {
     display: block;
@@ -92,13 +94,12 @@ const ErrorPage = Polymer({
       <span class="space"></span>
       <div class="middle middle-container center horizontal layout flex">
         <div class="flex">{{localize('last_error_viewer_title')}}</div>
-        <paper-icon-button id="email" icon="myicons:mail" on-tap="_onEmailTapped" disabled$="[[!lastError.message]]">
+        <paper-icon-button id="email" icon="myicons:mail" disabled$="[[!lastError.message]]">
         </paper-icon-button>
         <paper-tooltip for="email" position="left" offset="0">
           Send email to support
         </paper-tooltip>
-        <paper-icon-button id="remove" icon="myicons:delete" on-tap="_onRemoveTapped"
-                           disabled$="[[!lastError.message]]">
+        <paper-icon-button id="remove" icon="myicons:delete" disabled$="[[!lastError.message]]">
         </paper-icon-button>
         <paper-tooltip for="remove" position="left" offset="0">
           Delete the error
@@ -110,39 +111,22 @@ const ErrorPage = Polymer({
   <!-- Content -->
   <div class="page-content">
     <div id="errorViewer">
-      <paper-item class="error-title">[[_computeTitle(lastError)]]</paper-item>
+      <paper-item class="error-title">[[title]]</paper-item>
       <paper-item class="error-text">[[lastError.message]]</paper-item>
-      <paper-item class="error-text">[[_computeStack(lastError)]]</paper-item>
+      <paper-item class="error-text">[[stack]]</paper-item>
     </div>
   </div>
 </paper-material>
-`,
-
-  is: 'error-page',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** The LastError Object to display */
-    lastError: {
-      type: Object,
-      value: function() {
-        return new ChromeLastError();
-      },
-      notify: true,
-    },
-  },
+`;
+  }
 
   /**
    * Element is ready
    */
-  ready: function() {
+  public ready() {
+    super.ready();
 
-    setTimeout( async () => {
-
+    setTimeout(async () => {
       try {
         // initialize lastError
         const lastError = await ChromeLastError.load();
@@ -162,53 +146,28 @@ const ErrorPage = Polymer({
         }
       });
     }, 0);
-  },
+  }
 
   /**
    * Event: Email support
-   * @private
    */
-  _onEmailTapped: function() {
+  @listen('tap', 'email')
+  public onEmailTapped() {
     let body = MyUtils.getEmailBody();
-    body = body + `${this.lastError.title}\n\n${this.lastError.message}\n\n` +
-        `${this.lastError.stack}`;
-    body = body + '\n\nPlease provide any additional info. ' +
-        'on what led to the error.\n\n';
+    body += `${this.lastError.title}\n\n${this.lastError.message}\n\n${this.lastError.stack}`;
+    body += body + '\n\nPlease provide any additional info. on what led to the error.\n\n';
 
     const url = MyUtils.getEmailUrl('Last Error', body);
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError email');
     chrome.tabs.create({url: url});
-  },
+  }
 
   /**
    * Event: Remove the error
-   * @private
    */
-  _onRemoveTapped: function() {
+  @listen('tap', 'remove')
+  public onRemoveTapped() {
     ChromeLastError.reset().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
-  },
-
-  /**
-   * Computed Binding
-   * @param { ChromeLastError} lastError - the error
-   * @returns {string} stack trace
-   * @private
-   */
-  _computeStack: function(lastError: ChromeLastError) {
-    return lastError.message ? lastError.stack : '';
-  },
-
-  /**
-   * Computed Binding
-   * @param { ChromeLastError} lastError - the error
-   * @returns {string} page title
-   * @private
-   */
-  _computeTitle: function(lastError: ChromeLastError) {
-    return lastError.message ? lastError.title : '';
-  },
-});
-
-export default ErrorPage;
-
+  }
+}
