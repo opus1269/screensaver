@@ -103,7 +103,7 @@ export default class SettingSlider extends SettingBase {
   }
 
   :host paper-dropdown-menu {
-    width: 100px;
+    width: 175px;
     padding-right: 16px;
     --paper-input-container-input: {
       text-align: right;

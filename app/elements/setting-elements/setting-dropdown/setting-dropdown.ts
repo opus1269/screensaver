@@ -68,7 +68,7 @@ export default class SettingDropdown extends SettingBase {
   }
 
   :host paper-dropdown-menu {
-    width: 100px;
+    width: 175px;
 
     --paper-input-container-input: {
       text-align: right;
