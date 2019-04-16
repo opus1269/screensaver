@@ -338,8 +338,8 @@ export default class PhotosView extends BaseElement {
    *
    * @param ev
    */
-  private _onPhotoCatChanged(ev: any) {
-    const cat = ev.target.id;
+  private _onPhotoCatChanged(ev: CustomEvent) {
+    const cat = (ev.target as Element).id;
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
