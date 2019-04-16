@@ -22,11 +22,7 @@ import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
 import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
-import '../../elements/animations/spin-up-animation/spin-up-animation.js';
-import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/screensaver-slide/screensaver-slide.js';
-import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
-import '../../elements/weather-element/weather-element.js';
 
 import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import '../../elements/shared-styles.js';
@@ -41,7 +37,6 @@ import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
 import SSView from '../../scripts/screensaver/views/ss_view.js';
 
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -73,25 +68,7 @@ export let setNoPhotos: () => void = null;
 export let setPaused: (arg0: boolean) => void = null;
 
 /**
- * Object to handle Google Photos load errors
- *
- * @property MAX_COUNT - max times to call
- * @property count - count of calls
- * @property isUpdating - true if an event is handling an error
- * @property TIME_LIMIT - throttle calls to this fast in case something weird happens
- * @property lastTime - last time called
- */
-const _errHandler = {
-  MAX_COUNT: 168, // about a weeks worth, if all goes well
-  count: 0,
-  isUpdating: false,
-  TIME_LIMIT: (5 * 60000), // five minutes in milli sec
-  lastTime: 0,
-};
-
-/**
  * Polymer element to display a screensaver
- * @PolymerElement
  */
 Polymer({
   // language=HTML format=false
@@ -190,7 +167,7 @@ Polymer({
 
 <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
-    <template is="dom-repeat" id="repeatTemplate" as="view" items="[[_views]]">
+    <template is="dom-repeat" id="repeatTemplate" as="view" items="[[views]]">
       <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]" sizing-type="[[sizingType]]"
                          view="[[view]]" index="[[index]]" time-label="[[timeLabel]]">
       </screensaver-slide>
@@ -215,7 +192,7 @@ Polymer({
   properties: {
 
     /** Array of {@link SSView} objects */
-    _views: {
+    views: {
       type: Array,
       value: [],
     },
@@ -230,20 +207,6 @@ Polymer({
     aniType: {
       type: Number,
       value: 0,
-    },
-
-    /** Screen width in pixels */
-    screenWidth: {
-      type: Number,
-      value: screen.width,
-      readOnly: true,
-    },
-
-    /** Screen height in pixels */
-    screenHeight: {
-      type: Number,
-      value: screen.height,
-      readOnly: true,
     },
 
     /** Flag to indicate if slideshow is paused */
@@ -309,7 +272,7 @@ Polymer({
    * @param views - The array of views
    */
   setViews: function(views: SSView[]) {
-    this.set('_views', views);
+    this.set('views', views);
     this.$.repeatTemplate.render();
   },
 

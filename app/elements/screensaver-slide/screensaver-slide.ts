@@ -8,20 +8,22 @@
 import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, observe} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
-import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import SSView from '../../scripts/screensaver/views/ss_view.js';
+
+import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
+
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import BaseElement from '../base-element/base-element.js';
-
-import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
 import '../../elements/weather-element/weather-element.js';
 
-import SSView from '../../scripts/screensaver/views/ss_view.js';
+import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+
 
 /**
  * Object to handle Google Photos load errors

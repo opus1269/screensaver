@@ -5,15 +5,10 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * Base class for other SSView classes
- */
-
-import ScreensaverSlide from '../../../elements/screensaver-slide/screensaver-slide.js';
-import {IronImageElement} from '../../../node_modules/@polymer/iron-image/iron-image.js';
-import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-
-import SSPhoto from '../ss_photo.js';
+import ScreensaverSlide from '../../../elements/screensaver-slide/screensaver-slide';
+import {IronImageElement} from '../../../node_modules/@polymer/iron-image/iron-image';
+import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element';
+import SSPhoto from '../ss_photo';
 
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
@@ -66,6 +61,7 @@ export default abstract class SSView {
 
   /**
    * Create a new SSView
+   *
    * @param photo - The SSPhoto to view
    */
   protected constructor(photo: SSPhoto) {
@@ -82,6 +78,7 @@ export default abstract class SSView {
 
   /**
    * Set the url
+   *
    * @param url - The url of the SSPhoto
    */
   public setUrl(url: string = null) {
@@ -100,6 +97,7 @@ export default abstract class SSView {
 
   /**
    * Set the elements of the view
+   *
    * @param slide - <screensaver-slide>
    */
   public setElements(slide: ScreensaverSlide) {
@@ -117,6 +115,7 @@ export default abstract class SSView {
 
   /**
    * Set the photo
+   *
    * @param photo - the photo to view
    */
   public setPhoto(photo: SSPhoto) {
@@ -133,6 +132,7 @@ export default abstract class SSView {
 
   /**
    * Determine if a photo failed to load (usually 404 or 403 error)
+   *
    * @returns true if image load failed
    */
   public isError() {
@@ -141,6 +141,7 @@ export default abstract class SSView {
 
   /**
    * Determine if a photo has finished loading
+   *
    * @returns true if image is loaded
    */
   public isLoaded() {
@@ -149,6 +150,7 @@ export default abstract class SSView {
 
   /**
    * Does a photo have an author label to show
+   *
    * @returns true if we should show the author
    */
   protected _hasAuthor() {
@@ -158,6 +160,7 @@ export default abstract class SSView {
 
   /**
    * Does a view have an author label set
+   *
    * @returns true if author label is not empty
    */
   protected _hasAuthorLabel() {
@@ -166,6 +169,7 @@ export default abstract class SSView {
 
   /**
    * Does a photo have a geolocation
+   *
    * @returns true if geolocation point is non-null
    */
   protected _hasLocation() {
@@ -174,6 +178,7 @@ export default abstract class SSView {
 
   /**
    * Does a view have an location label set
+   *
    * @returns true if location label is not empty
    */
   protected _hasLocationLabel() {
