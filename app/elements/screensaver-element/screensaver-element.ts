@@ -5,15 +5,19 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
+import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
 import SSView from '../../scripts/screensaver/views/ss_view';
 
-import '../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {
+  customElement,
+  property,
+  query,
+} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../node_modules/@polymer/font-roboto/roboto.js';
 
-import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 
 import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
@@ -21,12 +25,6 @@ import '../../node_modules/@polymer/neon-animation/neon-animations.js';
 import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
-
-import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-import '../../elements/shared-styles.js';
-
-import * as MyGA from '../../scripts/my_analytics.js';
-import * as MyMsg from '../../scripts/my_msg.js';
 
 import '../../scripts/screensaver/ss_events.js';
 
@@ -36,6 +34,9 @@ import * as SSViews from '../../scripts/screensaver/ss_views.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
+import * as MyGA from '../../scripts/my_analytics.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
@@ -43,6 +44,7 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import BaseElement from '../base-element/base-element.js';
 
 declare var ChromePromise: any;
 
@@ -75,7 +77,6 @@ const _errHandler = {
   lastTime: 0,
 };
 
-
 export let setViews: (views: SSView[]) => void = null;
 export let isNoPhotos: () => boolean = null;
 export let setNoPhotos: () => void = null;
@@ -84,12 +85,43 @@ export let setPaused: (arg0: boolean) => void = null;
 /**
  * Polymer element to display a screensaver
  */
-Polymer({
-  // language=HTML format=false
-  _template: html`<!--suppress CssUnresolvedCustomProperty -->
-<style include="iron-flex iron-flex-alignment iron-positioning"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('screensaver-element')
+export class ScreensaverElement extends BaseElement {
+
+  /** Array of {@link SSView} objects */
+  @property({type: Array})
+  protected views: SSView[] = [];
+
+  /** Type for between photo animation */
+  @property({type: Number})
+  protected aniType = 0;
+
+  /** Flag to indicate if slideshow is paused */
+  @property({type: Boolean, observer: '_pausedChanged'})
+  protected paused = false;
+
+  /** Flag to indicate if we have no valid photos */
+  @property({type: Boolean})
+  protected noPhotos = false;
+
+  /** Label for current time */
+  @property({type: String})
+  protected timeLabel = '';
+
+  /** Slide template */
+  @query('#repeatTemplate')
+  protected repeatTemplate: DomRepeat;
+
+  /** Slide pages */
+  @query('#pages')
+  protected pages: NeonAnimatedPagesElement;
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment iron-positioning">
+  :host {
+    display: block;
+  }
 
   /* Added programmatically */
   .fadeOut {
@@ -145,50 +177,12 @@ Polymer({
             hidden$="[[!paused]]"></iron-image>
 <iron-image id="playImage" class="vcr" src="../images/play.png" sizing="contain" preload
             hidden$="[[paused]]"></iron-image>
-`,
-
-  is: 'screensaver-element',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    /** Array of {@link SSView} objects */
-    views: {
-      type: Array,
-      value: [],
-    },
-
-    /** Type for between photo animation */
-    aniType: {
-      type: Number,
-      value: 0,
-    },
-
-    /** Flag to indicate if slideshow is paused */
-    paused: {
-      type: Boolean,
-      value: false,
-      observer: '_pausedChanged',
-    },
-
-    /** Flag to indicate if we have no valid photos */
-    noPhotos: {
-      type: Boolean,
-      value: false,
-    },
-
-    /** Label for current time */
-    timeLabel: {
-      type: String,
-      value: '',
-    },
-  },
+`;
+  }
 
   /** Element is ready */
-  ready: function() {
+  public ready() {
+    super.ready();
 
     // set selected background image
     document.body.style.background = ChromeStorage.get('background',
@@ -212,71 +206,71 @@ Polymer({
       this._launch().catch(() => {});
 
     }, 0);
-  },
+  }
 
   /**
    * Set the views for the photos
    *
    * @param views - The array of views
    */
-  setViews: function(views: SSView[]) {
+  public setViews(views: SSView[]) {
     this.set('views', views);
-    this.$.repeatTemplate.render();
-  },
+    this.repeatTemplate.render();
+  }
 
   /**
    * Do we have usable photos
    *
    * @returns true if all photos are bad
    */
-  isNoPhotos: function() {
+  public isNoPhotos() {
     return this.noPhotos;
-  },
+  }
 
   /**
    * Set the state when no photos are available
    */
-  setNoPhotos: function() {
+  public setNoPhotos() {
     this.set('noPhotos', true);
-  },
+  }
 
   /**
    * Set the state when slideshow is paused
    *
    * @param paused - paused state
    */
-  setPaused: function(paused: boolean) {
+  public setPaused(paused: boolean) {
     this.set('paused', paused);
-  },
+  }
 
   /**
    * Process settings related to between photo transitions
    */
-  _setupPhotoTransitions: function() {
+  private _setupPhotoTransitions() {
     let type: TRANS_TYPE = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
     if (type === TRANS_TYPE.RANDOM) {
       // pick random transition
       type = ChromeUtils.getRandomInt(0, TRANS_TYPE.RANDOM - 1);
     }
     this.set('aniType', type);
-  },
+  }
 
   /**
    * Setup timer for time label
    */
-  _setupTime: function() {
+  private _setupTime() {
     const showTime = ChromeStorage.getInt('showTime', 0);
     if (showTime > 0) {
       this._setTimeLabel();
       // update current time once a minute
       setInterval(this._setTimeLabel.bind(this), 61 * 1000);
     }
-  },
+  }
 
   /**
    * Set the window zoom factor to 1.0
    */
-  _setZoom: async function() {
+  private async _setZoom() {
     const chromep = new ChromePromise();
     try {
       const zoomFactor = await chromep.tabs.getZoom();
@@ -288,19 +282,19 @@ Polymer({
     }
 
     return Promise.resolve();
-  },
+  }
 
   /**
    * Set the time label
    */
-  _setTimeLabel: function() {
+  private _setTimeLabel() {
     let label = '';
     const showTime = ChromeStorage.getInt('showTime', 0);
     if ((showTime !== 0)) {
       label = ChromeTime.getStringShort();
       this.set('timeLabel', label);
     }
-  },
+  }
 
   /**
    * Load the {@link SSPhotos} that will be displayed
@@ -308,7 +302,7 @@ Polymer({
    * @throws An error if we failed to load photos
    * @returns true if there is at least one photo
    */
-  _loadPhotos: async function() {
+  private async _loadPhotos() {
     let sources = PhotoSources.getSelectedSources();
     sources = sources || [];
 
@@ -326,20 +320,21 @@ Polymer({
       // randomize the order
       SSPhotos.shuffle();
     }
-    return Promise.resolve(true);
 
-  },
+    return Promise.resolve(true);
+  }
 
   /**
    * Launch the slide show
+   *
    * @param delay - delay in milli sec before start
    */
-  _launch: async function(delay: number = 2000) {
+  private async _launch(delay: number = 2000) {
     try {
       const hasPhotos = await this._loadPhotos();
       if (hasPhotos) {
         // initialize the views
-        SSViews.initialize(this.$.pages);
+        SSViews.initialize(this.pages);
 
         // send msg to update weather. don't wait can be slow
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
@@ -356,7 +351,7 @@ Polymer({
     }
 
     return Promise.resolve();
-  },
+  }
 
 
   /**
@@ -365,7 +360,7 @@ Polymer({
    * @param newValue - new value
    * @param oldValue - old value
    */
-  _pausedChanged: function(newValue: boolean | undefined, oldValue: boolean | undefined) {
+  private _pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if (typeof oldValue === 'undefined') {
       return;
     }
@@ -376,12 +371,12 @@ Polymer({
       this.$.playImage.classList.add('fadeOut');
       this.$.pauseImage.classList.remove('fadeOut');
     }
-  },
+  }
 
   /**
    * Event: An image failed to load
    */
-  _onImageError: async function(ev: CustomEvent) {
+  private async _onImageError(ev: CustomEvent) {
     if (_errHandler.isUpdating) {
       // another error event is already handling this
       return;
@@ -495,7 +490,5 @@ Polymer({
 
       _errHandler.isUpdating = false;
     }
-  },
-
-});
-
+  }
+}
