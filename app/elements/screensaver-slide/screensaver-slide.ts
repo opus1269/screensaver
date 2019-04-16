@@ -155,8 +155,6 @@ export default class ScreensaverSlide extends
     this.animationConfig.exit.timing.duration = dur;
   }
 
-  static get is() { return 'screensaver-slide'; }
-
   static get template() {
     // language=HTML format=false
     return html`
