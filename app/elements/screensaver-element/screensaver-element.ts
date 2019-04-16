@@ -5,9 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * Module for a screensaver
- */
+import SSView from '../../scripts/screensaver/views/ss_view';
 
 import '../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -35,8 +33,7 @@ import '../../scripts/screensaver/ss_events.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
-import SSView from '../../scripts/screensaver/views/ss_view.js';
-
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -60,6 +57,24 @@ export enum TRANS_TYPE {
   SLIDE_RIGHT,
   RANDOM,
 }
+
+/**
+ * Object to handle Google Photos load errors
+ *
+ * @property MAX_COUNT - max times to call
+ * @property count - count of calls
+ * @property isUpdating - true if an event is handling an error
+ * @property TIME_LIMIT - throttle calls to this fast in case something weird happens
+ * @property lastTime - last time called
+ */
+const _errHandler = {
+  MAX_COUNT: 168, // about a weeks worth, if all goes well
+  count: 0,
+  isUpdating: false,
+  TIME_LIMIT: (5 * 60000), // five minutes in milli sec
+  lastTime: 0,
+};
+
 
 export let setViews: (views: SSView[]) => void = null;
 export let isNoPhotos: () => boolean = null;
@@ -101,56 +116,6 @@ Polymer({
     opacity: 0.0;
   }
 
-  .time {
-    font-size: 5.25vh;
-    font-weight: 200;
-    position: fixed;
-    right: 1vw;
-    bottom: 3.5vh;
-    padding: 0;
-    margin: 0;
-    color: white;
-    opacity: 1.0;
-  }
-
-  .weather {
-    font-size: 5.25vh;
-    font-weight: 200;
-    position: fixed;
-    left: 1vw;
-    bottom: 3.5vh;
-    padding: 0;
-    margin: 0;
-    color: white;
-    opacity: 1.0;
-  }
-
-  .author {
-    font-size: 2.5vh;
-    font-weight: 300;
-    position: fixed;
-    overflow: hidden;
-    right: 1vw;
-    bottom: 1vh;
-    padding: 0;
-    margin: 0;
-    color: white;
-    opacity: 1.0;
-  }
-
-  .location {
-    font-size: 2.5vh;
-    font-weight: 300;
-    position: fixed;
-    overflow: hidden;
-    left: 1vw;
-    bottom: 1vh;
-    padding: 0;
-    margin: 0;
-    color: white;
-    opacity: 1.0;
-  }
-
   .noPhotos {
     font-size: 5vh;
     font-weight: 600;
@@ -167,8 +132,8 @@ Polymer({
 <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
     <template is="dom-repeat" id="repeatTemplate" as="view" items="[[views]]">
-      <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]" sizing-type="[[sizingType]]"
-                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]">
+      <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]"
+                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="_onImageError">
       </screensaver-slide>
     </template>
   </neon-animated-pages>
@@ -410,6 +375,125 @@ Polymer({
     } else {
       this.$.playImage.classList.add('fadeOut');
       this.$.pauseImage.classList.remove('fadeOut');
+    }
+  },
+
+  /**
+   * Event: An image failed to load
+   */
+  _onImageError: async function(ev: CustomEvent) {
+    if (_errHandler.isUpdating) {
+      // another error event is already handling this
+      return;
+    }
+
+    // url failed to load
+    _errHandler.isUpdating = true;
+
+    const index = ev.detail.index;
+    const theView = this.views[index];
+    const thePhoto = theView.photo;
+    const theType = thePhoto.getType();
+    if ('Google User' === theType) {
+      // Google baseUrl may have expired, try to update some photos
+
+      // TODO have to use cors to get status code, so have to have permission from site
+      // first, fetch again and check status - only handle 403 errors
+      // const url = photo.getUrl();
+      // try {
+      //   const response = await fetch(url, {
+      //     method: 'get',
+      //   });
+      //   const status = response.status;
+      //   console.log(status);
+      //   if (status !== 403) {
+      //     // some other problem, don't know how to fix it
+      //     _isUpdating = false;
+      //     return;
+      //   }
+      // } catch (err) {
+      //   // some other problem, don't know how to fix it
+      //   console.log(err);
+      //   _isUpdating = false;
+      //   return;
+      // }
+
+      // throttle call rate to Google API per screensaver session
+      // in case something weird happens
+      if ((Date.now() - _errHandler.lastTime) < _errHandler.TIME_LIMIT) {
+        _errHandler.isUpdating = false;
+        return;
+      }
+
+      // limit max number of calls to Google API per screensaver session
+      // in case something weird happens
+      _errHandler.count++;
+      if (_errHandler.count >= _errHandler.MAX_COUNT) {
+        _errHandler.isUpdating = false;
+        return;
+      }
+
+      // update last call time
+      _errHandler.lastTime = Date.now();
+
+      // Calculate an hours worth of photos max
+      let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+      transTime = transTime.base * 1000;
+      let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
+      // do at least 50, still one rpc. will help when displaying
+      // a lot for short times
+      nPhotos = Math.max(nPhotos, 50);
+
+      if (_errHandler.count === 1) {
+        // limit to 50 on first call for quicker starts
+        nPhotos = Math.min(nPhotos, 50);
+      } else {
+        // limit to 300 on subsequent calls
+        nPhotos = Math.min(nPhotos, 300);
+      }
+
+      // get max of nPhotos Google Photo ids starting at this one
+      const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
+      const ids = [];
+      for (const photo of photos) {
+        // unique ids only - required for batchGet call
+        const id = photo.getEx().id;
+        if (ids.indexOf(id) === -1) {
+          ids.push(id);
+        }
+      }
+
+      let newPhotos = [];
+      try {
+        // load the new photos from Google Photos
+        newPhotos = await GoogleSource.loadPhotos(ids);
+      } catch (err) {
+        // major problem, give up for this session
+        _errHandler.count = _errHandler.MAX_COUNT + 1;
+        _errHandler.isUpdating = true;
+        return;
+      }
+
+      // update the Google Photos baseUrls for this screensaver session
+      SSPhotos.updateGooglePhotoUrls(newPhotos);
+
+      // update any views with the new google photos
+      SSViews.updateAllUrls(newPhotos);
+
+      // persist new baseUrls to albumSelections
+      let updated;
+      try {
+        updated = await GoogleSource.updateBaseUrls(newPhotos);
+      } catch (err) {
+        if (!updated) {
+          // major problem, give up for this session
+          _errHandler.count = _errHandler.MAX_COUNT + 1;
+          _errHandler.isUpdating = true;
+          return;
+        }
+      }
+
+      _errHandler.isUpdating = false;
     }
   },
 
