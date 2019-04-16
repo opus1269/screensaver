@@ -9,7 +9,7 @@
  * Base class for other SSView classes
  */
 
-import {TemplateInstanceBase} from '../../../node_modules/@polymer/polymer/lib/utils/templatize.js';
+import ScreensaverSlide from '../../../elements/screensaver-slide/screensaver-slide.js';
 import {IronImageElement} from '../../../node_modules/@polymer/iron-image/iron-image.js';
 import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
@@ -27,25 +27,18 @@ export default abstract class SSView {
 
   /**
    * Should we show the time
+   *
    * @returns true if we should show the time
    */
   public static showTime() {
-    return ChromeStorage.getBool('showTime');
-  }
-
-  /**
-   * Call notifyPath after set because dirty checking doesn't always work
-   * @param model - model to change
-   * @param prop - property name
-   * @param value - property value
-   */
-  private static _dirtySet(model: TemplateInstanceBase, prop: string, value: any) {
-    model.set(prop, value);
-    model.notifyPath(prop);
+    return ChromeStorage.getBool('showTime', false);
   }
 
   /** The photo we are viewing */
   public photo: SSPhoto;
+
+  /** The main element */
+  public slide: ScreensaverSlide;
 
   /** The element to render the photo */
   public image: IronImageElement;
@@ -61,9 +54,6 @@ export default abstract class SSView {
 
   /** The element to render the current weather */
   public weather: PolymerElement;
-
-  /** The repeat template model for our instance */
-  public model: TemplateInstanceBase;
 
   /** The url to the photo */
   public url: string;
@@ -85,7 +75,6 @@ export default abstract class SSView {
     this.time = null;
     this.location = null;
     this.weather = null;
-    this.model = null;
     this.url = photo.getUrl();
     this.authorLabel = '';
     this.locationLabel = '';
@@ -97,7 +86,7 @@ export default abstract class SSView {
    */
   public setUrl(url: string = null) {
     this.url = url || this.photo.getUrl();
-    SSView._dirtySet(this.model, 'view.url', this.url);
+    this._dirtySet('view.url', this.url);
   }
 
   /**
@@ -111,21 +100,16 @@ export default abstract class SSView {
 
   /**
    * Set the elements of the view
-   * @param image - iron-image of the photo
-   * @param author - div, photographer
-   * @param time - div, current time
-   * @param location - div, geolocation text
-   * @param weather - weather-element weather
-   * @param model - template item model
+   * @param slide - <screensaver-slide>
    */
-  public setElements(image: IronImageElement, author: HTMLDivElement, time: HTMLDivElement, location: HTMLDivElement,
-                     weather: PolymerElement, model: TemplateInstanceBase) {
-    this.image = image;
-    this.author = author;
-    this.time = time;
-    this.location = location;
-    this.weather = weather;
-    this.model = model;
+  public setElements(slide: ScreensaverSlide) {
+    this.slide = slide;
+
+    this.image = slide.shadowRoot.querySelector('.image');
+    this.author = slide.shadowRoot.querySelector('.author');
+    this.time = slide.shadowRoot.querySelector('.time');
+    this.location = slide.shadowRoot.querySelector('.location');
+    this.weather = slide.shadowRoot.querySelector('.weather');
 
     this._setTimeStyle();
     this.setPhoto(this.photo);
@@ -211,7 +195,7 @@ export default abstract class SSView {
    */
   protected _setAuthorLabel() {
     this.authorLabel = '';
-    SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
+    this._dirtySet('view.authorLabel', this.authorLabel);
 
     const type = this.photo.getType();
     const photographer = this.photo.getPhotographer();
@@ -234,7 +218,7 @@ export default abstract class SSView {
       // no photographer name
       this.authorLabel = `${ChromeLocale.localize('photo_from')} ${newType}`;
     }
-    SSView._dirtySet(this.model, 'view.authorLabel', this.authorLabel);
+    this._dirtySet('view.authorLabel', this.authorLabel);
   }
 
   /**
@@ -242,7 +226,7 @@ export default abstract class SSView {
    */
   protected _setLocationLabel() {
     this.locationLabel = '';
-    SSView._dirtySet(this.model, 'view.locationLabel', this.locationLabel);
+    this._dirtySet('view.locationLabel', this.locationLabel);
 
     // TODO add back if we do geo location again
     // if (SSView._showLocation() && this._hasLocation()) {
@@ -251,7 +235,7 @@ export default abstract class SSView {
     //     if (location && this.model) {
     //       location = location.replace('Unnamed Road, ', '');
     //       this.locationLabel = location;
-    //       SSView._dirtySet(this.model, 'view.locationLabel',
+    //       this._dirtySet(this.model, 'view.locationLabel',
     //           this.locationLabel);
     //     }
     //     return null;
@@ -263,6 +247,17 @@ export default abstract class SSView {
     //     }
     //   });
     // }
+  }
+
+  /**
+   * Call notifyPath after set because dirty checking doesn't always work
+   *
+   * @param prop - property name
+   * @param value - property value
+   */
+  protected _dirtySet(prop: string, value: any) {
+    this.slide.set(prop, value);
+    this.slide.notifyPath(prop);
   }
 }
 

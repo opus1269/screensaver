@@ -10,23 +10,20 @@
  * @module ss/views
  */
 
-import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
-import {PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element';
-import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import ScreensaverSlide from '../../elements/screensaver-slide/screensaver-slide';
+import SSView from './views/ss_view';
+import SSPhoto from './ss_photo';
 
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import SSView from './views/ss_view.js';
-import SSPhoto from './ss_photo.js';
 import * as Screensaver from '../../elements/screensaver-element/screensaver-element.js';
 import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
+
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Enum for view type
@@ -100,16 +97,9 @@ export function initialize(pages: NeonAnimatedPagesElement) {
   Screensaver.setViews(_views);
 
   // set the Elements of each view
-  const repeatTemplate: DomRepeat = _pages.querySelector('#repeatTemplate');
   _views.forEach((view: SSView, index: number) => {
     const slide: ScreensaverSlide = _pages.querySelector('#view' + index);
-    const image: IronImageElement = slide.shadowRoot.querySelector('.image');
-    const author: HTMLDivElement = slide.shadowRoot.querySelector('.author');
-    const time: HTMLDivElement = slide.shadowRoot.querySelector('.time');
-    const location: HTMLDivElement = slide.shadowRoot.querySelector('.location');
-    const weather: PolymerElement = slide.shadowRoot.querySelector('.weather');
-    const model = repeatTemplate.modelForElement(slide);
-    view.setElements(image, author, time, location, weather, model);
+    view.setElements(slide);
   });
 }
 
