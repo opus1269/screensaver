@@ -21,9 +21,9 @@ import '../../elements/weather-element/weather-element.js';
 
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
-import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
 
 /**
@@ -194,7 +194,6 @@ export default class ScreensaverSlide extends
       // url failed to load
       _errHandler.isUpdating = true;
 
-      const theIndex = this.index;
       const theView = this.view;
       const thePhoto = theView.photo;
       const theType = thePhoto.getType();
@@ -241,7 +240,8 @@ export default class ScreensaverSlide extends
         _errHandler.lastTime = Date.now();
 
         // Calculate an hours worth of photos max
-        const transTime = SSRunner.getWaitTime();
+        let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+        transTime = transTime.base * 1000;
         let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
         // do at least 50, still one rpc. will help when displaying
         // a lot for short times
