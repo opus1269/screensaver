@@ -61,8 +61,7 @@ export enum TRANS_TYPE {
   RANDOM,
 }
 
-export let setSizingType: (arg0: string) => void = null;
-export let setViews: (arg0: SSView[]) => void = null;
+export let setViews: (views: SSView[]) => void = null;
 export let isNoPhotos: () => boolean = null;
 export let setNoPhotos: () => void = null;
 export let setPaused: (arg0: boolean) => void = null;
@@ -197,12 +196,6 @@ Polymer({
       value: [],
     },
 
-    /** The way an image is rendered */
-    sizingType: {
-      type: String,
-      value: null,
-    },
-
     /** Type for between photo animation */
     aniType: {
       type: Number,
@@ -237,7 +230,6 @@ Polymer({
         'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
     // Initialize exports
-    setSizingType = this.setSizingType.bind(this);
     setViews = this.setViews.bind(this);
     isNoPhotos = this.isNoPhotos.bind(this);
     setNoPhotos = this.setNoPhotos.bind(this);
@@ -255,15 +247,6 @@ Polymer({
       this._launch().catch(() => {});
 
     }, 0);
-  },
-
-  /**
-   * Set the sizing type for the photos
-   *
-   * @param type - The sizing type
-   */
-  setSizingType: function(type: string) {
-    this.set('sizingType', type);
   },
 
   /**

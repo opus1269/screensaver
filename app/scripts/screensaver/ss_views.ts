@@ -46,34 +46,27 @@ const _views: SSView[] = [];
 /** The neon-animated-pages */
 let _pages: NeonAnimatedPagesElement = null;
 
-/** The view type */
-let _type = Type.UNDEFINED;
-
 /**
- * Process settings related to the photo's appearance
+ * Get the sizing type for the photos
+ *
+ * @param type
+ * @returns sizing type for <iron-image>
  */
-function _setViewType() {
-  _type = ChromeStorage.getInt('photoSizing', Type.LETTERBOX);
-  if (_type === Type.RANDOM) {
-    // pick random sizing
-    _type = ChromeUtils.getRandomInt(0, 3);
-  }
-  let type = 'contain';
+function _getSizingType(type: Type) {
+  let sizingType = 'contain';
 
-  switch (_type) {
+  switch (type) {
     case Type.ZOOM:
-      type = 'cover';
+      sizingType = 'cover';
       break;
     case Type.LETTERBOX:
     case Type.FRAME:
     case Type.FULL:
-      type = null;
+      sizingType = null;
       break;
     default:
       break;
   }
-
-  Screensaver.setSizingType(type);
 }
 
 /**
@@ -83,12 +76,18 @@ function _setViewType() {
  */
 export function initialize(pages: NeonAnimatedPagesElement) {
   _pages = pages;
-  _setViewType();
+
+  let type = ChromeStorage.getInt('photoSizing', Type.LETTERBOX);
+  if (type === Type.RANDOM) {
+    // pick random sizing
+    type = ChromeUtils.getRandomInt(0, 3);
+  }
+  const sizingType = _getSizingType(type);
 
   const len = Math.min(SSPhotos.getCount(), _MAX_VIEWS);
   for (let i = 0; i < len; i++) {
     const photo = SSPhotos.get(i);
-    const view = SSViewFactory.create(photo, _type);
+    const view = SSViewFactory.create(photo, type);
     _views.push(view);
   }
   SSPhotos.setCurrentIndex(len);
@@ -99,20 +98,9 @@ export function initialize(pages: NeonAnimatedPagesElement) {
   // set the Elements of each view
   _views.forEach((view: SSView, index: number) => {
     const slide: ScreensaverSlide = _pages.querySelector('#view' + index);
+    slide.set('sizingType', sizingType);
     view.setElements(slide);
   });
-}
-
-/**
- * Get the type of view
- *
- * @returns The view type
- */
-export function getType() {
-  if (_type === Type.UNDEFINED) {
-    _setViewType();
-  }
-  return _type;
 }
 
 /**

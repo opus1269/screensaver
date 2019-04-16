@@ -50,16 +50,20 @@ export default class ScreensaverSlide extends
     (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => PolymerElement) {
 
   /** The SSView we contain */
-  @property({type: Number})
-  protected sizingType = 0;
-
-  /** The SSView we contain */
   @property({type: Object})
   protected view: SSView = null;
 
   /** The index of our view */
   @property({type: Number})
   protected index = 0;
+
+  /** Index of animation to use */
+  @property({type: Number})
+  protected aniType = 0;
+
+  /** The SSView we contain */
+  @property({type: Number})
+  protected sizingType = 0;
 
   /** Screen width */
   @property({type: Number})
@@ -93,10 +97,6 @@ export default class ScreensaverSlide extends
       },
     },
   };
-
-  /** Index of animation to use */
-  @property({type: Number})
-  protected aniType = 0;
 
   static get template() {
     // language=HTML format=false
