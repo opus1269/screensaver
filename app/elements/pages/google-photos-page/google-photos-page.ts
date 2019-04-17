@@ -32,7 +32,7 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import './albums-view.js';
 import './photos-view.js';
 
-import {showConfirmDialog} from '../../../elements/app-main/app-main.js';
+import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/my_icons.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
@@ -144,7 +144,7 @@ export default class GooglePhotosPage extends BaseElement {
     const text = ChromeLocale.localize('desc_mode_switch');
     const title = ChromeLocale.localize('title_mode_switch');
     const button = ChromeLocale.localize('button_mode_switch');
-    showConfirmDialog(text, title, button, this._changeMode.bind(this));
+    Options.showConfirmDialog(text, title, button, this._changeMode.bind(this));
     ChromeGA.event(ChromeGA.EVENT.ICON, 'changeGooglePhotosMode');
   }
 

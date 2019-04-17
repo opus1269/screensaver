@@ -28,7 +28,7 @@ import BaseElement from '../../base-element/base-element.js';
 
 import './photo_cat.js';
 
-import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
+import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 
@@ -157,7 +157,7 @@ export default class PhotosView extends BaseElement {
         await Permissions.removeGooglePhotos();
         const title = ChromeLocale.localize('err_load_photos');
         const text = ChromeLocale.localize('err_auth_picasa');
-        showErrorDialog(title, text, METHOD);
+        Options.showErrorDialog(title, text, METHOD);
         return Promise.resolve();
       }
 
@@ -172,7 +172,7 @@ export default class PhotosView extends BaseElement {
             await ChromeStorage.asyncSet('googleImages', json,
                 'useGooglePhotos');
         if (!set) {
-          showStorageErrorDialog(METHOD);
+          Options.showStorageErrorDialog(METHOD);
           this.set('needsPhotoRefresh', true);
         } else {
           this.set('needsPhotoRefresh', false);
@@ -191,7 +191,7 @@ export default class PhotosView extends BaseElement {
     if (error) {
       const title = ChromeLocale.localize('err_load_photos');
       const text = error.message;
-      showErrorDialog(title, text, METHOD);
+      Options.showErrorDialog(title, text, METHOD);
     }
   }
 

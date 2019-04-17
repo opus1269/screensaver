@@ -92,26 +92,6 @@ interface Page {
 }
 
 /**
- * Function to show a confirm dialog
- */
-export let showConfirmDialog: (arg0: string, arg1: string, arg2: string, arg3: () => void) => void = null;
-
-/**
- * Function to show an error dialog
- */
-export let showErrorDialog: (arg0: string, arg1: string, arg2: string) => void = null;
-
-/**
- * Function to show an error dialog about failing to store data
- */
-export let showStorageErrorDialog: (arg0: string) => void = null;
-
-/**
- * Function to call on confirm dialog confirm button click
- */
-let confirmFn: () => void = null;
-
-/**
  * Path to the extension in the Web Store
  */
 const EXT_URI = `https://chrome.google.com/webstore/detail/screensaver/${chrome.runtime.id}/`;
@@ -171,6 +151,11 @@ const pages: Page[] = [
 ];
 
 /**
+ * Function to call on confirm dialog confirm button click
+ */
+let confirmFn: () => void = null;
+
+/**
  * Google Photos Page
  */
 let gPhotosPage: any;
@@ -184,7 +169,7 @@ let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
  * Polymer element for the main UI
  */
 @customElement('app-main')
-export default class AppMain extends BaseElement {
+export class AppMain extends BaseElement {
 
   /**
    * Get the index into the {@link pages} array
@@ -254,11 +239,6 @@ export default class AppMain extends BaseElement {
 
     MyGA.initialize();
     ChromeGA.page('/options.html');
-
-    // Initialize dialog exports
-    showConfirmDialog = this.showConfirmDialog.bind(this);
-    showErrorDialog = this.showErrorDialog.bind(this);
-    showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
 
     // initialize page functions
     pages[1].fn = this._showScreensaverPreview.bind(this);

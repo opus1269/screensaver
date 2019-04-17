@@ -32,7 +32,7 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import BaseElement from '../../base-element/base-element.js';
 
-import {showErrorDialog, showStorageErrorDialog} from '../../../elements/app-main/app-main.js';
+import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/my_icons.js';
 
@@ -84,7 +84,7 @@ export default class AlbumsView extends BaseElement {
         if (!set) {
           // exceeded storage limits - use old
           _selections = await ChromeStorage.asyncGet('albumSelections', []);
-          showStorageErrorDialog(METHOD);
+          Options.showStorageErrorDialog(METHOD);
           return Promise.resolve(false);
         } else {
           // update selections
@@ -94,7 +94,7 @@ export default class AlbumsView extends BaseElement {
         // error
         const title = ChromeLocale.localize('err_status');
         const text = response.message;
-        showErrorDialog(title, text, METHOD);
+        Options.showErrorDialog(title, text, METHOD);
         return Promise.resolve(false);
       }
 
@@ -102,7 +102,7 @@ export default class AlbumsView extends BaseElement {
       // error
       const title = ChromeLocale.localize('err_status');
       const text = err.message;
-      showErrorDialog(title, text, METHOD);
+      Options.showErrorDialog(title, text, METHOD);
       return Promise.resolve(false);
     }
 
@@ -187,7 +187,7 @@ export default class AlbumsView extends BaseElement {
         await Permissions.removeGooglePhotos();
         const title = ERR_TITLE;
         const text = ChromeLocale.localize('err_auth_picasa');
-        showErrorDialog(title, text, METHOD);
+        Options.showErrorDialog(title, text, METHOD);
         return Promise.resolve();
       }
 
@@ -220,7 +220,7 @@ export default class AlbumsView extends BaseElement {
     } catch (err) {
       // handle errors ourselves
       const text = err.message;
-      showErrorDialog(ERR_TITLE, text, METHOD);
+      Options.showErrorDialog(ERR_TITLE, text, METHOD);
     } finally {
       this.set('waitForLoad', false);
     }
@@ -311,7 +311,7 @@ export default class AlbumsView extends BaseElement {
           // exceeded storage limits
           _selections.pop();
           this.set('albums.' + album.index + '.checked', false);
-          showStorageErrorDialog(METHOD);
+          Options.showStorageErrorDialog(METHOD);
         }
       }
     } catch (err) {
@@ -363,7 +363,7 @@ export default class AlbumsView extends BaseElement {
         ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
         const text = ChromeLocale.localize('err_max_albums');
-        showErrorDialog(ERR_TITLE, text, METHOD);
+        Options.showErrorDialog(ERR_TITLE, text, METHOD);
         return Promise.resolve(ret);
       }
 
@@ -373,7 +373,7 @@ export default class AlbumsView extends BaseElement {
         ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${photoCt}`);
         this.set('albums.' + album.index + '.checked', false);
         const text = ChromeLocale.localize('err_max_photos');
-        showErrorDialog(ERR_TITLE, text, METHOD);
+        Options.showErrorDialog(ERR_TITLE, text, METHOD);
         return Promise.resolve(ret);
       }
 
@@ -402,7 +402,7 @@ export default class AlbumsView extends BaseElement {
           // exceeded storage limits
           _selections.pop();
           this.set('albums.' + album.index + '.checked', false);
-          showStorageErrorDialog(METHOD);
+          Options.showStorageErrorDialog(METHOD);
           return Promise.resolve(ret);
         }
 
@@ -421,7 +421,7 @@ export default class AlbumsView extends BaseElement {
     }
 
     if (error) {
-      showErrorDialog(ERR_TITLE, error.message, METHOD);
+      Options.showErrorDialog(ERR_TITLE, error.message, METHOD);
     } else {
       ret = true;
     }

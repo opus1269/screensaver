@@ -35,7 +35,7 @@ import {LocalizeBehavior} from '../../../elements/setting-elements/localize-beha
 import '../../../elements/my_icons.js';
 import '../../../elements/shared-styles.js';
 
-import {showErrorDialog} from '../../../elements/app-main/app-main.js';
+import {Options} from '../../../scripts/options/options.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as MyUtils from '../../../scripts/my_utils.js';
@@ -478,7 +478,7 @@ Polymer({
         // ignore
       }
 
-      showErrorDialog(ERR_TITLE, err.message, METHOD);
+      Options.showErrorDialog(ERR_TITLE, err.message, METHOD);
     }
   },
 
