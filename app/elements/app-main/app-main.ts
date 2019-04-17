@@ -4,18 +4,24 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {AppDrawerLayoutElement} from '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout';
+import {AppDrawerElement} from '../../node_modules/@polymer/app-layout/app-drawer/app-drawer';
+import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/paper-listbox';
+
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {
+  customElement,
+  property,
+  computed,
+  query,
+  listen,
+} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../node_modules/@polymer/font-roboto/roboto.js';
 
-import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '../../node_modules/@polymer/iron-icon/iron-icon.js';
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 
-import '../../node_modules/@polymer/paper-styles/typography.js';
-import '../../node_modules/@polymer/paper-styles/color.js';
 import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
@@ -37,8 +43,9 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
+import BaseElement from '../base-element/base-element.js';
+
 import '../../elements/pages/settings-page/settings-page.js';
-import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
 import ErrorPage from '../../elements/pages/error-page/error-page.js';
 import GooglePhotosPage from '../../elements/pages/google-photos-page/google-photos-page.js';
 import HelpPage from '../../elements/pages/help-page/help-page.js';
@@ -46,8 +53,6 @@ import HelpPage from '../../elements/pages/help-page/help-page.js';
 import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
 import '../../elements/confirm-dialog/confirm-dialog.js';
-
-import '../../elements/shared-styles.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -60,13 +65,8 @@ import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js'
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
-
-/**
- * Module for the main UI
- */
 
 /**
  * The pages for our SPA
@@ -114,7 +114,7 @@ let confirmFn: () => void = null;
 /**
  * Path to the extension in the Web Store
  */
-const EXT_URI = `https://chrome.google.com/webstore/detail/screensaver/${chrome.runtime.id }/`;
+const EXT_URI = `https://chrome.google.com/webstore/detail/screensaver/${chrome.runtime.id}/`;
 
 /**
  * Path to my Pushy Clipboard extension
@@ -182,12 +182,395 @@ let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
 
 /**
  * Polymer element for the main UI
- * @PolymerElement
  */
-Polymer({
-  // language=HTML format=false
-  _template: html`<!--suppress CssUnresolvedCustomProperty -->
-<style include="shared-styles iron-flex iron-flex-alignment">
+@customElement('app-main')
+export default class AppMain extends BaseElement {
+
+  /**
+   * Get the index into the {@link pages} array
+   *
+   * @param name - route to get index for
+   * @returns index into array
+   */
+  private static getPageIdx(name: string) {
+    return pages.map((e) => {
+      return e.route;
+    }).indexOf(name);
+  }
+
+  /** The app's pages */
+  @property({type: Object})
+  public readonly pages = pages;
+
+  /** Current {@link Page} */
+  @property({type: String, notify: true})
+  public route = 'page-settings';
+
+  /** Google Photos permission status */
+  @property({type: String, notify: true})
+  public permission = Permissions.STATE.notSet;
+
+  /** Permission status */
+  @computed('permission')
+  get permissionStatus() {
+    return `${ChromeLocale.localize('permission_status')} ${ChromeLocale.localize(this.permission)}`;
+  }
+
+  @query('#mainMenu')
+  protected mainMenu: PaperListboxElement;
+
+  @query('#appDrawer')
+  protected appDrawer: AppDrawerElement;
+
+  @query('#appDrawerLayout')
+  protected appDrawerLayout: AppDrawerLayoutElement;
+
+  @query('#errorDialog')
+  protected errorDialog: any;
+
+  @query('#confirmDialog')
+  protected confirmDialog: any;
+
+  @query('#permissionsDialog')
+  protected permissionsDialog: any;
+
+  @query('#settingsPage')
+  protected settingsPage: any;
+
+  @query('#googlePhotosInsertion')
+  protected googlePhotosInsertion: HTMLElement;
+
+  @query('#errorInsertion')
+  protected errorInsertion: HTMLElement;
+
+  @query('#helpInsertion')
+  protected helpInsertion: HTMLElement;
+
+  /**
+   * Element is ready
+   */
+  public ready() {
+    super.ready();
+
+    MyGA.initialize();
+    ChromeGA.page('/options.html');
+
+    // Initialize dialog exports
+    showConfirmDialog = this.showConfirmDialog.bind(this);
+    showErrorDialog = this.showErrorDialog.bind(this);
+    showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
+
+    // initialize page functions
+    pages[1].fn = this._showScreensaverPreview.bind(this);
+    pages[2].fn = this._showGooglePhotosPage.bind(this);
+    pages[3].fn = this._showPermissionsDialog.bind(this);
+    pages[4].fn = this._showErrorPage.bind(this);
+    pages[5].fn = this._showHelpPage.bind(this);
+
+    // listen for chrome messages
+    ChromeMsg.listen(this._onChromeMessage.bind(this));
+
+    // listen for changes to chrome.storage
+    chrome.storage.onChanged.addListener((changes) => {
+      for (const key of Object.keys(changes)) {
+        if (key === 'lastError') {
+          this._setErrorMenuState().catch(() => {});
+          break;
+        }
+      }
+    });
+
+    // listen for changes to localStorage
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === 'permPicasa') {
+        this._setGooglePhotosMenuState();
+      } else if (ev.key === 'signedInToChrome') {
+        signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
+      }
+    }, false);
+
+    setTimeout(async () => {
+      // initialize menu enabled states
+      await this._setErrorMenuState();
+      this._setGooglePhotosMenuState();
+    }, 0);
+  }
+
+  /**
+   * Display an error dialog
+   *
+   * @param title - dialog title
+   * @param text - dialog text
+   * @param [method=null] - optional calling method
+   */
+  public showErrorDialog(title: string, text: string, method: string = null) {
+    if (method) {
+      ChromeLog.error(text, method, title);
+    }
+    this.errorDialog.open(title, text);
+  }
+
+  /**
+   * Display an error dialog about failing to save data
+   *
+   * @param method - calling method
+   */
+  public showStorageErrorDialog(method: string) {
+    const title = ChromeLocale.localize('err_storage_title');
+    const text = ChromeLocale.localize('err_storage_desc');
+    ChromeLog.error(text, method, title);
+    this.errorDialog.open(title, text);
+  }
+
+  /**
+   * Display a confirm dialog
+   *
+   * @param text - dialog text
+   * @param title - dialog title
+   * @param confirmLabel - confirm button text
+   * @param fn - function to call on confirm button click
+   */
+  public showConfirmDialog(text: string, title: string, confirmLabel: string, fn: () => void) {
+    confirmFn = fn;
+    this.confirmDialog.open(text, title, confirmLabel);
+  }
+
+  /**
+   * Clicked on confirm button of confirm dialog
+   */
+  @listen('confirm-tap', 'confirmDialog')
+  public onConfirmDialogTapped() {
+    if (confirmFn) {
+      confirmFn();
+    }
+  }
+
+  /**
+   * Clicked on accept permissions dialog button
+   */
+  @listen('click', 'permissionsDialogConfirmButton')
+  public async onAcceptPermissionsClicked() {
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
+    try {
+      // try to get permission - may prompt
+      const granted = await Permissions.request(Permissions.PICASA);
+      if (!granted) {
+        await Permissions.removeGooglePhotos();
+      }
+    } catch (err) {
+      ChromeLog.error(err.message, 'AppMain._onAcceptPermissionsClicked');
+    }
+
+    return Promise.resolve();
+  }
+
+  /**
+   * Clicked on deny permission dialog button
+   */
+  @listen('click', 'permissionsDialogDenyButton')
+  public async onDenyPermissionsClicked() {
+    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
+    try {
+      await Permissions.removeGooglePhotos();
+    } catch (err) {
+      ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
+    }
+
+    return Promise.resolve();
+  }
+
+  /**
+   * Event: Navigation menu selected. Route to proper page
+   *
+   * @param ev - ClickEvent
+   */
+  private _onNavMenuItemTapped(ev: any) {
+    // Close drawer after menu item is selected if it is in narrow layout
+    const appDrawerLayout = this.appDrawerLayout;
+    const appDrawer = this.appDrawer;
+    if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
+      appDrawer.close();
+    }
+
+    const prevRoute = this.route;
+
+    const idx = AppMain.getPageIdx(ev.currentTarget.id);
+    const page = pages[idx];
+
+    ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
+
+    if (page.url) {
+      // some pages are url links
+      this.mainMenu.select(prevRoute);
+      chrome.tabs.create({url: page.url});
+    } else if (page.fn) {
+      // some pages have functions to view them
+      page.fn(idx, prevRoute);
+    } else {
+      // some pages are just pages
+      this.set('route', page.route);
+    }
+  }
+
+  /**
+   * Show the Google Photos page
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
+   */
+  private _showGooglePhotosPage(index: number, prevRoute: string) {
+    signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
+    if (!signedInToChrome) {
+      // Display Error Dialog if not signed in to Chrome
+      const title = ChromeLocale.localize('err_chrome_signin_title');
+      const text = ChromeLocale.localize('err_chrome_signin');
+      this.errorDialog.open(title, text);
+      return;
+    }
+    if (!pages[index].ready) {
+      // create the page the first time
+      pages[index].ready = true;
+      gPhotosPage = new GooglePhotosPage();
+      this.$.googlePhotosInsertion.appendChild(gPhotosPage);
+    } else if (ChromeStorage.getBool('isAlbumMode', true)) {
+      gPhotosPage.loadAlbumList().catch(() => {});
+    }
+    this.set('route', pages[index].route);
+  }
+
+  /**
+   * Show the error viewer page
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
+   */
+  private _showErrorPage(index: number, prevRoute: string) {
+    if (!pages[index].ready) {
+      // insert the page the first time
+      pages[index].ready = true;
+      const el = new ErrorPage();
+      this.$.errorInsertion.appendChild(el);
+    }
+    this.set('route', pages[index].route);
+  }
+
+  /**
+   * Show the help page
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
+   */
+  private _showHelpPage(index: number, prevRoute: string) {
+    if (!pages[index].ready) {
+      // insert the page the first time
+      pages[index].ready = true;
+      const el = new HelpPage();
+      this.$.helpInsertion.appendChild(el);
+    }
+    this.set('route', pages[index].route);
+  }
+
+  /**
+   * Display a preview of the screen saver
+   *
+   * @param index into the {@link #pages} array
+   * @param prevRoute - last page selected
+   */
+  private _showScreensaverPreview(index: number, prevRoute: string) {
+    // reselect previous page - need to delay so tap event is done
+    setTimeout(() => this.mainMenu.select(prevRoute), 500);
+    ChromeMsg.send(MyMsg.TYPE.SS_SHOW).catch(() => {});
+  }
+
+  /**
+   * Show the permissions dialog
+   */
+  private _showPermissionsDialog() {
+    this.permissionsDialog.open();
+  }
+
+  /**
+   * Set enabled state of Google Photos menu item
+   */
+  private _setGooglePhotosMenuState() {
+    // disable google-page if user hasn't allowed
+    const idx = AppMain.getPageIdx('page-google-photos');
+    const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
+    if (!el) {
+      ChromeGA.error('no element found',
+          'AppMain._setGooglePhotosMenuState');
+    } else if (this.permission !== 'allowed') {
+      el.setAttribute('disabled', 'true');
+    } else {
+      el.removeAttribute('disabled');
+    }
+  }
+
+  /**
+   * Set enabled state of Error Viewer menu item
+   */
+  private async _setErrorMenuState() {
+    // disable error-page if no lastError
+    try {
+      const lastError = await ChromeLastError.load();
+
+      const idx = AppMain.getPageIdx('page-error');
+      const route = pages[idx].route;
+      const el = this.shadowRoot.querySelector(`#${route}`);
+      if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
+        el.removeAttribute('disabled');
+      } else if (el) {
+        el.setAttribute('disabled', 'true');
+      }
+    } catch (err) {
+      ChromeGA.error(err.message, 'AppMain._setErrorMenuState');
+    }
+
+    return Promise.resolve();
+  }
+
+  /**
+   * Event: Fired when a message is sent from either an extension process<br>
+   * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
+   * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
+   *
+   * @param request - details for the message
+   * @param sender - MessageSender object
+   * @param response - function to call once after processing
+   * @returns true if asynchronous
+   */
+  private _onChromeMessage(request: ChromeMsg.MsgType,
+                           sender: chrome.runtime.MessageSender,
+                           response: (arg0: object) => void) {
+    if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
+      // highlight ourselves and let the sender know we are here
+      const chromep = new ChromePromise();
+      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): chrome.tabs.Tab => {
+        chrome.tabs.update(tab.id, {highlighted: true});
+        return null;
+      }).catch((err: Error) => {
+        ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
+      });
+      response({message: 'OK'});
+    } else if (request.message === ChromeMsg.TYPE.STORAGE_EXCEEDED.message) {
+      // Display Error Dialog if a save action exceeded the
+      // localStorage limit
+      const title = ChromeLocale.localize('err_storage_title');
+      const text = ChromeLocale.localize('err_storage_desc');
+      this.errorDialog.open(title, text);
+    } else if (request.message === MyMsg.TYPE.PHOTO_SOURCE_FAILED.message) {
+      // failed to load
+      this.settingsPage.deselectPhotoSource(request.key);
+      const title = ChromeLocale.localize('err_photo_source_title');
+      const text = request.error;
+      this.errorDialog.open(title, text);
+    }
+    return false;
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
 
   :host {
     display: block;
@@ -236,8 +619,7 @@ Polymer({
 <error-dialog id="errorDialog"></error-dialog>
 
 <!-- Confirm dialog keep above app-drawer-layout because of overlay bug -->
-<confirm-dialog id="confirmDialog" confirm-label="[[localize('ok')]]"
-                on-confirm-tap="_onConfirmDialogTapped"></confirm-dialog>
+<confirm-dialog id="confirmDialog" confirm-label="[[localize('ok')]]"></confirm-dialog>
 
 <!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
 <paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
@@ -260,15 +642,15 @@ Polymer({
       </paper-item>
 
       <paper-item class="status">
-        [[_computePermissionsStatus(permission)]]
+        [[permissionStatus]]
       </paper-item>
 
     </div>
   </paper-dialog-scrollable>
   <div class="buttons">
     <paper-button dialog-dismiss>[[localize('cancel')]]</paper-button>
-    <paper-button dialog-dismiss on-click="_onDenyPermissionsClicked">[[localize('deny')]]</paper-button>
-    <paper-button dialog-confirm autofocus on-click="_onAcceptPermissionsClicked">[[localize('allow')]]</paper-button>
+    <paper-button id="permissionsDialogDenyButton" dialog-dismiss>[[localize('deny')]]</paper-button>
+    <paper-button id="permissionsDialogConfirmButton" dialog-confirm autofocus>[[localize('allow')]]</paper-button>
   </div>
 </paper-dialog>
 
@@ -346,375 +728,6 @@ Polymer({
   </app-localstorage-document>
 
 </app-drawer-layout>
-`,
-
-  is: 'app-main',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-
-    pages: {
-      type: Array,
-      value: pages,
-      readOnly: true,
-    },
-
-    /** Current {@link Page} */
-    route: {
-      type: String,
-      value: 'page-settings',
-      notify: true,
-    },
-
-    /** Google Photos permission status */
-    permission: {
-      type: String,
-      value: 'notSet',
-      notify: true,
-    },
-  },
-
-  /**
-   * Element is ready
-   */
-  ready: function() {
-    MyGA.initialize();
-    ChromeGA.page('/options.html');
-
-    // Initialize dialog exports
-    showConfirmDialog = this.showConfirmDialog.bind(this);
-    showErrorDialog = this.showErrorDialog.bind(this);
-    showStorageErrorDialog = this.showStorageErrorDialog.bind(this);
-
-    // initialize page functions
-    pages[1].fn = this._showScreensaverPreview.bind(this);
-    pages[2].fn = this._showGooglePhotosPage.bind(this);
-    pages[3].fn = this._showPermissionsDialog.bind(this);
-    pages[4].fn = this._showErrorPage.bind(this);
-    pages[5].fn = this._showHelpPage.bind(this);
-
-    // listen for chrome messages
-    ChromeMsg.listen(this._onChromeMessage.bind(this));
-
-    // listen for changes to chrome.storage
-    chrome.storage.onChanged.addListener((changes) => {
-      for (const key of Object.keys(changes)) {
-        if (key === 'lastError') {
-          this._setErrorMenuState().catch(() => {});
-          break;
-        }
-      }
-    });
-
-    // listen for changes to localStorage
-    window.addEventListener('storage', (ev) => {
-      if (ev.key === 'permPicasa') {
-        this._setGooglePhotosMenuState();
-      } else if (ev.key === 'signedInToChrome') {
-        this.signedInToChrome =
-            ChromeStorage.getBool('signedInToChrome', true);
-      }
-    }, false);
-
-    setTimeout(async () => {
-      // initialize menu enabled states
-      await this._setErrorMenuState();
-      this._setGooglePhotosMenuState();
-    }, 0);
-  },
-
-  /**
-   * Display an error dialog
-   *
-   * @param title - dialog title
-   * @param text - dialog text
-   * @param [method=null] - optional calling method
-   */
-  showErrorDialog: function(title: string, text: string, method: string = null) {
-    if (method) {
-      ChromeLog.error(text, method, title);
-    }
-    this.$.errorDialog.open(title, text);
-  },
-
-  /**
-   * Display an error dialog about failing to save data
-   *
-   * @param method - calling method
-   */
-  showStorageErrorDialog: function(method: string) {
-    const title = ChromeLocale.localize('err_storage_title');
-    const text = ChromeLocale.localize('err_storage_desc');
-    ChromeLog.error(text, method, title);
-    this.$.errorDialog.open(title, text);
-  },
-
-  /**
-   * Display a confirm dialog
-   *
-   * @param text - dialog text
-   * @param title - dialog title
-   * @param confirmLabel - confirm button text
-   * @param fn - function to call on confirm button click
-   */
-  showConfirmDialog: function(text: string, title: string, confirmLabel: string, fn: () => void) {
-    confirmFn = fn;
-    this.$.confirmDialog.open(text, title, confirmLabel);
-  },
-
-  /**
-   * Event: Clicked on confirm button of confirm dialog
-   */
-  _onConfirmDialogTapped: function() {
-    if (confirmFn) {
-      confirmFn();
-    }
-  },
-
-  /**
-   * Event: Navigation menu selected. Route to proper page
-   * @param ev - ClickEvent
-   */
-  _onNavMenuItemTapped: function(ev: any) {
-    // Close drawer after menu item is selected if it is in narrow layout
-    const appDrawerLayout = this.$$('#appDrawerLayout');
-    const appDrawer = this.$$('#appDrawer');
-    if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
-      appDrawer.close();
-    }
-
-    const prevRoute = this.route;
-
-    const idx = this._getPageIdx(ev.currentTarget.id);
-    const page = pages[idx];
-
-    ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
-
-    if (page.url) {
-      // some pages are url links
-      this.$.mainMenu.select(prevRoute);
-      chrome.tabs.create({url: page.url});
-    } else if (page.fn) {
-      // some pages have functions to view them
-      page.fn(idx, prevRoute);
-    } else {
-      // some pages are just pages
-      this.set('route', page.route);
-    }
-  },
-
-  /**
-   * Event: Clicked on accept permissions dialog button
-   */
-  _onAcceptPermissionsClicked: async function() {
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
-    try {
-      // try to get permission - may prompt
-      const granted = await Permissions.request(Permissions.PICASA);
-      if (!granted) {
-        await Permissions.removeGooglePhotos();
-      }
-    } catch (err) {
-      ChromeLog.error(err.message, 'AppMain._onAcceptPermissionsClicked');
-    }
-
-    return Promise.resolve();
-  },
-
-  /**
-   * Event: Clicked on deny permission dialog button
-   */
-  _onDenyPermissionsClicked: async function() {
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Deny');
-    try {
-      await Permissions.removeGooglePhotos();
-    } catch (err) {
-      ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
-    }
-
-    return Promise.resolve();
-  },
-
-  /**
-   * Computed Binding: Determine content script permission status string
-   *
-   * @param permission - current setting
-   * @returns The current status of the permission
-   */
-  _computePermissionsStatus: function(permission: string) {
-    return `${ChromeLocale.localize(
-        'permission_status')} ${ChromeLocale.localize(permission)}`;
-  },
-
-  /**
-   * Get the index into the {@link #pages} array
-   *
-   * @param name - route to get index for
-   * @returns index into array
-   */
-  _getPageIdx: function(name: string) {
-    return pages.map((e) => {
-      return e.route;
-    }).indexOf(name);
-  },
-
-  /**
-   * Show the Google Photos page
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  _showGooglePhotosPage: function(index: number, prevRoute: string) {
-    signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
-    if (!signedInToChrome) {
-      // Display Error Dialog if not signed in to Chrome
-      const title = ChromeLocale.localize('err_chrome_signin_title');
-      const text = ChromeLocale.localize('err_chrome_signin');
-      this.$.errorDialog.open(title, text);
-      return;
-    }
-    if (!pages[index].ready) {
-      // create the page the first time
-      pages[index].ready = true;
-      gPhotosPage = new GooglePhotosPage();
-      this.$.googlePhotosInsertion.appendChild(gPhotosPage);
-    } else if (ChromeStorage.getBool('isAlbumMode', true)) {
-      gPhotosPage.loadAlbumList().catch(() => {});
-    }
-    this.set('route', pages[index].route);
-  },
-
-  /**
-   * Show the error viewer page
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  _showErrorPage: function(index: number, prevRoute: string) {
-    if (!pages[index].ready) {
-      // insert the page the first time
-      pages[index].ready = true;
-      const el = new ErrorPage();
-      this.$.errorInsertion.appendChild(el);
-    }
-    this.set('route', pages[index].route);
-  },
-
-  /**
-   * Show the help page
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  _showHelpPage: function(index: number, prevRoute: string) {
-    if (!pages[index].ready) {
-      // insert the page the first time
-      pages[index].ready = true;
-      const el = new HelpPage();
-      this.$.helpInsertion.appendChild(el);
-    }
-    this.set('route', pages[index].route);
-  },
-
-  /**
-   * Display a preview of the screen saver
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  _showScreensaverPreview: function(index: number, prevRoute: string) {
-    // reselect previous page - need to delay so tap event is done
-    setTimeout(() => this.$.mainMenu.select(prevRoute), 500);
-    ChromeMsg.send(MyMsg.TYPE.SS_SHOW).catch(() => {});
-  },
-
-  /**
-   * Show the permissions dialog
-   */
-  _showPermissionsDialog: function() {
-    this.$.permissionsDialog.open();
-  },
-
-  /**
-   * Set enabled state of Google Photos menu item
-   */
-  _setGooglePhotosMenuState: function() {
-    // disable google-page if user hasn't allowed
-    const idx = this._getPageIdx('page-google-photos');
-    const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
-    if (!el) {
-      ChromeGA.error('no element found',
-          'AppMain._setGooglePhotosMenuState');
-    } else if (this.permission !== 'allowed') {
-      el.setAttribute('disabled', 'true');
-    } else {
-      el.removeAttribute('disabled');
-    }
-  },
-
-  /**
-   * Set enabled state of Error Viewer menu item
-   */
-  _setErrorMenuState: async function() {
-    // disable error-page if no lastError
-    try {
-      const lastError = await ChromeLastError.load();
-
-      const idx = this._getPageIdx('page-error');
-      const route = pages[idx].route;
-      const el = this.shadowRoot.querySelector(`#${route}`);
-      if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
-        el.removeAttribute('disabled');
-      } else if (el) {
-        el.setAttribute('disabled', 'true');
-      }
-    } catch (err) {
-      ChromeGA.error(err.message, 'AppMain._setErrorMenuState');
-    }
-
-    return Promise.resolve();
-  },
-
-  /**
-   * Event: Fired when a message is sent from either an extension process<br>
-   * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
-   * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
-   *
-   * @param request - details for the message
-   * @param sender - MessageSender object
-   * @param response - function to call once after processing
-   * @returns true if asynchronous
-   */
-  _onChromeMessage: function(request: ChromeMsg.MsgType,
-                             sender: chrome.runtime.MessageSender,
-                             response: (arg0: object) => void) {
-    if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
-      // highlight ourselves and let the sender know we are here
-      const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): chrome.tabs.Tab => {
-        chrome.tabs.update(tab.id, {highlighted: true});
-        return null;
-      }).catch((err: Error) => {
-        ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
-      });
-      response({message: 'OK'});
-    } else if (request.message === ChromeMsg.TYPE.STORAGE_EXCEEDED.message) {
-      // Display Error Dialog if a save action exceeded the
-      // localStorage limit
-      const title = ChromeLocale.localize('err_storage_title');
-      const text = ChromeLocale.localize('err_storage_desc');
-      this.$.errorDialog.open(title, text);
-    } else if (request.message === MyMsg.TYPE.PHOTO_SOURCE_FAILED.message) {
-      // failed to load
-      this.$.settingsPage.deselectPhotoSource(request.key);
-      const title = ChromeLocale.localize('err_photo_source_title');
-      const text = request.error;
-      this.$.errorDialog.open(title, text);
-    }
-    return false;
-  },
-
-});
+`;
+  }
+}
