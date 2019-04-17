@@ -7,13 +7,7 @@
 import '../node_modules/@polymer/polymer/polymer-element.js';
 
 /**
- * Module for the shared styles
- * @module els/shared_styles
- */
-
-/**
  * Element for the shared styles
- * @PolymerElement
  */
 const sharedStyles = document.createElement('dom-module');
 
