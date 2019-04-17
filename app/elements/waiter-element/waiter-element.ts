@@ -4,35 +4,48 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 
-import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
+import {PaperItemElement} from '../../node_modules/@polymer/paper-item/paper-item';
 
-import '../../node_modules/@polymer/paper-styles/typography.js';
-import '../../node_modules/@polymer/paper-styles/color.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, query, observe} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-/**
- * Module for the Waiter Element
- * @module els/waiter_element
- */
+import BaseElement from '../base-element/base-element.js';
 
 /**
  * Polymer element to display waiter for lengthy operations
- * @type {{}}
- * @alias module:els/waiter_element.WaiterElement
- * @PolymerElement
  */
-const WaiterElement = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('waiter-element')
+export default class WaiterElement extends BaseElement {
+
+  /** Visible and active state */
+  @property({type: Boolean, notify: true})
+  protected active = false;
+
+  /** Label to display */
+  @property({type: String, notify: true})
+  protected label = 'Working...';
+
+  /** Status Label to display */
+  @property({type: String})
+  protected statusLabel = '';
+
+  /** Status label element */
+  @query('#status')
+  protected status: PaperItemElement;
+
+  /** Set status label */
+  @observe('statusLabel')
+  protected statusLabelChanged() {
+    this.status.innerHTML = this.statusLabel.replace(/\n/g, '<br/>');
+  }
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -43,60 +56,17 @@ const WaiterElement = Polymer({
   }
 
   /*noinspection CssUnresolvedCustomPropertySet*/
-  :host .waiter paper-item {
+  :host paper-item {
     @apply --paper-font-title;
-  }
-
-  :host #statusLabel {
     text-align: center;
   }
 </style>
 
 <div class="waiter vertical layout center" hidden$="[[!active]]">
-  <div class="horizontal center-justified layout">
-    <paper-spinner active="[[active]]" tabindex="-1"></paper-spinner>
-  </div>
+  <paper-spinner active="[[active]]" tabindex="-1"></paper-spinner>
   <paper-item>[[label]]</paper-item>
-  <paper-item id="statusLabel"></paper-item>
+  <paper-item id="status"></paper-item>
 </div>
-`,
-
-  is: 'waiter-element',
-
-  properties: {
-    /** Visible and active state */
-    active: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-
-    /** Label to display */
-    label: {
-      type: String,
-      value: 'Working...',
-      notify: true,
-    },
-
-    /** Status Label to display */
-    statusLabel: {
-      type: String,
-      value: '',
-      observer: '_statusLabelChanged',
-    },
-  },
-
-  /**
-   * Observer: Set status label
-   * @param {string} label - label
-   * @private
-   */
-  _statusLabelChanged: function(label: string) {
-    if (label !== undefined) {
-      this.$.statusLabel.innerHTML = label.replace(/\n/g, '<br/>');
-    }
-  },
-});
-
-export default WaiterElement;
-
+`;
+  }
+}
