@@ -69,7 +69,7 @@ export enum TRANS_TYPE {
  * @property TIME_LIMIT - throttle calls to this fast in case something weird happens
  * @property lastTime - last time called
  */
-const _errHandler = {
+const errHandler = {
   MAX_COUNT: 168, // about a weeks worth, if all goes well
   count: 0,
   isUpdating: false,
@@ -77,44 +77,11 @@ const _errHandler = {
   lastTime: 0,
 };
 
-export let setViews: (views: SSView[]) => void = null;
-export let isNoPhotos: () => boolean = null;
-export let setNoPhotos: () => void = null;
-export let setPaused: (arg0: boolean) => void = null;
-
 /**
  * Polymer element to display a screensaver
  */
 @customElement('screensaver-element')
-export class ScreensaverElement extends BaseElement {
-
-  /**
-   * Load the {@link SSPhotos} that will be displayed
-   *
-   * @throws An error if we failed to load photos
-   * @returns true if there is at least one photo
-   */
-  private static async _loadPhotos() {
-    let sources = PhotoSources.getSelectedSources();
-    sources = sources || [];
-
-    for (const source of sources) {
-      await SSPhotos.addFromSource(source);
-    }
-
-    if (!SSPhotos.getCount()) {
-      // No usable photos
-      setNoPhotos();
-      return Promise.resolve(false);
-    }
-
-    if (ChromeStorage.getBool('shuffle')) {
-      // randomize the order
-      SSPhotos.shuffle();
-    }
-
-    return Promise.resolve(true);
-  }
+export default class ScreensaverElement extends BaseElement {
 
   /**
    * Set the window zoom factor to 1.0
@@ -169,12 +136,6 @@ export class ScreensaverElement extends BaseElement {
     document.body.style.background = ChromeStorage.get('background',
         'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
-    // Initialize exports
-    setViews = this.setViews.bind(this);
-    isNoPhotos = this.isNoPhotos.bind(this);
-    setNoPhotos = this.setNoPhotos.bind(this);
-    setPaused = this.setPaused.bind(this);
-
     setTimeout(async () => {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
@@ -182,11 +143,36 @@ export class ScreensaverElement extends BaseElement {
       await ScreensaverElement._setZoom();
 
       this._setupPhotoTransitions();
-
-      // start slide show
-      this._launch().catch(() => {});
-
     }, 0);
+  }
+
+  /**
+   * Launch the slide show
+   *
+   * @param delay - delay in milli sec before start
+   */
+  public async launch(delay: number = 2000) {
+    try {
+      const hasPhotos = await this._loadPhotos();
+      if (hasPhotos) {
+        // initialize the views
+        SSViews.initialize(this.pages);
+
+        // send msg to update weather. don't wait can be slow
+        ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
+
+        // set time label timer
+        this._setupTime();
+
+        // kick off the slide show
+        SSRunner.start(delay);
+      }
+    } catch (err) {
+      ChromeLog.error(err.message, 'SS._launch');
+      this.setNoPhotos();
+    }
+
+    return Promise.resolve();
   }
 
   /**
@@ -225,6 +211,34 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
+   * Load the {@link SSPhotos} that will be displayed
+   *
+   * @throws An error if we failed to load photos
+   * @returns true if there is at least one photo
+   */
+  private async _loadPhotos() {
+    let sources = PhotoSources.getSelectedSources();
+    sources = sources || [];
+
+    for (const source of sources) {
+      await SSPhotos.addFromSource(source);
+    }
+
+    if (!SSPhotos.getCount()) {
+      // No usable photos
+      this.setNoPhotos();
+      return Promise.resolve(false);
+    }
+
+    if (ChromeStorage.getBool('shuffle')) {
+      // randomize the order
+      SSPhotos.shuffle();
+    }
+
+    return Promise.resolve(true);
+  }
+
+  /**
    * Process settings related to between photo transitions
    */
   private _setupPhotoTransitions() {
@@ -260,38 +274,9 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
-  /**
-   * Launch the slide show
-   *
-   * @param delay - delay in milli sec before start
-   */
-  private async _launch(delay: number = 2000) {
-    try {
-      const hasPhotos = await ScreensaverElement._loadPhotos();
-      if (hasPhotos) {
-        // initialize the views
-        SSViews.initialize(this.pages);
-
-        // send msg to update weather. don't wait can be slow
-        ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
-
-        // set time label timer
-        this._setupTime();
-
-        // kick off the slide show
-        SSRunner.start(delay);
-      }
-    } catch (err) {
-      ChromeLog.error(err.message, 'SS._launch');
-      setNoPhotos();
-    }
-
-    return Promise.resolve();
-  }
-
 
   /**
-   * Observer: Paused state changed
+   * Simple Observer: Paused state changed
    *
    * @param newValue - new value
    * @param oldValue - old value
@@ -313,13 +298,13 @@ export class ScreensaverElement extends BaseElement {
    * Event: An image failed to load
    */
   private async _onImageError(ev: CustomEvent) {
-    if (_errHandler.isUpdating) {
+    if (errHandler.isUpdating) {
       // another error event is already handling this
       return;
     }
 
     // url failed to load
-    _errHandler.isUpdating = true;
+    errHandler.isUpdating = true;
 
     const index = ev.detail.index;
     const theView = this.views[index];
@@ -351,21 +336,21 @@ export class ScreensaverElement extends BaseElement {
 
       // throttle call rate to Google API per screensaver session
       // in case something weird happens
-      if ((Date.now() - _errHandler.lastTime) < _errHandler.TIME_LIMIT) {
-        _errHandler.isUpdating = false;
+      if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
+        errHandler.isUpdating = false;
         return;
       }
 
       // limit max number of calls to Google API per screensaver session
       // in case something weird happens
-      _errHandler.count++;
-      if (_errHandler.count >= _errHandler.MAX_COUNT) {
-        _errHandler.isUpdating = false;
+      errHandler.count++;
+      if (errHandler.count >= errHandler.MAX_COUNT) {
+        errHandler.isUpdating = false;
         return;
       }
 
       // update last call time
-      _errHandler.lastTime = Date.now();
+      errHandler.lastTime = Date.now();
 
       // Calculate an hours worth of photos max
       let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
@@ -375,7 +360,7 @@ export class ScreensaverElement extends BaseElement {
       // a lot for short times
       nPhotos = Math.max(nPhotos, 50);
 
-      if (_errHandler.count === 1) {
+      if (errHandler.count === 1) {
         // limit to 50 on first call for quicker starts
         nPhotos = Math.min(nPhotos, 50);
       } else {
@@ -400,8 +385,8 @@ export class ScreensaverElement extends BaseElement {
         newPhotos = await GoogleSource.loadPhotos(ids);
       } catch (err) {
         // major problem, give up for this session
-        _errHandler.count = _errHandler.MAX_COUNT + 1;
-        _errHandler.isUpdating = true;
+        errHandler.count = errHandler.MAX_COUNT + 1;
+        errHandler.isUpdating = true;
         return;
       }
 
@@ -418,13 +403,13 @@ export class ScreensaverElement extends BaseElement {
       } catch (err) {
         if (!updated) {
           // major problem, give up for this session
-          _errHandler.count = _errHandler.MAX_COUNT + 1;
-          _errHandler.isUpdating = true;
+          errHandler.count = errHandler.MAX_COUNT + 1;
+          errHandler.isUpdating = true;
           return;
         }
       }
 
-      _errHandler.isUpdating = false;
+      errHandler.isUpdating = false;
     }
   }
 
