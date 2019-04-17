@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {AppMain} from '../../elements/app-main/app-main';
+import AppMain from '../../elements/app-main/app-main';
 
 import '../../elements/app-main/app-main.js';
 

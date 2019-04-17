@@ -151,25 +151,10 @@ const pages: Page[] = [
 ];
 
 /**
- * Function to call on confirm dialog confirm button click
- */
-let confirmFn: () => void = null;
-
-/**
- * Google Photos Page
- */
-let gPhotosPage: any;
-
-/**
- * Chrome sign in state
- */
-let signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
-
-/**
  * Polymer element for the main UI
  */
 @customElement('app-main')
-export class AppMain extends BaseElement {
+export default class AppMain extends BaseElement {
 
   /**
    * Get the index into the {@link pages} array
@@ -231,6 +216,12 @@ export class AppMain extends BaseElement {
   @query('#helpInsertion')
   protected helpInsertion: HTMLElement;
 
+  /** Function to call on confirm dialog confirm button click */
+  protected confirmFn: () => void = null;
+
+  /** Google Photos Page */
+  protected gPhotosPage: GooglePhotosPage = null;
+
   /**
    * Element is ready
    */
@@ -264,8 +255,6 @@ export class AppMain extends BaseElement {
     window.addEventListener('storage', (ev) => {
       if (ev.key === 'permPicasa') {
         this._setGooglePhotosMenuState();
-      } else if (ev.key === 'signedInToChrome') {
-        signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
       }
     }, false);
 
@@ -311,7 +300,7 @@ export class AppMain extends BaseElement {
    * @param fn - function to call on confirm button click
    */
   public showConfirmDialog(text: string, title: string, confirmLabel: string, fn: () => void) {
-    confirmFn = fn;
+    this.confirmFn = fn;
     this.confirmDialog.open(text, title, confirmLabel);
   }
 
@@ -320,8 +309,8 @@ export class AppMain extends BaseElement {
    */
   @listen('confirm-tap', 'confirmDialog')
   public onConfirmDialogTapped() {
-    if (confirmFn) {
-      confirmFn();
+    if (this.confirmFn) {
+      this.confirmFn();
     }
   }
 
@@ -364,7 +353,7 @@ export class AppMain extends BaseElement {
    *
    * @param ev - ClickEvent
    */
-  private _onNavMenuItemTapped(ev: any) {
+  private _onNavMenuItemTapped(ev: CustomEvent) {
     // Close drawer after menu item is selected if it is in narrow layout
     const appDrawerLayout = this.appDrawerLayout;
     const appDrawer = this.appDrawer;
@@ -374,7 +363,7 @@ export class AppMain extends BaseElement {
 
     const prevRoute = this.route;
 
-    const idx = AppMain.getPageIdx(ev.currentTarget.id);
+    const idx = AppMain.getPageIdx((ev.currentTarget as HTMLElement).id);
     const page = pages[idx];
 
     ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
@@ -399,7 +388,7 @@ export class AppMain extends BaseElement {
    * @param prevRoute - last page selected
    */
   private _showGooglePhotosPage(index: number, prevRoute: string) {
-    signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
+    const signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
       const title = ChromeLocale.localize('err_chrome_signin_title');
@@ -410,10 +399,10 @@ export class AppMain extends BaseElement {
     if (!pages[index].ready) {
       // create the page the first time
       pages[index].ready = true;
-      gPhotosPage = new GooglePhotosPage();
-      this.$.googlePhotosInsertion.appendChild(gPhotosPage);
+      this.gPhotosPage = new GooglePhotosPage();
+      this.$.googlePhotosInsertion.appendChild(this.gPhotosPage);
     } else if (ChromeStorage.getBool('isAlbumMode', true)) {
-      gPhotosPage.loadAlbumList().catch(() => {});
+      this.gPhotosPage.loadAlbumList().catch(() => {});
     }
     this.set('route', pages[index].route);
   }
