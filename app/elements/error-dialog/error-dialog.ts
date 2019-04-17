@@ -4,14 +4,10 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../node_modules/@polymer/polymer/polymer-legacy.js';
-import {Polymer} from '../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
-import {html} from '../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper-dialog';
 
-import '../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-
-import '../../node_modules/@polymer/paper-styles/typography.js';
-import '../../node_modules/@polymer/paper-styles/color.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, query, listen} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
@@ -20,26 +16,58 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
-import {LocalizeBehavior} from '../../elements/setting-elements/localize-behavior/localize-behavior.js';
-
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Module for ErrorDialog
- * @module els/error_dialog
- */
+import BaseElement from '../base-element/base-element.js';
 
 /**
  * Polymer dialog to display an error
- * @type {{}}
- * @alias module:els/error_dialog.ErrorDialog
- * @PolymerElement
  */
-const ErrorDialog = Polymer({
-  // language=HTML format=false
-  _template: html`<style include="iron-flex iron-flex-alignment"></style>
-<style include="shared-styles"></style>
-<style>
+@customElement('error-dialog')
+export default class ErrorDialogElement extends BaseElement {
+
+  /** Display confirm button state */
+  @property({type: Boolean, notify: true})
+  protected showConfirmButton = false;
+
+  /** Display confirm button state */
+  @query('#dialog')
+  protected dialog: PaperDialogElement;
+
+  /** Dialog confirm button click */
+  @listen('click', 'confirmButton')
+  public onConfirmTapped() {
+    const customEvent = new CustomEvent('confirm-tap', {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(customEvent);
+  }
+
+  /**
+   * Show the dialog
+   *
+   * @param title
+   * @param text
+   */
+  public open(title: string, text: string) {
+    title = title || 'Unknown';
+    text = text || 'Unknown';
+    text = text.replace(/\n/g, '<br/>');
+    this.$.dialogTitle.innerHTML = title;
+    this.$.dialogText.innerHTML = text;
+    this.dialog.open();
+  }
+
+  /**
+   * Hide the dialog
+   */
+  public close() {
+    this.dialog.close();
+  }
+
+
+  static get template() {
+    // language=HTML format=false
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -58,62 +86,11 @@ const ErrorDialog = Polymer({
   </paper-dialog-scrollable>
   <div class="buttons">
     <paper-button dialog-dismiss="" autofocus="">[[localize('close', 'CLOSE')]]</paper-button>
-    <paper-button dialog-confirm="" hidden$="[[!showConfirmButton]]"
-                  on-tap="_onConfirmTapped">[[localize('ok', 'OK')]]</paper-button>
+    <paper-button id="confirmButton" dialog-confirm="" hidden$="[[!showConfirmButton]]">
+      [[localize('ok', 'OK')]]
+    </paper-button>
   </div>
 </paper-dialog>
-`,
-
-  is: 'error-dialog',
-
-  behaviors: [
-    LocalizeBehavior,
-  ],
-
-  properties: {
-    /**
-     * Fired when the confirm button is tapped
-     * @event confirm-tap
-     */
-
-    /** Display confirm button state */
-    showConfirmButton: {
-      type: Boolean,
-      value: false,
-      notify: true,
-    },
-  },
-
-  /** Event: Dialog confirm button click
-   * @private
-   */
-  _onConfirmTapped: function() {
-    this.fire('confirm-tap');
-  },
-
-  /**
-   * Show the dialog
-   * @param {string} title
-   * @param {string} text
-   * @private
-   */
-  open: function(title: string, text: string) {
-    title = title || 'Unknown';
-    text = text || 'Unknown';
-    text = text.replace(/\n/g, '<br/>');
-    this.$.dialogTitle.innerHTML = title;
-    this.$.dialogText.innerHTML = text;
-    this.$.dialog.open();
-  },
-
-  /**
-   * Hide the dialog
-   * @private
-   */
-  close: function() {
-    this.$.dialog.close();
-  },
-});
-
-export default ErrorDialog;
-
+`;
+  }
+}
