@@ -12,7 +12,6 @@ import {
   customElement,
   property,
   computed,
-  observe,
   listen,
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
@@ -61,21 +60,98 @@ import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/
 @customElement('settings-page')
 export default class SettingsPageElement extends BaseElement {
 
+  /**
+   * Get a Unit object
+   *
+   * @param name
+   * @param min - min value
+   * @param max - max value
+   * @param step - increment
+   * @param mult - multiplier between base and display
+   * @returns A unit object
+   */
+  protected static getUnit(name: string, min: number, max: number, step: number, mult: number) {
+    return {
+      name: ChromeLocale.localize(name),
+      min: min, max: max, step: step, mult: mult,
+    };
+  }
+
   /** Index of current tab */
   @property({type: Number, notify: true})
   public selectedTab = 0;
 
   /** Flag for enabled state of screensaver */
   @property({type: Boolean, notify: true})
-  protected enabled = true;
+  public enabled = true;
 
   /** Index of time value to show on screensaver */
   @property({type: Number, notify: true})
-  protected showTimeValue = 1;
+  public showTimeValue = 1;
+
+  /** Index of time value to show on screensaver */
+  @property({type: Boolean, notify: true})
+  public showWeatherValue = false;
 
   /** Index of temp unit to show on screensaver */
   @property({type: Number, notify: true})
-  protected weatherTempUnitValue = 0;
+  public weatherTempUnitValue = 0;
+
+  /** Wait time unit menu */
+  @property({type: Array})
+  public readonly waitTimeUnits = [
+    SettingsPageElement.getUnit('minutes', 1, 60, 1, 1),
+    SettingsPageElement.getUnit('hours', 1, 24, 1, 60),
+    SettingsPageElement.getUnit('days', 1, 365, 1, 1440),
+  ];
+
+  /** Transition time unit menu */
+  @property({type: Array})
+  public readonly transitionTimeUnits = [
+    SettingsPageElement.getUnit('seconds', 10, 60, 1, 1),
+    SettingsPageElement.getUnit('minutes', 1, 60, 1, 60),
+    SettingsPageElement.getUnit('hours', 1, 24, 1, 3600),
+    SettingsPageElement.getUnit('days', 1, 365, 1, 86400),
+  ];
+
+  /** Photo sizing menu */
+  @property({type: Array})
+  public readonly photoSizingMenu = [
+    ChromeLocale.localize('menu_letterbox'),
+    ChromeLocale.localize('menu_zoom'),
+    ChromeLocale.localize('menu_frame'),
+    ChromeLocale.localize('menu_full'),
+    ChromeLocale.localize('menu_random'),
+  ];
+
+  /** Photo transition menu */
+  @property({type: Array})
+  public readonly photoTransmissionMenu = [
+    ChromeLocale.localize('menu_scale_up'),
+    ChromeLocale.localize('menu_fade'),
+    ChromeLocale.localize('menu_slide_from_right'),
+    ChromeLocale.localize('menu_slide_down'),
+    ChromeLocale.localize('menu_spin_up'),
+    ChromeLocale.localize('menu_slide_up'),
+    ChromeLocale.localize('menu_slide_from_bottom'),
+    ChromeLocale.localize('menu_slide_right'),
+    ChromeLocale.localize('menu_random'),
+  ];
+
+  /** Time format menu */
+  @property({type: Array})
+  public readonly timeFormatMenu = [
+    ChromeLocale.localize('no'),
+    ChromeLocale.localize('menu_12_hour'),
+    ChromeLocale.localize('menu_24_hour'),
+  ];
+
+  /** Temperature unit menu */
+  @property({type: Array})
+  public readonly tempUnitMenu = [
+    '\u00b0C',
+    '\u00b0F',
+  ];
 
   /** Flag to indicate visibility of toolbar icons */
   @computed('selectedTab')
@@ -83,8 +159,29 @@ export default class SettingsPageElement extends BaseElement {
     return (this.selectedTab !== 2);
   }
 
+  /** Disabled state of weather temperature */
+  @computed('enabled', 'showTimeValue')
+  get largeTimeDisabled() {
+    let ret = false;
+    if (!this.enabled || (this.showTimeValue === 0)) {
+      ret = true;
+    }
+    return ret;
+  }
+
+  /** Disabled state of weather temperature */
+  @computed('enabled', 'showWeatherValue')
+  get weatherTempDisabled() {
+    let ret = false;
+    if (!this.enabled || !this.showWeatherValue) {
+      ret = true;
+    }
+    return ret;
+  }
+
   @query('#settingsToggle')
   private settingsToggle: SettingToggleElement;
+
   /**
    * Deselect the given {@link PhotoSource}
    *
@@ -93,7 +190,6 @@ export default class SettingsPageElement extends BaseElement {
   public deselectPhotoSource(useName: string) {
     this._setPhotoSourceChecked(useName, false);
   }
-
 
   /**
    * Event: Change enabled state of screensaver
@@ -256,23 +352,6 @@ export default class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Return a Unit object
-   *
-   * @param name
-   * @param min - min value
-   * @param max - max value
-   * @param step - increment
-   * @param mult - multiplier between base and display
-   * @returns A unit object
-   */
-  protected _getUnit(name: string, min: number, max: number, step: number, mult: number) {
-    return {
-      name: ChromeLocale.localize(name),
-      min: min, max: max, step: step, mult: mult,
-    };
-  }
-
-  /**
    * Set checked state of a {@link PhotoSource}
    *
    * @param useName - source name
@@ -296,131 +375,6 @@ export default class SettingsPageElement extends BaseElement {
     for (const useKey of useKeys) {
       this._setPhotoSourceChecked(useKey, state);
     }
-  }
-  /**
-   * Computed property: Set menu icons visibility
-   *
-   * @param selectedTab - the current tab
-   * @returns true if menu should be visible
-   */
-  protected _computeMenuHidden(selectedTab: number) {
-    return (selectedTab !== 2);
-  }
-
-  /**
-   * Computed binding: Set disabled state of largeTime toggle
-   *
-   * @param enabled - enabled state of screensaver
-   * @param showTimeValue - showTime value
-   * @returns true if disabled
-   */
-  protected _computeLargeTimeDisabled(enabled: boolean, showTimeValue: number) {
-    let ret = false;
-    if (!enabled || (showTimeValue === 0)) {
-      ret = true;
-    }
-    return ret;
-  }
-
-  /**
-   * Computed binding: Set disabled state of weather temperatur
-   *
-   * @param enabled - enabled state of screensaver
-   * @param showWeatherValue - showTime value
-   * @returns true if disabled
-   */
-  protected _computeWeatherTempDisabled(enabled: boolean, showWeatherValue: boolean) {
-    let ret = false;
-    if (!enabled || !showWeatherValue) {
-      ret = true;
-    }
-    return ret;
-  }
-
-  /**
-   * Computed binding: idle time values
-   *
-   * @returns Array of menu items
-   */
-  protected _computeWaitTimeUnits() {
-    return [
-      this._getUnit('minutes', 1, 60, 1, 1),
-      this._getUnit('hours', 1, 24, 1, 60),
-      this._getUnit('days', 1, 365, 1, 1440),
-    ];
-  }
-
-  /**
-   * Computed binding: transition time values
-   *
-   * @returns Array of menu items
-   */
-  protected _computeTransitionTimeUnits() {
-    return [
-      this._getUnit('seconds', 10, 60, 1, 1),
-      this._getUnit('minutes', 1, 60, 1, 60),
-      this._getUnit('hours', 1, 24, 1, 3600),
-      this._getUnit('days', 1, 365, 1, 86400),
-    ];
-  }
-
-  /**
-   * Computed binding: photo sizing values
-   *
-   * @returns Array of menu items
-   */
-  protected _computePhotoSizingMenu() {
-    return [
-      ChromeLocale.localize('menu_letterbox'),
-      ChromeLocale.localize('menu_zoom'),
-      ChromeLocale.localize('menu_frame'),
-      ChromeLocale.localize('menu_full'),
-      ChromeLocale.localize('menu_random'),
-    ];
-  }
-
-  /**
-   * Computed binding: photo transition values
-   *
-   * @returns Array of menu items
-   */
-  protected _computePhotoTransitionMenu() {
-    return [
-      ChromeLocale.localize('menu_scale_up'),
-      ChromeLocale.localize('menu_fade'),
-      ChromeLocale.localize('menu_slide_from_right'),
-      ChromeLocale.localize('menu_slide_down'),
-      ChromeLocale.localize('menu_spin_up'),
-      ChromeLocale.localize('menu_slide_up'),
-      ChromeLocale.localize('menu_slide_from_bottom'),
-      ChromeLocale.localize('menu_slide_right'),
-      ChromeLocale.localize('menu_random'),
-    ];
-  }
-
-  /**
-   * Computed binding: time format values
-   *
-   * @returns Array of menu items
-   */
-  protected _computeTimeFormatMenu() {
-    return [
-      ChromeLocale.localize('no'),
-      ChromeLocale.localize('menu_12_hour'),
-      ChromeLocale.localize('menu_24_hour'),
-    ];
-  }
-
-  /**
-   * Computed binding: temperature units
-   *
-   * @returns Array of menu items
-   */
-  protected _computeTempUnitMenu() {
-    return [
-      '\u00b0C',
-      '\u00b0F',
-    ];
   }
 
   static get template() {
@@ -496,14 +450,14 @@ export default class SettingsPageElement extends BaseElement {
   <div class="page-content">
     <iron-pages selected="{{selectedTab}}">
       <div>
-        <setting-slider name="idleTime" label="[[localize('setting_idle_time')]]" units="[[_computeWaitTimeUnits()]]"
+        <setting-slider name="idleTime" label="[[localize('setting_idle_time')]]" units="[[waitTimeUnits]]"
                         disabled$="[[!enabled]]"></setting-slider>
         <setting-slider name="transitionTime" label="[[localize('setting_transition_time')]]"
-                        units="[[_computeTransitionTimeUnits()]]" disabled$="[[!enabled]]"></setting-slider>
+                        units="[[transitionTimeUnits]]" disabled$="[[!enabled]]"></setting-slider>
         <setting-dropdown name="photoSizing" label="[[localize('setting_photo_sizing')]]"
-                          items="[[_computePhotoSizingMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
+                          items="[[photoSizingMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-dropdown name="photoTransition" label="[[localize('setting_photo_transition')]]"
-                          items="[[_computePhotoTransitionMenu()]]" disabled$="[[!enabled]]"></setting-dropdown>
+                          items="[[photoTransmissionMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="panAndScan" main-label="[[localize('setting_pan_and_scan')]]"
                         secondary-label="[[localize('setting_pan_and_scan_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
@@ -531,13 +485,13 @@ export default class SettingsPageElement extends BaseElement {
                         checked="{{showWeatherValue}}"
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]"
-                          items="[[_computeTempUnitMenu()]]" value="[[weatherTempUnitValue]]"
-                          disabled$="[[_computeWeatherTempDisabled(enabled, showWeatherValue)]]"
+                          items="[[tempUnitMenu]]" value="[[weatherTempUnitValue]]"
+                          disabled$="[[weatherTempDisabled]]"
                           indent=""></setting-dropdown>
-        <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[_computeTimeFormatMenu()]]"
+        <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[timeFormatMenu]]"
                           value="{{showTimeValue}}" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
-                        disabled$="[[_computeLargeTimeDisabled(enabled, showTimeValue)]]">
+                        disabled$="[[largeTimeDisabled]]">
         </setting-toggle>
         <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
