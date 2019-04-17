@@ -29,7 +29,7 @@ export default class SettingToggleElement extends SettingBase {
 
   /** Checked state */
   @property({type: Boolean, notify: true})
-  protected checked: boolean;
+  public checked: boolean;
 
   /** Descriptive label */
   @property({type: String})
