@@ -5,15 +5,16 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {html, PolymerElement} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import SSView from '../../scripts/screensaver/views/ss_view';
+
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, observe, listen} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
-
-import SSView from '../../scripts/screensaver/views/ss_view';
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
 import BaseElement from '../base-element/base-element.js';
+
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
@@ -24,7 +25,7 @@ import '../../elements/weather-element/weather-element.js';
  */
 @customElement('screensaver-slide')
 export default class ScreensaverSlideElement extends
-    (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => PolymerElement) {
+    (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => BaseElement) {
 
   /** The SSView we contain */
   @property({type: Object})
