@@ -102,75 +102,65 @@ const EXT_URI = `https://chrome.google.com/webstore/detail/screensaver/${chrome.
 const PUSHY_URI = 'https://chrome.google.com/webstore/detail/pushy-clipboard/jemdfhaheennfkehopbpkephjlednffd';
 
 /**
- * Array of pages
- */
-const pages: Page[] = [
-  {
-    label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
-    icon: 'myicons:settings', fn: null, url: null, ready: true, disabled: false, divider: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
-    icon: 'myicons:pageview', fn: null, url: null, ready: true, disabled: false, divider: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_google'), route: 'page-google-photos',
-    icon: 'myicons:cloud', fn: null, url: null, ready: false, divider: true, disabled: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_permission'), route: 'page-permission',
-    icon: 'myicons:perm-data-setting', fn: null, url: null, ready: true, divider: false, disabled: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_error'), route: 'page-error',
-    icon: 'myicons:error', fn: null, url: null, ready: false, disabled: false, divider: true,
-  },
-  {
-    label: ChromeLocale.localize('menu_help'), route: 'page-help',
-    icon: 'myicons:help', fn: null, url: null, ready: false, divider: false, disabled: false,
-  },
-  {
-    label: ChromeLocale.localize('help_faq'), route: 'page-faq',
-    icon: 'myicons:help', fn: null, url: 'https://opus1269.github.io/screensaver/faq.html', ready: true,
-    divider: false, disabled: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_support'), route: 'page-support',
-    icon: 'myicons:help', fn: null, url: `${EXT_URI}support`, ready: true,
-    divider: false, disabled: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
-    icon: 'myicons:grade', fn: null, url: `${EXT_URI}reviews`, ready: true,
-    divider: false, disabled: false,
-  },
-  {
-    label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
-    icon: 'myicons:extension', fn: null, url: PUSHY_URI, ready: true, divider: true, disabled: false,
-  },
-];
-
-/**
  * Polymer element for the main UI
  */
 @customElement('app-main')
 export default class AppMain extends BaseElement {
 
-  /**
-   * Get the index into the {@link pages} array
-   *
-   * @param name - route to get index for
-   * @returns index into array
-   */
-  private static getPageIdx(name: string) {
-    return pages.map((e) => {
-      return e.route;
-    }).indexOf(name);
-  }
-
   /** The app's pages */
-  @property({type: Object})
-  public readonly pages = pages;
+  @property({type: Array})
+  public readonly pages: Page[] = [
+    {
+      label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
+      icon: 'myicons:settings', fn: null, url: null,
+      ready: true, disabled: false, divider: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
+      icon: 'myicons:pageview', fn: this._showScreensaverPreview.bind(this), url: null,
+      ready: true, disabled: false, divider: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_google'), route: 'page-google-photos',
+      icon: 'myicons:cloud', fn: this._showGooglePhotosPage.bind(this), url: null,
+      ready: false, divider: true, disabled: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_permission'), route: 'page-permission',
+      icon: 'myicons:perm-data-setting', fn: this._showPermissionsDialog.bind(this), url: null,
+      ready: true, divider: false, disabled: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_error'), route: 'page-error',
+      icon: 'myicons:error', fn: this._showErrorPage.bind(this), url: null,
+      ready: false, disabled: false, divider: true,
+    },
+    {
+      label: ChromeLocale.localize('menu_help'), route: 'page-help',
+      icon: 'myicons:help', fn: this._showHelpPage.bind(this), url: null,
+      ready: false, divider: false, disabled: false,
+    },
+    {
+      label: ChromeLocale.localize('help_faq'), route: 'page-faq',
+      icon: 'myicons:help', fn: null, url: 'https://opus1269.github.io/screensaver/faq.html',
+      ready: true, divider: false, disabled: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_support'), route: 'page-support',
+      icon: 'myicons:help', fn: null, url: `${EXT_URI}support`,
+      ready: true, divider: false, disabled: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
+      icon: 'myicons:grade', fn: null, url: `${EXT_URI}reviews`,
+      ready: true, divider: false, disabled: false,
+    },
+    {
+      label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
+      icon: 'myicons:extension', fn: null, url: PUSHY_URI,
+      ready: true, divider: true, disabled: false,
+    },
+  ];
 
   /** Current {@link Page} */
   @property({type: String, notify: true})
@@ -230,13 +220,6 @@ export default class AppMain extends BaseElement {
 
     MyGA.initialize();
     ChromeGA.page('/options.html');
-
-    // initialize page functions
-    pages[1].fn = this._showScreensaverPreview.bind(this);
-    pages[2].fn = this._showGooglePhotosPage.bind(this);
-    pages[3].fn = this._showPermissionsDialog.bind(this);
-    pages[4].fn = this._showErrorPage.bind(this);
-    pages[5].fn = this._showHelpPage.bind(this);
 
     // listen for chrome messages
     ChromeMsg.listen(this._onChromeMessage.bind(this));
@@ -363,8 +346,8 @@ export default class AppMain extends BaseElement {
 
     const prevRoute = this.route;
 
-    const idx = AppMain.getPageIdx((ev.currentTarget as HTMLElement).id);
-    const page = pages[idx];
+    const idx = this.getPageIdx((ev.currentTarget as HTMLElement).id);
+    const page = this.pages[idx];
 
     ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
 
@@ -396,15 +379,15 @@ export default class AppMain extends BaseElement {
       this.errorDialog.open(title, text);
       return;
     }
-    if (!pages[index].ready) {
+    if (!this.pages[index].ready) {
       // create the page the first time
-      pages[index].ready = true;
+      this.pages[index].ready = true;
       this.gPhotosPage = new GooglePhotosPage();
       this.$.googlePhotosInsertion.appendChild(this.gPhotosPage);
     } else if (ChromeStorage.getBool('isAlbumMode', true)) {
       this.gPhotosPage.loadAlbumList().catch(() => {});
     }
-    this.set('route', pages[index].route);
+    this.set('route', this.pages[index].route);
   }
 
   /**
@@ -414,13 +397,13 @@ export default class AppMain extends BaseElement {
    * @param prevRoute - last page selected
    */
   private _showErrorPage(index: number, prevRoute: string) {
-    if (!pages[index].ready) {
+    if (!this.pages[index].ready) {
       // insert the page the first time
-      pages[index].ready = true;
+      this.pages[index].ready = true;
       const el = new ErrorPage();
       this.$.errorInsertion.appendChild(el);
     }
-    this.set('route', pages[index].route);
+    this.set('route', this.pages[index].route);
   }
 
   /**
@@ -430,13 +413,13 @@ export default class AppMain extends BaseElement {
    * @param prevRoute - last page selected
    */
   private _showHelpPage(index: number, prevRoute: string) {
-    if (!pages[index].ready) {
+    if (!this.pages[index].ready) {
       // insert the page the first time
-      pages[index].ready = true;
+      this.pages[index].ready = true;
       const el = new HelpPage();
       this.$.helpInsertion.appendChild(el);
     }
-    this.set('route', pages[index].route);
+    this.set('route', this.pages[index].route);
   }
 
   /**
@@ -463,8 +446,8 @@ export default class AppMain extends BaseElement {
    */
   private _setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
-    const idx = AppMain.getPageIdx('page-google-photos');
-    const el = this.shadowRoot.querySelector(`#${pages[idx].route}`);
+    const idx = this.getPageIdx('page-google-photos');
+    const el = this.shadowRoot.querySelector(`#${this.pages[idx].route}`);
     if (!el) {
       ChromeGA.error('no element found',
           'AppMain._setGooglePhotosMenuState');
@@ -483,8 +466,8 @@ export default class AppMain extends BaseElement {
     try {
       const lastError = await ChromeLastError.load();
 
-      const idx = AppMain.getPageIdx('page-error');
-      const route = pages[idx].route;
+      const idx = this.getPageIdx('page-error');
+      const route = this.pages[idx].route;
       const el = this.shadowRoot.querySelector(`#${route}`);
       if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
         el.removeAttribute('disabled');
@@ -535,6 +518,18 @@ export default class AppMain extends BaseElement {
       this.errorDialog.open(title, text);
     }
     return false;
+  }
+
+  /**
+   * Get the index into the {@link pages} array
+   *
+   * @param name - route to get index for
+   * @returns index into array
+   */
+  private getPageIdx(name: string) {
+    return this.pages.map((e) => {
+      return e.route;
+    }).indexOf(name);
   }
 
   static get template() {
