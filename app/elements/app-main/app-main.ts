@@ -46,9 +46,9 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 import BaseElement from '../base-element/base-element.js';
 
 import '../../elements/pages/settings-page/settings-page.js';
-import ErrorPage from '../../elements/pages/error-page/error-page.js';
-import GooglePhotosPage from '../../elements/pages/google-photos-page/google-photos-page.js';
-import HelpPage from '../../elements/pages/help-page/help-page.js';
+import ErrorPageElement from '../../elements/pages/error-page/error-page.js';
+import GooglePhotosPageElement from '../../elements/pages/google-photos-page/google-photos-page.js';
+import HelpPageElement from '../../elements/pages/help-page/help-page.js';
 
 import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
@@ -105,7 +105,7 @@ const PUSHY_URI = 'https://chrome.google.com/webstore/detail/pushy-clipboard/jem
  * Polymer element for the main UI
  */
 @customElement('app-main')
-export default class AppMain extends BaseElement {
+export default class AppMainElement extends BaseElement {
 
   /** The app's pages */
   @property({type: Array})
@@ -210,7 +210,7 @@ export default class AppMain extends BaseElement {
   protected confirmFn: () => void = null;
 
   /** Google Photos Page */
-  protected gPhotosPage: GooglePhotosPage = null;
+  protected gPhotosPage: GooglePhotosPageElement = null;
 
   /**
    * Element is ready
@@ -382,8 +382,8 @@ export default class AppMain extends BaseElement {
     if (!this.pages[index].ready) {
       // create the page the first time
       this.pages[index].ready = true;
-      this.gPhotosPage = new GooglePhotosPage();
-      this.$.googlePhotosInsertion.appendChild(this.gPhotosPage);
+      this.gPhotosPage = new GooglePhotosPageElement();
+      this.googlePhotosInsertion.appendChild(this.gPhotosPage);
     } else if (ChromeStorage.getBool('isAlbumMode', true)) {
       this.gPhotosPage.loadAlbumList().catch(() => {});
     }
@@ -400,8 +400,8 @@ export default class AppMain extends BaseElement {
     if (!this.pages[index].ready) {
       // insert the page the first time
       this.pages[index].ready = true;
-      const el = new ErrorPage();
-      this.$.errorInsertion.appendChild(el);
+      const el = new ErrorPageElement();
+      this.errorInsertion.appendChild(el);
     }
     this.set('route', this.pages[index].route);
   }
@@ -416,8 +416,8 @@ export default class AppMain extends BaseElement {
     if (!this.pages[index].ready) {
       // insert the page the first time
       this.pages[index].ready = true;
-      const el = new HelpPage();
-      this.$.helpInsertion.appendChild(el);
+      const el = new HelpPageElement();
+      this.helpInsertion.appendChild(el);
     }
     this.set('route', this.pages[index].route);
   }

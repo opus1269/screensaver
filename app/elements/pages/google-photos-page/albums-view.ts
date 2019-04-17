@@ -62,7 +62,7 @@ let _selections: SelectedAlbum[] = [];
  * Polymer element to manage Google Photos album selections
  */
 @customElement('albums-view')
-export default class AlbumsView extends BaseElement {
+export default class AlbumsViewElement extends BaseElement {
 
   /**
    * Fetch the photos for all the saved albums
@@ -211,7 +211,7 @@ export default class AlbumsView extends BaseElement {
 
       if (updatePhotos) {
         // update the saved selections
-        await AlbumsView._updateSavedAlbums();
+        await AlbumsViewElement._updateSavedAlbums();
       }
 
       // set selections based on those that are currently saved
@@ -367,7 +367,7 @@ export default class AlbumsView extends BaseElement {
         return Promise.resolve(ret);
       }
 
-      const photoCt = await AlbumsView._getTotalPhotoCount();
+      const photoCt = await AlbumsViewElement._getTotalPhotoCount();
       if (photoCt >= _MAX_PHOTOS) {
         // reached max number of photos
         ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${photoCt}`);

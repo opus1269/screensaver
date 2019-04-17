@@ -23,7 +23,7 @@ import '../../elements/weather-element/weather-element.js';
  * Polymer element to provide an animatable slide
  */
 @customElement('screensaver-slide')
-export default class ScreensaverSlide extends
+export default class ScreensaverSlideElement extends
     (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => PolymerElement) {
 
   /** The SSView we contain */

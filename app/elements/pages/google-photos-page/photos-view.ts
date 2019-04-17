@@ -61,7 +61,7 @@ const CATS = [
  * Polymer element for the Google Photos page photos view UI
  */
 @customElement('photos-view')
-export default class PhotosView extends BaseElement {
+export default class PhotosViewElement extends BaseElement {
 
   /** Array of photo categories */
   @property({type: Array})

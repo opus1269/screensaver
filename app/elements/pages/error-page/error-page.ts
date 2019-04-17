@@ -30,7 +30,7 @@ import ChromeLastError from '../../../scripts/chrome-extension-utils/scripts/las
  * Polymer element for the LastError page
  */
 @customElement('error-page')
-export default class ErrorPage extends BaseElement {
+export default class ErrorPageElement extends BaseElement {
 
   /** Last error */
   @property({type: Object})

@@ -19,7 +19,7 @@ import SettingBase from '../setting-base/setting-base.js';
  * Polymer element for time entry
  */
 @customElement('setting-time')
-export default class SettingTime extends SettingBase {
+export default class SettingTimeElement extends SettingBase {
 
   /** Time value '00:00' 24 hr format */
   @property({type: String, notify: true})

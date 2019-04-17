@@ -21,7 +21,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element for a url link
  */
 @customElement('setting-link')
-class SettingLink extends SettingBase {
+export default class SettingLinkElement extends SettingBase {
 
   /** Description */
   @property({type: String})
@@ -36,7 +36,7 @@ class SettingLink extends SettingBase {
   protected url = '';
 
   /**
-   * Event: Item tapped - show url in new tab
+   * Item tapped - show url in new tab
    */
   @listen('tap', 'item')
   public onLinkTapped() {

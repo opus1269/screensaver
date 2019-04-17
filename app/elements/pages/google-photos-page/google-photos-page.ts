@@ -47,7 +47,7 @@ import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/
  * @PolymerElement
  */
 @customElement('google-photos-page')
-export default class GooglePhotosPage extends BaseElement {
+export default class GooglePhotosPageElement extends BaseElement {
 
   /** Select by albums or photos */
   @property({type: Boolean, notify: true})

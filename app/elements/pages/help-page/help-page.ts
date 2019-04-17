@@ -23,7 +23,7 @@ import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/ut
  * Polymer element for the Help page
  */
 @customElement('help-page')
-export default class HelpPage extends BaseElement {
+export default class HelpPageElement extends BaseElement {
 
   /** Path to our Github repo */
   @property({type: String})

@@ -62,7 +62,7 @@ export interface UnitValue {
  * Polymer element for a url link
  */
 @customElement('setting-slider')
-export default class SettingSlider extends SettingBase {
+export class SettingSliderElement extends SettingBase {
 
   /** Unit value */
   @property({type: Object, notify: true, observer: '_valueChanged'})
@@ -102,7 +102,7 @@ export default class SettingSlider extends SettingBase {
   }
 
   /**
-   * Event: unit menu item tapped
+   * Unit menu item tapped
    *
    * @param ev - tap event
    */
@@ -117,7 +117,7 @@ export default class SettingSlider extends SettingBase {
   }
 
   /**
-   * Event: User changed slider value
+   * User changed slider value
    */
   @listen('change', 'slider')
   public onSliderValueChanged() {
@@ -127,7 +127,7 @@ export default class SettingSlider extends SettingBase {
   }
 
   /**
-   * Observer: Unit changed
+   * Unit changed
    *
    * @param newValue
    */

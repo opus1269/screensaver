@@ -30,7 +30,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element to select a background style
  */
 @customElement('setting-background')
-export default class SettingBackground extends SettingBase {
+export default class SettingBackgroundElement extends SettingBase {
 
   /** Selected backed style */
   @property({type: String, notify: true})

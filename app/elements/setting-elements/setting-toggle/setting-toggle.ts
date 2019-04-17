@@ -25,7 +25,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element for a toggle button
  */
 @customElement('setting-toggle')
-export default class SettingToggle extends SettingBase {
+export default class SettingToggleElement extends SettingBase {
 
   /** Checked state */
   @property({type: Boolean, notify: true})
@@ -50,7 +50,7 @@ export default class SettingToggle extends SettingBase {
   }
 
   /**
-   * Event: Checked state changed
+   * Checked state changed
    */
   @listen('change', 'toggle')
   public onChange() {
@@ -58,7 +58,7 @@ export default class SettingToggle extends SettingBase {
   }
 
   /**
-   * Event: Item tapped
+   * Item tapped
    *
    * @param ev - Tap event
    */

@@ -22,7 +22,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element to include or exclude a Google Photos category
  */
 @customElement('photo-cat')
-export default class PhotoCat extends BaseElement {
+export default class PhotoCatElement extends BaseElement {
 
   /** Checked state */
   @property({type: Boolean, notify: true})

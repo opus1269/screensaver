@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import AppMain from '../../elements/app-main/app-main';
+import AppMainElement from '../../elements/app-main/app-main';
 
 import '../../elements/app-main/app-main.js';
 
@@ -15,7 +15,7 @@ import '../../elements/app-main/app-main.js';
  * @remarks
  * This allows us to get a reference
  */
-export let Options: AppMain;
+export let Options: AppMainElement;
 
 // listen for document and resources loaded
 window.addEventListener('load', () => {

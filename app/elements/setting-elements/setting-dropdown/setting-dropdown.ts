@@ -19,13 +19,12 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import SettingBase from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Polymer element to select an item from a list
  */
 @customElement('setting-dropdown')
-export default class SettingDropdown extends SettingBase {
+export default class SettingDropdownElement extends SettingBase {
 
   /** Selected menu item index */
   @property({type: Number, notify: true})
