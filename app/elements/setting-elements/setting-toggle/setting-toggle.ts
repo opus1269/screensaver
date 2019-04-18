@@ -68,10 +68,12 @@ export default class SettingToggleElement extends SettingBase {
     ev.stopPropagation();
   }
 
-  static get template() {
+  /**
+   * Override mainContent from {@link SettingBase}
+   */
+  static get mainContent() {
     // language=HTML format=false
-    return html`
-<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -92,26 +94,22 @@ export default class SettingToggleElement extends SettingBase {
   }
 </style>
 
-<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
-
-  <iron-label for="toggle">
-    <paper-item class="center horizontal layout" tabindex="-1">
-      <paper-item-body class="flex" two-line="">
-        <div class="setting-label" hidden$="[[!mainLabel]]">
-          [[mainLabel]]
-        </div>
-        <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
-          [[secondaryLabel]]
-        </div>
-        <paper-ripple center=""></paper-ripple>
-      </paper-item-body>
-      <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}"
-                           disabled$="[[disabled]]">
-      </paper-toggle-button>
-    </paper-item>
-  </iron-label>
-
-</setting-base>
+<iron-label for="toggle">
+  <paper-item class="center horizontal layout" tabindex="-1">
+    <paper-item-body class="flex" two-line="">
+      <div class="setting-label" hidden$="[[!mainLabel]]">
+        [[mainLabel]]
+      </div>
+      <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+        [[secondaryLabel]]
+      </div>
+      <paper-ripple center=""></paper-ripple>
+    </paper-item-body>
+    <paper-toggle-button id="toggle" class="setting-toggle-button" checked="{{checked}}"
+                         disabled$="[[disabled]]">
+    </paper-toggle-button>
+  </paper-item>
+</iron-label>
 
 <app-localstorage-document key="[[name]]" data="{{checked}}" storage="window.localStorage">
 </app-localstorage-document>

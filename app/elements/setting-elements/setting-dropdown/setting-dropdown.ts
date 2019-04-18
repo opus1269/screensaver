@@ -55,7 +55,10 @@ export default class SettingDropdownElement extends SettingBase {
     }
   }
 
-  static get template() {
+  /**
+   * Override mainContent from {@link SettingBase}
+   */
+  static get mainContent() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
@@ -83,23 +86,19 @@ export default class SettingDropdownElement extends SettingBase {
       text-align: right;
     };
   }
-  
+
 </style>
 
-<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
-
-  <paper-item class="top center horizontal layout" tabindex="-1">
-    <div class="setting-label flex">[[label]]</div>
-    <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
-      <paper-listbox id="list" slot="dropdown-content" selected="{{value}}">
-        <template id="t" is="dom-repeat" items="[[items]]">
-          <paper-item>[[item]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-  </paper-item>
-  
-</setting-base>
+<paper-item class="top center horizontal layout" tabindex="-1">
+  <div class="setting-label flex">[[label]]</div>
+  <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
+    <paper-listbox id="list" slot="dropdown-content" selected="{{value}}">
+      <template id="t" is="dom-repeat" items="[[items]]">
+        <paper-item>[[item]]</paper-item>
+      </template>
+    </paper-listbox>
+  </paper-dropdown-menu>
+</paper-item>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>

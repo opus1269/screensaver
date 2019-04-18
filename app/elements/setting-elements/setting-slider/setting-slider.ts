@@ -182,10 +182,12 @@ export class SettingSliderElement extends SettingBase {
     this.set('value.base', mult * displayValue);
   }
 
-  static get template() {
+  /**
+   * Override mainContent from {@link SettingBase}
+   */
+  static get mainContent() {
     // language=HTML format=false
-    return html`
-<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
   }
@@ -224,24 +226,20 @@ export class SettingSliderElement extends SettingBase {
 
 </style>
 
-<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
-  
-  <paper-item id="label" class="setting-label" tabindex="-1">
-    [[label]]
-  </paper-item>
-  <div class="horizontal layout">
-    <paper-slider class="flex" id="slider" editable="" value="{{value.display}}"
-                  min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled$="[[disabled]]"></paper-slider>
-    <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
-      <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}">
-        <template id="t" is="dom-repeat" as="unit" items="[[units]]">
-          <paper-item>[[unit.name]]</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
-  </div>
-  
-</setting-base>
+<paper-item id="label" class="setting-label" tabindex="-1">
+  [[label]]
+</paper-item>
+<div class="horizontal layout">
+  <paper-slider class="flex" id="slider" editable="" value="{{value.display}}"
+                min="{{unit.min}}" max="{{unit.max}}" step="{{unit.step}}" disabled$="[[disabled]]"></paper-slider>
+  <paper-dropdown-menu disabled$="[[disabled]]" noink="" no-label-float="">
+    <paper-listbox id="list" slot="dropdown-content" selected="{{unitIdx}}">
+      <template id="t" is="dom-repeat" as="unit" items="[[units]]">
+        <paper-item>[[unit.name]]</paper-item>
+      </template>
+    </paper-listbox>
+  </paper-dropdown-menu>
+</div>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>

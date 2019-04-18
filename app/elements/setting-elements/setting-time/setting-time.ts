@@ -33,7 +33,10 @@ export default class SettingTimeElement extends SettingBase {
   @property({type: String})
   protected secondaryLabel = '';
 
-  static get template() {
+  /**
+   * Override mainContent from {@link SettingBase}
+   */
+  static get mainContent() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
@@ -56,23 +59,19 @@ export default class SettingTimeElement extends SettingBase {
   }
 </style>
 
-<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
-
-  <paper-item class="center horizontal layout" tabindex="-1">
-    <paper-item-body class="flex" two-line="">
-      <div class="setting-label" hidden$="[[!mainLabel]]">
-        [[mainLabel]]
-      </div>
-      <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
-        [[secondaryLabel]]
-      </div>
-    </paper-item-body>
-    <paper-input type="time" min="0:00" max="24:00" required
-                 class="setting-label" tabindex="-1" value={{value}} disabled$="[[disabled]]"></paper-input>
-  </paper-item>
-  <hr hidden$="[[noseparator]]">
-
-</setting-base>
+<paper-item class="center horizontal layout" tabindex="-1">
+  <paper-item-body class="flex" two-line="">
+    <div class="setting-label" hidden$="[[!mainLabel]]">
+      [[mainLabel]]
+    </div>
+    <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+      [[secondaryLabel]]
+    </div>
+  </paper-item-body>
+  <paper-input type="time" min="0:00" max="24:00" required
+               class="setting-label" tabindex="-1" value={{value}} disabled$="[[disabled]]"></paper-input>
+</paper-item>
+<hr hidden$="[[noseparator]]">
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>

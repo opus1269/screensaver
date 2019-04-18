@@ -70,7 +70,10 @@ export default class SettingBackgroundElement extends SettingBase {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, `SettingBackground.OK: ${this.selected}`);
   }
 
-  static get template() {
+  /**
+   * Override mainContent from {@link SettingBase}
+   */
+  static get mainContent() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
@@ -136,22 +139,18 @@ export default class SettingBackgroundElement extends SettingBase {
   </div>
 </paper-dialog>
 
-<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
-
-  <paper-item id="item" class="center horizontal layout" tabindex="-1">
-    <paper-item-body class="flex" two-line="">
-      <div class="setting-label" hidden$="[[!mainLabel]]">
-        [[mainLabel]]
-      </div>
-      <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
-        [[secondaryLabel]]
-      </div>
-    </paper-item-body>
-    <div class="selected-background" style$="[[value]]" tabindex="0" disabled$="[[disabled]]"></div>
-    <paper-ripple center=""></paper-ripple>
-  </paper-item>
-  
-</setting-base>
+<paper-item id="item" class="center horizontal layout" tabindex="-1">
+  <paper-item-body class="flex" two-line="">
+    <div class="setting-label" hidden$="[[!mainLabel]]">
+      [[mainLabel]]
+    </div>
+    <div class="setting-label" secondary="" hidden$="[[!secondaryLabel]]">
+      [[secondaryLabel]]
+    </div>
+  </paper-item-body>
+  <div class="selected-background" style$="[[value]]" tabindex="0" disabled$="[[disabled]]"></div>
+  <paper-ripple center=""></paper-ripple>
+</paper-item>
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>

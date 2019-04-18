@@ -44,10 +44,12 @@ export default class SettingLinkElement extends SettingBase {
     chrome.tabs.create({url: this.url});
   }
 
-  static get template() {
+  /**
+   * Override mainContent from {@link SettingBase}
+   */
+  static get mainContent() {
     // language=HTML format=false
-    return html`
-<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -73,15 +75,11 @@ export default class SettingLinkElement extends SettingBase {
   }
 </style>
 
-<setting-base section-title="[[sectionTitle]]" noseparator="[[noseparator]]">
-
-  <paper-icon-item id="item" class="flex">
-    <paper-ripple center=""></paper-ripple>
-    <iron-icon class="setting-link-icon" icon="[[icon]]" slot="item-icon"></iron-icon>
-    <span class="setting-label">[[label]]</span>
-  </paper-icon-item>
-
-</setting-base>
+<paper-icon-item id="item" class="flex">
+  <paper-ripple center=""></paper-ripple>
+  <iron-icon class="setting-link-icon" icon="[[icon]]" slot="item-icon"></iron-icon>
+  <span class="setting-label">[[label]]</span>
+</paper-icon-item>
 `;
   }
 }

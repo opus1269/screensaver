@@ -16,6 +16,15 @@ import BaseElement from '../../base-element/base-element.js';
 @customElement('setting-base')
 export default class SettingBase extends BaseElement {
 
+  /**
+   * Children override this to set the main content
+   *
+   * {@link https://polymer-library.polymer-project.org/3.0/docs/devguide/dom-template#inherit}
+   */
+  static get mainContent() {
+    return html`Forget to override mainContent?`;
+  }
+
   /** Element name */
   @property({type: String})
   protected name = 'store';
@@ -51,7 +60,7 @@ export default class SettingBase extends BaseElement {
   [[sectionTitle]]
 </div>
 
-<slot></slot>
+<div>${this.mainContent}</div>
 
 <hr class="divider" hidden$="[[noseparator]]">
 `;
