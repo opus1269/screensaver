@@ -9,10 +9,10 @@
  * Letterbox view
  */
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {SSPhoto} from '../ss_photo.js';
+import {SSView} from './ss_view.js';
 
-import SSView from './ss_view.js';
-import SSPhoto from '../ss_photo.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Aspect ratio of screen
@@ -25,7 +25,7 @@ const _SCREEN_AR = screen.width / screen.height;
  * @remarks
  * The photo will fit the height or width of the screen and display bars where necessary
  */
-export default class SSViewLetterbox extends SSView {
+export class SSViewLetterbox extends SSView {
 
   /**
    * Create new SSView

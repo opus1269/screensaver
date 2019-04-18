@@ -7,7 +7,7 @@
 import {customElement} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../../node_modules/@polymer/polymer/lib/legacy/class.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import {NeonAnimationBehavior} from '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
 
@@ -28,7 +28,7 @@ import {NeonAnimationBehavior} from '../../../node_modules/@polymer/neon-animati
  * Polymer element to provide a spin down animation
  */
 @customElement('spin-down-animation')
-export default class SpinDownAnimationElement extends
+export class SpinDownAnimationElement extends
     (mixinBehaviors([NeonAnimationBehavior], BaseElement) as new () => BaseElement) {
 
   /**

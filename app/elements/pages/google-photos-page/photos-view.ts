@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import PhotoCat from './photo_cat';
+import {PhotoCatElement} from './photo_cat';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -24,7 +24,7 @@ import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import './photo_cat.js';
 
@@ -61,7 +61,7 @@ const CATS = [
  * Polymer element for the Google Photos page photos view UI
  */
 @customElement('photos-view')
-export default class PhotosViewElement extends BaseElement {
+export class PhotosViewElement extends BaseElement {
 
   /** Array of photo categories */
   @property({type: Array})
@@ -214,9 +214,6 @@ export default class PhotosViewElement extends BaseElement {
 
   /**
    * Wait for load changed
-   *
-   * @param waitForLoad
-   * @param waiterStatus
    */
   @observe('waitForLoad', 'waiterStatus')
   private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
@@ -227,9 +224,6 @@ export default class PhotosViewElement extends BaseElement {
 
   /**
    * Simple Observer: noFilter changed
-   *
-   * @param newValue
-   * @param oldValue
    */
   private _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if ((newValue !== undefined) && (oldValue !== undefined)) {
@@ -243,7 +237,7 @@ export default class PhotosViewElement extends BaseElement {
    * Set the states of the photo-cat elements
    */
   private _setPhotoCats() {
-    const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PhotoCat>;
+    const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PhotoCatElement>;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
@@ -259,8 +253,6 @@ export default class PhotosViewElement extends BaseElement {
 
   /**
    * Event: Selection of photo-cat changed
-   *
-   * @param ev
    */
   private _onPhotoCatChanged(ev: CustomEvent) {
     const cat = (ev.target as Element).id;

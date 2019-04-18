@@ -9,7 +9,7 @@
  * A source of photos from reddit
  */
 
-import {PhotoSource, Photo} from './photo_source.js';
+import {Photo, PhotoSource} from './photo_source.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -47,7 +47,7 @@ let _snoocore: (arg0: string) => any;
 /**
  * A source of photos from reddit
  */
-export default class RedditSource extends PhotoSource {
+export class RedditSource extends PhotoSource {
 
   /**
    * Parse the size from the submission title.

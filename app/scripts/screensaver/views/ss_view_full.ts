@@ -9,10 +9,10 @@
  * Full view
  */
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {SSPhoto} from '../ss_photo.js';
+import {SSView} from './ss_view.js';
 
-import SSView from './ss_view.js';
-import SSPhoto from '../ss_photo.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Full view
@@ -20,7 +20,7 @@ import SSPhoto from '../ss_photo.js';
  * @remarks
  * The photo will fill the screen and be stretched horizontally or vertically if necessary
  */
-export default class SSViewFull extends SSView {
+export class SSViewFull extends SSView {
 
   /**
    * Create new SSViewFull

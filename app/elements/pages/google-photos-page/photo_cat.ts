@@ -1,8 +1,8 @@
 /*
- ~ Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
- ~ Licensed under Apache 2.0
- ~ https://opensource.org/licenses/Apache-2.0
- ~ https://goo.gl/wFvBM1
+ *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
+ *  Licensed under the BSD-3-Clause
+ *  https://opensource.org/licenses/BSD-3-Clause
+ *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
@@ -14,7 +14,7 @@ import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
@@ -22,7 +22,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element to include or exclude a Google Photos category
  */
 @customElement('photo-cat')
-export default class PhotoCatElement extends BaseElement {
+export class PhotoCatElement extends BaseElement {
 
   /** Checked state */
   @property({type: Boolean, notify: true})
@@ -42,8 +42,6 @@ export default class PhotoCatElement extends BaseElement {
 
   /**
    * Event: checkbox tapped
-   *
-   * @param ev
    */
   @listen('change', 'checkbox')
   public onCheckedChange(ev: any) {

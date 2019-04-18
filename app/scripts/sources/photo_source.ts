@@ -15,6 +15,7 @@ import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/loca
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -162,7 +163,6 @@ export abstract class PhotoSource {
 
   /**
    * Get use extra argument
-   * @returns
    */
   public getLoadArg() {
     return this._loadArg;

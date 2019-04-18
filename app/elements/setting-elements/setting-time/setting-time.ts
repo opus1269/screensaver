@@ -13,13 +13,13 @@ import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import SettingBase from '../setting-base/setting-base.js';
+import {SettingBase} from '../setting-base/setting-base.js';
 
 /**
  * Polymer element for time entry
  */
 @customElement('setting-time')
-export default class SettingTimeElement extends SettingBase {
+export class SettingTimeElement extends SettingBase {
 
   /** Time value '00:00' 24 hr format */
   @property({type: String, notify: true})

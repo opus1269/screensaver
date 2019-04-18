@@ -9,9 +9,10 @@
  * Fetch with authentication and exponential back-off
  */
 
-import * as ChromeAuth from './auth.js';
 import * as ChromeGA from './analytics.js';
+import * as ChromeAuth from './auth.js';
 import * as ChromeLocale from './locales.js';
+
 import './ex_handler.js';
 
 /**
@@ -53,22 +54,22 @@ export interface Response {
 /**
  * Authorization header
  */
-const _AUTH_HEADER = 'Authorization';
+const AUTH_HEADER = 'Authorization';
 
 /**
  * Bearer parameter for authorized call
  */
-const _BEARER = 'Bearer';
+const BEARER = 'Bearer';
 
 /**
  * Max retries on 500 errors
  */
-const _MAX_RETRIES = 4;
+const MAX_RETRIES = 4;
 
 /**
  * Delay multiplier for exponential back-off
  */
-const _DELAY = 1000;
+const DELAY = 1000;
 
 /**
  * Configuration object
@@ -79,7 +80,7 @@ export const CONFIG: Config = {
   interactive: false,
   token: null,
   backoff: true,
-  maxRetries: _MAX_RETRIES,
+  maxRetries: MAX_RETRIES,
   body: null,
 };
 
@@ -94,7 +95,7 @@ export const CONFIG: Config = {
 export async function doGet(url: string, conf = CONFIG) {
   const opts = {method: 'GET', headers: new Headers({})};
 
-  const json = await _doIt(url, opts, conf);
+  const json = await doIt(url, opts, conf);
   return Promise.resolve(json);
 }
 
@@ -109,7 +110,7 @@ export async function doGet(url: string, conf = CONFIG) {
 export async function doPost(url: string, conf = CONFIG) {
   const opts = {method: 'POST', headers: new Headers({})};
 
-  const json = await _doIt(url, opts, conf);
+  const json = await doIt(url, opts, conf);
   return Promise.resolve(json);
 }
 
@@ -124,8 +125,8 @@ export async function doPost(url: string, conf = CONFIG) {
  * @throws An error if fetch ultimately fails
  * @returns response from server
  */
-async function _processResponse(response: Response, url: string, opts: chrome.extension.FetchProperties,
-                                conf: Config, attempt: number) {
+async function processResponse(response: Response, url: string, opts: chrome.extension.FetchProperties,
+                               conf: Config, attempt: number) {
   if (response.ok) {
     // request succeeded - woo hoo!
     return Promise.resolve(response.json());
@@ -133,33 +134,32 @@ async function _processResponse(response: Response, url: string, opts: chrome.ex
 
   if (attempt >= conf.maxRetries) {
     // request still failed after maxRetries
-    throw _getError(response);
+    throw getError(response);
   }
 
   const status = response.status;
 
   if (conf.backoff && (status >= 500) && (status < 600)) {
     // temporary server error, maybe. Retry with backoff
-    const newResponse: Response = await _retry(url, opts, conf, attempt);
+    const newResponse: Response = await retry(url, opts, conf, attempt);
     return Promise.resolve(newResponse);
   }
 
   if (conf.isAuth && conf.token && conf.retryToken && (status === 401)) {
     // could be expired token. Remove cached one and try again
-    const newResponse: Response = await _retryToken(url, opts, conf, attempt);
+    const newResponse: Response = await retryToken(url, opts, conf, attempt);
     return Promise.resolve(newResponse);
   }
 
-  if (conf.isAuth && conf.interactive && conf.token && conf.retryToken &&
-      (status === 403)) {
+  if (conf.isAuth && conf.interactive && conf.token && conf.retryToken && (status === 403)) {
     // user may have revoked access to extension at some point
     // If interactive, retry so they can authorize again
-    const newResponse: Response = await _retryToken(url, opts, conf, attempt);
+    const newResponse: Response = await retryToken(url, opts, conf, attempt);
     return Promise.resolve(newResponse);
   }
 
   // request failed
-  throw _getError(response);
+  throw getError(response);
 }
 
 /**
@@ -168,7 +168,7 @@ async function _processResponse(response: Response, url: string, opts: chrome.ex
  * @param response - server response
  * @returns Error
  */
-function _getError(response: Response) {
+function getError(response: Response) {
   let msg = 'Unknown error.';
   if (response && response.status && (typeof (response.statusText) !== 'undefined')) {
     const statusMsg = ChromeLocale.localize('err_status', 'Status');
@@ -186,7 +186,7 @@ function _getError(response: Response) {
  * @throws An error if we failed to get token
  * @returns auth token
  */
-async function _getAuthToken(isAuth: boolean, interactive: boolean) {
+async function getAuthToken(isAuth: boolean, interactive: boolean) {
   if (isAuth) {
     try {
       const token = await ChromeAuth.getToken(interactive);
@@ -220,17 +220,17 @@ async function _getAuthToken(isAuth: boolean, interactive: boolean) {
  * @throws An error if fetch failed
  * @returns response from server
  */
-async function _retry(url: string, opts: any, conf: Config, attempt: number) {
+async function retry(url: string, opts: any, conf: Config, attempt: number) {
   attempt++;
-  const delay = (Math.pow(2, attempt) - 1) * _DELAY;
+  const delay = (Math.pow(2, attempt) - 1) * DELAY;
 
   // wait function
   const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   await wait(delay);
 
-  ChromeGA.error(`Retry fetch, attempt: ${attempt}`, 'ChromeHttp._retry');
+  ChromeGA.error(`Retry fetch, attempt: ${attempt}`, 'ChromeHttp.retry');
 
-  const response = await _fetch(url, opts, conf, attempt);
+  const response = await doFetch(url, opts, conf, attempt);
 
   return Promise.resolve(response);
 }
@@ -245,14 +245,14 @@ async function _retry(url: string, opts: any, conf: Config, attempt: number) {
  * @throws An error if fetch failed
  * @returns response from server
  */
-async function _retryToken(url: string, opts: any, conf: Config, attempt: number) {
+async function retryToken(url: string, opts: any, conf: Config, attempt: number) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
 
   await ChromeAuth.removeCachedToken(conf.interactive, conf.token);
 
   conf.token = null;
   conf.retryToken = false;
-  const response = await _fetch(url, opts, conf, attempt);
+  const response = await doFetch(url, opts, conf, attempt);
   return Promise.resolve(response);
 }
 
@@ -266,12 +266,12 @@ async function _retryToken(url: string, opts: any, conf: Config, attempt: number
  * @throws An error if fetch failed
  * @returns response from server
  */
-async function _fetch(url: string, opts: any, conf: Config, attempt: number) {
+async function doFetch(url: string, opts: any, conf: Config, attempt: number) {
   try {
-    const authToken = await _getAuthToken(conf.isAuth, conf.interactive);
+    const authToken = await getAuthToken(conf.isAuth, conf.interactive);
     if (conf.isAuth) {
       conf.token = authToken;
-      opts.headers.set(_AUTH_HEADER, `${_BEARER} ${conf.token}`);
+      opts.headers.set(AUTH_HEADER, `${BEARER} ${conf.token}`);
     }
     if (conf.body) {
       opts.body = JSON.stringify(conf.body);
@@ -281,17 +281,13 @@ async function _fetch(url: string, opts: any, conf: Config, attempt: number) {
     const response = await fetch(url, opts);
 
     // process and possibly retry
-    const ret = await _processResponse(response, url, opts, conf, attempt);
+    const ret = await processResponse(response, url, opts, conf, attempt);
     return Promise.resolve(ret);
 
   } catch (err) {
     let msg = err.message;
     if (msg === 'Failed to fetch') {
-      msg = ChromeLocale.localize('err_network');
-      if ((typeof (msg) === 'undefined') || (msg === '')) {
-        // in case localize is missing
-        msg = 'Network error';
-      }
+      msg = ChromeLocale.localize('err_network', 'Network error');
     }
     throw new Error(msg);
   }
@@ -306,11 +302,11 @@ async function _fetch(url: string, opts: any, conf: Config, attempt: number) {
  * @throws An error if request failed
  * @returns response from server
  */
-async function _doIt(url: string, opts: any, conf: Config) {
+async function doIt(url: string, opts: any, conf: Config) {
   conf = conf || CONFIG;
   if (conf.isAuth) {
-    opts.headers.set(_AUTH_HEADER, `${_BEARER} unknown`);
+    opts.headers.set(AUTH_HEADER, `${BEARER} unknown`);
   }
-  const response = await _fetch(url, opts, conf, 0);
+  const response = await doFetch(url, opts, conf, 0);
   return Promise.resolve(response);
 }

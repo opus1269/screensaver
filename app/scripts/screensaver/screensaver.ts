@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import ScreensaverElement from '../../elements/screensaver-element/screensaver-element';
+import {ScreensaverElement} from '../../elements/screensaver-element/screensaver-element';
 
 import '../../elements/screensaver-element/screensaver-element.js';
 

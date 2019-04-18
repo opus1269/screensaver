@@ -5,10 +5,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * A custom error that can be persisted
- */
-
 import './ex_handler.js';
 
 declare var ChromePromise: any;
@@ -24,7 +20,7 @@ const chromep = new ChromePromise();
  * const err = new ChromeLastError(title, message);
  * ```
  */
-class ChromeLastError extends Error {
+export class ChromeLastError extends Error {
 
   /**
    * Get the LastError from chrome.storage.local
@@ -48,7 +44,6 @@ class ChromeLastError extends Error {
    *
    * {@link https://developer.chrome.com/apps/storage}
    *
-   * @param lastError
    * @throws If the error failed to save
    */
   public static save(lastError: ChromeLastError) {
@@ -64,6 +59,7 @@ class ChromeLastError extends Error {
 
   /**
    * Set the LastError to an empty message in chrome.storage.local
+   *
    * @throws If the error failed to clear
    */
   public static reset() {
@@ -97,6 +93,4 @@ class ChromeLastError extends Error {
     this.title = title;
   }
 }
-
-export default ChromeLastError;
 

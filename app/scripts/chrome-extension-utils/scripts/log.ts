@@ -7,21 +7,23 @@
 
 /**
  * Log a message. Will also store the LastError to local storage as 'lastError'
- * @module chrome/log
  */
 
 import * as ChromeGA from './analytics.js';
+import {ChromeLastError} from './last_error.js';
 import * as ChromeLocale from './locales.js';
-import ChromeLastError from './last_error.js';
+
 import * as ChromeUtils from './utils.js';
+
 import './ex_handler.js';
 
 /**
  * Log an error
- * @param {?string} [msg=null] - override label
- * @param {?string} [meth=null] - override action
- * @param {?string} [title=null] - a title for the error
- * @param {?string} [extra=null] - extra info. for analytics
+ *
+ * @param msg - override label
+ * @param meth - override action
+ * @param title - a title for the error
+ * @param extra - extra info. for analytics
  */
 export function error(msg: string = null, meth: string = null,
                       title: string = null, extra: string = null) {
@@ -35,10 +37,11 @@ export function error(msg: string = null, meth: string = null,
 
 /**
  * Log an exception
- * @param {Error} err - the exception
- * @param {?string} [msg=null] - the error message
- * @param {boolean} [fatal=true] - true if fatal
- * @param {?string} [title=null] - a title for the exception
+ *
+ * @param err - the exception
+ * @param msg - the error message
+ * @param fatal - true if fatal
+ * @param title - a title for the exception
  */
 export function exception(err: Error, msg: string = null, fatal = false,
                           title: string = null) {

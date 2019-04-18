@@ -9,14 +9,15 @@
  * Factory to create {@link SSView} instances
  */
 
-import SSViewZoom from './ss_view_zoom.js';
-import SSViewFrame from './ss_view_frame.js';
-import SSViewFull from './ss_view_full.js';
-import SSViewLetterbox from './ss_view_letterbox.js';
+import {SSPhoto} from '../ss_photo.js';
 import * as SSViews from '../ss_views.js';
-import SSPhoto from '../ss_photo.js';
+import {SSViewFrame} from './ss_view_frame.js';
+import {SSViewFull} from './ss_view_full.js';
+import {SSViewLetterbox} from './ss_view_letterbox.js';
+import {SSViewZoom} from './ss_view_zoom.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**

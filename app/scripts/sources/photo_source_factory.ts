@@ -10,14 +10,15 @@
  */
 
 
-import CCSource from './photo_source_chromecast.js';
-import FlickrSource from './photo_source_flickr.js';
+import {CCSource} from './photo_source_chromecast.js';
+import {FlickrSource} from './photo_source_flickr.js';
 import {GoogleSource} from './photo_source_google.js';
-import RedditSource from './photo_source_reddit.js';
+import {RedditSource} from './photo_source_reddit.js';
 import * as PhotoSources from './photo_sources.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**

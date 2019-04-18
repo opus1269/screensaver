@@ -5,8 +5,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import AlbumsView from './albums-view';
-import PhotosView from './photos-view';
+import {AlbumsViewElement} from './albums-view';
+import {PhotosViewElement} from './photos-view';
 import {PaperToggleButtonElement} from '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
@@ -19,7 +19,7 @@ import {
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
@@ -47,7 +47,7 @@ import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/
  * @PolymerElement
  */
 @customElement('google-photos-page')
-export default class GooglePhotosPageElement extends BaseElement {
+export class GooglePhotosPageElement extends BaseElement {
 
   /** Select by albums or photos */
   @property({type: Boolean, notify: true})
@@ -102,10 +102,10 @@ export default class GooglePhotosPageElement extends BaseElement {
   }
 
   @query('#photosView')
-  private photosView: PhotosView;
+  private photosView: PhotosViewElement;
 
   @query('#albumsView')
-  private albumsView: AlbumsView;
+  private albumsView: AlbumsViewElement;
 
   @query('#googlePhotosToggle')
   private googlePhotosToggle: PaperToggleButtonElement;
@@ -144,7 +144,7 @@ export default class GooglePhotosPageElement extends BaseElement {
     const text = ChromeLocale.localize('desc_mode_switch');
     const title = ChromeLocale.localize('title_mode_switch');
     const button = ChromeLocale.localize('button_mode_switch');
-    Options.showConfirmDialog(text, title, button, this._changeMode.bind(this));
+    Options.showConfirmDialog(text, title, button, this.changeMode.bind(this));
     ChromeGA.event(ChromeGA.EVENT.ICON, 'changeGooglePhotosMode');
   }
 
@@ -156,7 +156,7 @@ export default class GooglePhotosPageElement extends BaseElement {
     if (this.isAlbumMode) {
       this.loadAlbumList().catch(() => {});
     } else {
-      this._loadPhotos().catch(() => {});
+      this.loadPhotos().catch(() => {});
     }
     const lbl = this.isAlbumMode ? 'refreshGoogleAlbums' : 'refreshGooglePhotos';
     ChromeGA.event(ChromeGA.EVENT.ICON, lbl);
@@ -202,7 +202,7 @@ export default class GooglePhotosPageElement extends BaseElement {
       if (this.isAlbumMode) {
         this.loadAlbumList(true).catch(() => {});
       } else {
-        this._loadPhotos().catch(() => {});
+        this.loadPhotos().catch(() => {});
       }
     }
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `useGoogle: ${useGoogle}`);
@@ -214,7 +214,7 @@ export default class GooglePhotosPageElement extends BaseElement {
   @listen('no-albums', 'albumsView')
   public onNoAlbums() {
     // force change to photos mode
-    this._changeMode();
+    this.changeMode();
   }
 
   /**
@@ -237,7 +237,7 @@ export default class GooglePhotosPageElement extends BaseElement {
   /**
    * Fetch Google Photos for the array of user's photos
    */
-  private _loadPhotos() {
+  private loadPhotos() {
     if (!this.isAlbumMode && this.useGoogle) {
       return this.photosView.loadPhotos().catch(() => {});
     }
@@ -246,7 +246,7 @@ export default class GooglePhotosPageElement extends BaseElement {
   /**
    * Toggle between album and photo mode
    */
-  private _changeMode() {
+  private changeMode() {
     this.set('isAlbumMode', !this.isAlbumMode);
     if (this.isAlbumMode) {
       ChromeStorage.asyncSet('googleImages', []).catch(() => {});

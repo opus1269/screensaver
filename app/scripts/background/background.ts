@@ -16,6 +16,7 @@ import * as Alarm from './alarm.js';
 import * as AppData from './data.js';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
@@ -25,16 +26,17 @@ import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytic
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Display the options tab
  */
-async function _showOptionsTab() {
+async function showOptionsTab() {
   // send message to the option tab to focus it.
   try {
     await ChromeMsg.send(ChromeMsg.TYPE.HIGHLIGHT);
-  } catch (e) {
+  } catch (err) {
     // no one listening, create it
     chrome.tabs.create({url: '/html/options.html'});
   }
@@ -51,7 +53,7 @@ async function _showOptionsTab() {
  *
  * @param details - type of event
  */
-async function _onInstalled(details: chrome.runtime.InstalledDetails) {
+async function onInstalled(details: chrome.runtime.InstalledDetails) {
   if (details.reason === 'install') {
     // initial install
 
@@ -59,7 +61,7 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
 
     try {
       await AppData.initialize();
-      await _showOptionsTab();
+      await showOptionsTab();
     } catch (err) {
       ChromeGA.error(err.message, 'Bg.onInstalled');
     }
@@ -101,13 +103,13 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
  *
  * @link https://developer.chrome.com/extensions/runtime#event-onStartup
  */
-async function _onStartup() {
+async function onStartup() {
   ChromeGA.page('/background.html');
 
   try {
     await AppData.processState();
   } catch (err) {
-    ChromeGA.error(err.message, 'Bg._onStartup');
+    ChromeGA.error(err.message, 'Bg.onStartup');
   }
 
   return Promise.resolve();
@@ -118,11 +120,11 @@ async function _onStartup() {
  *
  * @link https://goo.gl/abVwKu
  */
-async function _onIconClicked() {
+async function onIconClicked() {
   try {
-    await _showOptionsTab();
+    await showOptionsTab();
   } catch (err) {
-    ChromeGA.error(err.message, 'Bg._onIconClicked');
+    ChromeGA.error(err.message, 'Bg.onIconClicked');
   }
 
   return Promise.resolve();
@@ -135,11 +137,11 @@ async function _onIconClicked() {
  *
  * @param ev - StorageEvent
  */
-async function _onStorageChanged(ev: StorageEvent) {
+async function onStorageChanged(ev: StorageEvent) {
   try {
     await AppData.processState(ev.key);
   } catch (err) {
-    ChromeGA.error(err.message, 'Bg._onStorageChanged');
+    ChromeGA.error(err.message, 'Bg.onStorageChanged');
   }
 
   return Promise.resolve();
@@ -156,8 +158,8 @@ async function _onStorageChanged(ev: StorageEvent) {
  * @param response - function to call once after processing
  * @returns true if asynchronous
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                          response: (arg0: object) => void) {
+function onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                         response: (arg0: object) => void) {
   let ret = false;
   if (request.message === ChromeMsg.TYPE.RESTORE_DEFAULTS.message) {
     ret = true;
@@ -214,16 +216,16 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
 MyGA.initialize();
 
 // listen for extension install or update
-chrome.runtime.onInstalled.addListener(_onInstalled);
+chrome.runtime.onInstalled.addListener(onInstalled);
 
 // listen for Chrome starting
-chrome.runtime.onStartup.addListener(_onStartup);
+chrome.runtime.onStartup.addListener(onStartup);
 
 // listen for click on the icon
-chrome.browserAction.onClicked.addListener(_onIconClicked);
+chrome.browserAction.onClicked.addListener(onIconClicked);
 
 // listen for changes to the stored data
-window.addEventListener('storage', _onStorageChanged, false);
+window.addEventListener('storage', onStorageChanged, false);
 
 // listen for chrome messages
-ChromeMsg.listen(_onChromeMessage);
+ChromeMsg.listen(onChromeMessage);

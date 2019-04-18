@@ -44,7 +44,6 @@ export interface EventType {
  * @property ICON - toolbar icon click
  * @property CHECK - checkbox click
  * @property KEY_COMMAND - keyboard shortcut
- * @const
  */
 export const EVENT = {
   INSTALLED: {
@@ -126,10 +125,11 @@ export const EVENT = {
 
 /**
  * Initialize analytics
- * @param {string} trackingId - tracking id
- * @param {string} appName - extension name
- * @param {string} appId - extension Id
- * @param {string} appVersion - extension version
+ *
+ * @param trackingId - tracking id
+ * @param appName - extension name
+ * @param appId - extension Id
+ * @param appVersion - extension version
  */
 export function initialize(trackingId: string, appName: string , appId: string , appVersion: string) {
   // Standard Google Universal Analytics code
@@ -165,7 +165,8 @@ export function initialize(trackingId: string, appName: string , appId: string ,
 
 /**
  * Send a page
- * @param {string} url - page path
+ *
+ * @param url - page path
  */
 export function page(url: string) {
   if (url) {

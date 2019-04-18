@@ -10,8 +10,8 @@
  */
 
 import * as SSPhotos from './ss_photos.js';
-import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
+import * as SSViews from './ss_views.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 

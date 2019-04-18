@@ -30,7 +30,7 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';
@@ -50,27 +50,27 @@ import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 
 /** Max number of albums to select */
-const _MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
+const MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 
 /** Max number of total photos to select */
-const _MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
+const MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
 /** The array of selected albums */
-let _selections: SelectedAlbum[] = [];
+let selections: SelectedAlbum[] = [];
 
 /**
  * Polymer element to manage Google Photos album selections
  */
 @customElement('albums-view')
-export default class AlbumsViewElement extends BaseElement {
+export class AlbumsViewElement extends BaseElement {
 
   /**
    * Fetch the photos for all the saved albums
    *
    * @returns false if we failed
    */
-  private static async _updateSavedAlbums() {
-    const METHOD = 'AlbumViews._updateSavedAlbums';
+  private static async updateSavedAlbums() {
+    const METHOD = 'AlbumViews.updateSavedAlbums';
 
     try {
 
@@ -83,12 +83,12 @@ export default class AlbumsViewElement extends BaseElement {
         const set = await ChromeStorage.asyncSet('albumSelections', response, 'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits - use old
-          _selections = await ChromeStorage.asyncGet('albumSelections', []);
+          selections = await ChromeStorage.asyncGet('albumSelections', []);
           Options.showStorageErrorDialog(METHOD);
           return Promise.resolve(false);
         } else {
           // update selections
-          _selections = response;
+          selections = response;
         }
       } else {
         // error
@@ -114,7 +114,7 @@ export default class AlbumsViewElement extends BaseElement {
    *
    * @returns Total number of photos saved
    */
-  private static async _getTotalPhotoCount() {
+  private static async getTotalPhotoCount() {
     let ct = 0;
     const albums = await ChromeStorage.asyncGet('albumSelections', []);
     for (const album of albums) {
@@ -165,7 +165,7 @@ export default class AlbumsViewElement extends BaseElement {
     super.ready();
 
     // listen for chrome messages
-    ChromeMsg.listen(this._onChromeMessage.bind(this));
+    ChromeMsg.listen(this.onChromeMessage.bind(this));
   }
 
   /**
@@ -211,11 +211,11 @@ export default class AlbumsViewElement extends BaseElement {
 
       if (updatePhotos) {
         // update the saved selections
-        await AlbumsViewElement._updateSavedAlbums();
+        await AlbumsViewElement.updateSavedAlbums();
       }
 
       // set selections based on those that are currently saved
-      await this._selectSavedAlbums();
+      await this.selectSavedAlbums();
 
     } catch (err) {
       // handle errors ourselves
@@ -237,7 +237,7 @@ export default class AlbumsViewElement extends BaseElement {
       for (const album of this.albums) {
         if (!album.checked) {
           this.set('albums.' + album.index + '.checked', true);
-          const loaded = await this._loadAlbum(album, false);
+          const loaded = await this.loadAlbum(album, false);
           if (!loaded) {
             // something went wrong
             break;
@@ -262,15 +262,12 @@ export default class AlbumsViewElement extends BaseElement {
         this.set('albums.' + index + '.checked', false);
       }
     });
-    _selections = [];
+    selections = [];
     ChromeStorage.asyncSet('albumSelections', []).catch(() => {});
   }
 
   /**
    * Wait for load changed
-   *
-   * @param waitForLoad
-   * @param waiterStatus
    */
   @observe('waitForLoad', 'waiterStatus')
   private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
@@ -287,8 +284,8 @@ export default class AlbumsViewElement extends BaseElement {
    *
    * @param ev - checkbox state changed
    */
-  private async _onAlbumSelectChanged(ev: any) {
-    const METHOD = 'AlbumViews._onAlbumSelectChanged';
+  private async onAlbumSelectChanged(ev: any) {
+    const METHOD = 'AlbumViews.onAlbumSelectChanged';
     const album: Album = ev.model.album;
 
     ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
@@ -296,20 +293,20 @@ export default class AlbumsViewElement extends BaseElement {
     try {
       if (album.checked) {
         // add new
-        await this._loadAlbum(album, true);
+        await this.loadAlbum(album, true);
 
       } else {
         // delete old
-        const index = _selections.findIndex((e) => {
+        const index = selections.findIndex((e) => {
           return e.id === album.id;
         });
         if (index !== -1) {
-          _selections.splice(index, 1);
+          selections.splice(index, 1);
         }
-        const set = await ChromeStorage.asyncSet('albumSelections', _selections, 'useGoogleAlbums');
+        const set = await ChromeStorage.asyncSet('albumSelections', selections, 'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
-          _selections.pop();
+          selections.pop();
           this.set('albums.' + album.index + '.checked', false);
           Options.showStorageErrorDialog(METHOD);
         }
@@ -331,8 +328,8 @@ export default class AlbumsViewElement extends BaseElement {
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  private _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                           response: (arg0: object) => void) {
+  private onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                          response: (arg0: object) => void) {
     if (request.message === MyMsg.TYPE.ALBUM_COUNT.message) {
       // show user status of photo loading
       const name = request.name || '';
@@ -347,28 +344,28 @@ export default class AlbumsViewElement extends BaseElement {
   /**
    * Load an album from the Web
    *
-   * @param album
-   * @param wait if true, handle waiter display ourselves
+   * @param album - existing album to be replaced
+   * @param wait - if true, handle waiter display ourselves
    * @returns true if successful
    */
-  private async _loadAlbum(album: Album, wait: boolean = true) {
-    const METHOD = 'AlbumViews._loadAlbum';
+  private async loadAlbum(album: Album, wait: boolean = true) {
+    const METHOD = 'AlbumViews.loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
     let error: Error = null;
     let ret = false;
 
     try {
-      if (_selections.length >= _MAX_ALBUMS) {
+      if (selections.length >= MAX_ALBUMS) {
         // reached max number of albums
-        ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${_MAX_ALBUMS}`);
+        ChromeGA.event(MyGA.EVENT.ALBUMS_LIMITED, `limit: ${MAX_ALBUMS}`);
         this.set('albums.' + album.index + '.checked', false);
         const text = ChromeLocale.localize('err_max_albums');
         Options.showErrorDialog(ERR_TITLE, text, METHOD);
         return Promise.resolve(ret);
       }
 
-      const photoCt = await AlbumsViewElement._getTotalPhotoCount();
-      if (photoCt >= _MAX_PHOTOS) {
+      const photoCt = await AlbumsViewElement.getTotalPhotoCount();
+      if (photoCt >= MAX_PHOTOS) {
         // reached max number of photos
         ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${photoCt}`);
         this.set('albums.' + album.index + '.checked', false);
@@ -389,7 +386,7 @@ export default class AlbumsViewElement extends BaseElement {
 
       if (response && response.photos) {
         // album loaded
-        _selections.push({
+        selections.push({
           id: album.id,
           name: response.name,
           photos: response.photos,
@@ -397,10 +394,10 @@ export default class AlbumsViewElement extends BaseElement {
 
         ChromeGA.event(MyGA.EVENT.SELECT_ALBUM, `maxPhotos: ${album.ct}, actualPhotosLoaded: ${response.ct}`);
 
-        const set = await ChromeStorage.asyncSet('albumSelections', _selections, 'useGoogleAlbums');
+        const set = await ChromeStorage.asyncSet('albumSelections', selections, 'useGoogleAlbums');
         if (!set) {
           // exceeded storage limits
-          _selections.pop();
+          selections.pop();
           this.set('albums.' + album.index + '.checked', false);
           Options.showStorageErrorDialog(METHOD);
           return Promise.resolve(ret);
@@ -432,10 +429,10 @@ export default class AlbumsViewElement extends BaseElement {
   /**
    * Set the checked state based on the currently saved albums
    */
-  private async _selectSavedAlbums() {
-    _selections = await ChromeStorage.asyncGet('albumSelections', []);
+  private async selectSavedAlbums() {
+    selections = await ChromeStorage.asyncGet('albumSelections', []);
     for (let i = 0; i < this.albums.length; i++) {
-      for (const selection of _selections) {
+      for (const selection of selections) {
         if (this.albums[i].id === selection.id) {
           this.set('albums.' + i + '.checked', true);
           this.set('albums.' + i + '.ct', selection.photos.length);
@@ -451,7 +448,7 @@ export default class AlbumsViewElement extends BaseElement {
    * @param count - number of photos in album
    * @returns i18n label
    */
-  private _computePhotoLabel(count: number) {
+  private computePhotoLabel(count: number) {
     let ret = `${count} ${ChromeLocale.localize('photos')}`;
     if (count === 1) {
       ret = `${count} ${ChromeLocale.localize('photo')}`;
@@ -537,11 +534,11 @@ export default class AlbumsViewElement extends BaseElement {
       <iron-label>
         <div class="list-item" id="[[album.uid]]" disabled$="[[disabled]]">
           <paper-item class="center horizontal layout" tabindex="-1">
-            <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="_onAlbumSelectChanged"
+            <paper-checkbox iron-label-target="" checked="{{album.checked}}" on-change="onAlbumSelectChanged"
                             disabled$="[[disabled]]"></paper-checkbox>
             <paper-item-body class="flex" two-line="">
               <div class="setting-label">[[album.name]]</div>
-              <div class="setting-label" secondary="">[[_computePhotoLabel(album.ct)]]</div>
+              <div class="setting-label" secondary="">[[computePhotoLabel(album.ct)]]</div>
               <paper-ripple center=""></paper-ripple>
             </paper-item-body>
             <iron-image src="[[album.thumb]]" sizing="cover" preload="" disabled$="[[disabled]]"></iron-image>

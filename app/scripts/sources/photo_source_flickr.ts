@@ -11,9 +11,10 @@
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import {PhotoSource, Photo} from './photo_source.js';
+import {Photo, PhotoSource} from './photo_source.js';
 
 /**
  * Flickr rest API
@@ -33,7 +34,7 @@ const _MAX_PHOTOS = 250;
 /**
  * A source of photos from Flickr
  */
-export default class FlickrSource extends PhotoSource {
+export class FlickrSource extends PhotoSource {
 
   /**
    * Extract the photos into an Array

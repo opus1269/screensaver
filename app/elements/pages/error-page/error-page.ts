@@ -19,18 +19,18 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import ChromeLastError from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
+import {ChromeLastError} from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
 
 /**
  * Polymer element for the LastError page
  */
 @customElement('error-page')
-export default class ErrorPageElement extends BaseElement {
+export class ErrorPageElement extends BaseElement {
 
   /** Last error */
   @property({type: Object})

@@ -9,20 +9,21 @@
  * Collection of {@link SSView} objects
  */
 
+import {ScreensaverSlideElement} from '../../elements/screensaver-slide/screensaver-slide';
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
-import ScreensaverSlide from '../../elements/screensaver-slide/screensaver-slide';
-import SSView from './views/ss_view';
-import SSPhoto from './ss_photo';
 import {Photo} from '../sources/photo_source';
+import {SSPhoto} from './ss_photo';
+import {SSView} from './views/ss_view';
 
 import {Screensaver} from '../../scripts/screensaver/screensaver.js';
-import * as SSRunner from './ss_runner.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
+import * as SSRunner from './ss_runner.js';
 import * as SSViewFactory from './views/ss_view_factory.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
@@ -74,7 +75,7 @@ export function initialize(pages: NeonAnimatedPagesElement) {
 
   // set the Elements of each view
   VIEWS.forEach((view: SSView, index: number) => {
-    const slide: ScreensaverSlide = pages.querySelector('#view' + index);
+    const slide: ScreensaverSlideElement = pages.querySelector('#view' + index);
     slide.set('sizing', sizing);
     view.setElements(slide);
   });
@@ -270,7 +271,7 @@ export function findLoadedPhoto(idx: number) {
 /**
  * Get the sizing for the photos
  *
- * @param type
+ * @param type - the type from the UI
  * @returns sizing type for <iron-image>
  */
 function getSizing(type: Type) {

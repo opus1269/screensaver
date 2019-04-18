@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import SettingToggleElement from '../../setting-elements/setting-toggle/setting-toggle';
+import {SettingToggleElement} from '../../setting-elements/setting-toggle/setting-toggle';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -30,7 +30,7 @@ import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/setting-elements/setting-slider/setting-slider.js';
@@ -58,12 +58,12 @@ import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/
  * Polymer element for the Settings Page
  */
 @customElement('settings-page')
-export default class SettingsPageElement extends BaseElement {
+export class SettingsPageElement extends BaseElement {
 
   /**
    * Get a Unit object
    *
-   * @param name
+   * @param name - unit name
    * @param min - min value
    * @param max - max value
    * @param step - increment

@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper-dialog';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
@@ -21,13 +22,13 @@ import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytic
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
-import BaseElement from '../base-element/base-element.js';
+import {BaseElement} from '../base-element/base-element.js';
 
 /**
  * Polymer dialog to confirm an action
  */
 @customElement('confirm-dialog')
-export default class ConfirmDialogElement extends BaseElement {
+export class ConfirmDialogElement extends BaseElement {
 
   /** Display confirm button state */
   @property({type: String})
@@ -51,8 +52,8 @@ export default class ConfirmDialogElement extends BaseElement {
   /**
    * Show the dialog
    *
-   * @param title
-   * @param text
+   * @param title - title
+   * @param text - main text
    * @param confirmLabel - label for confirm button
    */
   public open(text: string = 'Continue?', title: string = 'This operation cannot be undone',

@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 import {AppDrawerLayoutElement} from '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppDrawerElement} from '../../node_modules/@polymer/app-layout/app-drawer/app-drawer';
 import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/paper-listbox';
@@ -43,12 +44,12 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import BaseElement from '../base-element/base-element.js';
+import {BaseElement} from '../base-element/base-element.js';
 
 import '../../elements/pages/settings-page/settings-page.js';
-import ErrorPageElement from '../../elements/pages/error-page/error-page.js';
-import GooglePhotosPageElement from '../../elements/pages/google-photos-page/google-photos-page.js';
-import HelpPageElement from '../../elements/pages/help-page/help-page.js';
+import {ErrorPageElement} from '../../elements/pages/error-page/error-page.js';
+import {GooglePhotosPageElement} from '../../elements/pages/google-photos-page/google-photos-page.js';
+import {HelpPageElement} from '../../elements/pages/help-page/help-page.js';
 
 import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
@@ -59,7 +60,7 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import ChromeLastError from '../../scripts/chrome-extension-utils/scripts/last_error.js';
+import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
@@ -105,7 +106,7 @@ const PUSHY_URI = 'https://chrome.google.com/webstore/detail/pushy-clipboard/jem
  * Polymer element for the main UI
  */
 @customElement('app-main')
-export default class AppMainElement extends BaseElement {
+export class AppMainElement extends BaseElement {
 
   /** The app's pages */
   @property({type: Array})
@@ -117,27 +118,27 @@ export default class AppMainElement extends BaseElement {
     },
     {
       label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
-      icon: 'myicons:pageview', fn: this._showScreensaverPreview.bind(this), url: null,
+      icon: 'myicons:pageview', fn: this.showScreensaverPreview.bind(this), url: null,
       ready: true, disabled: false, divider: false,
     },
     {
       label: ChromeLocale.localize('menu_google'), route: 'page-google-photos',
-      icon: 'myicons:cloud', fn: this._showGooglePhotosPage.bind(this), url: null,
+      icon: 'myicons:cloud', fn: this.showGooglePhotosPage.bind(this), url: null,
       ready: false, divider: true, disabled: false,
     },
     {
       label: ChromeLocale.localize('menu_permission'), route: 'page-permission',
-      icon: 'myicons:perm-data-setting', fn: this._showPermissionsDialog.bind(this), url: null,
+      icon: 'myicons:perm-data-setting', fn: this.showPermissionsDialog.bind(this), url: null,
       ready: true, divider: false, disabled: false,
     },
     {
       label: ChromeLocale.localize('menu_error'), route: 'page-error',
-      icon: 'myicons:error', fn: this._showErrorPage.bind(this), url: null,
+      icon: 'myicons:error', fn: this.showErrorPage.bind(this), url: null,
       ready: false, disabled: false, divider: true,
     },
     {
       label: ChromeLocale.localize('menu_help'), route: 'page-help',
-      icon: 'myicons:help', fn: this._showHelpPage.bind(this), url: null,
+      icon: 'myicons:help', fn: this.showHelpPage.bind(this), url: null,
       ready: false, divider: false, disabled: false,
     },
     {
@@ -222,13 +223,13 @@ export default class AppMainElement extends BaseElement {
     ChromeGA.page('/options.html');
 
     // listen for chrome messages
-    ChromeMsg.listen(this._onChromeMessage.bind(this));
+    ChromeMsg.listen(this.onChromeMessage.bind(this));
 
     // listen for changes to chrome.storage
     chrome.storage.onChanged.addListener((changes) => {
       for (const key of Object.keys(changes)) {
         if (key === 'lastError') {
-          this._setErrorMenuState().catch(() => {});
+          this.setErrorMenuState().catch(() => {});
           break;
         }
       }
@@ -237,14 +238,14 @@ export default class AppMainElement extends BaseElement {
     // listen for changes to localStorage
     window.addEventListener('storage', (ev) => {
       if (ev.key === 'permPicasa') {
-        this._setGooglePhotosMenuState();
+        this.setGooglePhotosMenuState();
       }
     }, false);
 
     setTimeout(async () => {
       // initialize menu enabled states
-      await this._setErrorMenuState();
-      this._setGooglePhotosMenuState();
+      await this.setErrorMenuState();
+      this.setGooglePhotosMenuState();
     }, 0);
   }
 
@@ -336,7 +337,7 @@ export default class AppMainElement extends BaseElement {
    *
    * @param ev - ClickEvent
    */
-  private _onNavMenuItemTapped(ev: CustomEvent) {
+  private onNavMenuItemTapped(ev: CustomEvent) {
     // Close drawer after menu item is selected if it is in narrow layout
     const appDrawerLayout = this.appDrawerLayout;
     const appDrawer = this.appDrawer;
@@ -370,7 +371,7 @@ export default class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private _showGooglePhotosPage(index: number, prevRoute: string) {
+  private showGooglePhotosPage(index: number, prevRoute: string) {
     const signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
@@ -396,7 +397,7 @@ export default class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private _showErrorPage(index: number, prevRoute: string) {
+  private showErrorPage(index: number, prevRoute: string) {
     if (!this.pages[index].ready) {
       // insert the page the first time
       this.pages[index].ready = true;
@@ -412,7 +413,7 @@ export default class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private _showHelpPage(index: number, prevRoute: string) {
+  private showHelpPage(index: number, prevRoute: string) {
     if (!this.pages[index].ready) {
       // insert the page the first time
       this.pages[index].ready = true;
@@ -428,7 +429,7 @@ export default class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private _showScreensaverPreview(index: number, prevRoute: string) {
+  private showScreensaverPreview(index: number, prevRoute: string) {
     // reselect previous page - need to delay so tap event is done
     setTimeout(() => this.mainMenu.select(prevRoute), 500);
     ChromeMsg.send(MyMsg.TYPE.SS_SHOW).catch(() => {});
@@ -437,20 +438,19 @@ export default class AppMainElement extends BaseElement {
   /**
    * Show the permissions dialog
    */
-  private _showPermissionsDialog() {
+  private showPermissionsDialog() {
     this.permissionsDialog.open();
   }
 
   /**
    * Set enabled state of Google Photos menu item
    */
-  private _setGooglePhotosMenuState() {
+  private setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
     const idx = this.getPageIdx('page-google-photos');
     const el = this.shadowRoot.querySelector(`#${this.pages[idx].route}`);
     if (!el) {
-      ChromeGA.error('no element found',
-          'AppMain._setGooglePhotosMenuState');
+      ChromeGA.error('no element found', 'AppMain.setGooglePhotosMenuState');
     } else if (this.permission !== 'allowed') {
       el.setAttribute('disabled', 'true');
     } else {
@@ -461,7 +461,7 @@ export default class AppMainElement extends BaseElement {
   /**
    * Set enabled state of Error Viewer menu item
    */
-  private async _setErrorMenuState() {
+  private async setErrorMenuState() {
     // disable error-page if no lastError
     try {
       const lastError = await ChromeLastError.load();
@@ -475,7 +475,7 @@ export default class AppMainElement extends BaseElement {
         el.setAttribute('disabled', 'true');
       }
     } catch (err) {
-      ChromeGA.error(err.message, 'AppMain._setErrorMenuState');
+      ChromeGA.error(err.message, 'AppMain.setErrorMenuState');
     }
 
     return Promise.resolve();
@@ -491,9 +491,9 @@ export default class AppMainElement extends BaseElement {
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  private _onChromeMessage(request: ChromeMsg.MsgType,
-                           sender: chrome.runtime.MessageSender,
-                           response: (arg0: object) => void) {
+  private onChromeMessage(request: ChromeMsg.MsgType,
+                          sender: chrome.runtime.MessageSender,
+                          response: (arg0: object) => void) {
     if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
@@ -636,7 +636,7 @@ export default class AppMainElement extends BaseElement {
           <hr hidden$="[[!item.divider]]"/>
           <paper-item id="[[item.route]]"
                       class="center horizontal layout"
-                      on-click="_onNavMenuItemTapped" disabled$="[[item.disabled]]">
+                      on-click="onNavMenuItemTapped" disabled$="[[item.disabled]]">
             <iron-icon icon="[[item.icon]]"></iron-icon>
             <span class="flex">[[item.label]]</span>
           </paper-item>

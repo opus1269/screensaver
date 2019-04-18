@@ -29,5 +29,5 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * It also includes all the basic polymer stuff
  */
 @customElement('base-element')
-export default class BaseElement extends I8nMixin(GestureEventListeners(DeclarativeEventListeners(PolymerElement))) {
+export class BaseElement extends I8nMixin(GestureEventListeners(DeclarativeEventListeners(PolymerElement))) {
 }

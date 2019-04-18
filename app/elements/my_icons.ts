@@ -12,7 +12,6 @@ import '../node_modules/@polymer/iron-iconset-svg/iron-iconset-svg.js';
 
 /**
  * Module for the app's icons
- * @module els/icons
  */
 
 const $_documentContainer = document.createElement('template');

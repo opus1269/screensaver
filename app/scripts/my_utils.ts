@@ -7,29 +7,27 @@
 
 /**
  * Misc. utility methods
- * @module utils
  */
 
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * True if development build
- * @type {boolean}
- * @private
  */
 const _DEBUG = false;
 
 /**
  * True if development build
- * @type {boolean}
  */
 export const DEBUG = _DEBUG;
 
 /**
  * Get our email address
- * @returns {string} email address
+ *
+ * @returns email address
  */
 export function getEmail() {
   return 'photoscreensaver@gmail.com';
@@ -37,7 +35,8 @@ export function getEmail() {
 
 /**
  * Get body for an email with basic extension info
- * @returns {string} text
+ *
+ * @returns text
  */
 export function getEmailBody() {
   return `Extension version: ${ChromeUtils.getVersion()}\n`
@@ -47,9 +46,10 @@ export function getEmailBody() {
 
 /**
  * Get encoded url for an email
- * @param {string} subject - email subject
- * @param {string} body - email body
- * @returns {string} encoded url
+ *
+ * @param subject - email subject
+ * @param body - email body
+ * @returns encoded url
  */
 export function getEmailUrl(subject: string, body: string) {
   const email = encodeURIComponent(getEmail());
@@ -60,7 +60,8 @@ export function getEmailUrl(subject: string, body: string) {
 
 /**
  * Get our Github base path
- * @returns {string} path
+ *
+ * @returns path
  */
 export function getGithubPath() {
   return 'https://github.com/opus1269/screensaver/';
@@ -68,7 +69,8 @@ export function getGithubPath() {
 
 /**
  * Get our Github pages base path
- * @returns {string} path
+ *
+ * @returns path
  */
 export function getGithubPagesPath() {
   if (DEBUG) {

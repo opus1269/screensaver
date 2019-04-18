@@ -5,20 +5,21 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import ScreensaverSlide from '../../../elements/screensaver-slide/screensaver-slide';
+import {ScreensaverSlideElement} from '../../../elements/screensaver-slide/screensaver-slide';
 import {IronImageElement} from '../../../node_modules/@polymer/iron-image/iron-image';
 import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element';
-import SSPhoto from '../ss_photo';
+import {SSPhoto} from '../ss_photo';
 
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Base class for other SSView classes
  */
-export default abstract class SSView {
+export abstract class SSView {
 
   /**
    * Should we show the time
@@ -33,7 +34,7 @@ export default abstract class SSView {
   public photo: SSPhoto;
 
   /** The main element */
-  public slide: ScreensaverSlide;
+  public slide: ScreensaverSlideElement;
 
   /** The element to render the photo */
   public image: IronImageElement;
@@ -100,7 +101,7 @@ export default abstract class SSView {
    *
    * @param slide - <screensaver-slide>
    */
-  public setElements(slide: ScreensaverSlide) {
+  public setElements(slide: ScreensaverSlideElement) {
     this.slide = slide;
 
     this.image = slide.shadowRoot.querySelector('.image');

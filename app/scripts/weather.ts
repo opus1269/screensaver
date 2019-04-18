@@ -7,7 +7,6 @@
 
 /**
  * Manage weather information
- * @module weather
  */
 
 import * as MyGA from '../scripts/my_analytics.js';
@@ -18,14 +17,15 @@ import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeLocale from '../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
-import ChromeTime from '../scripts/chrome-extension-utils/scripts/time.js';
+import {ChromeTime} from '../scripts/chrome-extension-utils/scripts/time.js';
+
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A geo location
- * @typedef {{}} WeatherLocation
- * @property {number} lat - latitude
- * @property {number} lon - longitude
+ *
+ * @property lat latitude
+ * @property lon - longitude
  */
 export interface WeatherLocation {
   lat: number;
@@ -34,14 +34,14 @@ export interface WeatherLocation {
 
 /**
  * Current weather conditions
- * @typedef {{}} CurrentWeather
- * @property {int} time - call time UTC milli sec
- * @property {int} id - weather id
- * @property {string} dayNight - day night prefix ('', 'day-', 'night-")
- * @property {number} tempValue - temperature value in K
- * @property {string} temp - temperature string
- * @property {string} city - city name
- * @property {string} description - weather description
+ *
+ * @property time - call time UTC milli sec
+ * @property id - weather id
+ * @property dayNight - day night prefix ('', 'day-', 'night-")
+ * @property tempValue - temperature value in K
+ * @property temp - temperature string
+ * @property city - city name
+ * @property description - weather description
  */
 export interface CurrentWeather {
   time: number;
@@ -56,8 +56,6 @@ export interface CurrentWeather {
 
 /**
  * Default weather
- * @readonly
- * @type {CurrentWeather}
  */
 export const DEF_WEATHER: CurrentWeather = {
   time: 0,
@@ -71,9 +69,6 @@ export const DEF_WEATHER: CurrentWeather = {
 
 /**
  * Default geolocation permission options
- * @readonly
- * @const
- * @type {{enableHighAccuracy, timeout, maximumAge}}
  */
 export const DEF_LOC_OPTIONS = {
   enableHighAccuracy: false,
@@ -83,18 +78,11 @@ export const DEF_LOC_OPTIONS = {
 
 /**
  * The most frequently we will call the API
- * @type {int}
- * @readonly
- * @const
- * @private
  */
 const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 
 /**
  * Default geolocation options
- * @readonly
- * @const
- * @type {WeatherLocation}
  */
 const _DEF_LOC: WeatherLocation = {
   lat: 0.0,
@@ -103,23 +91,19 @@ const _DEF_LOC: WeatherLocation = {
 
 /**
  * API key
- * @type {string}
- * @private
  */
 const _KEY = '2eab968d43699c1b6e126228b34880c9';
 
 /**
  * Base url of weather API
- * @type {string}
- * @private
  */
 const _URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
 
 /**
  * Update the weather
- * @param  {boolean} [force=false] if true, force update
+ *
+ * @param  force if true, force update
  * @throws An error if update failed
- * @returns {Promise<void>}
  */
 export async function update(force = false) {
   const METHOD = 'Weather.update';
@@ -165,7 +149,6 @@ export async function update(force = false) {
     let url = _URL_BASE;
     url += `?lat=${location.lat}&lon=${location.lon}&APPID=${_KEY}`;
 
-    /** @type {{cod, name, sys, main, weather}} */
     const response = await ChromeHttp.doGet(url, conf);
 
     if (response.cod !== 200) {
@@ -181,7 +164,6 @@ export async function update(force = false) {
       curWeather.city = response.name;
     }
 
-    /** @type {{sunrise, sunset}} */
     const sys = response.sys;
     if (sys && sys.sunrise && sys.sunset) {
       // sys time is UTC in seconds
@@ -238,9 +220,10 @@ export function updateUnits() {
 
 /**
  * Get the current geo location. Will prompt if needed
- * @param {WeatherLocation} [options=DEF_LOC_OPTIONS]
+ *
+ * @param options - api options
  * @throws An error if we failed to get location
- * @returns {Promise<WeatherLocation>}
+ * @returns current location
  */
 export async function getLocation(options = DEF_LOC_OPTIONS) {
   const METHOD = 'Weather.getLocation';
@@ -275,9 +258,6 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
 
 /**
  * Convert Kelvin to degrees F
- * @param {!number} temp
- * @returns {string}
- * @private
  */
 function _kToF(temp: number) {
   const value = (temp - 273.17) * 9.0 / 5.0 + 32.0;
@@ -286,9 +266,6 @@ function _kToF(temp: number) {
 
 /**
  * Convert Kelvin to degrees C
- * @param {!number} temp
- * @returns {string}
- * @private
  */
 function _kToC(temp: number) {
   const value = temp - 273.17;

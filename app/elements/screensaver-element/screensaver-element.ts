@@ -7,7 +7,7 @@
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
-import SSView from '../../scripts/screensaver/views/ss_view';
+import {SSView} from '../../scripts/screensaver/views/ss_view';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
@@ -20,7 +20,7 @@ import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
 import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
-import BaseElement from '../../elements/base-element/base-element.js';
+import {BaseElement} from '../../elements/base-element/base-element.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
@@ -39,7 +39,7 @@ import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytic
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import {ChromeTime} from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
 declare var ChromePromise: any;
@@ -77,7 +77,7 @@ const errHandler = {
  * Polymer element to display a screensaver
  */
 @customElement('screensaver-element')
-export default class ScreensaverElement extends BaseElement {
+export class ScreensaverElement extends BaseElement {
 
   /**
    * Set the window zoom factor to 1.0

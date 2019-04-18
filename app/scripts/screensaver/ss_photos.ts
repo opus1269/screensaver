@@ -9,11 +9,13 @@
  * Collection of {@link SSPhoto} objects
  */
 
+import {Photo, PhotoSource} from '../sources/photo_source';
+
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import SSPhoto from './ss_photo.js';
-import {Photo, PhotoSource} from '../sources/photo_source';
+import {SSPhoto} from './ss_photo.js';
 
 /**
  * The array of photos
@@ -27,8 +29,8 @@ let _curIdx = 0;
 
 /**
  * Add the photos from a {@link PhotoSource}
+ *
  * @throws An error if we failed to add the photos
- * @param photoSource
  */
 export async function addFromSource(photoSource: PhotoSource) {
   const sourcePhotos = await photoSource.getPhotos();
@@ -54,6 +56,7 @@ export function getCount() {
 
 /**
  * Do we have photos that aren't bad
+ *
  * @returns true if at least one photo is good
  */
 export function hasUsable() {
@@ -64,6 +67,7 @@ export function hasUsable() {
 
 /**
  * Get the {@link SSPhoto} at the given index
+ *
  * @param idx - The index
  * @returns The SSPhoto
  */
@@ -73,6 +77,7 @@ export function get(idx: number) {
 
 /**
  * Get the next {@link SSPhoto} that is usable
+ *
  * @param ignores - photos to ignore
  * @returns An SSPhoto, null if none are usable
  */
@@ -100,6 +105,7 @@ export function getCurrentIndex() {
 
 /**
  * Get the next num of google photos
+ *
  * @param num - max number to get
  * @param idx - starting index
  * @returns array of photos of max length num
@@ -123,6 +129,7 @@ export function getNextGooglePhotos(num: number, idx: number) {
 
 /**
  * Update the urls of the given photos that are of the user's Google Photos
+ *
  * @param photos - The photos to update
  */
 export function updateGooglePhotoUrls(photos: Photo[]) {
@@ -142,6 +149,7 @@ export function updateGooglePhotoUrls(photos: Photo[]) {
 
 /**
  * Set current index into {@link _photos}
+ *
  * @param idx - The index
  */
 export function setCurrentIndex(idx: number) {
@@ -150,6 +158,7 @@ export function setCurrentIndex(idx: number) {
 
 /**
  * Increment current index into {@link _photos}
+ *
  * @returns The new current index
  */
 export function incCurrentIndex() {

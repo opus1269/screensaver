@@ -16,6 +16,7 @@ import * as SSController from './ss_controller.js';
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -23,17 +24,17 @@ declare var ChromePromise: any;
 /**
  * Unique id of the display screensaver menu
  */
-const _DISPLAY_MENU = 'DISPLAY_MENU';
+const DISPLAY_MENU = 'DISPLAY_MENU';
 
 /**
  * Unique id of the enable screensaver menu
  */
-const _ENABLE_MENU = 'ENABLE_MENU';
+const ENABLE_MENU = 'ENABLE_MENU';
 
 /**
  * Toggle enabled state of the screen saver
  */
-async function _toggleEnabled() {
+async function toggleEnabled() {
   const oldState = ChromeStorage.getBool('enabled', true);
   ChromeStorage.set('enabled', !oldState);
 
@@ -48,15 +49,16 @@ async function _toggleEnabled() {
  * when the extension is updated to a new version,<br />
  * and when Chrome is updated to a new version.
  * @link https://developer.chrome.com/extensions/runtime#event-onInstalled
+ *
  * @param details - type of event
  */
-async function _onInstalled(details: chrome.runtime.InstalledDetails) {
+async function onInstalled(details: chrome.runtime.InstalledDetails) {
   const chromep = new ChromePromise();
 
   try {
     await chromep.contextMenus.create({
       type: 'normal',
-      id: _DISPLAY_MENU,
+      id: DISPLAY_MENU,
       title: ChromeLocale.localize('display_now'),
       contexts: ['browser_action'],
     });
@@ -69,7 +71,7 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
   try {
     await chromep.contextMenus.create({
       type: 'normal',
-      id: _ENABLE_MENU,
+      id: ENABLE_MENU,
       title: ChromeLocale.localize('disable'),
       contexts: ['browser_action'],
     });
@@ -95,29 +97,30 @@ async function _onInstalled(details: chrome.runtime.InstalledDetails) {
 /**
  * Event: Fired when a context menu item is clicked.
  * @link https://developer.chrome.com/extensions/contextMenus#event-onClicked
+ *
  * @param info - info on the clicked menu
  */
-async function _onMenuClicked(info: chrome.contextMenus.OnClickData) {
-  if (info.menuItemId === _DISPLAY_MENU) {
+async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
+  if (info.menuItemId === DISPLAY_MENU) {
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
     await SSController.display(false);
-  } else if (info.menuItemId === _ENABLE_MENU) {
+  } else if (info.menuItemId === ENABLE_MENU) {
     const isEnabled = ChromeStorage.getBool('enabled');
     ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
-    await _toggleEnabled();
+    await toggleEnabled();
   }
 }
 
 /**
- * Event: Fired when a registered command is activated using
- * a keyboard shortcut.
+ * Event: Fired when a registered command is activated using a keyboard shortcut.
  * @link https://developer.chrome.com/extensions/commands#event-onCommand
+ *
  * @param cmd - keyboard command
  */
-async function _onKeyCommand(cmd: string) {
+async function onKeyCommand(cmd: string) {
   if (cmd === 'toggle-enabled') {
     ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
-    await _toggleEnabled();
+    await toggleEnabled();
   } else if (cmd === 'show-screensaver') {
     ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
     await SSController.display(false);
@@ -125,11 +128,11 @@ async function _onKeyCommand(cmd: string) {
 }
 
 // listen for install events
-chrome.runtime.onInstalled.addListener(_onInstalled);
+chrome.runtime.onInstalled.addListener(onInstalled);
 
 // listen for clicks on context menus
-chrome.contextMenus.onClicked.addListener(_onMenuClicked);
+chrome.contextMenus.onClicked.addListener(onMenuClicked);
 
 // listen for special keyboard commands
-chrome.commands.onCommand.addListener(_onKeyCommand);
+chrome.commands.onCommand.addListener(onKeyCommand);
 

@@ -14,18 +14,21 @@ import * as Alarm from './alarm.js';
 import {UnitValue} from '../../elements/setting-elements/setting-slider/setting-slider';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as Weather from '../../scripts/weather.js';
 
-import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
+import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
+
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import ChromeLastError from '../../scripts/chrome-extension-utils/scripts/last_error.js';
+import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -34,13 +37,13 @@ const chromep = new ChromePromise();
 /**
  * Version of localStorage - update when items are added, removed, changed
  */
-const _DATA_VERSION = 25;
+const DATA_VERSION = 25;
 
 /**
  * App data saved to local storage
  */
 export const DEFS = {
-  version: _DATA_VERSION,
+  version: DATA_VERSION,
   enabled: true,
   permPicasa: Permissions.STATE.notSet,
   permBackground: Permissions.STATE.notSet,
@@ -91,10 +94,10 @@ export const DEFS = {
  */
 export async function initialize() {
   try {
-    _addDefaults();
+    addDefaults();
 
     // set operating system
-    await _setOS();
+    await setOS();
 
     // set signin state
     const signedIn = await ChromeAuth.isSignedIn();
@@ -104,10 +107,10 @@ export async function initialize() {
     await ChromeLastError.reset();
 
     // set time format based on locale
-    ChromeStorage.set('showTime', _getTimeFormat());
+    ChromeStorage.set('showTime', getTimeFormat());
 
     // set temp unit based on locale
-    ChromeStorage.set('weatherTempUnit', _getTempUnit());
+    ChromeStorage.set('weatherTempUnit', getTempUnit());
 
     // update state
     await processState();
@@ -126,17 +129,17 @@ export async function update() {
   // here when the version changes
   const oldVersion = ChromeStorage.getInt('version');
 
-  if (Number.isNaN(oldVersion) || (_DATA_VERSION > oldVersion)) {
+  if (Number.isNaN(oldVersion) || (DATA_VERSION > oldVersion)) {
     // update version number
-    ChromeStorage.set('version', _DATA_VERSION);
+    ChromeStorage.set('version', DATA_VERSION);
   }
 
   if (!Number.isNaN(oldVersion)) {
 
     if (oldVersion < 8) {
       // change setting-slider values due to adding units
-      _convertSliderValue('transitionTime');
-      _convertSliderValue('idleTime');
+      convertSliderValue('transitionTime');
+      convertSliderValue('idleTime');
     }
 
     if (oldVersion < 10) {
@@ -210,7 +213,7 @@ export async function update() {
 
   if (oldVersion < 21) {
     try {
-      await _updateToChromeLocaleStorage();
+      await updateToChromeLocaleStorage();
     } catch (err) {
       // ignore
     }
@@ -249,7 +252,7 @@ export async function update() {
     }
   }
 
-  _addDefaults();
+  addDefaults();
 
   // update state
   try {
@@ -279,10 +282,10 @@ export async function restoreDefaults() {
   }
 
   // restore default time format based on locale
-  ChromeStorage.set('showTime', _getTimeFormat());
+  ChromeStorage.set('showTime', getTimeFormat());
 
   // restore default temp unit based on locale
-  ChromeStorage.set('weatherTempUnit', _getTempUnit());
+  ChromeStorage.set('weatherTempUnit', getTempUnit());
 
   try {
     // update state
@@ -304,11 +307,11 @@ export async function processState(key = 'all') {
     if (key === 'all') {
       // update everything
 
-      await _processEnabled();
+      await processEnabled();
 
-      _processKeepAwake();
+      processKeepAwake();
 
-      _processIdleTime();
+      processIdleTime();
 
       await Alarm.updatePhotoAlarm();
 
@@ -323,7 +326,7 @@ export async function processState(key = 'all') {
 
       // set os, if not already
       if (!ChromeStorage.get('os')) {
-        await _setOS();
+        await setOS();
       }
     } else {
       // individual change
@@ -375,16 +378,16 @@ export async function processState(key = 'all') {
       } else {
         switch (key) {
           case 'enabled':
-            await _processEnabled();
+            await processEnabled();
             break;
           case 'idleTime':
-            _processIdleTime();
+            processIdleTime();
             break;
           case 'keepAwake':
           case 'activeStart':
           case 'activeStop':
           case 'allowSuspend':
-            _processKeepAwake();
+            processKeepAwake();
             break;
           case 'weatherTempUnit':
             await Weather.updateUnits();
@@ -414,7 +417,7 @@ export function getIdleSeconds() {
 /**
  * Move the currently selected photo sources to chrome.storage.local and delete the old ones
  */
-async function _updateToChromeLocaleStorage() {
+async function updateToChromeLocaleStorage() {
   const sources = PhotoSources.getSelectedSources();
   for (const source of sources) {
     const key = source.getPhotosKey();
@@ -424,7 +427,7 @@ async function _updateToChromeLocaleStorage() {
       if (!set) {
         const desc = source.getDesc();
         const msg = `Failed to move source: ${desc} to chrome.storage`;
-        ChromeLog.error(msg, 'AppData._updateToChromeLocaleStorage');
+        ChromeLog.error(msg, 'AppData.updateToChromeLocaleStorage');
       }
       // delete old one
       ChromeStorage.set(key, null);
@@ -441,7 +444,7 @@ async function _updateToChromeLocaleStorage() {
  * use the extension as a display keep awake scheduler without
  * using the screensaver
  */
-async function _processEnabled() {
+async function processEnabled() {
   Alarm.updateBadgeText();
 
   const isEnabled = ChromeStorage.getBool('enabled', DEFS.enabled);
@@ -463,7 +466,7 @@ async function _processEnabled() {
 /**
  * Set power scheduling features
  */
-function _processKeepAwake() {
+function processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', DEFS.keepAwake);
   keepAwake
       ? chrome.power.requestKeepAwake('display')
@@ -475,7 +478,7 @@ function _processKeepAwake() {
 /**
  * Set wait time for screen saver display after machine is idle
  */
-function _processIdleTime() {
+function processIdleTime() {
   chrome.idle.setDetectionInterval(getIdleSeconds());
 }
 
@@ -484,7 +487,7 @@ function _processIdleTime() {
  *
  * @returns 1 or 2
  */
-function _getTimeFormat() {
+function getTimeFormat() {
   const format = ChromeLocale.localize('time_format', '12');
   return (format === '12') ? 1 : 2;
 }
@@ -494,7 +497,7 @@ function _getTimeFormat() {
  *
  * @returns 0 or 1
  */
-function _getTempUnit() {
+function getTempUnit() {
   const unit = ChromeLocale.localize('temp_unit', 'C');
   return (unit === 'C') ? 0 : 1;
 }
@@ -502,7 +505,7 @@ function _getTempUnit() {
 /**
  * Set the 'os' value
  */
-async function _setOS() {
+async function setOS() {
   try {
     const info = await chromep.runtime.getPlatformInfo();
     ChromeStorage.set('os', info.os);
@@ -517,7 +520,7 @@ async function _setOS() {
 /**
  * Save the default value for each item that doesn't exist
  */
-function _addDefaults() {
+function addDefaults() {
   for (const key of Object.keys(DEFS)) {
     if (ChromeStorage.get(key) === null) {
       ChromeStorage.set(key, (DEFS as any)[key]);
@@ -530,7 +533,7 @@ function _addDefaults() {
  *
  * @param key - localStorage key
  */
-function _convertSliderValue(key: string) {
+function convertSliderValue(key: string) {
   const value = ChromeStorage.get(key);
   if (value) {
     const newValue = {

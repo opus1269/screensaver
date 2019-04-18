@@ -9,14 +9,15 @@
  * Event handling for a screensaver
  */
 
-import * as SSViews from './ss_views.js';
 import * as SSRunner from './ss_runner.js';
+import * as SSViews from './ss_views.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**

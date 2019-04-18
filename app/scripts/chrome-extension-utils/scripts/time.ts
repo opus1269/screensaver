@@ -5,27 +5,18 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-/**
- * Time Class module
- * @module chrome/time
- */
-
 import * as ChromeLocale from './locales.js';
 import * as ChromeStorage from './storage.js';
 import * as ChromeUtils from './utils.js';
+
 import './ex_handler.js';
 
 /**
  * Time Class
- * @property {int} _hr - 24 hour time
- * @property {int} _min - minutes
- * @alias module:chrome/time.ChromeTime
  */
-class ChromeTime {
+export class ChromeTime {
   /**
    * Milliseconds in minute
-   * @returns {int} value
-   * @static
    */
   static get MSEC_IN_MIN() {
     return 60 * 1000;
@@ -33,8 +24,6 @@ class ChromeTime {
 
   /**
    * Minutes in hour
-   * @returns {int} value
-   * @static
    */
   static get MIN_IN_HOUR() {
     return 60;
@@ -42,8 +31,6 @@ class ChromeTime {
 
   /**
    * Milliseconds in hour
-   * @returns {int} value
-   * @static
    */
   static get MSEC_IN_HOUR() {
     return ChromeTime.MIN_IN_HOUR * 60 * 1000;
@@ -51,8 +38,6 @@ class ChromeTime {
 
   /**
    * Minutes in day
-   * @returns {int} value
-   * @static
    */
   static get MIN_IN_DAY() {
     return 60 * 24;
@@ -60,8 +45,6 @@ class ChromeTime {
 
   /**
    * Milliseconds in day
-   * @returns {int} value
-   * @static
    */
   static get MSEC_IN_DAY() {
     return ChromeTime.MIN_IN_DAY * 60 * 1000;
@@ -69,9 +52,9 @@ class ChromeTime {
 
   /**
    * Convert string to current time
-   * @param {!string} timeString - in '00:00' format
-   * @returns {int} time in milliSeconds from epoch
-   * @static
+   *
+   * @param timeString - in '00:00' format
+   * @returns time in milliSeconds from epoch
    */
   public static getTime(timeString: string) {
     const date = new Date();
@@ -85,9 +68,9 @@ class ChromeTime {
 
   /**
    * Calculate time delta from now on a 24hr basis
-   * @param {string} timeString - in '00:00' format
-   * @returns {int} time delta in minutes
-   * @static
+   *
+   * @param timeString - in '00:00' format
+   * @returns time delta in minutes
    */
   public static getTimeDelta(timeString: string) {
     const curTime = Date.now();
@@ -102,10 +85,10 @@ class ChromeTime {
 
   /**
    * Determine if current time is between start and stop, inclusive
-   * @param {string} start - in '00:00' format
-   * @param {string} stop - in '00:00' format
-   * @returns {boolean} true if in the given range
-   * @static
+   *
+   * @param start - in '00:00' format
+   * @param stop - in '00:00' format
+   * @returns true if in the given range
    */
   public static isInRange(start: string, stop: string) {
     const curTime = Date.now();
@@ -129,10 +112,10 @@ class ChromeTime {
 
   /**
    * Get time as string suitable for display, including AM/PM if 12hr
-   * @param {!string} timeString - in '00:00' format
-   * @param {?int} [frmt=null] - optional format, overrides storage value
-   * @returns {!string} display string
-   * @static
+   *
+   * @param timeString - in '00:00' format
+   * @param frmt - optional format, overrides storage value
+   * @returns display string
    */
   public static getStringFull(timeString: string, frmt: number = null) {
     const time = new ChromeTime(timeString);
@@ -141,8 +124,8 @@ class ChromeTime {
 
   /**
    * Get current time suitable for display w/o AM/PM if 12hr
-   * @returns {!string} display string
-   * @static
+   *
+   * @returns display string
    */
   public static getStringShort() {
     const time = new ChromeTime();
@@ -157,10 +140,9 @@ class ChromeTime {
 
   /**
    * Determine if user wants 24 hr time
-   * @param {?int} [frmt=null] - optional format, overrides storage value
-   * @returns {boolean} true for 24 hour time
-   * @private
-   * @static
+   *
+   * @param frmt - optional format, overrides storage value
+   * @returns true for 24 hour time
    */
   private static _is24Hr(frmt: number = null) {
     let ret = false;
@@ -184,8 +166,8 @@ class ChromeTime {
 
   /**
    * Create a new Time
-   * @param {?string} [timeString=null] - in '00:00' format, if null
-   * use current Date
+   *
+   * @param timeString - in '00:00' format, if null use current Date
    */
   constructor(timeString: string = null) {
     this._hr = null;
@@ -194,8 +176,9 @@ class ChromeTime {
 
   /**
    * Get string representation of Time
-   * @param {?int} [frmt=null] - optional format, overrides storage value
-   * @returns {string} As string
+   *
+   * @param frmt - optional format, overrides storage value
+   * @returns As string
    */
   public toString(frmt: number = null) {
     const date = new Date();
@@ -224,8 +207,8 @@ class ChromeTime {
 
   /**
    * Parse time string
-   * @param {string} timeString - in '00:00' format
-   * @private
+   *
+   * @param timeString - in '00:00' format
    */
   private _parse(timeString: string) {
     if (!timeString) {
@@ -238,7 +221,4 @@ class ChromeTime {
     }
   }
 }
-
-export default ChromeTime;
-
 

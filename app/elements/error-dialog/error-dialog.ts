@@ -4,6 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper-dialog';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
@@ -16,13 +17,13 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
-import BaseElement from '../base-element/base-element.js';
+import {BaseElement} from '../base-element/base-element.js';
 
 /**
  * Polymer dialog to display an error
  */
 @customElement('error-dialog')
-export default class ErrorDialogElement extends BaseElement {
+export class ErrorDialogElement extends BaseElement {
 
   /** Display confirm button state */
   @property({type: Boolean, notify: true})
@@ -44,9 +45,6 @@ export default class ErrorDialogElement extends BaseElement {
 
   /**
    * Show the dialog
-   *
-   * @param title
-   * @param text
    */
   public open(title: string, text: string) {
     title = title || 'Unknown';

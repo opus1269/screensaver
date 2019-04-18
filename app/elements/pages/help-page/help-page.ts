@@ -4,8 +4,8 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 
@@ -13,7 +13,7 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../../elements/setting-elements/setting-link/setting-link.js';
 
-import BaseElement from '../../base-element/base-element.js';
+import {BaseElement} from '../../base-element/base-element.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
@@ -23,7 +23,7 @@ import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/ut
  * Polymer element for the Help page
  */
 @customElement('help-page')
-export default class HelpPageElement extends BaseElement {
+export class HelpPageElement extends BaseElement {
 
   /** Path to our Github repo */
   @property({type: String})
@@ -43,7 +43,7 @@ export default class HelpPageElement extends BaseElement {
    * @param subject - email subject
    * @returns url
    */
-  private _computeMailToUrl(subject: string) {
+  private computeMailToUrl(subject: string) {
     return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
   }
 
@@ -72,13 +72,13 @@ export default class HelpPageElement extends BaseElement {
   <div class="page-content">
     <setting-link section-title="{{localize('help_section_feedback')}}" name="questionMail"
                   label="{{localize('help_question')}}" icon="myicons:mail"
-                  url="[[_computeMailToUrl('Question')]]"></setting-link>
+                  url="[[computeMailToUrl('Question')]]"></setting-link>
     <setting-link label="{{localize('help_bug')}}" name="bugMail" icon="myicons:mail"
-                  url="[[_computeMailToUrl('Bug report')]]"></setting-link>
+                  url="[[computeMailToUrl('Bug report')]]"></setting-link>
     <setting-link label="{{localize('help_feature')}}" name="featureMail" icon="myicons:mail"
-                  url="[[_computeMailToUrl('Feature request')]]"></setting-link>
+                  url="[[computeMailToUrl('Feature request')]]"></setting-link>
     <setting-link label="{{localize('help_feedback')}}" name="feedbackMail" icon="myicons:mail"
-                  url="[[_computeMailToUrl('General feedback')]]"></setting-link>
+                  url="[[computeMailToUrl('General feedback')]]"></setting-link>
     <setting-link label="{{localize('help_issue')}}" name="submitGitHubIssue" noseparator="" icon="myicons:github"
                   url="[[githubPath]]issues/new"></setting-link>
     <hr>

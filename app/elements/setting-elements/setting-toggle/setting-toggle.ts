@@ -17,7 +17,7 @@ import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.j
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import SettingBase from '../setting-base/setting-base.js';
+import {SettingBase} from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
@@ -25,7 +25,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element for a toggle button
  */
 @customElement('setting-toggle')
-export default class SettingToggleElement extends SettingBase {
+export class SettingToggleElement extends SettingBase {
 
   /** Checked state */
   @property({type: Boolean, notify: true})

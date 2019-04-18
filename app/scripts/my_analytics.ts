@@ -13,6 +13,7 @@ import {EventType} from '../scripts/chrome-extension-utils/scripts/analytics';
 
 import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /** Tracking ID */

@@ -24,7 +24,7 @@ import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.j
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import SettingBase from '../setting-base/setting-base.js';
+import {SettingBase} from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
@@ -135,8 +135,6 @@ export class SettingSliderElement extends SettingBase {
 
   /**
    * Unit changed
-   *
-   * @param newValue
    */
   @observe('unitIdx')
   private unitIdxChanged(newValue: number | undefined) {
@@ -151,9 +149,6 @@ export class SettingSliderElement extends SettingBase {
 
   /**
    * Simple Observer: Value changed
-   *
-   * @param newValue
-   * @param oldValue
    */
   private _valueChanged(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
     if (newValue !== undefined) {

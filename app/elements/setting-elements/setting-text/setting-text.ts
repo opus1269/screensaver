@@ -33,7 +33,7 @@ import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @alias module:els/setting/text.SettingText
  * @PolymerElement
  */
-const SettingText = Polymer({
+export const SettingText = Polymer({
   // language=HTML format=false
   _template: html`<style include="iron-flex iron-flex-alignment"></style>
 <style include="shared-styles"></style>
@@ -173,6 +173,4 @@ const SettingText = Polymer({
     }
   },
 });
-
-export default SettingText;
 

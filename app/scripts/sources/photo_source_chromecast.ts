@@ -9,15 +9,16 @@
  * A source of photos from Chromecast
  */
 
-import {PhotoSource, Photo} from './photo_source.js';
+import {Photo, PhotoSource} from './photo_source.js';
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A source of photos from Chromecast
  */
-export default class CCSource extends PhotoSource {
+export class CCSource extends PhotoSource {
 
   /**
    * Create a new photo source

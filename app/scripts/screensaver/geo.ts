@@ -13,6 +13,7 @@ import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.j
 import * as ChromeJSON from '../../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**

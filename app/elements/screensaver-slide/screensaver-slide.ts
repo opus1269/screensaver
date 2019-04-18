@@ -6,7 +6,7 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
-import SSView from '../../scripts/screensaver/views/ss_view';
+import {SSView} from '../../scripts/screensaver/views/ss_view';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -24,7 +24,7 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
-import BaseElement from '../base-element/base-element.js';
+import {BaseElement} from '../base-element/base-element.js';
 
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
@@ -40,7 +40,7 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
  * Polymer element to provide an animatable slide
  */
 @customElement('screensaver-slide')
-export default class ScreensaverSlideElement extends
+export class ScreensaverSlideElement extends
     (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => BaseElement) {
 
   /** The SSView we contain */

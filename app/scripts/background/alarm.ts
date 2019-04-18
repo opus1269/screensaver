@@ -21,7 +21,8 @@ import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytic
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import ChromeTime from '../../scripts/chrome-extension-utils/scripts/time.js';
+import {ChromeTime} from '../../scripts/chrome-extension-utils/scripts/time.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
@@ -30,7 +31,7 @@ const chromep = new ChromePromise();
 /**
  * Alarms triggered by chrome.alarms
  */
-const _ALARMS = {
+const ALARMS = {
   ACTIVATE: 'ACTIVATE',
   DEACTIVATE: 'DEACTIVATE',
   UPDATE_PHOTOS: 'UPDATE_PHOTOS',
@@ -51,12 +52,12 @@ export function updateKeepAwakeAlarm() {
     const startDelayMin = ChromeTime.getTimeDelta(aStart);
     const stopDelayMin = ChromeTime.getTimeDelta(aStop);
 
-    chrome.alarms.create(_ALARMS.ACTIVATE, {
+    chrome.alarms.create(ALARMS.ACTIVATE, {
       delayInMinutes: startDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
 
-    chrome.alarms.create(_ALARMS.DEACTIVATE, {
+    chrome.alarms.create(ALARMS.DEACTIVATE, {
       delayInMinutes: stopDelayMin,
       periodInMinutes: ChromeTime.MIN_IN_DAY,
     });
@@ -67,8 +68,8 @@ export function updateKeepAwakeAlarm() {
       _setInactiveState();
     }
   } else {
-    chrome.alarms.clear(_ALARMS.ACTIVATE);
-    chrome.alarms.clear(_ALARMS.DEACTIVATE);
+    chrome.alarms.clear(ALARMS.ACTIVATE);
+    chrome.alarms.clear(ALARMS.DEACTIVATE);
   }
 
   updateBadgeText();
@@ -80,9 +81,9 @@ export function updateKeepAwakeAlarm() {
 export async function updatePhotoAlarm() {
   // Add daily alarm to update photo sources that request this
   try {
-    const alarm = await chromep.alarms.get(_ALARMS.UPDATE_PHOTOS);
+    const alarm = await chromep.alarms.get(ALARMS.UPDATE_PHOTOS);
     if (!alarm) {
-      chrome.alarms.create(_ALARMS.UPDATE_PHOTOS, {
+      chrome.alarms.create(ALARMS.UPDATE_PHOTOS, {
         when: Date.now() + ChromeTime.MSEC_IN_DAY,
         periodInMinutes: ChromeTime.MIN_IN_DAY,
       });
@@ -106,10 +107,10 @@ export async function updateWeatherAlarm() {
     // Trigger it every ten minutes, even though weather won't
     // update that often
     try {
-      const alarm = await chromep.alarms.get(_ALARMS.WEATHER);
+      const alarm = await chromep.alarms.get(ALARMS.WEATHER);
       if (!alarm) {
         // doesn't exist, create it
-        chrome.alarms.create(_ALARMS.WEATHER, {
+        chrome.alarms.create(ALARMS.WEATHER, {
           when: Date.now(),
           periodInMinutes: 10,
         });
@@ -118,7 +119,7 @@ export async function updateWeatherAlarm() {
       ChromeGA.error(err.message, 'Alarm.updateWeatherAlarm');
     }
   } else {
-    chrome.alarms.clear(_ALARMS.WEATHER);
+    chrome.alarms.clear(ALARMS.WEATHER);
   }
 
   return Promise.resolve();
@@ -129,7 +130,7 @@ export async function updateWeatherAlarm() {
  */
 export function updateBadgeText() {
   // delay setting a little to make sure range check is good
-  chrome.alarms.create(_ALARMS.BADGE_TEXT, {
+  chrome.alarms.create(ALARMS.BADGE_TEXT, {
     when: Date.now() + 1000,
   });
 }
@@ -222,15 +223,15 @@ async function _onAlarm(alarm: chrome.alarms.Alarm) {
 
   try {
     switch (alarm.name) {
-      case _ALARMS.ACTIVATE:
+      case ALARMS.ACTIVATE:
         // entering active time range of keep awake
         await _setActiveState();
         break;
-      case _ALARMS.DEACTIVATE:
+      case ALARMS.DEACTIVATE:
         // leaving active time range of keep awake
         _setInactiveState();
         break;
-      case _ALARMS.UPDATE_PHOTOS:
+      case ALARMS.UPDATE_PHOTOS:
         // get the latest for the daily photo streams
         try {
           await PhotoSources.processDaily();
@@ -238,11 +239,11 @@ async function _onAlarm(alarm: chrome.alarms.Alarm) {
           ChromeGA.error(err.message, 'Alarm._onAlarm');
         }
         break;
-      case _ALARMS.BADGE_TEXT:
+      case ALARMS.BADGE_TEXT:
         // set the icons text
         _setBadgeText();
         break;
-      case _ALARMS.WEATHER:
+      case ALARMS.WEATHER:
         // try to update the weather
         try {
           await _updateWeather();

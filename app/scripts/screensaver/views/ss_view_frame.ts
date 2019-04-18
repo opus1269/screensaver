@@ -9,10 +9,10 @@
  * Frame view
  */
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {SSPhoto} from '../ss_photo.js';
+import {SSView} from './ss_view.js';
 
-import SSView from './ss_view.js';
-import SSPhoto from '../ss_photo.js';
+import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Frame view
@@ -21,7 +21,7 @@ import SSPhoto from '../ss_photo.js';
  * The photo will be displayed with its natural aspect ratio, contained in a frame,
  * and roughly sized to the screen
  */
-export default class SSViewFrame extends SSView {
+export class SSViewFrame extends SSView {
 
   /**
    * Set style info for a label

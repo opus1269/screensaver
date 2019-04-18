@@ -13,7 +13,7 @@ import '../../../node_modules/@polymer/iron-icon/iron-icon.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
 
-import SettingBase from '../setting-base/setting-base.js';
+import {SettingBase} from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
@@ -21,7 +21,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element for a url link
  */
 @customElement('setting-link')
-export default class SettingLinkElement extends SettingBase {
+export class SettingLinkElement extends SettingBase {
 
   /** Description */
   @property({type: String})

@@ -11,6 +11,7 @@
  */
 
 import * as ChromeUtils from './utils.js';
+
 import './ex_handler.js';
 
 declare var ChromePromise: any;

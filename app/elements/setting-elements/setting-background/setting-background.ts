@@ -22,7 +22,7 @@ import '../../../node_modules/@polymer/paper-button/paper-button.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import SettingBase from '../setting-base/setting-base.js';
+import {SettingBase} from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
@@ -30,7 +30,7 @@ import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analy
  * Polymer element to select a background style
  */
 @customElement('setting-background')
-export default class SettingBackgroundElement extends SettingBase {
+export class SettingBackgroundElement extends SettingBase {
 
   /** Selected backed style */
   @property({type: String, notify: true})

@@ -7,7 +7,6 @@
 
 /**
  * A source of photos from Google Photos
- * @module sources/photo_source_google
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -17,12 +16,13 @@ import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/loca
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
-import {PhotoSource, Photo} from './photo_source.js';
+import {Photo, PhotoSource} from './photo_source.js';
 import * as PhotoSources from './photo_sources.js';
 
 /**
@@ -105,8 +105,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Default photo filter
-   * @returns The default photo filter
-   * @static
    */
   static get DEF_FILTER() {
     return {
@@ -127,8 +125,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * No filtering
-   * @returns The minimal filter - photos only
-   * @static
    */
   static get NO_FILTER() {
     return {
@@ -142,7 +138,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max albums to use
-   * @static
    */
   static get MAX_ALBUMS() {
     return 200;
@@ -150,7 +145,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max photos per album to use
-   * @static
    */
   static get MAX_ALBUM_PHOTOS() {
     return 2000;
@@ -158,7 +152,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max photos total to use for album mode
-   * @static
    */
   static get MAX_PHOTOS() {
     return 30000;
@@ -166,7 +159,6 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Max photos for google images mode
-   * @static
    */
   static get MAX_FILTERED_PHOTOS() {
     return 3000;
@@ -193,8 +185,9 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Has the Google auth token been revoked
-   * @param err
-   * @param name
+   *
+   * @param err - Error to check
+   * @param name - calling method
    */
   public static isAuthRevokedError(err: Error, name: string) {
     let ret = false;
@@ -213,6 +206,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Retrieve the user's list of albums
+   *
    * @throws An error if the album list failed to load.
    * @returns Array of albums
    */
@@ -272,6 +266,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Retrieve a Google Photos album
+   *
    * @param id -  Unique Album ID
    * @param name -  Album name
    * @param interactive=true - interactive mode for permissions
@@ -351,6 +346,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Load the saved albums from the Web
+   *
    * @param interactive=true - interactive mode for permissions
    * @param notify=false - notify listeners of status
    * @throws An error if the albums could not be updated
@@ -411,6 +407,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Load photos based on a filter
+   *
    * @param force=false - if true, force rpc
    * @param notify=false - if true, notify listeners of progress
    * @throws An error if we could not load the photos
@@ -533,7 +530,6 @@ export class GoogleSource extends PhotoSource {
       url = url.concat(query);
 
       // get the new mediaItemResults
-      /** @type {{mediaItemResults}} */
       const response = await ChromeHttp.doGet(url, conf);
       nCalls++;
       const mediaItems = [];
@@ -564,7 +560,8 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Update the baseUrls of the given photos
-   * @param photos
+   *
+   * @param photos - photos to update
    * @throws An error on failure
    * @returns false if couldn't persist albumSelections
    */
@@ -591,7 +588,8 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Update the baseUrls of the given photos in the saved albums
-   * @param photos
+   *
+   * @param photos - photos to update
    * @throws An error on failure
    * @returns false if couldn't persist albumSelections
    */
@@ -636,7 +634,8 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Update the baseUrls of the given photos in the saved photos
-   * @param photos
+   *
+   * @param photos - photos to update
    * @throws An error on failure
    * @returns false if couldn't persist googleImages
    */
@@ -677,6 +676,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Return true if we should be fetching from Google: trying to minimize Google Photos API usage
+   *
    * @returns true if we should fetch
    */
   private static _isFetch() {
@@ -693,6 +693,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Fetch the most recent state for the selected albums
+   *
    * @throws An error if we could not load an album
    * @returns Array of albums
    */
@@ -717,6 +718,7 @@ export class GoogleSource extends PhotoSource {
   }
 
   /** Determine if a mediaEntry is an image
+   *
    * @param mediaItem - Google Photos media object
    * @returns true if entry is a photo
    */
@@ -730,6 +732,7 @@ export class GoogleSource extends PhotoSource {
   }
 
   /** Get the image size to retrieve
+   *
    * @param mediaMetadata - info on image
    * @returns image size
    */
@@ -756,6 +759,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Get a photo from a mediaItem
+   *
    * @param mediaItem - object from Google Photos API call
    * @param albumName - Album name
    */
@@ -788,6 +792,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Extract the photos into an Array
+   *
    * @param mediaItems - objects from Google Photos API call
    * @param albumName - optional Album name
    * @returns An array of photos
@@ -827,6 +832,7 @@ export class GoogleSource extends PhotoSource {
 
   /**
    * Fetch the albums or photos for this source
+   *
    * @throws An error if we couldn't update
    * @returns An array of albums or array of photos
    */

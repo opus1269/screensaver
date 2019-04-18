@@ -9,18 +9,19 @@
  * Module for a screensaver photo
  */
 
-import {Photo} from '../sources/photo_source.js';
+import {Photo} from '../sources/photo_source';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * A photo for the screensaver
  */
-export default class SSPhoto {
+export class SSPhoto {
 
   /**
    * Determine if a given aspect ratio should be ignored

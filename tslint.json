@@ -11,6 +11,8 @@
       "check-format",
       "allow-leading-underscore"
     ],
+    "no-default-export": true,
+    "no-redundant-jsdoc": false,
     "no-trailing-whitespace": false,
     "only-arrow-functions": false,
     "interface-name": false,

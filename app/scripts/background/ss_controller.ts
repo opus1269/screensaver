@@ -18,8 +18,9 @@ import * as ChromeLocale from '../chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
-import ChromeTime from '../chrome-extension-utils/scripts/time.js';
+import {ChromeTime} from '../chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../chrome-extension-utils/scripts/utils.js';
+
 import '../chrome-extension-utils/scripts/ex_handler.js';
 
 declare var ChromePromise: any;
