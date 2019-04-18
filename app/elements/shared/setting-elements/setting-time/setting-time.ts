@@ -4,14 +4,14 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property} from '../../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/paper-input/paper-input.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../../node_modules/@polymer/paper-input/paper-input.js';
+import '../../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../../node_modules/@polymer/paper-item/paper-item-body.js';
 
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {SettingBase} from '../setting-base/setting-base.js';
 

@@ -30,7 +30,7 @@ import './photo_cat.js';
 
 import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';
-import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
+import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';

@@ -11,7 +11,7 @@
 
 import * as Alarm from './alarm.js';
 
-import {UnitValue} from '../../elements/setting-elements/setting-slider/setting-slider';
+import {UnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 

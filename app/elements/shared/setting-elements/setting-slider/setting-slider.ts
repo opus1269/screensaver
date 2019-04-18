@@ -5,28 +5,28 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {PaperListboxElement} from '../../../node_modules/@polymer/paper-listbox/paper-listbox';
-import {DomRepeat} from '../../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
+import {PaperListboxElement} from '../../../../node_modules/@polymer/paper-listbox/paper-listbox';
+import {DomRepeat} from '../../../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
 
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
+import {html} from '../../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
   customElement,
   property,
   observe,
   query,
   listen,
-} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+} from '../../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/paper-slider/paper-slider.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
-import '../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '../../../../node_modules/@polymer/paper-slider/paper-slider.js';
+import '../../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+import '../../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
+import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {SettingBase} from '../setting-base/setting-base.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
 /**
  * Unit type

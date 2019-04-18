@@ -11,7 +11,7 @@ import '../../../node_modules/@polymer/paper-material/paper-material.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import '../../../elements/setting-elements/setting-link/setting-link.js';
+import '../../../elements/shared/setting-elements/setting-link/setting-link.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 

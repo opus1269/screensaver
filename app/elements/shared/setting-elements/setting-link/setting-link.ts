@@ -5,17 +5,17 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, property, listen} from '../../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import '../../../node_modules/@polymer/iron-icon/iron-icon.js';
+import '../../../../node_modules/@polymer/iron-icon/iron-icon.js';
 
-import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
-import '../../../node_modules/@polymer/paper-item/paper-icon-item.js';
+import '../../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../../node_modules/@polymer/paper-item/paper-icon-item.js';
 
 import {SettingBase} from '../setting-base/setting-base.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
 /**
  * Polymer element for a url link

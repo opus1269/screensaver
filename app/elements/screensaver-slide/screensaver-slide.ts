@@ -31,7 +31,7 @@ import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/weather-element/weather-element.js';
 
 import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
-import {UnitValue} from '../setting-elements/setting-slider/setting-slider.js';
+import {UnitValue} from '../shared/setting-elements/setting-slider/setting-slider.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';

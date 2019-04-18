@@ -5,7 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {SettingToggleElement} from '../../setting-elements/setting-toggle/setting-toggle';
+import {SettingToggleElement} from '../../shared/setting-elements/setting-toggle/setting-toggle';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -32,11 +32,11 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
-import '../../../elements/setting-elements/setting-slider/setting-slider.js';
-import '../../../elements/setting-elements/setting-dropdown/setting-dropdown.js';
-import '../../../elements/setting-elements/setting-background/setting-background.js';
-import '../../../elements/setting-elements/setting-time/setting-time.js';
+import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
+import '../../../elements/shared/setting-elements/setting-slider/setting-slider.js';
+import '../../../elements/shared/setting-elements/setting-dropdown/setting-dropdown.js';
+import '../../../elements/shared/setting-elements/setting-background/setting-background.js';
+import '../../../elements/shared/setting-elements/setting-time/setting-time.js';
 import '../../../elements/my_icons.js';
 
 import {Options} from '../../../scripts/options/options.js';
