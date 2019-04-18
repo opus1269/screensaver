@@ -5,11 +5,22 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
 import SSView from '../../scripts/screensaver/views/ss_view';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, observe, listen} from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {
+  customElement,
+  property,
+  observe,
+  query,
+  listen,
+} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
+
+import '../../node_modules/@polymer/iron-image/iron-image.js';
+
+import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
@@ -17,8 +28,13 @@ import BaseElement from '../base-element/base-element.js';
 
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
-import '../../elements/iron-image-ken-burns/iron-image-ken-burns.js';
 import '../../elements/weather-element/weather-element.js';
+
+import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
+import {UnitValue} from '../setting-elements/setting-slider/setting-slider.js';
+
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
 /**
  * Polymer element to provide an animatable slide
@@ -55,6 +71,14 @@ export default class ScreensaverSlideElement extends
   @property({type: String})
   protected timeLabel = '';
 
+  /** Flag for photo animation */
+  @property({type: Boolean, notify: true})
+  protected isAnimate = false;
+
+  /** The animation object for photo animation */
+  @property({type: Object})
+  protected animation: Animation = null;
+
   /** Configuration of the current animation */
   @property({type: Object})
   protected animationConfig = {
@@ -75,6 +99,71 @@ export default class ScreensaverSlideElement extends
       },
     },
   };
+
+  @query('#ironImage')
+  protected ironImage: IronImageElement;
+
+  /**
+   * Setup and start the photo animation
+   */
+  public startAnimation() {
+    if (!this.isAnimate) {
+      return;
+    }
+
+    if (this.animation) {
+      this.animation.cancel();
+    }
+
+    const ironImage = this.ironImage;
+
+    const transTime: UnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+    const aniTime = transTime.base * 1000;
+    let delayTime = 1000;
+
+    // hack for spinup animation since it is slower than the others
+    const photoTransition = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+    if (photoTransition === TRANS_TYPE.SPIN_UP) {
+      delayTime = 2000;
+    }
+
+    const width = ironImage.width;
+    const height = ironImage.height;
+
+    const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+    const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+    const scale = 1.0 + ChromeUtils.getRandomFloat(.5, .9);
+    // maximum translation based on scale factor
+    // this could be up to .25, but limit it since we have no idea what the photos are
+    const maxDelta = (scale - 1.0) * .20;
+    const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
+    const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
+    const translateX = Math.round(deltaX) + 'px';
+    // noinspection JSSuspiciousNameCombination
+    const translateY = Math.round(deltaY) + 'px';
+
+    const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;
+
+    const keyframes: Keyframe[] = [
+      {transform: 'scale(1.0) translateX(0vw) translateY(0vh)'},
+      {transform: transform},
+    ];
+
+    const timing: KeyframeAnimationOptions = {
+      delay: delayTime,
+      duration: aniTime - delayTime,
+      iterations: 1,
+      easing: 'ease-in-out',
+      fill: 'forwards',
+    };
+
+    let el = ironImage.$.img;
+    if (ironImage.sizing) {
+      el = ironImage.$.sizedImgDiv;
+    }
+
+    this.set('animation', el.animate(keyframes, timing));
+  }
 
   /**
    * Event: Image loading error
@@ -146,6 +235,23 @@ export default class ScreensaverSlideElement extends
     this.animationConfig.exit.timing.duration = dur;
   }
 
+  /**
+   * Animate flag changed
+   *
+   * @param isAnimate - if true, animate the photo
+   */
+  @observe('isAnimate')
+  private isAnimateChanged(isAnimate: boolean) {
+    if (isAnimate !== undefined) {
+      if (!isAnimate) {
+        if (this.animation) {
+          this.animation.cancel();
+          this.set('animation', null);
+        }
+      }
+    }
+  }
+
   static get template() {
     // language=HTML format=false
     return html`
@@ -206,7 +312,7 @@ export default class ScreensaverSlideElement extends
   
 </style>
 <section id="view[[index]]">
-  <iron-image-ken-burns
+  <iron-image
       id="ironImage"
       class="image"
       src="[[view.url]]"
@@ -214,12 +320,17 @@ export default class ScreensaverSlideElement extends
       height="[[screenHeight]]"
       sizing="[[sizingType]]"
       preload>
-  </iron-image-ken-burns>
+  </iron-image>
   <div class="time">[[timeLabel]]</div>
   <div class="author">[[view.authorLabel]]</div>
   <div class="location">[[view.locationLabel]]</div>
   <weather-element class="weather"></weather-element>
 </section>
+
+
+<app-localstorage-document key="panAndScan" data="{{isAnimate}}" storage="window.localStorage">
+</app-localstorage-document>
+
 `;
   }
 }

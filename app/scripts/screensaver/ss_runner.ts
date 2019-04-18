@@ -221,8 +221,7 @@ function _runShow(newIdx: number | null = null) {
     // setup photo
     const view = SSViews.get(nextIdx);
     view.render();
-    // @ts-ignore
-    view.image.startAnimation();
+    view.slide.startAnimation();
 
     // track the photo history
     SSHistory.add(newIdx, nextIdx, VARS.replaceIdx);
