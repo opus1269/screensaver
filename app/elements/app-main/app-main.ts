@@ -214,33 +214,48 @@ export class AppMainElement extends BaseElement {
   protected gPhotosPage: GooglePhotosPageElement = null;
 
   /**
-   * Element is ready
+   * Called when the element is added to a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public connectedCallback() {
+    super.connectedCallback();
+
+    // listen for chrome messages
+    ChromeMsg.addListener(this.onChromeMessage.bind(this));
+
+    // listen for changes to chrome.storage
+    chrome.storage.onChanged.addListener(this.chromeStorageChanged.bind(this));
+
+    // listen for changes to localStorage
+    window.addEventListener('storage', this.localStorageChanged.bind(this));
+  }
+
+  /**
+   * Called when the element is removed from a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    // stop listening for chrome messages
+    ChromeMsg.removeListener(this.onChromeMessage.bind(this));
+
+    // stop listening for changes to chrome.storage
+    chrome.storage.onChanged.removeListener(this.chromeStorageChanged.bind(this));
+
+    // stop listening for changes to localStorage
+    window.removeEventListener('storage', this.localStorageChanged.bind(this));
+  }
+
+  /**
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
    */
   public ready() {
     super.ready();
 
     MyGA.initialize();
     ChromeGA.page('/options.html');
-
-    // listen for chrome messages
-    ChromeMsg.listen(this.onChromeMessage.bind(this));
-
-    // listen for changes to chrome.storage
-    chrome.storage.onChanged.addListener((changes) => {
-      for (const key of Object.keys(changes)) {
-        if (key === 'lastError') {
-          this.setErrorMenuState().catch(() => {});
-          break;
-        }
-      }
-    });
-
-    // listen for changes to localStorage
-    window.addEventListener('storage', (ev) => {
-      if (ev.key === 'permPicasa') {
-        this.setGooglePhotosMenuState();
-      }
-    }, false);
 
     setTimeout(async () => {
       // initialize menu enabled states
@@ -330,6 +345,31 @@ export class AppMainElement extends BaseElement {
     }
 
     return Promise.resolve();
+  }
+
+  /**
+   * Event: Item in localStorage changed
+   *
+   * @param ev
+   */
+  private localStorageChanged(ev: StorageEvent) {
+    if (ev.key === 'permPicasa') {
+      this.setGooglePhotosMenuState();
+    }
+  }
+
+  /**
+   * Event: Item in chrome.storage changed
+   *
+   * @param changes - details on changes
+   */
+  private chromeStorageChanged(changes: any) {
+    for (const key of Object.keys(changes)) {
+      if (key === 'lastError') {
+        this.setErrorMenuState().catch(() => {});
+        break;
+      }
+    }
   }
 
   /**

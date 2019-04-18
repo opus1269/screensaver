@@ -67,9 +67,9 @@ export async function display(single: boolean) {
   try {
     const all = ChromeStorage.getBool('allDisplays', AppData.DEFS.allDisplays);
     if (!single && all) {
-      await _openOnAllDisplays();
+      await openOnAllDisplays();
     } else {
-      await _open(null);
+      await open(null);
     }
   } catch (err) {
     ChromeLog.error(err.message, 'SSControl.display');
@@ -92,7 +92,7 @@ export function close() {
  * @param disp - a connected display
  * @returns true if there is a full screen window on the display
  */
-async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
+async function hasFullscreen(disp: chrome.system.display.DisplayInfo) {
   let ret = false;
   const fullScreen = ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
 
@@ -110,7 +110,7 @@ async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
       }
     }
   } catch (err) {
-    ChromeGA.error(err.message, 'SSController._hasFullscreen');
+    ChromeGA.error(err.message, 'SSController.hasFullscreen');
   }
 
   return Promise.resolve(ret);
@@ -121,7 +121,7 @@ async function _hasFullscreen(disp: chrome.system.display.DisplayInfo) {
  *
  * @returns true if showing
  */
-async function _isShowing() {
+async function isShowing() {
   // send message to the screensaver's to see if any are around
   try {
     await ChromeMsg.send(MyMsg.TYPE.SS_IS_SHOWING);
@@ -137,7 +137,7 @@ async function _isShowing() {
  *
  * @param disp - a connected display or null for the main display
  */
-async function _open(disp: chrome.system.display.DisplayInfo | null) {
+async function open(disp: chrome.system.display.DisplayInfo | null) {
   // window creation options
   const winOpts: chrome.windows.CreateData = {
     url: _SS_URL,
@@ -145,7 +145,7 @@ async function _open(disp: chrome.system.display.DisplayInfo | null) {
   };
 
   try {
-    const hasFullScreen = await _hasFullscreen(disp);
+    const hasFullScreen = await hasFullscreen(disp);
     if (hasFullScreen) {
       // don't display if there is a fullscreen window
       return Promise.resolve();
@@ -178,18 +178,18 @@ async function _open(disp: chrome.system.display.DisplayInfo | null) {
 /**
  * Open a screensaver on every display
  */
-async function _openOnAllDisplays() {
+async function openOnAllDisplays() {
   try {
     const displayArr = await chromep.system.display.getInfo();
     if (displayArr.length === 1) {
-      await _open(null);
+      await open(null);
     } else {
       for (const disp of displayArr) {
-        await _open(disp);
+        await open(disp);
       }
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'SSControl._openOnAllDisplays', _ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl.openOnAllDisplays', _ERR_SHOW);
   }
 
   return Promise.resolve();
@@ -208,9 +208,9 @@ async function _openOnAllDisplays() {
  */
 async function _onIdleStateChanged(state: string) {
   try {
-    const isShowing = await _isShowing();
+    const showing = await isShowing();
     if (state === 'idle') {
-      if (isActive() && !isShowing) {
+      if (isActive() && !showing) {
         await display(false);
       }
     } else if (state === 'locked') {
@@ -227,7 +227,7 @@ async function _onIdleStateChanged(state: string) {
       }
     }
   } catch (err) {
-    ChromeGA.error(err.message, 'SSControl._isShowing');
+    ChromeGA.error(err.message, 'SSControl.isShowing');
   }
 }
 
@@ -242,8 +242,8 @@ async function _onIdleStateChanged(state: string) {
  * @param response - function to call once after processing
  * @returns true if asynchronous
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                          response: (arg0: object) => void) {
+function onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                         response: (arg0: object) => void) {
   let ret = false;
   if (request.message === MyMsg.TYPE.SS_SHOW.message) {
     ret = true; // async
@@ -257,4 +257,4 @@ function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.Mes
 chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
 
 // listen for chrome messages
-ChromeMsg.listen(_onChromeMessage);
+ChromeMsg.addListener(onChromeMessage);

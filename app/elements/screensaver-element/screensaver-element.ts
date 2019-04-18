@@ -124,7 +124,10 @@ export class ScreensaverElement extends BaseElement {
   @query('#pages')
   protected pages: NeonAnimatedPagesElement;
 
-  /** Element is ready */
+  /**
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
+   */
   public ready() {
     super.ready();
 

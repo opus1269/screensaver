@@ -228,4 +228,4 @@ chrome.browserAction.onClicked.addListener(onIconClicked);
 window.addEventListener('storage', onStorageChanged, false);
 
 // listen for chrome messages
-ChromeMsg.listen(onChromeMessage);
+ChromeMsg.addListener(onChromeMessage);

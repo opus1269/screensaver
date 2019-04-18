@@ -117,12 +117,40 @@ export class PhotosViewElement extends BaseElement {
     return this.disabled || !this.needsPhotoRefresh;
   }
 
-  /** Element is ready */
-  public ready() {
-    super.ready();
+  /**
+   * Called when the element is added to a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public connectedCallback() {
+    super.connectedCallback();
 
     // listen for chrome messages
-    ChromeMsg.listen(this._onChromeMessage.bind(this));
+    ChromeMsg.addListener(this.onChromeMessage.bind(this));
+
+    // listen for changes to chrome.storage
+    chrome.storage.onChanged.addListener(this.chromeStorageChanged.bind(this));
+  }
+
+  /**
+   * Called when the element is removed from a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    // stop listening for chrome messages
+    ChromeMsg.removeListener(this.onChromeMessage.bind(this));
+
+    // stop listening for changes to chrome.storage
+    chrome.storage.onChanged.removeListener(this.chromeStorageChanged.bind(this));
+  }
+
+  /**
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
+   */
+  public ready() {
+    super.ready();
 
     setTimeout(() => {
       this.setPhotoCount().catch(() => {});
@@ -130,16 +158,6 @@ export class PhotosViewElement extends BaseElement {
       // set state of photo categories
       this._setPhotoCats();
 
-      // listen for changes to chrome.storage
-      chrome.storage.onChanged.addListener((changes) => {
-        for (const key of Object.keys(changes)) {
-          if (key === 'googleImages') {
-            this.setPhotoCount().catch(() => {});
-            this.set('needsPhotoRefresh', true);
-            break;
-          }
-        }
-      });
     }, 0);
   }
 
@@ -210,6 +228,21 @@ export class PhotosViewElement extends BaseElement {
   public onRefreshPhotosClicked() {
     this.loadPhotos().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'refreshPhotos');
+  }
+
+  /**
+   * Event: Item in chrome.storage changed
+   *
+   * @param changes - details on changes
+   */
+  private chromeStorageChanged(changes: any) {
+    for (const key of Object.keys(changes)) {
+      if (key === 'googleImages') {
+        this.setPhotoCount().catch(() => {});
+        this.set('needsPhotoRefresh', true);
+        break;
+      }
+    }
   }
 
   /**
@@ -292,8 +325,8 @@ export class PhotosViewElement extends BaseElement {
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  private _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                           response: (arg0: object) => void) {
+  private onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+                          response: (arg0: object) => void) {
     if (request.message === MyMsg.TYPE.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;

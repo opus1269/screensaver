@@ -88,8 +88,19 @@ export async function send(type: MsgType) {
  *
  * @param listener - function to receive messages
  */
-export function listen(listener: (arg0: MsgType,
-                                  arg1: chrome.runtime.MessageSender,
-                                  arg2: (arg0: object) => void) => boolean) {
+export function addListener(listener: (arg0: MsgType,
+                                       arg1: chrome.runtime.MessageSender,
+                                       arg2: (arg0: object) => void) => boolean) {
   chrome.runtime.onMessage.addListener(listener);
+}
+
+/**
+ * Remove a listener for chrome messages
+ *
+ * @param listener - function to receive messages
+ */
+export function removeListener(listener: (arg0: MsgType,
+                                          arg1: chrome.runtime.MessageSender,
+                                          arg2: (arg0: object) => void) => boolean) {
+  chrome.runtime.onMessage.removeListener(listener);
 }

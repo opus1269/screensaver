@@ -99,7 +99,10 @@ export class SettingSliderElement extends SettingBase {
   @query('#t')
   private template: DomRepeat;
 
-  /** Element is ready */
+  /**
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
+   */
   public ready() {
     super.ready();
 

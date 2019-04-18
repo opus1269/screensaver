@@ -111,7 +111,8 @@ export class GooglePhotosPageElement extends BaseElement {
   private googlePhotosToggle: PaperToggleButtonElement;
 
   /**
-   * Element is ready
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
    */
   public ready() {
     super.ready();

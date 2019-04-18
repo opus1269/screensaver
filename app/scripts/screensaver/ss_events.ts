@@ -158,7 +158,7 @@ function _onMouseClick() {
 }
 
 // listen for chrome messages
-ChromeMsg.listen(_onChromeMessage);
+ChromeMsg.addListener(_onChromeMessage);
 
 // listen for key events
 window.addEventListener('keydown', _onKey, false);

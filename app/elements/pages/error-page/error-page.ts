@@ -18,6 +18,7 @@ import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 
 import {BaseElement} from '../../base-element/base-element.js';
 
@@ -49,7 +50,30 @@ export class ErrorPageElement extends BaseElement {
   }
 
   /**
-   * Element is ready
+   * Called when the element is added to a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public connectedCallback() {
+    super.connectedCallback();
+
+    // listen for changes to chrome.storage
+    chrome.storage.onChanged.addListener(this.chromeStorageChanged.bind(this));
+  }
+
+  /**
+   * Called when the element is removed from a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    // stop listening for changes to chrome.storage
+    chrome.storage.onChanged.removeListener(this.chromeStorageChanged.bind(this));
+  }
+
+  /**
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
    */
   public ready() {
     super.ready();
@@ -63,16 +87,6 @@ export class ErrorPageElement extends BaseElement {
         ChromeGA.error(err.message, 'ErrorPage.ready');
       }
 
-      // listen for changes to lastError
-      chrome.storage.onChanged.addListener((changes) => {
-        for (const key of Object.keys(changes)) {
-          if (key === 'lastError') {
-            const change = changes[key];
-            this.set('lastError', change.newValue);
-            break;
-          }
-        }
-      });
     }, 0);
   }
 
@@ -97,6 +111,21 @@ export class ErrorPageElement extends BaseElement {
   public onRemoveTapped() {
     ChromeLastError.reset().catch(() => {});
     ChromeGA.event(ChromeGA.EVENT.ICON, 'LastError delete');
+  }
+
+  /**
+   * Event: Item in chrome.storage changed
+   *
+   * @param changes - details on changes
+   */
+  private chromeStorageChanged(changes: any) {
+    for (const key of Object.keys(changes)) {
+      if (key === 'lastError') {
+        const change = changes[key];
+        this.set('lastError', change.newValue);
+        break;
+      }
+    }
   }
 
   static get template() {

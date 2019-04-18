@@ -159,13 +159,25 @@ export class AlbumsViewElement extends BaseElement {
   public ironList: IronListElement;
 
   /**
-   * Element is ready
+   * Called when the element is added to a document.
+   * Can be called multiple times during the lifetime of an element.
    */
-  public ready() {
-    super.ready();
+  public connectedCallback() {
+    super.connectedCallback();
 
     // listen for chrome messages
-    ChromeMsg.listen(this.onChromeMessage.bind(this));
+    ChromeMsg.addListener(this.onChromeMessage.bind(this));
+  }
+
+  /**
+   * Called when the element is removed from a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    // stop listening for chrome messages
+    ChromeMsg.removeListener(this.onChromeMessage.bind(this));
   }
 
   /**
