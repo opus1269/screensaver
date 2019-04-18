@@ -74,11 +74,18 @@ export class SettingSliderElement extends SettingBase {
 
   /** The current @link {UnitType} */
   @property({type: Object, notify: true})
-  protected unit: UnitType = {name: 'unknown', min: 1, max: 10, step: 1, mult: 1};
+  protected unit: UnitType = {name: 'unknown', min: 0, max: 1000, step: 1, mult: 1};
 
-  /** Current unit array index */
+  /**
+   * Current unit array index
+   *
+   * @remarks
+   * TODO - needs permanent fix
+   * Set this to 1 instead of 0 because of obscure bug caused by transitionTime
+   * minimum in seconds (index 0) being larger than the others
+   */
   @property({type: Number, notify: true})
-  protected unitIdx = 0;
+  protected unitIdx = 1;
 
   /** Array of {@link UnitType} */
   @property({type: Array})
@@ -152,6 +159,7 @@ export class SettingSliderElement extends SettingBase {
     if (newValue !== undefined) {
       if (oldValue !== undefined) {
         if (newValue.unit !== oldValue.unit) {
+          // set the unit type
           this.list.selected = newValue.unit;
         }
       }
@@ -162,7 +170,16 @@ export class SettingSliderElement extends SettingBase {
    * Set the base value
    */
   private _setBase() {
-    this.set('value.base', this.units[this.unitIdx].mult * this.value.display);
+    const unit = this.units[this.unitIdx];
+    const mult = unit.mult;
+    let displayValue = this.value.display;
+
+    // make sure base value stays in bounds. if a unit change violates the new units value bounds, the
+    // display value is updated in the UI later.
+    displayValue = Math.max(displayValue, unit.min);
+    displayValue = Math.min(displayValue, unit.max);
+
+    this.set('value.base', mult * displayValue);
   }
 
   static get template() {
