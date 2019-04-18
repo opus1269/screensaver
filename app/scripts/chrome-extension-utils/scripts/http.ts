@@ -12,6 +12,7 @@
 import * as ChromeGA from './analytics.js';
 import * as ChromeAuth from './auth.js';
 import * as ChromeLocale from './locales.js';
+import * as ChromeUtils from './utils.js';
 
 import './ex_handler.js';
 
@@ -303,6 +304,8 @@ async function doFetch(url: string, opts: any, conf: Config, attempt: number) {
  * @returns response from server
  */
 async function doIt(url: string, opts: any, conf: Config) {
+  ChromeUtils.checkNetworkConnection();
+
   conf = conf || CONFIG;
   if (conf.isAuth) {
     opts.headers.set(AUTH_HEADER, `${BEARER} unknown`);

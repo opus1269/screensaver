@@ -5,6 +5,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 import './ex_handler.js';
+import * as ChromeLocale from './locales.js';
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
@@ -218,5 +219,21 @@ export function shuffleArray(array: any[]) {
     const temp = array[i];
     array[i] = array[j];
     array[j] = temp;
+  }
+}
+
+/**
+ * Check for internet connection
+ *
+ * @remarks
+ *
+ * This will at least ensure the LAN is connected.
+ * May get false ositives for other errors.
+ *
+ * @throws An error if no internet connection
+ */
+export function checkNetworkConnection() {
+  if (!navigator.onLine) {
+    throw new Error(ChromeLocale.localize('err_no_internet', 'Internet disconnected'));
   }
 }

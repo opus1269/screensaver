@@ -11,38 +11,40 @@
 
 import {Photo, PhotoSource} from './photo_source.js';
 
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Extension's redirect uri
  */
-const _REDIRECT_URI = `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
+const REDIRECT_URI = `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
 
 // noinspection SpellCheckingInspection
 /**
  * Reddit rest API authorization key
  */
-const _KEY = 'bATkDOUNW_tOlg';
+const KEY = 'bATkDOUNW_tOlg';
 
 /**
  * Max photos to return
  */
-const _MAX_PHOTOS = 200;
+const MAX_PHOTOS = 200;
 
 /**
  * Min size of photo to use
  */
-const _MIN_SIZE = 750;
+const MIN_SIZE = 750;
 
 /**
  * Max size of photo to use
  */
-const _MAX_SIZE = 3500;
+const MAX_SIZE = 3500;
 
 /**
  * Expose reddit API
  */
-let _snoocore: (arg0: string) => any;
+let snoocore: (arg0: string) => any;
 
 /**
  * A source of photos from reddit
@@ -92,7 +94,7 @@ export class RedditSource extends PhotoSource {
           url = item.source.url.replace(/&amp;/g, '&');
           width = parseInt(item.source.width, 10);
           height = parseInt(item.source.height, 10);
-          if (Math.max(width, height) > _MAX_SIZE) {
+          if (Math.max(width, height) > MAX_SIZE) {
             // too big. get the largest reduced resolution image
             item = item.resolutions[item.resolutions.length - 1];
             url = item.url.replace(/&amp;/g, '&');
@@ -111,7 +113,7 @@ export class RedditSource extends PhotoSource {
       const asp = width / height;
       const author = data.author;
       if (url && asp && !isNaN(asp) &&
-          (Math.max(width, height) >= _MIN_SIZE) && (Math.max(width, height) <= _MAX_SIZE)) {
+          (Math.max(width, height) >= MIN_SIZE) && (Math.max(width, height) <= MAX_SIZE)) {
         PhotoSource.addPhoto(photos, url, author, asp, data.url);
       }
     }
@@ -141,6 +143,8 @@ export class RedditSource extends PhotoSource {
    * @returns Array of {@link Photo}
    */
   public async fetchPhotos() {
+    ChromeUtils.checkNetworkConnection();
+
     let photos: Photo[] = [];
     const SRC = `${this.getLoadArg()}hot`;
 
@@ -152,19 +156,19 @@ export class RedditSource extends PhotoSource {
 
     try {
 
-      _snoocore = new Snoocore({
+      snoocore = new Snoocore({
         userAgent: 'photo-screen-saver',
         throttle: 0,
         oauth: {
           type: 'implicit',
-          key: _KEY,
-          redirectUri: _REDIRECT_URI,
+          key: KEY,
+          redirectUri: REDIRECT_URI,
           scope: ['read'],
         },
       });
 
       // web request to get first batch of results
-      let slice = await _snoocore(SRC).listing({limit: _MAX_PHOTOS});
+      let slice = await snoocore(SRC).listing({limit: MAX_PHOTOS});
       let slicePhotos;
       if (slice && slice.children && slice.children.length) {
         slicePhotos = RedditSource._processChildren(slice.children);
@@ -175,7 +179,7 @@ export class RedditSource extends PhotoSource {
       }
 
       // continue while there are more photos and we haven't reached the max
-      while (photos.length < _MAX_PHOTOS) {
+      while (photos.length < MAX_PHOTOS) {
         slice = await slice.next();
         if (slice && slice.children && slice.children.length) {
           slicePhotos = RedditSource._processChildren(slice.children);

@@ -839,12 +839,6 @@ export class GoogleSource extends PhotoSource {
   public async fetchPhotos() {
     const METHOD = 'GoogleSource.fetchPhotos';
 
-    // this will at least ensure the LAN is connected
-    // may get false positives for other failures
-    if (!navigator.onLine) {
-      throw new Error(ChromeLocale.localize('err_network'));
-    }
-
     try {
       const key = this.getUseKey();
       if (key === PhotoSources.UseKey.ALBUMS_GOOGLE) {

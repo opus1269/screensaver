@@ -18,6 +18,7 @@ import * as ChromeLocale from '../scripts/chrome-extension-utils/scripts/locales
 import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import {ChromeTime} from '../scripts/chrome-extension-utils/scripts/time.js';
+import * as ChromeUtils from './chrome-extension-utils/scripts/utils.js';
 
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -229,13 +230,7 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
   const METHOD = 'Weather.getLocation';
   const ERR_TITLE = ChromeLocale.localize('err_geolocation_title');
 
-  // this will at least ensure the LAN is connected
-  // may get false positives for other failures
-  if (!navigator.onLine) {
-    const msg = ChromeLocale.localize('err_network');
-    ChromeLog.error(msg, METHOD, ERR_TITLE);
-    throw new Error(msg);
-  }
+  ChromeUtils.checkNetworkConnection();
 
   let position: any;
   try {
