@@ -55,9 +55,9 @@ export default class ScreensaverSlideElement extends
   @property({type: Number})
   protected aniType = 0;
 
-  /** The SSView we contain */
-  @property({type: Number})
-  protected sizingType = 0;
+  /** The iron-image sizing tpe */
+  @property({type: String})
+  protected sizing: string = null;
 
   /** Screen width */
   @property({type: Number})
@@ -318,7 +318,7 @@ export default class ScreensaverSlideElement extends
       src="[[view.url]]"
       width="[[screenWidth]]"
       height="[[screenHeight]]"
-      sizing="[[sizingType]]"
+      sizing="[[sizing]]"
       preload>
   </iron-image>
   <div class="time">[[timeLabel]]</div>

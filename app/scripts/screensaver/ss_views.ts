@@ -7,7 +7,6 @@
 
 /**
  * Collection of {@link SSView} objects
- * @module ss/views
  */
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
@@ -39,67 +38,44 @@ export enum Type {
 }
 
 /** Max number of views */
-const _MAX_VIEWS = 10;
+const MAX_VIEWS = 10;
 
 /** The array of views */
-const _views: SSView[] = [];
+const VIEWS: SSView[] = [];
 
 /** The neon-animated-pages */
-let _pages: NeonAnimatedPagesElement = null;
+let PAGES: NeonAnimatedPagesElement = null;
 
 /**
- * Get the sizing type for the photos
- *
- * @param type
- * @returns sizing type for <iron-image>
- */
-function _getSizingType(type: Type) {
-  let sizingType = 'contain';
-
-  switch (type) {
-    case Type.ZOOM:
-      sizingType = 'cover';
-      break;
-    case Type.LETTERBOX:
-    case Type.FRAME:
-    case Type.FULL:
-      sizingType = null;
-      break;
-    default:
-      break;
-  }
-}
-
-/**
- * Initialize the {@link _views} array
+ * Initialize the {@link VIEWS} array
  *
  * @param pages - The neon-animated-pages
  */
 export function initialize(pages: NeonAnimatedPagesElement) {
-  _pages = pages;
+  PAGES = pages;
 
   let type = ChromeStorage.getInt('photoSizing', Type.LETTERBOX);
   if (type === Type.RANDOM) {
     // pick random sizing
     type = ChromeUtils.getRandomInt(0, 3);
   }
-  const sizingType = _getSizingType(type);
+  const sizing = getSizing(type);
 
-  const len = Math.min(SSPhotos.getCount(), _MAX_VIEWS);
+  const len = Math.min(SSPhotos.getCount(), MAX_VIEWS);
   for (let i = 0; i < len; i++) {
     const photo = SSPhotos.get(i);
     const view = SSViewFactory.create(photo, type);
-    _views.push(view);
+    VIEWS.push(view);
   }
   SSPhotos.setCurrentIndex(len);
 
   // set and force render of animated pages
-  Screensaver.setViews(_views);
+  Screensaver.setViews(VIEWS);
 
   // set the Elements of each view
-  _views.forEach((view: SSView, index: number) => {
-    const slide: ScreensaverSlide = _pages.querySelector('#view' + index);
-    slide.set('sizingType', sizingType);
+  VIEWS.forEach((view: SSView, index: number) => {
+    const slide: ScreensaverSlide = pages.querySelector('#view' + index);
+    slide.set('sizing', sizing);
     view.setElements(slide);
   });
 }
@@ -108,7 +84,7 @@ export function initialize(pages: NeonAnimatedPagesElement) {
  * Get number of views
  */
 export function getCount() {
-  return _views.length;
+  return VIEWS.length;
 }
 
 /**
@@ -118,7 +94,7 @@ export function getCount() {
  * @returns The SSView
  */
 export function get(idx: number) {
-  return _views[idx];
+  return VIEWS[idx];
 }
 
 /**
@@ -127,12 +103,12 @@ export function get(idx: number) {
  * @returns The index of the current view
  */
 export function getSelectedIndex() {
-  if (_pages) {
+  if (PAGES) {
     let selected: number;
-    if (typeof _pages.selected === 'string') {
-      selected = parseInt(_pages.selected, 10);
+    if (typeof PAGES.selected === 'string') {
+      selected = parseInt(PAGES.selected, 10);
     } else {
-      selected = _pages.selected;
+      selected = PAGES.selected;
     }
     return selected;
   }
@@ -145,7 +121,7 @@ export function getSelectedIndex() {
  * @param selected - The index of the views
  */
 export function setSelectedIndex(selected: number) {
-  _pages.selected = selected;
+  PAGES.selected = selected;
 }
 
 /**
@@ -155,7 +131,7 @@ export function setSelectedIndex(selected: number) {
  */
 export function getPhotos() {
   const ret: SSPhoto[] = [];
-  for (const view of _views) {
+  for (const view of VIEWS) {
     ret.push(view.photo);
   }
   return ret;
@@ -164,26 +140,26 @@ export function getPhotos() {
 /**
  * Is the given idx the selected index
  *
- * @param idx - index into {@link _views}
+ * @param idx - index into {@link VIEWS}
  * @returns true if selected
  */
 export function isSelectedIndex(idx: number) {
   let ret = false;
-  if (_pages && (idx === _pages.selected)) {
+  if (PAGES && (idx === PAGES.selected)) {
     ret = true;
   }
   return ret;
 }
 
 /**
- * Is the given {@link SSPhoto} in one of the {@link _views}
+ * Is the given {@link SSPhoto} in one of the {@link VIEWS}
  *
  * @param photo - The photo to check
- * @returns true if in {@link _views}
+ * @returns true if in {@link VIEWS}
  */
 export function hasPhoto(photo: SSPhoto) {
   let ret = false;
-  for (const view of _views) {
+  for (const view of VIEWS) {
     if (view.photo.getId() === photo.getId()) {
       ret = true;
       break;
@@ -199,8 +175,8 @@ export function hasPhoto(photo: SSPhoto) {
  */
 export function hasUsable() {
   let ret = false;
-  for (let i = 0; i < _views.length; i++) {
-    const view = _views[i];
+  for (let i = 0; i < VIEWS.length; i++) {
+    const view = VIEWS[i];
     if (SSRunner.isCurrentPair(i)) {
       // don't check current animation pair
       continue;
@@ -217,12 +193,12 @@ export function hasUsable() {
  * Replace the photo in all the views but the current animation pair
  */
 export function replaceAll() {
-  for (let i = 0; i < _views.length; i++) {
+  for (let i = 0; i < VIEWS.length; i++) {
     if (SSRunner.isCurrentPair(i)) {
       // don't replace current animation pair
       continue;
     }
-    const view = _views[i];
+    const view = VIEWS[i];
     const photo = SSPhotos.getNextUsable(getPhotos());
     if (photo) {
       view.setPhoto(photo);
@@ -239,7 +215,7 @@ export function replaceAll() {
  * @param photos - Photos whose url's have changed
  */
 export function updateAllUrls(photos: Photo[]) {
-  for (const view of _views) {
+  for (const view of VIEWS) {
     const photo = view.photo;
     const type = photo.getType();
     if (type === 'Google User') {
@@ -256,8 +232,8 @@ export function updateAllUrls(photos: Photo[]) {
 /**
  * Try to find a photo that has finished loading
  *
- * @param idx - index into {@link _views}
- * @returns index into {@link _views}, -1 if none are loaded
+ * @param idx - index into {@link VIEWS}
+ * @returns index into {@link VIEWS}, -1 if none are loaded
  */
 export function findLoadedPhoto(idx: number) {
   if (!hasUsable()) {
@@ -265,14 +241,14 @@ export function findLoadedPhoto(idx: number) {
     replaceAll();
   }
 
-  if ((_views[idx] !== undefined) && _views[idx].isLoaded()) {
+  if ((VIEWS[idx] !== undefined) && VIEWS[idx].isLoaded()) {
     return idx;
   }
 
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
-  for (let i = 0; i < _views.length; i++) {
-    const index = (i + idx) % _views.length;
-    const view = _views[index];
+  for (let i = 0; i < VIEWS.length; i++) {
+    const index = (i + idx) % VIEWS.length;
+    const view = VIEWS[index];
     if (SSRunner.isCurrentPair(index)) {
       // don't use current animation pair
       continue;
@@ -290,3 +266,28 @@ export function findLoadedPhoto(idx: number) {
   }
   return -1;
 }
+
+/**
+ * Get the sizing for the photos
+ *
+ * @param type
+ * @returns sizing type for <iron-image>
+ */
+function getSizing(type: Type) {
+  let sizing = 'contain';
+
+  switch (type) {
+    case Type.ZOOM:
+      sizing = 'cover';
+      break;
+    case Type.LETTERBOX:
+    case Type.FRAME:
+    case Type.FULL:
+      sizing = null;
+      break;
+    default:
+      break;
+  }
+}
+
+
