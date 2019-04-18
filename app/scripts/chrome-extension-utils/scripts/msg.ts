@@ -27,7 +27,7 @@ declare var ChromePromise: any;
  * @property name
  * @property count
  */
-export interface MsgType {
+export interface IMsgType {
   message: string;
   error?: string;
   key?: string;
@@ -48,18 +48,18 @@ export interface MsgType {
 export const TYPE = {
   HIGHLIGHT: {
     message: 'highlightTab',
-  } as MsgType,
+  } as IMsgType,
   RESTORE_DEFAULTS: {
     message: 'restoreDefaults',
-  } as MsgType,
+  } as IMsgType,
   STORAGE_EXCEEDED: {
     message: 'storageExceeded',
-  } as MsgType,
+  } as IMsgType,
   STORE: {
     message: 'store',
     key: '',
     value: '',
-  } as MsgType,
+  } as IMsgType,
 };
 
 /**
@@ -69,7 +69,7 @@ export const TYPE = {
  * @throws An error if we failed to connect to the extension
  * @returns Something that is json
  */
-export async function send(type: MsgType) {
+export async function send(type: IMsgType) {
   const chromep = new ChromePromise();
   try {
     const response = await chromep.runtime.sendMessage(type);
@@ -88,7 +88,7 @@ export async function send(type: MsgType) {
  *
  * @param listener - function to receive messages
  */
-export function addListener(listener: (arg0: MsgType,
+export function addListener(listener: (arg0: IMsgType,
                                        arg1: chrome.runtime.MessageSender,
                                        arg2: (arg0: object) => void) => boolean) {
   chrome.runtime.onMessage.addListener(listener);
@@ -99,7 +99,7 @@ export function addListener(listener: (arg0: MsgType,
  *
  * @param listener - function to receive messages
  */
-export function removeListener(listener: (arg0: MsgType,
+export function removeListener(listener: (arg0: IMsgType,
                                           arg1: chrome.runtime.MessageSender,
                                           arg2: (arg0: object) => void) => boolean) {
   chrome.runtime.onMessage.removeListener(listener);

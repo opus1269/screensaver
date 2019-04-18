@@ -22,7 +22,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property loc - descriptive location
  * @property point - geo location 'lat lon'
  */
-export interface Location {
+export interface ILocation {
   loc: string;
   point: string;
 }
@@ -33,15 +33,15 @@ export interface Location {
  * @property entries - Array of locations
  * @property maxSize - max entries to cache
  */
-export interface Cache {
-  entries: Location[];
+export interface ICache {
+  entries: ILocation[];
   maxSize: number;
 }
 
 /**
  * Location cache
  */
-const _LOC_CACHE: Cache = {
+const _LOC_CACHE: ICache = {
   entries: [],
   maxSize: 100,
 };

@@ -8,10 +8,10 @@
 /**
  * Chrome messages specific to this app
  *
- * {@link MsgType}
+ * {@link IMsgType}
  */
 
-import {MsgType} from './chrome-extension-utils/scripts/msg.js';
+import {IMsgType} from './chrome-extension-utils/scripts/msg.js';
 
 import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -33,39 +33,39 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 export const TYPE = {
   SS_SHOW: {
     message: 'showScreensaver',
-  } as MsgType,
+  } as IMsgType,
   SS_CLOSE: {
     message: 'closeScreensaver',
-  } as MsgType,
+  } as IMsgType,
   SS_IS_SHOWING: {
     message: 'isScreensaverShowing',
-  } as MsgType,
+  } as IMsgType,
   PHOTO_SOURCE_FAILED: {
     message: 'photoSourceFailed',
     key: '',
     error: '',
-  } as MsgType,
+  } as IMsgType,
   LOAD_FILTERED_PHOTOS: {
     message: 'loadFilteredPhotos',
-  } as MsgType,
+  } as IMsgType,
   FILTERED_PHOTOS_COUNT: {
     message: 'filteredPhotosCount',
     count: 0,
-  } as MsgType,
+  } as IMsgType,
   LOAD_ALBUMS: {
     message: 'loadAlbums',
-  } as MsgType,
+  } as IMsgType,
   LOAD_ALBUM: {
     message: 'loadAlbum',
-  } as MsgType,
+  } as IMsgType,
   ALBUM_COUNT: {
     message: 'albumCount',
     count: 0,
-  } as MsgType,
+  } as IMsgType,
   UPDATE_WEATHER_ALARM: {
     message: 'updateWeatherAlarm',
-  } as MsgType,
+  } as IMsgType,
   UPDATE_WEATHER: {
     message: 'updateWeather',
-  } as MsgType,
+  } as IMsgType,
 };

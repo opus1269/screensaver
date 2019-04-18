@@ -9,7 +9,7 @@
  * Manage Google Analytics tracking
  */
 
-import {EventType} from '../scripts/chrome-extension-utils/scripts/analytics';
+import {IEventType} from '../scripts/chrome-extension-utils/scripts/analytics';
 
 import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
@@ -40,67 +40,67 @@ export const EVENT = {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'loadAlbumList',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   SELECT_ALBUM: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'selectAlbum',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   LOAD_ALBUM: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'loadAlbum',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   LOAD_PHOTO: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'loadPhoto',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   LOAD_PHOTOS: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'loadPhotos',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   LOAD_FILTERED_PHOTOS: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'loadFilteredPhotos',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   FETCH_ALBUMS: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'fetchAlbums',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   FETCH_PHOTOS: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'fetchPhotos',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   PHOTOS_LIMITED: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'limitedAlbumPhotos',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   ALBUMS_LIMITED: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'limitedAlbums',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   PHOTO_SELECTIONS_LIMITED: {
     eventCategory: 'googlePhotosAPI',
     eventAction: 'limitedTotalPhotos',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   VIEW_PHOTO: {
     eventCategory: 'ui',
     eventAction: 'viewPhoto',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   WEATHER_UPDATED: {
     eventCategory: 'weather',
     eventAction: 'updatedWeather',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
 };
 
 /**

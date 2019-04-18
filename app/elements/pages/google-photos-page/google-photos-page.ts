@@ -225,7 +225,7 @@ export class GooglePhotosPageElement extends BaseElement {
    * @param useGoogle - true if using Google Photos
    */
   @observe('isAlbumMode', 'useGoogle')
-  private uiStateChanged(isAlbumMode: boolean, useGoogle: boolean) {
+  protected uiStateChanged(isAlbumMode: boolean, useGoogle: boolean) {
     if ((isAlbumMode === undefined) || (useGoogle === undefined)) {
       return;
     }
@@ -238,7 +238,7 @@ export class GooglePhotosPageElement extends BaseElement {
   /**
    * Fetch Google Photos for the array of user's photos
    */
-  private loadPhotos() {
+  protected loadPhotos() {
     if (!this.isAlbumMode && this.useGoogle) {
       return this.photosView.loadPhotos().catch(() => {});
     }
@@ -247,7 +247,7 @@ export class GooglePhotosPageElement extends BaseElement {
   /**
    * Toggle between album and photo mode
    */
-  private changeMode() {
+  protected changeMode() {
     this.set('isAlbumMode', !this.isAlbumMode);
     if (this.isAlbumMode) {
       ChromeStorage.asyncSet('googleImages', []).catch(() => {});

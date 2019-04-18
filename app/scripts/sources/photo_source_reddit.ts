@@ -9,7 +9,7 @@
  * A source of photos from reddit
  */
 
-import {Photo, PhotoSource} from './photo_source.js';
+import {IPhoto, PhotoSource} from './photo_source.js';
 
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
@@ -58,7 +58,7 @@ export class RedditSource extends PhotoSource {
    * This is the old way reddit did it
    *
    * @param title - submission title
-   * @returns Photo size
+   * @returns IPhoto size
    */
   private static _getSize(title: string) {
     const ret = {width: -1, height: -1};
@@ -75,10 +75,10 @@ export class RedditSource extends PhotoSource {
    * Build the list of photos for one page of items
    *
    * @param children - Array of objects from reddit
-   * @returns Array of {@link Photo}
+   * @returns Array of {@link IPhoto}
    */
   private static _processChildren(children: any[]) {
-    const photos: Photo[] = [];
+    const photos: IPhoto[] = [];
     let url: string;
     let width = 1;
     let height = 1;
@@ -140,12 +140,12 @@ export class RedditSource extends PhotoSource {
    * Fetch the photos for this source
    *
    * @throws An error if fetch failed
-   * @returns Array of {@link Photo}
+   * @returns Array of {@link IPhoto}
    */
   public async fetchPhotos() {
     ChromeUtils.checkNetworkConnection();
 
-    let photos: Photo[] = [];
+    let photos: IPhoto[] = [];
     const SRC = `${this.getLoadArg()}hot`;
 
     // @ts-ignore

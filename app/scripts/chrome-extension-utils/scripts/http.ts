@@ -27,7 +27,7 @@ import './ex_handler.js';
  * @property maxRetries - max retries
  * @property body - body of request
  */
-export interface Config {
+export interface IConfig {
   isAuth: boolean;
   retryToken: boolean;
   interactive: boolean;
@@ -45,7 +45,7 @@ export interface Config {
  * @property status - HTTP response code
  * @property statusText - HTTP response message
  */
-export interface Response {
+export interface IResponse {
   ok: boolean;
   json: () => any;
   status: number;
@@ -75,7 +75,7 @@ const DELAY = 1000;
 /**
  * Configuration object
  */
-export const CONFIG: Config = {
+export const CONFIG: IConfig = {
   isAuth: false,
   retryToken: false,
   interactive: false,
@@ -126,8 +126,8 @@ export async function doPost(url: string, conf = CONFIG) {
  * @throws An error if fetch ultimately fails
  * @returns response from server
  */
-async function processResponse(response: Response, url: string, opts: chrome.extension.FetchProperties,
-                               conf: Config, attempt: number) {
+async function processResponse(response: IResponse, url: string, opts: chrome.extension.FetchProperties,
+                               conf: IConfig, attempt: number) {
   if (response.ok) {
     // request succeeded - woo hoo!
     return Promise.resolve(response.json());
@@ -142,20 +142,20 @@ async function processResponse(response: Response, url: string, opts: chrome.ext
 
   if (conf.backoff && (status >= 500) && (status < 600)) {
     // temporary server error, maybe. Retry with backoff
-    const newResponse: Response = await retry(url, opts, conf, attempt);
+    const newResponse: IResponse = await retry(url, opts, conf, attempt);
     return Promise.resolve(newResponse);
   }
 
   if (conf.isAuth && conf.token && conf.retryToken && (status === 401)) {
     // could be expired token. Remove cached one and try again
-    const newResponse: Response = await retryToken(url, opts, conf, attempt);
+    const newResponse: IResponse = await retryToken(url, opts, conf, attempt);
     return Promise.resolve(newResponse);
   }
 
   if (conf.isAuth && conf.interactive && conf.token && conf.retryToken && (status === 403)) {
     // user may have revoked access to extension at some point
     // If interactive, retry so they can authorize again
-    const newResponse: Response = await retryToken(url, opts, conf, attempt);
+    const newResponse: IResponse = await retryToken(url, opts, conf, attempt);
     return Promise.resolve(newResponse);
   }
 
@@ -169,7 +169,7 @@ async function processResponse(response: Response, url: string, opts: chrome.ext
  * @param response - server response
  * @returns Error
  */
-function getError(response: Response) {
+function getError(response: IResponse) {
   let msg = 'Unknown error.';
   if (response && response.status && (typeof (response.statusText) !== 'undefined')) {
     const statusMsg = ChromeLocale.localize('err_status', 'Status');
@@ -221,7 +221,7 @@ async function getAuthToken(isAuth: boolean, interactive: boolean) {
  * @throws An error if fetch failed
  * @returns response from server
  */
-async function retry(url: string, opts: any, conf: Config, attempt: number) {
+async function retry(url: string, opts: any, conf: IConfig, attempt: number) {
   attempt++;
   const delay = (Math.pow(2, attempt) - 1) * DELAY;
 
@@ -246,7 +246,7 @@ async function retry(url: string, opts: any, conf: Config, attempt: number) {
  * @throws An error if fetch failed
  * @returns response from server
  */
-async function retryToken(url: string, opts: any, conf: Config, attempt: number) {
+async function retryToken(url: string, opts: any, conf: IConfig, attempt: number) {
   ChromeGA.event(ChromeGA.EVENT.REFRESHED_AUTH_TOKEN);
 
   await ChromeAuth.removeCachedToken(conf.interactive, conf.token);
@@ -267,7 +267,7 @@ async function retryToken(url: string, opts: any, conf: Config, attempt: number)
  * @throws An error if fetch failed
  * @returns response from server
  */
-async function doFetch(url: string, opts: any, conf: Config, attempt: number) {
+async function doFetch(url: string, opts: any, conf: IConfig, attempt: number) {
   try {
     const authToken = await getAuthToken(conf.isAuth, conf.interactive);
     if (conf.isAuth) {
@@ -303,7 +303,7 @@ async function doFetch(url: string, opts: any, conf: Config, attempt: number) {
  * @throws An error if request failed
  * @returns response from server
  */
-async function doIt(url: string, opts: any, conf: Config) {
+async function doIt(url: string, opts: any, conf: IConfig) {
   ChromeUtils.checkNetworkConnection();
 
   conf = conf || CONFIG;

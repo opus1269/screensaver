@@ -9,7 +9,7 @@
  * A source of photos from Chromecast
  */
 
-import {Photo, PhotoSource} from './photo_source.js';
+import {IPhoto, PhotoSource} from './photo_source.js';
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
 
@@ -40,11 +40,11 @@ export class CCSource extends PhotoSource {
    * Fetch the photos for this source
    *
    * @throws An error if fetch failed
-   * @returns Array of {@link Photo}
+   * @returns Array of {@link IPhoto}
    */
   public async fetchPhotos() {
     const url = '/assets/chromecast.json';
-    let photos: Photo[] = await ChromeHttp.doGet(url);
+    let photos: IPhoto[] = await ChromeHttp.doGet(url);
     photos = photos || [];
     for (const photo of photos) {
       photo.asp = '1.78';

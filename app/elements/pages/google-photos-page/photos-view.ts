@@ -235,7 +235,7 @@ export class PhotosViewElement extends BaseElement {
    *
    * @param changes - details on changes
    */
-  private chromeStorageChanged(changes: any) {
+  protected chromeStorageChanged(changes: any) {
     for (const key of Object.keys(changes)) {
       if (key === 'googleImages') {
         this.setPhotoCount().catch(() => {});
@@ -249,7 +249,7 @@ export class PhotosViewElement extends BaseElement {
    * Wait for load changed
    */
   @observe('waitForLoad', 'waiterStatus')
-  private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
+  protected waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
     if (!waitForLoad && waiterStatus) {
       this.set('waiterStatus', '');
     }
@@ -258,7 +258,7 @@ export class PhotosViewElement extends BaseElement {
   /**
    * Simple Observer: noFilter changed
    */
-  private _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
+  protected _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if ((newValue !== undefined) && (oldValue !== undefined)) {
       if (newValue !== oldValue) {
         this.set('needsPhotoRefresh', true);
@@ -269,7 +269,7 @@ export class PhotosViewElement extends BaseElement {
   /**
    * Set the states of the photo-cat elements
    */
-  private _setPhotoCats() {
+  protected _setPhotoCats() {
     const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PhotoCatElement>;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
@@ -287,7 +287,7 @@ export class PhotosViewElement extends BaseElement {
   /**
    * Event: Selection of photo-cat changed
    */
-  private _onPhotoCatChanged(ev: CustomEvent) {
+  protected _onPhotoCatChanged(ev: CustomEvent) {
     const cat = (ev.target as Element).id;
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
@@ -325,8 +325,8 @@ export class PhotosViewElement extends BaseElement {
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  private onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                          response: (arg0: object) => void) {
+  protected onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
+                            response: (arg0: object) => void) {
     if (request.message === MyMsg.TYPE.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;

@@ -28,7 +28,7 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property lat latitude
  * @property lon - longitude
  */
-export interface WeatherLocation {
+export interface IWeatherLocation {
   lat: number;
   lon: number;
 }
@@ -44,7 +44,7 @@ export interface WeatherLocation {
  * @property city - city name
  * @property description - weather description
  */
-export interface CurrentWeather {
+export interface ICurrentWeather {
   time: number;
   id: number;
   dayNight: string;
@@ -58,7 +58,7 @@ export interface CurrentWeather {
 /**
  * Default weather
  */
-export const DEF_WEATHER: CurrentWeather = {
+export const DEF_WEATHER: ICurrentWeather = {
   time: 0,
   id: 0,
   dayNight: '',
@@ -85,7 +85,7 @@ const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 /**
  * Default geolocation options
  */
-const _DEF_LOC: WeatherLocation = {
+const _DEF_LOC: IWeatherLocation = {
   lat: 0.0,
   lon: 0.0,
 };

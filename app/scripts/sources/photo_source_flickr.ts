@@ -14,7 +14,7 @@ import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/loca
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
-import {Photo, PhotoSource} from './photo_source.js';
+import {IPhoto, PhotoSource} from './photo_source.js';
 
 /**
  * Flickr rest API
@@ -41,14 +41,14 @@ export class FlickrSource extends PhotoSource {
    *
    * @param response - server response
    * @throws An error if we failed to process photos
-   * @returns Array of {@link Photo}
+   * @returns Array of {@link IPhoto}
    */
   private static _processPhotos(response: any) {
     if (!response.photos || !response.photos.photo) {
       throw new Error(ChromeLocale.localize('err_photo_source_title'));
     }
 
-    const photos: Photo[] = [];
+    const photos: IPhoto[] = [];
 
     for (const photo of response.photos.photo) {
       let url = null;
@@ -99,7 +99,7 @@ export class FlickrSource extends PhotoSource {
    * Fetch the photos for this source
    *
    * @throws An error if fetch failed
-   * @returns Array of {@link Photo}
+   * @returns Array of {@link IPhoto}
    */
   public async fetchPhotos() {
     let url;

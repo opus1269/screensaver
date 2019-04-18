@@ -9,7 +9,7 @@
  * Collection of {@link SSPhoto} objects
  */
 
-import {Photo, PhotoSource} from '../sources/photo_source';
+import {IPhoto, PhotoSource} from '../sources/photo_source';
 
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
@@ -132,13 +132,13 @@ export function getNextGooglePhotos(num: number, idx: number) {
  *
  * @param photos - The photos to update
  */
-export function updateGooglePhotoUrls(photos: Photo[]) {
+export function updateGooglePhotoUrls(photos: IPhoto[]) {
   for (let i = _photos.length - 1; i >= 0; i--) {
     if (_photos[i].getType() !== 'Google User') {
       continue;
     }
 
-    const index = photos.findIndex((e: Photo) => {
+    const index = photos.findIndex((e: IPhoto) => {
       return e.ex.id === _photos[i].getEx().id;
     });
     if (index >= 0) {

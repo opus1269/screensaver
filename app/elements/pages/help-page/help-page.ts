@@ -43,7 +43,7 @@ export class HelpPageElement extends BaseElement {
    * @param subject - email subject
    * @returns url
    */
-  private computeMailToUrl(subject: string) {
+  protected computeMailToUrl(subject: string) {
     return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
   }
 

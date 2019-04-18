@@ -158,7 +158,7 @@ async function onStorageChanged(ev: StorageEvent) {
  * @param response - function to call once after processing
  * @returns true if asynchronous
  */
-function onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                          response: (arg0: object) => void) {
   let ret = false;
   if (request.message === ChromeMsg.TYPE.RESTORE_DEFAULTS.message) {

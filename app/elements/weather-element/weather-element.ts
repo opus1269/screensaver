@@ -33,8 +33,8 @@ export class WeatherElement extends BaseElement {
   /**
    * Simple Observer: Current weather changed
    */
-  protected _weatherChanged(newValue: Weather.CurrentWeather | undefined,
-                            oldValue: Weather.CurrentWeather | undefined) {
+  protected _weatherChanged(newValue: Weather.ICurrentWeather | undefined,
+                            oldValue: Weather.ICurrentWeather | undefined) {
     const PREFIX = 'wi-owm-';
     let oldClass = null;
 

@@ -26,7 +26,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property x - screen horizontal position
  * @property y - screen vertical position
  */
-interface MousePosition {
+interface IMousePosition {
   x: number | null;
   y: number | null;
 }
@@ -34,7 +34,7 @@ interface MousePosition {
 /**
  * Starting mouse position
  */
-const _MOUSE_START: MousePosition = {x: null, y: null};
+const _MOUSE_START: IMousePosition = {x: null, y: null};
 
 /**
  * Close ourselves
@@ -81,7 +81,7 @@ function _onKeyCommand(cmd: string) {
  * @param response - function to call once after processing
  * @returns true if asynchronous
  */
-function _onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
+function _onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                           response: (arg0: object) => void) {
   if (request.message === MyMsg.TYPE.SS_CLOSE.message) {
     _close();

@@ -37,7 +37,7 @@ import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/an
  * @property step - value increment
  * @property mult - conversion value from the base
  */
-interface UnitType {
+interface IUnitType {
   name: string;
   min: number;
   max: number;
@@ -52,7 +52,7 @@ interface UnitType {
  * @property display - display value
  * @property unit - unit type index
  */
-export interface UnitValue {
+export interface IUnitValue {
   base: number;
   display: number;
   unit: number;
@@ -66,15 +66,15 @@ export class SettingSliderElement extends SettingBase {
 
   /** Unit value */
   @property({type: Object, notify: true, observer: '_valueChanged'})
-  protected value: UnitValue = {base: 10, display: 10, unit: 0};
+  protected value: IUnitValue = {base: 10, display: 10, unit: 0};
 
   /** Descriptive label */
   @property({type: String})
   protected label = '';
 
-  /** The current @link {UnitType} */
+  /** The current @link {IUnitType} */
   @property({type: Object, notify: true})
-  protected unit: UnitType = {name: 'unknown', min: 0, max: 1000, step: 1, mult: 1};
+  protected unit: IUnitType = {name: 'unknown', min: 0, max: 1000, step: 1, mult: 1};
 
   /**
    * Current unit array index
@@ -87,17 +87,17 @@ export class SettingSliderElement extends SettingBase {
   @property({type: Number, notify: true})
   protected unitIdx = 1;
 
-  /** Array of {@link UnitType} */
+  /** Array of {@link IUnitType} */
   @property({type: Array})
-  protected units: UnitType[] = [];
+  protected units: IUnitType[] = [];
 
   /** paper-listbox of units */
   @query('#list')
-  private list: PaperListboxElement;
+  protected list: PaperListboxElement;
 
   /** paper-listbox template */
   @query('#t')
-  private template: DomRepeat;
+  protected template: DomRepeat;
 
   /**
    * Called during Polymer-specific element initialization.
@@ -120,7 +120,7 @@ export class SettingSliderElement extends SettingBase {
   public onUnitMenuSelected(ev: Event) {
     const model = this.template.modelForElement(ev.target as PaperListboxElement);
     if (model) {
-      const unit: UnitValue = model.get('unit');
+      const unit: IUnitValue = model.get('unit');
       const label = `${this.name}: ${JSON.stringify(unit)}`;
       ChromeGA.event(ChromeGA.EVENT.SLIDER_UNITS, label);
     }
@@ -140,7 +140,7 @@ export class SettingSliderElement extends SettingBase {
    * Unit changed
    */
   @observe('unitIdx')
-  private unitIdxChanged(newValue: number | undefined) {
+  protected unitIdxChanged(newValue: number | undefined) {
     if (newValue !== undefined) {
       this.set('value.unit', newValue);
       this._setBase();
@@ -153,7 +153,7 @@ export class SettingSliderElement extends SettingBase {
   /**
    * Simple Observer: Value changed
    */
-  private _valueChanged(newValue: UnitValue | undefined, oldValue: UnitValue | undefined) {
+  protected _valueChanged(newValue: IUnitValue | undefined, oldValue: IUnitValue | undefined) {
     if (newValue !== undefined) {
       if (oldValue !== undefined) {
         if (newValue.unit !== oldValue.unit) {
@@ -167,7 +167,7 @@ export class SettingSliderElement extends SettingBase {
   /**
    * Set the base value
    */
-  private _setBase() {
+  protected _setBase() {
     const unit = this.units[this.unitIdx];
     const mult = unit.mult;
     let displayValue = this.value.display;

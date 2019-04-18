@@ -81,7 +81,7 @@ declare var ChromePromise: any;
  * @property disabled - Menu disabled state
  * @property divider - Should we display a divider along with the Menu item
  */
-interface Page {
+interface IPage {
   label: string;
   route: string;
   icon: string;
@@ -110,7 +110,7 @@ export class AppMainElement extends BaseElement {
 
   /** The app's pages */
   @property({type: Array})
-  public readonly pages: Page[] = [
+  public readonly pages: IPage[] = [
     {
       label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
       icon: 'myicons:settings', fn: null, url: null,
@@ -163,7 +163,7 @@ export class AppMainElement extends BaseElement {
     },
   ];
 
-  /** Current {@link Page} */
+  /** Current {@link IPage} */
   @property({type: String, notify: true})
   public route = 'page-settings';
 
@@ -210,7 +210,7 @@ export class AppMainElement extends BaseElement {
   /** Function to call on confirm dialog confirm button click */
   protected confirmFn: () => void = null;
 
-  /** Google Photos Page */
+  /** Google Photos IPage */
   protected gPhotosPage: GooglePhotosPageElement = null;
 
   /**
@@ -352,7 +352,7 @@ export class AppMainElement extends BaseElement {
    *
    * @param ev
    */
-  private localStorageChanged(ev: StorageEvent) {
+  protected localStorageChanged(ev: StorageEvent) {
     if (ev.key === 'permPicasa') {
       this.setGooglePhotosMenuState();
     }
@@ -363,7 +363,7 @@ export class AppMainElement extends BaseElement {
    *
    * @param changes - details on changes
    */
-  private chromeStorageChanged(changes: any) {
+  protected chromeStorageChanged(changes: any) {
     for (const key of Object.keys(changes)) {
       if (key === 'lastError') {
         this.setErrorMenuState().catch(() => {});
@@ -377,7 +377,7 @@ export class AppMainElement extends BaseElement {
    *
    * @param ev - ClickEvent
    */
-  private onNavMenuItemTapped(ev: CustomEvent) {
+  protected onNavMenuItemTapped(ev: CustomEvent) {
     // Close drawer after menu item is selected if it is in narrow layout
     const appDrawerLayout = this.appDrawerLayout;
     const appDrawer = this.appDrawer;
@@ -411,7 +411,7 @@ export class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private showGooglePhotosPage(index: number, prevRoute: string) {
+  protected showGooglePhotosPage(index: number, prevRoute: string) {
     const signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
@@ -437,7 +437,7 @@ export class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private showErrorPage(index: number, prevRoute: string) {
+  protected showErrorPage(index: number, prevRoute: string) {
     if (!this.pages[index].ready) {
       // insert the page the first time
       this.pages[index].ready = true;
@@ -453,7 +453,7 @@ export class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private showHelpPage(index: number, prevRoute: string) {
+  protected showHelpPage(index: number, prevRoute: string) {
     if (!this.pages[index].ready) {
       // insert the page the first time
       this.pages[index].ready = true;
@@ -469,7 +469,7 @@ export class AppMainElement extends BaseElement {
    * @param index into the {@link #pages} array
    * @param prevRoute - last page selected
    */
-  private showScreensaverPreview(index: number, prevRoute: string) {
+  protected showScreensaverPreview(index: number, prevRoute: string) {
     // reselect previous page - need to delay so tap event is done
     setTimeout(() => this.mainMenu.select(prevRoute), 500);
     ChromeMsg.send(MyMsg.TYPE.SS_SHOW).catch(() => {});
@@ -478,14 +478,14 @@ export class AppMainElement extends BaseElement {
   /**
    * Show the permissions dialog
    */
-  private showPermissionsDialog() {
+  protected showPermissionsDialog() {
     this.permissionsDialog.open();
   }
 
   /**
    * Set enabled state of Google Photos menu item
    */
-  private setGooglePhotosMenuState() {
+  protected setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
     const idx = this.getPageIdx('page-google-photos');
     const el = this.shadowRoot.querySelector(`#${this.pages[idx].route}`);
@@ -501,7 +501,7 @@ export class AppMainElement extends BaseElement {
   /**
    * Set enabled state of Error Viewer menu item
    */
-  private async setErrorMenuState() {
+  protected async setErrorMenuState() {
     // disable error-page if no lastError
     try {
       const lastError = await ChromeLastError.load();
@@ -531,9 +531,9 @@ export class AppMainElement extends BaseElement {
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  private onChromeMessage(request: ChromeMsg.MsgType,
-                          sender: chrome.runtime.MessageSender,
-                          response: (arg0: object) => void) {
+  protected onChromeMessage(request: ChromeMsg.IMsgType,
+                            sender: chrome.runtime.MessageSender,
+                            response: (arg0: object) => void) {
     if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       const chromep = new ChromePromise();
@@ -566,7 +566,7 @@ export class AppMainElement extends BaseElement {
    * @param name - route to get index for
    * @returns index into array
    */
-  private getPageIdx(name: string) {
+  protected getPageIdx(name: string) {
     return this.pages.map((e) => {
       return e.route;
     }).indexOf(name);

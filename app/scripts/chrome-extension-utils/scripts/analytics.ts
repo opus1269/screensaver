@@ -21,7 +21,7 @@ declare var ga: any;
  * @property eventAction - action
  * @property eventLabel - label
  */
-export interface EventType {
+export interface IEventType {
   eventCategory: string;
   eventAction: string;
   eventLabel: string;
@@ -50,77 +50,77 @@ export const EVENT = {
     eventCategory: 'extension',
     eventAction: 'installed',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   UPDATED: {
     eventCategory: 'extension',
     eventAction: 'updated',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   REFRESHED_AUTH_TOKEN: {
     eventCategory: 'user',
     eventAction: 'refreshedAuthToken',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   ALARM: {
     eventCategory: 'alarm',
     eventAction: 'triggered',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   MENU: {
     eventCategory: 'ui',
     eventAction: 'menuSelect',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   TOGGLE: {
     eventCategory: 'ui',
     eventAction: 'toggle',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   LINK: {
     eventCategory: 'ui',
     eventAction: 'linkSelect',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   TEXT: {
     eventCategory: 'ui',
     eventAction: 'textChanged',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   SLIDER_VALUE: {
     eventCategory: 'ui',
     eventAction: 'sliderValueChanged',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   SLIDER_UNITS: {
     eventCategory: 'ui',
     eventAction: 'sliderUnitsChanged',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   BUTTON: {
     eventCategory: 'ui',
     eventAction: 'buttonClicked',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   RADIO_BUTTON: {
     eventCategory: 'ui',
     eventAction: 'radioButtonClicked',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   ICON: {
     eventCategory: 'ui',
     eventAction: 'toolbarIconClicked',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   CHECK: {
     eventCategory: 'ui',
     eventAction: 'checkBoxClicked',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
   KEY_COMMAND: {
     eventCategory: 'ui',
     eventAction: 'keyCommand',
     eventLabel: '',
-  } as EventType,
+  } as IEventType,
 };
 
 /**
@@ -183,7 +183,7 @@ export function page(url: string) {
  * @param label - override label
  * @param action - override action
  */
-export function event(theEvent: EventType, label: string = null, action: string = null) {
+export function event(theEvent: IEventType, label: string = null, action: string = null) {
   if (theEvent) {
     const ev = ChromeJSON.shallowCopy(theEvent);
     ev.hitType = 'event';

@@ -9,7 +9,7 @@
  * Module for a screensaver photo
  */
 
-import {Photo} from '../sources/photo_source';
+import {IPhoto} from '../sources/photo_source';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 
@@ -83,7 +83,7 @@ export class SSPhoto {
    * @param source - persisted source photo
    * @param sourceType - the PhotoSource type this photo is from
    */
-  constructor(id: number, source: Photo, sourceType: string) {
+  constructor(id: number, source: IPhoto, sourceType: string) {
     this._id = id;
     this._url = source.url;
     this._photographer = source.author ? source.author : '';

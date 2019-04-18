@@ -11,7 +11,7 @@
 
 import {ScreensaverSlideElement} from '../../elements/screensaver-slide/screensaver-slide';
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
-import {Photo} from '../sources/photo_source';
+import {IPhoto} from '../sources/photo_source';
 import {SSPhoto} from './ss_photo';
 import {SSView} from './views/ss_view';
 
@@ -215,7 +215,7 @@ export function replaceAll() {
  *
  * @param photos - Photos whose url's have changed
  */
-export function updateAllUrls(photos: Photo[]) {
+export function updateAllUrls(photos: IPhoto[]) {
   for (const view of VIEWS) {
     const photo = view.photo;
     const type = photo.getType();

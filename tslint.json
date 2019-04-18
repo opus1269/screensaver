@@ -15,7 +15,7 @@
     "no-redundant-jsdoc": false,
     "no-trailing-whitespace": false,
     "only-arrow-functions": false,
-    "interface-name": false,
+    "interface-name": true,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "object-literal-shorthand": false,

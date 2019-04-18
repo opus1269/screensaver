@@ -180,7 +180,7 @@ export class SettingsPageElement extends BaseElement {
   }
 
   @query('#settingsToggle')
-  private settingsToggle: SettingToggleElement;
+  protected settingsToggle: SettingToggleElement;
 
   /**
    * Deselect the given {@link PhotoSource}

@@ -11,7 +11,7 @@
 
 import * as Alarm from './alarm.js';
 
-import {UnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
+import {IUnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
 
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
@@ -49,8 +49,8 @@ export const DEFS = {
   permBackground: Permissions.STATE.notSet,
   permWeather: Permissions.STATE.notSet,
   allowBackground: false,
-  idleTime: {base: 5, display: 5, unit: 0} as UnitValue, // minutes
-  transitionTime: {base: 30, display: 30, unit: 0} as UnitValue, // seconds
+  idleTime: {base: 5, display: 5, unit: 0} as IUnitValue, // minutes
+  transitionTime: {base: 30, display: 30, unit: 0} as IUnitValue, // seconds
   skip: true,
   shuffle: true,
   photoSizing: 0,

@@ -117,7 +117,7 @@ export class ErrorPageElement extends BaseElement {
    *
    * @param changes - details on changes
    */
-  private chromeStorageChanged(changes: any) {
+  protected chromeStorageChanged(changes: any) {
     for (const key of Object.keys(changes)) {
       if (key === 'lastError') {
         const change = changes[key];

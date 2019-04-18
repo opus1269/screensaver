@@ -27,7 +27,7 @@ const chromep = new ChromePromise();
  * @property permissions - array of permissions
  * @property origins - array of origins
  */
-export interface Type {
+interface IType {
   name: string;
   permissions: string[];
   origins: string[];
@@ -47,7 +47,7 @@ export enum STATE {
  * Once upon a time, Picasa was the API for access to Google Photos,
  * hence the name.
  */
-export const PICASA: Type = {
+export const PICASA: IType = {
   name: 'permPicasa',
   permissions: [],
   origins: ['https://photoslibrary.googleapis.com/'],
@@ -59,14 +59,14 @@ export const PICASA: Type = {
  * @remarks
  * geolocation can't be optional permission in chrome, so we need to use the permissions API
  */
-export const WEATHER: Type = {
+export const WEATHER: IType = {
   name: 'permWeather',
   permissions: [],
   origins: ['https://api.openweathermap.org/'],
 };
 
 /** Permission for Chrome running in background */
-export const BACKGROUND: Type = {
+export const BACKGROUND: IType = {
   name: 'permBackground',
   permissions: ['background'],
   origins: [],
@@ -78,7 +78,7 @@ export const BACKGROUND: Type = {
  * @param type - permission type
  * @returns true if notSet
  */
-export function notSet(type: Type) {
+export function notSet(type: IType) {
   return ChromeStorage.get(type.name) === STATE.notSet;
 }
 
@@ -88,7 +88,7 @@ export function notSet(type: Type) {
  * @param type - permission type
  * @returns true if allowed
  */
-export function isAllowed(type: Type) {
+export function isAllowed(type: IType) {
   return ChromeStorage.get(type.name) === STATE.allowed;
 }
 
@@ -98,7 +98,7 @@ export function isAllowed(type: Type) {
  * @param type - permission type
  * @returns true if denied
  */
-export function isDenied(type: Type) {
+export function isDenied(type: IType) {
   return ChromeStorage.get(type.name) === STATE.denied;
 }
 
@@ -109,7 +109,7 @@ export function isDenied(type: Type) {
  * @throws An error if request failed
  * @returns true if permission granted
  */
-export async function request(type: Type) {
+export async function request(type: IType) {
   let granted = false;
   try {
     granted = await chromep.permissions.request({
@@ -146,7 +146,7 @@ export async function request(type: Type) {
  * @throws An error if failed to remove
  * @returns true if removed
  */
-export async function remove(type: Type) {
+export async function remove(type: IType) {
   let removed = false;
 
   const contains = await _contains(type);
@@ -171,7 +171,7 @@ export async function remove(type: Type) {
  * @throws An error if failed to deny
  * @returns true if removed
  */
-export async function deny(type: Type) {
+export async function deny(type: IType) {
 
   const removed = await remove(type);
 
@@ -210,7 +210,7 @@ export async function removeGooglePhotos() {
  * @param type - permission type
  * @param value - permission state
  */
-async function _setState(type: Type, value: STATE) {
+async function _setState(type: IType, value: STATE) {
   try {
     // send message to store value so items that are bound
     // to it will get storage event
@@ -232,7 +232,7 @@ async function _setState(type: Type, value: STATE) {
  * @throws An error if failed to get status
  * @returns true if we have the permission
  */
-async function _contains(type: Type) {
+async function _contains(type: IType) {
   return await chromep.permissions.contains({
     permissions: type.permissions,
     origins: type.origins,

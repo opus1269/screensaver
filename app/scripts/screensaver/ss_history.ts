@@ -23,7 +23,7 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @property photoId - {@link SSPhoto} unique id
  * @property photosPos - index into {@link SSPhotos}
  */
-interface Item {
+interface IItem {
   viewsIdx: number;
   replaceIdx: number;
   photoId: number;
@@ -38,7 +38,7 @@ interface Item {
  * @property max - max length of arr; it will actually have 1 item more
  */
 const HIST = {
-  arr: [] as Item[],
+  arr: [] as IItem[],
   idx: -1,
   max: 10,
 };
@@ -65,7 +65,7 @@ export function add(newIdx: number | null, selected: number, replaceIdx: number)
     const photoId = view.photo.getId();
     const photosPos = SSPhotos.getCurrentIndex();
 
-    const item: Item = {
+    const item: IItem = {
       viewsIdx: selected,
       replaceIdx: replaceIdx,
       photoId: photoId,

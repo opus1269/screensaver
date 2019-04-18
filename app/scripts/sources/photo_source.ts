@@ -9,7 +9,7 @@
  * A source of photos for the screen saver
  */
 
-import {SelectedAlbum} from './photo_source_google';
+import {ISelectedAlbum} from './photo_source_google';
 
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
@@ -30,7 +30,7 @@ declare var ChromePromise: any;
  * @property ex - extra info. about the photo
  * @property point - geolocation
  */
-export interface Photo {
+export interface IPhoto {
   url: string;
   author: string;
   asp: string;
@@ -44,9 +44,9 @@ export interface Photo {
  * @property type - The type of PhotoSource
  * @property photos - The array of photos
  */
-export interface Photos {
+export interface IPhotos {
   type: string;
-  photos: Photo[];
+  photos: IPhoto[];
 }
 
 
@@ -56,7 +56,7 @@ export interface Photos {
 export abstract class PhotoSource {
 
   /**
-   * Add a {@link Photo} to an existing Array
+   * Add a {@link IPhoto} to an existing Array
    *
    * @param photos - The array to add to
    * @param url - The url to the photo
@@ -65,8 +65,8 @@ export abstract class PhotoSource {
    * @param ex - Additional information about the photo
    * @param point - An optional geolocation
    */
-  public static addPhoto(photos: Photo[], url: string, author: string, asp: number, ex: any, point: string = '') {
-    const photo: Photo = {
+  public static addPhoto(photos: IPhoto[], url: string, author: string, asp: number, ex: any, point: string = '') {
+    const photo: IPhoto = {
       url: url,
       author: author,
       asp: asp.toPrecision(3),
@@ -131,7 +131,7 @@ export abstract class PhotoSource {
    * @throws An error if fetch failed
    * @returns Could be array of photos or albums
    */
-  public abstract fetchPhotos(): Promise<Photo[] | SelectedAlbum[]>;
+  public abstract fetchPhotos(): Promise<IPhoto[] | ISelectedAlbum[]>;
 
   /**
    * Get the source type
@@ -179,13 +179,13 @@ export abstract class PhotoSource {
    * Get the photos from local storage
    */
   public async getPhotos() {
-    const ret: Photos = {
+    const ret: IPhotos = {
       type: this._type,
       photos: [],
     };
 
     if (this.use()) {
-      let photos: Photo[] = [];
+      let photos: IPhoto[] = [];
       if (this._isArray) {
         let items = await ChromeStorage.asyncGet(this._photosKey);
         // could be that items have not been retrieved yet
@@ -262,7 +262,7 @@ export abstract class PhotoSource {
    * @param photos - could be array of photos or albums
    * @returns An error message if the save failed
    */
-  private async _save(photos: Photo[] | SelectedAlbum[]) {
+  private async _save(photos: IPhoto[] | ISelectedAlbum[]) {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {

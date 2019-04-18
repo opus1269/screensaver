@@ -31,7 +31,7 @@ import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/weather-element/weather-element.js';
 
 import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
-import {UnitValue} from '../shared/setting-elements/setting-slider/setting-slider.js';
+import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
@@ -117,7 +117,7 @@ export class ScreensaverSlideElement extends
 
     const ironImage = this.ironImage;
 
-    const transTime: UnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+    const transTime: IUnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
     const aniTime = transTime.base * 1000;
     let delayTime = 1000;
 
@@ -184,7 +184,7 @@ export class ScreensaverSlideElement extends
    * @param newValue - new type
    */
   @observe('aniType')
-  private aniChanged(newValue: number) {
+  protected aniChanged(newValue: number) {
     let entry;
     let exit;
     let dur = 2000;
@@ -241,7 +241,7 @@ export class ScreensaverSlideElement extends
    * @param isAnimate - if true, animate the photo
    */
   @observe('isAnimate')
-  private isAnimateChanged(isAnimate: boolean) {
+  protected isAnimateChanged(isAnimate: boolean) {
     if (isAnimate !== undefined) {
       if (!isAnimate) {
         if (this.animation) {

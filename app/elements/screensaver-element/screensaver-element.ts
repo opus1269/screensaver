@@ -82,7 +82,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Set the window zoom factor to 1.0
    */
-  private static async _setZoom() {
+  protected static async _setZoom() {
     const chromep = new ChromePromise();
     try {
       const zoomFactor = await chromep.tabs.getZoom();
@@ -215,7 +215,7 @@ export class ScreensaverElement extends BaseElement {
    * @throws An error if we failed to load photos
    * @returns true if there is at least one photo
    */
-  private async _loadPhotos() {
+  protected async _loadPhotos() {
     let sources = PhotoSources.getSelectedSources();
     sources = sources || [];
 
@@ -240,7 +240,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Process settings related to between photo transitions
    */
-  private _setupPhotoTransitions() {
+  protected _setupPhotoTransitions() {
     let type: TRANS_TYPE = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
     if (type === TRANS_TYPE.RANDOM) {
       // pick random transition
@@ -252,7 +252,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Setup timer for time label
    */
-  private _setupTime() {
+  protected _setupTime() {
     const showTime = ChromeStorage.getInt('showTime', 0);
     if (showTime > 0) {
       this._setTimeLabel();
@@ -264,7 +264,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Set the time label
    */
-  private _setTimeLabel() {
+  protected _setTimeLabel() {
     let label = '';
     const showTime = ChromeStorage.getInt('showTime', 0);
     if ((showTime !== 0)) {
@@ -280,7 +280,7 @@ export class ScreensaverElement extends BaseElement {
    * @param newValue - new value
    * @param oldValue - old value
    */
-  private _pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
+  protected _pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if (typeof oldValue === 'undefined') {
       return;
     }
@@ -296,7 +296,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Event: An image failed to load
    */
-  private async _onImageError(ev: CustomEvent) {
+  protected async _onImageError(ev: CustomEvent) {
     if (errHandler.isUpdating) {
       // another error event is already handling this
       return;

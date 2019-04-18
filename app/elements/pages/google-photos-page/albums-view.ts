@@ -6,7 +6,7 @@
  */
 
 import {IronListElement} from '../../../node_modules/@polymer/iron-list/iron-list';
-import {Album, SelectedAlbum} from '../../../scripts/sources/photo_source_google';
+import {IAlbum, ISelectedAlbum} from '../../../scripts/sources/photo_source_google';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -56,7 +56,7 @@ const MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
 const MAX_PHOTOS = GoogleSource.MAX_PHOTOS;
 
 /** The array of selected albums */
-let selections: SelectedAlbum[] = [];
+let selections: ISelectedAlbum[] = [];
 
 /**
  * Polymer element to manage Google Photos album selections
@@ -69,14 +69,14 @@ export class AlbumsViewElement extends BaseElement {
    *
    * @returns false if we failed
    */
-  private static async updateSavedAlbums() {
+  protected static async updateSavedAlbums() {
     const METHOD = 'AlbumViews.updateSavedAlbums';
 
     try {
 
       // send message to background page to do the work
       const msg = ChromeJSON.shallowCopy(MyMsg.TYPE.LOAD_ALBUMS);
-      const response: SelectedAlbum[] | ChromeMsg.MsgType = await ChromeMsg.send(msg);
+      const response: ISelectedAlbum[] | ChromeMsg.IMsgType = await ChromeMsg.send(msg);
 
       if (Array.isArray(response)) {
         // try to save
@@ -114,7 +114,7 @@ export class AlbumsViewElement extends BaseElement {
    *
    * @returns Total number of photos saved
    */
-  private static async getTotalPhotoCount() {
+  protected static async getTotalPhotoCount() {
     let ct = 0;
     const albums = await ChromeStorage.asyncGet('albumSelections', []);
     for (const album of albums) {
@@ -126,7 +126,7 @@ export class AlbumsViewElement extends BaseElement {
 
   /** The array of all albums */
   @property({type: Array, notify: true})
-  public albums: Album[] = [];
+  public albums: IAlbum[] = [];
 
   /** Status of the option permission for the Google Photos API */
   @property({type: String, notify: true})
@@ -269,7 +269,7 @@ export class AlbumsViewElement extends BaseElement {
    * Remove selected albums
    */
   public removeSelectedAlbums() {
-    this.albums.forEach((album: Album, index: number) => {
+    this.albums.forEach((album: IAlbum, index: number) => {
       if (album.checked) {
         this.set('albums.' + index + '.checked', false);
       }
@@ -282,7 +282,7 @@ export class AlbumsViewElement extends BaseElement {
    * Wait for load changed
    */
   @observe('waitForLoad', 'waiterStatus')
-  private waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
+  protected waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
     if (!waitForLoad) {
       this.ironList._render();
       if (waiterStatus) {
@@ -296,9 +296,9 @@ export class AlbumsViewElement extends BaseElement {
    *
    * @param ev - checkbox state changed
    */
-  private async onAlbumSelectChanged(ev: any) {
+  protected async onAlbumSelectChanged(ev: any) {
     const METHOD = 'AlbumViews.onAlbumSelectChanged';
-    const album: Album = ev.model.album;
+    const album: IAlbum = ev.model.album;
 
     ChromeGA.event(ChromeGA.EVENT.CHECK, `selectGoogleAlbum: ${album.checked}`);
 
@@ -340,8 +340,8 @@ export class AlbumsViewElement extends BaseElement {
    * @param response - function to call once after processing
    * @returns true if asynchronous
    */
-  private onChromeMessage(request: ChromeMsg.MsgType, sender: chrome.runtime.MessageSender,
-                          response: (arg0: object) => void) {
+  protected onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
+                            response: (arg0: object) => void) {
     if (request.message === MyMsg.TYPE.ALBUM_COUNT.message) {
       // show user status of photo loading
       const name = request.name || '';
@@ -360,7 +360,7 @@ export class AlbumsViewElement extends BaseElement {
    * @param wait - if true, handle waiter display ourselves
    * @returns true if successful
    */
-  private async loadAlbum(album: Album, wait: boolean = true) {
+  protected async loadAlbum(album: IAlbum, wait: boolean = true) {
     const METHOD = 'AlbumViews.loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
     let error: Error = null;
@@ -441,7 +441,7 @@ export class AlbumsViewElement extends BaseElement {
   /**
    * Set the checked state based on the currently saved albums
    */
-  private async selectSavedAlbums() {
+  protected async selectSavedAlbums() {
     selections = await ChromeStorage.asyncGet('albumSelections', []);
     for (let i = 0; i < this.albums.length; i++) {
       for (const selection of selections) {
@@ -460,7 +460,7 @@ export class AlbumsViewElement extends BaseElement {
    * @param count - number of photos in album
    * @returns i18n label
    */
-  private computePhotoLabel(count: number) {
+  protected computePhotoLabel(count: number) {
     let ret = `${count} ${ChromeLocale.localize('photos')}`;
     if (count === 1) {
       ret = `${count} ${ChromeLocale.localize('photo')}`;

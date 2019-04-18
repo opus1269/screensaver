@@ -40,7 +40,7 @@ export class SettingDropdownElement extends SettingBase {
 
   /** paper-listbox template */
   @query('#t')
-  private template: DomRepeat;
+  protected template: DomRepeat;
 
   /**
    * Event: menu item tapped

@@ -22,13 +22,13 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
-import {Photo, PhotoSource} from './photo_source.js';
+import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSources from './photo_sources.js';
 
 /**
  * A Google Photo Album
  */
-export interface Album {
+export interface IAlbum {
   index: number;
   uid: string;
   name: string;
@@ -36,16 +36,16 @@ export interface Album {
   thumb: string;
   checked: boolean;
   ct: number;
-  photos: Photo[];
+  photos: IPhoto[];
 }
 
 /**
  * A Selected Google Photo Album, this is persisted
  */
-export interface SelectedAlbum {
+export interface ISelectedAlbum {
   id: string;
   name: string;
-  photos: Photo[];
+  photos: IPhoto[];
 }
 
 /**
@@ -62,7 +62,7 @@ export interface SelectedAlbum {
 /**
  * Google Photos API representation of an album
  */
-interface GPhotosAlbum {
+interface IGPhotosAlbum {
   id: string;
   title: string;
   productUrl: string;
@@ -212,8 +212,8 @@ export class GoogleSource extends PhotoSource {
    */
   public static async loadAlbumList() {
     let nextPageToken: string;
-    let gAlbums: GPhotosAlbum[] = [];
-    const albums: Album[] = [];
+    let gAlbums: IGPhotosAlbum[] = [];
+    const albums: IAlbum[] = [];
     let ct = 0;
     const baseUrl = `${_URL_BASE}albums/${_ALBUMS_QUERY}`;
     let url = baseUrl;
@@ -242,7 +242,7 @@ export class GoogleSource extends PhotoSource {
     for (const gAlbum of gAlbums) {
       if (gAlbum && gAlbum.mediaItemsCount && (gAlbum.mediaItemsCount > 0)) {
 
-        const album: Album = {
+        const album: IAlbum = {
           index: ct,
           uid: 'album' + ct,
           name: gAlbum.title,
@@ -272,7 +272,7 @@ export class GoogleSource extends PhotoSource {
    * @param interactive=true - interactive mode for permissions
    * @param notify=false - notify listeners of status
    * @throws An error if the album failed to load.
-   * @returns Album
+   * @returns IAlbum
    */
   public static async loadAlbum(id: string, name: string, interactive = true, notify = false) {
     // max items in search call
@@ -290,7 +290,7 @@ export class GoogleSource extends PhotoSource {
     conf.body = body;
 
     let nextPageToken: string;
-    let photos: Photo[] = [];
+    let photos: IPhoto[] = [];
 
     // Loop while there is a nextPageToken to load more items and we
     // haven't loaded greater than MAX_ALBUM_PHOTOS.
@@ -328,7 +328,7 @@ export class GoogleSource extends PhotoSource {
 
     } while (nextPageToken && (photos.length < this.MAX_ALBUM_PHOTOS));
 
-    const album: Album = {
+    const album: IAlbum = {
       index: 0,
       uid: 'album' + 0,
       name: name,
@@ -447,7 +447,7 @@ export class GoogleSource extends PhotoSource {
     conf.body = body;
 
     let nextPageToken;
-    let newPhotos: Photo[] = [];
+    let newPhotos: IPhoto[] = [];
 
     try {
       // Loop while there is a nextPageToken and MAX_PHOTOS has not been hit
@@ -502,7 +502,7 @@ export class GoogleSource extends PhotoSource {
    */
   public static async loadPhotos(ids: string[]) {
     ids = ids || [];
-    let photos: Photo[] = [];
+    let photos: IPhoto[] = [];
     // max items in getBatch call
     const MAX_QUERIES = 50;
 
@@ -565,7 +565,7 @@ export class GoogleSource extends PhotoSource {
    * @throws An error on failure
    * @returns false if couldn't persist albumSelections
    */
-  public static async updateBaseUrls(photos: Photo[]) {
+  public static async updateBaseUrls(photos: IPhoto[]) {
     let ret = true;
 
     photos = photos || [];
@@ -593,7 +593,7 @@ export class GoogleSource extends PhotoSource {
    * @throws An error on failure
    * @returns false if couldn't persist albumSelections
    */
-  private static async _updateAlbumsBaseUrls(photos: Photo[]) {
+  private static async _updateAlbumsBaseUrls(photos: IPhoto[]) {
     let ret = true;
 
     photos = photos || [];
@@ -611,7 +611,7 @@ export class GoogleSource extends PhotoSource {
       // loop on all the albums
       for (const album of albums) {
         const albumPhotos = album.photos;
-        const index = albumPhotos.findIndex((e: Photo) => {
+        const index = albumPhotos.findIndex((e: IPhoto) => {
           return e.ex.id === photo.ex.id;
         });
         if (index >= 0) {
@@ -639,7 +639,7 @@ export class GoogleSource extends PhotoSource {
    * @throws An error on failure
    * @returns false if couldn't persist googleImages
    */
-  private static async _updatePhotosBaseUrls(photos: Photo[]) {
+  private static async _updatePhotosBaseUrls(photos: IPhoto[]) {
     let ret = true;
 
     photos = photos || [];
@@ -654,7 +654,7 @@ export class GoogleSource extends PhotoSource {
 
     // loop on all the photos
     for (const photo of photos) {
-      const index = savedPhotos.findIndex((e: Photo) => {
+      const index = savedPhotos.findIndex((e: IPhoto) => {
         return e.ex.id === photo.ex.id;
       });
       if (index >= 0) {
@@ -700,12 +700,12 @@ export class GoogleSource extends PhotoSource {
   private static async _fetchAlbums() {
     if (!this._isFetch()) {
       // no need to change - save on api calls
-      const curAlbums: Album[] = await ChromeStorage.asyncGet('albumSelections', []);
+      const curAlbums: IAlbum[] = await ChromeStorage.asyncGet('albumSelections', []);
       return Promise.resolve(curAlbums);
     }
 
     let ct = 0;
-    const albums: Album[] = await this.loadAlbums(false, false);
+    const albums: IAlbum[] = await this.loadAlbums(false, false);
     for (const album of albums) {
       ct += album.photos.length;
     }
@@ -764,7 +764,7 @@ export class GoogleSource extends PhotoSource {
    * @param albumName - Album name
    */
   private static _processPhoto(mediaItem: any, albumName: string) {
-    let photo: Photo = null;
+    let photo: IPhoto = null;
 
     if (mediaItem && mediaItem.mediaMetadata) {
       if (this._isImage(mediaItem)) {
@@ -799,12 +799,12 @@ export class GoogleSource extends PhotoSource {
    */
   private static _processPhotos(mediaItems: any, albumName = '') {
 
-    const photos: Photo[] = [];
+    const photos: IPhoto[] = [];
     if (!mediaItems) {
       return photos;
     }
     for (const mediaItem of mediaItems) {
-      const photo: Photo = this._processPhoto(mediaItem, albumName);
+      const photo: IPhoto = this._processPhoto(mediaItem, albumName);
       if (photo) {
         const asp = parseFloat(photo.asp);
         this.addPhoto(photos, photo.url, photo.author, asp,

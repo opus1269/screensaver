@@ -10,7 +10,6 @@ import * as ChromeLocale from './locales.js';
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
-
 /**
  * Utility methods
  */
@@ -19,22 +18,6 @@ const chromep = new ChromePromise();
  * Set to true if development build
  */
 const _DEBUG = false;
-
-/**
- * Determine if we are a given operating system
- *
- * @param os - os short name
- * @returns true if the given os
- */
-async function _isOS(os: string) {
-  try {
-    const info = await chromep.runtime.getPlatformInfo();
-    return Promise.resolve((info.os === os));
-  } catch (e) {
-    // something went wrong - linux seems to fail this call sometimes
-    return Promise.resolve(false);
-  }
-}
 
 /**
  * True if development build
@@ -127,7 +110,7 @@ export async function getPlatformOS() {
  * @returns true if MS Windows
  */
 export function isWindows() {
-  return _isOS('win');
+  return isOS('win');
 }
 
 /**
@@ -136,7 +119,7 @@ export function isWindows() {
  * @returns true if ChromeOS
  */
 export function isChromeOS() {
-  return _isOS('cros');
+  return isOS('cros');
 }
 
 /**
@@ -145,7 +128,7 @@ export function isChromeOS() {
  * @returns true if Mac
  */
 export function isMac() {
-  return _isOS('mac');
+  return isOS('mac');
 }
 
 /**
@@ -228,7 +211,7 @@ export function shuffleArray(array: any[]) {
  * @remarks
  *
  * This will at least ensure the LAN is connected.
- * May get false ositives for other errors.
+ * May get false positives for other errors.
  *
  * @throws An error if no internet connection
  */
@@ -237,3 +220,20 @@ export function checkNetworkConnection() {
     throw new Error(ChromeLocale.localize('err_no_internet', 'Internet disconnected'));
   }
 }
+
+/**
+ * Determine if we are a given operating system
+ *
+ * @param os - os short name
+ * @returns true if the given os
+ */
+async function isOS(os: string) {
+  try {
+    const info = await chromep.runtime.getPlatformInfo();
+    return Promise.resolve((info.os === os));
+  } catch (e) {
+    // something went wrong - linux seems to fail this call sometimes
+    return Promise.resolve(false);
+  }
+}
+
