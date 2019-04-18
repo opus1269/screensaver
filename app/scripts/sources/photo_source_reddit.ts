@@ -110,8 +110,8 @@ export default class RedditSource extends PhotoSource {
 
       const asp = width / height;
       const author = data.author;
-      if (asp && !isNaN(asp) && (Math.max(width, height) >= _MIN_SIZE) &&
-          (Math.max(width, height) <= _MAX_SIZE)) {
+      if (url && asp && !isNaN(asp) &&
+          (Math.max(width, height) >= _MIN_SIZE) && (Math.max(width, height) <= _MAX_SIZE)) {
         PhotoSource.addPhoto(photos, url, author, asp, data.url);
       }
     }
