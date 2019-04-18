@@ -49,18 +49,18 @@ const VARS = {
 export function start(delay = 2000) {
   const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
   VARS.transTime = transTime.base * 1000;
-  _setWaitTime(transTime.base * 1000);
+  setWaitTime(transTime.base * 1000);
 
   VARS.interactive = ChromeStorage.getBool('interactive', false);
 
   SSHistory.initialize();
 
   // start slide show. slight delay at beginning so we have a smooth start
-  window.setTimeout(_runShow, delay);
+  window.setTimeout(runShow, delay);
 }
 
 /**
- * Get wait time between _runShow calls
+ * Get wait time between runShow calls
  *
  * @returns current wait time
  */
@@ -125,9 +125,9 @@ export function togglePaused(newIdx: number | null = null) {
     VARS.paused = !VARS.paused;
     Screensaver.setPaused(VARS.paused);
     if (VARS.paused) {
-      _stop();
+      stop();
     } else {
-      _restart(newIdx);
+      restart(newIdx);
     }
   }
 }
@@ -137,7 +137,7 @@ export function togglePaused(newIdx: number | null = null) {
  */
 export function forward() {
   if (VARS.started) {
-    _step();
+    step();
   }
 }
 
@@ -148,7 +148,7 @@ export function back() {
   if (VARS.started) {
     const nextStep = SSHistory.back();
     if (nextStep !== null) {
-      _step(nextStep);
+      step(nextStep);
     }
   }
 }
@@ -156,7 +156,7 @@ export function back() {
 /**
  * Stop the animation
  */
-function _stop() {
+function stop() {
   window.clearTimeout(VARS.timeOutId);
 }
 
@@ -165,12 +165,12 @@ function _stop() {
  *
  * @param newIdx optional idx to use for current idx
  */
-function _restart(newIdx: number | null = null) {
+function restart(newIdx: number | null = null) {
   const transTime = ChromeStorage.get('transitionTime');
   if (transTime) {
-    _setWaitTime(transTime.base * 1000);
+    setWaitTime(transTime.base * 1000);
   }
-  _runShow(newIdx);
+  runShow(newIdx);
 }
 
 /**
@@ -178,13 +178,13 @@ function _restart(newIdx: number | null = null) {
  *
  * @param newIdx optional idx to use for current idx
  */
-function _step(newIdx: number | null = null) {
+function step(newIdx: number | null = null) {
   if (isPaused()) {
     togglePaused(newIdx);
     togglePaused();
   } else {
-    _stop();
-    _restart(newIdx);
+    stop();
+    restart(newIdx);
   }
 }
 
@@ -193,7 +193,7 @@ function _step(newIdx: number | null = null) {
  *
  * @param newIdx - override selected
  */
-function _runShow(newIdx: number | null = null) {
+function runShow(newIdx: number | null = null) {
   if (Screensaver.isNoPhotos()) {
     // no usable photos to show
     return;
@@ -211,7 +211,7 @@ function _runShow(newIdx: number | null = null) {
     nextIdx = 0;
   }
 
-  nextIdx = _getNextViewIdx(nextIdx);
+  nextIdx = getNextViewIdx(nextIdx);
   if (nextIdx !== -1) {
     // the next photo is ready
 
@@ -233,23 +233,31 @@ function _runShow(newIdx: number | null = null) {
 
     if (newIdx === null) {
       // load next photo from master array
-      _replacePhoto(VARS.replaceIdx);
+      if (VARS.interactive) {
+        replacePhoto(VARS.replaceIdx);
+      } else {
+        // delay loading so transition animations run without background web call
+        // can't do if interactive 'cuz it would mess up order
+        setTimeout(() => {
+          replacePhoto(VARS.replaceIdx);
+        }, 2000);
+      }
       VARS.replaceIdx = VARS.lastSelected;
     }
   }
 
   // set the next timeout, then call ourselves - runs unless interrupted
   VARS.timeOutId = setTimeout(() => {
-    _runShow();
+    runShow();
   }, VARS.waitTime);
 }
 
 /**
- * Set wait time between _runShow calls in milliSecs
+ * Set wait time between runShow calls in milliSecs
  *
  * @param waitTime - wait time for next attempt to get photo
  */
-function _setWaitTime(waitTime: number) {
+function setWaitTime(waitTime: number) {
   VARS.waitTime = waitTime;
   // larger than 32 bit int is bad news
   // see: https://stackoverflow.com/a/3468650/4468645
@@ -262,14 +270,14 @@ function _setWaitTime(waitTime: number) {
  * @param idx - index into {@link SSViews} to start search at
  * @returns The index into {@link SSViews} to display next, -1 if none are ready
  */
-function _getNextViewIdx(idx: number) {
+function getNextViewIdx(idx: number) {
   const ret = SSViews.findLoadedPhoto(idx);
   if (ret === -1) {
     // no photos ready, wait a little, try again
-    _setWaitTime(500);
+    setWaitTime(500);
   } else {
     // photo found, set the waitTime back to transition time
-    _setWaitTime(VARS.transTime);
+    setWaitTime(VARS.transTime);
   }
   return ret;
 }
@@ -279,7 +287,7 @@ function _getNextViewIdx(idx: number) {
  *
  * @param idx - {@link SSViews} index to replace
  */
-function _replacePhoto(idx: number) {
+function replacePhoto(idx: number) {
   if (idx >= 0) {
     if (SSViews.isSelectedIndex(idx)) {
       return;
@@ -298,7 +306,5 @@ function _replacePhoto(idx: number) {
     }
   }
 }
-
-
 
 
