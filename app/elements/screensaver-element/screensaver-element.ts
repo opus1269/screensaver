@@ -10,11 +10,7 @@ import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-re
 import SSView from '../../scripts/screensaver/views/ss_view';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
-import {
-  customElement,
-  property,
-  query,
-} from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../node_modules/@polymer/font-roboto/roboto.js';
 
