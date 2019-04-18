@@ -4,7 +4,7 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '@polymer/polymer/polymer-element.js';
+import '../../node_modules/@polymer/polymer/polymer-element.js';
 
 /**
  * Element for the shared styles
