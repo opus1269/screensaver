@@ -47,8 +47,8 @@ export default class SpinUpAnimationElement extends
 
     // @ts-ignore
     return new KeyframeEffect(node, [
-          {transform: 'scale(0) rotate(0)'},
-          {transform: 'scale(1) rotate(1.0turn)'},
+          {transform: 'scale(0) rotate(0)', easing: 'ease-in-out'},
+          {transform: 'scale(1) rotate(1.0turn)', easing: 'ease-in-out'},
         ],
         // @ts-ignore
         this.timingFromConfig(config));
