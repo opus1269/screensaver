@@ -30,7 +30,7 @@ import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {BaseElement} from '../../base-element/base-element.js';
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';

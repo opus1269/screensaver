@@ -20,7 +20,7 @@ import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
 import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
-import {BaseElement} from '../../elements/base-element/base-element.js';
+import {BaseElement} from '../../elements/shared/base-element/base-element.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
 

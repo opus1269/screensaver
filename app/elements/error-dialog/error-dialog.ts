@@ -17,7 +17,7 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
-import {BaseElement} from '../base-element/base-element.js';
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 /**
  * Polymer dialog to display an error

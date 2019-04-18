@@ -18,9 +18,8 @@ import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
-import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 
-import {BaseElement} from '../../base-element/base-element.js';
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 

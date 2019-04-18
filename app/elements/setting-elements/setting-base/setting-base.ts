@@ -8,7 +8,7 @@
 import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import {BaseElement} from '../../base-element/base-element.js';
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 /**
  * Base class for a family of setting elements

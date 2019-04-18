@@ -24,7 +24,7 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 
-import {BaseElement} from '../base-element/base-element.js';
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';

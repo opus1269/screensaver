@@ -13,7 +13,7 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../../elements/setting-elements/setting-link/setting-link.js';
 
-import {BaseElement} from '../../base-element/base-element.js';
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 

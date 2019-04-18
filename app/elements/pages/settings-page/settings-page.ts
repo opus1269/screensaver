@@ -30,7 +30,7 @@ import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import {BaseElement} from '../../base-element/base-element.js';
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import '../../../elements/setting-elements/setting-toggle/setting-toggle.js';
 import '../../../elements/setting-elements/setting-slider/setting-slider.js';

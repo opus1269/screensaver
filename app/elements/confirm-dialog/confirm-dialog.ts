@@ -22,7 +22,7 @@ import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytic
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
-import {BaseElement} from '../base-element/base-element.js';
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 /**
  * Polymer dialog to confirm an action

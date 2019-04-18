@@ -19,7 +19,7 @@ import {
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import {BaseElement} from '../../base-element/base-element.js';
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';

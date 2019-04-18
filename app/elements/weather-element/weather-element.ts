@@ -12,7 +12,7 @@ import '../../node_modules/@polymer/paper-item/paper-item.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {BaseElement} from '../base-element/base-element.js';
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 import * as Weather from '../../scripts/weather.js';
 

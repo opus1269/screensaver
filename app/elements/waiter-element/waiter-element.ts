@@ -13,7 +13,7 @@ import {customElement, property, query, observe} from '../../node_modules/@polym
 import '../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
-import {BaseElement} from '../base-element/base-element.js';
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 /**
  * Polymer element to display waiter for lengthy operations

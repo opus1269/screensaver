@@ -44,7 +44,7 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {BaseElement} from '../base-element/base-element.js';
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 import '../../elements/pages/settings-page/settings-page.js';
 import {ErrorPageElement} from '../../elements/pages/error-page/error-page.js';
