@@ -450,18 +450,27 @@ export class SettingsPageElement extends BaseElement {
   <div class="page-content">
     <iron-pages selected="{{selectedTab}}">
       <div>
-        <setting-slider name="idleTime" label="[[localize('setting_idle_time')]]" units="[[waitTimeUnits]]"
+        <setting-slider section-title="[[localize('settings_appearance')]]" name="idleTime"
+                        label="[[localize('setting_idle_time')]]" units="[[waitTimeUnits]]"
                         disabled$="[[!enabled]]"></setting-slider>
-        <setting-slider name="transitionTime" label="[[localize('setting_transition_time')]]"
+        <setting-slider name="transitionTime"
+                        label="[[localize('setting_transition_time')]]"
                         units="[[transitionTimeUnits]]" disabled$="[[!enabled]]"></setting-slider>
-        <setting-dropdown name="photoSizing" label="[[localize('setting_photo_sizing')]]"
-                          items="[[photoSizingMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-dropdown name="photoTransition" label="[[localize('setting_photo_transition')]]"
                           items="[[photoTransmissionMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
+        <setting-dropdown name="photoSizing" label="[[localize('setting_photo_sizing')]]"
+                          items="[[photoSizingMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="panAndScan" main-label="[[localize('setting_pan_and_scan')]]"
                         secondary-label="[[localize('setting_pan_and_scan_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
-        <setting-toggle id="allowBackground" name="allowBackground" main-label="[[localize('setting_background')]]"
+        <setting-background name="background" main-label="[[localize('setting_bg')]]"
+                            secondary-label="[[localize('setting_bg_desc')]]"
+                            disabled$="[[!enabled]]"></setting-background>
+        <setting-toggle name="fullResGoogle" main-label="[[localize('setting_full_res')]]"
+                        secondary-label="[[localize('setting_full_res_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle section-title="[[localize('settings_behavior')]]" id="allowBackground" name="allowBackground"
+                        main-label="[[localize('setting_background')]]"
                         secondary-label="[[localize('setting_background_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="interactive" main-label="[[localize('setting_interactive')]]"
@@ -472,14 +481,14 @@ export class SettingsPageElement extends BaseElement {
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="skip" main-label="[[localize('setting_skip')]]"
                         secondary-label="[[localize('setting_skip_desc')]]" disabled$="[[!enabled]]"></setting-toggle>
-        <setting-toggle name="fullResGoogle" main-label="[[localize('setting_full_res')]]"
-                        secondary-label="[[localize('setting_full_res_desc')]]"
+        <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
-        <setting-toggle name="showPhotog" main-label="[[localize('setting_photog')]]"
+        <setting-toggle section-title="[[localize('settings_extras')]]" name="showPhotog"
+                        main-label="[[localize('setting_photog')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
-        <setting-toggle name="showLocation" main-label="[[localize('setting_location')]]"
-                        secondary-label="[[localize('setting_location_desc')]]"
-                        disabled$="[[!enabled]]"></setting-toggle>
+<!--        <setting-toggle name="showLocation" main-label="[[localize('setting_location')]]"-->
+<!--                        secondary-label="[[localize('setting_location_desc')]]"-->
+<!--                        disabled$="[[!enabled]]"></setting-toggle>-->
         <setting-toggle id="showWeather" name="showCurrentWeather" main-label="[[localize('setting_weather')]]"
                         secondary-label="[[localize('setting_weather_desc')]]"
                         checked="{{showWeatherValue}}"
@@ -491,13 +500,8 @@ export class SettingsPageElement extends BaseElement {
         <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[timeFormatMenu]]"
                           value="{{showTimeValue}}" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
-                        disabled$="[[largeTimeDisabled]]">
+                        disabled$="[[largeTimeDisabled]]" noseparator="">
         </setting-toggle>
-        <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
-                        disabled$="[[!enabled]]"></setting-toggle>
-        <setting-background name="background" main-label="[[localize('setting_bg')]]"
-                            secondary-label="[[localize('setting_bg_desc')]]" noseparator=""
-                            disabled$="[[!enabled]]"></setting-background>
       </div>
       <div>
         <setting-toggle name="allDisplays" main-label="[[localize('setting_all_displays')]]"

@@ -630,6 +630,18 @@
   "setting_pan_and_scan_desc": {
     "message": "Pas het \"Ken Burns\" effect op de foto's toe"
   },
+  "err_no_internet": {
+    "message": "Internet verbroken"
+  },
+  "settings_appearance": {
+    "message": "Verschijning"
+  },
+  "settings_behavior": {
+    "message": "Gedrag"
+  },
+  "settings_extras": {
+    "message": "Extra display-functies"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

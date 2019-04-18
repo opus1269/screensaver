@@ -630,6 +630,18 @@
   "setting_pan_and_scan_desc": {
     "message": "Wenden Sie den Effekt \"Ken Burns\" auf die Fotos an"
   },
+  "err_no_internet": {
+    "message": "Internet getrennt"
+  },
+  "settings_appearance": {
+    "message": "Aussehen"
+  },
+  "settings_behavior": {
+    "message": "Verhalten"
+  },
+  "settings_extras": {
+    "message": "Zusätzliche Anzeigefunktionen"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"
