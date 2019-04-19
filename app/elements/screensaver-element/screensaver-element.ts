@@ -104,7 +104,7 @@ export class ScreensaverElement extends BaseElement {
   protected aniType = 0;
 
   /** Flag to indicate if slideshow is paused */
-  @property({type: Boolean, observer: '_pausedChanged'})
+  @property({type: Boolean, observer: 'pausedChanged'})
   protected paused = false;
 
   /** Flag to indicate if we have no valid photos */
@@ -482,7 +482,7 @@ export class ScreensaverElement extends BaseElement {
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
     <template is="dom-repeat" id="repeatTemplate" as="view" items="[[views]]">
       <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]"
-                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="_onImageError">
+                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="onImageError">
       </screensaver-slide>
     </template>
   </neon-animated-pages>
