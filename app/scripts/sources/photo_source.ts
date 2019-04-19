@@ -18,6 +18,8 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
+
 declare var ChromePromise: any;
 
 /**
@@ -45,7 +47,7 @@ export interface IPhoto {
  * @property photos - The array of photos
  */
 export interface IPhotos {
-  type: string;
+  type: PhotoSourceFactory.Type;
   photos: IPhoto[];
 }
 
@@ -95,9 +97,9 @@ export abstract class PhotoSource {
     }
   }
 
-  private readonly _useKey: string;
+  private readonly _useKey: PhotoSourceFactory.UseKey;
   private readonly _photosKey: string;
-  private readonly _type: string;
+  private readonly _type: PhotoSourceFactory.Type;
   private readonly _desc: string;
   private readonly _isDaily: boolean;
   private readonly _isArray: boolean;
@@ -114,7 +116,7 @@ export abstract class PhotoSource {
    * @param isArray - Is the source an Array of photo Arrays
    * @param loadArg - optional arg for load function
    */
-  protected constructor(useKey: string, photosKey: string, type: string,
+  protected constructor(useKey: PhotoSourceFactory.UseKey, photosKey: string, type: PhotoSourceFactory.Type,
                         desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
     this._useKey = useKey;
     this._photosKey = photosKey;

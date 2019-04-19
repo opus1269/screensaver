@@ -205,7 +205,7 @@ export abstract class SSView {
 
     const type = this.photo.getType();
     const photographer = this.photo.getPhotographer();
-    let newType = type;
+    let newType: string = type;
     const idx = type.search('User');
 
     if (!ChromeStorage.getBool('showPhotog') && (idx !== -1)) {

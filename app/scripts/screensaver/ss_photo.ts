@@ -11,12 +11,14 @@
 
 import {IPhoto} from '../sources/photo_source';
 
-import * as MyGA from '../../scripts/my_analytics.js';
-
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as MyGA from '../../scripts/my_analytics.js';
+
+import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 
 /**
  * A photo for the screensaver
@@ -57,7 +59,7 @@ export class SSPhoto {
   private readonly _photographer: string;
 
   /** The PhotoSource type the photo came from */
-  private readonly _type: string;
+  private readonly _type: PhotoSourceFactory.Type;
 
   /** The aspect ratio of the photo */
   private readonly _aspectRatio: number;
@@ -83,7 +85,7 @@ export class SSPhoto {
    * @param source - persisted source photo
    * @param sourceType - the PhotoSource type this photo is from
    */
-  constructor(id: number, source: IPhoto, sourceType: string) {
+  constructor(id: number, source: IPhoto, sourceType: PhotoSourceFactory.Type) {
     this._id = id;
     this._url = source.url;
     this._photographer = source.author ? source.author : '';
@@ -182,7 +184,7 @@ export class SSPhoto {
     let url = null;
 
     switch (this._type) {
-      case 'flickr':
+      case PhotoSourceFactory.Type.FLICKR:
         if (this._ex) {
           // parse photo id
           regex = /(\/[^/]*){4}(_.*_)/;
@@ -190,12 +192,12 @@ export class SSPhoto {
           url = `https://www.flickr.com/photos/${this._ex}${id[1]}`;
         }
         break;
-      case 'reddit':
+      case PhotoSourceFactory.Type.REDDIT:
         if (this._ex) {
           url = this._ex;
         }
         break;
-      case 'Google User':
+      case PhotoSourceFactory.Type.GOOGLE_USER:
         if (this._ex && this._ex.url) {
           url = this._ex.url;
         }

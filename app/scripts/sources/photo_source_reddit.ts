@@ -15,6 +15,8 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
+import * as PhotoSourceFactory from './photo_source_factory.js';
+
 /**
  * Extension's redirect uri
  */
@@ -131,8 +133,8 @@ export class RedditSource extends PhotoSource {
    * @param isArray - Is the source an Array of photo Arrays
    * @param loadArg - optional arg for load function
    */
-  constructor(useKey: string, photosKey: string, type: string, desc: string, isDaily: boolean, isArray: boolean,
-              loadArg: any = null) {
+  public constructor(useKey: PhotoSourceFactory.UseKey, photosKey: string, type: PhotoSourceFactory.Type,
+                     desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
     super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
   }
 
