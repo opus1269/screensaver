@@ -23,7 +23,7 @@ import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
 import {IPhoto, PhotoSource} from './photo_source.js';
-import * as PhotoSources from './photo_sources.js';
+import * as PhotoSourceFactory from './photo_source_factory.js';
 
 /**
  * A Google Photo Album
@@ -841,7 +841,7 @@ export class GoogleSource extends PhotoSource {
 
     try {
       const key = this.getUseKey();
-      if (key === PhotoSources.UseKey.ALBUMS_GOOGLE) {
+      if (key === PhotoSourceFactory.UseKey.ALBUMS_GOOGLE) {
         // album mode
         return await GoogleSource._fetchAlbums();
       } else {

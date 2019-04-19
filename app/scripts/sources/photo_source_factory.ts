@@ -9,17 +9,38 @@
  * Factory to create {@link PhotoSource} instances
  */
 
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 
 import {CCSource} from './photo_source_chromecast.js';
 import {FlickrSource} from './photo_source_flickr.js';
 import {GoogleSource} from './photo_source_google.js';
 import {RedditSource} from './photo_source_reddit.js';
-import * as PhotoSources from './photo_sources.js';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+/**
+ * Enum for {@link PhotoSource} Type
+ */
+export enum Type {
+  GOOGLE_USER = 'Google User',
+  GOOGLE = 'Google',
+  FLICKR = 'flickr',
+  REDDIT = 'reddit',
+}
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+/**
+ * Enum for {@link PhotoSource} useKey
+ */
+export enum UseKey {
+  ALBUMS_GOOGLE = 'useGoogleAlbums',
+  PHOTOS_GOOGLE = 'useGooglePhotos',
+  CHROMECAST = 'useChromecast',
+  SPACE_RED = 'useSpaceReddit',
+  EARTH_RED = 'useEarthReddit',
+  ANIMAL_RED = 'useAnimalReddit',
+  INT_FLICKR = 'useInterestingFlickr',
+  AUTHOR = 'useAuthors',
+}
 
 /**
  * Factory Method to create a new {@link PhotoSource}
@@ -27,47 +48,47 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * @param useKey - type of source
  * @returns a new PhotoSource of the given type
  */
-export function create(useKey: PhotoSources.UseKey) {
+export function create(useKey: UseKey) {
   switch (useKey) {
-    case PhotoSources.UseKey.ALBUMS_GOOGLE:
+    case UseKey.ALBUMS_GOOGLE:
       return new GoogleSource(useKey, 'albumSelections',
-          PhotoSources.Type.GOOGLE_USER,
+          Type.GOOGLE_USER,
           ChromeLocale.localize('google_title'),
           true, true, null);
-    case PhotoSources.UseKey.PHOTOS_GOOGLE:
+    case UseKey.PHOTOS_GOOGLE:
       // not implemented yet
       return new GoogleSource(useKey, 'googleImages',
-          PhotoSources.Type.GOOGLE_USER,
+          Type.GOOGLE_USER,
           ChromeLocale.localize('google_title_photos'),
           true, false, null);
-    case PhotoSources.UseKey.CHROMECAST:
+    case UseKey.CHROMECAST:
       return new CCSource(useKey, 'ccImages',
-          PhotoSources.Type.GOOGLE,
+          Type.GOOGLE,
           ChromeLocale.localize('setting_chromecast'),
           false, false, null);
-    case PhotoSources.UseKey.INT_FLICKR:
+    case UseKey.INT_FLICKR:
       return new FlickrSource(useKey, 'flickrInterestingImages',
-          PhotoSources.Type.FLICKR,
+          Type.FLICKR,
           ChromeLocale.localize('setting_flickr_int'),
           true, false, false);
-    case PhotoSources.UseKey.AUTHOR:
+    case UseKey.AUTHOR:
       return new FlickrSource(useKey, 'authorImages',
-          PhotoSources.Type.FLICKR,
+          Type.FLICKR,
           ChromeLocale.localize('setting_mine'),
           false, false, true);
-    case PhotoSources.UseKey.SPACE_RED:
+    case UseKey.SPACE_RED:
       return new RedditSource(useKey, 'spaceRedditImages',
-          PhotoSources.Type.REDDIT,
+          Type.REDDIT,
           ChromeLocale.localize('setting_reddit_space'),
           true, false, 'r/spaceporn/');
-    case PhotoSources.UseKey.EARTH_RED:
+    case UseKey.EARTH_RED:
       return new RedditSource(useKey, 'earthRedditImages',
-          PhotoSources.Type.REDDIT,
+          Type.REDDIT,
           ChromeLocale.localize('setting_reddit_earth'),
           true, false, 'r/EarthPorn/');
-    case PhotoSources.UseKey.ANIMAL_RED:
+    case UseKey.ANIMAL_RED:
       return new RedditSource(useKey, 'animalRedditImages',
-          PhotoSources.Type.REDDIT,
+          Type.REDDIT,
           ChromeLocale.localize('setting_reddit_animal'),
           true, false, 'r/animalporn/');
     default:

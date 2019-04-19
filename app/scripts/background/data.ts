@@ -9,27 +9,26 @@
  * Manage the extension's global data
  */
 
-import * as Alarm from './alarm.js';
-
 import {IUnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
-
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
-
-import * as MyMsg from '../../scripts/my_msg.js';
-import * as Permissions from '../../scripts/permissions.js';
-import * as PhotoSources from '../../scripts/sources/photo_sources.js';
-import * as Weather from '../../scripts/weather.js';
-
-import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
+import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+
+import * as MyMsg from '../../scripts/my_msg.js';
+import * as Permissions from '../../scripts/permissions.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import * as Weather from '../../scripts/weather.js';
+import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
+
+import * as Alarm from './alarm.js';
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
@@ -235,7 +234,7 @@ export async function update() {
 
   if (oldVersion < 25) {
     // reload chromecast photos since asp is now a string
-    const key = PhotoSources.UseKey.CHROMECAST;
+    const key = PhotoSourceFactory.UseKey.CHROMECAST;
     const useChromecast = ChromeStorage.getBool(key, DEFS[key]);
     if (useChromecast) {
       try {
@@ -336,10 +335,10 @@ export async function processState(key = 'all') {
         if (key === 'fullResGoogle') {
           // full res photo state changed update albums or photos
 
-          const isAlbums = ChromeStorage.getBool(PhotoSources.UseKey.ALBUMS_GOOGLE, DEFS.useGoogleAlbums);
+          const isAlbums = ChromeStorage.getBool(PhotoSourceFactory.UseKey.ALBUMS_GOOGLE, DEFS.useGoogleAlbums);
           if (isAlbums) {
             // update albums
-            const useKey = PhotoSources.UseKey.ALBUMS_GOOGLE;
+            const useKey = PhotoSourceFactory.UseKey.ALBUMS_GOOGLE;
             try {
               await PhotoSources.process(useKey);
             } catch (err) {
@@ -350,10 +349,10 @@ export async function processState(key = 'all') {
             }
           }
 
-          const isPhotos = ChromeStorage.getBool(PhotoSources.UseKey.PHOTOS_GOOGLE, DEFS.useGooglePhotos);
+          const isPhotos = ChromeStorage.getBool(PhotoSourceFactory.UseKey.PHOTOS_GOOGLE, DEFS.useGooglePhotos);
           if (isPhotos) {
             // update photos
-            const useKey = PhotoSources.UseKey.PHOTOS_GOOGLE;
+            const useKey = PhotoSourceFactory.UseKey.PHOTOS_GOOGLE;
             try {
               await PhotoSources.process(useKey);
             } catch (err) {
@@ -363,11 +362,12 @@ export async function processState(key = 'all') {
               ChromeMsg.send(msg).catch(() => {});
             }
           }
-        } else if ((key !== PhotoSources.UseKey.ALBUMS_GOOGLE) && (key !== PhotoSources.UseKey.PHOTOS_GOOGLE)) {
+        } else if ((key !== PhotoSourceFactory.UseKey.ALBUMS_GOOGLE) &&
+            (key !== PhotoSourceFactory.UseKey.PHOTOS_GOOGLE)) {
           // update photo source - skip Google sources as they are handled
           // by the UI when the mode changes
           try {
-            await PhotoSources.process(key as PhotoSources.UseKey);
+            await PhotoSources.process(key as PhotoSourceFactory.UseKey);
           } catch (err) {
             const msg = MyMsg.TYPE.PHOTO_SOURCE_FAILED;
             msg.key = key;

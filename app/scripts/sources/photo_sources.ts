@@ -9,35 +9,10 @@
  * Manage the {@link PhotoSource} objects
  */
 
-import * as PhotoSourceFactory from './photo_source_factory.js';
-
+import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-/**
- * Enum for {@link PhotoSource} Type
- */
-export enum Type {
-  GOOGLE_USER = 'Google User',
-  GOOGLE = 'Google',
-  FLICKR = 'flickr',
-  REDDIT = 'reddit',
-}
-
-/**
- * Enum for {@link PhotoSource} useKey
- */
-export enum UseKey {
-  ALBUMS_GOOGLE = 'useGoogleAlbums',
-  PHOTOS_GOOGLE = 'useGooglePhotos',
-  CHROMECAST = 'useChromecast',
-  SPACE_RED = 'useSpaceReddit',
-  EARTH_RED = 'useEarthReddit',
-  ANIMAL_RED = 'useAnimalReddit',
-  INT_FLICKR = 'useInterestingFlickr',
-  AUTHOR = 'useAuthors',
-}
+import * as PhotoSourceFactory from './photo_source_factory.js';
 
 /**
  * Get the sources that are marked true in local storage
@@ -66,7 +41,7 @@ export function getSelectedSources() {
  */
 export function getUseKeys() {
   const ret = [];
-  for (const useKey of Object.values(UseKey)) {
+  for (const useKey of Object.values(PhotoSourceFactory.UseKey)) {
     ret.push(useKey);
   }
   return ret;
@@ -80,7 +55,7 @@ export function getUseKeys() {
  */
 export function isUseKey(keyName: string) {
   let ret = false;
-  for (const useKey of Object.values(UseKey)) {
+  for (const useKey of Object.values(PhotoSourceFactory.UseKey)) {
     if (useKey === keyName) {
       ret = true;
       break;
@@ -95,7 +70,7 @@ export function isUseKey(keyName: string) {
  * @param useKey - The photo source to retrieve
  * @throws An error if processing failed
  */
-export async function process(useKey: UseKey) {
+export async function process(useKey: PhotoSourceFactory.UseKey) {
   const source = PhotoSourceFactory.create(useKey);
   if (source) {
     await source.process();
