@@ -95,7 +95,7 @@ function close() {
  * @param cmd - keyboard command
  */
 function onKeyCommand(cmd: string) {
-  if (SSRunner.isInteractive()) {
+  if (SSRunner.isStarted() && SSRunner.isInteractive()) {
     if (cmd === 'ss-toggle-paused') {
       ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
       SSRunner.togglePaused();
@@ -140,7 +140,7 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
  */
 function onKey(ev: KeyboardEvent) {
   const keyName = ev.key;
-  if (!SSRunner.isStarted()) {
+  if (!SSRunner.isStarted() && !SSRunner.isInteractive()) {
     close();
     return;
   }
