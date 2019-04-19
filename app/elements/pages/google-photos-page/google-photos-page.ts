@@ -5,8 +5,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {AlbumsViewElement} from './albums-view';
-import {PhotosViewElement} from './photos-view';
 import {PaperToggleButtonElement} from '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
@@ -29,8 +27,8 @@ import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import './albums-view.js';
-import './photos-view.js';
+import {AlbumsViewElement} from './albums-view.js';
+import {PhotosViewElement} from './photos-view.js';
 
 import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/my_icons.js';
@@ -81,7 +79,7 @@ export class GooglePhotosPageElement extends BaseElement {
         : ChromeLocale.localize('tooltip_refresh_photos');
   }
 
-  /** Model tooltip label */
+  /** Mode tooltip label */
   @computed('isAlbumMode')
   get modeTooltipLabel() {
     return this.isAlbumMode
@@ -89,7 +87,7 @@ export class GooglePhotosPageElement extends BaseElement {
         : ChromeLocale.localize('tooltip_google_mode_photos');
   }
 
-  /** Model icon */
+  /** Mode icon */
   @computed('isAlbumMode')
   get modeIcon() {
     return this.isAlbumMode ? 'myicons:photo-album' : 'myicons:photo';
@@ -253,7 +251,6 @@ export class GooglePhotosPageElement extends BaseElement {
       ChromeStorage.asyncSet('googleImages', []).catch(() => {});
       this.loadAlbumList().catch(() => {});
     } else {
-      // remove album selections
       this.albumsView.removeSelectedAlbums();
       this.photosView.setPhotoCount().catch(() => {});
     }
