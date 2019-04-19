@@ -16,6 +16,16 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
+ * Enum for {@link PhotoSource} Type
+ */
+export enum Type {
+  GOOGLE_USER = 'Google User',
+  GOOGLE = 'Google',
+  FLICKR = 'flickr',
+  REDDIT = 'reddit',
+}
+
+/**
  * Enum for {@link PhotoSource} useKey
  */
 export enum UseKey {

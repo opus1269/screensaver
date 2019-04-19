@@ -30,37 +30,44 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 export function create(useKey: PhotoSources.UseKey) {
   switch (useKey) {
     case PhotoSources.UseKey.ALBUMS_GOOGLE:
-      return new GoogleSource(useKey, 'albumSelections', 'Google User',
+      return new GoogleSource(useKey, 'albumSelections',
+          PhotoSources.Type.GOOGLE_USER,
           ChromeLocale.localize('google_title'),
           true, true, null);
     case PhotoSources.UseKey.PHOTOS_GOOGLE:
       // not implemented yet
-      return new GoogleSource(useKey, 'googleImages', 'Google User',
+      return new GoogleSource(useKey, 'googleImages',
+          PhotoSources.Type.GOOGLE_USER,
           ChromeLocale.localize('google_title_photos'),
           true, false, null);
     case PhotoSources.UseKey.CHROMECAST:
-      return new CCSource(useKey, 'ccImages', 'Google',
+      return new CCSource(useKey, 'ccImages',
+          PhotoSources.Type.GOOGLE,
           ChromeLocale.localize('setting_chromecast'),
           false, false, null);
     case PhotoSources.UseKey.INT_FLICKR:
       return new FlickrSource(useKey, 'flickrInterestingImages',
-          'flickr',
+          PhotoSources.Type.FLICKR,
           ChromeLocale.localize('setting_flickr_int'),
           true, false, false);
     case PhotoSources.UseKey.AUTHOR:
-      return new FlickrSource(useKey, 'authorImages', 'flickr',
+      return new FlickrSource(useKey, 'authorImages',
+          PhotoSources.Type.FLICKR,
           ChromeLocale.localize('setting_mine'),
           false, false, true);
     case PhotoSources.UseKey.SPACE_RED:
-      return new RedditSource(useKey, 'spaceRedditImages', 'reddit',
+      return new RedditSource(useKey, 'spaceRedditImages',
+          PhotoSources.Type.REDDIT,
           ChromeLocale.localize('setting_reddit_space'),
           true, false, 'r/spaceporn/');
     case PhotoSources.UseKey.EARTH_RED:
-      return new RedditSource(useKey, 'earthRedditImages', 'reddit',
+      return new RedditSource(useKey, 'earthRedditImages',
+          PhotoSources.Type.REDDIT,
           ChromeLocale.localize('setting_reddit_earth'),
           true, false, 'r/EarthPorn/');
     case PhotoSources.UseKey.ANIMAL_RED:
-      return new RedditSource(useKey, 'animalRedditImages', 'reddit',
+      return new RedditSource(useKey, 'animalRedditImages',
+          PhotoSources.Type.REDDIT,
           ChromeLocale.localize('setting_reddit_animal'),
           true, false, 'r/animalporn/');
     default:
