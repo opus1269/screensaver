@@ -24,13 +24,12 @@ import {BaseElement} from '../../elements/shared/base-element/base-element.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
-import '../../scripts/screensaver/ss_events.js';
-
-import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
+import * as SSEvents from '../../scripts/screensaver/ss_events.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
+import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as SSViews from '../../scripts/screensaver/ss_views.js';
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -125,6 +124,28 @@ export class ScreensaverElement extends BaseElement {
   protected pages: NeonAnimatedPagesElement;
 
   /**
+   * Called when the element is added to a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public connectedCallback() {
+    super.connectedCallback();
+
+    // listen for events
+    SSEvents.addListeners();
+  }
+
+  /**
+   * Called when the element is removed from a document.
+   * Can be called multiple times during the lifetime of an element.
+   */
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+
+    // stop listening for events
+    SSEvents.removeListeners();
+  }
+
+  /**
    * Called during Polymer-specific element initialization.
    * Called once, the first time the element is attached to the document.
    */
@@ -141,7 +162,7 @@ export class ScreensaverElement extends BaseElement {
 
       await ScreensaverElement._setZoom();
 
-      this._setupPhotoTransitions();
+      this.setupPhotoTransitions();
     }, 0);
   }
 
@@ -152,7 +173,7 @@ export class ScreensaverElement extends BaseElement {
    */
   public async launch(delay: number = 2000) {
     try {
-      const hasPhotos = await this._loadPhotos();
+      const hasPhotos = await this.loadPhotos();
       if (hasPhotos) {
         // initialize the views
         SSViews.initialize(this.pages);
@@ -161,7 +182,7 @@ export class ScreensaverElement extends BaseElement {
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
 
         // set time label timer
-        this._setupTime();
+        this.setupTime();
 
         // kick off the slide show
         SSRunner.start(delay);
@@ -215,7 +236,7 @@ export class ScreensaverElement extends BaseElement {
    * @throws An error if we failed to load photos
    * @returns true if there is at least one photo
    */
-  protected async _loadPhotos() {
+  protected async loadPhotos() {
     let sources = PhotoSources.getSelectedSources();
     sources = sources || [];
 
@@ -240,7 +261,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Process settings related to between photo transitions
    */
-  protected _setupPhotoTransitions() {
+  protected setupPhotoTransitions() {
     let type: TRANS_TYPE = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
     if (type === TRANS_TYPE.RANDOM) {
       // pick random transition
@@ -252,19 +273,19 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Setup timer for time label
    */
-  protected _setupTime() {
+  protected setupTime() {
     const showTime = ChromeStorage.getInt('showTime', 0);
     if (showTime > 0) {
-      this._setTimeLabel();
+      this.setTimeLabel();
       // update current time once a minute
-      setInterval(this._setTimeLabel.bind(this), 61 * 1000);
+      setInterval(this.setTimeLabel.bind(this), 61 * 1000);
     }
   }
 
   /**
    * Set the time label
    */
-  protected _setTimeLabel() {
+  protected setTimeLabel() {
     let label = '';
     const showTime = ChromeStorage.getInt('showTime', 0);
     if ((showTime !== 0)) {
@@ -280,7 +301,7 @@ export class ScreensaverElement extends BaseElement {
    * @param newValue - new value
    * @param oldValue - old value
    */
-  protected _pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
+  protected pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
     if (typeof oldValue === 'undefined') {
       return;
     }
@@ -296,7 +317,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Event: An image failed to load
    */
-  protected async _onImageError(ev: CustomEvent) {
+  protected async onImageError(ev: CustomEvent) {
     if (errHandler.isUpdating) {
       // another error event is already handling this
       return;

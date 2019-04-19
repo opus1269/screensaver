@@ -18,8 +18,6 @@ import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytic
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /**
  * Starting mouse position
  *
@@ -37,9 +35,50 @@ interface IMousePosition {
 const _MOUSE_START: IMousePosition = {x: null, y: null};
 
 /**
+ * Listen for events
+ */
+export function addListeners() {
+
+  // listen for chrome messages
+  ChromeMsg.addListener(onChromeMessage);
+
+  // listen for key events
+  window.addEventListener('keydown', onKey, false);
+
+  // listen for mousemove events
+  window.addEventListener('mousemove', onMouseMove, false);
+
+  // listen for mouse click events
+  window.addEventListener('click', onMouseClick, false);
+
+  // listen for special keyboard commands
+  chrome.commands.onCommand.addListener(onKeyCommand);
+}
+
+/**
+ * Stop listening for events
+ */
+export function removeListeners() {
+  // listen for chrome messages
+  ChromeMsg.removeListener(onChromeMessage);
+
+  // listen for key events
+  window.removeEventListener('keydown', onKey, false);
+
+  // listen for mousemove events
+  window.removeEventListener('mousemove', onMouseMove, false);
+
+  // listen for mouse click events
+  window.removeEventListener('click', onMouseClick, false);
+
+  // listen for special keyboard commands
+  chrome.commands.onCommand.removeListener(onKeyCommand);
+}
+
+/**
  * Close ourselves
  */
-function _close() {
+function close() {
   // send message to other screen savers to close themselves
   ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
   setTimeout(() => {
@@ -55,7 +94,7 @@ function _close() {
  *
  * @param cmd - keyboard command
  */
-function _onKeyCommand(cmd: string) {
+function onKeyCommand(cmd: string) {
   if (SSRunner.isInteractive()) {
     if (cmd === 'ss-toggle-paused') {
       ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
@@ -81,10 +120,10 @@ function _onKeyCommand(cmd: string) {
  * @param response - function to call once after processing
  * @returns true if asynchronous
  */
-function _onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
-                          response: (arg0: object) => void) {
+function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
+                         response: (arg0: object) => void) {
   if (request.message === MyMsg.TYPE.SS_CLOSE.message) {
-    _close();
+    close();
   } else if (request.message === MyMsg.TYPE.SS_IS_SHOWING.message) {
     // let people know we are here
     response({message: 'OK'});
@@ -99,10 +138,10 @@ function _onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Me
  *
  * @param ev - KeyboardEvent
  */
-function _onKey(ev: KeyboardEvent) {
+function onKey(ev: KeyboardEvent) {
   const keyName = ev.key;
   if (!SSRunner.isStarted()) {
-    _close();
+    close();
     return;
   }
   switch (keyName) {
@@ -113,11 +152,11 @@ function _onKey(ev: KeyboardEvent) {
     case 'ArrowRight':
       // fallthrough
       if (!SSRunner.isInteractive()) {
-        _close();
+        close();
       }
       break;
     default:
-      _close();
+      close();
       break;
   }
 }
@@ -127,13 +166,13 @@ function _onKey(ev: KeyboardEvent) {
  *
  * @param ev - mousemove event
  */
-function _onMouseMove(ev: MouseEvent) {
+function onMouseMove(ev: MouseEvent) {
   if (_MOUSE_START.x && _MOUSE_START.y) {
     const deltaX = Math.abs(ev.clientX - _MOUSE_START.x);
     const deltaY = Math.abs(ev.clientY - _MOUSE_START.y);
     if (Math.max(deltaX, deltaY) > 10) {
       // close after a minimum amount of mouse movement
-      _close();
+      close();
     }
   } else {
     // first move, set values
@@ -145,29 +184,14 @@ function _onMouseMove(ev: MouseEvent) {
 /**
  * Event: mouse click
  */
-function _onMouseClick() {
+function onMouseClick() {
   if (SSRunner.isStarted()) {
     const idx = SSViews.getSelectedIndex();
-    const allowPhotoClicks = ChromeStorage.getBool('allowPhotoClicks');
-    if (allowPhotoClicks && (typeof (idx) !== 'undefined')) {
+    const allowPhotoClicks = ChromeStorage.getBool('allowPhotoClicks', true);
+    if (allowPhotoClicks && (idx !== undefined)) {
       const view = SSViews.get(idx);
       view.photo.showSource();
     }
   }
-  _close();
+  close();
 }
-
-// listen for chrome messages
-ChromeMsg.addListener(_onChromeMessage);
-
-// listen for key events
-window.addEventListener('keydown', _onKey, false);
-
-// listen for mousemove events
-window.addEventListener('mousemove', _onMouseMove, false);
-
-// listen for mouse click events
-window.addEventListener('click', _onMouseClick, false);
-
-// listen for special keyboard commands
-chrome.commands.onCommand.addListener(_onKeyCommand);
