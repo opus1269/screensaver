@@ -84,7 +84,7 @@ export class SSViewFrame extends SSView {
     const timeStyle = this.time.style;
     const image = this.image;
     const imageStyle = image.style;
-    const img: any = image.$.img;
+    const img: HTMLImageElement = image.$.img as HTMLImageElement;
     const imgStyle = img.style;
     const photo = this.photo;
     const ar = photo.getAspectRatio();

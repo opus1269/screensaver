@@ -7,7 +7,13 @@
 
 import {AppDrawerLayoutElement} from '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppDrawerElement} from '../../node_modules/@polymer/app-layout/app-drawer/app-drawer';
+import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper-dialog';
 import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/paper-listbox';
+
+import {SettingsPageElement} from '../../elements/pages/settings-page/settings-page';
+
+import {ErrorDialogElement} from '../../elements/error-dialog/error-dialog';
+import {ConfirmDialogElement} from '../../elements/confirm-dialog/confirm-dialog';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -46,14 +52,15 @@ import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorag
 
 import {BaseElement} from '../shared/base-element/base-element.js';
 
-import '../../elements/pages/settings-page/settings-page.js';
 import {ErrorPageElement} from '../../elements/pages/error-page/error-page.js';
 import {GooglePhotosPageElement} from '../../elements/pages/google-photos-page/google-photos-page.js';
 import {HelpPageElement} from '../../elements/pages/help-page/help-page.js';
+import '../../elements/pages/settings-page/settings-page.js';
 
-import '../../elements/my_icons.js';
 import '../../elements/error-dialog/error-dialog.js';
 import '../../elements/confirm-dialog/confirm-dialog.js';
+
+import '../../elements/my_icons.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
@@ -187,16 +194,16 @@ export class AppMainElement extends BaseElement {
   protected appDrawerLayout: AppDrawerLayoutElement;
 
   @query('#errorDialog')
-  protected errorDialog: any;
+  protected errorDialog: ErrorDialogElement;
 
   @query('#confirmDialog')
-  protected confirmDialog: any;
+  protected confirmDialog: ConfirmDialogElement;
 
   @query('#permissionsDialog')
-  protected permissionsDialog: any;
+  protected permissionsDialog: PaperDialogElement;
 
   @query('#settingsPage')
-  protected settingsPage: any;
+  protected settingsPage: SettingsPageElement;
 
   @query('#googlePhotosInsertion')
   protected googlePhotosInsertion: HTMLElement;

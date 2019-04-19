@@ -36,7 +36,7 @@ export class SSViewFull extends SSView {
    */
   public render() {
 
-    const img: any = this.image.$.img;
+    const img: HTMLImageElement = this.image.$.img as HTMLImageElement;
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.objectFit = 'fill';

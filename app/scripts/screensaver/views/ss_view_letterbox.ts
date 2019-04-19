@@ -44,7 +44,7 @@ export class SSViewLetterbox extends SSView {
     const ar = this.photo.getAspectRatio();
     const image = this.image;
     const imageStyle = image.style;
-    const img: any = image.$.img;
+    const img: HTMLImageElement = image.$.img as HTMLImageElement;
     const imgStyle = img.style;
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;
