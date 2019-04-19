@@ -372,6 +372,7 @@ export class AppMainElement extends BaseElement {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Event: Navigation menu selected. Route to proper page
    *

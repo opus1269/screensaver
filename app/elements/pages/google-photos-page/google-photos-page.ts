@@ -6,6 +6,8 @@
  */
 
 import {PaperToggleButtonElement} from '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button';
+import {AlbumsViewElement} from './albums-view';
+import {PhotosViewElement} from './photos-view';
 
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -27,11 +29,12 @@ import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import {AlbumsViewElement} from './albums-view.js';
-import {PhotosViewElement} from './photos-view.js';
+import '../../../elements/my_icons.js';
+
+import './albums-view.js';
+import './photos-view.js';
 
 import {Options} from '../../../scripts/options/options.js';
-import '../../../elements/my_icons.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
@@ -100,13 +103,13 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   @query('#photosView')
-  private photosView: PhotosViewElement;
+  protected photosView: PhotosViewElement;
 
   @query('#albumsView')
-  private albumsView: AlbumsViewElement;
+  protected albumsView: AlbumsViewElement;
 
   @query('#googlePhotosToggle')
-  private googlePhotosToggle: PaperToggleButtonElement;
+  protected googlePhotosToggle: PaperToggleButtonElement;
 
   /**
    * Called during Polymer-specific element initialization.

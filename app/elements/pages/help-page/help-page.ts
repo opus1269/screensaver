@@ -37,6 +37,7 @@ export class HelpPageElement extends BaseElement {
   @property({type: String})
   protected readonly version = encodeURIComponent(ChromeUtils.getVersion());
 
+  // noinspection JSMethodCanBeStatic,JSUnusedGlobalSymbols
   /**
    * computed binding: Get a mailto url
    *

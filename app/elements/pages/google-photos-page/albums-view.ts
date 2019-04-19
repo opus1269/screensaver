@@ -124,25 +124,25 @@ export class AlbumsViewElement extends BaseElement {
     return Promise.resolve(ct);
   }
 
-  /** The array of all albums */
-  @property({type: Array, notify: true})
-  public albums: IAlbum[] = [];
+  /** Flag to display the loading... UI */
+  @property({type: Boolean})
+  public waitForLoad = false;
 
   /** Status of the option permission for the Google Photos API */
   @property({type: String, notify: true})
   public permPicasa: string = Permissions.STATE.notSet;
 
+  /** The array of all albums */
+  @property({type: Array, notify: true})
+  protected albums: IAlbum[] = [];
+
   /** Flag to indicate if UI is disabled */
   @property({type: Boolean})
-  public disabled = false;
-
-  /** Flag to display the loading... UI */
-  @property({type: Boolean})
-  public waitForLoad = false;
+  protected disabled = false;
 
   /** Status label for waiter */
   @property({type: Boolean})
-  public waiterStatus = '';
+  protected waiterStatus = '';
 
   /** Hidden state of the main ui */
   @computed('waitForLoad', 'permPicasa')
@@ -156,7 +156,7 @@ export class AlbumsViewElement extends BaseElement {
 
   /** iron-list of albums */
   @query('#ironList')
-  public ironList: IronListElement;
+  protected ironList: IronListElement;
 
   /**
    * Called when the element is added to a document.
@@ -454,6 +454,7 @@ export class AlbumsViewElement extends BaseElement {
     }
   }
 
+  // noinspection JSMethodCanBeStatic,JSUnusedGlobalSymbols
   /**
    * Computed binding: Set photo count label on an album
    *

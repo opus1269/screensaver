@@ -314,6 +314,7 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Event: An image failed to load
    */

@@ -42,38 +42,14 @@ import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 
 /**
- * Photo categories
- */
-const CATS = [
-  {name: 'LANDSCAPES', label: ChromeLocale.localize('photo_cat_landscapes')},
-  {name: 'CITYSCAPES', label: ChromeLocale.localize('photo_cat_cityscapes')},
-  {name: 'LANDMARKS', label: ChromeLocale.localize('photo_cat_landmarks')},
-  {name: 'PEOPLE', label: ChromeLocale.localize('photo_cat_people')},
-  {name: 'ANIMALS', label: ChromeLocale.localize('photo_cat_animals')},
-  {name: 'PETS', label: ChromeLocale.localize('photo_cat_pets')},
-  {name: 'PERFORMANCES', label: ChromeLocale.localize('photo_cat_performances')},
-  {name: 'SPORT', label: ChromeLocale.localize('photo_cat_sport')},
-  {name: 'FOOD', label: ChromeLocale.localize('photo_cat_food')},
-  {name: 'SELFIES', label: ChromeLocale.localize('photo_cat_selfies')},
-];
-
-/**
  * Polymer element for the Google Photos page photos view UI
  */
 @customElement('photos-view')
 export class PhotosViewElement extends BaseElement {
 
-  /** Array of photo categories */
-  @property({type: Array})
-  public cats = CATS;
-
   /** Do we need to reload the photos */
   @property({type: Boolean, notify: true})
   public needsPhotoRefresh = true;
-
-  /** Count for photo mode */
-  @property({type: Number, notify: true})
-  public photoCount = 0;
 
   /** Flag to indicate if we should not filter photos */
   @property({type: Boolean, notify: true, observer: '_noFilterChanged'})
@@ -91,9 +67,28 @@ export class PhotosViewElement extends BaseElement {
   @property({type: Boolean})
   public waitForLoad = false;
 
+  /** Array of photo categories */
+  @property({type: Array})
+  protected readonly cats = [
+    {name: 'LANDSCAPES', label: ChromeLocale.localize('photo_cat_landscapes')},
+    {name: 'CITYSCAPES', label: ChromeLocale.localize('photo_cat_cityscapes')},
+    {name: 'LANDMARKS', label: ChromeLocale.localize('photo_cat_landmarks')},
+    {name: 'PEOPLE', label: ChromeLocale.localize('photo_cat_people')},
+    {name: 'ANIMALS', label: ChromeLocale.localize('photo_cat_animals')},
+    {name: 'PETS', label: ChromeLocale.localize('photo_cat_pets')},
+    {name: 'PERFORMANCES', label: ChromeLocale.localize('photo_cat_performances')},
+    {name: 'SPORT', label: ChromeLocale.localize('photo_cat_sport')},
+    {name: 'FOOD', label: ChromeLocale.localize('photo_cat_food')},
+    {name: 'SELFIES', label: ChromeLocale.localize('photo_cat_selfies')},
+  ];
+
+  /** Count for photo mode */
+  @property({type: Number, notify: true})
+  protected photoCount = 0;
+
   /** Status label for waiter */
   @property({type: Boolean})
-  public waiterStatus = '';
+  protected waiterStatus = '';
 
   /** Hidden state of the main ui */
   @computed('waitForLoad', 'permPicasa')
