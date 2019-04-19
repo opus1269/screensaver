@@ -188,7 +188,7 @@ export class SettingsPageElement extends BaseElement {
    * @param useName - key
    */
   public deselectPhotoSource(useName: string) {
-    this._setPhotoSourceChecked(useName, false);
+    this.setPhotoSourceChecked(useName, false);
   }
 
   /**
@@ -230,15 +230,15 @@ export class SettingsPageElement extends BaseElement {
    */
   @listen('tap', 'select')
   public onSelectAllTapped() {
-    this._setPhotoSourcesChecked(true);
+    this.setPhotoSourcesChecked(true);
   }
 
   /**
    * Event: deselect all {@link PhotoSource} objects tapped
    */
   @listen('tap', 'deselect')
-  public _onDeselectAllTapped() {
-    this._setPhotoSourcesChecked(false);
+  public onDeselectAllTapped() {
+    this.setPhotoSourcesChecked(false);
   }
 
   /**
@@ -252,9 +252,9 @@ export class SettingsPageElement extends BaseElement {
   /**
    * Event: Process the background
    */
-  @listen('tap', 'select')
+  @listen('tap', 'allowBackground')
   public onChromeBackgroundTapped() {
-    const METHOD = 'SettingsPage._onShowWeatherTapped';
+    const METHOD = 'SettingsPage.onChromeBackgroundTapped';
     const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
     // this used to not be updated yet in Polymer 1
     const isSet = ChromeStorage.getBool('allowBackground');
@@ -274,7 +274,7 @@ export class SettingsPageElement extends BaseElement {
    */
   @listen('tap', 'showWeather')
   public async onShowWeatherTapped() {
-    const METHOD = 'SettingsPage._onShowWeatherTapped';
+    const METHOD = 'SettingsPage.onShowWeatherTapped';
     const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
     const ERR_TEXT = ChromeLocale.localize('err_weather_perm');
     // this used to not be updated yet in Polymer 1
@@ -357,7 +357,7 @@ export class SettingsPageElement extends BaseElement {
    * @param useName - source name
    * @param state - checked state
    */
-  protected _setPhotoSourceChecked(useName: string, state: boolean) {
+  protected setPhotoSourceChecked(useName: string, state: boolean) {
     const selector = `[name=${useName}]`;
     const el = this.shadowRoot.querySelector(selector) as SettingToggleElement;
     if (el && !useName.includes('useGoogle')) {
@@ -370,10 +370,10 @@ export class SettingsPageElement extends BaseElement {
    *
    * @param state - checked state
    */
-  protected _setPhotoSourcesChecked(state: boolean) {
+  protected setPhotoSourcesChecked(state: boolean) {
     const useKeys = PhotoSources.getUseKeys();
     for (const useKey of useKeys) {
-      this._setPhotoSourceChecked(useKey, state);
+      this.setPhotoSourceChecked(useKey, state);
     }
   }
 
