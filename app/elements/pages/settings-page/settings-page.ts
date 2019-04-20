@@ -371,9 +371,9 @@ export class SettingsPageElement extends BaseElement {
    * @param state - checked state
    */
   protected setPhotoSourcesChecked(state: boolean) {
-    const useKeys = PhotoSources.getUseKeys();
-    for (const useKey of useKeys) {
-      this.setPhotoSourceChecked(useKey, state);
+    const useKeyValues = PhotoSources.getUseKeyValues();
+    for (const useKeyValue of useKeyValues) {
+      this.setPhotoSourceChecked(useKeyValue, state);
     }
   }
 

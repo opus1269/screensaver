@@ -21,11 +21,11 @@ import * as PhotoSourceFactory from './photo_source_factory.js';
  */
 export function getSelectedSources() {
   const ret = [];
-  const useKeys = getUseKeys();
-  for (const useKey of useKeys) {
-    const isSelected = ChromeStorage.getBool(useKey, false);
+  const useKeyValues = getUseKeyValues();
+  for (const useKeyValue of useKeyValues) {
+    const isSelected = ChromeStorage.getBool(useKeyValue, false);
     if (isSelected) {
-      const source = PhotoSourceFactory.create(useKey);
+      const source = PhotoSourceFactory.create(useKeyValue);
       if (source) {
         ret.push(source);
       }
@@ -35,11 +35,11 @@ export function getSelectedSources() {
 }
 
 /**
- * Get all the usage keys
+ * Get all the UseKey values
  *
  * @returns Array of usage keys
  */
-export function getUseKeys() {
+export function getUseKeyValues() {
   const ret = [];
   for (const useKey of Object.values(PhotoSourceFactory.UseKey)) {
     ret.push(useKey);
