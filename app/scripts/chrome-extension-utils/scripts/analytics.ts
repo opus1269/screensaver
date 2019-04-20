@@ -16,10 +16,6 @@ declare var ga: any;
 
 /**
  * Google Analytics Event type
- *
- * @property eventCategory - category
- * @property eventAction - action
- * @property eventLabel - label
  */
 export interface IEventType {
   eventCategory: string;
@@ -131,7 +127,7 @@ export const EVENT = {
  * @param appId - extension Id
  * @param appVersion - extension version
  */
-export function initialize(trackingId: string, appName: string , appId: string , appVersion: string) {
+export function initialize(trackingId: string, appName: string, appId: string, appVersion: string) {
   // Standard Google Universal Analytics code
   // @ts-ignore
   (function(i, s, o, g, r, a, m) {
@@ -224,15 +220,15 @@ export function error(label = 'unknown', action = 'unknownMethod') {
  * @param message - the error message
  * @param fatal - true if fatal
  */
-export function exception(theError: Error, message: string = null, fatal = false) {
+export function exception(theError: Error | null, message: string = null, fatal = false) {
   try {
     let msg = 'Unknown';
     if (message) {
       msg = message;
-    } else if (theError.message) {
+    } else if (theError && theError.message) {
       msg = theError.message;
     }
-    if (theError.stack) {
+    if (theError && theError.stack) {
       msg += `\n\n${theError.stack}`;
     }
     const ex = {

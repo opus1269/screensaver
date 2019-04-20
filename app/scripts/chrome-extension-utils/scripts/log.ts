@@ -13,10 +13,6 @@ import * as ChromeGA from './analytics.js';
 import {ChromeLastError} from './last_error.js';
 import * as ChromeLocale from './locales.js';
 
-import * as ChromeUtils from './utils.js';
-
-import './ex_handler.js';
-
 /**
  * Log an error
  *
@@ -43,18 +39,17 @@ export function error(msg: string = null, meth: string = null,
  * @param fatal - true if fatal
  * @param title - a title for the exception
  */
-export function exception(err: Error, msg: string = null, fatal = false,
+export function exception(err: Error|null, msg: string = null, fatal = false,
                           title: string = null) {
   try {
     let errMsg = msg;
     if (!errMsg && err && err.message) {
       errMsg = err.message;
     }
-    title = title ||
-        ChromeLocale.localize('err_exception', 'An exception occurred');
+    title = title || ChromeLocale.localize('err_exception', 'An exception occurred');
     ChromeLastError.save(new ChromeLastError(title, errMsg)).catch(() => {});
     ChromeGA.exception(err, msg, fatal);
   } catch (err) {
-    ChromeUtils.noop();
+    // ignore
   }
 }

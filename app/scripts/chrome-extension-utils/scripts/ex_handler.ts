@@ -6,28 +6,25 @@
  */
 
 /**
- * Global exceptions handler
+ * Global exceptions handlers
  */
 
 import * as ChromeLog from './log.js';
 
-/**
- * Replace global error handler with Google Analytics for logging purposes.
- */
-class ExHandler {
-
-  constructor() {
-    if (typeof window.onerror === 'object') {
-      // global error handler
-      window.onerror = function(message, url, line, col, errObject) {
-        if (ChromeLog && errObject) {
-          ChromeLog.exception(errObject, null, true);
-        }
-      };
-    }
+// Listen for uncaught promises for logging purposes. - Chrome only
+window.addEventListener('unhandledrejection', function(ev: PromiseRejectionEvent) {
+  if (ChromeLog && ev) {
+    const msg = (ev.reason && ev.reason.message) ? ev.reason.message : 'Uncaught promise rejection';
+    ChromeLog.exception(null, msg, true);
   }
+});
 
+// Replace global error handler for logging purposes.
+if (typeof window.onerror === 'object') {
+  // global error handler
+  window.onerror = function(message, url, line, col, errObject) {
+    if (ChromeLog && errObject) {
+      ChromeLog.exception(errObject, null, true);
+    }
+  };
 }
-
-new ExHandler(); // tslint:disable-line no-unused-expression
-
