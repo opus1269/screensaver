@@ -12,7 +12,6 @@
 import {Screensaver} from '../../scripts/screensaver/screensaver.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
-import * as SSViews from './ss_views.js';
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
@@ -71,7 +70,7 @@ export function getWaitTime() {
 /**
  * Set next selected index
  *
- * @param idx - replace index in {@link SSViews}
+ * @param idx - replace index
  */
 export function setReplaceIdx(idx: number) {
   VARS.replaceIdx = idx;
@@ -107,11 +106,11 @@ export function isPaused() {
 /**
  * Is the given idx a part of the current animation pair
  *
- * @param idx - index into {@link SSViews}
+ * @param idx - index
  * @returns true if selected or last selected
  */
 export function isCurrentPair(idx: number) {
-  const selected = SSViews.getSelectedIndex();
+  const selected = Screensaver.getSelectedSlideIndex();
   return ((idx === selected) || (idx === VARS.lastSelected));
 }
 
@@ -199,8 +198,8 @@ function runShow(newIdx: number | null = null) {
     return;
   }
 
-  const selected = SSViews.getSelectedIndex();
-  const viewLen = SSViews.getCount();
+  const selected = Screensaver.getSelectedSlideIndex();
+  const viewLen = Screensaver.getSlideCount();
   let curIdx = (newIdx === null) ? selected : newIdx;
   curIdx = !isStarted() ? 0 : curIdx;
   let nextIdx = (curIdx === viewLen - 1) ? 0 : curIdx + 1;
@@ -211,7 +210,7 @@ function runShow(newIdx: number | null = null) {
     nextIdx = 0;
   }
 
-  nextIdx = getNextViewIdx(nextIdx);
+  nextIdx = getNextSlideIdx(nextIdx);
   if (nextIdx !== -1) {
     // the next photo is ready
 
@@ -220,16 +219,17 @@ function runShow(newIdx: number | null = null) {
     }
 
     // setup photo
-    const view = SSViews.get(nextIdx);
-    view.render();
-    view.slide.startAnimation();
+    const slide = Screensaver.getSlide(nextIdx);
+    slide.startAnimation();
 
     // track the photo history
-    SSHistory.add(newIdx, nextIdx, VARS.replaceIdx);
+    if (VARS.interactive) {
+      SSHistory.add(newIdx, nextIdx, VARS.replaceIdx);
+    }
 
     // update selected so the animation runs
     VARS.lastSelected = selected;
-    SSViews.setSelectedIndex(nextIdx);
+    Screensaver.setSelectedSlideIndex(nextIdx);
 
     if (newIdx === null) {
       // load next photo from master array
@@ -267,11 +267,11 @@ function setWaitTime(waitTime: number) {
 /**
  * Get the index of the next view to display
  *
- * @param idx - index into {@link SSViews} to start search at
- * @returns The index into {@link SSViews} to display next, -1 if none are ready
+ * @param idx - index to start search at
+ * @returns The index to display next, -1 if none are ready
  */
-function getNextViewIdx(idx: number) {
-  const ret = SSViews.findLoadedPhoto(idx);
+function getNextSlideIdx(idx: number) {
+  const ret = Screensaver.findLoadedPhoto(idx);
   if (ret === -1) {
     // no photos ready, wait a little, try again
     setWaitTime(500);
@@ -283,26 +283,26 @@ function getNextViewIdx(idx: number) {
 }
 
 /**
- * Replace the photo in the SSView at the given index with the next SSPhoto
+ * Replace the photo at the given index with the next SSPhoto
  *
- * @param idx - {@link SSViews} index to replace
+ * @param idx - index to replace
  */
 function replacePhoto(idx: number) {
   if (idx >= 0) {
-    if (SSViews.isSelectedIndex(idx)) {
+    if (Screensaver.isSelectedSlideIndex(idx)) {
       return;
     }
 
-    const viewLength = SSViews.getCount();
+    const slideLength = Screensaver.getSlideCount();
     const photoLen = SSPhotos.getCount();
-    if (photoLen <= viewLength) {
+    if (photoLen <= slideLength) {
+      // number of photos <= number of slides
       return;
     }
 
-    const photo = SSPhotos.getNextUsable(SSViews.getPhotos());
+    const photo = SSPhotos.getNextUsable(Screensaver.getPhotos());
     if (photo) {
-      const view = SSViews.get(idx);
-      view.setPhoto(photo);
+      Screensaver.replacePhoto(photo, idx);
     }
   }
 }

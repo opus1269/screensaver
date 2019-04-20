@@ -71,7 +71,7 @@ export function initialize(pages: NeonAnimatedPagesElement) {
   SSPhotos.setCurrentIndex(len);
 
   // set and force render of animated pages
-  Screensaver.setViews(VIEWS);
+  // Screensaver.setViews(VIEWS);
 
   // set the Elements of each view
   VIEWS.forEach((view: SSView, index: number) => {

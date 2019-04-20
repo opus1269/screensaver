@@ -9,9 +9,9 @@
  * Track the recent traversal history of a Screensaver
  */
 
+import {Screensaver} from './screensaver.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSRunner from './ss_runner.js';
-import * as SSViews from './ss_views.js';
 
 import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
@@ -19,9 +19,9 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
  * History item
  */
 interface IItem {
-  /** {@link SSViews} current index */
-  viewsIdx: number;
-  /** {@link SSViews} next index */
+  /** current slide index */
+  currentIdx: number;
+  /** next slide index */
   replaceIdx: number;
   /** {@link SSPhoto} unique id */
   photoId: number;
@@ -38,14 +38,14 @@ const HIST = {
   /** Index into arr */
   idx: -1,
   /** Max length of history, it will actually have 1 item more */
-  max: SSViews.MAX_VIEWS,
+  max: 10,
 };
 
 /**
  * Initialize the history
  */
 export function initialize() {
-  HIST.max = Math.min(SSPhotos.getCount(), HIST.max);
+  HIST.max = Math.min(SSPhotos.getCount(), Screensaver.getMaxSlideCount());
 }
 
 /**
@@ -57,14 +57,14 @@ export function initialize() {
  */
 export function add(newIdx: number | null, selected: number, replaceIdx: number) {
   if (newIdx === null) {
-    const view = SSViews.get(selected);
+    const slide = Screensaver.getSlide(selected);
     const idx = HIST.idx;
     const len = HIST.arr.length;
-    const photoId = view.photo.getId();
+    const photoId = slide.photo.getId();
     const photosPos = SSPhotos.getCurrentIndex();
 
     const item: IItem = {
-      viewsIdx: selected,
+      currentIdx: selected,
       replaceIdx: replaceIdx,
       photoId: photoId,
       photosPos: photosPos,
@@ -128,13 +128,11 @@ export function back() {
   SSPhotos.setCurrentIndex(photosPos);
   SSRunner.setReplaceIdx(replaceIdx);
 
-  const viewsIdx = HIST.arr[idx].viewsIdx;
+  const slideIdx = HIST.arr[idx].currentIdx;
   const photoId = HIST.arr[idx].photoId;
-  nextStep = (nextStep === null) ? viewsIdx : nextStep;
-  const view = SSViews.get(viewsIdx);
+  nextStep = (nextStep === null) ? slideIdx : nextStep;
   const photo = SSPhotos.get(photoId);
-  view.setPhoto(photo);
-  view.render();
+  Screensaver.replacePhoto(photo, slideIdx);
 
   return nextStep;
 }

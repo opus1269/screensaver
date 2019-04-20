@@ -7,7 +7,7 @@
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
-import {SSView} from '../../scripts/screensaver/views/ss_view';
+import {ScreensaverSlideElement} from '../screensaver-slide/screensaver-slide';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
@@ -24,13 +24,6 @@ import {BaseElement} from '../../elements/shared/base-element/base-element.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
-import * as SSEvents from '../../scripts/screensaver/ss_events.js';
-import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
-import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
-import * as SSViews from '../../scripts/screensaver/ss_views.js';
-import * as PhotoSources from '../../scripts/sources/photo_sources.js';
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
-
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
@@ -40,6 +33,15 @@ import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js'
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import {ChromeTime} from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
+import * as SSEvents from '../../scripts/screensaver/ss_events.js';
+import * as SSHistory from '../../scripts/screensaver/ss_history.js';
+import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
+import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+
+import {SSPhoto} from '../../scripts/screensaver/ss_photo.js';
 
 declare var ChromePromise: any;
 
@@ -95,9 +97,11 @@ export class ScreensaverElement extends BaseElement {
     return Promise.resolve();
   }
 
-  /** Array of {@link SSView} objects */
+  protected MAX_SLIDES = 10;
+
+  /** Array of {@link SSPhoto} in the views */
   @property({type: Array})
-  protected views: SSView[] = [];
+  protected photos: SSPhoto[] = [];
 
   /** Type for between photo animation */
   @property({type: Number})
@@ -175,8 +179,14 @@ export class ScreensaverElement extends BaseElement {
     try {
       const hasPhotos = await this.loadPhotos();
       if (hasPhotos) {
-        // initialize the views
-        SSViews.initialize(this.pages);
+        // initialize the photos
+        const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
+        const photos: SSPhoto[] = [];
+        for (let i = 0; i < length; i++) {
+          photos.push(SSPhotos.getNextUsable());
+        }
+        this.set('photos', photos);
+        this.repeatTemplate.render();
 
         // send msg to update weather. don't wait can be slow
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
@@ -196,13 +206,148 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Set the views for the photos
-   *
-   * @param views - The array of views
+   * Get max number of slides
    */
-  public setViews(views: SSView[]) {
-    this.set('views', views);
-    this.repeatTemplate.render();
+  public getMaxSlideCount() {
+    return this.MAX_SLIDES;
+  }
+
+  /**
+   * Get the photos
+   *
+   * @returns The array of photos
+   */
+  public getPhotos() {
+    return this.photos;
+  }
+
+  /**
+   * Get the selected photo
+   *
+   * @returns The selected photo, undefined if non selected
+   */
+  public getSelectedPhoto() {
+    let ret: SSPhoto;
+    const idx =  this.getSelectedSlideIndex();
+    if (idx !== -1) {
+      ret = this.photos[idx];
+    }
+    return ret;
+  }
+
+  /**
+   * Replace the photo at the given index
+   *
+   * @param photo - new photo
+   * @param idx - index to replace
+   */
+  public replacePhoto(photo: SSPhoto, idx: number) {
+    this.splice('photos', idx, 1, photo);
+  }
+
+  /**
+   * Try to find a photo that has finished loading
+   *
+   * @param idx - index into {@link photos}
+   * @returns index into {@link photos}, -1 if none are loaded
+   */
+  public findLoadedPhoto(idx: number) {
+    if (!this.hasUsablePhoto()) {
+      // replace the photos
+      this.replaceAll();
+    }
+
+    const curSlide = this.getSlide(idx);
+
+    if (curSlide && curSlide.isPhotoLoaded()) {
+      return idx;
+    }
+
+    // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
+    for (let i = 0; i < this.photos.length; i++) {
+      const index = (i + idx) % this.photos.length;
+      const slide = this.getSlide(index);
+      const photo = this.photos[index];
+      if (SSRunner.isCurrentPair(index)) {
+        // don't use current animation pair
+        continue;
+      }
+      if (slide.isPhotoLoaded()) {
+        return index;
+      } else if (slide.isPhotoError() && !photo.isBad()) {
+        photo.markBad();
+        if (!SSPhotos.hasUsable()) {
+          // all photos bad
+          this.setNoPhotos();
+          return -1;
+        }
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * Is the given idx the selected slide
+   *
+   * @param idx - index into {@link photos}
+   * @returns true if selected
+   */
+  public isSelectedSlideIndex(idx: number) {
+    let ret = false;
+    if (this.pages && (idx === this.pages.selected)) {
+      ret = true;
+    }
+    return ret;
+  }
+
+  /**
+   * Get the selected index of the pages
+   *
+   * @returns The index of the current slide, -1 if not found
+   */
+  public getSelectedSlideIndex() {
+    if (this.pages) {
+      let selected: number;
+      // TODO wtf with typeof
+      if (typeof this.pages.selected === 'string') {
+        selected = parseInt(this.pages.selected, 10);
+      } else {
+        selected = this.pages.selected;
+      }
+      return selected;
+    }
+    return -1;
+  }
+
+  /**
+   * Set the selected index of the pages
+   *
+   * @param idx - slide index
+   *
+   */
+  public setSelectedSlideIndex(idx: number) {
+    if (this.pages) {
+      this.pages.selected = idx;
+    }
+  }
+
+  /**
+   * Get the selected index of the pages
+   *
+   * @returns The index of the current view
+   */
+  public getSlideCount() {
+    return this.photos ? this.photos.length : 0;
+  }
+
+  /**
+   * Get the slide at the given index
+   *
+   * @returns The slide
+   */
+  public getSlide(idx: number) {
+    const selector = `#slide${idx}`;
+    return this.shadowRoot.querySelector(selector) as ScreensaverSlideElement;
   }
 
   /**
@@ -314,124 +459,166 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
+  /**
+   * Do we have a photo that is loaded
+   *
+   * @returns true if at least one photo is valid
+   */
+  protected hasUsablePhoto() {
+    let ret = false;
+    for (let i = 0; i < this.photos.length; i++) {
+      const photo = this.photos[i];
+      if (SSRunner.isCurrentPair(i)) {
+        // don't check current animation pair
+        continue;
+      }
+      if (!photo.isBad()) {
+        ret = true;
+        break;
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Replace the photo in all the slides but the current animation pair
+   */
+  protected replaceAll() {
+    for (let i = 0; i < this.photos.length; i++) {
+      if (SSRunner.isCurrentPair(i)) {
+        // don't replace current animation pair
+        continue;
+      }
+      const photo = SSPhotos.getNextUsable(this.photos);
+      if (photo) {
+        this.replacePhoto(photo, i);
+      } else {
+        // all bad
+        break;
+      }
+    }
+    SSHistory.clear();
+  }
+
   // noinspection JSUnusedGlobalSymbols
   /**
    * Event: An image failed to load
    */
   protected async onImageError(ev: CustomEvent) {
-    if (errHandler.isUpdating) {
-      // another error event is already handling this
-      return;
-    }
-
-    // url failed to load
-    errHandler.isUpdating = true;
-
-    const index = ev.detail.index;
-    const theView = this.views[index];
-    const thePhoto = theView.photo;
-    const theType = thePhoto.getType();
-    if ('Google User' === theType) {
-      // Google baseUrl may have expired, try to update some photos
-
-      // TODO have to use cors to get status code, so have to have permission from site
-      // first, fetch again and check status - only handle 403 errors
-      // const url = photo.getUrl();
-      // try {
-      //   const response = await fetch(url, {
-      //     method: 'get',
-      //   });
-      //   const status = response.status;
-      //   console.log(status);
-      //   if (status !== 403) {
-      //     // some other problem, don't know how to fix it
-      //     _isUpdating = false;
-      //     return;
-      //   }
-      // } catch (err) {
-      //   // some other problem, don't know how to fix it
-      //   console.log(err);
-      //   _isUpdating = false;
-      //   return;
-      // }
-
-      // throttle call rate to Google API per screensaver session
-      // in case something weird happens
-      if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
-        errHandler.isUpdating = false;
-        return;
-      }
-
-      // limit max number of calls to Google API per screensaver session
-      // in case something weird happens
-      errHandler.count++;
-      if (errHandler.count >= errHandler.MAX_COUNT) {
-        errHandler.isUpdating = false;
-        return;
-      }
-
-      // update last call time
-      errHandler.lastTime = Date.now();
-
-      // Calculate an hours worth of photos max
-      let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
-      transTime = transTime.base * 1000;
-      let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
-      // do at least 50, still one rpc. will help when displaying
-      // a lot for short times
-      nPhotos = Math.max(nPhotos, 50);
-
-      if (errHandler.count === 1) {
-        // limit to 50 on first call for quicker starts
-        nPhotos = Math.min(nPhotos, 50);
-      } else {
-        // limit to 300 on subsequent calls
-        nPhotos = Math.min(nPhotos, 300);
-      }
-
-      // get max of nPhotos Google Photo ids starting at this one
-      const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
-      const ids = [];
-      for (const photo of photos) {
-        // unique ids only - required for batchGet call
-        const id = photo.getEx().id;
-        if (ids.indexOf(id) === -1) {
-          ids.push(id);
-        }
-      }
-
-      let newPhotos = [];
-      try {
-        // load the new photos from Google Photos
-        newPhotos = await GoogleSource.loadPhotos(ids);
-      } catch (err) {
-        // major problem, give up for this session
-        errHandler.count = errHandler.MAX_COUNT + 1;
-        errHandler.isUpdating = true;
-        return;
-      }
-
-      // update the Google Photos baseUrls for this screensaver session
-      SSPhotos.updateGooglePhotoUrls(newPhotos);
-
-      // update any views with the new google photos
-      SSViews.updateAllUrls(newPhotos);
-
-      // persist new baseUrls to albumSelections
-      let updated;
-      try {
-        updated = await GoogleSource.updateBaseUrls(newPhotos);
-      } catch (err) {
-        if (!updated) {
-          // major problem, give up for this session
-          errHandler.count = errHandler.MAX_COUNT + 1;
-          errHandler.isUpdating = true;
-          return;
-        }
-      }
-
-      errHandler.isUpdating = false;
-    }
+    // TODO replace
+    // if (errHandler.isUpdating) {
+    //   // another error event is already handling this
+    //   return;
+    // }
+    //
+    // // url failed to load
+    // errHandler.isUpdating = true;
+    //
+    // const index = ev.detail.index;
+    // const theView = this.views[index];
+    // const thePhoto = theView.photo;
+    // const theType = thePhoto.getType();
+    // if ('Google User' === theType) {
+    //   // Google baseUrl may have expired, try to update some photos
+    //
+    //   // TODO have to use cors to get status code, so have to have permission from site
+    //   // first, fetch again and check status - only handle 403 errors
+    //   // const url = photo.getUrl();
+    //   // try {
+    //   //   const response = await fetch(url, {
+    //   //     method: 'get',
+    //   //   });
+    //   //   const status = response.status;
+    //   //   console.log(status);
+    //   //   if (status !== 403) {
+    //   //     // some other problem, don't know how to fix it
+    //   //     _isUpdating = false;
+    //   //     return;
+    //   //   }
+    //   // } catch (err) {
+    //   //   // some other problem, don't know how to fix it
+    //   //   console.log(err);
+    //   //   _isUpdating = false;
+    //   //   return;
+    //   // }
+    //
+    //   // throttle call rate to Google API per screensaver session
+    //   // in case something weird happens
+    //   if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
+    //     errHandler.isUpdating = false;
+    //     return;
+    //   }
+    //
+    //   // limit max number of calls to Google API per screensaver session
+    //   // in case something weird happens
+    //   errHandler.count++;
+    //   if (errHandler.count >= errHandler.MAX_COUNT) {
+    //     errHandler.isUpdating = false;
+    //     return;
+    //   }
+    //
+    //   // update last call time
+    //   errHandler.lastTime = Date.now();
+    //
+    //   // Calculate an hours worth of photos max
+    //   let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+    //   transTime = transTime.base * 1000;
+    //   let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
+    //   // do at least 50, still one rpc. will help when displaying
+    //   // a lot for short times
+    //   nPhotos = Math.max(nPhotos, 50);
+    //
+    //   if (errHandler.count === 1) {
+    //     // limit to 50 on first call for quicker starts
+    //     nPhotos = Math.min(nPhotos, 50);
+    //   } else {
+    //     // limit to 300 on subsequent calls
+    //     nPhotos = Math.min(nPhotos, 300);
+    //   }
+    //
+    //   // get max of nPhotos Google Photo ids starting at this one
+    //   const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
+    //   const ids = [];
+    //   for (const photo of photos) {
+    //     // unique ids only - required for batchGet call
+    //     const id = photo.getEx().id;
+    //     if (ids.indexOf(id) === -1) {
+    //       ids.push(id);
+    //     }
+    //   }
+    //
+    //   let newPhotos = [];
+    //   try {
+    //     // load the new photos from Google Photos
+    //     newPhotos = await GoogleSource.loadPhotos(ids);
+    //   } catch (err) {
+    //     // major problem, give up for this session
+    //     errHandler.count = errHandler.MAX_COUNT + 1;
+    //     errHandler.isUpdating = true;
+    //     return;
+    //   }
+    //
+    //   // update the Google Photos baseUrls for this screensaver session
+    //   SSPhotos.updateGooglePhotoUrls(newPhotos);
+    //
+    //   // update any views with the new google photos
+    //   SSViews.updateAllUrls(newPhotos);
+    //
+    //   // persist new baseUrls to albumSelections
+    //   let updated;
+    //   try {
+    //     updated = await GoogleSource.updateBaseUrls(newPhotos);
+    //   } catch (err) {
+    //     if (!updated) {
+    //       // major problem, give up for this session
+    //       errHandler.count = errHandler.MAX_COUNT + 1;
+    //       errHandler.isUpdating = true;
+    //       return;
+    //     }
+    //   }
+    //
+    //   errHandler.isUpdating = false;
+    // }
   }
 
   static get template() {
@@ -481,9 +668,9 @@ export class ScreensaverElement extends BaseElement {
 
 <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
-    <template is="dom-repeat" id="repeatTemplate" as="view" items="[[views]]">
-      <screensaver-slide class="fit" id="view[[index]]" ani-type="[[aniType]]"
-                         view="[[view]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="onImageError">
+    <template is="dom-repeat" id="repeatTemplate" as="photo" items="[[photos]]">
+      <screensaver-slide class="fit" id="slide[[index]]" ani-type="[[aniType]]"
+                         photo="[[photo]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="onImageError">
       </screensaver-slide>
     </template>
   </neon-animated-pages>

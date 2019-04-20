@@ -9,14 +9,14 @@
  * Event handling for a screensaver
  */
 
-import * as SSRunner from './ss_runner.js';
-import * as SSViews from './ss_views.js';
-
-import * as MyMsg from '../../scripts/my_msg.js';
-
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+
+import * as MyMsg from '../../scripts/my_msg.js';
+
+import {Screensaver} from './screensaver.js';
+import * as SSRunner from './ss_runner.js';
 
 /**
  * A mouse position
@@ -186,11 +186,10 @@ function onMouseMove(ev: MouseEvent) {
  */
 function onMouseClick() {
   if (SSRunner.isStarted()) {
-    const idx = SSViews.getSelectedIndex();
+    const photo = Screensaver.getSelectedPhoto();
     const allowPhotoClicks = ChromeStorage.getBool('allowPhotoClicks', true);
-    if (allowPhotoClicks && (idx !== undefined)) {
-      const view = SSViews.get(idx);
-      view.photo.showSource();
+    if (allowPhotoClicks && photo) {
+      photo.showSource();
     }
   }
   close();

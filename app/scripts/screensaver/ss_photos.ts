@@ -81,7 +81,7 @@ export function get(idx: number) {
  * @param ignores - photos to ignore
  * @returns An SSPhoto, null if none are usable
  */
-export function getNextUsable(ignores: SSPhoto[]) {
+export function getNextUsable(ignores: SSPhoto[] = []) {
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
   for (let i = 0; i < _photos.length; i++) {
     // find a url that is ok, AFAWK

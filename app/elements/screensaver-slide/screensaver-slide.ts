@@ -6,12 +6,12 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
-import {SSView} from '../../scripts/screensaver/views/ss_view';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {
   customElement,
   property,
+  computed,
   observe,
   query,
   listen,
@@ -33,21 +33,24 @@ import '../../elements/weather-element/weather-element.js';
 import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
 import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider.js';
 
+import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
+import {SSPhoto} from '../../scripts/screensaver/ss_photo.js';
 
 /**
  * Polymer element to provide an animatable slide
  */
 @customElement('screensaver-slide')
-export class ScreensaverSlideElement extends
-    (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => BaseElement) {
+export class ScreensaverSlideElement
+    extends (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => BaseElement) {
 
-  /** The SSView we contain */
+  /** The SSPhoto we contain */
   @property({type: Object})
-  protected view: SSView = null;
+  public photo: SSPhoto = null;
 
-  /** The index of our view */
+  /** The unique index of our view */
   @property({type: Number})
   protected index = 0;
 
@@ -100,8 +103,60 @@ export class ScreensaverSlideElement extends
     },
   };
 
+  /** Photo url */
+  @computed('photo')
+  get url() {
+    return this.photo.getUrl();
+  }
+
+  /** Author label */
+  @computed('photo')
+  get authorLabel() {
+    const type = this.photo.getType();
+    const photographer = this.photo.getPhotographer();
+    let newType: string = type;
+    const idx = type.search('User');
+
+    if (!ChromeStorage.getBool('showPhotog', true) && (idx !== -1)) {
+      // don't show label for user's own photos, if requested
+      return '';
+    }
+
+    if (idx !== -1) {
+      // strip off 'User'
+      newType = type.substring(0, idx - 1);
+    }
+
+    if (!ChromeUtils.isWhiteSpace(photographer)) {
+      return `${photographer} / ${newType}`;
+    } else {
+      // no photographer name
+      return `${ChromeLocale.localize('photo_from')} ${newType}`;
+    }
+  }
+
+  /** Location label */
+  @computed('photo')
+  get Label() {
+    return '';
+  }
+
   @query('#ironImage')
   protected ironImage: IronImageElement;
+
+  /**
+   * Is the photo loaded
+   */
+  public isPhotoLoaded() {
+    return !!this.ironImage && this.ironImage.loaded;
+  }
+
+  /**
+   * Did the photo fail to load
+   */
+  public isPhotoError() {
+    return !this.ironImage || this.ironImage.error;
+  }
 
   /**
    * Setup and start the photo animation
@@ -311,19 +366,19 @@ export class ScreensaverSlideElement extends
   }
   
 </style>
-<section id="view[[index]]">
+<section id="slide[[index]]">
   <iron-image
       id="ironImage"
       class="image"
-      src="[[view.url]]"
+      src="[[url]]"
       width="[[screenWidth]]"
       height="[[screenHeight]]"
       sizing="[[sizing]]"
       preload>
   </iron-image>
   <div class="time">[[timeLabel]]</div>
-  <div class="author">[[view.authorLabel]]</div>
-  <div class="location">[[view.locationLabel]]</div>
+  <div class="author">[[authorLabel]]</div>
+  <div class="location">[[locationLabel]]</div>
   <weather-element class="weather"></weather-element>
 </section>
 
