@@ -264,7 +264,7 @@ export class ScreensaverSlideElement
 
     const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
     const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
-    const scale = 1.0 + ChromeUtils.getRandomFloat(.5, .9);
+    const scale = 1.0 + ChromeUtils.getRandomFloat(.2, .6);
     // maximum translation based on scale factor
     // this could be up to .25, but limit it since we have no idea what the photos are
     const maxDelta = (scale - 1.0) * .20;
