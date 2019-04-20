@@ -45,7 +45,10 @@ import {SSPhoto} from '../../scripts/screensaver/ss_photo.js';
 
 declare var ChromePromise: any;
 
-export enum TRANS_TYPE {
+/**
+ * Slide transition animation type
+ */
+export const enum TRANS_TYPE {
   SCALE_UP = 0,
   FADE,
   SLIDE_FROM_RIGHT,
@@ -54,6 +57,17 @@ export enum TRANS_TYPE {
   SLIDE_UP,
   SLIDE_FROM_BOTTOM,
   SLIDE_RIGHT,
+  RANDOM,
+}
+
+/**
+ * Slide appearance type
+ */
+export const enum VIEW_TYPE {
+  LETTERBOX = 0,
+  ZOOM,
+  FRAME,
+  FULL,
   RANDOM,
 }
 
@@ -97,6 +111,12 @@ export class ScreensaverElement extends BaseElement {
     return Promise.resolve();
   }
 
+  /**
+   *  Maximum number of slides to create
+   *
+   *  @remarks
+   *  Actual number will be the smaller of this and the total number of photos
+   */
   protected MAX_SLIDES = 10;
 
   /** Array of {@link SSPhoto} in the views */
@@ -167,6 +187,8 @@ export class ScreensaverElement extends BaseElement {
       await ScreensaverElement._setZoom();
 
       this.setupPhotoTransitions();
+
+      this.setupViewType();
     }, 0);
   }
 
@@ -179,6 +201,7 @@ export class ScreensaverElement extends BaseElement {
     try {
       const hasPhotos = await this.loadPhotos();
       if (hasPhotos) {
+
         // initialize the photos
         const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
         const photos: SSPhoto[] = [];
@@ -401,6 +424,18 @@ export class ScreensaverElement extends BaseElement {
     }
 
     return Promise.resolve(true);
+  }
+
+  /**
+   * Process settings related to slide appearance
+   */
+  protected setupViewType() {
+    let type = ChromeStorage.getInt('photoSizing', VIEW_TYPE.LETTERBOX);
+    if (type === VIEW_TYPE.RANDOM) {
+      // pick random sizing
+      type = ChromeUtils.getRandomInt(0, VIEW_TYPE.RANDOM - 1);
+    }
+    this.set('viewType', type);
   }
 
   /**
@@ -669,7 +704,7 @@ export class ScreensaverElement extends BaseElement {
 <div id="mainContainer" class="flex" hidden$="[[noPhotos]]">
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
     <template is="dom-repeat" id="repeatTemplate" as="photo" items="[[photos]]">
-      <screensaver-slide class="fit" id="slide[[index]]" ani-type="[[aniType]]"
+      <screensaver-slide class="fit" id="slide[[index]]" view-type="[[viewType]]" ani-type="[[aniType]]"
                          photo="[[photo]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="onImageError">
       </screensaver-slide>
     </template>
