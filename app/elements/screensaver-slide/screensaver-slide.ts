@@ -6,38 +6,38 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
+import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
+import {SSPhoto} from '../../scripts/screensaver/ss_photo';
+import {WeatherElement} from '../weather-element/weather-element';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {
-  customElement,
-  property,
   computed,
-  observe,
-  query,
+  customElement,
   listen,
+  observe,
+  property,
+  query,
 } from '../../node_modules/@polymer/decorators/lib/decorators.js';
-import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
 
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
-
-import {BaseElement} from '../shared/base-element/base-element.js';
-
-import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/animations/spin-down-animation/spin-down-animation.js';
+import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/weather-element/weather-element.js';
 
-import {TRANS_TYPE} from '../screensaver-element/screensaver-element.js';
-import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider.js';
+import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
+import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
+
+import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element.js';
+
+import {BaseElement} from '../shared/base-element/base-element.js';
 
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
-
-import {SSPhoto} from '../../scripts/screensaver/ss_photo.js';
 
 /**
  * Polymer element to provide an animatable slide
@@ -46,21 +46,62 @@ import {SSPhoto} from '../../scripts/screensaver/ss_photo.js';
 export class ScreensaverSlideElement
     extends (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => BaseElement) {
 
+  /**
+   * Set style info for a label in a frame view
+   *
+   * @param style - element.style object
+   * @param width - frame width
+   * @param height - frame height
+   * @param isLeft - if true align left, else right
+   */
+  protected static setFrameLabelStyle(style: CSSStyleDeclaration, width: number, height: number, isLeft: boolean) {
+    style.textOverflow = 'ellipsis';
+    style.whiteSpace = 'nowrap';
+    style.color = 'black';
+    style.opacity = '1.0';
+    style.fontSize = '2.5vh';
+    style.fontWeight = '400';
+
+    // percent of screen width for label padding
+    const padPer = 0.5;
+    // percent of screen width of image
+    const imgWidthPer = (width / screen.width) * 100;
+    // percent of screen width on each side of image
+    const sidePer = (100 - imgWidthPer) / 2;
+
+    if (isLeft) {
+      style.left = sidePer + padPer + 'vw';
+      style.right = '';
+      style.textAlign = 'left';
+    } else {
+      style.right = sidePer + padPer + 'vw';
+      style.left = '';
+      style.textAlign = 'right';
+    }
+    style.width = imgWidthPer - 2 * padPer + 'vw';
+
+    // percent of screen height of image
+    const imgHtPer = (height / screen.height) * 100;
+    // percent of screen height on each side of image
+    const topPer = (100 - imgHtPer) / 2;
+    style.bottom = topPer + 1.1 + 'vh';
+  }
+
   /** The SSPhoto we contain */
   @property({type: Object})
   public photo: SSPhoto = null;
+
+  /** View type to render */
+  @property({type: Number})
+  public viewType: VIEW_TYPE = VIEW_TYPE.LETTERBOX;
 
   /** The unique index of our view */
   @property({type: Number})
   protected index = 0;
 
-  /** Index of animation to use */
+  /** Between photo animation type */
   @property({type: Number})
-  protected aniType = 0;
-
-  /** The iron-image sizing tpe */
-  @property({type: String})
-  protected sizing: string = null;
+  protected aniType: TRANS_TYPE = TRANS_TYPE.FADE;
 
   /** Screen width */
   @property({type: Number})
@@ -103,6 +144,26 @@ export class ScreensaverSlideElement
     },
   };
 
+  /** The iron-image sizing tpe */
+  @computed('viewType')
+  get sizing() {
+    let sizing: string | null = null;
+
+    switch (this.viewType) {
+      case VIEW_TYPE.ZOOM:
+        sizing = 'cover';
+        break;
+      case VIEW_TYPE.LETTERBOX:
+      case VIEW_TYPE.FRAME:
+      case VIEW_TYPE.FULL:
+        sizing = null;
+        break;
+      default:
+        break;
+    }
+    return sizing;
+  }
+
   /** Photo url */
   @computed('photo')
   get url() {
@@ -137,12 +198,24 @@ export class ScreensaverSlideElement
 
   /** Location label */
   @computed('photo')
-  get Label() {
+  get locationLabel() {
     return '';
   }
 
   @query('#ironImage')
   protected ironImage: IronImageElement;
+
+  @query('.time')
+  protected time: HTMLDivElement;
+
+  @query('.author')
+  protected author: HTMLDivElement;
+
+  @query('.location')
+  protected location: HTMLDivElement;
+
+  @query('.weather')
+  protected weather: WeatherElement;
 
   /**
    * Is the photo loaded
@@ -221,16 +294,30 @@ export class ScreensaverSlideElement
   }
 
   /**
+   * Event: Image loading changed
+   */
+  @listen('loaded-changed', 'ironImage')
+  public onLoadedChanged(ev: CustomEvent) {
+    const loaded = ev.detail.value;
+    if (loaded) {
+      this.render();
+    }
+  }
+
+  /**
    * Event: Image loading error
    */
   @listen('error-changed', 'ironImage')
-  public onErrorChanged() {
-    const customEvent = new CustomEvent('image-error', {
-      bubbles: true,
-      composed: true,
-      detail: {index: this.index},
-    });
-    this.dispatchEvent(customEvent);
+  public onErrorChanged(ev: CustomEvent) {
+    const error = ev.detail.value;
+    if (error) {
+      const customEvent = new CustomEvent('image-error', {
+        bubbles: true,
+        composed: true,
+        detail: {index: this.index},
+      });
+      this.dispatchEvent(customEvent);
+    }
   }
 
   /**
@@ -239,42 +326,42 @@ export class ScreensaverSlideElement
    * @param newValue - new type
    */
   @observe('aniType')
-  protected aniChanged(newValue: number) {
+  protected aniChanged(newValue: TRANS_TYPE) {
     let entry;
     let exit;
     let dur = 2000;
 
     switch (newValue) {
-      case 0:
+      case TRANS_TYPE.SCALE_UP:
         entry = 'scale-up-animation';
         exit = 'scale-down-animation';
         break;
-      case 1:
+      case TRANS_TYPE.FADE:
         entry = 'fade-in-animation';
         exit = 'fade-out-animation';
         break;
-      case 2:
+      case TRANS_TYPE.SLIDE_FROM_RIGHT:
         entry = 'slide-from-right-animation';
         exit = 'slide-left-animation';
         break;
-      case 3:
+      case TRANS_TYPE.SLIDE_DOWN:
         entry = 'slide-from-top-animation';
         exit = 'slide-up-animation';
         break;
-      case 4:
+      case TRANS_TYPE.SPIN_UP:
         entry = 'spin-up-animation';
         exit = 'spin-down-animation';
         dur = 3000;
         break;
-      case 5:
+      case TRANS_TYPE.SLIDE_UP:
         entry = 'slide-from-bottom-animation';
         exit = 'slide-down-animation';
         break;
-      case 6:
+      case TRANS_TYPE.SLIDE_FROM_BOTTOM:
         entry = 'slide-from-bottom-animation';
         exit = 'slide-up-animation';
         break;
-      case 7:
+      case TRANS_TYPE.SLIDE_RIGHT:
         entry = 'slide-from-left-animation';
         exit = 'slide-left-animation';
         break;
@@ -304,6 +391,181 @@ export class ScreensaverSlideElement
           this.set('animation', null);
         }
       }
+    }
+  }
+
+  /**
+   * Render the slide according to the view type
+   */
+  protected render() {
+    switch (this.viewType) {
+      case VIEW_TYPE.ZOOM:
+        // default settings
+        break;
+      case VIEW_TYPE.FULL:
+        this.renderFull();
+        break;
+      case VIEW_TYPE.LETTERBOX:
+        this.renderLetterbox();
+        break;
+      case VIEW_TYPE.FRAME:
+        this.renderFrame();
+        break;
+      default:
+        break;
+    }
+  }
+
+  protected renderFull() {
+    const img: HTMLImageElement = this.ironImage.$.img as HTMLImageElement;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'fill';
+  }
+
+  protected renderLetterbox() {
+    const SCREEN_AR = screen.width / screen.height;
+    const ar = this.photo.getAspectRatio();
+    const image = this.ironImage;
+    const imageStyle = image.style;
+    const img: HTMLImageElement = image.$.img as HTMLImageElement;
+    const imgStyle = img.style;
+    const authorStyle = this.author.style;
+    const locationStyle = this.location.style;
+    const timeStyle = this.time.style;
+    const weatherStyle = this.weather.style;
+
+    // percent of the screen width of image
+    let imgWidthPer = ((ar / SCREEN_AR * 100));
+    imgWidthPer = Math.min(imgWidthPer, 100.0);
+    const right = (100 - imgWidthPer) / 2;
+    // percent of the screen height of image
+    let imgHeightPer = ((SCREEN_AR / ar * 100));
+    imgHeightPer = Math.min(imgHeightPer, 100.0);
+    const bottom = (100 - imgHeightPer) / 2;
+
+    // set image size
+    const height = Math.round(imgHeightPer / 100 * screen.height);
+    const width = Math.round(imgWidthPer / 100 * screen.width);
+    image.height = height;
+    image.width = width;
+    imgStyle.height = height + 'px';
+    imgStyle.width = width + 'px';
+    imageStyle.top = (screen.height - height) / 2 + 'px';
+    imageStyle.left = (screen.width - width) / 2 + 'px';
+
+
+    // position other elements
+    authorStyle.textAlign = 'right';
+    locationStyle.textAlign = 'left';
+    weatherStyle.textAlign = 'left';
+
+    authorStyle.right = (right + 1) + 'vw';
+    authorStyle.bottom = (bottom + 1) + 'vh';
+    authorStyle.width = imgWidthPer - .5 + 'vw';
+
+    locationStyle.left = (right + 1) + 'vw';
+    locationStyle.bottom = (bottom + 1) + 'vh';
+    locationStyle.width = imgWidthPer - .5 + 'vw';
+
+    weatherStyle.left = (right + 1) + 'vw';
+    weatherStyle.bottom = (bottom + 3.5) + 'vh';
+    weatherStyle.width = imgWidthPer - .5 + 'vw';
+
+    timeStyle.right = (right + 1) + 'vw';
+    timeStyle.bottom = (bottom + 3.5) + 'vh';
+
+    if (ChromeStorage.getBool('showTime', false)) {
+      // don't wrap author
+      authorStyle.textOverflow = 'ellipsis';
+      authorStyle.whiteSpace = 'nowrap';
+    }
+
+    // percent of half the width of image
+    const maxWidth = imgWidthPer / 2;
+    if (!ChromeUtils.isWhiteSpace(this.locationLabel)) {
+      // limit author width if we also have a location
+      authorStyle.maxWidth = maxWidth - 1.1 + 'vw';
+    }
+
+    if (!ChromeUtils.isWhiteSpace(this.authorLabel)) {
+      // limit location width if we also have an author
+      locationStyle.maxWidth = maxWidth - 1.1 + 'vw';
+    }
+  }
+
+  protected renderFrame() {
+    const photo = this.photo;
+    const ar = photo.getAspectRatio();
+    const image = this.ironImage;
+    const imageStyle = image.style;
+    const img: HTMLImageElement = image.$.img as HTMLImageElement;
+    const imgStyle = img.style;
+    const authorStyle = this.author.style;
+    const locationStyle = this.location.style;
+    const weatherStyle = this.weather.style;
+    const timeStyle = this.time.style;
+
+    // scale to screen size
+    const border = screen.height * 0.005;
+    const borderBot = screen.height * 0.05;
+    const padding = screen.height * 0.025;
+
+    // photo size
+    const height = Math.min((screen.width - padding * 2 - border * 2) / ar,
+        screen.height - padding * 2 - border - borderBot);
+    const width = height * ar;
+
+    // size with the frame
+    const frWidth = width + border * 2;
+    const frHeight = height + borderBot + border;
+
+    // set image size
+    image.height = height;
+    image.width = width;
+    imageStyle.top = (screen.height - frHeight) / 2 + 'px';
+    imageStyle.left = (screen.width - frWidth) / 2 + 'px';
+    imageStyle.border = 0.5 + 'vh ridge WhiteSmoke';
+    imageStyle.borderBottom = 5 + 'vh solid WhiteSmoke';
+    imageStyle.borderRadius = '1.5vh';
+    imageStyle.boxShadow = '1.5vh 1.5vh 1.5vh rgba(0,0,0,.7)';
+
+
+    imgStyle.height = height + 'px';
+    imgStyle.width = width + 'px';
+    imgStyle.top = screen.height / 2 + 'px';
+    imgStyle.left = screen.width / 2 + 'px';
+
+    ScreensaverSlideElement.setFrameLabelStyle(authorStyle, frWidth, frHeight, false);
+    ScreensaverSlideElement.setFrameLabelStyle(locationStyle, frWidth, frHeight, true);
+
+    // percent of screen height of image
+    const imgHtPer = (frHeight / screen.height) * 100;
+    // percent of screen height on each side of image
+    const topPer = (100 - imgHtPer) / 2;
+    // percent of screen width of image
+    const imgWidthPer = (frWidth / screen.width) * 100;
+    // percent of screen width on each side of image
+    const sidePer = (100 - imgWidthPer) / 2;
+
+    timeStyle.right = sidePer + 1.0 + 'vw';
+    timeStyle.textAlign = 'right';
+    timeStyle.bottom = topPer + 5.0 + 'vh';
+
+    weatherStyle.left = sidePer + 1.0 + 'vw';
+    weatherStyle.textAlign = 'left';
+    weatherStyle.bottom = topPer + 6.5 + 'vh';
+
+    // percent of half the width of image
+    const maxWidth = imgWidthPer / 2;
+    if (!ChromeUtils.isWhiteSpace(this.locationLabel)) {
+      // limit author width if we also have a location
+      authorStyle.maxWidth = maxWidth - 1 + 'vw';
+    }
+
+    if (!ChromeUtils.isWhiteSpace(this.authorLabel)) {
+      // limit location width if we also have an author
+      locationStyle.maxWidth = maxWidth - 1 + 'vw';
     }
   }
 
