@@ -13,8 +13,6 @@ import {Screensaver} from './screensaver.js';
 import * as SSPhotos from './ss_photos.js';
 import * as SSRunner from './ss_runner.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /**
  * History item
  */

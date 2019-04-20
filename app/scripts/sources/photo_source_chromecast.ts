@@ -9,13 +9,10 @@
  * A source of photos from Chromecast
  */
 
-import {IPhoto, PhotoSource} from './photo_source.js';
-
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
-import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
+import {IPhoto, PhotoSource} from './photo_source.js';
+import * as PhotoSourceFactory from './photo_source_factory.js';
 
 /**
  * A source of photos from Chromecast

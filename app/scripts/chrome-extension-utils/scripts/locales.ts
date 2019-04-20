@@ -10,8 +10,6 @@
  * {@link https://developer.chrome.com/extensions/i18n}
  */
 
-import './ex_handler.js';
-
 /**
  * Get the i18n string
  *

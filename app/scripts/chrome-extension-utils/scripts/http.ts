@@ -14,8 +14,6 @@ import * as ChromeAuth from './auth.js';
 import * as ChromeLocale from './locales.js';
 import * as ChromeUtils from './utils.js';
 
-import './ex_handler.js';
-
 /**
  * Http configuration
  *

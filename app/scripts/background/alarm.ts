@@ -10,20 +10,18 @@
  * @link https://developer.chrome.com/apps/alarms
  */
 
-import * as AppData from './data.js';
-import * as SSController from './ss_controller.js';
-
-import * as MyMsg from '../../scripts/my_msg.js';
-import * as PhotoSources from '../../scripts/sources/photo_sources.js';
-import * as Weather from '../../scripts/weather.js';
-
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import {ChromeTime} from '../../scripts/chrome-extension-utils/scripts/time.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import * as Weather from '../../scripts/weather.js';
+
+import * as AppData from './data.js';
+import * as SSController from './ss_controller.js';
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();

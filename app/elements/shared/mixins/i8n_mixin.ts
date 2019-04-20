@@ -10,8 +10,6 @@ import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-ele
 
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 
-import '../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /**
  * Element class mixin that provides API for chrome.i8n
  * {@link https://developer.chrome.com/extensions/i18n}

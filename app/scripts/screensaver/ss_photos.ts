@@ -13,8 +13,6 @@ import {IPhoto, PhotoSource} from '../sources/photo_source';
 
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 import {SSPhoto} from './ss_photo.js';
 
 /**

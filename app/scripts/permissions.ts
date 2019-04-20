@@ -15,8 +15,6 @@ import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 

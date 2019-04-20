@@ -9,10 +9,6 @@
  * Controller for the screen saver
  */
 
-import * as AppData from './data.js';
-
-import * as MyMsg from '../../scripts/my_msg.js';
-
 import * as ChromeGA from '../chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../chrome-extension-utils/scripts/log.js';
@@ -21,7 +17,9 @@ import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
 import {ChromeTime} from '../chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../chrome-extension-utils/scripts/utils.js';
 
-import '../chrome-extension-utils/scripts/ex_handler.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+
+import * as AppData from './data.js';
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();

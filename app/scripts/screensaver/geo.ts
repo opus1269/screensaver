@@ -14,8 +14,6 @@ import * as ChromeJSON from '../../scripts/chrome-extension-utils/scripts/json.j
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /**
  * A Geo location
  *

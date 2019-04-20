@@ -19,8 +19,6 @@ import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js'
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';

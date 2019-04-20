@@ -4,7 +4,6 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import './ex_handler.js';
 import * as ChromeLocale from './locales.js';
 
 declare var ChromePromise: any;

@@ -62,10 +62,6 @@ import '../../elements/confirm-dialog/confirm-dialog.js';
 
 import '../../elements/my_icons.js';
 
-import * as MyGA from '../../scripts/my_analytics.js';
-import * as MyMsg from '../../scripts/my_msg.js';
-import * as Permissions from '../../scripts/permissions.js';
-
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
@@ -73,6 +69,10 @@ import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js'
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
+import * as MyGA from '../../scripts/my_analytics.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+import * as Permissions from '../../scripts/permissions.js';
 
 declare var ChromePromise: any;
 

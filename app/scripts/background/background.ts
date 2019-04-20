@@ -12,22 +12,21 @@
 import '../../scripts/background/context_menus.js';
 import '../../scripts/background/user.js';
 
-import * as Alarm from './alarm.js';
-import * as AppData from './data.js';
-
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
 import * as Weather from '../../scripts/weather.js';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import * as Alarm from './alarm.js';
+import * as AppData from './data.js';
+
 
 /**
  * Display the options tab

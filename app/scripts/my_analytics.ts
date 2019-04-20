@@ -14,8 +14,6 @@ import {IEventType} from '../scripts/chrome-extension-utils/scripts/analytics';
 import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
 
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /** Tracking ID */
 const _TRACKING_ID = 'UA-61314754-1';
 

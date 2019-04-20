@@ -20,7 +20,6 @@ import '../../../../node_modules/@polymer/paper-input/paper-input.js';
 import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Module for the SettingText

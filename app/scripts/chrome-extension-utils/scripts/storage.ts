@@ -13,8 +13,6 @@ import * as ChromeGA from './analytics.js';
 import * as ChromeJSON from './json.js';
 import * as ChromeMsg from './msg.js';
 
-import './ex_handler.js';
-
 declare var ChromePromise: any;
 
 /**

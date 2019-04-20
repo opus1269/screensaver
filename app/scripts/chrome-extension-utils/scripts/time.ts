@@ -9,8 +9,6 @@ import * as ChromeLocale from './locales.js';
 import * as ChromeStorage from './storage.js';
 import * as ChromeUtils from './utils.js';
 
-import './ex_handler.js';
-
 /**
  * Time Class
  */

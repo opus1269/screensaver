@@ -9,8 +9,6 @@
  * Manage weather information
  */
 
-import * as MyGA from '../scripts/my_analytics.js';
-
 import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeHttp from '../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
@@ -20,37 +18,35 @@ import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storag
 import {ChromeTime} from '../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from './chrome-extension-utils/scripts/utils.js';
 
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import * as MyGA from '../scripts/my_analytics.js';
 
 /**
  * A geo location
- *
- * @property lat latitude
- * @property lon - longitude
  */
 export interface IWeatherLocation {
+  /** latitude */
   lat: number;
+  /** longitude */
   lon: number;
 }
 
 /**
  * Current weather conditions
- *
- * @property time - call time UTC milli sec
- * @property id - weather id
- * @property dayNight - day night prefix ('', 'day-', 'night-")
- * @property tempValue - temperature value in K
- * @property temp - temperature string
- * @property city - city name
- * @property description - weather description
  */
 export interface ICurrentWeather {
+  /** call time UTC milli sec */
   time: number;
+  /** weather type id */
   id: number;
+  /** day night prefix ('', 'day-', 'night-") */
   dayNight: string;
+  /** temperature value in K */
   tempValue: number;
+  /** temperature string */
   temp: string;
+  /** city name */
   city: string;
+  /** weather description */
   description: string;
 }
 
@@ -93,12 +89,12 @@ const _DEF_LOC: IWeatherLocation = {
 /**
  * API key
  */
-const _KEY = '2eab968d43699c1b6e126228b34880c9';
+const KEY = '2eab968d43699c1b6e126228b34880c9';
 
 /**
  * Base url of weather API
  */
-const _URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
+const URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
 
 /**
  * Update the weather
@@ -147,8 +143,8 @@ export async function update(force = false) {
   try {
     const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.maxRetries = 2;
-    let url = _URL_BASE;
-    url += `?lat=${location.lat}&lon=${location.lon}&APPID=${_KEY}`;
+    let url = URL_BASE;
+    url += `?lat=${location.lat}&lon=${location.lon}&APPID=${KEY}`;
 
     const response = await ChromeHttp.doGet(url, conf);
 

@@ -9,7 +9,6 @@
  * Manage the {@link PhotoSource} objects
  */
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
 import * as PhotoSourceFactory from './photo_source_factory.js';

@@ -11,9 +11,7 @@
  * {@link IMsgType}
  */
 
-import {IMsgType} from './chrome-extension-utils/scripts/msg.js';
-
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
+import {IMsgType} from './chrome-extension-utils/scripts/msg';
 
 /**
  * Chrome Messages for this app

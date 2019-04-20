@@ -12,7 +12,6 @@
  */
 
 import * as ChromeGA from './analytics.js';
-import './ex_handler.js';
 
 declare var ChromePromise: any;
 

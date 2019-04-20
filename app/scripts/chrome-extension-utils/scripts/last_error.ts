@@ -5,8 +5,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import './ex_handler.js';
-
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 

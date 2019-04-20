@@ -9,13 +9,11 @@
  * Control the running of a {@link Screensaver}
  */
 
+import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+
 import {Screensaver} from '../../scripts/screensaver/screensaver.js';
 import * as SSHistory from './ss_history.js';
 import * as SSPhotos from './ss_photos.js';
-
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Instance variables

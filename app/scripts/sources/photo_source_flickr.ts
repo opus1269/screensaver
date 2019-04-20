@@ -12,12 +12,9 @@
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 import {IPhoto, PhotoSource} from './photo_source.js';
 
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
-
 
 /**
  * Flickr rest API

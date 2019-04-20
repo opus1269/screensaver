@@ -10,7 +10,6 @@
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 
 import {CCSource} from './photo_source_chromecast.js';

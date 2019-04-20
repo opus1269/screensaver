@@ -14,8 +14,6 @@ import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/loca
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 
 /**
  * Event: Fired when signin state changes for an act. on the user's profile.

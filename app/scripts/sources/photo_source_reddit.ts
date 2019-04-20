@@ -9,12 +9,9 @@
  * A source of photos from reddit
  */
 
-import {IPhoto, PhotoSource} from './photo_source.js';
-
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
-import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
+import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';
 
 /**

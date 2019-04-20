@@ -12,8 +12,6 @@
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
 
-import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
-
 /**
  * True if development build
  */
