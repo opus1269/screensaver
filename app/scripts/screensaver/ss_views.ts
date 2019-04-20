@@ -39,7 +39,7 @@ export enum Type {
 }
 
 /** Max number of views */
-const MAX_VIEWS = 10;
+export const MAX_VIEWS = 10;
 
 /** The array of views */
 const VIEWS: SSView[] = [];

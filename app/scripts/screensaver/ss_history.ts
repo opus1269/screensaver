@@ -38,7 +38,7 @@ const HIST = {
   /** Index into arr */
   idx: -1,
   /** Max length of history, it will actually have 1 item more */
-  max: 10,
+  max: SSViews.MAX_VIEWS,
 };
 
 /**
