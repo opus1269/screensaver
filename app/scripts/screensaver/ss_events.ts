@@ -19,13 +19,13 @@ import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js'
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
 /**
- * Starting mouse position
+ * A mouse position
  *
- * @property x - screen horizontal position
- * @property y - screen vertical position
  */
 interface IMousePosition {
+  /** Screen horizontal position in pixels */
   x: number | null;
+  /** Screen vertical position in pixels */
   y: number | null;
 }
 

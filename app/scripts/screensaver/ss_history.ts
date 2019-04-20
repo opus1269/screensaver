@@ -17,29 +17,27 @@ import '../../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * History item
- *
- * @property viewsIdx - {@link SSViews} current index
- * @property replaceIdx - {@link SSViews} next index
- * @property photoId - {@link SSPhoto} unique id
- * @property photosPos - index into {@link SSPhotos}
  */
 interface IItem {
+  /** {@link SSViews} current index */
   viewsIdx: number;
+  /** {@link SSViews} next index */
   replaceIdx: number;
+  /** {@link SSPhoto} unique id */
   photoId: number;
+  /** The index into {@link SSPhotos} */
   photosPos: number;
 }
 
 /**
  * Slide show history
- *
- * @property arr - history items
- * @property idx - pointer into arr
- * @property max - max length of arr; it will actually have 1 item more
  */
 const HIST = {
+  /** History items */
   arr: [] as IItem[],
+  /** Index into arr */
   idx: -1,
+  /** Max length of history, it will actually have 1 item more */
   max: 10,
 };
 

@@ -17,54 +17,53 @@ import '../scripts/chrome-extension-utils/scripts/ex_handler.js';
 
 /**
  * Chrome Messages for this app
- *
- * @property SS_SHOW - show screensaver
- * @property SS_CLOSE - close screensaver
- * @property SS_IS_SHOWING - is a screensaver showing
- * @property PHOTO_SOURCE_FAILED - failed to web load
- * @property LOAD_FILTERED_PHOTOS - request to load the filtered google photos
- * @property FILTERED_PHOTOS_COUNT - number of photos
- * @property LOAD_ALBUMS - request to load contents of the saved albums
- * @property LOAD_ALBUM - request to load the contents of a google photos album
- * @property ALBUM_COUNT - number of photos loaded so far in an album
- * @property UPDATE_WEATHER_ALARM - update alarm for requesting current weather
- * @property UPDATE_WEATHER - update current weather
  */
 export const TYPE = {
+  /** Show screensaver */
   SS_SHOW: {
     message: 'showScreensaver',
   } as IMsgType,
+  /** Close screensaver */
   SS_CLOSE: {
     message: 'closeScreensaver',
   } as IMsgType,
+  /** Is a screensaver showing */
   SS_IS_SHOWING: {
     message: 'isScreensaverShowing',
   } as IMsgType,
+  /** Failed to retrieve a {@link PhotoSource} */
   PHOTO_SOURCE_FAILED: {
     message: 'photoSourceFailed',
     key: '',
     error: '',
   } as IMsgType,
+  /** Request to load the filtered google photos */
   LOAD_FILTERED_PHOTOS: {
     message: 'loadFilteredPhotos',
   } as IMsgType,
+  /** Number of photos loaded so far */
   FILTERED_PHOTOS_COUNT: {
     message: 'filteredPhotosCount',
     count: 0,
   } as IMsgType,
+  /** Request to load all the saved albums */
   LOAD_ALBUMS: {
     message: 'loadAlbums',
   } as IMsgType,
+  /** Request to load an album */
   LOAD_ALBUM: {
     message: 'loadAlbum',
   } as IMsgType,
+  /** Number of photos loaded for an album so far */
   ALBUM_COUNT: {
     message: 'albumCount',
     count: 0,
   } as IMsgType,
+  /** Update the alarm for getting the current weather */
   UPDATE_WEATHER_ALARM: {
     message: 'updateWeatherAlarm',
   } as IMsgType,
+  /** Update the current weather */
   UPDATE_WEATHER: {
     message: 'updateWeather',
   } as IMsgType,

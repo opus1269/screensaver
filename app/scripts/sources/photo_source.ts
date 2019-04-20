@@ -24,30 +24,31 @@ declare var ChromePromise: any;
 
 /**
  * A photo from a {@link PhotoSource}
- * This is the photo information that is persisted.
  *
- * @property url - url of photo
- * @property author - photographer
- * @property asp - aspect ration
- * @property ex - extra info. about the photo
- * @property point - geolocation
+ * @remarks
+ *
+ * This is the photo information that is persisted.
  */
 export interface IPhoto {
+  /** Url to the photo */
   url: string;
+  /** The photographer */
   author: string;
+  /** Aspect ratio */
   asp: string;
+  /** Extra information about the photo */
   ex?: any;
+  /** Geolocation */
   point?: string;
 }
 
 /**
- * The photos for a {@link PhotoSource}
- *
- * @property type - The type of PhotoSource
- * @property photos - The array of photos
+ * All the photos from a {@link PhotoSource}
  */
 export interface IPhotos {
+  /** The type of the PhotoSource that provided the photos */
   type: PhotoSourceFactory.Type;
+  /** The array of photos */
   photos: IPhoto[];
 }
 

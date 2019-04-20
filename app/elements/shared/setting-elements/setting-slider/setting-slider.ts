@@ -30,31 +30,29 @@ import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/an
 
 /**
  * Unit type
- *
- * @property name - type name
- * @property min - min value
- * @property max - max value
- * @property step - value increment
- * @property mult - conversion value from the base
  */
 interface IUnitType {
+  /** unit name */
   name: string;
+  /** minimum value */
   min: number;
+  /** maximum value */
   max: number;
+  /** value increment */
   step: number;
+  /** conversion factor from the base */
   mult: number;
 }
 
 /**
  * Unit value
- *
- * @property base - base value
- * @property display - display value
- * @property unit - unit type index
  */
 export interface IUnitValue {
+  /** base value */
   base: number;
+  /** display value */
   display: number;
+  /** index into {@link IUnitType array} */
   unit: number;
 }
 

@@ -78,24 +78,23 @@ declare var ChromePromise: any;
 
 /**
  * The pages for our SPA
- *
- * @property label - Menu label
- * @property route - Insertion point
- * @property icon - Menu icon
- * @property fn - Function to call when we are selected
- * @property url - to display when we are selected
- * @property ready - Have we been loaded a first time
- * @property disabled - Menu disabled state
- * @property divider - Should we display a divider along with the Menu item
  */
 interface IPage {
+  /** Menu label */
   label: string;
+  /** Insertion point */
   route: string;
+  /** Menu icon */
   icon: string;
-  fn: (arg0: number, arg1: string) => void | null;
+  /** Function to call when we are selected */
+  fn: (index: number, prevRoute: string) => void | null;
+  /** Url to display when we are selected */
   url: string | null;
+  /** Have we been loaded the first time */
   ready: boolean;
+  /** Menu disabled state */
   disabled: boolean;
+  /** Should we display a divider along with the Menu item */
   divider: boolean;
 }
 

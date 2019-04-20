@@ -22,21 +22,23 @@ const chromep = new ChromePromise();
 
 /**
  * A permission type
- *
- * @property name - key in localStorage
- * @property permissions - array of permissions
- * @property origins - array of origins
  */
 interface IType {
+  /** Key we are persisted as */
   name: string;
+  /** Array of permissions */
   permissions: string[];
+  /** Array of uri origins */
   origins: string[];
 }
 
 /** Possible states of an permission */
 export enum STATE {
+  /** Default */
   notSet = 'notSet',
+  /** User allowed */
   allowed = 'allowed',
+  /** User denied */
   denied = 'denied',
 }
 
