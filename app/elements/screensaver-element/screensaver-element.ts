@@ -7,7 +7,9 @@
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
+import {IPhoto} from '../../scripts/sources/photo_source';
 import {ScreensaverSlideElement} from '../screensaver-slide/screensaver-slide';
+import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
@@ -39,9 +41,8 @@ import * as SSHistory from '../../scripts/screensaver/ss_history.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
+import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
-
-import {SSPhoto} from '../../scripts/screensaver/ss_photo.js';
 
 declare var ChromePromise: any;
 
@@ -97,7 +98,7 @@ export class ScreensaverElement extends BaseElement {
   /**
    * Set the window zoom factor to 1.0
    */
-  protected static async _setZoom() {
+  protected static async setZoom() {
     const chromep = new ChromePromise();
     try {
       const zoomFactor = await chromep.tabs.getZoom();
@@ -105,7 +106,7 @@ export class ScreensaverElement extends BaseElement {
         chrome.tabs.setZoom(1.0);
       }
     } catch (err) {
-      ChromeGA.error(err.message, 'SS._setZoom');
+      ChromeGA.error(err.message, 'SS.setZoom');
     }
 
     return Promise.resolve();
@@ -184,7 +185,7 @@ export class ScreensaverElement extends BaseElement {
       MyGA.initialize();
       ChromeGA.page('/screensaver.html');
 
-      await ScreensaverElement._setZoom();
+      await ScreensaverElement.setZoom();
 
       this.setupPhotoTransitions();
 
@@ -265,7 +266,9 @@ export class ScreensaverElement extends BaseElement {
    * @param idx - index to replace
    */
   public replacePhoto(photo: SSPhoto, idx: number) {
-    this.splice('photos', idx, 1, photo);
+    if (photo && (idx >= 0)) {
+      this.splice('photos', idx, 1, photo);
+    }
   }
 
   /**
@@ -535,125 +538,144 @@ export class ScreensaverElement extends BaseElement {
     SSHistory.clear();
   }
 
+  /**
+   * Update the url in all the slides
+   *
+   * @param photos - Photos whose url's have changed
+   */
+  protected updateAllUrls(photos: IPhoto[]) {
+    for (let i = 0; i < this.photos.length; i++) {
+      const photo = this.photos[i];
+      const type = photo.getType();
+      if (type === PhotoSourceFactory.Type.GOOGLE_USER) {
+        const slide = this.getSlide(i);
+        const index = photos.findIndex((e) => {
+          return e.ex.id === photo.getEx().id;
+        });
+        if (index >= 0) {
+          slide.setUrl(photos[index].url);
+        }
+      }
+    }
+  }
+
   // noinspection JSUnusedGlobalSymbols
   /**
    * Event: An image failed to load
    */
   protected async onImageError(ev: CustomEvent) {
-    // TODO replace
-    // if (errHandler.isUpdating) {
-    //   // another error event is already handling this
-    //   return;
-    // }
-    //
-    // // url failed to load
-    // errHandler.isUpdating = true;
-    //
-    // const index = ev.detail.index;
-    // const theView = this.views[index];
-    // const thePhoto = theView.photo;
-    // const theType = thePhoto.getType();
-    // if ('Google User' === theType) {
-    //   // Google baseUrl may have expired, try to update some photos
-    //
-    //   // TODO have to use cors to get status code, so have to have permission from site
-    //   // first, fetch again and check status - only handle 403 errors
-    //   // const url = photo.getUrl();
-    //   // try {
-    //   //   const response = await fetch(url, {
-    //   //     method: 'get',
-    //   //   });
-    //   //   const status = response.status;
-    //   //   console.log(status);
-    //   //   if (status !== 403) {
-    //   //     // some other problem, don't know how to fix it
-    //   //     _isUpdating = false;
-    //   //     return;
-    //   //   }
-    //   // } catch (err) {
-    //   //   // some other problem, don't know how to fix it
-    //   //   console.log(err);
-    //   //   _isUpdating = false;
-    //   //   return;
-    //   // }
-    //
-    //   // throttle call rate to Google API per screensaver session
-    //   // in case something weird happens
-    //   if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
-    //     errHandler.isUpdating = false;
-    //     return;
-    //   }
-    //
-    //   // limit max number of calls to Google API per screensaver session
-    //   // in case something weird happens
-    //   errHandler.count++;
-    //   if (errHandler.count >= errHandler.MAX_COUNT) {
-    //     errHandler.isUpdating = false;
-    //     return;
-    //   }
-    //
-    //   // update last call time
-    //   errHandler.lastTime = Date.now();
-    //
-    //   // Calculate an hours worth of photos max
-    //   let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
-    //   transTime = transTime.base * 1000;
-    //   let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
-    //   // do at least 50, still one rpc. will help when displaying
-    //   // a lot for short times
-    //   nPhotos = Math.max(nPhotos, 50);
-    //
-    //   if (errHandler.count === 1) {
-    //     // limit to 50 on first call for quicker starts
-    //     nPhotos = Math.min(nPhotos, 50);
-    //   } else {
-    //     // limit to 300 on subsequent calls
-    //     nPhotos = Math.min(nPhotos, 300);
-    //   }
-    //
-    //   // get max of nPhotos Google Photo ids starting at this one
-    //   const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
-    //   const ids = [];
-    //   for (const photo of photos) {
-    //     // unique ids only - required for batchGet call
-    //     const id = photo.getEx().id;
-    //     if (ids.indexOf(id) === -1) {
-    //       ids.push(id);
-    //     }
-    //   }
-    //
-    //   let newPhotos = [];
-    //   try {
-    //     // load the new photos from Google Photos
-    //     newPhotos = await GoogleSource.loadPhotos(ids);
-    //   } catch (err) {
-    //     // major problem, give up for this session
-    //     errHandler.count = errHandler.MAX_COUNT + 1;
-    //     errHandler.isUpdating = true;
-    //     return;
-    //   }
-    //
-    //   // update the Google Photos baseUrls for this screensaver session
-    //   SSPhotos.updateGooglePhotoUrls(newPhotos);
-    //
-    //   // update any views with the new google photos
-    //   SSViews.updateAllUrls(newPhotos);
-    //
-    //   // persist new baseUrls to albumSelections
-    //   let updated;
-    //   try {
-    //     updated = await GoogleSource.updateBaseUrls(newPhotos);
-    //   } catch (err) {
-    //     if (!updated) {
-    //       // major problem, give up for this session
-    //       errHandler.count = errHandler.MAX_COUNT + 1;
-    //       errHandler.isUpdating = true;
-    //       return;
-    //     }
-    //   }
-    //
-    //   errHandler.isUpdating = false;
-    // }
+    if (errHandler.isUpdating) {
+      // another error event is already handling this
+      return;
+    }
+
+    // url failed to load
+    errHandler.isUpdating = true;
+
+    const index = ev.detail.index;
+    const thePhoto = this.photos[index];
+    const theType = thePhoto.getType();
+    if ('Google User' === theType) {
+      // Google baseUrl may have expired, try to update some photos
+
+      // TODO have to use cors to get status code, so have to have permission from site
+      // first, fetch again and check status - only handle 403 errors
+      // const url = photo.getUrl();
+      // try {
+      //   const response = await fetch(url, {
+      //     method: 'get',
+      //   });
+      //   const status = response.status;
+      //   console.log(status);
+      //   if (status !== 403) {
+      //     // some other problem, don't know how to fix it
+      //     _isUpdating = false;
+      //     return;
+      //   }
+      // } catch (err) {
+      //   // some other problem, don't know how to fix it
+      //   console.log(err);
+      //   _isUpdating = false;
+      //   return;
+      // }
+
+      // throttle call rate to Google API per screensaver session
+      // in case something weird happens
+      if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
+        errHandler.isUpdating = false;
+        return;
+      }
+
+      // limit max number of calls to Google API per screensaver session
+      // in case something weird happens
+      errHandler.count++;
+      if (errHandler.count >= errHandler.MAX_COUNT) {
+        errHandler.isUpdating = false;
+        return;
+      }
+
+      // update last call time
+      errHandler.lastTime = Date.now();
+
+      // Calculate an hours worth of photos max
+      let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+      transTime = transTime.base * 1000;
+      let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
+      // do at least 50, still one rpc. will help when displaying
+      // a lot for short times
+      nPhotos = Math.max(nPhotos, 50);
+
+      if (errHandler.count === 1) {
+        // limit to 50 on first call for quicker starts
+        nPhotos = Math.min(nPhotos, 50);
+      } else {
+        // limit to 300 on subsequent calls
+        nPhotos = Math.min(nPhotos, 300);
+      }
+
+      // get max of nPhotos Google Photo ids starting at this one
+      const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
+      const ids = [];
+      for (const photo of photos) {
+        // unique ids only - required for batchGet call
+        const id = photo.getEx().id;
+        if (ids.indexOf(id) === -1) {
+          ids.push(id);
+        }
+      }
+
+      let newPhotos = [];
+      try {
+        // load the new photos from Google Photos
+        newPhotos = await GoogleSource.loadPhotos(ids);
+      } catch (err) {
+        // major problem, give up for this session
+        errHandler.count = errHandler.MAX_COUNT + 1;
+        errHandler.isUpdating = true;
+        return;
+      }
+
+      // update the Google Photos baseUrls for this screensaver session
+      SSPhotos.updateGooglePhotoUrls(newPhotos);
+
+      // update any views with the new google photos
+      this.updateAllUrls(newPhotos);
+
+      // persist new baseUrls to albumSelections
+      let updated;
+      try {
+        updated = await GoogleSource.updateBaseUrls(newPhotos);
+      } catch (err) {
+        if (!updated) {
+          // major problem, give up for this session
+          errHandler.count = errHandler.MAX_COUNT + 1;
+          errHandler.isUpdating = true;
+          return;
+        }
+      }
+
+      errHandler.isUpdating = false;
+    }
   }
 
   static get template() {

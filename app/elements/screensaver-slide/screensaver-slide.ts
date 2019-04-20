@@ -9,6 +9,7 @@ import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-imag
 import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {WeatherElement} from '../weather-element/weather-element';
+import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
 
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {
@@ -30,8 +31,6 @@ import '../../elements/weather-element/weather-element.js';
 
 import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
 import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
-
-import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element.js';
 
 import {BaseElement} from '../shared/base-element/base-element.js';
 
@@ -99,6 +98,10 @@ export class ScreensaverSlideElement
   @property({type: Number})
   protected index = 0;
 
+  /** The url of the photo */
+  @property({type: String})
+  protected url = '';
+
   /** Between photo animation type */
   @property({type: Number})
   protected aniType: TRANS_TYPE = TRANS_TYPE.FADE;
@@ -164,12 +167,6 @@ export class ScreensaverSlideElement
     return sizing;
   }
 
-  /** Photo url */
-  @computed('photo')
-  get url() {
-    return this.photo.getUrl();
-  }
-
   /** Author label */
   @computed('photo')
   get authorLabel() {
@@ -216,6 +213,13 @@ export class ScreensaverSlideElement
 
   @query('.weather')
   protected weather: WeatherElement;
+
+  /**
+   * Set the url
+   */
+  public setUrl(url: string) {
+    this.set('url', url);
+  }
 
   /**
    * Is the photo loaded
@@ -317,6 +321,18 @@ export class ScreensaverSlideElement
         detail: {index: this.index},
       });
       this.dispatchEvent(customEvent);
+    }
+  }
+
+  /**
+   * Photo changed
+   *
+   * @param photo - the new photo
+   */
+  @observe('photo')
+  protected photoChanged(photo: SSPhoto) {
+    if (photo) {
+      this.set('url', photo.getUrl());
     }
   }
 
