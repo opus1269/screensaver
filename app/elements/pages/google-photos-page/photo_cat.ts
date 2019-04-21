@@ -5,8 +5,12 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {PaperCheckboxElement} from '../../../node_modules/@polymer/paper-checkbox/paper-checkbox';
+
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+
+import '../../../node_modules/@polymer/iron-label/iron-label.js';
 
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
@@ -44,12 +48,13 @@ export class PhotoCatElement extends BaseElement {
    * Event: checkbox tapped
    */
   @listen('change', 'checkbox')
-  public onCheckedChange(ev: any) {
-    ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${ev.target.checked}`);
+  public onCheckedChange(ev: CustomEvent) {
+    const checked = (ev.target as PaperCheckboxElement).checked;
+    ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${checked}`);
     const customEvent = new CustomEvent('value-changed', {
       bubbles: true,
       composed: true,
-      detail: {value: ev.target.checked},
+      detail: {value: checked},
     });
     this.dispatchEvent(customEvent);
   }
@@ -66,14 +71,26 @@ export class PhotoCatElement extends BaseElement {
     pointer-events: none;
   }
 
+  :host iron-label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+  }
+
 </style>
 
-<paper-item class="center horizontal layout">
-  <div id="label" class="setting-label flex" tabindex="-1">[[label]]</div>
-  <paper-checkbox id="checkbox" name="include" checked="{{checked}}"
-                  disabled$="[[disabled]]">[[localize('include')]]
-  </paper-checkbox>
-</paper-item>
+<iron-label for="checkbox">
+  <paper-item class="center horizontal layout" tabindex="-1">
+    <paper-item class="setting-label flex">
+      [[label]]
+      <paper-ripple center=""></paper-ripple>
+    </paper-item>
+    <paper-checkbox id="checkbox" name="include" checked="{{checked}}"
+                    disabled$="[[disabled]]">
+      [[localize('include')]]
+    </paper-checkbox>
+  </paper-item>
+</iron-label>
 `;
   }
 }
