@@ -114,8 +114,6 @@ export async function initialize() {
   } catch (err) {
     ChromeGA.error(err.message, 'AppData.initialize');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -257,8 +255,6 @@ export async function update() {
   } catch (e) {
     // ignore
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -290,8 +286,6 @@ export async function restoreDefaults() {
   } catch (err) {
     // ignore
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -398,8 +392,6 @@ export async function processState(key = 'all') {
   } catch (err) {
     ChromeGA.error(err.message, 'AppData.processState');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -455,10 +447,8 @@ async function processEnabled() {
 
     await chromep.contextMenus.update('ENABLE_MENU', {title: label});
   } catch (err) {
-    // ignore
+    ChromeGA.error(err.message, 'AppData.processEnabled');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -510,9 +500,8 @@ async function setOS() {
   } catch (err) {
     // something went wrong - linux seems to fail this call sometimes
     ChromeStorage.set('os', 'unknown');
+    ChromeGA.error(err.message, 'AppData.setOS');
   }
-
-  return Promise.resolve();
 }
 
 /**

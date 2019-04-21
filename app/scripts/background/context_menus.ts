@@ -37,9 +37,11 @@ async function toggleEnabled() {
   ChromeStorage.set('enabled', !oldState);
 
   // storage changed event not fired on same page as the change
-  await AppData.processState('enabled');
-
-  return Promise.resolve();
+  try {
+    await AppData.processState('enabled');
+  } catch (err) {
+    ChromeGA.error(err.message, 'ContextMenus.toggleEnabled');
+  }
 }
 
 /**
@@ -99,13 +101,17 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
  * @param info - info on the clicked menu
  */
 async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
-  if (info.menuItemId === DISPLAY_MENU) {
-    ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
-    await SSController.display(false);
-  } else if (info.menuItemId === ENABLE_MENU) {
-    const isEnabled = ChromeStorage.getBool('enabled');
-    ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
-    await toggleEnabled();
+  try {
+    if (info.menuItemId === DISPLAY_MENU) {
+      ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
+      await SSController.display(false);
+    } else if (info.menuItemId === ENABLE_MENU) {
+      const isEnabled = ChromeStorage.getBool('enabled');
+      ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
+      await toggleEnabled();
+    }
+  } catch (err) {
+    ChromeGA.error(err.message, 'ContextMenus.onMenuClicked');
   }
 }
 
@@ -116,12 +122,16 @@ async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
  * @param cmd - keyboard command
  */
 async function onKeyCommand(cmd: string) {
-  if (cmd === 'toggle-enabled') {
-    ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
-    await toggleEnabled();
-  } else if (cmd === 'show-screensaver') {
-    ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
-    await SSController.display(false);
+  try {
+    if (cmd === 'toggle-enabled') {
+      ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
+      await toggleEnabled();
+    } else if (cmd === 'show-screensaver') {
+      ChromeGA.event(ChromeGA.EVENT.KEY_COMMAND, `${cmd}`);
+      await SSController.display(false);
+    }
+  } catch (err) {
+    ChromeGA.error(err.message, 'ContextMenus.onKeyCommand');
   }
 }
 
@@ -133,4 +143,3 @@ chrome.contextMenus.onClicked.addListener(onMenuClicked);
 
 // listen for special keyboard commands
 chrome.commands.onCommand.addListener(onKeyCommand);
-

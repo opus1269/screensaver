@@ -63,7 +63,7 @@ export function updateKeepAwakeAlarm() {
     // if we are currently outside of the active range
     // then set inactive state
     if (!ChromeTime.isInRange(aStart, aStop)) {
-      _setInactiveState();
+      setInactiveState();
     }
   } else {
     chrome.alarms.clear(ALARMS.ACTIVATE);
@@ -86,12 +86,9 @@ export async function updatePhotoAlarm() {
         periodInMinutes: ChromeTime.MIN_IN_DAY,
       });
     }
-    return Promise.resolve();
   } catch (err) {
     ChromeGA.error(err.message, 'Alarm.updatePhotoAlarm');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -119,8 +116,6 @@ export async function updateWeatherAlarm() {
   } else {
     chrome.alarms.clear(ALARMS.WEATHER);
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -136,7 +131,7 @@ export function updateBadgeText() {
 /**
  * Set state when the screensaver is in the active time range
  */
-async function _setActiveState() {
+async function setActiveState() {
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
   const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
   if (keepAwake) {
@@ -152,18 +147,16 @@ async function _setActiveState() {
       await SSController.display(false);
     }
   } catch (err) {
-    ChromeGA.error(err.message, 'Alarm._setActiveState');
+    ChromeGA.error(err.message, 'Alarm.setActiveState');
   }
 
   updateBadgeText();
-
-  return Promise.resolve();
 }
 
 /**
  * Set state when the screensaver is in the inactive time range
  */
-function _setInactiveState() {
+function setInactiveState() {
   const allowSuspend = ChromeStorage.getBool('allowSuspend',
       AppData.DEFS.allowSuspend);
   if (allowSuspend) {
@@ -178,7 +171,7 @@ function _setInactiveState() {
 /**
  * Set the Badge text on the icon
  */
-function _setBadgeText() {
+function setBadgeText() {
   const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
   let text = '';
@@ -196,7 +189,7 @@ function _setBadgeText() {
  * Update the weather
  * @throws An error if update failed
  */
-async function _updateWeather() {
+async function updateWeather() {
   // is the screensaver running
   let response = null;
   try {
@@ -208,55 +201,53 @@ async function _updateWeather() {
   if (response) {
     await Weather.update();
   }
-
-  return Promise.resolve();
 }
 
 /**
  * Event: Fired when an alarm has triggered.
  * @link https://developer.chrome.com/apps/alarms#event-onAlarm
+ *
  * @param alarm - details on the alarm
  */
-async function _onAlarm(alarm: chrome.alarms.Alarm) {
+async function onAlarm(alarm: chrome.alarms.Alarm) {
 
   try {
     switch (alarm.name) {
       case ALARMS.ACTIVATE:
         // entering active time range of keep awake
-        await _setActiveState();
+        await setActiveState();
         break;
       case ALARMS.DEACTIVATE:
         // leaving active time range of keep awake
-        _setInactiveState();
+        setInactiveState();
         break;
       case ALARMS.UPDATE_PHOTOS:
         // get the latest for the daily photo streams
         try {
           await PhotoSources.processDaily();
         } catch (err) {
-          ChromeGA.error(err.message, 'Alarm._onAlarm');
+          ChromeGA.error(err.message, 'Alarm.onAlarm');
         }
         break;
       case ALARMS.BADGE_TEXT:
         // set the icons text
-        _setBadgeText();
+        setBadgeText();
         break;
       case ALARMS.WEATHER:
         // try to update the weather
         try {
-          await _updateWeather();
+          await updateWeather();
         } catch (err) {
-          ChromeGA.error(err.message, 'Alarm._onAlarm');
+          ChromeGA.error(err.message, 'Alarm.onAlarm');
         }
         break;
       default:
         break;
     }
   } catch (err) {
-    ChromeGA.error(err.message, 'Alarm._onAlarm');
+    ChromeGA.error(err.message, 'Alarm.onAlarm');
   }
 }
 
 // Listen for alarms
-chrome.alarms.onAlarm.addListener(_onAlarm);
-
+chrome.alarms.onAlarm.addListener(onAlarm);

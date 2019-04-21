@@ -27,7 +27,6 @@ import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 import * as Alarm from './alarm.js';
 import * as AppData from './data.js';
 
-
 /**
  * Display the options tab
  */
@@ -39,8 +38,6 @@ async function showOptionsTab() {
     // no one listening, create it
     chrome.tabs.create({url: '/html/options.html'});
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -74,7 +71,7 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
       if (version === oldVer) {
         // spurious update:
         // https://bugs.chromium.org/p/chromium/issues/detail?id=303481
-        return Promise.resolve();
+        return;
       }
       // TODO clean this up
       let showThreeInfo = false;
@@ -92,8 +89,6 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
     } catch (err) {
       ChromeGA.error(err.message, 'Bg.onUpdated');
     }
-
-    return Promise.resolve();
   }
 }
 
@@ -110,8 +105,6 @@ async function onStartup() {
   } catch (err) {
     ChromeGA.error(err.message, 'Bg.onStartup');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -125,8 +118,6 @@ async function onIconClicked() {
   } catch (err) {
     ChromeGA.error(err.message, 'Bg.onIconClicked');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -142,8 +133,6 @@ async function onStorageChanged(ev: StorageEvent) {
   } catch (err) {
     ChromeGA.error(err.message, 'Bg.onStorageChanged');
   }
-
-  return Promise.resolve();
 }
 
 /**

@@ -27,12 +27,12 @@ const chromep = new ChromePromise();
 /**
  * Screensaver URL
  */
-const _SS_URL = '/html/screensaver.html';
+const SS_URL = '/html/screensaver.html';
 
 /**
  * Error showing Screensaver
  */
-const _ERR_SHOW = ChromeLocale.localize('err_show_ss');
+const ERR_SHOW = ChromeLocale.localize('err_show_ss');
 
 /**
  * Determine if the screen saver can be displayed
@@ -72,8 +72,6 @@ export async function display(single: boolean) {
   } catch (err) {
     ChromeLog.error(err.message, 'SSControl.display');
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -111,7 +109,7 @@ async function hasFullscreen(disp: chrome.system.display.DisplayInfo) {
     ChromeGA.error(err.message, 'SSController.hasFullscreen');
   }
 
-  return Promise.resolve(ret);
+  return ret;
 }
 
 /**
@@ -123,10 +121,10 @@ async function isShowing() {
   // send message to the screensaver's to see if any are around
   try {
     await ChromeMsg.send(MyMsg.TYPE.SS_IS_SHOWING);
-    return Promise.resolve(true);
+    return true;
   } catch (err) {
     // no one listening
-    return Promise.resolve(false);
+    return false;
   }
 }
 
@@ -138,7 +136,7 @@ async function isShowing() {
 async function open(disp: chrome.system.display.DisplayInfo | null) {
   // window creation options
   const winOpts: chrome.windows.CreateData = {
-    url: _SS_URL,
+    url: SS_URL,
     type: 'popup',
   };
 
@@ -146,7 +144,7 @@ async function open(disp: chrome.system.display.DisplayInfo | null) {
     const hasFullScreen = await hasFullscreen(disp);
     if (hasFullScreen) {
       // don't display if there is a fullscreen window
-      return Promise.resolve();
+      return;
     }
 
     if (!disp) {
@@ -167,10 +165,8 @@ async function open(disp: chrome.system.display.DisplayInfo | null) {
     }
 
   } catch (err) {
-    ChromeLog.error(err.message, 'SSControl._open', _ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl._open', ERR_SHOW);
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -187,10 +183,8 @@ async function openOnAllDisplays() {
       }
     }
   } catch (err) {
-    ChromeLog.error(err.message, 'SSControl.openOnAllDisplays', _ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl.openOnAllDisplays', ERR_SHOW);
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -204,7 +198,7 @@ async function openOnAllDisplays() {
  *
  * @param state - current state of computer
  */
-async function _onIdleStateChanged(state: string) {
+async function onIdleStateChanged(state: string) {
   try {
     const showing = await isShowing();
     if (state === 'idle') {
@@ -225,7 +219,7 @@ async function _onIdleStateChanged(state: string) {
       }
     }
   } catch (err) {
-    ChromeGA.error(err.message, 'SSControl.isShowing');
+    ChromeGA.error(err.message, 'SSControl.onIdleStateChanged');
   }
 }
 
@@ -252,7 +246,7 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
 }
 
 // listen for changes to the idle state of the computer
-chrome.idle.onStateChanged.addListener(_onIdleStateChanged);
+chrome.idle.onStateChanged.addListener(onIdleStateChanged);
 
 // listen for chrome messages
 ChromeMsg.addListener(onChromeMessage);

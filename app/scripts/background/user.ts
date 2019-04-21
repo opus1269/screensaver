@@ -9,11 +9,11 @@
  * Manage the Chrome sign-in state
  */
 
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-
 
 /**
  * Event: Fired when signin state changes for an act. on the user's profile.
@@ -22,13 +22,13 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
  * @param account - chrome AccountInfo
  * @param signedIn - true if signedIn
  */
-async function _onSignInChanged(account: chrome.identity.AccountInfo, signedIn: boolean) {
+async function onSignInChanged(account: chrome.identity.AccountInfo, signedIn: boolean) {
   if (!signedIn) {
 
     // clearing browsing data (other stuff?) can trigger this even though still signed in
     const isSignedIn = await ChromeAuth.isSignedIn();
     if (isSignedIn) {
-      return Promise.resolve();
+      return;
     }
 
     ChromeStorage.set('signedInToChrome', signedIn);
@@ -37,21 +37,18 @@ async function _onSignInChanged(account: chrome.identity.AccountInfo, signedIn: 
     try {
       await ChromeStorage.asyncSet('albumSelections', []);
       await ChromeStorage.asyncSet('googleImages', []);
-    } catch (e) {
-      // ignore
+    } catch (err) {
+      ChromeGA.error(err.message, 'User.onSignInChanged');
     }
 
     const type = ChromeStorage.get('permPicasa', 'notSet');
     if (type === 'allowed') {
-      ChromeLog.error(ChromeLocale.localize('err_chrome_signout'),
-          'User._onSignInChanged');
+      ChromeLog.error(ChromeLocale.localize('err_chrome_signout'), 'User.onSignInChanged');
     }
   } else {
     ChromeStorage.set('signedInToChrome', signedIn);
   }
-
-  return Promise.resolve();
 }
 
 // Listen for changes to Browser sign-in
-chrome.identity.onSignInChanged.addListener(_onSignInChanged);
+chrome.identity.onSignInChanged.addListener(onSignInChanged);
