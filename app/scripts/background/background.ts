@@ -9,7 +9,7 @@
  * The background script for the extension.<br>
  */
 
-import '../../scripts/background/context_menus.js';
+import * as ContextMenus from '../../scripts/background/context_menus.js';
 import '../../scripts/background/user.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -50,6 +50,13 @@ async function showOptionsTab() {
  * @param details - type of event
  */
 async function onInstalled(details: chrome.runtime.InstalledDetails) {
+  // initialize context menus
+  try {
+    await ContextMenus.initialize();
+  } catch (err) {
+    ChromeGA.error(err, 'BG.onInstalled');
+  }
+
   if (details.reason === 'install') {
     // initial install
 

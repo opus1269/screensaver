@@ -30,29 +30,9 @@ const DISPLAY_MENU = 'DISPLAY_MENU';
 const ENABLE_MENU = 'ENABLE_MENU';
 
 /**
- * Toggle enabled state of the screen saver
+ * Initialize the menus
  */
-async function toggleEnabled() {
-  const oldState = ChromeStorage.getBool('enabled', true);
-  ChromeStorage.set('enabled', !oldState);
-
-  // storage changed event not fired on same page as the change
-  try {
-    await AppData.processState('enabled');
-  } catch (err) {
-    ChromeGA.error(err.message, 'ContextMenus.toggleEnabled');
-  }
-}
-
-/**
- * Event: Fired when the extension is first installed,<br />
- * when the extension is updated to a new version,<br />
- * and when Chrome is updated to a new version.
- * @link https://developer.chrome.com/extensions/runtime#event-onInstalled
- *
- * @param details - type of event
- */
-async function onInstalled(details: chrome.runtime.InstalledDetails) {
+export async function initialize() {
   const chromep = new ChromePromise();
 
   try {
@@ -91,6 +71,21 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
     if (!err.message.includes('duplicate id')) {
       ChromeGA.error(err.message, 'chromep.contextMenus.create');
     }
+  }
+}
+
+/**
+ * Toggle enabled state of the screen saver
+ */
+async function toggleEnabled() {
+  const oldState = ChromeStorage.getBool('enabled', true);
+  ChromeStorage.set('enabled', !oldState);
+
+  // storage changed event not fired on same page as the change
+  try {
+    await AppData.processState('enabled');
+  } catch (err) {
+    ChromeGA.error(err.message, 'ContextMenus.toggleEnabled');
   }
 }
 
@@ -134,9 +129,6 @@ async function onKeyCommand(cmd: string) {
     ChromeGA.error(err.message, 'ContextMenus.onKeyCommand');
   }
 }
-
-// listen for install events
-chrome.runtime.onInstalled.addListener(onInstalled);
 
 // listen for clicks on context menus
 chrome.contextMenus.onClicked.addListener(onMenuClicked);
