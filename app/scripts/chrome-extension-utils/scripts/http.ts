@@ -165,8 +165,7 @@ function getError(response: Response) {
 async function getAuthToken(isAuth: boolean, interactive: boolean) {
   if (isAuth) {
     try {
-      const token = await ChromeAuth.getToken(interactive);
-      return Promise.resolve(token);
+      return await ChromeAuth.getToken(interactive);
     } catch (err) {
       if (interactive && (err.message.includes('revoked') ||
           err.message.includes('Authorization page could not be loaded'))) {

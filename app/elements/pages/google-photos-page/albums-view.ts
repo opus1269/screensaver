@@ -32,15 +32,8 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/my_icons.js';
-
-import * as Permissions from '../../../scripts/permissions.js';
-import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
-
-import * as MyGA from '../../../scripts/my_analytics.js';
-import * as MyMsg from '../../../scripts/my_msg.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
@@ -48,6 +41,13 @@ import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/l
 import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+
+import * as MyGA from '../../../scripts/my_analytics.js';
+import * as MyMsg from '../../../scripts/my_msg.js';
+
+import {Options} from '../../../scripts/options/options.js';
+import * as Permissions from '../../../scripts/permissions.js';
+import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
 
 /** Max number of albums to select */
 const MAX_ALBUMS = GoogleSource.MAX_ALBUMS;
@@ -85,7 +85,7 @@ export class AlbumsViewElement extends BaseElement {
           // exceeded storage limits - use old
           selections = await ChromeStorage.asyncGet('albumSelections', []);
           Options.showStorageErrorDialog(METHOD);
-          return Promise.resolve(false);
+          return false;
         } else {
           // update selections
           selections = response;
@@ -95,7 +95,7 @@ export class AlbumsViewElement extends BaseElement {
         const title = ChromeLocale.localize('err_status');
         const text = response.message;
         Options.showErrorDialog(title, text, METHOD);
-        return Promise.resolve(false);
+        return false;
       }
 
     } catch (err) {
@@ -103,10 +103,10 @@ export class AlbumsViewElement extends BaseElement {
       const title = ChromeLocale.localize('err_status');
       const text = err.message;
       Options.showErrorDialog(title, text, METHOD);
-      return Promise.resolve(false);
+      return false;
     }
 
-    return Promise.resolve(true);
+    return true;
   }
 
   /**
@@ -121,7 +121,7 @@ export class AlbumsViewElement extends BaseElement {
       album.photos = album.photos || [];
       ct += album.photos.length;
     }
-    return Promise.resolve(ct);
+    return ct;
   }
 
   /** Flag to display the loading... UI */
@@ -200,7 +200,7 @@ export class AlbumsViewElement extends BaseElement {
         const title = ERR_TITLE;
         const text = ChromeLocale.localize('err_auth_picasa');
         Options.showErrorDialog(title, text, METHOD);
-        return Promise.resolve();
+        return;
       }
 
       // get the list of user's albums
@@ -218,7 +218,7 @@ export class AlbumsViewElement extends BaseElement {
           composed: true,
         });
         this.dispatchEvent(customEvent);
-        return Promise.resolve();
+        return;
       }
 
       if (updatePhotos) {
@@ -261,8 +261,6 @@ export class AlbumsViewElement extends BaseElement {
     } finally {
       this.set('waitForLoad', false);
     }
-
-    return Promise.resolve();
   }
 
   /**
@@ -326,8 +324,6 @@ export class AlbumsViewElement extends BaseElement {
     } catch (err) {
       // ignore
     }
-
-    return Promise.resolve();
   }
 
   /**
@@ -373,7 +369,7 @@ export class AlbumsViewElement extends BaseElement {
         this.set('albums.' + album.index + '.checked', false);
         const text = ChromeLocale.localize('err_max_albums');
         Options.showErrorDialog(ERR_TITLE, text, METHOD);
-        return Promise.resolve(ret);
+        return ret;
       }
 
       const photoCt = await AlbumsViewElement.getTotalPhotoCount();
@@ -383,7 +379,7 @@ export class AlbumsViewElement extends BaseElement {
         this.set('albums.' + album.index + '.checked', false);
         const text = ChromeLocale.localize('err_max_photos');
         Options.showErrorDialog(ERR_TITLE, text, METHOD);
-        return Promise.resolve(ret);
+        return ret;
       }
 
       if (wait) {
@@ -412,7 +408,7 @@ export class AlbumsViewElement extends BaseElement {
           selections.pop();
           this.set('albums.' + album.index + '.checked', false);
           Options.showStorageErrorDialog(METHOD);
-          return Promise.resolve(ret);
+          return ret;
         }
 
         this.set('albums.' + album.index + '.ct', response.ct);
@@ -435,7 +431,7 @@ export class AlbumsViewElement extends BaseElement {
       ret = true;
     }
 
-    return Promise.resolve(ret);
+    return ret;
   }
 
   /**

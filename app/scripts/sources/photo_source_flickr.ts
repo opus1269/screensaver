@@ -126,8 +126,6 @@ export class FlickrSource extends PhotoSource {
     }
 
     // convert to our format
-    const photos = FlickrSource._processPhotos(response);
-
-    return Promise.resolve(photos);
+    return FlickrSource._processPhotos(response);
   }
 }

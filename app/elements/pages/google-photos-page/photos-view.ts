@@ -28,18 +28,19 @@ import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import './photo_cat.js';
 
-import {Options} from '../../../scripts/options/options.js';
 import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
-
-import * as MyMsg from '../../../scripts/my_msg.js';
-import * as Permissions from '../../../scripts/permissions.js';
-import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+
+import * as MyMsg from '../../../scripts/my_msg.js';
+import * as Permissions from '../../../scripts/permissions.js';
+
+import {Options} from '../../../scripts/options/options.js';
+import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
 
 /**
  * Polymer element for the Google Photos page photos view UI
@@ -171,7 +172,7 @@ export class PhotosViewElement extends BaseElement {
         const title = ChromeLocale.localize('err_load_photos');
         const text = ChromeLocale.localize('err_auth_picasa');
         Options.showErrorDialog(title, text, METHOD);
-        return Promise.resolve();
+        return;
       }
 
       this.set('waitForLoad', true);

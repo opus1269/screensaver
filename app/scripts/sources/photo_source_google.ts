@@ -339,7 +339,7 @@ export class GoogleSource extends PhotoSource {
 
     ChromeGA.event(MyGA.EVENT.LOAD_ALBUM, `nPhotos: ${album.ct}`);
 
-    return Promise.resolve(album);
+    return album;
   }
 
   /**
@@ -355,7 +355,7 @@ export class GoogleSource extends PhotoSource {
 
     const albums = await ChromeStorage.asyncGet('albumSelections', []);
     if ((albums.length === 0)) {
-      return Promise.resolve(albums);
+      return albums;
     }
 
     let ct = 0;
@@ -400,7 +400,7 @@ export class GoogleSource extends PhotoSource {
       }
     }
 
-    return Promise.resolve(albums);
+    return albums;
   }
 
   /**
@@ -415,7 +415,7 @@ export class GoogleSource extends PhotoSource {
     const curPhotos = await ChromeStorage.asyncGet('googleImages', []);
     if (!force && !this._isFetch()) {
       // no need to change - save on api calls
-      return Promise.resolve(curPhotos);
+      return curPhotos;
     }
 
     const MAX_PHOTOS = GoogleSource.MAX_FILTERED_PHOTOS;
@@ -488,7 +488,7 @@ export class GoogleSource extends PhotoSource {
     ChromeGA.event(MyGA.EVENT.LOAD_FILTERED_PHOTOS,
         `nPhotos: ${newPhotos.length}`);
 
-    return Promise.resolve(newPhotos);
+    return newPhotos;
   }
 
   /**
@@ -699,7 +699,7 @@ export class GoogleSource extends PhotoSource {
     if (!this._isFetch()) {
       // no need to change - save on api calls
       const curAlbums: IAlbum[] = await ChromeStorage.asyncGet('albumSelections', []);
-      return Promise.resolve(curAlbums);
+      return curAlbums;
     }
 
     let ct = 0;
@@ -712,7 +712,7 @@ export class GoogleSource extends PhotoSource {
       ChromeGA.event(MyGA.EVENT.FETCH_ALBUMS, `nAlbums: ${albums.length} nPhotos: ${ct}`);
     }
 
-    return Promise.resolve(albums);
+    return albums;
   }
 
   /** Determine if a mediaEntry is an image
@@ -849,7 +849,7 @@ export class GoogleSource extends PhotoSource {
     } catch (err) {
       if (GoogleSource.isAuthRevokedError(err, METHOD)) {
         // Oauth2 Access was revoked - handled error ourselves
-        return Promise.resolve([]);
+        return [];
       }
       return Promise.reject(err);
     }

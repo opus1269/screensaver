@@ -334,8 +334,6 @@ export class AppMainElement extends BaseElement {
     } catch (err) {
       ChromeLog.error(err.message, 'AppMain._onAcceptPermissionsClicked');
     }
-
-    return Promise.resolve();
   }
 
   /**
@@ -349,8 +347,6 @@ export class AppMainElement extends BaseElement {
     } catch (err) {
       ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
     }
-
-    return Promise.resolve();
   }
 
   /**
@@ -524,8 +520,6 @@ export class AppMainElement extends BaseElement {
     } catch (err) {
       ChromeGA.error(err.message, 'AppMain.setErrorMenuState');
     }
-
-    return Promise.resolve();
   }
 
   /**

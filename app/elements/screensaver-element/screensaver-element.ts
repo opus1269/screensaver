@@ -26,9 +26,6 @@ import {BaseElement} from '../../elements/shared/base-element/base-element.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
-import * as MyGA from '../../scripts/my_analytics.js';
-import * as MyMsg from '../../scripts/my_msg.js';
-
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
@@ -36,12 +33,16 @@ import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/sto
 import {ChromeTime} from '../../scripts/chrome-extension-utils/scripts/time.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
+import * as MyGA from '../../scripts/my_analytics.js';
+import * as MyMsg from '../../scripts/my_msg.js';
+
 import * as SSEvents from '../../scripts/screensaver/ss_events.js';
 import * as SSHistory from '../../scripts/screensaver/ss_history.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
+
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
 declare var ChromePromise: any;
@@ -108,8 +109,6 @@ export class ScreensaverElement extends BaseElement {
     } catch (err) {
       ChromeGA.error(err.message, 'SS.setZoom');
     }
-
-    return Promise.resolve();
   }
 
   /**

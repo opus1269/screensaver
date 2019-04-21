@@ -74,8 +74,6 @@ export async function process(useKey: PhotoSourceFactory.UseKey) {
   if (source) {
     await source.process();
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -93,7 +91,7 @@ export async function getSelectedPhotos() {
     ret.push(photos);
   }
 
-  return Promise.resolve(ret);
+  return ret;
 }
 
 /**
@@ -117,8 +115,6 @@ export async function processAll(doGoogle = false) {
       }
     }
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -135,6 +131,4 @@ export async function processDaily() {
       }
     }
   }
-
-  return Promise.resolve();
 }

@@ -69,8 +69,7 @@ export const TYPE = {
 export async function send(type: IMsgType) {
   const chromep = new ChromePromise();
   try {
-    const response = await chromep.runtime.sendMessage(type);
-    return Promise.resolve(response);
+    return await chromep.runtime.sendMessage(type);
   } catch (err) {
     if (err.message && !err.message.includes('port closed') && !err.message.includes('Receiving end does not exist')) {
       const msg = `type: ${type.message}, ${err.message}`;

@@ -48,6 +48,6 @@ export class CCSource extends PhotoSource {
     for (const photo of photos) {
       photo.asp = '1.78';
     }
-    return Promise.resolve(photos);
+    return photos;
   }
 }
