@@ -48,8 +48,8 @@
     "merge2": "^1.2.3",
     "polymer-build": "^3.1.1",
     "run-sequence": "^2.2.1",
-    "tslint": "^5.15.0",
-    "typescript": "^3.4.3",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.4",
     "uglify-es": "^3.3.10"
   },
   "false": {}
