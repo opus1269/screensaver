@@ -118,7 +118,7 @@ export class ScreensaverElement extends BaseElement {
    *  @remarks
    *  Actual number will be the smaller of this and the total number of photos
    */
-  protected MAX_SLIDES = 10;
+  protected readonly MAX_SLIDES = 10;
 
   /** Array of {@link SSPhoto} in the views */
   @property({type: Array})
@@ -198,7 +198,7 @@ export class ScreensaverElement extends BaseElement {
    *
    * @param delay - delay in milli sec before start
    */
-  public async launch(delay: number = 2000) {
+  public async launch(delay: number = 1500) {
     try {
       const hasPhotos = await this.loadPhotos();
       if (hasPhotos) {
