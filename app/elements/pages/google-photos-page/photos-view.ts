@@ -26,10 +26,10 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import './photo_cat.js';
-
-import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
+import '../../../elements/waiter-element/waiter-element.js';
+
+import './photo_cat.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';

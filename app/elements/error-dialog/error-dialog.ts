@@ -14,6 +14,7 @@ import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../node_modules/@polymer/paper-button/paper-button.js';
+
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 

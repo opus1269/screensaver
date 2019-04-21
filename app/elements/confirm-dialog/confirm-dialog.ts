@@ -18,11 +18,11 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
 import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
+import {BaseElement} from '../shared/base-element/base-element.js';
+
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
-
-import {BaseElement} from '../shared/base-element/base-element.js';
 
 /**
  * Polymer dialog to confirm an action

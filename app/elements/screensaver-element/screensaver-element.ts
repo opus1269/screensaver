@@ -42,7 +42,6 @@ import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
-
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
 declare var ChromePromise: any;

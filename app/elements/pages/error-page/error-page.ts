@@ -21,10 +21,10 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import * as MyUtils from '../../../scripts/my_utils.js';
-
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import {ChromeLastError} from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
+
+import * as MyUtils from '../../../scripts/my_utils.js';
 
 /**
  * Polymer element for the LastError page

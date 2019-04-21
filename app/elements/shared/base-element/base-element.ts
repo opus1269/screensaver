@@ -16,6 +16,7 @@ import '../../../node_modules/@polymer/paper-styles/color.js';
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
 import '../shared-styles.js';
+
 import {I8nMixin} from '../mixins/i8n_mixin.js';
 
 /**

@@ -39,7 +39,12 @@ import '../../../elements/shared/setting-elements/setting-background/setting-bac
 import '../../../elements/shared/setting-elements/setting-time/setting-time.js';
 import '../../../elements/my_icons.js';
 
-import {Options} from '../../../scripts/options/options.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as MyUtils from '../../../scripts/my_utils.js';
@@ -47,12 +52,7 @@ import * as Permissions from '../../../scripts/permissions.js';
 import * as PhotoSources from '../../../scripts/sources/photo_sources.js';
 import * as Weather from '../../../scripts/weather.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import {Options} from '../../../scripts/options/options.js';
 
 /**
  * Polymer element for the Settings Page

@@ -7,9 +7,9 @@
 import {customElement} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {mixinBehaviors} from '../../../node_modules/@polymer/polymer/lib/legacy/class.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
-
 import {NeonAnimationBehavior} from '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
+
+import {BaseElement} from '../../shared/base-element/base-element.js';
 
 /*
  <spin-down-animation> animates the scale transform of an element from 1 to 0

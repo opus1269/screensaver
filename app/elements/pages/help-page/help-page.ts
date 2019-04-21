@@ -15,9 +15,9 @@ import '../../../elements/shared/setting-elements/setting-link/setting-link.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import * as MyUtils from '../../../scripts/my_utils.js';
-
 import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
+
+import * as MyUtils from '../../../scripts/my_utils.js';
 
 /**
  * Polymer element for the Help page

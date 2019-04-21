@@ -34,13 +34,13 @@ import '../../../elements/my_icons.js';
 import './albums-view.js';
 import './photos-view.js';
 
-import {Options} from '../../../scripts/options/options.js';
-
-import * as MyUtils from '../../../scripts/my_utils.js';
-
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+
+import * as MyUtils from '../../../scripts/my_utils.js';
+
+import {Options} from '../../../scripts/options/options.js';
 
 /**
  * Polymer element for the Google Photos page
