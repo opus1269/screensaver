@@ -81,7 +81,7 @@ const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 /**
  * Default geolocation options
  */
-const _DEF_LOC: IWeatherLocation = {
+const DEF_LOC: IWeatherLocation = {
   lat: 0.0,
   lon: 0.0,
 };
@@ -136,7 +136,7 @@ export async function update(force = false) {
       return Promise.resolve();
     }
     // use last location
-    location = ChromeStorage.get('location', _DEF_LOC);
+    location = ChromeStorage.get('location', DEF_LOC);
   }
 
   // now, try to update weather
