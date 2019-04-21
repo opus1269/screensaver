@@ -25,6 +25,7 @@ export class SSPhoto {
 
   /**
    * Determine if a given aspect ratio should be ignored
+   *
    * @param asp - an aspect ratio
    * @returns true if the aspect ratio should be ignored
    */
@@ -43,6 +44,7 @@ export class SSPhoto {
 
   /**
    * Determine if a photo would look bad zoomed or stretched at the given aspect ratio
+   *
    * @param asp - an aspect ratio
    * @returns true if a photo aspect ratio differs substantially from the screens'
    */
@@ -79,6 +81,7 @@ export class SSPhoto {
 
   /**
    * Create a new photo
+   *
    * @param id - unique id
    * @param source - persisted source photo
    * @param sourceType - the PhotoSource type this photo is from
@@ -131,6 +134,7 @@ export class SSPhoto {
 
   /**
    * Set the url
+   *
    * @param url to photo
    */
   public setUrl(url: string) {
