@@ -6,12 +6,13 @@
  */
 
 /**
- * Log a message. Will also store the LastError to local storage as 'lastError'
+ * Log a message. Will also store the LastError to chrome storage
  */
 
 import * as ChromeGA from './analytics.js';
 import {ChromeLastError} from './last_error.js';
 import * as ChromeLocale from './locales.js';
+import * as ChromeUtils from './utils.js';
 
 /**
  * Log an error
@@ -50,6 +51,8 @@ export function exception(err: Error|null, msg: string = null, fatal = false,
     ChromeLastError.save(new ChromeLastError(title, errMsg)).catch(() => {});
     ChromeGA.exception(err, msg, fatal);
   } catch (err) {
-    // ignore
+    if (ChromeUtils.DEBUG) {
+      console.error(err); // tslint:disable-line no-console
+    }
   }
 }

@@ -25,93 +25,93 @@ export interface IEventType {
 
 /**
  * Event types
- *
- * @property INSTALLED - extension installed
- * @property UPDATED - extension updated
- * @property REFRESHED_AUTH_TOKEN - cached token refreshed
- * @property ALARM - Chrome alarm triggered
- * @property MENU - menu selected
- * @property TOGGLE - setting-toggle
- * @property LINK - setting-link
- * @property TEXT - setting-text
- * @property SLIDER_VALUE - setting-slider value
- * @property SLIDER_UNITS - setting-slider unit
- * @property BUTTON - button click
- * @property ICON - toolbar icon click
- * @property CHECK - checkbox click
- * @property KEY_COMMAND - keyboard shortcut
  */
 export const EVENT = {
+  /** extension installed */
   INSTALLED: {
     eventCategory: 'extension',
     eventAction: 'installed',
     eventLabel: '',
   } as IEventType,
+  /** extension updated */
   UPDATED: {
     eventCategory: 'extension',
     eventAction: 'updated',
     eventLabel: '',
   } as IEventType,
+  /** cached OAuth2 token refreshed */
   REFRESHED_AUTH_TOKEN: {
     eventCategory: 'user',
     eventAction: 'refreshedAuthToken',
     eventLabel: '',
   } as IEventType,
+  /** Chrome alarm triggered */
   ALARM: {
     eventCategory: 'alarm',
     eventAction: 'triggered',
     eventLabel: '',
   } as IEventType,
+  /** menu item selected */
   MENU: {
     eventCategory: 'ui',
     eventAction: 'menuSelect',
     eventLabel: '',
   } as IEventType,
+  /** toggle state changed */
   TOGGLE: {
     eventCategory: 'ui',
     eventAction: 'toggle',
     eventLabel: '',
   } as IEventType,
+  /** url link clicked */
   LINK: {
     eventCategory: 'ui',
     eventAction: 'linkSelect',
     eventLabel: '',
   } as IEventType,
+  /** text changed */
   TEXT: {
     eventCategory: 'ui',
     eventAction: 'textChanged',
     eventLabel: '',
   } as IEventType,
+  /** slider value changed */
   SLIDER_VALUE: {
     eventCategory: 'ui',
     eventAction: 'sliderValueChanged',
     eventLabel: '',
   } as IEventType,
+  /** slider unit changed */
   SLIDER_UNITS: {
     eventCategory: 'ui',
     eventAction: 'sliderUnitsChanged',
     eventLabel: '',
   } as IEventType,
+  /** button clicked */
   BUTTON: {
     eventCategory: 'ui',
     eventAction: 'buttonClicked',
     eventLabel: '',
   } as IEventType,
+  /** radio button clicked */
   RADIO_BUTTON: {
     eventCategory: 'ui',
     eventAction: 'radioButtonClicked',
     eventLabel: '',
   } as IEventType,
+  /** toolbar icon clicked */
   ICON: {
     eventCategory: 'ui',
     eventAction: 'toolbarIconClicked',
     eventLabel: '',
   } as IEventType,
+  /** checkbox clicked */
   CHECK: {
     eventCategory: 'ui',
     eventAction: 'checkBoxClicked',
     eventLabel: '',
   } as IEventType,
+  /** keyboard shortcut entered */
   KEY_COMMAND: {
     eventCategory: 'ui',
     eventAction: 'keyCommand',
@@ -197,19 +197,19 @@ export function event(theEvent: IEventType, label: string = null, action: string
  * Send an error
  *
  * @param label - override label
- * @param action - override action
+ * @param method - override method
  */
-export function error(label = 'unknown', action = 'unknownMethod') {
+export function error(label = 'unknown', method = 'unknownMethod') {
   const ev = {
     hitType: 'event',
     eventCategory: 'error',
-    eventAction: action,
+    eventAction: method,
     eventLabel: `Err: ${label}`,
   };
   if (!ChromeUtils.DEBUG) {
     ga('send', ev);
   } else {
-    console.error(ev);
+    console.error(ev); // tslint:disable-line no-console
   }
 }
 
@@ -239,9 +239,11 @@ export function exception(theError: Error | null, message: string = null, fatal 
     if (!ChromeUtils.DEBUG) {
       ga('send', ex);
     } else {
-      console.error(ex);
+      console.error(ex); // tslint:disable-line no-console
     }
   } catch (err) {
-    // ignore
+    if (ChromeUtils.DEBUG) {
+      console.error(err); // tslint:disable-line no-console
+    }
   }
 }

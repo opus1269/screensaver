@@ -24,7 +24,7 @@ if (typeof window.onerror === 'object') {
   // global error handler
   window.onerror = function(message, url, line, col, errObject) {
     if (ChromeLog && errObject) {
-      ChromeLog.exception(errObject, null, true);
+       ChromeLog.exception(errObject, null, true);
     }
   };
 }

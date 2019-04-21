@@ -142,7 +142,7 @@ export class ChromeTime {
    * @param frmt - optional format, overrides storage value
    * @returns true for 24 hour time
    */
-  private static _is24Hr(frmt: number = null) {
+  private static is24Hr(frmt: number = null) {
     let ret = false;
     let format = ChromeStorage.getInt('showTime', 0);
     if (frmt !== null) {
@@ -169,7 +169,7 @@ export class ChromeTime {
    */
   constructor(timeString: string = null) {
     this._hr = null;
-    this._parse(timeString);
+    this.parse(timeString);
   }
 
   /**
@@ -193,7 +193,7 @@ export class ChromeTime {
     const opts = {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: !ChromeTime._is24Hr(frmt),
+      hour12: !ChromeTime.is24Hr(frmt),
     };
     try {
       ret = date.toLocaleTimeString(languages, opts);
@@ -208,7 +208,7 @@ export class ChromeTime {
    *
    * @param timeString - in '00:00' format
    */
-  private _parse(timeString: string) {
+  private parse(timeString: string) {
     if (!timeString) {
       const date = new Date();
       this._hr = date.getHours();
@@ -219,4 +219,3 @@ export class ChromeTime {
     }
   }
 }
-

@@ -7,36 +7,36 @@
 
 /**
  * JSON utilities
- * @module chrome/json
  */
 
 import * as ChromeGA from './analytics.js';
 
-
 /**
- * Parse JSON, with exception handling
+ * Parse json, with exception handling
+ *
  * @param jsonString - string to parse
- * @returns JSON Object, null on error
+ * @returns json object, null on error
  */
 export function parse(jsonString: string) {
   let ret = null;
   try {
     ret = JSON.parse(jsonString);
   } catch (err) {
-    ChromeGA.exception(err, `Caught: JSONUtils.parse: ${err.message}`, false);
+    ChromeGA.error(err.message, 'ChromeJSON.parse');
   }
   return ret;
 }
 
 /**
  * Return shallow copy of Object
+ *
  * @param object - object to copy
  * @returns shallow copy of input, null on error
  */
 export function shallowCopy(object: object) {
   let ret = null;
   const jsonString = JSON.stringify(object);
-  if (typeof (jsonString) !== 'undefined') {
+  if (jsonString !== undefined) {
     ret = parse(jsonString);
   }
   return ret;

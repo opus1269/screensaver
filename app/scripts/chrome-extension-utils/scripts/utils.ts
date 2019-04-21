@@ -15,6 +15,10 @@ const chromep = new ChromePromise();
 
 /**
  * Set to true if development build
+ *
+ * @remarks
+ *
+ * Do not change name as it is processed during build
  */
 const _DEBUG = false;
 
@@ -100,7 +104,7 @@ export async function getPlatformOS() {
     // something went wrong - linux seems to fail this call sometimes
   }
 
-  return Promise.resolve(output);
+  return output;
 }
 
 /**
@@ -133,8 +137,7 @@ export function isMac() {
 /**
  * No operation
  */
-export function noop() {
-}
+export function noop() {}
 
 /**
  * Determine if a String is null or whitespace only
@@ -142,7 +145,7 @@ export function noop() {
  * @param str - string to check
  * @returns true is str is whitespace or null
  */
-export function isWhiteSpace(str: string | null) {
+export function isWhiteSpace(str: string | null | undefined) {
   return (!str || str.length === 0 || /^\s*$/.test(str));
 }
 
@@ -153,12 +156,10 @@ export function isWhiteSpace(str: string | null) {
  * @returns A pseudo-random string
  */
 export function getRandomString(len = 8) {
-  const POSS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
-      'abcdefghijklmnopqrstuvwxyz0123456789';
+  const POSS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let text = '';
   for (let i = 0; i < len; i++) {
-    text +=
-        POSS.charAt(Math.floor(Math.random() * POSS.length));
+    text += POSS.charAt(Math.floor(Math.random() * POSS.length));
   }
   return text;
 }
@@ -229,10 +230,9 @@ export function checkNetworkConnection() {
 async function isOS(os: string) {
   try {
     const info = await chromep.runtime.getPlatformInfo();
-    return Promise.resolve((info.os === os));
+    return (info.os === os);
   } catch (e) {
     // something went wrong - linux seems to fail this call sometimes
-    return Promise.resolve(false);
+    return false;
   }
 }
-

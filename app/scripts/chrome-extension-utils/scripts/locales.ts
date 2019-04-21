@@ -28,6 +28,7 @@ export function localize(key: string, def = '') {
 
 /**
  * Get the current locale
+ *
  * @returns current locale e.g. en_US
  */
 export function getLocale() {

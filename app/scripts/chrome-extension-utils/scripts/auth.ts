@@ -36,8 +36,7 @@ export async function getToken(interactive = false, scopes: string[] = null) {
   if (scopes && scopes.length) {
     request.scopes = scopes;
   }
-  const token = await chromep.identity.getAuthToken(request);
-  return Promise.resolve(token);
+  return await chromep.identity.getAuthToken(request);
 }
 
 /**
@@ -58,7 +57,7 @@ export async function removeCachedToken(interactive = false, curToken = '', scop
 
   await chromep.identity.removeCachedAuthToken({token: oldToken});
 
-  return Promise.resolve(oldToken);
+  return oldToken;
 }
 
 /**
@@ -78,7 +77,7 @@ export async function isSignedIn() {
     }
   }
 
-  return Promise.resolve(ret);
+  return ret;
 }
 
 /**
@@ -98,5 +97,5 @@ export async function isRevoked() {
     }
   }
 
-  return Promise.resolve(ret);
+  return ret;
 }

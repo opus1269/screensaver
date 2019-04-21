@@ -17,43 +17,41 @@ declare var ChromePromise: any;
 
 /**
  * A Chrome message
- *
- * @property message - a message
- * @property error - an error message
- * @property key - key name
- * @property value - value of key
- * @property id
- * @property name
- * @property count
  */
 export interface IMsgType {
+  /** a message */
   message: string;
+  /** an error message */
   error?: string;
+  /** key */
   key?: string;
+  /** value */
   value?: any;
+  /** id */
   id?: string;
+  /** name */
   name?: string;
+  /** count */
   count?: number;
 }
 
 /**
  * Chrome Messages
- *
- * @property HIGHLIGHT - highlight a tab
- * @property RESTORE_DEFAULTS - restore default settings
- * @property STORAGE_EXCEEDED - local storage save failed
- * @property STORE - save value to storage
  */
 export const TYPE = {
+  /** highlight the options tab */
   HIGHLIGHT: {
     message: 'highlightTab',
   } as IMsgType,
+  /** restore default settings for app */
   RESTORE_DEFAULTS: {
     message: 'restoreDefaults',
   } as IMsgType,
+  /** save to some storage source failed because it would exceed capacity */
   STORAGE_EXCEEDED: {
     message: 'storageExceeded',
   } as IMsgType,
+  /** save value to local storage */
   STORE: {
     message: 'store',
     key: '',
@@ -87,9 +85,9 @@ export async function send(type: IMsgType) {
  *
  * @param listener - function to receive messages
  */
-export function addListener(listener: (arg0: IMsgType,
-                                       arg1: chrome.runtime.MessageSender,
-                                       arg2: (arg0: object) => void) => boolean) {
+export function addListener(listener: (request: IMsgType,
+                                       sender: chrome.runtime.MessageSender,
+                                       response: (arg0: object) => void) => boolean) {
   chrome.runtime.onMessage.addListener(listener);
 }
 
@@ -98,8 +96,8 @@ export function addListener(listener: (arg0: IMsgType,
  *
  * @param listener - function to receive messages
  */
-export function removeListener(listener: (arg0: IMsgType,
-                                          arg1: chrome.runtime.MessageSender,
-                                          arg2: (arg0: object) => void) => boolean) {
+export function removeListener(listener: (request: IMsgType,
+                                          sender: chrome.runtime.MessageSender,
+                                          response: (arg0: object) => void) => boolean) {
   chrome.runtime.onMessage.removeListener(listener);
 }

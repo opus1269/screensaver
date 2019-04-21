@@ -6,7 +6,7 @@
  */
 
 /**
- * Fetch with authentication and exponential back-off
+ * Fetch with optional authentication and exponential back-off
  */
 
 import * as ChromeGA from './analytics.js';
@@ -16,22 +16,21 @@ import * as ChromeUtils from './utils.js';
 
 /**
  * Http configuration
- *
- * @property isAuth - if true, authorization required
- * @property retryToken - if true, retry with new token
- * @property interactive - user initiated, if true
- * @property token - auth token
- * @property backoff - if true, do exponential back-off
- * @property maxRetries - max retries
- * @property body - body of request
  */
 interface IConfig {
+  /** is authorization required */
   isAuth: boolean;
+  /** retry with new OAuth2 token on 401 error */
   retryToken: boolean;
+  /** is user initiated */
   interactive: boolean;
+  /** OAuth2 token */
   token: string | null;
+  /** retry with exponential backoff on 5xx errors */
   backoff: boolean;
+  /** maximum retries for backoff */
   maxRetries: number;
+  /** body of request */
   body: object;
 }
 
@@ -78,9 +77,7 @@ export const CONFIG: IConfig = {
  */
 export async function doGet(url: string, conf = CONFIG) {
   const opts: RequestInit = {method: 'GET', headers: new Headers({})};
-
-  const json = await doIt(url, opts, conf);
-  return Promise.resolve(json);
+  return await doIt(url, opts, conf);
 }
 
 /**
@@ -93,9 +90,7 @@ export async function doGet(url: string, conf = CONFIG) {
  */
 export async function doPost(url: string, conf = CONFIG) {
   const opts: RequestInit = {method: 'POST', headers: new Headers({})};
-
-  const json = await doIt(url, opts, conf);
-  return Promise.resolve(json);
+  return await doIt(url, opts, conf);
 }
 
 /**
@@ -107,12 +102,13 @@ export async function doPost(url: string, conf = CONFIG) {
  * @param conf - configuration
  * @param attempt - the retry attempt we are on
  * @throws An error if fetch ultimately fails
- * @returns response from server
+ * @returns response from server as json object
  */
-async function processResponse(response: Response, url: string, opts: RequestInit, conf: IConfig, attempt: number) {
+async function processResponse(response: Response, url: string, opts: RequestInit,
+                               conf: IConfig, attempt: number): Promise<any> {
   if (response.ok) {
     // request succeeded - woo hoo!
-    return Promise.resolve(response.json());
+    return response.json();
   }
 
   if (attempt >= conf.maxRetries) {
@@ -124,21 +120,18 @@ async function processResponse(response: Response, url: string, opts: RequestIni
 
   if (conf.backoff && (status >= 500) && (status < 600)) {
     // temporary server error, maybe. Retry with backoff
-    const newResponse: Response = await retry(url, opts, conf, attempt);
-    return Promise.resolve(newResponse);
+    return await retry(url, opts, conf, attempt);
   }
 
   if (conf.isAuth && conf.token && conf.retryToken && (status === 401)) {
     // could be expired token. Remove cached one and try again
-    const newResponse: Response = await retryToken(url, opts, conf, attempt);
-    return Promise.resolve(newResponse);
+    return await retryToken(url, opts, conf, attempt);
   }
 
   if (conf.isAuth && conf.interactive && conf.token && conf.retryToken && (status === 403)) {
     // user may have revoked access to extension at some point
     // If interactive, retry so they can authorize again
-    const newResponse: Response = await retryToken(url, opts, conf, attempt);
-    return Promise.resolve(newResponse);
+    return await retryToken(url, opts, conf, attempt);
   }
 
   // request failed
@@ -181,15 +174,14 @@ async function getAuthToken(isAuth: boolean, interactive: boolean) {
         // Always returns Authorization page error
         // when first registering, Not sure why
         // Other message is if user revoked access to extension
-        const token = await ChromeAuth.getToken(false);
-        return Promise.resolve(token);
+        return await ChromeAuth.getToken(false);
       } else {
         throw err;
       }
     }
   } else {
     // non-authorization branch
-    return Promise.resolve(null);
+    return;
   }
 }
 
@@ -213,9 +205,7 @@ async function retry(url: string, opts: RequestInit, conf: IConfig, attempt: num
 
   ChromeGA.error(`Retry fetch, attempt: ${attempt}`, 'ChromeHttp.retry');
 
-  const response = await doFetch(url, opts, conf, attempt);
-
-  return Promise.resolve(response);
+  return await doFetch(url, opts, conf, attempt);
 }
 
 /**
@@ -235,8 +225,7 @@ async function retryToken(url: string, opts: RequestInit, conf: IConfig, attempt
 
   conf.token = null;
   conf.retryToken = false;
-  const response = await doFetch(url, opts, conf, attempt);
-  return Promise.resolve(response);
+  return await doFetch(url, opts, conf, attempt);
 }
 
 /**
@@ -264,8 +253,7 @@ async function doFetch(url: string, opts: RequestInit, conf: IConfig, attempt: n
     const response = await fetch(url, opts);
 
     // process and possibly retry
-    const ret = await processResponse(response, url, opts, conf, attempt);
-    return Promise.resolve(ret);
+    return await processResponse(response, url, opts, conf, attempt);
 
   } catch (err) {
     let msg = err.message;
@@ -292,6 +280,5 @@ async function doIt(url: string, opts: RequestInit, conf: IConfig) {
   if (conf.isAuth) {
     (opts.headers as Headers).set(AUTH_HEADER, `${BEARER} unknown`);
   }
-  const response = await doFetch(url, opts, conf, 0);
-  return Promise.resolve(response);
+  return await doFetch(url, opts, conf, 0);
 }

@@ -16,11 +16,11 @@ import * as ChromeMsg from './msg.js';
 declare var ChromePromise: any;
 
 /**
- * Get a JSON parsed value from localStorage
+ * Get a json parsed value from localStorage
  *
  * @param key - key to get value for
  * @param def - optional default value if key not found
- * @returns JSON object or string, null if key does not exist
+ * @returns json object or string, null if key does not exist
  */
 export function get(key: string, def: any = null) {
   const item = localStorage.getItem(key);
@@ -85,7 +85,7 @@ export function set(key: string, value: object | [] | string | number | boolean 
  * @param keyBool - key to a boolean value that is true if the primary key has non-empty value
  * @returns true if value was set successfully
  */
-export function safeSet(key: string, value: JSON, keyBool: string = null) {
+export function safeSet(key: string, value: any, keyBool: string = null) {
   let ret = true;
   const oldValue = get(key);
   try {
@@ -188,4 +188,3 @@ export async function asyncSet(key: string, value: object | [], keyBool: string 
 // }
 
 // return ret;
-

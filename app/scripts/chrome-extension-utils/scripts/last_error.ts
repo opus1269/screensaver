@@ -32,19 +32,17 @@ export class ChromeLastError extends Error {
     if (details) {
       const lastError = new ChromeLastError(details.title, details.message);
       lastError.stack = details.stack;
-      return Promise.resolve(lastError);
+      return lastError;
     }
-    return Promise.resolve(new ChromeLastError());
+    return new ChromeLastError();
   }
 
   /**
    * Save the LastError to chrome.storage.local
    *
-   * {@link https://developer.chrome.com/apps/storage}
-   *
    * @throws If the error failed to save
    */
-  public static save(lastError: ChromeLastError) {
+  public static async save(lastError: ChromeLastError) {
     const value = {
       title: lastError.title || '',
       message: lastError.message || '',
@@ -52,7 +50,7 @@ export class ChromeLastError extends Error {
     };
 
     // persist
-    return chromep.storage.local.set({lastError: value});
+    return await chromep.storage.local.set({lastError: value});
   }
 
   /**
@@ -60,13 +58,13 @@ export class ChromeLastError extends Error {
    *
    * @throws If the error failed to clear
    */
-  public static reset() {
+  public static async reset() {
     // Save it using the Chrome storage API.
-    return chromep.storage.local.set({lastError: new ChromeLastError()});
+    return await chromep.storage.local.set({lastError: new ChromeLastError()});
   }
 
-  public title: string;
-
+  /** Title for error */
+  public readonly title: string;
 
   /**
    * Create a new LastError
@@ -91,4 +89,3 @@ export class ChromeLastError extends Error {
     this.title = title;
   }
 }
-
