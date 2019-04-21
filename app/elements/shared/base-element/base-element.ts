@@ -5,13 +5,14 @@
  ~ https://goo.gl/wFvBM1
  */
 
-import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
-import {GestureEventListeners} from '../../../node_modules/@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-import {DeclarativeEventListeners} from '../../../node_modules/@polymer/decorators/lib/declarative-event-listeners.js';
+import {PolymerElement} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../../node_modules/@polymer/paper-styles/typography.js';
+import {DeclarativeEventListeners} from '../../../node_modules/@polymer/decorators/lib/declarative-event-listeners.js';
+import {GestureEventListeners} from '../../../node_modules/@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+
 import '../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../node_modules/@polymer/paper-styles/typography.js';
 
 import '../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 

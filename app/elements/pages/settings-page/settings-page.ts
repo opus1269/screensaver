@@ -7,37 +7,37 @@
 
 import {SettingToggleElement} from '../../shared/setting-elements/setting-toggle/setting-toggle';
 
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
-  customElement,
-  property,
   computed,
+  customElement,
   listen,
+  property,
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../../node_modules/@polymer/iron-pages/iron-pages.js';
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
+import '../../../node_modules/@polymer/iron-pages/iron-pages.js';
 
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-tabs/paper-tab.js';
 import '../../../node_modules/@polymer/paper-tabs/paper-tabs.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
-import '../../../elements/shared/setting-elements/setting-slider/setting-slider.js';
-import '../../../elements/shared/setting-elements/setting-dropdown/setting-dropdown.js';
-import '../../../elements/shared/setting-elements/setting-background/setting-background.js';
-import '../../../elements/shared/setting-elements/setting-time/setting-time.js';
 import '../../../elements/my_icons.js';
+import '../../../elements/shared/setting-elements/setting-background/setting-background.js';
+import '../../../elements/shared/setting-elements/setting-dropdown/setting-dropdown.js';
+import '../../../elements/shared/setting-elements/setting-slider/setting-slider.js';
+import '../../../elements/shared/setting-elements/setting-time/setting-time.js';
+import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';

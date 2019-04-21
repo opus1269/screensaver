@@ -5,8 +5,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property} from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 
 import '../../node_modules/@polymer/paper-item/paper-item.js';
 

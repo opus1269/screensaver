@@ -8,32 +8,32 @@
 import {IronListElement} from '../../../node_modules/@polymer/iron-list/iron-list';
 import {IAlbum, ISelectedAlbum} from '../../../scripts/sources/photo_source_google';
 
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
-  customElement,
-  property,
   computed,
+  customElement,
   observe,
+  property,
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../../node_modules/@polymer/iron-list/iron-list.js';
-import '../../../node_modules/@polymer/iron-label/iron-label.js';
 import '../../../node_modules/@polymer/iron-image/iron-image.js';
+import '../../../node_modules/@polymer/iron-label/iron-label.js';
+import '../../../node_modules/@polymer/iron-list/iron-list.js';
 
-import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
-import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
-import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
+import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
-import '../../../elements/waiter-element/waiter-element.js';
 import '../../../elements/my_icons.js';
+import '../../../elements/waiter-element/waiter-element.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';

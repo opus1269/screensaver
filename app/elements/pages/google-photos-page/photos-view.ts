@@ -7,19 +7,19 @@
 
 import {PhotoCatElement} from './photo_cat';
 
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
-  customElement,
-  property,
   computed,
-  observe,
+  customElement,
   listen,
+  observe,
+  property,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';

@@ -7,8 +7,8 @@
 
 import {PaperItemElement} from '../../node_modules/@polymer/paper-item/paper-item';
 
+import {customElement, observe, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, query, observe} from '../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';

@@ -6,12 +6,12 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
-import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
-import {SSPhoto} from '../../scripts/screensaver/ss_photo';
-import {WeatherElement} from '../weather-element/weather-element';
-import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
 
-import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {SSPhoto} from '../../scripts/screensaver/ss_photo';
+import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
+import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
+import {WeatherElement} from '../weather-element/weather-element';
+
 import {
   computed,
   customElement,
@@ -20,6 +20,7 @@ import {
   property,
   query,
 } from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 

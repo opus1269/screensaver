@@ -7,20 +7,21 @@
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
+
+import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {IPhoto} from '../../scripts/sources/photo_source';
 import {ScreensaverSlideElement} from '../screensaver-slide/screensaver-slide';
-import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 
-import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 
 import '../../node_modules/@polymer/font-roboto/roboto.js';
 
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 
+import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
-import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
 import {BaseElement} from '../../elements/shared/base-element/base-element.js';
 
@@ -40,9 +41,9 @@ import * as SSEvents from '../../scripts/screensaver/ss_events.js';
 import * as SSHistory from '../../scripts/screensaver/ss_history.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
-import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 declare var ChromePromise: any;
 
@@ -74,18 +75,17 @@ export const enum VIEW_TYPE {
 
 /**
  * Object to handle Google Photos load errors
- *
- * @property MAX_COUNT - max times to call
- * @property count - count of calls
- * @property isUpdating - true if an event is handling an error
- * @property TIME_LIMIT - throttle calls to this fast in case something weird happens
- * @property lastTime - last time called
  */
 const errHandler = {
+  /** maximum number of times to call */
   MAX_COUNT: 168, // about a weeks worth, if all goes well
+  /** count of calls */
   count: 0,
+  /** true if an event is handling an error */
   isUpdating: false,
+  /** throttle calls to this fast in case something weird happens */
   TIME_LIMIT: (5 * 60000), // five minutes in milli sec
+  /** last time called */
   lastTime: 0,
 };
 

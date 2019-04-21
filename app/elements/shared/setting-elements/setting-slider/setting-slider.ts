@@ -8,19 +8,19 @@
 import {PaperListboxElement} from '../../../../node_modules/@polymer/paper-listbox/paper-listbox';
 import {DomRepeat} from '../../../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
 
-import {html} from '../../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
   customElement,
-  property,
-  observe,
-  query,
   listen,
+  observe,
+  property,
+  query,
 } from '../../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../../../node_modules/@polymer/paper-slider/paper-slider.js';
+import '../../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '../../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
-import '../../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '../../../../node_modules/@polymer/paper-slider/paper-slider.js';
 
 import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 

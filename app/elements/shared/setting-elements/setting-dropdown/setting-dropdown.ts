@@ -7,12 +7,12 @@
 
 import {DomRepeat} from '../../../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
 
+import {customElement, listen, property, query} from '../../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html, PolymerElement} from '../../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, query, listen} from '../../../../node_modules/@polymer/decorators/lib/decorators.js';
 
+import '../../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '../../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../../node_modules/@polymer/paper-listbox/paper-listbox.js';
-import '../../../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 
 import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 

@@ -12,11 +12,11 @@
       "allow-leading-underscore"
     ],
     "no-default-export": true,
-    "no-redundant-jsdoc": false,
+    "no-redundant-jsdoc": true,
     "no-trailing-whitespace": false,
     "only-arrow-functions": false,
     "interface-name": true,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "object-literal-sort-keys": false,
     "object-literal-shorthand": false,
     "no-empty": false,

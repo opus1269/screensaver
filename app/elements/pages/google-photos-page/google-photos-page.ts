@@ -9,25 +9,25 @@ import {PaperToggleButtonElement} from '../../../node_modules/@polymer/paper-tog
 import {AlbumsViewElement} from './albums-view';
 import {PhotosViewElement} from './photos-view';
 
-import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 import {
-  customElement,
-  property,
   computed,
-  observe,
+  customElement,
   listen,
+  observe,
+  property,
   query,
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
-import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 
-import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import '../../../elements/my_icons.js';
 

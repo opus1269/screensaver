@@ -7,16 +7,16 @@
 
 import {PaperCheckboxElement} from '../../../node_modules/@polymer/paper-checkbox/paper-checkbox';
 
+import {customElement, listen, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
 import '../../../node_modules/@polymer/iron-label/iron-label.js';
 
-import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 import '../../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 
 import {BaseElement} from '../../shared/base-element/base-element.js';
 

@@ -5,17 +5,17 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {computed, customElement, listen, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
-import {customElement, property, computed, listen} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
+import '../../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
+import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../../node_modules/@polymer/paper-toggle-button/paper-toggle-button.js';
 import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
-import '../../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
-import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
-import '../../../node_modules/@polymer/paper-checkbox/paper-checkbox.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 

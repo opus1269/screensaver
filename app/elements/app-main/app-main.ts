@@ -12,40 +12,40 @@ import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/pap
 
 import {SettingsPageElement} from '../../elements/pages/settings-page/settings-page';
 
-import {ErrorDialogElement} from '../../elements/error-dialog/error-dialog';
 import {ConfirmDialogElement} from '../../elements/confirm-dialog/confirm-dialog';
+import {ErrorDialogElement} from '../../elements/error-dialog/error-dialog';
 
-import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 import {
-  customElement,
-  property,
   computed,
-  query,
+  customElement,
   listen,
+  property,
+  query,
 } from '../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 
 import '../../node_modules/@polymer/font-roboto/roboto.js';
 
 import '../../node_modules/@polymer/iron-icon/iron-icon.js';
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 
-import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
-import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../node_modules/@polymer/paper-material/paper-material.js';
 import '../../node_modules/@polymer/paper-listbox/paper-listbox.js';
+import '../../node_modules/@polymer/paper-material/paper-material.js';
 
+import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
-import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 
 import '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
 import '../../node_modules/@polymer/app-layout/app-drawer/app-drawer.js';
-import '../../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
-import '../../node_modules/@polymer/app-layout/app-header/app-header.js';
 import '../../node_modules/@polymer/app-layout/app-header-layout/app-header-layout.js';
+import '../../node_modules/@polymer/app-layout/app-header/app-header.js';
+import '../../node_modules/@polymer/app-layout/app-scroll-effects/app-scroll-effects.js';
 import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
@@ -57,8 +57,8 @@ import {GooglePhotosPageElement} from '../../elements/pages/google-photos-page/g
 import {HelpPageElement} from '../../elements/pages/help-page/help-page.js';
 import '../../elements/pages/settings-page/settings-page.js';
 
-import '../../elements/error-dialog/error-dialog.js';
 import '../../elements/confirm-dialog/confirm-dialog.js';
+import '../../elements/error-dialog/error-dialog.js';
 
 import '../../elements/my_icons.js';
 
@@ -351,8 +351,6 @@ export class AppMainElement extends BaseElement {
 
   /**
    * Event: Item in localStorage changed
-   *
-   * @param ev
    */
   protected localStorageChanged(ev: StorageEvent) {
     if (ev.key === 'permPicasa') {

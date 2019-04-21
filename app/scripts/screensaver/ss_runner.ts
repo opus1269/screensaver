@@ -17,24 +17,23 @@ import * as SSPhotos from './ss_photos.js';
 
 /**
  * Instance variables
- *
- * @property started - true if slideshow started
- * @property replaceIdx - page to replace with next photo
- * @property lastSelected - last selected page
- * @property transTime - normal photo transition time
- * @property waitTime - wait time when looking for photo in milliSecs
- * @property interactive - is interaction allowed
- * @property paused - is screensaver paused
- * @property timeOutId - id of setTimeout
  */
 const VARS = {
+  /** is slideshow started */
   started: false,
+  /** slide to replace with next photo */
   replaceIdx: -1,
+  /** last selected slide */
   lastSelected: -1,
+  /** normal photo transition time in milliSecs */
   transTime: 30000,
+  /** wait time when looking for loaded photo in milliSecs */
   waitTime: 30000,
+  /** is keyboard interaction allowed to move through slides */
   interactive: false,
+  /** is screensaver paused */
   paused: false,
+  /** id of current setTimeout */
   timeOutId: 0,
 };
 

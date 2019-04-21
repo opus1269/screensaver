@@ -16,23 +16,21 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 /**
  * A Geo location
- *
- * @property loc - descriptive location
- * @property point - geo location 'lat lon'
  */
 export interface ILocation {
+  /** description of location */
   loc: string;
+  /** geo location 'lat lon' */
   point: string;
 }
 
 /**
  * Location cache
- *
- * @property entries - Array of locations
- * @property maxSize - max entries to cache
  */
 export interface ICache {
+  /** array of locations */
   entries: ILocation[];
+  /** maximum number of locations to cache */
   maxSize: number;
 }
 

@@ -4,18 +4,18 @@
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
-import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 import {Polymer} from '../../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
+import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
 
-import '../../../../node_modules/@polymer/paper-styles/typography.js';
 import '../../../../node_modules/@polymer/paper-styles/color.js';
+import '../../../../node_modules/@polymer/paper-styles/typography.js';
 
 import '../../../../node_modules/@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 
-import '../../../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../../node_modules/@polymer/paper-input/paper-input.js';
+import '../../../../node_modules/@polymer/paper-item/paper-item-body.js';
+import '../../../../node_modules/@polymer/paper-item/paper-item.js';
 
 import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
@@ -23,14 +23,10 @@ import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/an
 
 /**
  * Module for the SettingText
- * @module els/setting/text
  */
 
 /**
  * Polymer element for text entry
- * @type {{}}
- * @alias module:els/setting/text.SettingText
- * @PolymerElement
  */
 export const SettingText = Polymer({
   // language=HTML format=false
@@ -151,7 +147,6 @@ export const SettingText = Polymer({
 
   /**
    * Event: Lost focus - fire setting-text-changed event
-   * @private
    */
   _onBlur: function() {
     ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
@@ -160,9 +155,8 @@ export const SettingText = Polymer({
 
   /**
    * Event: keyup - fire setting-text-changed event on 'Enter'
-   * @param {Event} ev - key event
-   * @param {int} ev.keyCode - key code
-   * @private
+   *
+   * @param ev - key event
    */
   _onKeyUp: function(ev: KeyboardEvent) {
     // check if 'Enter' was pressed
