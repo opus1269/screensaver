@@ -304,5 +304,3 @@ function replacePhoto(idx: number) {
     }
   }
 }
-
-

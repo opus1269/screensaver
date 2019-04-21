@@ -133,7 +133,7 @@ export async function request(type: IType) {
     throw err;
   }
 
-  return Promise.resolve(granted);
+  return granted;
 }
 
 /**
@@ -161,7 +161,7 @@ export async function remove(type: IType) {
     await _setState(type, STATE.notSet);
   }
 
-  return Promise.resolve(removed);
+  return removed;
 }
 
 /**
@@ -172,13 +172,12 @@ export async function remove(type: IType) {
  * @returns true if removed
  */
 export async function deny(type: IType) {
-
   const removed = await remove(type);
 
   // set to denied regardless of whether it was removed
   await _setState(type, STATE.denied);
 
-  return Promise.resolve(removed);
+  return removed;
 }
 
 /**
@@ -187,7 +186,6 @@ export async function deny(type: IType) {
  * @throws An error on failure
  */
 export async function removeGooglePhotos() {
-
   await deny(PICASA);
 
   try {
@@ -200,8 +198,6 @@ export async function removeGooglePhotos() {
   } catch (err) {
     // nice to remove but not critical
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -221,8 +217,6 @@ async function _setState(type: IType, value: STATE) {
   } catch (err) {
     // ignore
   }
-
-  return Promise.resolve();
 }
 
 /**
@@ -238,4 +232,3 @@ async function _contains(type: IType) {
     origins: type.origins,
   });
 }
-

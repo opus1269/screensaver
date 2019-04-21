@@ -62,7 +62,6 @@ export class ErrorDialogElement extends BaseElement {
     this.dialog.close();
   }
 
-
   static get template() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">

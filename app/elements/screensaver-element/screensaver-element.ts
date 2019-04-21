@@ -225,8 +225,6 @@ export class ScreensaverElement extends BaseElement {
       ChromeLog.error(err.message, 'SS._launch');
       this.setNoPhotos();
     }
-
-    return Promise.resolve();
   }
 
   /**
@@ -284,7 +282,6 @@ export class ScreensaverElement extends BaseElement {
     }
 
     const curSlide = this.getSlide(idx);
-
     if (curSlide && curSlide.isPhotoLoaded()) {
       return idx;
     }
@@ -418,7 +415,7 @@ export class ScreensaverElement extends BaseElement {
     if (!SSPhotos.getCount()) {
       // No usable photos
       this.setNoPhotos();
-      return Promise.resolve(false);
+      return false;
     }
 
     if (ChromeStorage.getBool('shuffle')) {
@@ -426,7 +423,7 @@ export class ScreensaverElement extends BaseElement {
       SSPhotos.shuffle();
     }
 
-    return Promise.resolve(true);
+    return true;
   }
 
   /**
@@ -476,7 +473,6 @@ export class ScreensaverElement extends BaseElement {
       this.set('timeLabel', label);
     }
   }
-
 
   /**
    * Simple Observer: Paused state changed

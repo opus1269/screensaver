@@ -50,7 +50,6 @@ export interface ICurrentWeather {
   description: string;
 }
 
-
 /**
  * Default weather
  */
@@ -110,7 +109,7 @@ export async function update(force = false) {
   const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
 
   if (!showWeather) {
-    return Promise.resolve();
+    return;
   }
 
   if (!force) {
@@ -119,7 +118,7 @@ export async function update(force = false) {
     const time = Date.now();
     if ((time - lastTime) < MIN_CALL_FREQ) {
       // don't update faster than this
-      return Promise.resolve();
+      return;
     }
   }
 
@@ -133,7 +132,7 @@ export async function update(force = false) {
       const msg = ChromeLocale.localize('err_geolocation_perm');
       ChromeLog.error(msg, METHOD, ERR_TITLE);
       ChromeStorage.set('showCurrentWeather', false);
-      return Promise.resolve();
+      return;
     }
     // use last location
     location = ChromeStorage.get('location', DEF_LOC);
@@ -151,7 +150,7 @@ export async function update(force = false) {
     if (response.cod !== 200) {
       const msg = `${ChromeLocale.localize('err_status')}: ${response.cod}`;
       ChromeLog.error(msg, METHOD, ERR_TITLE);
-      return Promise.resolve();
+      return;
     }
 
     const curWeather = ChromeJSON.shallowCopy(DEF_WEATHER);
@@ -193,8 +192,6 @@ export async function update(force = false) {
     ChromeStorage.set('currentWeather', curWeather);
 
     ChromeGA.event(MyGA.EVENT.WEATHER_UPDATED);
-
-    return Promise.resolve();
   } catch (err) {
     ChromeLog.error(err.message, METHOD, ERR_TITLE);
     throw err;
@@ -244,7 +241,7 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
     lon: position.coords.longitude,
   };
   ChromeStorage.set('location', ret);
-  return Promise.resolve(ret);
+  return ret;
 }
 
 /**

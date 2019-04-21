@@ -24,13 +24,14 @@
     "no-arg": true,
     "no-bitwise": true,
     "no-conditional-assignment": true,
-    "no-consecutive-blank-lines": false,
+    "no-consecutive-blank-lines": true,
     "no-console": {
       "severity": "warning",
       "options": [
         "debug",
         "info",
         "log",
+        "error",
         "time",
         "timeEnd",
         "trace"

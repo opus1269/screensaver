@@ -49,7 +49,6 @@ const _LOC_CACHE: ICache = {
  */
 const _GEOCODE_API = 'http://maps.googleapis.com/maps/api/geocode/json';
 
-
 /**
  * Get the location string
  *

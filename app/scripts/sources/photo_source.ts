@@ -50,7 +50,6 @@ export interface IPhotos {
   photos: IPhoto[];
 }
 
-
 /**
  * A source of photos for the screen saver
  */
@@ -178,6 +177,8 @@ export abstract class PhotoSource {
 
   /**
    * Get the photos from local storage
+   *
+   * @returns the source's photos
    */
   public async getPhotos() {
     const ret: IPhotos = {
@@ -201,7 +202,7 @@ export abstract class PhotoSource {
       }
       ret.photos = photos;
     }
-    return Promise.resolve(ret);
+    return ret;
   }
 
   /**
@@ -230,7 +231,7 @@ export abstract class PhotoSource {
         title += `: ${this._desc}`;
         ChromeLog.error(err.message, 'PhotoSource.process', title,
             `source: ${this._useKey}`);
-        return Promise.reject(err);
+        throw err;
       }
     } else {
       // remove the source
@@ -248,13 +249,11 @@ export abstract class PhotoSource {
         try {
           const chromep = new ChromePromise();
           await chromep.storage.local.remove(this._photosKey);
-        } catch (e) {
+        } catch (err) {
           // ignore
         }
       }
     }
-
-    return Promise.resolve();
   }
 
   /**
@@ -267,8 +266,7 @@ export abstract class PhotoSource {
     let ret = null;
     const keyBool = this._useKey;
     if (photos && photos.length) {
-      const set =
-          await ChromeStorage.asyncSet(this._photosKey, photos, keyBool);
+      const set = await ChromeStorage.asyncSet(this._photosKey, photos, keyBool);
       if (!set) {
         ret = 'Exceeded storage capacity.';
       }

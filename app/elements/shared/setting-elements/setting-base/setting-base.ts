@@ -66,4 +66,3 @@ export class SettingBase extends BaseElement {
 `;
   }
 }
-

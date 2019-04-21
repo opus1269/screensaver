@@ -470,7 +470,6 @@ export class ScreensaverSlideElement
     imageStyle.top = (screen.height - height) / 2 + 'px';
     imageStyle.left = (screen.width - width) / 2 + 'px';
 
-
     // position other elements
     authorStyle.textAlign = 'right';
     locationStyle.textAlign = 'left';
@@ -545,7 +544,6 @@ export class ScreensaverSlideElement
     imageStyle.borderBottom = 5 + 'vh solid WhiteSmoke';
     imageStyle.borderRadius = '1.5vh';
     imageStyle.boxShadow = '1.5vh 1.5vh 1.5vh rgba(0,0,0,.7)';
-
 
     imgStyle.height = height + 'px';
     imgStyle.width = width + 'px';

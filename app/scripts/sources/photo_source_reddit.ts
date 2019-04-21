@@ -207,7 +207,6 @@ export class RedditSource extends PhotoSource {
       throw new Error(msg);
     }
 
-    return Promise.resolve(photos);
+    return photos;
   }
 }
-
