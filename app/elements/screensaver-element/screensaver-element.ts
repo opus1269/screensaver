@@ -248,7 +248,7 @@ export class ScreensaverElement extends BaseElement {
    */
   public getSelectedPhoto() {
     let ret: SSPhoto;
-    const idx =  this.getSelectedSlideIndex();
+    const idx = this.getSelectedSlideIndex();
     if (idx !== -1) {
       ret = this.photos[idx];
     }
@@ -333,7 +333,6 @@ export class ScreensaverElement extends BaseElement {
   public getSelectedSlideIndex() {
     if (this.pages) {
       let selected: number;
-      // TODO wtf with typeof
       if (typeof this.pages.selected === 'string') {
         selected = parseInt(this.pages.selected, 10);
       } else {
@@ -574,108 +573,105 @@ export class ScreensaverElement extends BaseElement {
     const thePhoto = this.photos[index];
     const theType = thePhoto.getType();
     if (theType === PhotoSourceFactory.Type.GOOGLE_USER) {
-      // Google baseUrl may have expired, try to update some photos
+      try {
+        // Google baseUrl may have expired, try to update some photos
 
-      // TODO have to use cors to get status code, so have to have permission from site
-      // first, fetch again and check status - only handle 403 errors
-      // const url = photo.getUrl();
-      // try {
-      //   const response = await fetch(url, {
-      //     method: 'get',
-      //   });
-      //   const status = response.status;
-      //   console.log(status);
-      //   if (status !== 403) {
-      //     // some other problem, don't know how to fix it
-      //     _isUpdating = false;
-      //     return;
-      //   }
-      // } catch (err) {
-      //   // some other problem, don't know how to fix it
-      //   console.log(err);
-      //   _isUpdating = false;
-      //   return;
-      // }
+        // TODO have to use cors to get status code, so have to have permission from site
+        // first, fetch again and check status - only handle 403 errors
+        // const url = photo.getUrl();
+        // try {
+        //   const response = await fetch(url, {
+        //     method: 'get',
+        //   });
+        //   const status = response.status;
+        //   console.log(status);
+        //   if (status !== 403) {
+        //     // some other problem, don't know how to fix it
+        //     _isUpdating = false;
+        //     return;
+        //   }
+        // } catch (err) {
+        //   // some other problem, don't know how to fix it
+        //   console.log(err);
+        //   _isUpdating = false;
+        //   return;
+        // }
 
-      // throttle call rate to Google API per screensaver session
-      // in case something weird happens
-      if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
-        errHandler.isUpdating = false;
-        return;
-      }
+        // throttle call rate to Google API per screensaver session
+        // in case something weird happens
+        if ((Date.now() - errHandler.lastTime) < errHandler.TIME_LIMIT) {
+          errHandler.isUpdating = false;
+          return;
+        }
 
-      // limit max number of calls to Google API per screensaver session
-      // in case something weird happens
-      errHandler.count++;
-      if (errHandler.count >= errHandler.MAX_COUNT) {
-        errHandler.isUpdating = false;
-        return;
-      }
+        // limit max number of calls to Google API per screensaver session
+        // in case something weird happens
+        errHandler.count++;
+        if (errHandler.count >= errHandler.MAX_COUNT) {
+          errHandler.isUpdating = false;
+          return;
+        }
 
-      // update last call time
-      errHandler.lastTime = Date.now();
+        // update last call time
+        errHandler.lastTime = Date.now();
 
-      // Calculate an hours worth of photos max
-      let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
-      transTime = transTime.base * 1000;
-      let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
-      // do at least 50, still one rpc. will help when displaying
-      // a lot for short times
-      nPhotos = Math.max(nPhotos, 50);
+        // Calculate an hours worth of photos max
+        let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+        transTime = transTime.base * 1000;
+        let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
+        // do at least 50, still one rpc. will help when displaying
+        // a lot for short times
+        nPhotos = Math.max(nPhotos, 50);
 
-      if (errHandler.count === 1) {
-        // limit to 50 on first call for quicker starts
-        nPhotos = Math.min(nPhotos, 50);
-      } else {
-        // limit to 300 on subsequent calls
-        nPhotos = Math.min(nPhotos, 300);
-      }
+        if (errHandler.count === 1) {
+          // limit to 50 on first call for quicker starts
+          nPhotos = Math.min(nPhotos, 50);
+        } else {
+          // limit to 300 on subsequent calls
+          nPhotos = Math.min(nPhotos, 300);
+        }
 
-      // get max of nPhotos Google Photo ids starting at this one
-      const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
-      const ids = [];
-      for (const photo of photos) {
-        // unique ids only - required for batchGet call
-        const ex = photo.getEx();
-        if (ex) {
-          const id = ex.id;
-          if (ids.indexOf(id) === -1) {
-            ids.push(id);
+        // get max of nPhotos Google Photo ids starting at this one
+        const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
+        const ids = [];
+        for (const photo of photos) {
+          // unique ids only - required for batchGet call
+          const ex = photo.getEx();
+          if (ex) {
+            const id = ex.id;
+            if (ids.indexOf(id) === -1) {
+              ids.push(id);
+            }
           }
         }
-      }
 
-      let newPhotos = [];
-      try {
         // load the new photos from Google Photos
-        newPhotos = await GoogleSource.loadPhotos(ids);
-      } catch (err) {
-        // major problem, give up for this session
-        errHandler.count = errHandler.MAX_COUNT + 1;
-        errHandler.isUpdating = true;
-        return;
-      }
+        const newPhotos = await GoogleSource.loadPhotos(ids);
 
-      // update the Google Photos baseUrls for this screensaver session
-      SSPhotos.updateGooglePhotoUrls(newPhotos);
+        // update the Google Photos baseUrls for this screensaver session
+        SSPhotos.updateGooglePhotoUrls(newPhotos);
 
-      // update any views with the new google photos
-      this.updateAllUrls(newPhotos);
+        // update any views with the new google photos
+        this.updateAllUrls(newPhotos);
 
-      // persist new baseUrls to albumSelections
-      let updated;
-      try {
-        updated = await GoogleSource.updateBaseUrls(newPhotos);
-      } catch (err) {
+        // persist new baseUrls to albumSelections
+        const updated = await GoogleSource.updateBaseUrls(newPhotos);
         if (!updated) {
           // major problem, give up for this session
+          ChromeGA.error('Failed to save new urls', 'SS.onImageError');
           errHandler.count = errHandler.MAX_COUNT + 1;
           errHandler.isUpdating = true;
           return;
         }
-      }
 
-      errHandler.isUpdating = false;
+        errHandler.isUpdating = false;
+      } catch (err) {
+        // major problem, give up for this session
+        ChromeGA.error(err.message, 'SS.onImageError');
+        errHandler.count = errHandler.MAX_COUNT + 1;
+        errHandler.isUpdating = true;
+        return;
+      }
     }
   }
 
