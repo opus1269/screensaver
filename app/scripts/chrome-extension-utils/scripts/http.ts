@@ -17,7 +17,9 @@ import * as ChromeUtils from './utils.js';
 /**
  * Http configuration
  */
-interface IConfig {
+export interface IConfig {
+  /** check for no internet connection */
+  checkConnection: boolean;
   /** is authorization required */
   isAuth: boolean;
   /** retry with new OAuth2 token on 401 error */
@@ -31,7 +33,7 @@ interface IConfig {
   /** maximum retries for backoff */
   maxRetries: number;
   /** body of request */
-  body: object;
+  body: any;
 }
 
 /**
@@ -58,6 +60,7 @@ const DELAY = 1000;
  * Configuration object
  */
 export const CONFIG: IConfig = {
+  checkConnection: true,
   isAuth: false,
   retryToken: false,
   interactive: false,
@@ -273,9 +276,12 @@ async function doFetch(url: string, opts: RequestInit, conf: IConfig, attempt: n
  * @returns response from server
  */
 async function doIt(url: string, opts: RequestInit, conf: IConfig) {
-  ChromeUtils.checkNetworkConnection();
-
   conf = conf || CONFIG;
+
+  if (conf.checkConnection) {
+    ChromeUtils.checkNetworkConnection();
+  }
+
   if (conf.isAuth) {
     (opts.headers as Headers).set(AUTH_HEADER, `${BEARER} unknown`);
   }
