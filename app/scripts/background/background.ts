@@ -6,11 +6,8 @@
  */
 
 /**
- * The background script for the extension.<br>
+ * The background script for the extension.
  */
-
-import * as ContextMenus from '../../scripts/background/context_menus.js';
-import '../../scripts/background/user.js';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
@@ -25,7 +22,9 @@ import * as Weather from '../../scripts/weather.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
 import * as Alarm from './alarm.js';
+import * as ContextMenus from './context_menus.js';
 import * as AppData from './data.js';
+import './user.js';
 
 /**
  * Display the options tab
@@ -158,8 +157,7 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
   let ret = false;
   if (request.message === ChromeMsg.TYPE.RESTORE_DEFAULTS.message) {
     ret = true;
-    AppData.restoreDefaults().catch(() => {
-    });
+    AppData.restoreDefaults().catch(() => {});
   } else if (request.message === ChromeMsg.TYPE.STORE.message) {
     ChromeStorage.set(request.key, request.value);
   } else if (request.message === MyMsg.TYPE.LOAD_FILTERED_PHOTOS.message) {

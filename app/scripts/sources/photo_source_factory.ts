@@ -20,15 +20,22 @@ import {RedditSource} from './photo_source_reddit.js';
 /**
  * Enum for {@link PhotoSource} Type
  */
-export enum Type {
+export const enum Type {
+  /** User's Google Photos account */
   GOOGLE_USER = 'Google User',
+  /** Chromecast public photos */
   GOOGLE = 'Google',
+  /** Flickr public photos or my photos */
   FLICKR = 'flickr',
+  /** Reddit public photos */
   REDDIT = 'reddit',
 }
 
 /**
  * Enum for {@link PhotoSource} useKey
+ *
+ * @remarks
+ * This is the boolean value persisted to storage
  */
 export enum UseKey {
   ALBUMS_GOOGLE = 'useGoogleAlbums',
@@ -50,49 +57,39 @@ export enum UseKey {
 export function create(useKey: UseKey) {
   switch (useKey) {
     case UseKey.ALBUMS_GOOGLE:
-      return new GoogleSource(useKey, 'albumSelections',
-          Type.GOOGLE_USER,
+      return new GoogleSource(useKey, 'albumSelections', Type.GOOGLE_USER,
           ChromeLocale.localize('google_title'),
           true, true, null);
     case UseKey.PHOTOS_GOOGLE:
-      // not implemented yet
-      return new GoogleSource(useKey, 'googleImages',
-          Type.GOOGLE_USER,
+      return new GoogleSource(useKey, 'googleImages', Type.GOOGLE_USER,
           ChromeLocale.localize('google_title_photos'),
           true, false, null);
     case UseKey.CHROMECAST:
-      return new CCSource(useKey, 'ccImages',
-          Type.GOOGLE,
+      return new CCSource(useKey, 'ccImages', Type.GOOGLE,
           ChromeLocale.localize('setting_chromecast'),
           false, false, null);
     case UseKey.INT_FLICKR:
-      return new FlickrSource(useKey, 'flickrInterestingImages',
-          Type.FLICKR,
+      return new FlickrSource(useKey, 'flickrInterestingImages', Type.FLICKR,
           ChromeLocale.localize('setting_flickr_int'),
           true, false, false);
     case UseKey.AUTHOR:
-      return new FlickrSource(useKey, 'authorImages',
-          Type.FLICKR,
+      return new FlickrSource(useKey, 'authorImages', Type.FLICKR,
           ChromeLocale.localize('setting_mine'),
           false, false, true);
     case UseKey.SPACE_RED:
-      return new RedditSource(useKey, 'spaceRedditImages',
-          Type.REDDIT,
+      return new RedditSource(useKey, 'spaceRedditImages', Type.REDDIT,
           ChromeLocale.localize('setting_reddit_space'),
           true, false, 'r/spaceporn/');
     case UseKey.EARTH_RED:
-      return new RedditSource(useKey, 'earthRedditImages',
-          Type.REDDIT,
+      return new RedditSource(useKey, 'earthRedditImages', Type.REDDIT,
           ChromeLocale.localize('setting_reddit_earth'),
           true, false, 'r/EarthPorn/');
     case UseKey.ANIMAL_RED:
-      return new RedditSource(useKey, 'animalRedditImages',
-          Type.REDDIT,
+      return new RedditSource(useKey, 'animalRedditImages', Type.REDDIT,
           ChromeLocale.localize('setting_reddit_animal'),
           true, false, 'r/animalporn/');
     default:
-      ChromeGA.error(`Bad PhotoSource type: ${useKey}`,
-          'PhotoSourceFactory.create');
+      ChromeGA.error(`Bad PhotoSource type: ${useKey}`, 'PhotoSourceFactory.create');
       return null;
   }
 }

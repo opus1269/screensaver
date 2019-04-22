@@ -31,7 +31,7 @@ interface IType {
 }
 
 /** Possible states of an permission */
-export enum STATE {
+export const enum STATE {
   /** Default */
   notSet = 'notSet',
   /** User allowed */
