@@ -447,7 +447,7 @@ async function processEnabled() {
 
     await chromep.contextMenus.update('ENABLE_MENU', {title: label});
   } catch (err) {
-    ChromeGA.error(err.message, 'AppData.processEnabled');
+    // ignore - may not be created yet
   }
 }
 
