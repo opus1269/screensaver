@@ -14,8 +14,13 @@ import * as ChromeLog from './log.js';
 // Listen for uncaught promises for logging purposes. - Chrome only
 window.addEventListener('unhandledrejection', function(ev: PromiseRejectionEvent) {
   if (ChromeLog && ev) {
-    const msg = (ev.reason && ev.reason.message) ? ev.reason.message : 'Uncaught promise rejection';
-    ChromeLog.exception(null, msg, true);
+    const reason = ev.reason;
+    if (reason && (reason instanceof Error)) {
+      ChromeLog.exception(reason, null, true);
+    } else {
+      const msg = (reason && reason.message) ? reason.message : 'Uncaught promise rejection';
+      ChromeLog.exception(null, msg, true);
+    }
   }
 });
 
