@@ -10,6 +10,7 @@
  */
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
+import * as ChromeJSON from '../chrome-extension-utils/scripts/json.js';
 
 import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';
@@ -43,7 +44,12 @@ export class CCSource extends PhotoSource {
    */
   public async fetchPhotos() {
     const url = '/assets/chromecast.json';
-    let photos: IPhoto[] = await ChromeHttp.doGet(url);
+
+    // no need to check for internet connection since our call is local
+    const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    conf.checkConnection = false;
+
+    let photos: IPhoto[] = await ChromeHttp.doGet(url, conf);
     photos = photos || [];
     for (const photo of photos) {
       photo.asp = '1.78';
