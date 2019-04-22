@@ -217,7 +217,7 @@ export class GoogleSource extends PhotoSource {
     let url = baseUrl;
 
     // get list of albums
-    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = true;
@@ -281,7 +281,7 @@ export class GoogleSource extends PhotoSource {
     };
     body.albumId = id;
 
-    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = interactive;
@@ -438,7 +438,7 @@ export class GoogleSource extends PhotoSource {
     const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
 
     // get list of photos based on filter
-    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = force;
@@ -508,7 +508,7 @@ export class GoogleSource extends PhotoSource {
       return photos;
     }
 
-    const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
     conf.retryToken = true;
     conf.interactive = false;

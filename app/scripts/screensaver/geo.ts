@@ -72,7 +72,7 @@ export function get(point: string) {
 
   // get from api - it will translate based on the browser language
   const url = `${_GEOCODE_API}?latlng=${pt}`;
-  const conf = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+  const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
   conf.maxRetries = 2;
   return ChromeHttp.doGet(url, conf).then((response) => {
     let location = '';
