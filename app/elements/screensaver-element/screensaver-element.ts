@@ -636,9 +636,12 @@ export class ScreensaverElement extends BaseElement {
       const ids = [];
       for (const photo of photos) {
         // unique ids only - required for batchGet call
-        const id = photo.getEx().id;
-        if (ids.indexOf(id) === -1) {
-          ids.push(id);
+        const ex = photo.getEx();
+        if (ex) {
+          const id = ex.id;
+          if (ids.indexOf(id) === -1) {
+            ids.push(id);
+          }
         }
       }
 
