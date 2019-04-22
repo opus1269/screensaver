@@ -264,6 +264,10 @@ export class ScreensaverElement extends BaseElement {
   public replacePhoto(photo: SSPhoto, idx: number) {
     if (photo && (idx >= 0)) {
       this.splice('photos', idx, 1, photo);
+      // force immediate update of url
+      const slide = this.getSlide(idx);
+      slide.setUrl(photo.getUrl());
+      slide.notifyPath('url');
     }
   }
 
