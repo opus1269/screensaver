@@ -104,7 +104,7 @@ export async function processAll(doGoogle = false) {
   for (const source of sources) {
     let skip = false;
     const type = source.getType();
-    if ('Google User' === type) {
+    if (type === PhotoSourceFactory.Type.GOOGLE_USER) {
       skip = !doGoogle;
     }
     if (!skip) {

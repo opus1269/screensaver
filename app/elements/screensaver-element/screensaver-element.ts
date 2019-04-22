@@ -573,7 +573,7 @@ export class ScreensaverElement extends BaseElement {
     const index = ev.detail.index;
     const thePhoto = this.photos[index];
     const theType = thePhoto.getType();
-    if ('Google User' === theType) {
+    if (theType === PhotoSourceFactory.Type.GOOGLE_USER) {
       // Google baseUrl may have expired, try to update some photos
 
       // TODO have to use cors to get status code, so have to have permission from site

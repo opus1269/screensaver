@@ -9,10 +9,10 @@
  * Collection of {@link SSPhoto} objects
  */
 
-import {IPhoto, PhotoSource} from '../sources/photo_source';
-
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
+import {IPhoto, PhotoSource} from '../sources/photo_source.js';
+import * as PhotoSourceFactory from '../sources/photo_source_factory.js';
 import {SSPhoto} from './ss_photo.js';
 
 /**
@@ -117,7 +117,7 @@ export function getNextGooglePhotos(num: number, idx: number) {
     const photo = _photos[index];
     if (ct >= num) {
       break;
-    } else if (photo.getType() === 'Google User') {
+    } else if (photo.getType() === PhotoSourceFactory.Type.GOOGLE_USER) {
       photos.push(photo);
       ct++;
     }
@@ -132,7 +132,7 @@ export function getNextGooglePhotos(num: number, idx: number) {
  */
 export function updateGooglePhotoUrls(photos: IPhoto[]) {
   for (let i = _photos.length - 1; i >= 0; i--) {
-    if (_photos[i].getType() !== 'Google User') {
+    if (_photos[i].getType() !== PhotoSourceFactory.Type.GOOGLE_USER) {
       continue;
     }
 
