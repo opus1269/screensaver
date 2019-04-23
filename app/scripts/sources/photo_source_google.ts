@@ -27,13 +27,21 @@ import * as PhotoSourceFactory from './photo_source_factory.js';
  * A Google Photo Album
  */
 export interface IAlbum {
+  /** The index when in an array */
   index: number;
+  /** Unique string when in an array */
   uid: string;
+  /** Name */
   name: string;
+  /** Unique id of album */
   id: string;
+  /** url to thumbnail photo */
   thumb: string;
+  /** selected state */
   checked: boolean;
+  /** Either total number of media items or number of photos */
   ct: number;
+  /** Array of photos */
   photos: IPhoto[];
 }
 
@@ -41,57 +49,83 @@ export interface IAlbum {
  * A Selected Google Photo Album, this is persisted
  */
 export interface ISelectedAlbum {
+  /** Unique id */
   id: string;
+  /** Name */
   name: string;
+  /** Array of photos */
   photos: IPhoto[];
 }
 
 /**
- * Google Photos API representation of a photo
+ * Size of a photo
  */
-// interface GPhotosPhoto {
-//   id: string;
-//   mimeType: string;
-//   baseUrl: string;
-//   productUrl: string;
-//   mediaMetadata: any;
-// }
+interface ISize {
+  width: number;
+  height: number;
+}
+
+/**
+ * Google Photos API meta data for a media item
+ */
+interface IMediaMetaData {
+  width: string;
+  height: string;
+}
+
+/**
+ * Google Photos API media item
+ */
+interface IMediaItem {
+  /** Unique id */
+  id: string;
+  /** Type of item */
+  mimeType: string;
+  /** Temporary url to item - expires in about an hour */
+  baseUrl: string;
+  /** Url to item in Google Photos account */
+  productUrl: string;
+  /** Extra information about item */
+  mediaMetadata: IMediaMetaData;
+}
 
 /**
  * Google Photos API representation of an album
  */
-interface IGPhotosAlbum {
+interface IGAlbum {
+  /** Unique id */
   id: string;
+  /** Name */
   title: string;
-  productUrl: string;
+  /** Number of items in album */
   mediaItemsCount: number;
+  /** Temporary Url to cover photo - expires in about an hour */
   coverPhotoBaseUrl: string;
-  coverPhotoMediaItemId: string;
 }
 
 /**
  * Path to Google Photos API
  */
-const _URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
+const URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
 
 /**
  * Query for list of albums
  */
-const _ALBUMS_QUERY =
+const ALBUMS_QUERY =
     '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,' +
     'coverPhotoBaseUrl)';
 
 /**
  * Only return stuff we use
  */
-const _MEDIA_ITEMS_FIELDS =
+const MEDIA_ITEMS_FIELDS =
     'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,' +
     'mediaMetadata/width,mediaMetadata/height)';
 
 /**
  * Only return stuff we use
  */
-const _MEDIA_ITEMS_RESULTS_FIELDS =
+const MEDIA_ITEMS_RESULTS_FIELDS =
     'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,' +
     'mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,' +
     'mediaItem/mediaMetadata/height)';
@@ -162,25 +196,6 @@ export class GoogleSource extends PhotoSource {
     return 3000;
   }
 
-  // /**
-  //  * Is the error due to the Google Photos API quota? Also logs it if true
-  //  * @param err - info on image
-  //  * @param caller - calling method
-  //  * @returns true if 429 error
-  //  * @static
-  //  */
-  // static isQuotaError(err, caller) {
-  //   let ret = false;
-  //   const statusMsg = `${ChromeLocale.localize('err_status')}: 429`;
-  //   if (err.message.includes(statusMsg)) {
-  //     // Hit Google photos quota
-  //     ChromeLog.error(err.message, caller,
-  //         ChromeLocale.localize('err_google_quota'));
-  //     ret = true;
-  //   }
-  //   return ret;
-  // }
-
   /**
    * Has the Google auth token been revoked
    *
@@ -210,10 +225,10 @@ export class GoogleSource extends PhotoSource {
    */
   public static async loadAlbumList() {
     let nextPageToken: string;
-    let gAlbums: IGPhotosAlbum[] = [];
+    let gAlbums: IGAlbum[] = [];
     const albums: IAlbum[] = [];
     let ct = 0;
-    const baseUrl = `${_URL_BASE}albums/${_ALBUMS_QUERY}`;
+    const baseUrl = `${URL_BASE}albums/${ALBUMS_QUERY}`;
     let url = baseUrl;
 
     // get list of albums
@@ -270,16 +285,16 @@ export class GoogleSource extends PhotoSource {
    * @param interactive=true - interactive mode for permissions
    * @param notify=false - notify listeners of status
    * @throws An error if the album failed to load.
-   * @returns IAlbum
+   * @returns An album
    */
   public static async loadAlbum(id: string, name: string, interactive = true, notify = false) {
     // max items in search call
     const MAX_QUERIES = 100;
-    const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
-    const body: any = {
+    const url = `${URL_BASE}mediaItems:search?${MEDIA_ITEMS_FIELDS}`;
+    const body = {
       pageSize: MAX_QUERIES,
+      albumId: id,
     };
-    body.albumId = id;
 
     const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
     conf.isAuth = true;
@@ -311,7 +326,7 @@ export class GoogleSource extends PhotoSource {
       nextPageToken = response.nextPageToken;
       conf.body.pageToken = nextPageToken;
 
-      const mediaItems = response.mediaItems;
+      const mediaItems: IMediaItem[] = response.mediaItems;
       if (mediaItems) {
         const newPhotos = this._processPhotos(mediaItems, name);
         photos = photos.concat(newPhotos);
@@ -343,36 +358,36 @@ export class GoogleSource extends PhotoSource {
   }
 
   /**
-   * Load the saved albums from the Web
+   * Reload the saved albums from the Web
    *
    * @param interactive=true - interactive mode for permissions
    * @param notify=false - notify listeners of status
    * @throws An error if the albums could not be updated
-   * @returns The array of albums
+   * @returns The array of album selections
    */
   public static async loadAlbums(interactive = false, notify = false) {
     const METHOD = 'GoogleSource.loadAlbums';
 
-    const albums = await ChromeStorage.asyncGet('albumSelections', []);
-    if ((albums.length === 0)) {
-      return albums;
+    const selAlbums: ISelectedAlbum[] = await ChromeStorage.asyncGet('albumSelections', []);
+    if ((selAlbums.length === 0)) {
+      return selAlbums;
     }
 
     let ct = 0;
     // loop on each album and reload from Web
-    for (let i = albums.length - 1; i >= 0; i--) {
-      const album = albums[i] || [];
-      let newAlbum = null;
+    for (let i = selAlbums.length - 1; i >= 0; i--) {
+      const selAlbum = selAlbums[i];
+      let newSelAlbum: ISelectedAlbum;
       try {
-        newAlbum = await GoogleSource.loadAlbum(album.id, album.name, interactive, notify);
+        newSelAlbum = await GoogleSource.loadAlbum(selAlbum.id, selAlbum.name, interactive, notify);
       } catch (err) {
         if (err.message.match(/404/)) {
           // album likely deleted in Google Photos
           let msg = ChromeLocale.localize('removed_album');
-          msg += `: ${album.name}`;
+          msg += `: ${selAlbum.name}`;
           ChromeLog.error(msg, METHOD);
           // delete it
-          albums.splice(i, 1);
+          selAlbums.splice(i, 1);
           continue;
         } else {
           // failed to load album
@@ -380,12 +395,12 @@ export class GoogleSource extends PhotoSource {
         }
       }
 
-      const photos = newAlbum.photos || [];
+      const photos = newSelAlbum.photos || [];
 
       // replace
-      albums.splice(i, 1, {
-        id: album.id,
-        name: newAlbum.name,
+      selAlbums.splice(i, 1, {
+        id: selAlbum.id,
+        name: newSelAlbum.name,
         photos: photos,
       });
 
@@ -394,13 +409,12 @@ export class GoogleSource extends PhotoSource {
         // exceeded total photo limit, stop processing
         ChromeGA.event(MyGA.EVENT.PHOTO_SELECTIONS_LIMITED, `limit: ${ct}`);
         // let user know
-        ChromeLog.error(ChromeLocale.localize('err_max_photos'),
-            METHOD);
+        ChromeLog.error(ChromeLocale.localize('err_max_photos'), METHOD);
         break;
       }
     }
 
-    return albums;
+    return selAlbums;
   }
 
   /**
@@ -412,9 +426,9 @@ export class GoogleSource extends PhotoSource {
    * @returns The array of photos
    */
   public static async loadFilteredPhotos(force = false, notify = false) {
-    const curPhotos = await ChromeStorage.asyncGet('googleImages', []);
     if (!force && !this._isFetch()) {
       // no need to change - save on api calls
+      const curPhotos: IPhoto[] = await ChromeStorage.asyncGet('googleImages', []);
       return curPhotos;
     }
 
@@ -435,7 +449,7 @@ export class GoogleSource extends PhotoSource {
       filters: filters,
     };
 
-    const url = `${_URL_BASE}mediaItems:search?${_MEDIA_ITEMS_FIELDS}`;
+    const url = `${URL_BASE}mediaItems:search?${MEDIA_ITEMS_FIELDS}`;
 
     // get list of photos based on filter
     const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
@@ -465,7 +479,6 @@ export class GoogleSource extends PhotoSource {
         let response = await ChromeHttp.doPost(url, conf);
         response = response || {};
 
-        // convert to module:sources/photo_source.Photo[]
         const photos = this._processPhotos(response.mediaItems);
         if (photos.length > 0) {
           newPhotos = newPhotos.concat(photos);
@@ -520,7 +533,7 @@ export class GoogleSource extends PhotoSource {
     let nCalls = 0;
     // get the photos in batches of MAX_QUERIES
     do {
-      let url = `${_URL_BASE}mediaItems:batchGet?${_MEDIA_ITEMS_RESULTS_FIELDS}`;
+      let url = `${URL_BASE}mediaItems:batchGet?${MEDIA_ITEMS_RESULTS_FIELDS}`;
       let query = '';
       for (let i = start; i < stop; i++) {
         query = query.concat(`&mediaItemIds=${ids[i]}`);
@@ -698,12 +711,12 @@ export class GoogleSource extends PhotoSource {
   private static async _fetchAlbums() {
     if (!this._isFetch()) {
       // no need to change - save on api calls
-      const curAlbums: IAlbum[] = await ChromeStorage.asyncGet('albumSelections', []);
+      const curAlbums: ISelectedAlbum[] = await ChromeStorage.asyncGet('albumSelections', []);
       return curAlbums;
     }
 
     let ct = 0;
-    const albums: IAlbum[] = await this.loadAlbums(false, false);
+    const albums: ISelectedAlbum[] = await this.loadAlbums(false, false);
     for (const album of albums) {
       ct += album.photos.length;
     }
@@ -720,7 +733,7 @@ export class GoogleSource extends PhotoSource {
    * @param mediaItem - Google Photos media object
    * @returns true if entry is a photo
    */
-  private static _isImage(mediaItem: any) {
+  private static _isImage(mediaItem: IMediaItem) {
     return mediaItem &&
         mediaItem.mimeType &&
         mediaItem.mimeType.startsWith('image/') &&
@@ -734,12 +747,14 @@ export class GoogleSource extends PhotoSource {
    * @param mediaMetadata - info on image
    * @returns image size
    */
-  private static _getImageSize(mediaMetadata: any) {
+  private static _getImageSize(mediaMetadata: IMediaMetaData) {
     const MAX_SIZE = 1920;
-    const ret: any = {};
-    ret.width = parseInt(mediaMetadata.width, 10);
-    ret.height = parseInt(mediaMetadata.height, 10);
-    if (!ChromeStorage.getBool('fullResGoogle')) {
+    const ret: ISize = {
+      width: parseInt(mediaMetadata.width, 10),
+      height: parseInt(mediaMetadata.height, 10),
+    };
+
+    if (!ChromeStorage.getBool('fullResGoogle', false)) {
       // limit size of image to download
       const max = Math.max(MAX_SIZE, ret.width, ret.height);
       if (max > MAX_SIZE) {
@@ -760,9 +775,10 @@ export class GoogleSource extends PhotoSource {
    *
    * @param mediaItem - object from Google Photos API call
    * @param albumName - Album name
+   * @returns photo or null
    */
-  private static _processPhoto(mediaItem: any, albumName: string) {
-    let photo: IPhoto = null;
+  private static _processPhoto(mediaItem: IMediaItem, albumName: string) {
+    let photo: IPhoto | null = null;
 
     if (mediaItem && mediaItem.mediaMetadata) {
       if (this._isImage(mediaItem)) {
@@ -795,18 +811,17 @@ export class GoogleSource extends PhotoSource {
    * @param albumName - optional Album name
    * @returns An array of photos
    */
-  private static _processPhotos(mediaItems: any, albumName = '') {
-
+  private static _processPhotos(mediaItems: IMediaItem[], albumName = '') {
     const photos: IPhoto[] = [];
     if (!mediaItems) {
       return photos;
     }
+
     for (const mediaItem of mediaItems) {
       const photo: IPhoto = this._processPhoto(mediaItem, albumName);
       if (photo) {
         const asp = parseFloat(photo.asp);
-        this.addPhoto(photos, photo.url, photo.author, asp,
-            photo.ex, photo.point);
+        this.addPhoto(photos, photo.url, photo.author, asp, photo.ex, photo.point);
       }
     }
     return photos;
