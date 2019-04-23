@@ -32,57 +32,102 @@ declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
 /**
- * Version of localStorage - update when items are added, removed, changed
+ * Version of data - update when items are added, removed, changed
+ *
  */
-const DATA_VERSION = 25;
+const DATA_VERSION = 26;
 
 /**
  * App data saved to local storage
  */
 export const DEFS = {
+  /** localstorage data version */
   version: DATA_VERSION,
+  /** Screensaver enabled state */
   enabled: true,
+  /** Google Photos optional permission */
   permPicasa: Permissions.STATE.notSet,
+  /** Run Chrome in background optional permission */
   permBackground: Permissions.STATE.notSet,
+  /** Weather API optional permission */
   permWeather: Permissions.STATE.notSet,
+  /** Run chrome in background state */
   allowBackground: false,
+  /** Unit for idle time */
   idleTime: {base: 5, display: 5, unit: 0} as IUnitValue, // minutes
+  /** Unit for transition time */
   transitionTime: {base: 30, display: 30, unit: 0} as IUnitValue, // seconds
+  /** Skip photos with extreme aspect ratio state */
   skip: true,
+  /** Show photos in random order state */
   shuffle: true,
+  /** Photo sizing menu selection */
   photoSizing: 0,
+  /** Between photo animation menu selection */
   photoTransition: 1,
+  /** Manual control of screensaver state */
   interactive: false,
+  /** Time format for screensaver */
   showTime: 2, // 24 hr format
+  /** Display time on larger font state */
   largeTime: false,
+  /** Show photographer state */
   showPhotog: true,
+  /** Show geolocation state */
   showLocation: true,
+  /** Background style for screensaver */
   background: 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
+  /** Prevent screen/computer from sleeping state */
   keepAwake: false,
+  /** Don't display over full screen Chrome windows state */
   chromeFullscreen: true,
+  /** Show on all displays state */
   allDisplays: false,
+  /** Start time for displaying screensaver */
   activeStart: '00:00', // 24 hr time
+  /** Stop time for displaying screensaver */
   activeStop: '00:00', // 24 hr time
+  /** Allow computer to sleep during active keep awake state */
   allowSuspend: false,
+  /** Allow left mouse click to show original photo source state */
   allowPhotoClicks: true,
+  /** Space reddit selected state */
   useSpaceReddit: false,
+  /** Earth reddit selected state */
   useEarthReddit: false,
+  /** Animal reddit selected state */
   useAnimalReddit: false,
+  /** Interesting flickr selected state */
   useInterestingFlickr: false,
+  /** Chromecast selected state */
   useChromecast: true,
+  /** My photos selected state */
   useAuthors: false,
+  /** Full resolution for user's Google Photos state */
   fullResGoogle: false,
+  /** Is album mode for user's Google Photos state */
   isAlbumMode: true,
+  /** User's Google Photos selected state */
   useGoogle: true,
+  /** User's Google Photos albums selected state */
   useGoogleAlbums: true,
+  /** User's Google Photos photos state */
   useGooglePhotos: false,
+  /** Chrome signin state */
   signedInToChrome: true,
+  /** Don't filter user's Google Photos by categories state */
   googlePhotosNoFilter: true,
+  /** Filter to use for users' Google Photos */
   googlePhotosFilter: GoogleSource.DEF_FILTER,
+  /** Current geolocation */
   location: {lat: 0, lon: 0},
+  /** Display current weather state */
   showCurrentWeather: false,
+  /** Weather temperature display unit */
   weatherTempUnit: 0,
+  /** Current weather */
   currentWeather: Weather.DEF_WEATHER,
+  /** "Ken Burns" effect state */
   panAndScan: false,
 };
 
@@ -91,6 +136,14 @@ export const DEFS = {
  */
 export async function initialize() {
   try {
+    // save version to chrome.storage
+    try {
+      await ChromeStorage.asyncSet('version', DATA_VERSION);
+    } catch (err) {
+      ChromeGA.error(err.message, 'AppData.initialize');
+    }
+
+    // set all data to defaults
     addDefaults();
 
     // set operating system
@@ -121,15 +174,30 @@ export async function initialize() {
  */
 export async function update() {
   // New items, changes, and removal of unused items can take place
-  // here when the version changes
-  const oldVersion = ChromeStorage.getInt('version');
+  // here when the data version changes
 
-  if (Number.isNaN(oldVersion) || (DATA_VERSION > oldVersion)) {
-    // update version number
-    ChromeStorage.set('version', DATA_VERSION);
+  // get the previous data version
+  let oldVersion: number;
+  try {
+    // first, try to get from chrome.storage
+    oldVersion = await ChromeStorage.asyncGet('version');
+  } catch (err) {
+    // ignore
+  }
+  if (!oldVersion) {
+    // used to save this to localstorage before DATA_VERSION 26
+    oldVersion = ChromeStorage.getInt('version');
   }
 
-  if (!Number.isNaN(oldVersion)) {
+  // update version number
+  try {
+    await ChromeStorage.asyncSet('version', DATA_VERSION);
+    ChromeStorage.set('version', DATA_VERSION);
+  } catch (err) {
+    ChromeGA.error(err.message, 'AppData.update');
+  }
+
+  if (oldVersion && !Number.isNaN(oldVersion)) {
 
     if (oldVersion < 8) {
       // change setting-slider values due to adding units
@@ -176,75 +244,77 @@ export async function update() {
       // Google Photos API not compatible with Picasa API album id's
       ChromeStorage.set('albumSelections', []);
     }
-  }
 
-  if (oldVersion < 19) {
-    // remove all traces of 500px
-    ChromeStorage.set('useEditors500px', null);
-    ChromeStorage.set('usePopular500px', null);
-    ChromeStorage.set('useYesterday500px', null);
-    ChromeStorage.set('editors500pxImages', null);
-    ChromeStorage.set('popular500pxImages', null);
-    ChromeStorage.set('yesterday500pxImages', null);
-  }
-
-  if (oldVersion < 20) {
-    // set signin state
-    try {
-      const signedIn = await ChromeAuth.isSignedIn();
-      ChromeStorage.set('signedInToChrome', signedIn);
-    } catch (err) {
-      // ignore
+    if (oldVersion < 19) {
+      // remove all traces of 500px
+      ChromeStorage.set('useEditors500px', null);
+      ChromeStorage.set('usePopular500px', null);
+      ChromeStorage.set('useYesterday500px', null);
+      ChromeStorage.set('editors500pxImages', null);
+      ChromeStorage.set('popular500pxImages', null);
+      ChromeStorage.set('yesterday500pxImages', null);
     }
 
-    // change minimum transition time
-    const trans = ChromeStorage.get('transitionTime', DEFS.transitionTime);
-    if ((trans.unit === 0)) {
-      trans.base = Math.max(10, trans.base);
-      trans.display = trans.base;
-      ChromeStorage.set('transitionTime', trans);
-    }
-  }
-
-  if (oldVersion < 21) {
-    try {
-      await updateToChromeLocaleStorage();
-    } catch (err) {
-      // ignore
-    }
-  }
-
-  if (oldVersion < 22) {
-    // remove unused data
-    ChromeStorage.set('gPhotosNeedsUpdate', null);
-    ChromeStorage.set('gPhotosMaxAlbums', null);
-    ChromeStorage.set('isAwake', null);
-    ChromeStorage.set('isShowing', null);
-    ChromeStorage.set('albumSelections', null);
-  }
-
-  if (oldVersion < 23) {
-    // remove unused data
-    ChromeStorage.set('googleImages', null);
-  }
-
-  if (oldVersion < 25) {
-    // reload chromecast photos since asp is now a string
-    const key = PhotoSourceFactory.UseKey.CHROMECAST;
-    const useChromecast = ChromeStorage.getBool(key, DEFS[key]);
-    if (useChromecast) {
+    if (oldVersion < 20) {
+      // set signin state
       try {
-        await PhotoSources.process(key);
+        const signedIn = await ChromeAuth.isSignedIn();
+        ChromeStorage.set('signedInToChrome', signedIn);
       } catch (err) {
-        ChromeStorage.set(key, false);
+        // ignore
+      }
+
+      // change minimum transition time
+      const trans = ChromeStorage.get('transitionTime', DEFS.transitionTime);
+      if ((trans.unit === 0)) {
+        trans.base = Math.max(10, trans.base);
+        trans.display = trans.base;
+        ChromeStorage.set('transitionTime', trans);
+      }
+    }
+
+    if (oldVersion < 21) {
+      try {
+        await updateToChromeLocaleStorage();
+      } catch (err) {
+        // ignore
+      }
+    }
+
+    if (oldVersion < 22) {
+      // remove unused data
+      ChromeStorage.set('gPhotosNeedsUpdate', null);
+      ChromeStorage.set('gPhotosMaxAlbums', null);
+      ChromeStorage.set('isAwake', null);
+      ChromeStorage.set('isShowing', null);
+      ChromeStorage.set('albumSelections', null);
+    }
+
+    if (oldVersion < 23) {
+      // remove unused data
+      ChromeStorage.set('googleImages', null);
+    }
+
+    if (oldVersion < 25) {
+      // reload chromecast photos since asp is now a string
+      const key = PhotoSourceFactory.UseKey.CHROMECAST;
+      const useChromecast = ChromeStorage.getBool(key, DEFS[key]);
+      if (useChromecast) {
         try {
-          // failed to convert, delete source
-          await chromep.storage.local.remove(this._photosKey);
+          await PhotoSources.process(key);
         } catch (err) {
-          // ignore
+          ChromeStorage.set(key, false);
+          try {
+            // failed to convert, delete source
+            await chromep.storage.local.remove(this._photosKey);
+          } catch (err) {
+            // ignore
+          }
         }
       }
     }
+  } else {
+    ChromeGA.error('Failed to get oldVersion', 'AppData.update');
   }
 
   addDefaults();

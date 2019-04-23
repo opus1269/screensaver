@@ -119,17 +119,15 @@ export function safeSet(key: string, value: any, keyBool: string = null) {
  * @param def - default value if not found
  * @returns Object or Array from storage, def if not found
  */
-export async function asyncGet(key: string, def: object | [] = null) {
+export async function asyncGet(key: string, def: object | [] | number = null) {
   let ret = null;
   const chromep = new ChromePromise();
   try {
     const res = await chromep.storage.local.get([key]);
     ret = res[key];
   } catch (err) {
-    if (def) {
-      ret = def;
-    }
-    // TODO handle error
+    ChromeGA.error(err.message, 'ChromeStorage.asyncGet');
+    ret = def;
   }
 
   if (ret === undefined) {
@@ -150,7 +148,7 @@ export async function asyncGet(key: string, def: object | [] = null) {
  * @param keyBool - key to a boolean value that is true if the primary key has non-empty value
  * @returns true if value was set successfully
  */
-export async function asyncSet(key: string, value: object | [], keyBool: string = null) {
+export async function asyncSet(key: string, value: object | [] | number, keyBool: string = null) {
   // TODO what about keyBool?
   let ret = true;
   const chromep = new ChromePromise();
@@ -166,25 +164,26 @@ export async function asyncSet(key: string, value: object | [], keyBool: string 
   }
   return ret;
 }
-  // const oldValue = get(key);
-  // try {
-  //   set(key, value);
-  // } catch (e) {
-  //   ret = false;
-  //   if (oldValue) {
-  //     // revert to old value
-  //     set(key, oldValue);
-  //   }
-  //   if (keyBool) {
-  //     // revert to old value
-  //     if (oldValue && oldValue.length) {
-  //       set(keyBool, true);
-  //     } else {
-  //       set(keyBool, false);
-  //     }
-  //   }
-  //   // notify listeners
-  //   ChromeMsg.send(ChromeMsg.TYPE.STORAGE_EXCEEDED).catch(() => {});
+
+// const oldValue = get(key);
+// try {
+//   set(key, value);
+// } catch (e) {
+//   ret = false;
+//   if (oldValue) {
+//     // revert to old value
+//     set(key, oldValue);
+//   }
+//   if (keyBool) {
+//     // revert to old value
+//     if (oldValue && oldValue.length) {
+//       set(keyBool, true);
+//     } else {
+//       set(keyBool, false);
+//     }
+//   }
+//   // notify listeners
+//   ChromeMsg.send(ChromeMsg.TYPE.STORAGE_EXCEEDED).catch(() => {});
 // }
 
 // return ret;
