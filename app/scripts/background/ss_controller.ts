@@ -165,7 +165,7 @@ async function open(disp: chrome.system.display.DisplayInfo | null) {
     }
 
   } catch (err) {
-    ChromeLog.error(err.message, 'SSControl._open', ERR_SHOW);
+    ChromeLog.error(err.message, 'SSControl.open', ERR_SHOW);
   }
 }
 
