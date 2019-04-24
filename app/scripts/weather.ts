@@ -145,7 +145,7 @@ export async function update(force = false) {
   // now, try to update weather
   try {
     const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
-    conf.maxRetries = 2;
+    conf.maxRetries = 3;
     let url = URL_BASE;
     url += `?lat=${location.lat}&lon=${location.lon}&APPID=${KEY}`;
 
