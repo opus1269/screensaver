@@ -84,7 +84,6 @@ const imageMin = require('gulp-imagemin');
 const replace = require('gulp-replace');
 const eslint = require('gulp-eslint');
 const stripLine = require('gulp-strip-line');
-const jsdoc3 = require('gulp-jsdoc3');
 const zip = require('gulp-zip');
 // noinspection JSUnusedLocalSymbols
 const debug = require('gulp-debug'); // eslint-disable-line no-unused-vars
@@ -93,6 +92,7 @@ const debug = require('gulp-debug'); // eslint-disable-line no-unused-vars
 const ts = require('gulp-typescript');
 const tsProject = ts.createProject('tsconfig.json');
 const tslint = require('gulp-tslint');
+const typedoc = require('gulp-typedoc');
 
 // ECMA6
 const uglifyjs = require('uglify-es');
@@ -231,19 +231,19 @@ gulp.task('buildProd', (cb) => {
 });
 
 // Generate JSDoc
-gulp.task('docs', (cb) => {
+gulp.task('docs', () => {
+   chDir('app');
 
-  chDir('app');
-
-  const config = require('./jsdoc.json');
-  const README = '../README.md';
-  gulp.src([
-    README,
-    files.scripts,
-    files.elements,
-  ], {read: true}).
-      pipe(gulp.dest(base.tmp_docs)).
-      pipe(jsdoc3(config, cb));
+  const input = files.ts;
+  return gulp.src(input).pipe(typedoc({
+    mode: 'modules',
+    module: 'system',
+    target: 'ES6',
+    out: '../docs/gen',
+    name: 'Photo Screensaver',
+    readme: '../README.md',
+    tsconfig: '../tsconfig.json',
+  }));
 });
 
 // Spawn a process to run 'polymer build' for the debug build
