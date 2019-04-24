@@ -1,0 +1,989 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>SettingsPageElement | Photo Screensaver</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Photo Screensaver</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/els_pages_settings.html">els/pages/settings</a>
+				</li>
+				<li>
+					<a href="els_pages_settings.settingspageelement.html">SettingsPageElement</a>
+				</li>
+			</ul>
+			<h1>Class SettingsPageElement</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Polymer element for the Settings Page</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="els_shared_base_element.baseelement.html" class="tsd-signature-type">BaseElement</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">SettingsPageElement</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="els_pages_settings.settingspageelement.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Events</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onchromebackgroundtapped" class="tsd-kind-icon">on<wbr>Chrome<wbr>Background<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#ondeselectalltapped" class="tsd-kind-icon">on<wbr>Deselect<wbr>All<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onenabledchanged" class="tsd-kind-icon">on<wbr>Enabled<wbr>Changed</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onhelptapped" class="tsd-kind-icon">on<wbr>Help<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onrestoredefaultstapped" class="tsd-kind-icon">on<wbr>Restore<wbr>Defaults<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onselectalltapped" class="tsd-kind-icon">on<wbr>Select<wbr>All<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onshowweathertapped" class="tsd-kind-icon">on<wbr>Show<wbr>Weather<wbr>Tapped</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#enabled" class="tsd-kind-icon">enabled</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#photosizingmenu" class="tsd-kind-icon">photo<wbr>Sizing<wbr>Menu</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#phototransmissionmenu" class="tsd-kind-icon">photo<wbr>Transmission<wbr>Menu</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#selectedtab" class="tsd-kind-icon">selected<wbr>Tab</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#settingstoggle" class="tsd-kind-icon">settings<wbr>Toggle</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#showtimevalue" class="tsd-kind-icon">show<wbr>Time<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#showweathervalue" class="tsd-kind-icon">show<wbr>Weather<wbr>Value</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#tempunitmenu" class="tsd-kind-icon">temp<wbr>Unit<wbr>Menu</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#timeformatmenu" class="tsd-kind-icon">time<wbr>Format<wbr>Menu</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#transitiontimeunits" class="tsd-kind-icon">transition<wbr>Time<wbr>Units</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#waittimeunits" class="tsd-kind-icon">wait<wbr>Time<wbr>Units</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#weathertempunitvalue" class="tsd-kind-icon">weather<wbr>Temp<wbr>Unit<wbr>Value</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#largetimedisabled" class="tsd-kind-icon">large<wbr>Time<wbr>Disabled</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#menuhidden" class="tsd-kind-icon">menu<wbr>Hidden</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#weathertempdisabled" class="tsd-kind-icon">weather<wbr>Temp<wbr>Disabled</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-static"><a href="els_pages_settings.settingspageelement.html#template" class="tsd-kind-icon">template</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#deselectphotosource" class="tsd-kind-icon">deselect<wbr>Photo<wbr>Source</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#setphotosourcechecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Source<wbr>Checked</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#setphotosourceschecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Sources<wbr>Checked</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static"><a href="els_pages_settings.settingspageelement.html#getunit" class="tsd-kind-icon">get<wbr>Unit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="els_pages_settings.settingspageelement.html#localize" class="tsd-kind-icon">localize</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Settings<wbr>Page<wbr>Element<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="els_pages_settings.settingspageelement.html" class="tsd-signature-type">SettingsPageElement</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from (Anonymous class).__constructor</p>
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/shared/mixins/i8n_mixin.ts#L25">elements/shared/mixins/i8n_mixin.ts:25</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="els_pages_settings.settingspageelement.html" class="tsd-signature-type">SettingsPageElement</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Events</h2>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onchromebackgroundtapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Chrome<wbr>Background<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Chrome<wbr>Background<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L276">elements/pages/settings-page/settings-page.ts:276</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Process the background</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="ondeselectalltapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Deselect<wbr>All<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Deselect<wbr>All<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L256">elements/pages/settings-page/settings-page.ts:256</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>deselect all <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a> objects tapped</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onenabledchanged" class="tsd-anchor"></a>
+					<h3>on<wbr>Enabled<wbr>Changed</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Enabled<wbr>Changed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L208">elements/pages/settings-page/settings-page.ts:208</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Change enabled state of screensaver</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onhelptapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Help<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Help<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L220">elements/pages/settings-page/settings-page.ts:220</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handle tap on help icon</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onrestoredefaultstapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Restore<wbr>Defaults<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Restore<wbr>Defaults<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L266">elements/pages/settings-page/settings-page.ts:266</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>restore default settings tapped</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onselectalltapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Select<wbr>All<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Select<wbr>All<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L246">elements/pages/settings-page/settings-page.ts:246</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>select all <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a> objects tapped</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onshowweathertapped" class="tsd-anchor"></a>
+					<h3>on<wbr>Show<wbr>Weather<wbr>Tapped</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Show<wbr>Weather<wbr>Tapped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L298">elements/pages/settings-page/settings-page.ts:298</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Process the weather permission</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="enabled" class="tsd-anchor"></a>
+					<h3>enabled</h3>
+					<div class="tsd-signature tsd-kind-icon">enabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L94">elements/pages/settings-page/settings-page.ts:94</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Flag for enabled state of screensaver</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="photosizingmenu" class="tsd-anchor"></a>
+					<h3>photo<wbr>Sizing<wbr>Menu</h3>
+					<div class="tsd-signature tsd-kind-icon">photo<wbr>Sizing<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[ChromeLocale.localize(&#x27;menu_letterbox&#x27;),ChromeLocale.localize(&#x27;menu_zoom&#x27;),ChromeLocale.localize(&#x27;menu_frame&#x27;),ChromeLocale.localize(&#x27;menu_full&#x27;),ChromeLocale.localize(&#x27;menu_random&#x27;),]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L127">elements/pages/settings-page/settings-page.ts:127</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Photo sizing menu</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="phototransmissionmenu" class="tsd-anchor"></a>
+					<h3>photo<wbr>Transmission<wbr>Menu</h3>
+					<div class="tsd-signature tsd-kind-icon">photo<wbr>Transmission<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[ChromeLocale.localize(&#x27;menu_scale_up&#x27;),ChromeLocale.localize(&#x27;menu_fade&#x27;),ChromeLocale.localize(&#x27;menu_slide_from_right&#x27;),ChromeLocale.localize(&#x27;menu_slide_down&#x27;),ChromeLocale.localize(&#x27;menu_spin_up&#x27;),ChromeLocale.localize(&#x27;menu_slide_up&#x27;),ChromeLocale.localize(&#x27;menu_slide_from_bottom&#x27;),ChromeLocale.localize(&#x27;menu_slide_right&#x27;),ChromeLocale.localize(&#x27;menu_random&#x27;),]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L137">elements/pages/settings-page/settings-page.ts:137</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Photo transition menu</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="selectedtab" class="tsd-anchor"></a>
+					<h3>selected<wbr>Tab</h3>
+					<div class="tsd-signature tsd-kind-icon">selected<wbr>Tab<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L90">elements/pages/settings-page/settings-page.ts:90</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Index of current tab</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="settingstoggle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> settings<wbr>Toggle</h3>
+					<div class="tsd-signature tsd-kind-icon">settings<wbr>Toggle<span class="tsd-signature-symbol">:</span> <a href="els_shared_setting_elements.settingtoggleelement.html" class="tsd-signature-type">SettingToggleElement</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L191">elements/pages/settings-page/settings-page.ts:191</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="showtimevalue" class="tsd-anchor"></a>
+					<h3>show<wbr>Time<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">show<wbr>Time<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L98">elements/pages/settings-page/settings-page.ts:98</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Index of time value to show on screensaver</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="showweathervalue" class="tsd-anchor"></a>
+					<h3>show<wbr>Weather<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">show<wbr>Weather<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L102">elements/pages/settings-page/settings-page.ts:102</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Index of time value to show on screensaver</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="tempunitmenu" class="tsd-anchor"></a>
+					<h3>temp<wbr>Unit<wbr>Menu</h3>
+					<div class="tsd-signature tsd-kind-icon">temp<wbr>Unit<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;\u00b0C&#x27;,&#x27;\u00b0F&#x27;,]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L159">elements/pages/settings-page/settings-page.ts:159</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Temperature unit menu</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="timeformatmenu" class="tsd-anchor"></a>
+					<h3>time<wbr>Format<wbr>Menu</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Format<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[ChromeLocale.localize(&#x27;no&#x27;),ChromeLocale.localize(&#x27;menu_12_hour&#x27;),ChromeLocale.localize(&#x27;menu_24_hour&#x27;),]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L151">elements/pages/settings-page/settings-page.ts:151</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Time format menu</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="transitiontimeunits" class="tsd-anchor"></a>
+					<h3>transition<wbr>Time<wbr>Units</h3>
+					<div class="tsd-signature tsd-kind-icon">transition<wbr>Time<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[SettingsPageElement.getUnit(&#x27;seconds&#x27;, 10, 60, 1, 1),SettingsPageElement.getUnit(&#x27;minutes&#x27;, 1, 60, 1, 60),SettingsPageElement.getUnit(&#x27;hours&#x27;, 1, 24, 1, 3600),SettingsPageElement.getUnit(&#x27;days&#x27;, 1, 365, 1, 86400),]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L118">elements/pages/settings-page/settings-page.ts:118</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Transition time unit menu</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="waittimeunits" class="tsd-anchor"></a>
+					<h3>wait<wbr>Time<wbr>Units</h3>
+					<div class="tsd-signature tsd-kind-icon">wait<wbr>Time<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[SettingsPageElement.getUnit(&#x27;minutes&#x27;, 1, 60, 1, 1),SettingsPageElement.getUnit(&#x27;hours&#x27;, 1, 24, 1, 60),SettingsPageElement.getUnit(&#x27;days&#x27;, 1, 365, 1, 1440),]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L110">elements/pages/settings-page/settings-page.ts:110</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Wait time unit menu</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="weathertempunitvalue" class="tsd-anchor"></a>
+					<h3>weather<wbr>Temp<wbr>Unit<wbr>Value</h3>
+					<div class="tsd-signature tsd-kind-icon">weather<wbr>Temp<wbr>Unit<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L106">elements/pages/settings-page/settings-page.ts:106</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Index of temp unit to show on screensaver</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="largetimedisabled" class="tsd-anchor"></a>
+					<h3>large<wbr>Time<wbr>Disabled</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> largeTimeDisabled<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L172">elements/pages/settings-page/settings-page.ts:172</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disabled state of weather temperature</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="menuhidden" class="tsd-anchor"></a>
+					<h3>menu<wbr>Hidden</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> menuHidden<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L166">elements/pages/settings-page/settings-page.ts:166</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Flag to indicate visibility of toolbar icons</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="weathertempdisabled" class="tsd-anchor"></a>
+					<h3>weather<wbr>Temp<wbr>Disabled</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> weatherTempDisabled<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L182">elements/pages/settings-page/settings-page.ts:182</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Disabled state of weather temperature</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+					<a name="template" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> template</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> template<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HTMLTemplateElement</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L402">elements/pages/settings-page/settings-page.ts:402</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLTemplateElement</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="deselectphotosource" class="tsd-anchor"></a>
+					<h3>deselect<wbr>Photo<wbr>Source</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">deselect<wbr>Photo<wbr>Source<span class="tsd-signature-symbol">(</span>useName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L198">elements/pages/settings-page/settings-page.ts:198</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Deselect the given <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>useName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>key</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="setphotosourcechecked" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Photo<wbr>Source<wbr>Checked</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Photo<wbr>Source<wbr>Checked<span class="tsd-signature-symbol">(</span>useName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L382">elements/pages/settings-page/settings-page.ts:382</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set checked state of a <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a></p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>useName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>source name</p>
+									</div>
+								</li>
+								<li>
+									<h5>state: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>checked state</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="setphotosourceschecked" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Photo<wbr>Sources<wbr>Checked</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Photo<wbr>Sources<wbr>Checked<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L395">elements/pages/settings-page/settings-page.ts:395</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set checked state of all <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a> objects</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>state: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>checked state</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
+					<a name="getunit" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagProtected">Protected</span> get<wbr>Unit</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Unit<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, step<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, mult<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/pages/settings-page/settings-page.ts#L81">elements/pages/settings-page/settings-page.ts:81</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get a Unit object</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>unit name</p>
+									</div>
+								</li>
+								<li>
+									<h5>min: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>min value</p>
+									</div>
+								</li>
+								<li>
+									<h5>max: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>max value</p>
+									</div>
+								</li>
+								<li>
+									<h5>step: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>increment</p>
+									</div>
+								</li>
+								<li>
+									<h5>mult: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>multiplier between base and display</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<p>A unit object</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>min<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>mult<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>step<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+					<a name="localize" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> localize</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">localize<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, def<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from (Anonymous class).localize</p>
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/shared/mixins/i8n_mixin.ts#L37">elements/shared/mixins/i8n_mixin.ts:37</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Localize a string</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>name from _locales</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> def: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;null</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>default value if name not found</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/els_pages_settings.html">els/pages/settings</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+						<a href="els_pages_settings.settingspageelement.html" class="tsd-kind-icon">Settings<wbr>Page<wbr>Element</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+								<a href="els_pages_settings.settingspageelement.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onchromebackgroundtapped" class="tsd-kind-icon">on<wbr>Chrome<wbr>Background<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#ondeselectalltapped" class="tsd-kind-icon">on<wbr>Deselect<wbr>All<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onenabledchanged" class="tsd-kind-icon">on<wbr>Enabled<wbr>Changed</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onhelptapped" class="tsd-kind-icon">on<wbr>Help<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onrestoredefaultstapped" class="tsd-kind-icon">on<wbr>Restore<wbr>Defaults<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onselectalltapped" class="tsd-kind-icon">on<wbr>Select<wbr>All<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onshowweathertapped" class="tsd-kind-icon">on<wbr>Show<wbr>Weather<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#enabled" class="tsd-kind-icon">enabled</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#photosizingmenu" class="tsd-kind-icon">photo<wbr>Sizing<wbr>Menu</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#phototransmissionmenu" class="tsd-kind-icon">photo<wbr>Transmission<wbr>Menu</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#selectedtab" class="tsd-kind-icon">selected<wbr>Tab</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="els_pages_settings.settingspageelement.html#settingstoggle" class="tsd-kind-icon">settings<wbr>Toggle</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#showtimevalue" class="tsd-kind-icon">show<wbr>Time<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#showweathervalue" class="tsd-kind-icon">show<wbr>Weather<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#tempunitmenu" class="tsd-kind-icon">temp<wbr>Unit<wbr>Menu</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#timeformatmenu" class="tsd-kind-icon">time<wbr>Format<wbr>Menu</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#transitiontimeunits" class="tsd-kind-icon">transition<wbr>Time<wbr>Units</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#waittimeunits" class="tsd-kind-icon">wait<wbr>Time<wbr>Units</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#weathertempunitvalue" class="tsd-kind-icon">weather<wbr>Temp<wbr>Unit<wbr>Value</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#largetimedisabled" class="tsd-kind-icon">large<wbr>Time<wbr>Disabled</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#menuhidden" class="tsd-kind-icon">menu<wbr>Hidden</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#weathertempdisabled" class="tsd-kind-icon">weather<wbr>Temp<wbr>Disabled</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-static">
+								<a href="els_pages_settings.settingspageelement.html#template" class="tsd-kind-icon">template</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#deselectphotosource" class="tsd-kind-icon">deselect<wbr>Photo<wbr>Source</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="els_pages_settings.settingspageelement.html#setphotosourcechecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Source<wbr>Checked</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="els_pages_settings.settingspageelement.html#setphotosourceschecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Sources<wbr>Checked</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
+								<a href="els_pages_settings.settingspageelement.html#getunit" class="tsd-kind-icon">get<wbr>Unit</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
+								<a href="els_pages_settings.settingspageelement.html#localize" class="tsd-kind-icon">localize</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
