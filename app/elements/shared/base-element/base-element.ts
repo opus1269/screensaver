@@ -1,3 +1,11 @@
+/**
+ * Custom element
+ *
+ * @module els/shared/base_element
+ */
+
+/** */
+
 /*
  ~ Copyright (c) 2016-2017, Michael A. Updike All rights reserved.
  ~ Licensed under Apache 2.0

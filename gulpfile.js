@@ -226,7 +226,8 @@ gulp.task('buildProd', (cb) => {
   isWatch = false;
   buildDirectory = 'build/prod';
 
-  runSequence('_build_js', '_poly_build', '_manifest', '_zip', '_delete_js',
+  runSequence('_build_js', '_poly_build', '_manifest', '_zip',
+      '_delete_js', 'docs',
       cb);
 });
 

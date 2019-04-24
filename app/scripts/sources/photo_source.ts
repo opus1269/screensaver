@@ -1,8 +1,7 @@
 /**
  * Module for classes that provide photos to the screensaver
  *
- * @module photo_source
- * @preferred
+ * @module scripts/sources/photo_source
  */
 
 /*

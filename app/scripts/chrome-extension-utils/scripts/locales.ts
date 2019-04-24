@@ -1,13 +1,18 @@
+/**
+ * Internationalization methods
+ *
+ * {@link https://developer.chrome.com/extensions/i18n}
+ *
+ * @module scripts/chrome/locales
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Internationalization methods
- * {@link https://developer.chrome.com/extensions/i18n}
  */
 
 /**

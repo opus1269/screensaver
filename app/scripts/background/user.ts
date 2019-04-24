@@ -1,12 +1,16 @@
+/**
+ * Manage the Chrome sign-in state
+ *
+ * @module scripts/bg/user
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Manage the Chrome sign-in state
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -16,11 +20,12 @@ import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js'
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 
 /**
- * Event: Fired when signin state changes for an act. on the user's profile.
+ * Fired when signin state changes for an act. on the user's profile.
  * @link https://developer.chrome.com/apps/identity#event-onSignInChanged
  *
  * @param account - chrome AccountInfo
  * @param signedIn - true if signedIn
+ * @event
  */
 async function onSignInChanged(account: chrome.identity.AccountInfo, signedIn: boolean) {
   if (!signedIn) {

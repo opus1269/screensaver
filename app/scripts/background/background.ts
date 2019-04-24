@@ -1,7 +1,7 @@
 /**
  * The background script for the extension.
  *
- * @module background
+ * @module scripts/bg/background
  */
 
 /** */
@@ -104,9 +104,11 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
 }
 
 /**
- * Event: Fired when a profile that has this extension installed first starts up
+ * Fired when a profile that has this extension installed first starts up
  *
  * @link https://developer.chrome.com/extensions/runtime#event-onStartup
+ *
+ * @event
  */
 async function onStartup() {
   ChromeGA.page('/background.html');
@@ -119,9 +121,11 @@ async function onStartup() {
 }
 
 /**
- * Event: Fired when a browser action icon is clicked.
+ * Fired when a browser action icon is clicked.
  *
  * @link https://goo.gl/abVwKu
+ *
+ * @event
  */
 async function onIconClicked() {
   try {
@@ -132,11 +136,12 @@ async function onIconClicked() {
 }
 
 /**
- * Event: Fired when item in localStorage changes
+ * Fired when item in localStorage changes
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/Events/storage
  *
  * @param ev - StorageEvent
+ * @event
  */
 async function onStorageChanged(ev: StorageEvent) {
   try {
@@ -147,7 +152,7 @@ async function onStorageChanged(ev: StorageEvent) {
 }
 
 /**
- * Event: Fired when a message is sent from either an extension process<br>
+ * Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  *
  * @link https://developer.chrome.com/extensions/runtime#event-onMessage
@@ -156,6 +161,7 @@ async function onStorageChanged(ev: StorageEvent) {
  * @param sender - MessageSender object
  * @param response - function to call once after processing
  * @returns true if asynchronous
+ * @event
  */
 function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                          response: (arg0: object) => void) {

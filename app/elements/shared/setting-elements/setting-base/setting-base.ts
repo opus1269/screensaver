@@ -1,3 +1,12 @@
+/**
+ * Collection of custom elements for setting options
+ *
+ * @module els/shared/setting_elements
+ * @preferred
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause

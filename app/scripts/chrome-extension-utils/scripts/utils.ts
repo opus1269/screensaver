@@ -1,3 +1,11 @@
+/**
+ * Utility methods
+ *
+ * @module scripts/chrome/utils
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -8,10 +16,6 @@ import * as ChromeLocale from './locales.js';
 
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
-
-/**
- * Utility methods
- */
 
 /**
  * Set to true if development build
@@ -53,7 +57,7 @@ export function getVersion() {
  */
 export function getChromeVersion() {
   const raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-  return raw ? parseInt(raw[2], 10) : false;
+  return raw ? parseInt(raw[2], 10) : 0;
 }
 
 /**
@@ -152,7 +156,7 @@ export function isWhiteSpace(str: string | null | undefined) {
 /**
  * Get a random string of the given length
  *
- * @param [len=8] - length of generated string
+ * @param len - length of generated string
  * @returns A pseudo-random string
  */
 export function getRandomString(len = 8) {

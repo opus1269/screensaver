@@ -1,3 +1,9 @@
+/**
+ * @module els/pages/google_photos
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -290,9 +296,10 @@ export class AlbumsViewElement extends BaseElement {
   }
 
   /**
-   * Event: Album checkbox state changed
+   * Album checkbox state changed
    *
    * @param ev - checkbox state changed
+   * @event
    */
   protected async onAlbumSelectChanged(ev: any) {
     const METHOD = 'AlbumViews.onAlbumSelectChanged';
@@ -327,7 +334,7 @@ export class AlbumsViewElement extends BaseElement {
   }
 
   /**
-   * Event: Fired when a message is sent from either an extension process<br>
+   * Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
    * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
    *
@@ -335,6 +342,7 @@ export class AlbumsViewElement extends BaseElement {
    * @param sender - MessageSender object
    * @param response - function to call once after processing
    * @returns true if asynchronous
+   * @event
    */
   protected onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                             response: (arg0: object) => void) {

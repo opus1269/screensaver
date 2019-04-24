@@ -1,12 +1,16 @@
+/**
+ * Event handling for a screensaver
+ *
+ * @module scripts/ss/events
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Event handling for a screensaver
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -88,11 +92,12 @@ function close() {
 }
 
 /**
- * Event: Fired when a registered command is activated using a keyboard shortcut.
+ * Fired when a registered command is activated using a keyboard shortcut.
  *
  * {@link https://developer.chrome.com/extensions/commands#event-onCommand}
  *
  * @param cmd - keyboard command
+ * @event
  */
 function onKeyCommand(cmd: string) {
   if (SSRunner.isStarted() && SSRunner.isInteractive()) {
@@ -110,7 +115,7 @@ function onKeyCommand(cmd: string) {
 }
 
 /**
- * Event: Fired when a message is sent from either an extension<br>
+ * Fired when a message is sent from either an extension<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  *
  * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
@@ -119,6 +124,7 @@ function onKeyCommand(cmd: string) {
  * @param sender - MessageSender object
  * @param response - function to call once after processing
  * @returns true if asynchronous
+ * @event
  */
 function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                          response: (arg0: object) => void) {
@@ -132,11 +138,12 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
 }
 
 /**
- * Event: KeyboardEvent
+ * KeyboardEvent
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent}
  *
  * @param ev - KeyboardEvent
+ * @event
  */
 function onKey(ev: KeyboardEvent) {
   const keyName = ev.key;
@@ -162,9 +169,10 @@ function onKey(ev: KeyboardEvent) {
 }
 
 /**
- * Event: mousemove
+ * mousemove
  *
  * @param ev - mousemove event
+ * @event
  */
 function onMouseMove(ev: MouseEvent) {
   if (_MOUSE_START.x && _MOUSE_START.y) {
@@ -182,7 +190,9 @@ function onMouseMove(ev: MouseEvent) {
 }
 
 /**
- * Event: mouse click
+ * mouse click
+ *
+ * @event
  */
 function onMouseClick() {
   if (SSRunner.isStarted()) {

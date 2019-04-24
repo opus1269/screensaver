@@ -1,3 +1,11 @@
+/**
+ * Custom element for an error dialog
+ *
+ * @module els/error_dialog
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -34,7 +42,11 @@ export class ErrorDialogElement extends BaseElement {
   @query('#dialog')
   protected dialog: PaperDialogElement;
 
-  /** Dialog confirm button click */
+  /**
+   * Dialog confirm button click
+   *
+   * @event
+   */
   @listen('click', 'confirmButton')
   public onConfirmTapped() {
     const customEvent = new CustomEvent('confirm-tap', {

@@ -1,3 +1,12 @@
+/**
+ * Custom elements for a page in an SPA app
+ *
+ * @module els/pages/google_photos
+ * @preferred
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -137,7 +146,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle tap on mode icon
+   * Handle tap on mode icon
+   *
+   * @event
    */
   @listen('tap', 'mode')
   public onModeTapped() {
@@ -151,7 +162,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle tap on refresh album list icon
+   * Handle tap on refresh album list icon
+   *
+   * @event
    */
   @listen('tap', 'refresh')
   public onRefreshTapped() {
@@ -165,7 +178,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle tap on help icon
+   * Handle tap on help icon
+   *
+   * @event
    */
   @listen('tap', 'help')
   public onHelpTapped() {
@@ -176,7 +191,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle tap on deselect all albums icon
+   * Handle tap on deselect all albums icon
+   *
+   * @event
    */
   @listen('tap', 'deselect')
   public onDeselectAllTapped() {
@@ -185,7 +202,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle tap on select all albums icon
+   * Handle tap on select all albums icon
+   *
+   * @event
    */
   @listen('tap', 'select')
   public onSelectAllTapped() {
@@ -194,7 +213,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: checked state changed on main toggle changed
+   * checked state changed on main toggle changed
+   *
+   * @event
    */
   @listen('change', 'googlePhotosToggle')
   public onUseGoogleChanged() {
@@ -211,7 +232,9 @@ export class GooglePhotosPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle event indicating the user has no albums
+   * Handle event indicating the user has no albums
+   *
+   * @event
    */
   @listen('no-albums', 'albumsView')
   public onNoAlbums() {

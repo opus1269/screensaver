@@ -1,7 +1,7 @@
 /**
  * Manage the {@link PhotoSource} objects
  *
- * @module photo_sources
+ * @module scripts/sources/photo_sources
  */
 
 /** */

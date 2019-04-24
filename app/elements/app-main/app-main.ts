@@ -1,3 +1,11 @@
+/**
+ * Custom element for the options UI
+ *
+ * @module els/app_main
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -311,6 +319,8 @@ export class AppMainElement extends BaseElement {
 
   /**
    * Clicked on confirm button of confirm dialog
+   *
+   * @event
    */
   @listen('confirm-tap', 'confirmDialog')
   public onConfirmDialogTapped() {
@@ -321,6 +331,8 @@ export class AppMainElement extends BaseElement {
 
   /**
    * Clicked on accept permissions dialog button
+   *
+   * @event
    */
   @listen('click', 'permissionsDialogConfirmButton')
   public async onAcceptPermissionsClicked() {
@@ -338,6 +350,8 @@ export class AppMainElement extends BaseElement {
 
   /**
    * Clicked on deny permission dialog button
+   *
+   * @event
    */
   @listen('click', 'permissionsDialogDenyButton')
   public async onDenyPermissionsClicked() {
@@ -350,7 +364,9 @@ export class AppMainElement extends BaseElement {
   }
 
   /**
-   * Event: Item in localStorage changed
+   * Item in localStorage changed
+   *
+   * @event
    */
   protected localStorageChanged(ev: StorageEvent) {
     if (ev.key === 'permPicasa') {
@@ -359,9 +375,10 @@ export class AppMainElement extends BaseElement {
   }
 
   /**
-   * Event: Item in chrome.storage changed
+   * Item in chrome.storage changed
    *
    * @param changes - details on changes
+   * @event
    */
   protected chromeStorageChanged(changes: any) {
     for (const key of Object.keys(changes)) {
@@ -374,9 +391,10 @@ export class AppMainElement extends BaseElement {
 
   // noinspection JSUnusedGlobalSymbols
   /**
-   * Event: Navigation menu selected. Route to proper page
+   * Navigation menu selected. Route to proper page
    *
    * @param ev - ClickEvent
+   * @event
    */
   protected onNavMenuItemTapped(ev: CustomEvent) {
     // Close drawer after menu item is selected if it is in narrow layout
@@ -521,7 +539,7 @@ export class AppMainElement extends BaseElement {
   }
 
   /**
-   * Event: Fired when a message is sent from either an extension process<br>
+   * Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
    * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
    *
@@ -529,6 +547,7 @@ export class AppMainElement extends BaseElement {
    * @param sender - MessageSender object
    * @param response - function to call once after processing
    * @returns true if asynchronous
+   * @event
    */
   protected onChromeMessage(request: ChromeMsg.IMsgType,
                             sender: chrome.runtime.MessageSender,

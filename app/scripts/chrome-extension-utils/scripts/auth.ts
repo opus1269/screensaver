@@ -1,13 +1,18 @@
+/**
+ * Google Oauth2.0 utilities
+ *
+ * {@link https://developer.chrome.com/apps/identity}
+ *
+ * @module scripts/chrome/auth
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Google Oauth2.0 utilities
- * {@link https://developer.chrome.com/apps/identity}
  */
 
 import * as ChromeUtils from './utils.js';

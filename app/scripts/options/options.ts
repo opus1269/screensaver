@@ -1,3 +1,11 @@
+/**
+ * Manage the options UI
+ *
+ * @module scripts/options
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause

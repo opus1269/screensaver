@@ -1,12 +1,16 @@
+/**
+ * Log a message. Will also store the LastError to chrome storage
+ *
+ * @module scripts/chrome/log
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Log a message. Will also store the LastError to chrome storage
  */
 
 import * as ChromeGA from './analytics.js';

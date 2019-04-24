@@ -1,9 +1,18 @@
+/**
+ * Custom element for a page in an SPA app
+ *
+ * @module els/pages/help
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 import {customElement, property} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 

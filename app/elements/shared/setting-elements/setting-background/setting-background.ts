@@ -1,3 +1,11 @@
+/**
+ * Custom element
+ *
+ * @module els/shared/setting_elements
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -53,7 +61,9 @@ export class SettingBackgroundElement extends SettingBase {
   protected dialog: PaperDialogElement;
 
   /**
-   * Event: Show dialog on tap
+   * Show dialog on tap
+   *
+   * @event
    */
   @listen('tap', 'item')
   public onTap() {
@@ -61,7 +71,9 @@ export class SettingBackgroundElement extends SettingBase {
   }
 
   /**
-   * Event: Set selected background on tap of OK button
+   * Set selected background on tap of OK button
+   *
+   * @event
    */
   @listen('tap', 'confirmButton')
   public onOK() {

@@ -1,3 +1,11 @@
+/**
+ * Module for the app's icons
+ *
+ * @module els/icons
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -9,10 +17,6 @@
 
 import '../node_modules/@polymer/iron-icon/iron-icon.js';
 import '../node_modules/@polymer/iron-iconset-svg/iron-iconset-svg.js';
-
-/**
- * Module for the app's icons
- */
 
 const $_documentContainer = document.createElement('template');
 

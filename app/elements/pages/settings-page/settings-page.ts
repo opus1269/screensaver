@@ -1,3 +1,11 @@
+/**
+ * Custom element for a page in an SPA app
+ *
+ * @module els/pages/settings
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -192,7 +200,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: Change enabled state of screensaver
+   * Change enabled state of screensaver
+   *
+   * @event
    */
   @listen('change', 'settingsToggle')
   public onEnabledChanged() {
@@ -202,7 +212,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: Handle tap on help icon
+   * Handle tap on help icon
+   *
+   * @event
    */
   @listen('tap', 'help')
   public onHelpTapped() {
@@ -226,7 +238,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: select all {@link PhotoSource} objects tapped
+   * select all {@link PhotoSource} objects tapped
+   *
+   * @event
    */
   @listen('tap', 'select')
   public onSelectAllTapped() {
@@ -234,7 +248,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: deselect all {@link PhotoSource} objects tapped
+   * deselect all {@link PhotoSource} objects tapped
+   *
+   * @event
    */
   @listen('tap', 'deselect')
   public onDeselectAllTapped() {
@@ -242,7 +258,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: restore default settings tapped
+   * restore default settings tapped
+   *
+   * @event
    */
   @listen('tap', 'restore')
   public onRestoreDefaultsTapped() {
@@ -250,7 +268,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: Process the background
+   * Process the background
+   *
+   * @event
    */
   @listen('tap', 'allowBackground')
   public onChromeBackgroundTapped() {
@@ -270,7 +290,9 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Event: Process the weather permission
+   * Process the weather permission
+   *
+   * @event
    */
   @listen('tap', 'showWeather')
   public async onShowWeatherTapped() {

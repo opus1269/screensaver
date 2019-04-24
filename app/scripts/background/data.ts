@@ -1,12 +1,16 @@
+/**
+ * Manage the extension's global data
+ *
+ * @module scripts/bg/data
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Manage the extension's global data
  */
 
 import {IUnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';

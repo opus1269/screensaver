@@ -1,3 +1,9 @@
+/**
+ * @module els/pages/google_photos
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -218,7 +224,9 @@ export class PhotosViewElement extends BaseElement {
   }
 
   /**
-   * Event: Refresh photos button clicked
+   * Refresh photos button clicked
+   *
+   * @event
    */
   @listen('click', 'refreshButton')
   public onRefreshPhotosClicked() {
@@ -227,9 +235,10 @@ export class PhotosViewElement extends BaseElement {
   }
 
   /**
-   * Event: Item in chrome.storage changed
+   * Item in chrome.storage changed
    *
    * @param changes - details on changes
+   * @event
    */
   protected chromeStorageChanged(changes: any) {
     for (const key of Object.keys(changes)) {
@@ -281,7 +290,9 @@ export class PhotosViewElement extends BaseElement {
   }
 
   /**
-   * Event: Selection of photo-cat changed
+   * Selection of photo-cat changed
+   *
+   * @event
    */
   protected _onPhotoCatChanged(ev: CustomEvent) {
     const cat = (ev.target as Element).id;
@@ -311,7 +322,7 @@ export class PhotosViewElement extends BaseElement {
   }
 
   /**
-   * Event: Fired when a message is sent from either an extension process<br>
+   * Fired when a message is sent from either an extension process<br>
    * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
    *
    * {@link https://developer.chrome.com/extensions/runtime#event-onMessage}
@@ -320,6 +331,7 @@ export class PhotosViewElement extends BaseElement {
    * @param sender - MessageSender object
    * @param response - function to call once after processing
    * @returns true if asynchronous
+   * @event
    */
   protected onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                             response: (arg0: object) => void) {

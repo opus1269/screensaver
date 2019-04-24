@@ -1,14 +1,18 @@
+/**
+ * Wrapper for chrome messages
+ *
+ * {@link https://developer.chrome.com/extensions/messaging}
+ *
+ * @module scripts/chrome/msg
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Wrapper for chrome messages
- *
- * {@link https://developer.chrome.com/extensions/messaging}
  */
 
 import * as ChromeGA from './analytics.js';

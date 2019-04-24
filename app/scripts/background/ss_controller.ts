@@ -1,12 +1,16 @@
+/**
+ * Controller for the screensaver
+ *
+ * @module scripts/bg/ss_controller
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Controller for the screen saver
  */
 
 import * as ChromeGA from '../chrome-extension-utils/scripts/analytics.js';
@@ -188,7 +192,7 @@ async function openOnAllDisplays() {
 }
 
 /**
- * Event: Fired when the system changes to an active, idle or locked state.
+ * Fired when the system changes to an active, idle or locked state.
  * The event fires with "locked" if the screen is locked or the [built in]
  * screensaver activates, "idle" if the system is unlocked and the user has not
  * generated any input for a specified number of seconds, and "active" when the
@@ -197,6 +201,7 @@ async function openOnAllDisplays() {
  * @link https://developer.chrome.com/extensions/idle#event-onStateChanged
  *
  * @param state - current state of computer
+ * @event
  */
 async function onIdleStateChanged(state: string) {
   try {
@@ -224,7 +229,7 @@ async function onIdleStateChanged(state: string) {
 }
 
 /**
- * Event: Fired when a message is sent from either an extension process<br>
+ * Fired when a message is sent from either an extension process<br>
  * (by runtime.sendMessage) or a content script (by tabs.sendMessage).
  *
  * @link https://developer.chrome.com/extensions/runtime#event-onMessage
@@ -233,6 +238,7 @@ async function onIdleStateChanged(state: string) {
  * @param sender MessageSender object
  * @param response - function to call once after processing
  * @returns true if asynchronous
+ * @event
  */
 function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
                          response: (arg0: object) => void) {

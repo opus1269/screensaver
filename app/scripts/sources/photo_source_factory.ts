@@ -1,7 +1,7 @@
 /**
  * Factory to create {@link PhotoSource} instances
  *
- * @module photo_source_factory
+ * @module scripts/sources/photo_source_factory
  */
 
 /** */

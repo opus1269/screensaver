@@ -1,3 +1,9 @@
+/**
+ * @module els/shared/setting_elements
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -43,9 +49,10 @@ export class SettingDropdownElement extends SettingBase {
   protected template: DomRepeat;
 
   /**
-   * Event: menu item tapped
+   * menu item tapped
    *
    * @param ev - tap event
+   * @event
    */
   @listen('tap', 'list')
   public onItemSelected(ev: CustomEvent) {

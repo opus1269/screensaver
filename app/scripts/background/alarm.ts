@@ -1,13 +1,17 @@
+/**
+ * Manage alarms from the chrome.alarms API
+ * @link https://developer.chrome.com/apps/alarms
+ *
+ * @module scripts/bg/alarm
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Manage alarms from the chrome.alarms API
- * @link https://developer.chrome.com/apps/alarms
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -204,10 +208,11 @@ async function updateWeather() {
 }
 
 /**
- * Event: Fired when an alarm has triggered.
+ * Fired when an alarm has triggered.
  * @link https://developer.chrome.com/apps/alarms#event-onAlarm
  *
  * @param alarm - details on the alarm
+ * @event
  */
 async function onAlarm(alarm: chrome.alarms.Alarm) {
 

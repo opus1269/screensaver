@@ -1,9 +1,16 @@
+/**
+ * @module els/shared/setting_elements
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
+
 import {Polymer} from '../../../../node_modules/@polymer/polymer/lib/legacy/polymer-fn.js';
 import {html} from '../../../../node_modules/@polymer/polymer/lib/utils/html-tag.js';
 import '../../../node_modules/@polymer/polymer/polymer-legacy.js';
@@ -146,7 +153,9 @@ export const SettingText = Polymer({
   },
 
   /**
-   * Event: Lost focus - fire setting-text-changed event
+   * Lost focus - fire setting-text-changed event
+   *
+   * @event
    */
   _onBlur: function() {
     ChromeGA.event(ChromeGA.EVENT.TEXT, this.name);
@@ -154,9 +163,10 @@ export const SettingText = Polymer({
   },
 
   /**
-   * Event: keyup - fire setting-text-changed event on 'Enter'
+   * keyup - fire setting-text-changed event on 'Enter'
    *
    * @param ev - key event
+   * @event
    */
   _onKeyUp: function(ev: KeyboardEvent) {
     // check if 'Enter' was pressed

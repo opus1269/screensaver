@@ -1,3 +1,9 @@
+/**
+ * @module els/shared/setting_elements
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -37,6 +43,8 @@ export class SettingLinkElement extends SettingBase {
 
   /**
    * Item tapped - show url in new tab
+   *
+   * @event
    */
   @listen('tap', 'item')
   public onLinkTapped() {

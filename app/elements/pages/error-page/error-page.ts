@@ -1,3 +1,11 @@
+/**
+ * Custom element for a page in an SPA app
+ *
+ * @module els/pages/error
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -90,7 +98,9 @@ export class ErrorPageElement extends BaseElement {
   }
 
   /**
-   * Event: Email support
+   * Email support
+   *
+   * @event
    */
   @listen('tap', 'email')
   public onEmailTapped() {
@@ -104,7 +114,9 @@ export class ErrorPageElement extends BaseElement {
   }
 
   /**
-   * Event: Remove the error
+   * Remove the error
+   *
+   * @event
    */
   @listen('tap', 'remove')
   public onRemoveTapped() {
@@ -113,9 +125,10 @@ export class ErrorPageElement extends BaseElement {
   }
 
   /**
-   * Event: Item in chrome.storage changed
+   * Item in chrome.storage changed
    *
    * @param changes - details on changes
+   * @event
    */
   protected chromeStorageChanged(changes: any) {
     for (const key of Object.keys(changes)) {

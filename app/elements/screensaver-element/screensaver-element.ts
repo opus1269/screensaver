@@ -1,3 +1,11 @@
+/**
+ * Custom element for a screensaver
+ *
+ * @module els/screensaver
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -558,7 +566,9 @@ export class ScreensaverElement extends BaseElement {
 
   // noinspection JSUnusedGlobalSymbols
   /**
-   * Event: An image failed to load
+   * An image failed to load
+   *
+   * @event
    */
   protected async onImageError(ev: CustomEvent) {
     if (errHandler.isUpdating) {

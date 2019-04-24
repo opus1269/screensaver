@@ -1,3 +1,9 @@
+/**
+ * @module els/pages/google_photos
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -45,7 +51,9 @@ export class PhotoCatElement extends BaseElement {
   protected disabled = false;
 
   /**
-   * Event: checkbox tapped
+   * checkbox tapped
+   *
+   * @event
    */
   @listen('change', 'checkbox')
   public onCheckedChange(ev: CustomEvent) {

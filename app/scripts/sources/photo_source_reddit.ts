@@ -1,7 +1,7 @@
 /**
  * A source of photos from reddit
  *
- * @module photo_source
+ * @module scripts/sources/photo_source_reddit
  */
 
 /** */

@@ -1,3 +1,9 @@
+/**
+ * @module els/shared/setting_elements
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -113,6 +119,7 @@ export class SettingSliderElement extends SettingBase {
    * Unit menu item tapped
    *
    * @param ev - tap event
+   * @event
    */
   @listen('tap', 'list')
   public onUnitMenuSelected(ev: Event) {
@@ -126,6 +133,8 @@ export class SettingSliderElement extends SettingBase {
 
   /**
    * User changed slider value
+   *
+   * @event
    */
   @listen('change', 'slider')
   public onSliderValueChanged() {

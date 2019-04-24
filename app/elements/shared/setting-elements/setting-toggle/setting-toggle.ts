@@ -1,3 +1,9 @@
+/**
+ * @module els/shared/setting_elements
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -51,6 +57,8 @@ export class SettingToggleElement extends SettingBase {
 
   /**
    * Checked state changed
+   *
+   * @event
    */
   @listen('change', 'toggle')
   public onChange() {
@@ -61,6 +69,7 @@ export class SettingToggleElement extends SettingBase {
    * Item tapped
    *
    * @param ev - Tap event
+   * @event
    */
   @listen('tap', 'toggle')
   public onTap(ev: Event) {

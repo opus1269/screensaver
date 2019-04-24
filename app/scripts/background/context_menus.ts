@@ -1,13 +1,17 @@
+/**
+ * Manage the Context Menus for the extension
+ * @link https://developer.chrome.com/extensions/contextMenus
+ *
+ * @module scripts/bg/context_menus
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Manage the Context Menus for the extension
- * @link https://developer.chrome.com/extensions/contextMenus
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -90,10 +94,11 @@ async function toggleEnabled() {
 }
 
 /**
- * Event: Fired when a context menu item is clicked.
+ * Fired when a context menu item is clicked.
  * @link https://developer.chrome.com/extensions/contextMenus#event-onClicked
  *
  * @param info - info on the clicked menu
+ * @event
  */
 async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
   try {
@@ -111,10 +116,11 @@ async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
 }
 
 /**
- * Event: Fired when a registered command is activated using a keyboard shortcut.
+ * Fired when a registered command is activated using a keyboard shortcut.
  * @link https://developer.chrome.com/extensions/commands#event-onCommand
  *
  * @param cmd - keyboard command
+ * @event
  */
 async function onKeyCommand(cmd: string) {
   try {

@@ -1,3 +1,11 @@
+/**
+ * Custom element for a slide in a screensaver
+ *
+ * @module els/screensaver_slide
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -299,7 +307,9 @@ export class ScreensaverSlideElement
   }
 
   /**
-   * Event: Image loading changed
+   * Image loading changed
+   *
+   * @event
    */
   @listen('loaded-changed', 'ironImage')
   public onLoadedChanged(ev: CustomEvent) {
@@ -310,7 +320,9 @@ export class ScreensaverSlideElement
   }
 
   /**
-   * Event: Image loading error
+   * Image loading error
+   *
+   * @event
    */
   @listen('error-changed', 'ironImage')
   public onErrorChanged(ev: CustomEvent) {
