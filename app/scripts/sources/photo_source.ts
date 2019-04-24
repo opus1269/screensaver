@@ -1,12 +1,15 @@
+/**
+ * Module for classes that provide photos to the screensaver
+ *
+ * @module photo_source
+ * @preferred
+ */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * A source of photos for the screen saver
  */
 
 import {ISelectedAlbum} from './photo_source_google';

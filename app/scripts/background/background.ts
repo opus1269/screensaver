@@ -1,12 +1,16 @@
+/**
+ * The background script for the extension.
+ *
+ * @module background
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * The background script for the extension.
  */
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -40,13 +44,14 @@ async function showOptionsTab() {
 }
 
 /**
- * Event: Fired when the extension is first installed,<br />
+ * Fired when the extension is first installed,<br />
  * when the extension is updated to a new version,<br />
  * and when Chrome is updated to a new version.
  *
  * @link https://developer.chrome.com/extensions/runtime#event-onInstalled
  *
  * @param details - type of event
+ * @event
  */
 async function onInstalled(details: chrome.runtime.InstalledDetails) {
   // initialize context menus

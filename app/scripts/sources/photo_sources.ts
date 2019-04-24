@@ -1,12 +1,16 @@
+/**
+ * Manage the {@link PhotoSource} objects
+ *
+ * @module photo_sources
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * Manage the {@link PhotoSource} objects
  */
 
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';

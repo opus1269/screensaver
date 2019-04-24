@@ -1,12 +1,16 @@
+/**
+ * A source of photos from Flickr
+ *
+ * @module photo_source
+ */
+
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
  *  https://opensource.org/licenses/BSD-3-Clause
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
- */
-
-/**
- * A source of photos from Flickr
  */
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
