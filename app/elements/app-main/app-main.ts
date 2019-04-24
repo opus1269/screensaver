@@ -625,7 +625,7 @@ export class AppMainElement extends BaseElement {
 <confirm-dialog id="confirmDialog" confirm-label="[[localize('ok')]]"></confirm-dialog>
 
 <!-- permissions dialog keep above app-drawer-layout because of overlay bug -->
-<paper-dialog id="permissionsDialog" entry-animation="scale-up-animation"
+<paper-dialog id="permissionsDialog" modal entry-animation="scale-up-animation"
               exit-animation="fade-out-animation">
   <h2>[[localize('menu_permission')]]</h2>
   <paper-dialog-scrollable>

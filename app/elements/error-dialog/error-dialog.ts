@@ -77,7 +77,7 @@ export class ErrorDialogElement extends BaseElement {
   }
 </style>
 
-<paper-dialog id="dialog" class="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+<paper-dialog id="dialog" class="dialog" modal entry-animation="scale-up-animation" exit-animation="fade-out-animation">
   <h2 id="dialogTitle" class="vertical layout center"></h2>
   <paper-dialog-scrollable>
     <paper-item id="dialogText" class="text"></paper-item>
