@@ -50,6 +50,13 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 
+interface ITarget {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
 /**
  * Polymer element to provide an animatable slide
  */
@@ -141,6 +148,10 @@ export class ScreensaverSlideElement
   /** The animation object for photo animation */
   @property({type: Object})
   protected animation: Animation = null;
+
+  /** The target box for the photo animation */
+  @property({type: Object})
+  protected animationTarget: ITarget = null;
 
   /** Configuration of the current animation */
   @property({type: Object})
@@ -263,8 +274,6 @@ export class ScreensaverSlideElement
       this.animation.cancel();
     }
 
-    const ironImage = this.ironImage;
-
     const transTime: IUnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
     const aniTime = transTime.base * 1000;
     let delayTime = 1000;
@@ -275,20 +284,34 @@ export class ScreensaverSlideElement
       delayTime = 2000;
     }
 
+    const ironImage = this.ironImage;
     const width = ironImage.width;
     const height = ironImage.height;
+    let translateX;
+    let translateY;
+    let scale;
 
-    const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
-    const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
-    const scale = 1.0 + ChromeUtils.getRandomFloat(.2, .6);
-    // maximum translation based on scale factor
-    // this could be up to .25, but limit it since we have no idea what the photos are
-    const maxDelta = (scale - 1.0) * .20;
-    const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
-    const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
-    const translateX = Math.round(deltaX) + 'px';
-    // noinspection JSSuspiciousNameCombination
-    const translateY = Math.round(deltaY) + 'px';
+    if (this.animationTarget) {
+      // face detected
+      const xScale =  width / this.animationTarget.width;
+      const yScale =  height / this.animationTarget.height;
+      scale = Math.max(xScale, yScale);
+      translateX = -this.animationTarget.x + 'px';
+      translateY = -this.animationTarget.y + 'px';
+    } else {
+      // set random pan and zoom
+      const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+      const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+      scale = 1.0 + ChromeUtils.getRandomFloat(.2, .6);
+      // maximum translation based on scale factor
+      // this could be up to .25, but limit it since we have no idea what the photos are
+      const maxDelta = (scale - 1.0) * .20;
+      const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
+      const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
+      translateX = Math.round(deltaX) + 'px';
+      // noinspection JSSuspiciousNameCombination
+      translateY = Math.round(deltaY) + 'px';
+    }
 
     const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;
 
@@ -327,7 +350,7 @@ export class ScreensaverSlideElement
       if (this.isAnimate && this.detectFaces) {
         // setup face detection
         try {
-          await this.getAllFaces();
+          await this.setFaces();
         } catch (err) {
           ChromeGA.error(err.message, 'SSSlide.onLoadedChanged');
         }
@@ -621,9 +644,56 @@ export class ScreensaverSlideElement
     }
   }
 
-  protected async getAllFaces() {
-    const detections = await FaceDetect.detectAll(this.ironImage.$.img as HTMLImageElement);
-    console.log(detections);
+  /**
+   * Set the face detection target
+   */
+  protected async setFaces() {
+    const img = this.ironImage.$.img as HTMLImageElement;
+    const detections = await FaceDetect.detectAll(img);
+
+    if (!detections.length) {
+      // no faces
+      this.animationTarget = null;
+    } else {
+      // calculate bounding box of all faces relative to photo center
+      const target: ITarget = {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      };
+
+      let left = img.naturalWidth;
+      let right = 0;
+      let top = img.naturalHeight;
+      let bottom = 0;
+      for (const detection of detections) {
+        const box: any = detection.box;
+        left = Math.min(box.left, left);
+        right = Math.max(box.right, right);
+        top = Math.min(box.top, top);
+        bottom = Math.max(box.bottom, bottom);
+      }
+
+      target.width = Math.round(right - left);
+      target.height = Math.round(bottom - top);
+      // relative to top left in natural coord.
+      target.x = Math.round(left + (right - left) / 2);
+      target.y = Math.round(top + (bottom - top) / 2);
+      // relative to center in natural coord.
+      target.x = Math.round(target.x - (img.naturalWidth / 2));
+      target.y = Math.round(target.y - (img.naturalHeight / 2));
+
+      // finally, relative to center in scaled photo coord.
+      target.x = Math.round(target.x * this.ironImage.width / img.naturalWidth);
+      target.y = Math.round(target.y * this.ironImage.height / img.naturalHeight);
+      target.width = Math.round(target.width * this.ironImage.width / img.naturalWidth);
+      target.height = Math.round(target.height * this.ironImage.height / img.naturalHeight);
+
+      this.animationTarget = target;
+    }
+
+    console.log('target: ', this.animationTarget);
   }
 
   static get template() {
