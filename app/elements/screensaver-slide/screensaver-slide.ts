@@ -295,7 +295,8 @@ export class ScreensaverSlideElement
       // face detected
       const xScale =  width / this.animationTarget.width;
       const yScale =  height / this.animationTarget.height;
-      scale = Math.max(xScale, yScale);
+      scale = Math.min(xScale, yScale);
+      scale = Math.max(scale, 1.0);
       translateX = -this.animationTarget.x + 'px';
       translateY = -this.animationTarget.y + 'px';
     } else {
@@ -692,8 +693,6 @@ export class ScreensaverSlideElement
 
       this.animationTarget = target;
     }
-
-    console.log('target: ', this.animationTarget);
   }
 
   static get template() {
