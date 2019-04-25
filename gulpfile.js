@@ -38,7 +38,7 @@ const files = {
   elements: `${path.elements}**/*.js`,
   elements_ts: `${path.elements}**/*.ts`,
   images: `${path.images}*.*`,
-  assets: `${path.assets}*.*`,
+  assets: `${path.assets}**/*`,
   lib: `${path.lib}**/*.*`,
   locales: `${path.locales}**/*.*`,
   css: `${path.css}**/*.*`,
