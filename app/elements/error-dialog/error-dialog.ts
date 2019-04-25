@@ -1,7 +1,7 @@
 /**
- * Custom element for an error dialog
+ * Modal dialogs
  *
- * @module els/error_dialog
+ * @module els/confirm_dialog
  */
 
 /** */
@@ -38,7 +38,7 @@ export class ErrorDialogElement extends BaseElement {
   @property({type: Boolean, notify: true})
   protected showConfirmButton = false;
 
-  /** Display confirm button state */
+  /** paper-dialog */
   @query('#dialog')
   protected dialog: PaperDialogElement;
 

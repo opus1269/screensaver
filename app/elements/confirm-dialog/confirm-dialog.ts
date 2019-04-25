@@ -1,7 +1,8 @@
 /**
- * Custom element for a confirm dialog
+ * Modal dialogs
  *
- * @module els/confirm_dialog
+ * @module els/dialogs
+ * @preferred
  */
 
 /** */
@@ -38,11 +39,11 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 @customElement('confirm-dialog')
 export class ConfirmDialogElement extends BaseElement {
 
-  /** Display confirm button state */
+  /** Confirm button label */
   @property({type: String})
   protected confirmLabel = ChromeLocale.localize('ok', 'OK');
 
-  /** Display confirm button state */
+  /** paper-dialog */
   @query('#dialog')
   protected dialog: PaperDialogElement;
 
@@ -68,8 +69,7 @@ export class ConfirmDialogElement extends BaseElement {
    * @param text - main text
    * @param confirmLabel - label for confirm button
    */
-  public open(text: string = 'Continue?', title: string = 'This operation cannot be undone',
-              confirmLabel: string = null) {
+  public open(text = 'Continue?', title = 'This operation cannot be undone', confirmLabel = '') {
     if (!ChromeUtils.isWhiteSpace(confirmLabel)) {
       this.set('confirmLabel', confirmLabel);
     }
