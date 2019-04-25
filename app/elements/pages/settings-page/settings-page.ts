@@ -313,8 +313,11 @@ export class SettingsPageElement extends BaseElement {
     const METHOD = 'SettingsPage.onShowWeatherTapped';
     const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
     const ERR_TEXT = ChromeLocale.localize('err_weather_perm');
-    // this used to not be updated yet in Polymer 1
-    const isShow = ChromeStorage.getBool('showCurrentWeather', false);
+    const PERM = Permissions.WEATHER;
+    const KEY = 'showCurrentWeather';
+    const ALARM = MyMsg.TYPE.UPDATE_WEATHER_ALARM;
+
+    const isShow = ChromeStorage.getBool(KEY, false);
 
     try {
       if (isShow) {
@@ -340,7 +343,7 @@ export class SettingsPageElement extends BaseElement {
         // have geolocation permission, now get weather permission
 
         // try to get weather permission
-        const granted = await Permissions.request(Permissions.WEATHER);
+        const granted = await Permissions.request(PERM);
 
         if (!granted) {
           // noinspection ExceptionCaughtLocallyJS
@@ -353,13 +356,13 @@ export class SettingsPageElement extends BaseElement {
         // not showing weather
 
         // remove weather permission
-        await Permissions.remove(Permissions.WEATHER);
+        await Permissions.remove(PERM);
         // revoke geolocation permission - not implemented in Chrome
         // await navigator.permissions.revoke({name: 'geolocation'});
       }
 
       // now update the alarm
-      const response = await ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER_ALARM);
+      const response = await ChromeMsg.send(ALARM);
       if (response.errorMessage) {
         // noinspection ExceptionCaughtLocallyJS
         throw new Error(response.errorMessage);
@@ -371,14 +374,14 @@ export class SettingsPageElement extends BaseElement {
       try {
         // set to false
         const msg = ChromeJSON.shallowCopy(ChromeMsg.TYPE.STORE);
-        msg.key = 'showCurrentWeather';
+        msg.key = KEY;
         msg.value = false;
         await ChromeMsg.send(msg);
 
         // update the alarm
-        await ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER_ALARM);
+        await ChromeMsg.send(ALARM);
 
-        await Permissions.remove(Permissions.WEATHER);
+        await Permissions.remove(PERM);
       } catch (err) {
         // ignore
       }
@@ -397,14 +400,17 @@ export class SettingsPageElement extends BaseElement {
     const METHOD = 'SettingsPage.onDetectFacesTapped';
     const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
     const ERR_TEXT = ChromeLocale.localize('err_detect_faces_perm');
-    const detectFaces = ChromeStorage.getBool('detectFaces', false);
+    const PERM = Permissions.DETECT_FACES;
+    const KEY = 'detectFaces';
+
+    const detectFaces = ChromeStorage.getBool(KEY, false);
 
     try {
       if (detectFaces) {
         // use face detection
 
         // try to get detect faces permission
-        const granted = await Permissions.request(Permissions.DETECT_FACES);
+        const granted = await Permissions.request(PERM);
 
         if (!granted) {
           // noinspection ExceptionCaughtLocallyJS
@@ -414,7 +420,7 @@ export class SettingsPageElement extends BaseElement {
         // not showing weather
 
         // remove weather permission
-        await Permissions.remove(Permissions.DETECT_FACES);
+        await Permissions.remove(PERM);
       }
 
     } catch (err) {
@@ -422,11 +428,11 @@ export class SettingsPageElement extends BaseElement {
       try {
         // set to false
         const msg = ChromeJSON.shallowCopy(ChromeMsg.TYPE.STORE);
-        msg.key = 'detectFaces';
+        msg.key = KEY;
         msg.value = false;
         await ChromeMsg.send(msg);
 
-        await Permissions.remove(Permissions.DETECT_FACES);
+        await Permissions.remove(PERM);
       } catch (err) {
         // ignore
       }
