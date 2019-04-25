@@ -43,9 +43,12 @@ import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/cla
 
 import {BaseElement} from '../shared/base-element/base-element.js';
 
+import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+
+import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 
 /**
  * Polymer element to provide an animatable slide
@@ -114,6 +117,10 @@ export class ScreensaverSlideElement
   /** Between photo animation type */
   @property({type: Number})
   protected aniType: TRANS_TYPE = TRANS_TYPE.FADE;
+
+  /** Detect faces during photo animation */
+  @property({type: Boolean})
+  protected readonly detectFaces = ChromeStorage.getBool('detectFaces', false);
 
   /** Screen width */
   @property({type: Number})
@@ -312,10 +319,19 @@ export class ScreensaverSlideElement
    * @event
    */
   @listen('loaded-changed', 'ironImage')
-  public onLoadedChanged(ev: CustomEvent) {
+  public async onLoadedChanged(ev: CustomEvent) {
     const loaded = ev.detail.value;
     if (loaded) {
       this.render();
+
+      if (this.isAnimate && this.detectFaces) {
+        // setup face detection
+        try {
+          await this.getAllFaces();
+        } catch (err) {
+          ChromeGA.error(err.message, 'SSSlide.onLoadedChanged');
+        }
+      }
     }
   }
 
@@ -445,6 +461,9 @@ export class ScreensaverSlideElement
     }
   }
 
+  /**
+   * Render fullscreen view type
+   */
   protected renderFull() {
     const img: HTMLImageElement = this.ironImage.$.img as HTMLImageElement;
     img.style.width = '100%';
@@ -452,6 +471,9 @@ export class ScreensaverSlideElement
     img.style.objectFit = 'fill';
   }
 
+  /**
+   * Render letterbox view type
+   */
   protected renderLetterbox() {
     const SCREEN_AR = screen.width / screen.height;
     const ar = this.photo.getAspectRatio();
@@ -522,6 +544,9 @@ export class ScreensaverSlideElement
     }
   }
 
+  /**
+   * Render frame view type
+   */
   protected renderFrame() {
     const photo = this.photo;
     const ar = photo.getAspectRatio();
@@ -596,6 +621,11 @@ export class ScreensaverSlideElement
     }
   }
 
+  protected async getAllFaces() {
+    const detections = await FaceDetect.detectAll(this.ironImage.$.img as HTMLImageElement);
+    console.log(detections);
+  }
+
   static get template() {
     // language=HTML format=false
     return html`
@@ -657,6 +687,7 @@ export class ScreensaverSlideElement
 </style>
 <section id="slide[[index]]">
   <iron-image
+      crossorign="Anonymous"
       id="ironImage"
       class="image"
       src="[[url]]"

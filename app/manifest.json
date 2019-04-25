@@ -62,7 +62,10 @@
   "optional_permissions": [
     "background",
     "https://photoslibrary.googleapis.com/",
-    "https://api.openweathermap.org/"
+    "https://api.openweathermap.org/",
+    "https://*.googleusercontent.com/",
+    "https://preview.redd.it/",
+    "https://live.staticflickr.com/"
   ],
   "background": {
     "persistent": false,

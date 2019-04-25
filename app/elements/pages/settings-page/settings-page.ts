@@ -89,7 +89,7 @@ export class SettingsPageElement extends BaseElement {
   @property({type: Number, notify: true})
   public selectedTab = 0;
 
-  /** Flag for enabled state of screensaver */
+  /** Enabled state of screensaver flag */
   @property({type: Boolean, notify: true})
   public enabled = true;
 
@@ -97,9 +97,13 @@ export class SettingsPageElement extends BaseElement {
   @property({type: Number, notify: true})
   public showTimeValue = 1;
 
-  /** Index of time value to show on screensaver */
+  /** Show current weather flag */
   @property({type: Boolean, notify: true})
   public showWeatherValue = false;
+
+  /** "Ken Burns" effect animation flag */
+  @property({type: Boolean, notify: true})
+  public panAndScanValue = false;
 
   /** Index of temp unit to show on screensaver */
   @property({type: Number, notify: true})
@@ -172,6 +176,16 @@ export class SettingsPageElement extends BaseElement {
   get largeTimeDisabled() {
     let ret = false;
     if (!this.enabled || (this.showTimeValue === 0)) {
+      ret = true;
+    }
+    return ret;
+  }
+
+  /** Disabled state of face detection */
+  @computed('enabled', 'panAndScanValue')
+  get detectFacesDisabled() {
+    let ret = false;
+    if (!this.enabled || !this.panAndScanValue) {
       ret = true;
     }
     return ret;
@@ -374,6 +388,54 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
+   * Process the face detection permission
+   *
+   * @event
+   */
+  @listen('tap', 'detectFaces')
+  public async onDetectFacesTapped() {
+    const METHOD = 'SettingsPage.onDetectFacesTapped';
+    const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
+    const ERR_TEXT = ChromeLocale.localize('err_detect_faces_perm');
+    const detectFaces = ChromeStorage.getBool('detectFaces', false);
+
+    try {
+      if (detectFaces) {
+        // use face detection
+
+        // try to get detect faces permission
+        const granted = await Permissions.request(Permissions.DETECT_FACES);
+
+        if (!granted) {
+          // noinspection ExceptionCaughtLocallyJS
+          throw new Error(ERR_TEXT);
+        }
+      } else {
+        // not showing weather
+
+        // remove weather permission
+        await Permissions.remove(Permissions.DETECT_FACES);
+      }
+
+    } catch (err) {
+
+      try {
+        // set to false
+        const msg = ChromeJSON.shallowCopy(ChromeMsg.TYPE.STORE);
+        msg.key = 'detectFaces';
+        msg.value = false;
+        await ChromeMsg.send(msg);
+
+        await Permissions.remove(Permissions.DETECT_FACES);
+      } catch (err) {
+        // ignore
+      }
+
+      Options.showErrorDialog(ERR_TITLE, err.message, METHOD);
+    }
+  }
+
+  /**
    * Set checked state of a {@link PhotoSource}
    *
    * @param useName - source name
@@ -484,7 +546,11 @@ export class SettingsPageElement extends BaseElement {
                           items="[[photoSizingMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="panAndScan" main-label="[[localize('setting_pan_and_scan')]]"
                         secondary-label="[[localize('setting_pan_and_scan_desc')]]"
+                        checked="{{panAndScanValue}}"
                         disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle id="detectFaces" name="detectFaces" main-label="[[localize('setting_detect_faces')]]"
+                        secondary-label="[[localize('setting_detect_faces_desc')]]"
+                        disabled$="[[detectFacesDisabled]]" indent></setting-toggle>
         <setting-background name="background" main-label="[[localize('setting_bg')]]"
                             secondary-label="[[localize('setting_bg_desc')]]"
                             disabled$="[[!enabled]]"></setting-background>

@@ -646,6 +646,15 @@
     "message": "F",
     "description": "Set to F for Fahrenheit C for Celsius"
   },
+  "setting_detect_faces": {
+    "message": "Detect faces"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Use neural network to identify and zoom to faces"
+  },
+  "err_detect_faces_perm": {
+    "message": "Will not detect faces during pan and zoom."
+  },
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"

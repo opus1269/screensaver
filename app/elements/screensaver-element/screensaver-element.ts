@@ -45,6 +45,7 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 
+import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 import * as SSEvents from '../../scripts/screensaver/ss_events.js';
 import * as SSHistory from '../../scripts/screensaver/ss_history.js';
 import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
@@ -205,9 +206,17 @@ export class ScreensaverElement extends BaseElement {
    * @param delay - delay in milli sec before start
    */
   public async launch(delay: number = 1500) {
+    const METHOD = 'SS.launch';
     try {
       const hasPhotos = await this.loadPhotos();
       if (hasPhotos) {
+
+        // setup face detection
+        try {
+          await this.setupFaceDetect();
+        } catch (err) {
+          ChromeGA.error(err.message, METHOD);
+        }
 
         // initialize the photos
         const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
@@ -228,7 +237,7 @@ export class ScreensaverElement extends BaseElement {
         SSRunner.start(delay);
       }
     } catch (err) {
-      ChromeLog.error(err.message, 'SS._launch');
+      ChromeLog.error(err.message, METHOD);
       this.setNoPhotos();
     }
   }
@@ -468,6 +477,16 @@ export class ScreensaverElement extends BaseElement {
       this.setTimeLabel();
       // update current time once a minute
       setInterval(this.setTimeLabel.bind(this), 61 * 1000);
+    }
+  }
+
+  /**
+   * Setup face detection
+   */
+  protected async setupFaceDetect() {
+    const panAndZoom = ChromeStorage.getBool('panAndScan', false);
+    if (panAndZoom) {
+      await FaceDetect.initialize();
     }
   }
 

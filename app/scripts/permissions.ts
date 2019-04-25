@@ -76,6 +76,17 @@ export const BACKGROUND: IType = {
   origins: [],
 };
 
+/** Permission for detecting faces in photos */
+export const DETECT_FACES: IType = {
+  name: 'permDetectFaces',
+  permissions: [],
+  origins: [
+    'https://*.googleusercontent.com/',
+    'https://preview.redd.it/',
+    'https://live.staticflickr.com/',
+  ],
+};
+
 /**
  * Has user not made a choice on a permission yet
  *

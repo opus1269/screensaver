@@ -55,6 +55,8 @@ export const DEFS = {
   permBackground: Permissions.STATE.notSet,
   /** Weather API optional permission */
   permWeather: Permissions.STATE.notSet,
+  /** Detect faces in photos optional permission */
+  permDetectFaces: Permissions.STATE.notSet,
   /** Run chrome in background state */
   allowBackground: false,
   /** Unit for idle time */
@@ -133,6 +135,8 @@ export const DEFS = {
   currentWeather: Weather.DEF_WEATHER,
   /** "Ken Burns" effect state */
   panAndScan: false,
+  /** Detect faces during "Ken Burns" effect */
+  detectFaces: false,
 };
 
 /**
