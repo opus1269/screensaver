@@ -51,16 +51,12 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 
 /**
- * A target box, relative to the photo center, in pixels for the photo animation
+ * A rectangle
  */
-interface IAnimationTarget {
-  /** final horizontal position */
+interface IRect {
   x: number;
-  /** final vertical position */
   y: number;
-  /** target width */
   width: number;
-  /** target height */
   height: number;
 }
 
@@ -156,9 +152,9 @@ export class ScreensaverSlideElement
   @property({type: Boolean})
   protected readonly detectFaces = ChromeStorage.getBool('detectFaces', false);
 
-  /** The target box for the photo animation when detecting faces */
+  /** The target rectangle for the photo animation when detecting faces */
   @property({type: Object})
-  protected animationTarget: IAnimationTarget = null;
+  protected animationTarget: IRect = null;
 
   /** Configuration of the current animation */
   @property({type: Object})
@@ -673,7 +669,7 @@ export class ScreensaverSlideElement
       this.animationTarget = null;
     } else {
       // calculate bounding box of all faces relative to photo center
-      const target: IAnimationTarget = {
+      const target: IRect = {
         x: 0,
         y: 0,
         width: 0,
@@ -686,11 +682,11 @@ export class ScreensaverSlideElement
       let top = img.naturalHeight;
       let bottom = 0;
       for (const detection of detections) {
-        const boundingBox: any = detection.box;
-        left = Math.min(boundingBox.left, left);
-        right = Math.max(boundingBox.right, right);
-        top = Math.min(boundingBox.top, top);
-        bottom = Math.max(boundingBox.bottom, bottom);
+        const box = detection.box;
+        left = Math.min(box.left, left);
+        right = Math.max(box.right, right);
+        top = Math.min(box.top, top);
+        bottom = Math.max(box.bottom, bottom);
       }
 
       // relative to center in natural coord.
