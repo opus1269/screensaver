@@ -4,6 +4,10 @@
 
 ### [License](https://github.com/tfoxy/chrome-promise/blob/master/LICENSE)
 
+## face-api.js
+
+### [License](https://github.com/justadudewhohacks/face-api.js/blob/master/LICENSE)
+
 ## Snoocore
 
 ### [License](https://snoocore.readme.io/docs/license)
