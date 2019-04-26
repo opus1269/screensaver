@@ -39,7 +39,7 @@ const chromep = new ChromePromise();
  * Version of data - update when items are added, removed, changed
  *
  */
-const DATA_VERSION = 26;
+const DATA_VERSION = 27;
 
 /**
  * App data saved to local storage
