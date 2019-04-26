@@ -50,10 +50,17 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 
-interface ITarget {
+/**
+ * A target box, relative to the photo center, in pixels for the photo animation
+ */
+interface IAnimationTarget {
+  /** final horizontal position */
   x: number;
+  /** final vertical position */
   y: number;
+  /** target width */
   width: number;
+  /** target height */
   height: number;
 }
 
@@ -125,10 +132,6 @@ export class ScreensaverSlideElement
   @property({type: Number})
   protected aniType: TRANS_TYPE = TRANS_TYPE.FADE;
 
-  /** Detect faces during photo animation */
-  @property({type: Boolean})
-  protected readonly detectFaces = ChromeStorage.getBool('detectFaces', false);
-
   /** Screen width */
   @property({type: Number})
   protected readonly screenWidth = screen.width;
@@ -149,9 +152,13 @@ export class ScreensaverSlideElement
   @property({type: Object})
   protected animation: Animation = null;
 
-  /** The target box for the photo animation */
+  /** Detect faces during photo animation flag */
+  @property({type: Boolean})
+  protected readonly detectFaces = ChromeStorage.getBool('detectFaces', false);
+
+  /** The target box for the photo animation when detecting faces */
   @property({type: Object})
-  protected animationTarget: ITarget = null;
+  protected animationTarget: IAnimationTarget = null;
 
   /** Configuration of the current animation */
   @property({type: Object})
@@ -297,7 +304,7 @@ export class ScreensaverSlideElement
       const yScale = height / this.animationTarget.height;
       const scaleFactor = Math.min(xScale, yScale);
       // limit scaling
-      scale = Math.min(1.8, scaleFactor);
+      scale = Math.min(1.6, scaleFactor);
 
       // set translation based on scale factor
       const maxX = (scale - 1.0) * .25 * width;
@@ -666,40 +673,39 @@ export class ScreensaverSlideElement
       this.animationTarget = null;
     } else {
       // calculate bounding box of all faces relative to photo center
-      const target: ITarget = {
+      const target: IAnimationTarget = {
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       };
 
+      // get union of all faces in the photo's natural coord.
       let left = img.naturalWidth;
       let right = 0;
       let top = img.naturalHeight;
       let bottom = 0;
       for (const detection of detections) {
-        const box: any = detection.box;
-        left = Math.min(box.left, left);
-        right = Math.max(box.right, right);
-        top = Math.min(box.top, top);
-        bottom = Math.max(box.bottom, bottom);
+        const boundingBox: any = detection.box;
+        left = Math.min(boundingBox.left, left);
+        right = Math.max(boundingBox.right, right);
+        top = Math.min(boundingBox.top, top);
+        bottom = Math.max(boundingBox.bottom, bottom);
       }
 
+      // relative to center in natural coord.
+      target.x = Math.round(left + ((right - left) / 2) - (img.naturalWidth / 2));
+      target.y = Math.round(top + ((bottom - top) / 2) - (img.naturalHeight / 2));
       target.width = Math.round(right - left);
       target.height = Math.round(bottom - top);
 
-      // relative to top left in natural coord.
-      target.x = Math.round(left + (right - left) / 2);
-      target.y = Math.round(top + (bottom - top) / 2);
-      // relative to center in natural coord.
-      target.x = Math.round(target.x - (img.naturalWidth / 2));
-      target.y = Math.round(target.y - (img.naturalHeight / 2));
-
       // relative to center in scaled photo coord.
-      target.x = Math.round(target.x * this.ironImage.width / img.naturalWidth);
-      target.y = Math.round(target.y * this.ironImage.height / img.naturalHeight);
-      target.width = Math.round(target.width * this.ironImage.width / img.naturalWidth);
-      target.height = Math.round(target.height * this.ironImage.height / img.naturalHeight);
+      const scaleX = this.ironImage.width / img.naturalWidth;
+      const scaleY = this.ironImage.height / img.naturalHeight;
+      target.x = Math.round(target.x * scaleX);
+      target.y = Math.round(target.y * scaleY);
+      target.width = Math.round(target.width * scaleX);
+      target.height = Math.round(target.height * scaleY);
 
       if (detections.length === 1) {
         // forehead correction - increase vertical box size and recenter, head standers are screwed
