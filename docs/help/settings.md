@@ -32,6 +32,10 @@ will be displayed.
 
 The amount of time before the next photo will be displayed.
 
+> ![alt text](./assets/settings_ss_controls_trans_mode.png)
+
+The animation to be used between photos
+
 > ![alt text](./assets/settings_ss_controls_display_mode.png)
 
 The appearance of the photo.
@@ -42,14 +46,28 @@ The appearance of the photo.
 * Full - Fill screen, modify aspect ratio if necessary
 * Random - Select one of the above options each time the screensaver starts
 
-> ![alt text](./assets/settings_ss_controls_trans_mode.png)
-
-The animation to be used between photos
-
-> ![alt text](./assets/settings_ss_controls_pan_and_scan.png)
+> ![alt text](./assets/settings_ss_controls_pan_and_zoom.png)
 
 This will give a "live" feel to the current photo by zooming and
 translating while it is being displayed.
+
+> ![alt text](./assets/settings_ss_controls_detect_faces.png)
+
+This will attempt to find people's faces in a photo, and if found,
+use them as the target for panning and zooming. It is not 100%
+accurate.
+
+> ![alt text](./assets/settings_ss_controls_background_image.png)
+
+Select the background style for the screensaver. This will display a
+dialog with the available styles.
+
+> ![alt text](./assets/settings_ss_controls_full_res.png)
+
+Display the highest resolution available for your Google Photos. These files
+can be extremely large. Also, they have not been auto rotated in Google Photos.
+If you have photos that are not oriented properly, you will need to fix that
+in [Google Photos](https://support.google.com/photos/answer/6128850?co=GENIE.Platform%3DDesktop).
 
 > ![alt text](./assets/settings_ss_controls_background.png)
 
@@ -95,23 +113,17 @@ Don't show photos that are very narrow or vary wide when in Full or Zoom mode.
 These photos would be highly distorted in Full mode or zoomed in on a small
 portion of the photo in Zoom mode.
 
-> ![alt text](./assets/settings_ss_controls_full_res.png)
+> ![alt text](./assets/settings_ss_controls_show_source.png)
 
-Display the highest resolution available for your Google Photos. These files
-can be extremely large. Also, they have not been auto rotated in Google Photos.
-If you have photos that are not oriented properly, you will need to fix that
-in [Google Photos](https://support.google.com/photos/answer/6128850?co=GENIE.Platform%3DDesktop).
+Display the original source of the currently displayed photo in the screensaver
+when you click the left mouse button. You may want to turn this off if you normally
+use a left mouse click to wakeup your screen.
 
 > ![alt text](./assets/settings_ss_controls_album_name.png)
 
 Display the album name your Google Photos are in, if you have used
 [Album Mode](./google_photos.html#albums)
 to select them.
-
-> ![alt text](./assets/settings_ss_controls_location.png)
-
-Display the geo location of a photo if it is available. Note: This feature
-is not currently available.
 
 > ![alt text](./assets/settings_ss_controls_show_weather.png)
 
@@ -149,17 +161,6 @@ options are available:
 > ![alt text](./assets/settings_ss_controls_large_time.png)
 
 Use a larger font for the time display on the screensaver
-
-> ![alt text](./assets/settings_ss_controls_show_source.png)
-
-Display the original source of the currently displayed photo in the screensaver
-when you click the left mouse button. You may want to turn this off if you normally
-use a left mouse click to wakeup your screen.
-
-> ![alt text](./assets/settings_ss_controls_background_image.png)
-
-Select the background style for the screensaver. This will display a
-dialog with the available styles.
 
 
 <a name="display_controls"></a>
