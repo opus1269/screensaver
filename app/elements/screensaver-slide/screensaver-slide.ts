@@ -292,13 +292,22 @@ export class ScreensaverSlideElement
     let scale;
 
     if (this.animationTarget) {
-      // face detected
-      const xScale =  width / this.animationTarget.width;
-      const yScale =  height / this.animationTarget.height;
-      scale = Math.min(xScale, yScale);
-      scale = Math.max(scale, 1.0);
-      translateX = -this.animationTarget.x + 'px';
-      translateY = -this.animationTarget.y + 'px';
+      // face(s) detected, pan and zoom to target
+      const xScale = width / this.animationTarget.width;
+      const yScale = height / this.animationTarget.height;
+      const scaleFactor = Math.min(xScale, yScale);
+      // limit scaling
+      scale = Math.min(1.8, scaleFactor);
+
+      // set translation based on scale factor
+      const maxX = (scale - 1.0) * .25 * width;
+      const maxY = (scale - 1.0) * .25 * height;
+      const deltaX = Math.min(maxX, Math.abs(this.animationTarget.x)) * Math.sign(this.animationTarget.x);
+      // noinspection JSSuspiciousNameCombination
+      const deltaY = Math.min(maxY, Math.abs(this.animationTarget.y)) * Math.sign(this.animationTarget.y);
+
+      translateX = -deltaX + 'px';
+      translateY = -deltaY + 'px';
     } else {
       // set random pan and zoom
       const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
@@ -351,7 +360,7 @@ export class ScreensaverSlideElement
       if (this.isAnimate && this.detectFaces) {
         // setup face detection
         try {
-          await this.setFaces();
+          await this.setAnimationTarget();
         } catch (err) {
           ChromeGA.error(err.message, 'SSSlide.onLoadedChanged');
         }
@@ -648,7 +657,7 @@ export class ScreensaverSlideElement
   /**
    * Set the face detection target
    */
-  protected async setFaces() {
+  protected async setAnimationTarget() {
     const img = this.ironImage.$.img as HTMLImageElement;
     const detections = await FaceDetect.detectAll(img);
 
@@ -678,6 +687,7 @@ export class ScreensaverSlideElement
 
       target.width = Math.round(right - left);
       target.height = Math.round(bottom - top);
+
       // relative to top left in natural coord.
       target.x = Math.round(left + (right - left) / 2);
       target.y = Math.round(top + (bottom - top) / 2);
@@ -685,11 +695,20 @@ export class ScreensaverSlideElement
       target.x = Math.round(target.x - (img.naturalWidth / 2));
       target.y = Math.round(target.y - (img.naturalHeight / 2));
 
-      // finally, relative to center in scaled photo coord.
+      // relative to center in scaled photo coord.
       target.x = Math.round(target.x * this.ironImage.width / img.naturalWidth);
       target.y = Math.round(target.y * this.ironImage.height / img.naturalHeight);
       target.width = Math.round(target.width * this.ironImage.width / img.naturalWidth);
       target.height = Math.round(target.height * this.ironImage.height / img.naturalHeight);
+
+      if (detections.length === 1) {
+        // forehead correction - increase vertical box size and recenter, head standers are screwed
+        const oldHeight = target.height;
+        target.height = Math.round(oldHeight * 1.2);
+        target.y = Math.round(target.y - (target.height * 0.2));
+        // don't go above top of photo
+        target.y = Math.max(target.y, -(this.ironImage.height / 2));
+      }
 
       this.animationTarget = target;
     }
