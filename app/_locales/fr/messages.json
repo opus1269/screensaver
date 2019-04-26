@@ -642,6 +642,15 @@
   "settings_extras": {
     "message": "Fonctions d'affichage supplémentaires"
   },
+  "setting_detect_faces": {
+    "message": "Détecter les visages"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Utilisez la reconnaissance de motif pour effectuer un panoramique et un zoom sur les visages"
+  },
+  "err_detect_faces_perm": {
+    "message": "Ne détecte pas les visages pendant le panoramique et le zoom."
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

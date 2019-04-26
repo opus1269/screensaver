@@ -642,6 +642,15 @@
   "settings_extras": {
     "message": "Funzioni di visualizzazione aggiuntive"
   },
+  "setting_detect_faces": {
+    "message": "Rileva volti"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Usa il riconoscimento del modello per eseguire il pan e lo zoom sui volti delle persone"
+  },
+  "err_detect_faces_perm": {
+    "message": "Non rileva i volti durante panoramica e zoom."
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

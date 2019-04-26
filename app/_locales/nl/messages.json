@@ -642,6 +642,15 @@
   "settings_extras": {
     "message": "Extra display-functies"
   },
+  "setting_detect_faces": {
+    "message": "Gezichten detecteren"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Gebruik patroonherkenning om te pannen en zoomen naar de gezichten van mensen"
+  },
+  "err_detect_faces_perm": {
+    "message": "Detecteert geen gezichten tijdens pannen en zoomen."
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

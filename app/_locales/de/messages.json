@@ -642,6 +642,15 @@
   "settings_extras": {
     "message": "Zusätzliche Anzeigefunktionen"
   },
+  "setting_detect_faces": {
+    "message": "Gesichter erkennen"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Verwenden Sie die Mustererkennung zum Schwenken und Zoomen der Gesichter von Personen"
+  },
+  "err_detect_faces_perm": {
+    "message": "Gesichter werden beim Schwenken und Zoomen nicht erkannt"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

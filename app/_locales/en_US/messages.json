@@ -642,18 +642,18 @@
   "settings_extras": {
     "message": "Additional display features"
   },
-  "temp_unit": {
-    "message": "F",
-    "description": "Set to F for Fahrenheit C for Celsius"
-  },
   "setting_detect_faces": {
     "message": "Detect faces"
   },
   "setting_detect_faces_desc": {
-    "message": "Use neural network to identify and zoom to faces"
+    "message": "Use pattern recognition to pan and zoom to people's faces"
   },
   "err_detect_faces_perm": {
     "message": "Will not detect faces during pan and zoom."
+  },
+  "temp_unit": {
+    "message": "F",
+    "description": "Set to F for Fahrenheit C for Celsius"
   },
   "time_format": {
     "message": "12",

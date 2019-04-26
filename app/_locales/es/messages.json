@@ -642,6 +642,15 @@
   "settings_extras": {
     "message": "Características de visualización adicionales"
   },
+  "setting_detect_faces": {
+    "message": "Detectar caras"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Utiliza el reconocimiento de patrones para desplazarte y acercarte a los rostros"
+  },
+  "err_detect_faces_perm": {
+    "message": "No detectará caras durante la panorámica y el zoom."
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"
