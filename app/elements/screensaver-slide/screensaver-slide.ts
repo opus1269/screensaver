@@ -662,7 +662,12 @@ export class ScreensaverSlideElement
    */
   protected async setAnimationTarget() {
     const img = this.ironImage.$.img as HTMLImageElement;
-    const detections = await FaceDetect.detectAll(img);
+    let detections: any = [];
+    try {
+      detections = await FaceDetect.detectAll(img);
+    } catch (err) {
+      // ignore - usually cors error
+    }
 
     if (!detections.length) {
       // no faces

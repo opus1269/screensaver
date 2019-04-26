@@ -26,6 +26,7 @@ export async function initialize() {
  * Detect all the faces in an image
  *
  * @param img - image to check
+ * @throws An error if something goes wrong
  * @returns an array of detected faces
  */
 export async function detectAll(img: HTMLImageElement) {

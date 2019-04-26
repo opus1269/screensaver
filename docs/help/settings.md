@@ -55,7 +55,8 @@ translating while it is being displayed.
 
 This will attempt to find people's faces in a photo, and if found,
 use them as the target for panning and zooming. It is not 100%
-accurate.
+accurate. If you use this option, it will take a little longer
+for the first photo to display when the screensaver starts.
 
 > ![alt text](./assets/settings_ss_controls_background_image.png)
 
