@@ -50,11 +50,16 @@ export const enum STATE {
  * @remarks
  * Once upon a time, Picasa was the API for access to Google Photos,
  * hence the name.
+ * Include 'https://*.googleusercontent.com/' so we can get error status
+ * when photos fail to load (cors thing).
  */
 export const PICASA: IType = {
   name: 'permPicasa',
   permissions: [],
-  origins: ['https://photoslibrary.googleapis.com/'],
+  origins: [
+    'https://photoslibrary.googleapis.com/',
+    'https://*.googleusercontent.com/',
+  ],
 };
 
 /**
