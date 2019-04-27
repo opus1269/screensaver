@@ -1,7 +1,7 @@
 /**
  * Modal dialogs
  *
- * @module els/confirm_dialog
+ * @module els/dialogs
  */
 
 /** */
