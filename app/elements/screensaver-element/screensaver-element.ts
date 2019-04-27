@@ -122,6 +122,8 @@ export class ScreensaverElement extends BaseElement {
 
   /**
    * Setup face detection
+   *
+   * @throws An error if failed to initialize face-api.js
    */
   protected static async setupFaceDetect() {
     const panAndZoom = ChromeStorage.getBool('panAndScan', false);
