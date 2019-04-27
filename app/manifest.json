@@ -64,7 +64,7 @@
     "https://photoslibrary.googleapis.com/",
     "https://api.openweathermap.org/",
     "https://*.googleusercontent.com/",
-    "https://preview.redd.it/",
+    "https://*.redd.it/",
     "https://live.staticflickr.com/"
   ],
   "background": {

@@ -91,7 +91,7 @@ export const DETECT_FACES: IType = {
   permissions: [],
   origins: [
     GOOGLE_SOURCE_ORIGIN,
-    'https://preview.redd.it/',
+    'https://*.redd.it/',
     'https://live.staticflickr.com/',
   ],
 };
