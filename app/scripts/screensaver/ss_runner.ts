@@ -60,15 +60,6 @@ export function start(delay = 2000) {
 }
 
 /**
- * Get wait time between runShow calls
- *
- * @returns current wait time
- */
-export function getWaitTime() {
-  return VARS.waitTime;
-}
-
-/**
  * Set next selected index
  *
  * @param idx - replace index
@@ -93,15 +84,6 @@ export function isStarted() {
  */
 export function isInteractive() {
   return VARS.interactive;
-}
-
-/**
- * Are we paused
- *
- * @returns true if paused
- */
-export function isPaused() {
-  return VARS.paused;
 }
 
 /**
@@ -154,6 +136,15 @@ export function back() {
 }
 
 /**
+ * Are we paused
+ *
+ * @returns true if paused
+ */
+function isPaused() {
+  return VARS.paused;
+}
+
+/**
  * Stop the animation
  */
 function stop() {
@@ -170,7 +161,7 @@ function restart(newIdx: number | null = null) {
   if (transTime) {
     setWaitTime(transTime.base * 1000);
   }
-  runShow(newIdx);
+  runShow(newIdx).catch(() => {});
 }
 
 /**
@@ -191,7 +182,7 @@ function step(newIdx: number | null = null) {
 /**
  * Self called at fixed time intervals to cycle through the photos
  *
- * @param newIdx - override selected
+ * @param newIdx - override selected, if not null
  */
 async function runShow(newIdx: number | null = null) {
   if (Screensaver.isNoPhotos()) {

@@ -17,6 +17,8 @@ declare var faceapi: any;
 
 /**
  * Initialize the face api
+ *
+ * @throws An error if something goes wrong
  */
 export async function initialize() {
   await faceapi.loadTinyFaceDetectorModel('/assets/models');
