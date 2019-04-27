@@ -120,6 +120,16 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
+   * Setup face detection
+   */
+  protected static async setupFaceDetect() {
+    const panAndZoom = ChromeStorage.getBool('panAndScan', false);
+    if (panAndZoom) {
+      await FaceDetect.initialize();
+    }
+  }
+
+  /**
    *  Maximum number of slides to create
    *
    *  @remarks
@@ -154,6 +164,9 @@ export class ScreensaverElement extends BaseElement {
   /** Slide pages */
   @query('#pages')
   protected pages: NeonAnimatedPagesElement;
+
+  /** Delay before showing first slide in milli secs */
+  protected delayTime = 1500;
 
   /**
    * Called when the element is added to a document.
@@ -202,10 +215,8 @@ export class ScreensaverElement extends BaseElement {
 
   /**
    * Launch the slide show
-   *
-   * @param delay - delay in milli sec before start
    */
-  public async launch(delay: number = 1500) {
+  public async launch() {
     const METHOD = 'SS.launch';
     try {
       const hasPhotos = await this.loadPhotos();
@@ -213,7 +224,7 @@ export class ScreensaverElement extends BaseElement {
 
         // setup face detection
         try {
-          await this.setupFaceDetect();
+          await ScreensaverElement.setupFaceDetect();
         } catch (err) {
           ChromeGA.error(err.message, METHOD);
         }
@@ -234,7 +245,7 @@ export class ScreensaverElement extends BaseElement {
         this.setupTime();
 
         // kick off the slide show
-        SSRunner.start(delay);
+        SSRunner.start(this.delayTime);
       }
     } catch (err) {
       ChromeLog.error(err.message, METHOD);
@@ -481,16 +492,6 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Setup face detection
-   */
-  protected async setupFaceDetect() {
-    const panAndZoom = ChromeStorage.getBool('panAndScan', false);
-    if (panAndZoom) {
-      await FaceDetect.initialize();
-    }
-  }
-
-  /**
    * Set the time label
    */
   protected setTimeLabel() {
@@ -605,26 +606,11 @@ export class ScreensaverElement extends BaseElement {
       try {
         // Google baseUrl may have expired, try to update some photos
 
-        // TODO have to use cors to get status code, so have to have permission from site
-        // first, fetch again and check status - only handle 403 errors
-        // const url = photo.getUrl();
-        // try {
-        //   const response = await fetch(url, {
-        //     method: 'get',
-        //   });
-        //   const status = response.status;
-        //   console.log(status);
-        //   if (status !== 403) {
-        //     // some other problem, don't know how to fix it
-        //     _isUpdating = false;
-        //     return;
-        //   }
-        // } catch (err) {
-        //   // some other problem, don't know how to fix it
-        //   console.log(err);
-        //   _isUpdating = false;
-        //   return;
-        // }
+        // no point if not online
+        if (!navigator.onLine) {
+          errHandler.isUpdating = false;
+          return;
+        }
 
         // throttle call rate to Google API per screensaver session
         // in case something weird happens
@@ -643,6 +629,22 @@ export class ScreensaverElement extends BaseElement {
 
         // update last call time
         errHandler.lastTime = Date.now();
+
+        // fetch again and check status - only handle 403 errors
+        const url = thePhoto.getUrl();
+        try {
+          const response = await fetch(url, {method: 'get'});
+          const status = response.status;
+          if (status && (status !== 403)) {
+            // some other problem, don't know how to fix it
+            errHandler.isUpdating = false;
+            return;
+          }
+        } catch (err) {
+          // some other problem, don't know how to fix it
+          errHandler.isUpdating = false;
+          return;
+        }
 
         // Calculate an hours worth of photos max
         let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
