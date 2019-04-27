@@ -44,6 +44,7 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
+import * as Permissions from '../../scripts/permissions.js';
 
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 import * as SSEvents from '../../scripts/screensaver/ss_events.js';
@@ -630,20 +631,24 @@ export class ScreensaverElement extends BaseElement {
         // update last call time
         errHandler.lastTime = Date.now();
 
-        // fetch again and check status - only handle 403 errors
-        const url = thePhoto.getUrl();
-        try {
-          const response = await fetch(url, {method: 'get'});
-          const status = response.status;
-          if (status && (status !== 403)) {
+        const hasCors = await Permissions.hasGoogleSourceOrigin();
+        if (hasCors) {
+          // If we can make a cors request, fetch again and check status.
+          // If it is not a 403 error, return;
+          const url = thePhoto.getUrl();
+          try {
+            const response = await fetch(url, {method: 'get'});
+            const status = response.status;
+            if (status !== 403) {
+              // some other problem, don't know how to fix it
+              errHandler.isUpdating = false;
+              return;
+            }
+          } catch (err) {
             // some other problem, don't know how to fix it
             errHandler.isUpdating = false;
             return;
           }
-        } catch (err) {
-          // some other problem, don't know how to fix it
-          errHandler.isUpdating = false;
-          return;
         }
 
         // Calculate an hours worth of photos max

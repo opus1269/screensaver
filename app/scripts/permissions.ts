@@ -201,6 +201,24 @@ export async function deny(type: IType) {
 }
 
 /**
+ * Determine if we have permissions for Google photos baseUrl's origin
+ *
+ * @returns true if we have the permission
+ */
+export async function hasGoogleSourceOrigin() {
+  let ret = false;
+  try {
+    ret = await chromep.permissions.contains({
+      permissions: [],
+      origins: ['https://*.googleusercontent.com/'],
+    });
+  } catch (err) {
+    // ignore
+  }
+  return ret;
+}
+
+/**
  * Remove, deny, and clear photo selections for Google Photos
  *
  * @throws An error on failure
