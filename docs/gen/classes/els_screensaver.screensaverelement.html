@@ -110,6 +110,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#max_slides" class="tsd-kind-icon">MAX_<wbr>SLIDES</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#anitype" class="tsd-kind-icon">ani<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#delaytime" class="tsd-kind-icon">delay<wbr>Time</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#nophotos" class="tsd-kind-icon">no<wbr>Photos</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#pages" class="tsd-kind-icon">pages</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#paused" class="tsd-kind-icon">paused</a></li>
@@ -155,6 +156,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="els_screensaver.screensaverelement.html#updateallurls" class="tsd-kind-icon">update<wbr>All<wbr>Urls</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="els_screensaver.screensaverelement.html#localize" class="tsd-kind-icon">localize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static"><a href="els_screensaver.screensaverelement.html#setzoom" class="tsd-kind-icon">set<wbr>Zoom</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static"><a href="els_screensaver.screensaverelement.html#setupfacedetect" class="tsd-kind-icon">setup<wbr>Face<wbr>Detect</a></li>
 							</ul>
 						</section>
 					</div>
@@ -173,7 +175,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from (Anonymous class).__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/shared/mixins/i8n_mixin.ts#L25">elements/shared/mixins/i8n_mixin.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/shared/mixins/i8n_mixin.ts#L25">elements/shared/mixins/i8n_mixin.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="els_screensaver.screensaverelement.html" class="tsd-signature-type">ScreensaverElement</a></h4>
@@ -193,7 +195,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L573">elements/screensaver-element/screensaver-element.ts:573</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L596">elements/screensaver-element/screensaver-element.ts:596</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -220,7 +222,7 @@
 					<div class="tsd-signature tsd-kind-icon">MAX_<wbr>SLIDES<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">10</span><span class="tsd-signature-symbol"> =&nbsp;10</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L127">elements/screensaver-element/screensaver-element.ts:127</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L141">elements/screensaver-element/screensaver-element.ts:141</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -237,7 +239,7 @@
 					<div class="tsd-signature tsd-kind-icon">ani<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L135">elements/screensaver-element/screensaver-element.ts:135</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L149">elements/screensaver-element/screensaver-element.ts:149</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -247,12 +249,27 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="delaytime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> delay<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">delay<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1500</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L172">elements/screensaver-element/screensaver-element.ts:172</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Delay before showing first slide in milli secs</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 					<a name="nophotos" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> no<wbr>Photos</h3>
 					<div class="tsd-signature tsd-kind-icon">no<wbr>Photos<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L143">elements/screensaver-element/screensaver-element.ts:143</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L157">elements/screensaver-element/screensaver-element.ts:157</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -267,7 +284,7 @@
 					<div class="tsd-signature tsd-kind-icon">pages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NeonAnimatedPagesElement</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L155">elements/screensaver-element/screensaver-element.ts:155</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L169">elements/screensaver-element/screensaver-element.ts:169</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -282,7 +299,7 @@
 					<div class="tsd-signature tsd-kind-icon">paused<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L139">elements/screensaver-element/screensaver-element.ts:139</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L153">elements/screensaver-element/screensaver-element.ts:153</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -297,7 +314,7 @@
 					<div class="tsd-signature tsd-kind-icon">photos<span class="tsd-signature-symbol">:</span> <a href="scripts_ss_photo.ssphoto.html" class="tsd-signature-type">SSPhoto</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L131">elements/screensaver-element/screensaver-element.ts:131</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L145">elements/screensaver-element/screensaver-element.ts:145</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -312,7 +329,7 @@
 					<div class="tsd-signature tsd-kind-icon">repeat<wbr>Template<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DomRepeat</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L151">elements/screensaver-element/screensaver-element.ts:151</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L165">elements/screensaver-element/screensaver-element.ts:165</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -327,7 +344,7 @@
 					<div class="tsd-signature tsd-kind-icon">time<wbr>Label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L147">elements/screensaver-element/screensaver-element.ts:147</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L161">elements/screensaver-element/screensaver-element.ts:161</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -349,7 +366,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L688">elements/screensaver-element/screensaver-element.ts:688</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L716">elements/screensaver-element/screensaver-element.ts:716</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLTemplateElement</span></h4>
@@ -369,7 +386,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L161">elements/screensaver-element/screensaver-element.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L178">elements/screensaver-element/screensaver-element.ts:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -392,7 +409,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L172">elements/screensaver-element/screensaver-element.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L189">elements/screensaver-element/screensaver-element.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -415,7 +432,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L288">elements/screensaver-element/screensaver-element.ts:288</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L311">elements/screensaver-element/screensaver-element.ts:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -447,7 +464,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L239">elements/screensaver-element/screensaver-element.ts:239</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L262">elements/screensaver-element/screensaver-element.ts:262</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,7 +486,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L248">elements/screensaver-element/screensaver-element.ts:248</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L271">elements/screensaver-element/screensaver-element.ts:271</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -492,7 +509,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L257">elements/screensaver-element/screensaver-element.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L280">elements/screensaver-element/screensaver-element.ts:280</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,7 +532,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L341">elements/screensaver-element/screensaver-element.ts:341</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L364">elements/screensaver-element/screensaver-element.ts:364</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -538,7 +555,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L380">elements/screensaver-element/screensaver-element.ts:380</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L403">elements/screensaver-element/screensaver-element.ts:403</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -567,7 +584,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L371">elements/screensaver-element/screensaver-element.ts:371</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L394">elements/screensaver-element/screensaver-element.ts:394</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -590,7 +607,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L510">elements/screensaver-element/screensaver-element.ts:510</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L533">elements/screensaver-element/screensaver-element.ts:533</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -613,7 +630,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L390">elements/screensaver-element/screensaver-element.ts:390</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L413">elements/screensaver-element/screensaver-element.ts:413</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -636,7 +653,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L328">elements/screensaver-element/screensaver-element.ts:328</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L351">elements/screensaver-element/screensaver-element.ts:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -662,13 +679,13 @@
 					<a name="launch" class="tsd-anchor"></a>
 					<h3>launch</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">launch<span class="tsd-signature-symbol">(</span>delay<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">launch<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L207">elements/screensaver-element/screensaver-element.ts:207</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L222">elements/screensaver-element/screensaver-element.ts:222</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -676,15 +693,6 @@
 									<p>Launch the slide show</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> delay: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1500</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>delay in milli sec before start</p>
-									</div>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
@@ -699,7 +707,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L416">elements/screensaver-element/screensaver-element.ts:416</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L439">elements/screensaver-element/screensaver-element.ts:439</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -727,7 +735,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L492">elements/screensaver-element/screensaver-element.ts:492</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L515">elements/screensaver-element/screensaver-element.ts:515</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -764,7 +772,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L183">elements/screensaver-element/screensaver-element.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L200">elements/screensaver-element/screensaver-element.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -787,7 +795,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L529">elements/screensaver-element/screensaver-element.ts:529</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L552">elements/screensaver-element/screensaver-element.ts:552</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -809,7 +817,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L272">elements/screensaver-element/screensaver-element.ts:272</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L295">elements/screensaver-element/screensaver-element.ts:295</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -846,7 +854,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L397">elements/screensaver-element/screensaver-element.ts:397</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L420">elements/screensaver-element/screensaver-element.ts:420</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -868,7 +876,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L406">elements/screensaver-element/screensaver-element.ts:406</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L429">elements/screensaver-element/screensaver-element.ts:429</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -899,7 +907,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L360">elements/screensaver-element/screensaver-element.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L383">elements/screensaver-element/screensaver-element.ts:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -930,7 +938,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L477">elements/screensaver-element/screensaver-element.ts:477</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L500">elements/screensaver-element/screensaver-element.ts:500</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -952,7 +960,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L453">elements/screensaver-element/screensaver-element.ts:453</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L476">elements/screensaver-element/screensaver-element.ts:476</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -974,7 +982,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L465">elements/screensaver-element/screensaver-element.ts:465</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L488">elements/screensaver-element/screensaver-element.ts:488</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -996,7 +1004,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L441">elements/screensaver-element/screensaver-element.ts:441</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L464">elements/screensaver-element/screensaver-element.ts:464</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1018,7 +1026,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L551">elements/screensaver-element/screensaver-element.ts:551</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L574">elements/screensaver-element/screensaver-element.ts:574</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1050,7 +1058,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from (Anonymous class).localize</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/shared/mixins/i8n_mixin.ts#L37">elements/shared/mixins/i8n_mixin.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/shared/mixins/i8n_mixin.ts#L37">elements/shared/mixins/i8n_mixin.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1087,13 +1095,40 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/elements/screensaver-element/screensaver-element.ts#L109">elements/screensaver-element/screensaver-element.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L111">elements/screensaver-element/screensaver-element.ts:111</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Set the window zoom factor to 1.0</p>
 								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
+					<a name="setupfacedetect" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagProtected">Protected</span> setup<wbr>Face<wbr>Detect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">setup<wbr>Face<wbr>Detect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/elements/screensaver-element/screensaver-element.ts#L128">elements/screensaver-element/screensaver-element.ts:128</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Setup face detection</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>An error if failed to initialize face-api.js</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
@@ -1136,6 +1171,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="els_screensaver.screensaverelement.html#anitype" class="tsd-kind-icon">ani<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="els_screensaver.screensaverelement.html#delaytime" class="tsd-kind-icon">delay<wbr>Time</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
 								<a href="els_screensaver.screensaverelement.html#nophotos" class="tsd-kind-icon">no<wbr>Photos</a>
@@ -1241,6 +1279,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
 								<a href="els_screensaver.screensaverelement.html#setzoom" class="tsd-kind-icon">set<wbr>Zoom</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static">
+								<a href="els_screensaver.screensaverelement.html#setupfacedetect" class="tsd-kind-icon">setup<wbr>Face<wbr>Detect</a>
 							</li>
 						</ul>
 					</li>

@@ -93,6 +93,7 @@
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="scripts_permissions.html#chromepromise" class="tsd-kind-icon">Chrome<wbr>Promise</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="scripts_permissions.html#google_source_origin" class="tsd-kind-icon">GOOGLE_<wbr>SOURCE_<wbr>ORIGIN</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="scripts_permissions.html#chromep" class="tsd-kind-icon">chromep</a></li>
 							</ul>
 						</section>
@@ -102,6 +103,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="scripts_permissions.html#_contains" class="tsd-kind-icon">_contains</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="scripts_permissions.html#_setstate" class="tsd-kind-icon">_set<wbr>State</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="scripts_permissions.html#deny" class="tsd-kind-icon">deny</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="scripts_permissions.html#hasgooglesourceorigin" class="tsd-kind-icon">has<wbr>Google<wbr>Source<wbr>Origin</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="scripts_permissions.html#isallowed" class="tsd-kind-icon">is<wbr>Allowed</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="scripts_permissions.html#isdenied" class="tsd-kind-icon">is<wbr>Denied</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="scripts_permissions.html#notset" class="tsd-kind-icon">not<wbr>Set</a></li>
@@ -114,7 +116,8 @@
 							<h3>Object literals</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="scripts_permissions.html#background" class="tsd-kind-icon">BACKGROUND</a></li>
-								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="scripts_permissions.html#picasa" class="tsd-kind-icon">PICASA</a></li>
+								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="scripts_permissions.html#detect_faces" class="tsd-kind-icon">DETECT_<wbr>FACES</a></li>
+								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="scripts_permissions.html#google_photos" class="tsd-kind-icon">GOOGLE_<wbr>PHOTOS</a></li>
 								<li class="tsd-kind-object-literal tsd-parent-kind-external-module"><a href="scripts_permissions.html#weather" class="tsd-kind-icon">WEATHER</a></li>
 							</ul>
 						</section>
@@ -129,9 +132,24 @@
 					<div class="tsd-signature tsd-kind-icon">Chrome<wbr>Promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L22">scripts/permissions.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L22">scripts/permissions.ts:22</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="google_source_origin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> GOOGLE_<wbr>SOURCE_<wbr>ORIGIN</h3>
+					<div class="tsd-signature tsd-kind-icon">GOOGLE_<wbr>SOURCE_<wbr>ORIGIN<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://*.googleusercontent.com/"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;https://*.googleusercontent.com/&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L38">scripts/permissions.ts:38</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Origin for the actual url&#39;s we retrieve for google photos</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 					<a name="chromep" class="tsd-anchor"></a>
@@ -139,7 +157,7 @@
 					<div class="tsd-signature tsd-kind-icon">chromep<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;new ChromePromise()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L23">scripts/permissions.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L23">scripts/permissions.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -156,7 +174,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L233">scripts/permissions.ts:233</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L287">scripts/permissions.ts:287</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -193,7 +211,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L213">scripts/permissions.ts:213</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L267">scripts/permissions.ts:267</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -230,7 +248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L178">scripts/permissions.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L214">scripts/permissions.ts:214</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -258,6 +276,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="hasgooglesourceorigin" class="tsd-anchor"></a>
+					<h3>has<wbr>Google<wbr>Source<wbr>Origin</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Google<wbr>Source<wbr>Origin<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L228">scripts/permissions.ts:228</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Determine if we have permissions for Google photos baseUrl&#39;s origin</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>true if we have the permission</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="isallowed" class="tsd-anchor"></a>
 					<h3>is<wbr>Allowed</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -267,7 +308,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L95">scripts/permissions.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L115">scripts/permissions.ts:115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -299,7 +340,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L105">scripts/permissions.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L125">scripts/permissions.ts:125</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -331,7 +372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L85">scripts/permissions.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L105">scripts/permissions.ts:105</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -363,7 +404,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L153">scripts/permissions.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L189">scripts/permissions.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -403,7 +444,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L192">scripts/permissions.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L246">scripts/permissions.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -430,7 +471,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L116">scripts/permissions.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L136">scripts/permissions.ts:136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -466,7 +507,7 @@
 					<div class="tsd-signature tsd-kind-icon">BACKGROUND<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L73">scripts/permissions.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L82">scripts/permissions.ts:82</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -480,7 +521,7 @@
 						<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;permBackground&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L74">scripts/permissions.ts:74</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L83">scripts/permissions.ts:83</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -490,7 +531,7 @@
 						<div class="tsd-signature tsd-kind-icon">origins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L76">scripts/permissions.ts:76</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L85">scripts/permissions.ts:85</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -500,18 +541,63 @@
 						<div class="tsd-signature tsd-kind-icon">permissions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;background&#x27;]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L75">scripts/permissions.ts:75</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L84">scripts/permissions.ts:84</a></li>
 							</ul>
 						</aside>
 					</section>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module">
-					<a name="picasa" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> PICASA</h3>
-					<div class="tsd-signature tsd-kind-icon">PICASA<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<a name="detect_faces" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> DETECT_<wbr>FACES</h3>
+					<div class="tsd-signature tsd-kind-icon">DETECT_<wbr>FACES<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L54">scripts/permissions.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L89">scripts/permissions.ts:89</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Permission for detecting faces in photos</p>
+						</div>
+					</div>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="detect_faces.name-1" class="tsd-anchor"></a>
+						<h3>name</h3>
+						<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;permDetectFaces&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L90">scripts/permissions.ts:90</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="detect_faces.origins-1" class="tsd-anchor"></a>
+						<h3>origins</h3>
+						<div class="tsd-signature tsd-kind-icon">origins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[GOOGLE_SOURCE_ORIGIN,&#x27;https://*.redd.it/&#x27;,&#x27;https://live.staticflickr.com/&#x27;,]</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L92">scripts/permissions.ts:92</a></li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="detect_faces.permissions-1" class="tsd-anchor"></a>
+						<h3>permissions</h3>
+						<div class="tsd-signature tsd-kind-icon">permissions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L91">scripts/permissions.ts:91</a></li>
+							</ul>
+						</aside>
+					</section>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-external-module">
+					<a name="google_photos" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> GOOGLE_<wbr>PHOTOS</h3>
+					<div class="tsd-signature tsd-kind-icon">GOOGLE_<wbr>PHOTOS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L60">scripts/permissions.ts:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -520,38 +606,41 @@
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>remarks</dt>
-							<dd><p>Once upon a time, Picasa was the API for access to Google Photos,
-								hence the name.</p>
+							<dd><p>Once upon a time, Picasa was the API for access to Google Photos, hence the name.
+									Included &#39;https://*.googleusercontent.com/&#39; so we can get error status
+									when photos fail to load (cors thing). User&#39;s who authorized before
+									this was added will not be required to allow it. They could be, but it
+								might be confusing for the user.</p>
 							</dd>
 						</dl>
 					</div>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="picasa.name-1" class="tsd-anchor"></a>
+						<a name="google_photos.name-2" class="tsd-anchor"></a>
 						<h3>name</h3>
 						<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;permPicasa&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L55">scripts/permissions.ts:55</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L61">scripts/permissions.ts:61</a></li>
 							</ul>
 						</aside>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="picasa.origins-1" class="tsd-anchor"></a>
+						<a name="google_photos.origins-2" class="tsd-anchor"></a>
 						<h3>origins</h3>
-						<div class="tsd-signature tsd-kind-icon">origins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;https://photoslibrary.googleapis.com/&#x27;]</span></div>
+						<div class="tsd-signature tsd-kind-icon">origins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;https://photoslibrary.googleapis.com/&#x27;,GOOGLE_SOURCE_ORIGIN,]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L57">scripts/permissions.ts:57</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L63">scripts/permissions.ts:63</a></li>
 							</ul>
 						</aside>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="picasa.permissions-1" class="tsd-anchor"></a>
+						<a name="google_photos.permissions-2" class="tsd-anchor"></a>
 						<h3>permissions</h3>
 						<div class="tsd-signature tsd-kind-icon">permissions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L56">scripts/permissions.ts:56</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L62">scripts/permissions.ts:62</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -562,7 +651,7 @@
 					<div class="tsd-signature tsd-kind-icon">WEATHER<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L66">scripts/permissions.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L75">scripts/permissions.ts:75</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -576,32 +665,32 @@
 						</dl>
 					</div>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="weather.name-2" class="tsd-anchor"></a>
+						<a name="weather.name-3" class="tsd-anchor"></a>
 						<h3>name</h3>
 						<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;permWeather&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L67">scripts/permissions.ts:67</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L76">scripts/permissions.ts:76</a></li>
 							</ul>
 						</aside>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="weather.origins-2" class="tsd-anchor"></a>
+						<a name="weather.origins-3" class="tsd-anchor"></a>
 						<h3>origins</h3>
 						<div class="tsd-signature tsd-kind-icon">origins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;https://api.openweathermap.org/&#x27;]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L69">scripts/permissions.ts:69</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L78">scripts/permissions.ts:78</a></li>
 							</ul>
 						</aside>
 					</section>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
-						<a name="weather.permissions-2" class="tsd-anchor"></a>
+						<a name="weather.permissions-3" class="tsd-anchor"></a>
 						<h3>permissions</h3>
 						<div class="tsd-signature tsd-kind-icon">permissions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/5191e19/app/scripts/permissions.ts#L68">scripts/permissions.ts:68</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/permissions.ts#L77">scripts/permissions.ts:77</a></li>
 							</ul>
 						</aside>
 					</section>
@@ -631,6 +720,9 @@
 						<a href="scripts_permissions.html#chromepromise" class="tsd-kind-icon">Chrome<wbr>Promise</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="scripts_permissions.html#google_source_origin" class="tsd-kind-icon">GOOGLE_<wbr>SOURCE_<wbr>ORIGIN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="scripts_permissions.html#chromep" class="tsd-kind-icon">chromep</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
@@ -641,6 +733,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="scripts_permissions.html#deny" class="tsd-kind-icon">deny</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="scripts_permissions.html#hasgooglesourceorigin" class="tsd-kind-icon">has<wbr>Google<wbr>Source<wbr>Origin</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="scripts_permissions.html#isallowed" class="tsd-kind-icon">is<wbr>Allowed</a>
@@ -664,7 +759,10 @@
 						<a href="scripts_permissions.html#background" class="tsd-kind-icon">BACKGROUND</a>
 					</li>
 					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
-						<a href="scripts_permissions.html#picasa" class="tsd-kind-icon">PICASA</a>
+						<a href="scripts_permissions.html#detect_faces" class="tsd-kind-icon">DETECT_<wbr>FACES</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
+						<a href="scripts_permissions.html#google_photos" class="tsd-kind-icon">GOOGLE_<wbr>PHOTOS</a>
 					</li>
 					<li class=" tsd-kind-object-literal tsd-parent-kind-external-module">
 						<a href="scripts_permissions.html#weather" class="tsd-kind-icon">WEATHER</a>
