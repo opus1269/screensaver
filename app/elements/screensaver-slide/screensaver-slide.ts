@@ -269,6 +269,12 @@ export class ScreensaverSlideElement
    * Prep the photo for display
    */
   public async prep() {
+
+    if (ChromeStorage.getBool('largeTime', false)) {
+      this.time.style.fontSize = '8.5vh';
+      this.time.style.fontWeight = '300';
+    }
+
     this.render();
 
     if (this.isAnimate) {
