@@ -14,11 +14,8 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
-
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
-import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
-import {WeatherElement} from '../weather-element/weather-element';
 
 import {
   computed,
@@ -30,6 +27,9 @@ import {
 } from '../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
 
+import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
+import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
+
 import '../../node_modules/@polymer/iron-image/iron-image.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
@@ -38,10 +38,9 @@ import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/weather-element/weather-element.js';
 
-import {NeonAnimatableBehavior} from '../../node_modules/@polymer/neon-animation/neon-animatable-behavior.js';
-import {mixinBehaviors} from '../../node_modules/@polymer/polymer/lib/legacy/class.js';
-
 import {BaseElement} from '../shared/base-element/base-element.js';
+import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
+import {WeatherElement} from '../weather-element/weather-element';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
@@ -176,26 +175,6 @@ export class ScreensaverSlideElement
       },
     },
   };
-
-  /** The iron-image sizing tpe */
-  @computed('viewType')
-  get sizing() {
-    let sizing: string | null = null;
-
-    switch (this.viewType) {
-      case VIEW_TYPE.ZOOM:
-        sizing = 'cover';
-        break;
-      case VIEW_TYPE.LETTERBOX:
-      case VIEW_TYPE.FRAME:
-      case VIEW_TYPE.FULL:
-        sizing = null;
-        break;
-      default:
-        break;
-    }
-    return sizing;
-  }
 
   /** Author label */
   @computed('photo')
@@ -392,7 +371,7 @@ export class ScreensaverSlideElement
   protected render() {
     switch (this.viewType) {
       case VIEW_TYPE.ZOOM:
-        // default settings
+        this.renderZoom();
         break;
       case VIEW_TYPE.FULL:
         this.renderFull();
@@ -416,6 +395,16 @@ export class ScreensaverSlideElement
     img.style.width = '100%';
     img.style.height = '100%';
     img.style.objectFit = 'fill';
+  }
+
+  /**
+   * Render zoom view type
+   */
+  protected renderZoom() {
+    const img: HTMLImageElement = this.ironImage.$.img as HTMLImageElement;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
   }
 
   /**
@@ -613,8 +602,11 @@ export class ScreensaverSlideElement
         target.height = Math.round(bottom - top);
 
         // relative to center in scaled photo coord.
-        const scaleX = this.ironImage.width / img.naturalWidth;
-        const scaleY = this.ironImage.height / img.naturalHeight;
+        const size = this.getImageSize();
+        const width = size.width;
+        const height = size.height;
+        const scaleX = width / img.naturalWidth;
+        const scaleY = height / img.naturalHeight;
         target.x = Math.round(target.x * scaleX);
         target.y = Math.round(target.y * scaleY);
         target.width = Math.round(target.width * scaleX);
@@ -626,7 +618,7 @@ export class ScreensaverSlideElement
           target.height = Math.round(oldHeight * 1.2);
           target.y = Math.round(target.y - (target.height * 0.2));
           // don't go above top of photo
-          target.y = Math.max(target.y, -(this.ironImage.height / 2));
+          target.y = Math.max(target.y, -(height / 2));
         }
 
         this.animationTarget = target;
@@ -667,8 +659,9 @@ export class ScreensaverSlideElement
       }
 
       const ironImage = this.ironImage;
-      const width = ironImage.width;
-      const height = ironImage.height;
+      const size = this.getImageSize();
+      const width = size.width;
+      const height = size.height;
       let translateX;
       let translateY;
       let scale;
@@ -720,12 +713,9 @@ export class ScreensaverSlideElement
         fill: 'forwards',
       };
 
-      let el = ironImage.$.img;
-      if (ironImage.sizing) {
-        el = ironImage.$.sizedImgDiv;
-      }
-
+      const el = ironImage.$.img;
       this.set('animation', el.animate(keyframes, timing));
+
     } catch (err) {
       if (this.animation) {
         this.animation.cancel();
@@ -733,6 +723,31 @@ export class ScreensaverSlideElement
       }
       ChromeGA.error(err.message, 'SSSlide.startAnimation');
     }
+  }
+
+  protected getImageSize() {
+    const ret = {
+      width: 0,
+      height: 0,
+    };
+
+    if (this.viewType === VIEW_TYPE.ZOOM) {
+      // determine un-cropped size
+      const photoAr = this.photo.getAspectRatio();
+      const screenAr = this.screenWidth / this.screenHeight;
+      if (photoAr > screenAr) {
+        ret.width = this.screenWidth * (photoAr / screenAr);
+        ret.height = this.screenHeight;
+      } else {
+        ret.width = this.screenWidth;
+        ret.height = this.screenHeight * (screenAr / photoAr);
+      }
+    } else {
+      ret.width = this.ironImage.width;
+      ret.height = this.ironImage.height;
+    }
+
+    return ret;
   }
 
   static get template() {
@@ -802,7 +817,6 @@ export class ScreensaverSlideElement
       src="[[url]]"
       width="[[screenWidth]]"
       height="[[screenHeight]]"
-      sizing="[[sizing]]"
       preload>
   </iron-image>
   <div class="time">[[timeLabel]]</div>
