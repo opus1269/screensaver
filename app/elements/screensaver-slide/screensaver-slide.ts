@@ -268,13 +268,18 @@ export class ScreensaverSlideElement
   /**
    * Setup and start the photo animation
    */
-  public startAnimation() {
+  public async startAnimation() {
+    if (this.animation) {
+      this.animation.cancel();
+    }
+
     if (!this.isAnimate) {
       return;
     }
 
-    if (this.animation) {
-      this.animation.cancel();
+    if (this.detectFaces) {
+      // setup face detection
+      await this.setAnimationTarget();
     }
 
     const transTime: IUnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
@@ -359,15 +364,6 @@ export class ScreensaverSlideElement
     const loaded = ev.detail.value;
     if (loaded) {
       this.render();
-
-      if (this.isAnimate && this.detectFaces) {
-        // setup face detection
-        try {
-          await this.setAnimationTarget();
-        } catch (err) {
-          ChromeGA.error(err.message, 'SSSlide.onLoadedChanged');
-        }
-      }
     }
   }
 
@@ -661,63 +657,68 @@ export class ScreensaverSlideElement
    * Set the face detection target
    */
   protected async setAnimationTarget() {
-    const img = this.ironImage.$.img as HTMLImageElement;
-    let detections: any = [];
     try {
-      detections = await FaceDetect.detectAll(img);
+      const img = this.ironImage.$.img as HTMLImageElement;
+      let detections: any = [];
+      try {
+        detections = await FaceDetect.detectAll(img);
+      } catch (err) {
+        // ignore - usually cors error
+      }
+
+      if (!detections.length) {
+        // no faces
+        this.animationTarget = null;
+      } else {
+        // calculate bounding box of all faces relative to photo center
+        const target: IRect = {
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        };
+
+        // get union of all faces in the photo's natural coord.
+        let left = img.naturalWidth;
+        let right = 0;
+        let top = img.naturalHeight;
+        let bottom = 0;
+        for (const detection of detections) {
+          const box = detection.box;
+          left = Math.min(box.left, left);
+          right = Math.max(box.right, right);
+          top = Math.min(box.top, top);
+          bottom = Math.max(box.bottom, bottom);
+        }
+
+        // relative to center in natural coord.
+        target.x = Math.round(left + ((right - left) / 2) - (img.naturalWidth / 2));
+        target.y = Math.round(top + ((bottom - top) / 2) - (img.naturalHeight / 2));
+        target.width = Math.round(right - left);
+        target.height = Math.round(bottom - top);
+
+        // relative to center in scaled photo coord.
+        const scaleX = this.ironImage.width / img.naturalWidth;
+        const scaleY = this.ironImage.height / img.naturalHeight;
+        target.x = Math.round(target.x * scaleX);
+        target.y = Math.round(target.y * scaleY);
+        target.width = Math.round(target.width * scaleX);
+        target.height = Math.round(target.height * scaleY);
+
+        if (detections.length === 1) {
+          // forehead correction - increase vertical box size and recenter, head standers are screwed
+          const oldHeight = target.height;
+          target.height = Math.round(oldHeight * 1.2);
+          target.y = Math.round(target.y - (target.height * 0.2));
+          // don't go above top of photo
+          target.y = Math.max(target.y, -(this.ironImage.height / 2));
+        }
+
+        this.animationTarget = target;
+      }
     } catch (err) {
-      // ignore - usually cors error
-    }
-
-    if (!detections.length) {
-      // no faces
       this.animationTarget = null;
-    } else {
-      // calculate bounding box of all faces relative to photo center
-      const target: IRect = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-      };
-
-      // get union of all faces in the photo's natural coord.
-      let left = img.naturalWidth;
-      let right = 0;
-      let top = img.naturalHeight;
-      let bottom = 0;
-      for (const detection of detections) {
-        const box = detection.box;
-        left = Math.min(box.left, left);
-        right = Math.max(box.right, right);
-        top = Math.min(box.top, top);
-        bottom = Math.max(box.bottom, bottom);
-      }
-
-      // relative to center in natural coord.
-      target.x = Math.round(left + ((right - left) / 2) - (img.naturalWidth / 2));
-      target.y = Math.round(top + ((bottom - top) / 2) - (img.naturalHeight / 2));
-      target.width = Math.round(right - left);
-      target.height = Math.round(bottom - top);
-
-      // relative to center in scaled photo coord.
-      const scaleX = this.ironImage.width / img.naturalWidth;
-      const scaleY = this.ironImage.height / img.naturalHeight;
-      target.x = Math.round(target.x * scaleX);
-      target.y = Math.round(target.y * scaleY);
-      target.width = Math.round(target.width * scaleX);
-      target.height = Math.round(target.height * scaleY);
-
-      if (detections.length === 1) {
-        // forehead correction - increase vertical box size and recenter, head standers are screwed
-        const oldHeight = target.height;
-        target.height = Math.round(oldHeight * 1.2);
-        target.y = Math.round(target.y - (target.height * 0.2));
-        // don't go above top of photo
-        target.y = Math.max(target.y, -(this.ironImage.height / 2));
-      }
-
-      this.animationTarget = target;
+      ChromeGA.error(err.message, 'SSSlide.setAnimationTarget');
     }
   }
 

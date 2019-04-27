@@ -193,7 +193,7 @@ function step(newIdx: number | null = null) {
  *
  * @param newIdx - override selected
  */
-function runShow(newIdx: number | null = null) {
+async function runShow(newIdx: number | null = null) {
   if (Screensaver.isNoPhotos()) {
     // no usable photos to show
     return;
@@ -221,7 +221,7 @@ function runShow(newIdx: number | null = null) {
 
     // setup photo
     const slide = Screensaver.getSlide(nextIdx);
-    slide.startAnimation();
+    await slide.startAnimation();
 
     // track the photo history
     if (VARS.interactive) {
@@ -249,7 +249,7 @@ function runShow(newIdx: number | null = null) {
 
   // set the next timeout, then call ourselves - runs unless interrupted
   VARS.timeOutId = setTimeout(() => {
-    runShow();
+    runShow().catch(() => {});
   }, VARS.waitTime);
 }
 
