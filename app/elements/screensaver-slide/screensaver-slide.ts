@@ -602,9 +602,8 @@ export class ScreensaverSlideElement
         target.height = Math.round(bottom - top);
 
         // relative to center in scaled photo coord.
-        const size = this.getImageSize();
-        const width = size.width;
-        const height = size.height;
+        const width = this.ironImage.width;
+        const height = this.ironImage.height;
         const scaleX = width / img.naturalWidth;
         const scaleY = height / img.naturalHeight;
         target.x = Math.round(target.x * scaleX);
@@ -659,9 +658,8 @@ export class ScreensaverSlideElement
       }
 
       const ironImage = this.ironImage;
-      const size = this.getImageSize();
-      const width = size.width;
-      const height = size.height;
+      const width = ironImage.width;
+      const height = ironImage.height;
       let translateX;
       let translateY;
       let scale;
@@ -723,31 +721,6 @@ export class ScreensaverSlideElement
       }
       ChromeGA.error(err.message, 'SSSlide.startAnimation');
     }
-  }
-
-  protected getImageSize() {
-    const ret = {
-      width: 0,
-      height: 0,
-    };
-
-    if (this.viewType === VIEW_TYPE.ZOOM) {
-      // determine un-cropped size
-      const photoAr = this.photo.getAspectRatio();
-      const screenAr = this.screenWidth / this.screenHeight;
-      if (photoAr > screenAr) {
-        ret.width = this.screenWidth * (photoAr / screenAr);
-        ret.height = this.screenHeight;
-      } else {
-        ret.width = this.screenWidth;
-        ret.height = this.screenHeight * (screenAr / photoAr);
-      }
-    } else {
-      ret.width = this.ironImage.width;
-      ret.height = this.ironImage.height;
-    }
-
-    return ret;
   }
 
   static get template() {
