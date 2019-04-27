@@ -212,7 +212,9 @@ async function runShow(newIdx: number | null = null) {
 
     // setup photo
     const slide = Screensaver.getSlide(nextIdx);
-    await slide.startAnimation();
+    if (slide) {
+      await slide.prep();
+    }
 
     // track the photo history
     if (VARS.interactive) {
@@ -225,22 +227,14 @@ async function runShow(newIdx: number | null = null) {
 
     if (newIdx === null) {
       // load next photo from master array
-      if (VARS.interactive) {
-        replacePhoto(VARS.replaceIdx);
-      } else {
-        // delay loading so transition animations run without background web call
-        // can't do if interactive 'cuz it would mess up order
-        setTimeout(() => {
-          replacePhoto(VARS.replaceIdx);
-        }, 2000);
-      }
+      replacePhoto(VARS.replaceIdx);
       VARS.replaceIdx = VARS.lastSelected;
     }
   }
 
   // set the next timeout, then call ourselves - runs unless interrupted
-  VARS.timeOutId = setTimeout(() => {
-    runShow().catch(() => {});
+  VARS.timeOutId = setTimeout(async () => {
+    await runShow();
   }, VARS.waitTime);
 }
 

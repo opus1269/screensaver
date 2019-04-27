@@ -266,104 +266,13 @@ export class ScreensaverSlideElement
   }
 
   /**
-   * Setup and start the photo animation
+   * Prep the photo for display
    */
-  public async startAnimation() {
-    if (this.animation) {
-      this.animation.cancel();
-    }
+  public async prep() {
+    this.render();
 
-    if (!this.isAnimate) {
-      return;
-    }
-
-    if (this.detectFaces) {
-      // setup face detection
-      await this.setAnimationTarget();
-    }
-
-    const transTime: IUnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
-    const aniTime = transTime.base * 1000;
-    let delayTime = 1000;
-
-    // hack for spinup animation since it is slower than the others
-    const photoTransition = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
-    if (photoTransition === TRANS_TYPE.SPIN_UP) {
-      delayTime = 2000;
-    }
-
-    const ironImage = this.ironImage;
-    const width = ironImage.width;
-    const height = ironImage.height;
-    let translateX;
-    let translateY;
-    let scale;
-
-    if (this.animationTarget) {
-      // face(s) detected, pan and zoom to target
-      const xScale = width / this.animationTarget.width;
-      const yScale = height / this.animationTarget.height;
-      const scaleFactor = Math.min(xScale, yScale);
-      // limit scaling
-      scale = Math.min(1.6, scaleFactor);
-
-      // set translation based on scale factor
-      const maxX = (scale - 1.0) * .25 * width;
-      const maxY = (scale - 1.0) * .25 * height;
-      const deltaX = Math.min(maxX, Math.abs(this.animationTarget.x)) * Math.sign(this.animationTarget.x);
-      // noinspection JSSuspiciousNameCombination
-      const deltaY = Math.min(maxY, Math.abs(this.animationTarget.y)) * Math.sign(this.animationTarget.y);
-
-      translateX = -deltaX + 'px';
-      translateY = -deltaY + 'px';
-    } else {
-      // set random pan and zoom
-      const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
-      const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
-      scale = 1.0 + ChromeUtils.getRandomFloat(.2, .6);
-      // maximum translation based on scale factor
-      // this could be up to .25, but limit it since we have no idea what the photos are
-      const maxDelta = (scale - 1.0) * .20;
-      const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
-      const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
-      translateX = Math.round(deltaX) + 'px';
-      // noinspection JSSuspiciousNameCombination
-      translateY = Math.round(deltaY) + 'px';
-    }
-
-    const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;
-
-    const keyframes: Keyframe[] = [
-      {transform: 'scale(1.0) translateX(0vw) translateY(0vh)'},
-      {transform: transform},
-    ];
-
-    const timing: KeyframeAnimationOptions = {
-      delay: delayTime,
-      duration: aniTime - delayTime,
-      iterations: 1,
-      easing: 'ease-in-out',
-      fill: 'forwards',
-    };
-
-    let el = ironImage.$.img;
-    if (ironImage.sizing) {
-      el = ironImage.$.sizedImgDiv;
-    }
-
-    this.set('animation', el.animate(keyframes, timing));
-  }
-
-  /**
-   * Image loading changed
-   *
-   * @event
-   */
-  @listen('loaded-changed', 'ironImage')
-  public async onLoadedChanged(ev: CustomEvent) {
-    const loaded = ev.detail.value;
-    if (loaded) {
-      this.render();
+    if (this.isAnimate) {
+      await this.startAnimation();
     }
   }
 
@@ -719,6 +628,104 @@ export class ScreensaverSlideElement
     } catch (err) {
       this.animationTarget = null;
       ChromeGA.error(err.message, 'SSSlide.setAnimationTarget');
+    }
+  }
+
+  /**
+   * Start the photo animation
+   */
+  protected async startAnimation() {
+    if (this.animation) {
+      this.animation.cancel();
+      this.set('animation', null);
+    }
+
+    if (!this.isAnimate) {
+      return;
+    }
+
+    try {
+      if (this.detectFaces) {
+        // setup face detection
+        await this.setAnimationTarget();
+      }
+
+      const transTime: IUnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+      const aniTime = transTime.base * 1000;
+      let delayTime = 1000;
+
+      // hack for spinup animation since it is slower than the others
+      const photoTransition = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+      if (photoTransition === TRANS_TYPE.SPIN_UP) {
+        delayTime = 2000;
+      }
+
+      const ironImage = this.ironImage;
+      const width = ironImage.width;
+      const height = ironImage.height;
+      let translateX;
+      let translateY;
+      let scale;
+
+      if (this.animationTarget) {
+        // face(s) detected, pan and zoom to target
+        const xScale = width / this.animationTarget.width;
+        const yScale = height / this.animationTarget.height;
+        const scaleFactor = Math.min(xScale, yScale);
+        // limit scaling
+        scale = Math.min(1.6, scaleFactor);
+
+        // set translation based on scale factor
+        const maxX = (scale - 1.0) * .25 * width;
+        const maxY = (scale - 1.0) * .25 * height;
+        const deltaX = Math.min(maxX, Math.abs(this.animationTarget.x)) * Math.sign(this.animationTarget.x);
+        // noinspection JSSuspiciousNameCombination
+        const deltaY = Math.min(maxY, Math.abs(this.animationTarget.y)) * Math.sign(this.animationTarget.y);
+
+        translateX = -deltaX + 'px';
+        translateY = -deltaY + 'px';
+      } else {
+        // set random pan and zoom
+        const signX = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+        const signY = ChromeUtils.getRandomInt(0, 1) ? -1 : 1;
+        scale = 1.0 + ChromeUtils.getRandomFloat(.2, .6);
+        // maximum translation based on scale factor
+        // this could be up to .25, but limit it since we have no idea what the photos are
+        const maxDelta = (scale - 1.0) * .20;
+        const deltaX = signX * width * ChromeUtils.getRandomFloat(0, maxDelta);
+        const deltaY = signY * height * ChromeUtils.getRandomFloat(0, maxDelta);
+        translateX = Math.round(deltaX) + 'px';
+        // noinspection JSSuspiciousNameCombination
+        translateY = Math.round(deltaY) + 'px';
+      }
+
+      const transform = `scale(${scale}) translateX(${translateX}) translateY(${translateY})`;
+
+      const keyframes: Keyframe[] = [
+        {transform: 'scale(1.0) translateX(0vw) translateY(0vh)'},
+        {transform: transform},
+      ];
+
+      const timing: KeyframeAnimationOptions = {
+        delay: delayTime,
+        duration: aniTime - delayTime,
+        iterations: 1,
+        easing: 'ease-in-out',
+        fill: 'forwards',
+      };
+
+      let el = ironImage.$.img;
+      if (ironImage.sizing) {
+        el = ironImage.$.sizedImgDiv;
+      }
+
+      this.set('animation', el.animate(keyframes, timing));
+    } catch (err) {
+      if (this.animation) {
+        this.animation.cancel();
+        this.set('animation', null);
+      }
+      ChromeGA.error(err.message, 'SSSlide.startAnimation');
     }
   }
 
