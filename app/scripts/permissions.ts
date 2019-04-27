@@ -34,7 +34,10 @@ interface IType {
   origins: string[];
 }
 
-/** Possible states of an permission */
+/** Origin for the actual url's we retrieve for google photos */
+const GOOGLE_SOURCE_ORIGIN = 'https://*.googleusercontent.com/';
+
+/** Possible states of a permission */
 export const enum STATE {
   /** Default */
   notSet = 'notSet',
@@ -48,17 +51,18 @@ export const enum STATE {
  * Permission for access to the user's Google Photos
  *
  * @remarks
- * Once upon a time, Picasa was the API for access to Google Photos,
- * hence the name.
- * Include 'https://*.googleusercontent.com/' so we can get error status
- * when photos fail to load (cors thing).
+ * Once upon a time, Picasa was the API for access to Google Photos, hence the name.
+ * Included 'https://*.googleusercontent.com/' so we can get error status
+ * when photos fail to load (cors thing). User's who authorized before
+ * this was added will not be required to allow it. They could be, but it
+ * might be confusing for the user.
  */
-export const PICASA: IType = {
+export const GOOGLE_PHOTOS: IType = {
   name: 'permPicasa',
   permissions: [],
   origins: [
     'https://photoslibrary.googleapis.com/',
-    'https://*.googleusercontent.com/',
+    GOOGLE_SOURCE_ORIGIN,
   ],
 };
 
@@ -86,7 +90,7 @@ export const DETECT_FACES: IType = {
   name: 'permDetectFaces',
   permissions: [],
   origins: [
-    'https://*.googleusercontent.com/',
+    GOOGLE_SOURCE_ORIGIN,
     'https://preview.redd.it/',
     'https://live.staticflickr.com/',
   ],
@@ -99,7 +103,7 @@ export const DETECT_FACES: IType = {
  * @returns true if notSet
  */
 export function notSet(type: IType) {
-  return ChromeStorage.get(type.name) === STATE.notSet;
+  return ChromeStorage.get(type.name, STATE.notSet) === STATE.notSet;
 }
 
 /**
@@ -109,7 +113,7 @@ export function notSet(type: IType) {
  * @returns true if allowed
  */
 export function isAllowed(type: IType) {
-  return ChromeStorage.get(type.name) === STATE.allowed;
+  return ChromeStorage.get(type.name, STATE.notSet) === STATE.allowed;
 }
 
 /**
@@ -119,7 +123,7 @@ export function isAllowed(type: IType) {
  * @returns true if denied
  */
 export function isDenied(type: IType) {
-  return ChromeStorage.get(type.name) === STATE.denied;
+  return ChromeStorage.get(type.name, STATE.notSet) === STATE.denied;
 }
 
 /**
@@ -131,11 +135,27 @@ export function isDenied(type: IType) {
  */
 export async function request(type: IType) {
   let granted = false;
+  const permissions = {
+    permissions: type.permissions,
+    origins: type.origins,
+  };
+
   try {
-    granted = await chromep.permissions.request({
-      permissions: type.permissions,
-      origins: type.origins,
-    });
+
+    // special handling for GOOGLE_PHOTOS permission
+    if ((type === GOOGLE_PHOTOS) && isAllowed(type)) {
+      // if we have been previously allowed, but don't have source origin,
+      // remove it from the request so user is not prompted again
+      const hasSourceOrigin = await hasGoogleSourceOrigin();
+      if (!hasSourceOrigin) {
+        const index = permissions.origins.indexOf(GOOGLE_SOURCE_ORIGIN);
+        if (index !== -1) {
+          permissions.origins.splice(index, 1);
+        }
+      }
+    }
+
+    granted = await chromep.permissions.request(permissions);
 
     if (granted) {
       await _setState(type, STATE.allowed);
@@ -210,7 +230,7 @@ export async function hasGoogleSourceOrigin() {
   try {
     ret = await chromep.permissions.contains({
       permissions: [],
-      origins: ['https://*.googleusercontent.com/'],
+      origins: [GOOGLE_SOURCE_ORIGIN],
     });
   } catch (err) {
     // ignore
@@ -224,7 +244,7 @@ export async function hasGoogleSourceOrigin() {
  * @throws An error on failure
  */
 export async function removeGooglePhotos() {
-  await deny(PICASA);
+  await deny(GOOGLE_PHOTOS);
 
   try {
     // remove selected albums and photos

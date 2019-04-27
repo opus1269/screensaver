@@ -170,7 +170,7 @@ export class PhotosViewElement extends BaseElement {
     const METHOD = 'PhotosView.loadPhotos';
     let error: Error = null;
     try {
-      const granted = await Permissions.request(Permissions.PICASA);
+      const granted = await Permissions.request(Permissions.GOOGLE_PHOTOS);
 
       if (!granted) {
         // failed to get google photos permission

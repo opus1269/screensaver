@@ -339,7 +339,7 @@ export class AppMainElement extends BaseElement {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'Permission.Allow');
     try {
       // try to get permission - may prompt
-      const granted = await Permissions.request(Permissions.PICASA);
+      const granted = await Permissions.request(Permissions.GOOGLE_PHOTOS);
       if (!granted) {
         await Permissions.removeGooglePhotos();
       }

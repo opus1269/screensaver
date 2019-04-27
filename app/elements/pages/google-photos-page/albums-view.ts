@@ -199,7 +199,7 @@ export class AlbumsViewElement extends BaseElement {
     this.set('waitForLoad', true);
 
     try {
-      const granted = await Permissions.request(Permissions.PICASA);
+      const granted = await Permissions.request(Permissions.GOOGLE_PHOTOS);
       if (!granted) {
         // failed to get google photos permission
         await Permissions.removeGooglePhotos();
