@@ -4,6 +4,8 @@
  * @module scripts/sources/photo_source
  */
 
+/** */
+
 /*
  *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
  *  Licensed under the BSD-3-Clause
@@ -53,7 +55,7 @@ export interface IPhotos {
 }
 
 /**
- * A source of photos for the screen saver
+ * Base class for a source of photos for a {@link Screensaver}
  */
 export abstract class PhotoSource {
 
@@ -93,13 +95,26 @@ export abstract class PhotoSource {
     return `${lat} ${lon}`;
    }
 
+   /** The storage key for if the source is selected */
   private readonly _useKey: PhotoSourceFactory.UseKey;
+
+  /** The storage key for the collection of photos */
   private readonly _photosKey: string;
+
+  /** A unique descriptor of the photo source */
   private readonly _type: PhotoSourceFactory.Type;
+
+  /** A human readable description of the source */
   private readonly _desc: string;
+
+  /** Flag to indicate if source should be updated daily */
   private readonly _isDaily: boolean;
+
+  /** Flag to indicate if source is an Array of arrays */
   private readonly _isArray: boolean;
-  private readonly _loadArg: any;
+
+  /** Optional argument to pass to the load method */
+  private readonly _loadArg?: any;
 
   /**
    * Create a new photo source
@@ -113,7 +128,7 @@ export abstract class PhotoSource {
    * @param loadArg - optional arg for load function
    */
   protected constructor(useKey: PhotoSourceFactory.UseKey, photosKey: string, type: PhotoSourceFactory.Type,
-                        desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
+                        desc: string, isDaily: boolean, isArray: boolean, loadArg?: any) {
     this._useKey = useKey;
     this._photosKey = photosKey;
     this._type = type;
