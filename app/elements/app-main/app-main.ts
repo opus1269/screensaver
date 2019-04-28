@@ -509,6 +509,7 @@ export class AppMainElement extends BaseElement {
   protected setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
     const idx = this.getPageIdx('page-google-photos');
+    // @ts-ignore
     const el = this.shadowRoot.querySelector(`#${this.pages[idx].route}`);
     if (!el) {
       ChromeGA.error('no element found', 'AppMain.setGooglePhotosMenuState');
@@ -529,6 +530,7 @@ export class AppMainElement extends BaseElement {
 
       const idx = this.getPageIdx('page-error');
       const route = this.pages[idx].route;
+      // @ts-ignore
       const el = this.shadowRoot.querySelector(`#${route}`);
       if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
         el.removeAttribute('disabled');

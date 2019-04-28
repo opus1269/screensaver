@@ -409,6 +409,7 @@ export class ScreensaverElement extends BaseElement {
    */
   public getSlide(idx: number) {
     const selector = `#slide${idx}`;
+    // @ts-ignore
     return this.shadowRoot.querySelector(selector) as ScreensaverSlideElement;
   }
 

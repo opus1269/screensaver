@@ -77,9 +77,12 @@ export class SettingBackgroundElement extends SettingBase {
    */
   @listen('tap', 'confirmButton')
   public onOK() {
+    // @ts-ignore
     const el = this.shadowRoot.getElementById(this.selected);
-    this.set('value', 'background:' + el.style.background);
-    ChromeGA.event(ChromeGA.EVENT.BUTTON, `SettingBackground.OK: ${this.selected}`);
+    if (el) {
+      this.set('value', 'background:' + el.style.background);
+      ChromeGA.event(ChromeGA.EVENT.BUTTON, `SettingBackground.OK: ${this.selected}`);
+    }
   }
 
   /**

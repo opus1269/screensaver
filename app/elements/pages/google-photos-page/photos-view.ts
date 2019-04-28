@@ -275,6 +275,7 @@ export class PhotosViewElement extends BaseElement {
    * Set the states of the photo-cat elements
    */
   protected _setPhotoCats() {
+    // @ts-ignore
     const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PhotoCatElement>;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
