@@ -335,7 +335,7 @@ export class PhotosViewElement extends BaseElement {
    * @event
    */
   protected onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
-                            response: (arg0: object) => void) {
+                            response: ChromeMsg.ResponseCB) {
     if (request.message === MyMsg.TYPE.FILTERED_PHOTOS_COUNT.message) {
       // show user status of photo loading
       const count = request.count || 0;

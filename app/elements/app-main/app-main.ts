@@ -553,7 +553,7 @@ export class AppMainElement extends BaseElement {
    */
   protected onChromeMessage(request: ChromeMsg.IMsgType,
                             sender: chrome.runtime.MessageSender,
-                            response: (arg0: object) => void) {
+                            response: ChromeMsg.ResponseCB) {
     let ret = false;
     if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here

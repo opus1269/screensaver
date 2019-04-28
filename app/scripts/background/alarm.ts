@@ -33,13 +33,18 @@ const chromep = new ChromePromise();
 /**
  * Alarms triggered by chrome.alarms
  */
-const ALARMS = {
-  ACTIVATE: 'ACTIVATE',
-  DEACTIVATE: 'DEACTIVATE',
-  UPDATE_PHOTOS: 'UPDATE_PHOTOS',
-  BADGE_TEXT: 'BADGE_TEXT',
-  WEATHER: 'WEATHER',
-};
+const enum ALARMS {
+  /** Entering active state for screensaver/keep awake */
+  ACTIVATE = 'ACTIVATE',
+  /** Leaving active state for screensaver/keep awake */
+  DEACTIVATE = 'DEACTIVATE',
+  /** Perform daily update of photo sources */
+  UPDATE_PHOTOS = 'UPDATE_PHOTOS',
+  /** Set the badge text of the extension icon */
+  BADGE_TEXT = 'BADGE_TEXT',
+  /** Update the current weather */
+  WEATHER = 'WEATHER',
+}
 
 /**
  * Set the repeating alarms for the keep awake
@@ -191,6 +196,7 @@ function setBadgeText() {
 
 /**
  * Update the weather
+ *
  * @throws An error if update failed
  */
 async function updateWeather() {

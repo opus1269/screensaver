@@ -165,20 +165,22 @@ async function onStorageChanged(ev: StorageEvent) {
  * @event
  */
 function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
-                         response: (arg0: object) => void) {
+                         response: ChromeMsg.ResponseCB) {
   let ret = false;
   if (request.message === ChromeMsg.TYPE.RESTORE_DEFAULTS.message) {
     ret = true;
-    AppData.restoreDefaults().catch(() => {});
+    AppData.restoreDefaults().then(() => {
+      response({message: 'OK'});
+    }).catch(() => {});
   } else if (request.message === ChromeMsg.TYPE.STORE.message) {
     if (request.key) {
       ChromeStorage.set(request.key, request.value);
+      response({message: 'OK'});
     }
   } else if (request.message === MyMsg.TYPE.LOAD_FILTERED_PHOTOS.message) {
     ret = true;
     GoogleSource.loadFilteredPhotos(true, true).then((photos) => {
       response(photos);
-      return null;
     }).catch((err) => {
       response({message: err.message});
     });
@@ -195,7 +197,6 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
     ret = true;
     GoogleSource.loadAlbums(true, true).then((albums) => {
       response(albums);
-      return null;
     }).catch((err) => {
       response({message: err.message});
     });
@@ -203,7 +204,6 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
     ret = true;
     Alarm.updateWeatherAlarm().then(() => {
       response({message: 'OK'});
-      return null;
     }).catch((err) => {
       response({errorMessage: err.message});
     });
@@ -211,7 +211,6 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
     ret = true;
     Weather.update().then(() => {
       response({message: 'OK'});
-      return null;
     }).catch((err) => {
       response({errorMessage: err.message});
     });

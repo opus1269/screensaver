@@ -241,12 +241,16 @@ async function onIdleStateChanged(state: string) {
  * @event
  */
 function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
-                         response: (arg0: object) => void) {
+                         response: ChromeMsg.ResponseCB) {
   let ret = false;
   if (request.message === MyMsg.TYPE.SS_SHOW.message) {
     ret = true; // async
     // preview the screensaver
-    display(false).catch(() => {});
+    display(false).then(() => {
+      response({message: 'OK'});
+    }).catch((err) => {
+      response({error: err.message});
+    });
   }
   return ret;
 }

@@ -19,9 +19,7 @@ import * as ChromeGA from './analytics.js';
 
 declare var ChromePromise: any;
 
-/**
- * A Chrome message
- */
+/** A Chrome message */
 export interface IMsgType {
   /** a message */
   message: string;
@@ -63,6 +61,12 @@ export const TYPE = {
   } as IMsgType,
 };
 
+/** Method signature for response callback */
+export type ResponseCB = (jsonifiable: any) => void;
+
+/** Method signature for listener */
+type Listener = ((request: IMsgType, sender: chrome.runtime.MessageSender, response: ResponseCB) => boolean);
+
 /**
  * Send a chrome message
  *
@@ -88,9 +92,7 @@ export async function send(type: IMsgType) {
  *
  * @param listener - function to receive messages
  */
-export function addListener(listener: (request: IMsgType,
-                                       sender: chrome.runtime.MessageSender,
-                                       response: (arg0: object) => void) => boolean) {
+export function addListener(listener: Listener) {
   chrome.runtime.onMessage.addListener(listener);
 }
 
@@ -99,8 +101,6 @@ export function addListener(listener: (request: IMsgType,
  *
  * @param listener - function to receive messages
  */
-export function removeListener(listener: (request: IMsgType,
-                                          sender: chrome.runtime.MessageSender,
-                                          response: (arg0: object) => void) => boolean) {
+export function removeListener(listener: Listener) {
   chrome.runtime.onMessage.removeListener(listener);
 }

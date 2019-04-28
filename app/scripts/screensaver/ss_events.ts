@@ -127,7 +127,7 @@ function onKeyCommand(cmd: string) {
  * @event
  */
 function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.MessageSender,
-                         response: (arg0: object) => void) {
+                         response: ChromeMsg.ResponseCB) {
   if (request.message === MyMsg.TYPE.SS_CLOSE.message) {
     close();
   } else if (request.message === MyMsg.TYPE.SS_IS_SHOWING.message) {
