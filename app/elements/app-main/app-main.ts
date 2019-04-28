@@ -107,20 +107,18 @@ interface IPage {
 }
 
 /**
- * Path to the extension in the Web Store
- */
-const EXT_URI = `https://chrome.google.com/webstore/detail/screensaver/${chrome.runtime.id}/`;
-
-/**
- * Path to my Pushy Clipboard extension
- */
-const PUSHY_URI = 'https://chrome.google.com/webstore/detail/pushy-clipboard/jemdfhaheennfkehopbpkephjlednffd';
-
-/**
  * Polymer element for the main UI
  */
 @customElement('app-main')
 export class AppMainElement extends BaseElement {
+
+  /** Path to the extension in the Web Store */
+  protected static readonly EXT_URI =
+      `https://chrome.google.com/webstore/detail/screensaver/${chrome.runtime.id}/`;
+
+  /** Path to my Pushy Clipboard extension */
+  protected static readonly PUSHY_URI =
+      'https://chrome.google.com/webstore/detail/pushy-clipboard/jemdfhaheennfkehopbpkephjlednffd';
 
   /** The app's pages */
   @property({type: Array})
@@ -162,17 +160,17 @@ export class AppMainElement extends BaseElement {
     },
     {
       label: ChromeLocale.localize('menu_support'), route: 'page-support',
-      icon: 'myicons:help', fn: null, url: `${EXT_URI}support`,
+      icon: 'myicons:help', fn: null, url: `${AppMainElement.EXT_URI}support`,
       ready: true, divider: false, disabled: false,
     },
     {
       label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
-      icon: 'myicons:grade', fn: null, url: `${EXT_URI}reviews`,
+      icon: 'myicons:grade', fn: null, url: `${AppMainElement.EXT_URI}reviews`,
       ready: true, divider: false, disabled: false,
     },
     {
       label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
-      icon: 'myicons:extension', fn: null, url: PUSHY_URI,
+      icon: 'myicons:extension', fn: null, url: AppMainElement.PUSHY_URI,
       ready: true, divider: true, disabled: false,
     },
   ];
