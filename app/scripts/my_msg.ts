@@ -15,9 +15,7 @@
 
 import {IMsgType} from './chrome-extension-utils/scripts/msg';
 
-/**
- * Chrome Messages for this app
- */
+/** Chrome Messages specific to this extension */
 export const TYPE = {
   /** Show screensaver */
   SS_SHOW: {

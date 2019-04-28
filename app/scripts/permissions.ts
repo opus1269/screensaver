@@ -22,9 +22,7 @@ import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storag
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
-/**
- * A permission type
- */
+/** A permission type */
 interface IType {
   /** Key we are persisted as */
   name: string;

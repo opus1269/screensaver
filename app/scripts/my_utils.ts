@@ -16,30 +16,12 @@
 import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
 
-/**
- * True if development build
- */
-const _DEBUG = false;
-
-/**
- * True if development build
- */
-export const DEBUG = _DEBUG;
-
-/**
- * Get our email address
- *
- * @returns email address
- */
+/** Get our email address */
 export function getEmail() {
   return 'photoscreensaver@gmail.com';
 }
 
-/**
- * Get body for an email with basic extension info
- *
- * @returns text
- */
+/** Get body for an email with basic extension info */
 export function getEmailBody() {
   return `Extension version: ${ChromeUtils.getVersion()}\n`
       + `Chrome version: ${ChromeUtils.getFullChromeVersion()}\n`
@@ -60,22 +42,14 @@ export function getEmailUrl(subject: string, body: string) {
   return `mailto:${email}?subject=${sub}&body=${bod}`;
 }
 
-/**
- * Get our Github base path
- *
- * @returns path
- */
+/** Get our Github base path */
 export function getGithubPath() {
   return 'https://github.com/opus1269/screensaver/';
 }
 
-/**
- * Get our Github pages base path
- *
- * @returns path
- */
+/** Get our Github pages base path */
 export function getGithubPagesPath() {
-  if (DEBUG) {
+  if (ChromeUtils.DEBUG) {
     return 'http://127.0.0.1:4000/';
   } else {
     return 'https://opus1269.github.io/screensaver/';

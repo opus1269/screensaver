@@ -74,7 +74,7 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
   } else if (details.reason === 'update') {
     // extension updated
 
-    if (!MyUtils.DEBUG) {
+    if (!ChromeUtils.DEBUG) {
       const oldVer = details.previousVersion;
       const version = ChromeUtils.getVersion();
       if (version === oldVer) {

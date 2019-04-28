@@ -24,9 +24,7 @@ import * as ChromeUtils from './chrome-extension-utils/scripts/utils.js';
 
 import * as MyGA from '../scripts/my_analytics.js';
 
-/**
- * A geo location
- */
+/** A geo location */
 export interface IWeatherLocation {
   /** latitude */
   lat: number;
@@ -34,9 +32,7 @@ export interface IWeatherLocation {
   lon: number;
 }
 
-/**
- * Current weather conditions
- */
+/** Current weather conditions */
 export interface ICurrentWeather {
   /** call time UTC milli sec */
   time: number;
@@ -54,9 +50,7 @@ export interface ICurrentWeather {
   description: string;
 }
 
-/**
- * Default weather
- */
+/** Default weather */
 export const DEF_WEATHER: ICurrentWeather = {
   time: 0,
   id: 0,
@@ -67,36 +61,26 @@ export const DEF_WEATHER: ICurrentWeather = {
   city: '',
 };
 
-/**
- * Default geolocation permission options
- */
+/** Default geolocation permission options */
 export const DEF_LOC_OPTIONS = {
   enableHighAccuracy: false,
   timeout: 60000,
   maximumAge: 0,
 };
 
-/**
- * The most frequently we will call the API
- */
+/** The most frequently we will call the API */
 const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 
-/**
- * Default geolocation options
- */
+/** Default geolocation options */
 const DEF_LOC: IWeatherLocation = {
   lat: 0.0,
   lon: 0.0,
 };
 
-/**
- * API key
- */
+/** API key */
 const KEY = '2eab968d43699c1b6e126228b34880c9';
 
-/**
- * Base url of weather API
- */
+/** Base url of weather API */
 const URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';
 
 /**
@@ -202,9 +186,7 @@ export async function update(force = false) {
   }
 }
 
-/**
- * Update the display units
- */
+/** Update the display units */
 export function updateUnits() {
   const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
   const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
@@ -248,17 +230,13 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
   return ret;
 }
 
-/**
- * Convert Kelvin to degrees F
- */
+/** Convert Kelvin to degrees F */
 function _kToF(temp: number) {
   const value = (temp - 273.17) * 9.0 / 5.0 + 32.0;
   return `${value.toFixed(0)} \u00b0F`;
 }
 
-/**
- * Convert Kelvin to degrees C
- */
+/** Convert Kelvin to degrees C */
 function _kToC(temp: number) {
   const value = temp - 273.17;
   return `${value.toFixed(0)} \u00b0C`;
