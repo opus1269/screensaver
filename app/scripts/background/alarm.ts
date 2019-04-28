@@ -30,9 +30,7 @@ import * as SSController from './ss_controller.js';
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
-/**
- * Alarms triggered by chrome.alarms
- */
+/** Unique alarm ids */
 const enum ALARMS {
   /** Entering active state for screensaver/keep awake */
   ACTIVATE = 'ACTIVATE',
@@ -46,9 +44,7 @@ const enum ALARMS {
   WEATHER = 'WEATHER',
 }
 
-/**
- * Set the repeating alarms for the keep awake
- */
+/** Set the repeating alarms for the keep awake */
 export function updateKeepAwakeAlarm() {
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
   const aStart = ChromeStorage.get('activeStart', AppData.DEFS.activeStart);
@@ -79,12 +75,10 @@ export function updateKeepAwakeAlarm() {
     chrome.alarms.clear(ALARMS.DEACTIVATE);
   }
 
-  updateBadgeText();
+  updateBadgeTextAlarm();
 }
 
-/**
- * Set the repeating daily photo alarm
- */
+/** Set the repeating daily photo alarm */
 export async function updatePhotoAlarm() {
   // Add daily alarm to update photo sources that request this
   try {
@@ -100,9 +94,7 @@ export async function updatePhotoAlarm() {
   }
 }
 
-/**
- * Set the weather alarm
- */
+/** Set the weather alarm */
 export async function updateWeatherAlarm() {
   const showWeather = ChromeStorage.getBool('showCurrentWeather',
       AppData.DEFS.showCurrentWeather);
@@ -127,19 +119,15 @@ export async function updateWeatherAlarm() {
   }
 }
 
-/**
- * Set the icon badge text
- */
-export function updateBadgeText() {
+/** Set the icon badge text alarm */
+export function updateBadgeTextAlarm() {
   // delay setting a little to make sure range check is good
   chrome.alarms.create(ALARMS.BADGE_TEXT, {
     when: Date.now() + 1000,
   });
 }
 
-/**
- * Set state when the screensaver is in the active time range
- */
+/** Set state when the screensaver is in the active time range */
 async function setActiveState() {
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
   const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
@@ -159,12 +147,10 @@ async function setActiveState() {
     ChromeGA.error(err.message, 'Alarm.setActiveState');
   }
 
-  updateBadgeText();
+  updateBadgeTextAlarm();
 }
 
-/**
- * Set state when the screensaver is in the inactive time range
- */
+/** Set state when the screensaver is in the inactive time range */
 function setInactiveState() {
   const allowSuspend = ChromeStorage.getBool('allowSuspend',
       AppData.DEFS.allowSuspend);
@@ -174,12 +160,10 @@ function setInactiveState() {
     chrome.power.requestKeepAwake('system');
   }
   SSController.close();
-  updateBadgeText();
+  updateBadgeTextAlarm();
 }
 
-/**
- * Set the Badge text on the icon
- */
+/** Set the Badge text on the icon */
 function setBadgeText() {
   const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
   const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
@@ -221,7 +205,7 @@ async function updateWeather() {
  * @event
  */
 async function onAlarm(alarm: chrome.alarms.Alarm) {
-
+  const METHOD = 'Alarm.onAlarm';
   try {
     switch (alarm.name) {
       case ALARMS.ACTIVATE:
@@ -237,7 +221,7 @@ async function onAlarm(alarm: chrome.alarms.Alarm) {
         try {
           await PhotoSources.processDaily();
         } catch (err) {
-          ChromeGA.error(err.message, 'Alarm.onAlarm');
+          ChromeGA.error(err.message, METHOD);
         }
         break;
       case ALARMS.BADGE_TEXT:
@@ -249,14 +233,14 @@ async function onAlarm(alarm: chrome.alarms.Alarm) {
         try {
           await updateWeather();
         } catch (err) {
-          ChromeGA.error(err.message, 'Alarm.onAlarm');
+          ChromeGA.error(err.message, METHOD);
         }
         break;
       default:
         break;
     }
   } catch (err) {
-    ChromeGA.error(err.message, 'Alarm.onAlarm');
+    ChromeGA.error(err.message, METHOD);
   }
 }
 

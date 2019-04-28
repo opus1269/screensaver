@@ -35,15 +35,10 @@ import * as Alarm from './alarm.js';
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
-/**
- * Version of data - update when items are added, removed, changed
- *
- */
+/** Version of data - update when items are added, removed, changed */
 const DATA_VERSION = 27;
 
-/**
- * App data saved to local storage
- */
+/** App data saved to local storage */
 export const DEFS = {
   /** localstorage data version */
   version: DATA_VERSION,
@@ -139,9 +134,7 @@ export const DEFS = {
   detectFaces: false,
 };
 
-/**
- * Initialize the data saved in localStorage
- */
+/** Initialize the saved data */
 export async function initialize() {
   try {
     // save version to chrome.storage
@@ -177,9 +170,7 @@ export async function initialize() {
   }
 }
 
-/**
- * Update the data saved in localStorage
- */
+/** Update the saved data */
 export async function update() {
   // New items, changes, and removal of unused items can take place
   // here when the data version changes
@@ -335,9 +326,7 @@ export async function update() {
   }
 }
 
-/**
- * Restore default values for data saved in localStorage
- */
+/** Restore default values for the saved data */
 export async function restoreDefaults() {
   for (const key of Object.keys(DEFS)) {
     // skip Google Photos settings
@@ -367,7 +356,7 @@ export async function restoreDefaults() {
 }
 
 /**
- * Process changes to localStorage items
+ * Process changes to saved data
  *
  * @param key - the item that changed
  */
@@ -482,9 +471,7 @@ export function getIdleSeconds() {
   return idle.base * 60;
 }
 
-/**
- * Move the currently selected photo sources to chrome.storage.local and delete the old ones
- */
+/** Move the currently selected photo sources to chrome.storage.local and delete the old ones */
 async function updateToChromeLocaleStorage() {
   const sources = PhotoSources.getSelectedSources();
   for (const source of sources) {
@@ -513,7 +500,7 @@ async function updateToChromeLocaleStorage() {
  * using the screensaver
  */
 async function processEnabled() {
-  Alarm.updateBadgeText();
+  Alarm.updateBadgeTextAlarm();
 
   const isEnabled = ChromeStorage.getBool('enabled', DEFS.enabled);
 
@@ -529,9 +516,7 @@ async function processEnabled() {
   }
 }
 
-/**
- * Set power scheduling features
- */
+/** Set power scheduling features */
 function processKeepAwake() {
   const keepAwake = ChromeStorage.getBool('keepAwake', DEFS.keepAwake);
   keepAwake
@@ -541,9 +526,7 @@ function processKeepAwake() {
   Alarm.updateKeepAwakeAlarm();
 }
 
-/**
- * Set wait time for screen saver display after machine is idle
- */
+/** Set wait time for screen saver display after machine is idle */
 function processIdleTime() {
   chrome.idle.setDetectionInterval(getIdleSeconds());
 }
@@ -568,9 +551,7 @@ function getTempUnit() {
   return (unit === 'C') ? 0 : 1;
 }
 
-/**
- * Set the 'os' value
- */
+/** Set the operating system value */
 async function setOS() {
   try {
     const info = await chromep.runtime.getPlatformInfo();
@@ -582,9 +563,7 @@ async function setOS() {
   }
 }
 
-/**
- * Save the default value for each item that doesn't exist
- */
+/** Save the default value for each item that doesn't exist */
 function addDefaults() {
   for (const key of Object.keys(DEFS)) {
     if (ChromeStorage.get(key) === null) {

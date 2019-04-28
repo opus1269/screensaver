@@ -28,20 +28,16 @@ import * as AppData from './data.js';
 declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
-/**
- * Screensaver URL
- */
+/** Screensaver URL */
 const SS_URL = '/html/screensaver.html';
 
-/**
- * Error showing Screensaver
- */
+/** Error showing Screensaver */
 const ERR_SHOW = ChromeLocale.localize('err_show_ss');
 
 /**
- * Determine if the screen saver can be displayed
+ * Determine if the screensaver can be displayed
  *
- * @returns true if should display the screensaver
+ * @returns true if we should display the screensaver
  */
 export function isActive() {
   const enabled = ChromeStorage.getBool('enabled');
@@ -62,7 +58,7 @@ export function isActive() {
  *
  * Important: Always request screensaver through this call
  *
- * @param single - if true, only show on one display
+ * @param single - if true, only show on main display
  */
 export async function display(single: boolean) {
 
@@ -78,11 +74,9 @@ export async function display(single: boolean) {
   }
 }
 
-/**
- * Close all the screen saver windows
- */
+/** Close all the screen saver windows */
 export function close() {
-  // send message to the screen savers to close themselves
+  // send message to the screensavers to close themselves
   ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
 }
 
@@ -122,7 +116,7 @@ async function hasFullscreen(disp?: chrome.system.display.DisplayInfo) {
  * @returns true if showing
  */
 async function isShowing() {
-  // send message to the screensaver's to see if any are around
+  // send message to the screensavers to see if any are around
   try {
     await ChromeMsg.send(MyMsg.TYPE.SS_IS_SHOWING);
     return true;
@@ -133,7 +127,7 @@ async function isShowing() {
 }
 
 /**
- * Open a screen saver window on the given display
+ * Open a screensaver window on the given display
  *
  * @param disp - an optional connected display, otherwise the main display
  */
@@ -173,9 +167,7 @@ async function open(disp?: chrome.system.display.DisplayInfo) {
   }
 }
 
-/**
- * Open a screensaver on every display
- */
+/** Open a screensaver on every connected display */
 async function openOnAllDisplays() {
   try {
     const displayArr = await chromep.system.display.getInfo();

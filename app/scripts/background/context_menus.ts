@@ -23,26 +23,24 @@ import * as SSController from './ss_controller.js';
 
 declare var ChromePromise: any;
 
-/**
- * Unique id of the display screensaver menu
- */
-const DISPLAY_MENU = 'DISPLAY_MENU';
+/** Unique menu ids */
+const enum MENU {
+  /** Display screensaver */
+  DISPLAY = 'DISPLAY_MENU',
+  /** Toggle enabled state of screensaver */
+  ENABLE = 'ENABLE_MENU',
+  /** Separator */
+  SEP = 'SEP_MENU',
+}
 
-/**
- * Unique id of the enable screensaver menu
- */
-const ENABLE_MENU = 'ENABLE_MENU';
-
-/**
- * Initialize the menus
- */
+/** Initialize the menus */
 export async function initialize() {
   const chromep = new ChromePromise();
 
   try {
     await chromep.contextMenus.create({
       type: 'normal',
-      id: DISPLAY_MENU,
+      id: MENU.DISPLAY,
       title: ChromeLocale.localize('display_now'),
       contexts: ['browser_action'],
     });
@@ -55,7 +53,7 @@ export async function initialize() {
   try {
     await chromep.contextMenus.create({
       type: 'normal',
-      id: ENABLE_MENU,
+      id: MENU.ENABLE,
       title: ChromeLocale.localize('disable'),
       contexts: ['browser_action'],
     });
@@ -68,7 +66,7 @@ export async function initialize() {
   try {
     await chromep.contextMenus.create({
       type: 'separator',
-      id: 'SEP_MENU',
+      id: MENU.SEP,
       contexts: ['browser_action'],
     });
   } catch (err) {
@@ -78,9 +76,7 @@ export async function initialize() {
   }
 }
 
-/**
- * Toggle enabled state of the screen saver
- */
+/** Toggle enabled state of the screen saver */
 async function toggleEnabled() {
   const oldState = ChromeStorage.getBool('enabled', true);
   ChromeStorage.set('enabled', !oldState);
@@ -102,10 +98,10 @@ async function toggleEnabled() {
  */
 async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
   try {
-    if (info.menuItemId === DISPLAY_MENU) {
+    if (info.menuItemId === MENU.DISPLAY) {
       ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
       await SSController.display(false);
-    } else if (info.menuItemId === ENABLE_MENU) {
+    } else if (info.menuItemId === MENU.ENABLE) {
       const isEnabled = ChromeStorage.getBool('enabled');
       ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
       await toggleEnabled();

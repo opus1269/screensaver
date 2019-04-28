@@ -30,9 +30,7 @@ import * as ContextMenus from './context_menus.js';
 import * as AppData from './data.js';
 import './user.js';
 
-/**
- * Display the options tab
- */
+/** Display the options tab */
 async function showOptionsTab() {
   // send message to the option tab to focus it.
   try {
