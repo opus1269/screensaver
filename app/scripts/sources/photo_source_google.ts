@@ -777,10 +777,9 @@ export class GoogleSource extends PhotoSource {
    *
    * @param mediaItem - object from Google Photos API call
    * @param albumName - Album name
-   * @returns photo or null
+   * @returns photo or undefined
    */
   private static _processPhoto(mediaItem: IMediaItem, albumName: string) {
-    let photo: IPhoto | null = null;
 
     if (mediaItem && mediaItem.mediaMetadata) {
       if (this._isImage(mediaItem)) {
@@ -790,7 +789,7 @@ export class GoogleSource extends PhotoSource {
         const width = size.width;
         const height = size.height;
 
-        photo = {
+        return {
           url: `${mediaItem.baseUrl}=w${width}-h${height}`,
           asp: (width / height).toPrecision(3),
           author: albumName,
@@ -798,12 +797,9 @@ export class GoogleSource extends PhotoSource {
             id: mediaItem.id,
             url: mediaItem.productUrl,
           },
-          point: null,
-        };
+        } as IPhoto;
       }
     }
-
-    return photo;
   }
 
   /**
@@ -820,7 +816,7 @@ export class GoogleSource extends PhotoSource {
     }
 
     for (const mediaItem of mediaItems) {
-      const photo: IPhoto = this._processPhoto(mediaItem, albumName);
+      const photo = this._processPhoto(mediaItem, albumName);
       if (photo) {
         const asp = parseFloat(photo.asp);
         this.addPhoto(photos, photo.url, photo.author, asp, photo.ex, photo.point);

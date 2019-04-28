@@ -229,7 +229,7 @@ export function error(label = 'unknown', method = 'unknownMethod') {
  * @param msg - the error message
  * @param fatal - true if fatal
  */
-export function exception(err: Error | null, msg?: string, fatal?: boolean) {
+export function exception(err: Error | null, msg: string | null, fatal?: boolean) {
   try {
     const theFatal = (fatal === undefined) ? false : fatal;
     let theMsg = 'Unknown';

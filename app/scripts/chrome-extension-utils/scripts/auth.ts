@@ -34,7 +34,7 @@ const chromep = new ChromePromise();
  * @throws An error if we failed to get token
  * @returns An access token
  */
-export async function getToken(interactive = false, scopes: string[] = null) {
+export async function getToken(interactive = false, scopes?: string[]) {
   const request: chrome.identity.TokenDetails = {
     interactive: interactive,
   };
@@ -53,14 +53,16 @@ export async function getToken(interactive = false, scopes: string[] = null) {
  * @throws An error if we failed to remove token
  * @returns The old token
  */
-export async function removeCachedToken(interactive = false, curToken = '', scopes: string[] = null) {
+export async function removeCachedToken(interactive = false, curToken: string | null = '', scopes?: string[]) {
   let oldToken = curToken;
 
   if (ChromeUtils.isWhiteSpace(oldToken)) {
     oldToken = await getToken(interactive, scopes);
   }
 
-  await chromep.identity.removeCachedAuthToken({token: oldToken});
+  if (oldToken) {
+    await chromep.identity.removeCachedAuthToken({token: oldToken});
+  }
 
   return oldToken;
 }

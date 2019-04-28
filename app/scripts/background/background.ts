@@ -23,7 +23,7 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import * as MyUtils from '../../scripts/my_utils.js';
 import * as Weather from '../../scripts/weather.js';
 
-import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
+import {GoogleSource, IAlbum} from '../../scripts/sources/photo_source_google.js';
 
 import * as Alarm from './alarm.js';
 import * as ContextMenus from './context_menus.js';
@@ -58,7 +58,7 @@ async function onInstalled(details: chrome.runtime.InstalledDetails) {
   try {
     await ContextMenus.initialize();
   } catch (err) {
-    ChromeGA.error(err, 'BG.onInstalled');
+    ChromeGA.error(err, 'Bg.onInstalled');
   }
 
   if (details.reason === 'install') {
@@ -140,14 +140,15 @@ async function onIconClicked() {
  *
  * @link https://developer.mozilla.org/en-US/docs/Web/Events/storage
  *
+ * @remarks
+ * ev.key is null only if clear() is called on the storage area
+ *
  * @param ev - StorageEvent
  * @event
  */
 async function onStorageChanged(ev: StorageEvent) {
-  try {
+  if (ev.key) {
     await AppData.processState(ev.key);
-  } catch (err) {
-    ChromeGA.error(err.message, 'Bg.onStorageChanged');
   }
 }
 
@@ -170,7 +171,9 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
     ret = true;
     AppData.restoreDefaults().catch(() => {});
   } else if (request.message === ChromeMsg.TYPE.STORE.message) {
-    ChromeStorage.set(request.key, request.value);
+    if (request.key) {
+      ChromeStorage.set(request.key, request.value);
+    }
   } else if (request.message === MyMsg.TYPE.LOAD_FILTERED_PHOTOS.message) {
     ret = true;
     GoogleSource.loadFilteredPhotos(true, true).then((photos) => {
@@ -181,12 +184,13 @@ function onChromeMessage(request: ChromeMsg.IMsgType, sender: chrome.runtime.Mes
     });
   } else if (request.message === MyMsg.TYPE.LOAD_ALBUM.message) {
     ret = true;
-    GoogleSource.loadAlbum(request.id, request.name, true, true).then((album) => {
-      response(album);
-      return null;
-    }).catch((err) => {
-      response({message: err.message});
-    });
+    if ((request.id !== undefined) && (request.name !== undefined)) {
+      GoogleSource.loadAlbum(request.id, request.name, true, true).then((album: IAlbum) => {
+        response(album);
+      }).catch((err: Error) => {
+        response({message: err.message});
+      });
+    }
   } else if (request.message === MyMsg.TYPE.LOAD_ALBUMS.message) {
     ret = true;
     GoogleSource.loadAlbums(true, true).then((albums) => {

@@ -229,30 +229,27 @@ export class ScreensaverSlideElement
   @query('.weather')
   protected weather: WeatherElement;
 
-  /**
-   * Set the url
-   */
+  /** Get the photo */
+  public getPhoto() {
+    return this.photo;
+  }
+
+  /** Set the url */
   public setUrl(url: string) {
     this.set('url', url);
   }
 
-  /**
-   * Is the photo loaded
-   */
+  /** Is the photo loaded */
   public isPhotoLoaded() {
     return !!this.ironImage && this.ironImage.loaded;
   }
 
-  /**
-   * Did the photo fail to load
-   */
+  /** Did the photo fail to load */
   public isPhotoError() {
     return !this.ironImage || this.ironImage.error;
   }
 
-  /**
-   * Prep the photo for display
-   */
+  /** Prep the photo for display */
   public async prep() {
 
     if (ChromeStorage.getBool('largeTime', false)) {

@@ -69,10 +69,10 @@ export class SSPhoto {
   private readonly _aspectRatio: number;
 
   /** Extra information about the photo */
-  private readonly _ex: any | null;
+  private readonly _ex: any | undefined;
 
   /** The location where the photo was taken */
-  private readonly _point: string | null;
+  private readonly _point: string | undefined;
 
   /** A unique id for the photo */
   private _id: number;
@@ -185,17 +185,17 @@ export class SSPhoto {
    * Create a new tab with a link to the original source of the photo, if possible
    */
   public showSource() {
-    let regex;
-    let id;
     let url = null;
 
     switch (this._type) {
       case PhotoSourceFactory.Type.FLICKR:
         if (this._ex) {
           // parse photo id
-          regex = /(\/[^/]*){4}(_.*_)/;
-          id = this._url.match(regex);
-          url = `https://www.flickr.com/photos/${this._ex}${id[1]}`;
+          const regex = /(\/[^/]*){4}(_.*_)/;
+          const id = this._url.match(regex);
+          if (id) {
+            url = `https://www.flickr.com/photos/${this._ex}${id[1]}`;
+          }
         }
         break;
       case PhotoSourceFactory.Type.REDDIT:

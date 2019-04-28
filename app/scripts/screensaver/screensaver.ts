@@ -17,6 +17,11 @@ import {ScreensaverElement} from '../../elements/screensaver-element/screensaver
 
 import '../../elements/screensaver-element/screensaver-element.js';
 
+import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
+import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+
+import * as MyMsg from '../../scripts/my_msg.js';
+
 /**
  * A screensaver instance
  *
@@ -27,6 +32,13 @@ export let Screensaver: ScreensaverElement;
 
 // listen for document and resources loaded
 window.addEventListener('load', () => {
+  // @ts-ignore
   Screensaver = document.querySelector('screensaver-element');
-  Screensaver.launch().catch(() => {});
+  if (Screensaver) {
+    Screensaver.launch().catch(() => {});
+  } else {
+    // bad news, close the screen savers
+    ChromeLog.error('Failed to get screensaver reference', 'Screensaver.onLoad');
+    ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
+  }
 });

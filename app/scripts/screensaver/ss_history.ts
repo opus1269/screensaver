@@ -58,11 +58,11 @@ export function initialize() {
  * @param replaceIdx - the replace index
  */
 export function add(newIdx: number | null, selected: number, replaceIdx: number) {
-  if (newIdx === null) {
-    const slide = Screensaver.getSlide(selected);
+  const photo = Screensaver.getSlide(selected).getPhoto();
+  if ((newIdx === null) && photo) {
     const idx = HIST.idx;
     const len = HIST.arr.length;
-    const photoId = slide.photo.getId();
+    const photoId = photo.getId();
     const photosPos = SSPhotos.getCurrentIndex();
 
     const item: IItem = {

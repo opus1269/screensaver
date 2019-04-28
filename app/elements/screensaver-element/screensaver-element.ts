@@ -285,7 +285,7 @@ export class ScreensaverElement extends BaseElement {
    * @returns The selected photo, undefined if non selected
    */
   public getSelectedPhoto() {
-    let ret: SSPhoto;
+    let ret: SSPhoto | undefined;
     const idx = this.getSelectedSlideIndex();
     if (idx !== -1) {
       ret = this.photos[idx];

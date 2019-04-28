@@ -43,7 +43,7 @@ export function error(msg: string, method?: string, title?: string, extra?: stri
  * @param fatal - true if fatal
  * @param title - a title for the exception
  */
-export function exception(err: Error | null, msg?: string, fatal?: boolean, title?: string) {
+export function exception(err: Error | null, msg: string | null, fatal?: boolean, title?: string) {
   try {
     let errMsg = msg;
     if (!errMsg && err && err.message) {

@@ -27,5 +27,7 @@ export let Options: AppMainElement;
 
 // listen for document and resources loaded
 window.addEventListener('load', () => {
+  // @ts-ignore
+  // TODO Anything we can do here?
   Options = document.querySelector('app-main');
 });

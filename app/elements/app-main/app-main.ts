@@ -554,16 +554,19 @@ export class AppMainElement extends BaseElement {
   protected onChromeMessage(request: ChromeMsg.IMsgType,
                             sender: chrome.runtime.MessageSender,
                             response: (arg0: object) => void) {
+    let ret = false;
     if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
+      ret = true;
       const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab): chrome.tabs.Tab => {
-        chrome.tabs.update(tab.id, {highlighted: true});
-        return null;
+      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab) => {
+        if (tab && tab.id) {
+          chrome.tabs.update(tab.id, {highlighted: true});
+        }
+        response({message: 'OK'});
       }).catch((err: Error) => {
         ChromeLog.error(err.message, 'chromep.tabs.getCurrent');
       });
-      response({message: 'OK'});
     } else if (request.message === ChromeMsg.TYPE.STORAGE_EXCEEDED.message) {
       // Display Error Dialog if a save action exceeded the
       // localStorage limit
@@ -572,12 +575,14 @@ export class AppMainElement extends BaseElement {
       this.errorDialog.open(title, text);
     } else if (request.message === MyMsg.TYPE.PHOTO_SOURCE_FAILED.message) {
       // failed to load
-      this.settingsPage.deselectPhotoSource(request.key);
+      if (request.key) {
+        this.settingsPage.deselectPhotoSource(request.key);
+      }
       const title = ChromeLocale.localize('err_photo_source_title');
-      const text = request.error;
+      const text = request.error || '';
       this.errorDialog.open(title, text);
     }
-    return false;
+    return ret;
   }
 
   /**
