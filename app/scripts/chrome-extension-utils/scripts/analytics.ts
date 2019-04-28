@@ -144,11 +144,16 @@ export function initialize(trackingId: string, appName: string, appId: string, a
       (i[r].q = i[r].q || []).push(arguments);
       // @ts-ignore
     }, i[r].l = 1 * new Date();
+    // @ts-ignore
     // noinspection CommaExpressionJS
     a = s.createElement(o),
+        // @ts-ignore
         m = s.getElementsByTagName(o)[0];
+    // @ts-ignore
     a.async = 1;
+    // @ts-ignore
     a.src = g;
+    // @ts-ignore
     m.parentNode.insertBefore(a, m);
   })(window, document, 'script',
       'https://www.google-analytics.com/analytics.js', 'ga');
@@ -183,7 +188,7 @@ export function page(url: string) {
  * @param label - override label
  * @param action - override action
  */
-export function event(theEvent: IEventType, label: string = null, action: string = null) {
+export function event(theEvent: IEventType, label?: string, action?: string) {
   if (theEvent) {
     const ev = ChromeJSON.shallowCopy(theEvent);
     ev.hitType = 'event';
@@ -220,25 +225,26 @@ export function error(label = 'unknown', method = 'unknownMethod') {
 /**
  * Send an exception
  *
- * @param theError - the exception
- * @param message - the error message
+ * @param err - the error
+ * @param msg - the error message
  * @param fatal - true if fatal
  */
-export function exception(theError: Error | null, message: string = null, fatal = false) {
+export function exception(err: Error | null, msg?: string, fatal?: boolean) {
   try {
-    let msg = 'Unknown';
-    if (message) {
-      msg = message;
-    } else if (theError && theError.message) {
-      msg = theError.message;
+    const theFatal = (fatal === undefined) ? false : fatal;
+    let theMsg = 'Unknown';
+    if (msg) {
+      theMsg = msg;
+    } else if (err && err.message) {
+      theMsg = err.message;
     }
-    if (theError && theError.stack) {
-      msg += `\n\n${theError.stack}`;
+    if (err && err.stack) {
+      theMsg += `\n\n${err.stack}`;
     }
     const ex = {
       hitType: 'exception',
-      exDescription: msg,
-      exFatal: fatal,
+      exDescription: theMsg,
+      exFatal: theFatal,
     };
     if (!ChromeUtils.DEBUG) {
       ga('send', ex);

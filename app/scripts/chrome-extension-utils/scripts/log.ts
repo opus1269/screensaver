@@ -22,18 +22,17 @@ import * as ChromeUtils from './utils.js';
  * Log an error
  *
  * @param msg - override label
- * @param meth - override action
+ * @param method - override action
  * @param title - a title for the error
  * @param extra - extra info. for analytics
  */
-export function error(msg: string = null, meth: string = null,
-                      title: string = null, extra: string = null) {
+export function error(msg: string, method?: string, title?: string, extra?: string) {
   msg = msg || ChromeLocale.localize('err_unknown', 'unknown');
-  meth = meth || ChromeLocale.localize('err_unknownMethod', 'unknownMethod');
+  method = method || ChromeLocale.localize('err_unknownMethod', 'unknownMethod');
   title = title || ChromeLocale.localize('err_error', 'An error occurred');
   const gaMsg = extra ? `${msg} ${extra}` : msg;
   ChromeLastError.save(new ChromeLastError(title, msg)).catch(() => {});
-  ChromeGA.error(gaMsg, meth);
+  ChromeGA.error(gaMsg, method);
 }
 
 /**
@@ -44,12 +43,13 @@ export function error(msg: string = null, meth: string = null,
  * @param fatal - true if fatal
  * @param title - a title for the exception
  */
-export function exception(err: Error|null, msg: string = null, fatal = false,
-                          title: string = null) {
+export function exception(err: Error | null, msg?: string, fatal?: boolean, title?: string) {
   try {
     let errMsg = msg;
     if (!errMsg && err && err.message) {
       errMsg = err.message;
+    } else {
+      errMsg = 'Unknown exception';
     }
     title = title || ChromeLocale.localize('err_exception', 'An exception occurred');
     ChromeLastError.save(new ChromeLastError(title, errMsg)).catch(() => {});

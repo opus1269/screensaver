@@ -139,9 +139,13 @@ export class GooglePhotosPageElement extends BaseElement {
    *
    * @param doPhotos - if true, reload each album
    */
-  public loadAlbumList(doPhotos: boolean = false) {
-    if (this.isAlbumMode) {
-      return this.albumsView.loadAlbumList(doPhotos).catch(() => {});
+  public async loadAlbumList(doPhotos: boolean = false) {
+    try {
+      if (this.isAlbumMode) {
+        await this.albumsView.loadAlbumList(doPhotos);
+      }
+    } catch (err) {
+      // ignore - handled by albumsView
     }
   }
 
@@ -262,9 +266,13 @@ export class GooglePhotosPageElement extends BaseElement {
   /**
    * Fetch Google Photos for the array of user's photos
    */
-  protected loadPhotos() {
-    if (!this.isAlbumMode && this.useGoogle) {
-      return this.photosView.loadPhotos().catch(() => {});
+  protected async loadPhotos() {
+    try {
+      if (!this.isAlbumMode && this.useGoogle) {
+        await this.photosView.loadPhotos();
+      }
+    } catch (err) {
+      // ignore - handled in photosView
     }
   }
 

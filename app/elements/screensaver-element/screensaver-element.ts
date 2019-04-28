@@ -233,13 +233,20 @@ export class ScreensaverElement extends BaseElement {
         }
 
         // initialize the photos
-        const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
         const photos: SSPhoto[] = [];
+        const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
         for (let i = 0; i < length; i++) {
-          photos.push(SSPhotos.getNextUsable());
+          const photo = SSPhotos.getNextUsable();
+          if (photo) {
+            photos.push(photo);
+          }
         }
         this.set('photos', photos);
         this.repeatTemplate.render();
+        if (photos.length === 0) {
+          this.setNoPhotos();
+          return;
+        }
 
         // send msg to update weather. don't wait can be slow
         ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});

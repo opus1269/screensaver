@@ -367,7 +367,7 @@ export class AlbumsViewElement extends BaseElement {
   protected async loadAlbum(album: IAlbum, wait: boolean = true) {
     const METHOD = 'AlbumViews.loadAlbum';
     const ERR_TITLE = ChromeLocale.localize('err_load_album');
-    let error: Error = null;
+    let error: Error | undefined;
     let ret = false;
 
     try {

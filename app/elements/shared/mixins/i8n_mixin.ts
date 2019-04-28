@@ -32,9 +32,9 @@ export const I8nMixin = dedupingMixin((superClass: new () => PolymerElement) => 
    * Localize a string
    *
    * @param name - name from _locales
-   * @param def - default value if name not found
+   * @param def - optional default value if name not found
    */
-  public localize(name: string, def: string = null) {
+  public localize(name: string, def?: string) {
     return ChromeLocale.localize(name, def);
   }
 

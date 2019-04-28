@@ -168,7 +168,7 @@ export class PhotosViewElement extends BaseElement {
    */
   public async loadPhotos() {
     const METHOD = 'PhotosView.loadPhotos';
-    let error: Error = null;
+    let error: Error | undefined;
     try {
       const granted = await Permissions.request(Permissions.GOOGLE_PHOTOS);
 
