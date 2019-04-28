@@ -109,7 +109,7 @@ export class ScreensaverSlideElement
 
   /** The SSPhoto we contain */
   @property({type: Object})
-  public photo: SSPhoto = null;
+  public photo: SSPhoto | null = null;
 
   /** View type to render */
   @property({type: Number})
@@ -145,7 +145,7 @@ export class ScreensaverSlideElement
 
   /** The animation object for photo animation */
   @property({type: Object})
-  protected animation: Animation = null;
+  protected animation: Animation | null = null;
 
   /** Detect faces during photo animation flag */
   @property({type: Boolean})
@@ -153,7 +153,7 @@ export class ScreensaverSlideElement
 
   /** The target rectangle for the photo animation when detecting faces */
   @property({type: Object})
-  protected animationTarget: IRect = null;
+  protected animationTarget: IRect | null = null;
 
   /** Configuration of the current animation */
   @property({type: Object})
@@ -179,27 +179,33 @@ export class ScreensaverSlideElement
   /** Author label */
   @computed('photo')
   get authorLabel() {
-    const type = this.photo.getType();
-    const photographer = this.photo.getPhotographer();
-    let newType: string = type;
-    const idx = type.search('User');
+    let ret = '';
 
-    if (!ChromeStorage.getBool('showPhotog', true) && (idx !== -1)) {
-      // don't show label for user's own photos, if requested
-      return '';
+    if (this.photo) {
+      const type = this.photo.getType();
+      const photographer = this.photo.getPhotographer();
+      let newType: string = type;
+      const idx = type.search('User');
+
+      if (!ChromeStorage.getBool('showPhotog', true) && (idx !== -1)) {
+        // don't show label for user's own photos, if requested
+        return '';
+      }
+
+      if (idx !== -1) {
+        // strip off 'User'
+        newType = type.substring(0, idx - 1);
+      }
+
+      if (!ChromeUtils.isWhiteSpace(photographer)) {
+        ret = `${photographer} / ${newType}`;
+      } else {
+        // no photographer name
+        ret = `${ChromeLocale.localize('photo_from')} ${newType}`;
+      }
     }
 
-    if (idx !== -1) {
-      // strip off 'User'
-      newType = type.substring(0, idx - 1);
-    }
-
-    if (!ChromeUtils.isWhiteSpace(photographer)) {
-      return `${photographer} / ${newType}`;
-    } else {
-      // no photographer name
-      return `${ChromeLocale.localize('photo_from')} ${newType}`;
-    }
+    return ret;
   }
 
   /** Location label */
@@ -411,6 +417,10 @@ export class ScreensaverSlideElement
    * Render letterbox view type
    */
   protected renderLetterbox() {
+    if (!this.photo) {
+      return;
+    }
+
     const SCREEN_AR = screen.width / screen.height;
     const ar = this.photo.getAspectRatio();
     const image = this.ironImage;
@@ -484,6 +494,10 @@ export class ScreensaverSlideElement
    * Render frame view type
    */
   protected renderFrame() {
+    if (!this.photo) {
+      return;
+    }
+
     const photo = this.photo;
     const ar = photo.getAspectRatio();
     const image = this.ironImage;
@@ -561,6 +575,16 @@ export class ScreensaverSlideElement
    * Set the face detection target
    */
   protected async setAnimationTarget() {
+    const ironImage = this.ironImage;
+    if (!ironImage) {
+      return;
+    }
+    const width = ironImage.width;
+    const height = ironImage.height;
+    if (!width || !height) {
+      return;
+    }
+
     try {
       const img = this.ironImage.$.img as HTMLImageElement;
       let detections: any = [];
@@ -602,8 +626,6 @@ export class ScreensaverSlideElement
         target.height = Math.round(bottom - top);
 
         // relative to center in scaled photo coord.
-        const width = this.ironImage.width;
-        const height = this.ironImage.height;
         const scaleX = width / img.naturalWidth;
         const scaleY = height / img.naturalHeight;
         target.x = Math.round(target.x * scaleX);
@@ -641,6 +663,16 @@ export class ScreensaverSlideElement
       return;
     }
 
+    const ironImage = this.ironImage;
+    if (!ironImage) {
+      return;
+    }
+    const width = ironImage.width;
+    const height = ironImage.height;
+    if (!width || !height) {
+      return;
+    }
+
     try {
       if (this.detectFaces) {
         // setup face detection
@@ -657,9 +689,6 @@ export class ScreensaverSlideElement
         delayTime = 2000;
       }
 
-      const ironImage = this.ironImage;
-      const width = ironImage.width;
-      const height = ironImage.height;
       let translateX;
       let translateY;
       let scale;

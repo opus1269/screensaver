@@ -71,7 +71,7 @@ export async function display(single: boolean) {
     if (!single && all) {
       await openOnAllDisplays();
     } else {
-      await open(null);
+      await open();
     }
   } catch (err) {
     ChromeLog.error(err.message, 'SSControl.display');
@@ -89,10 +89,10 @@ export function close() {
 /**
  * Determine if there is a full screen chrome window running on a display
  *
- * @param disp - a connected display
+ * @param disp - an optional connected display, otherwise the main display
  * @returns true if there is a full screen window on the display
  */
-async function hasFullscreen(disp: chrome.system.display.DisplayInfo) {
+async function hasFullscreen(disp?: chrome.system.display.DisplayInfo) {
   let ret = false;
   const fullScreen = ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
 
@@ -135,9 +135,9 @@ async function isShowing() {
 /**
  * Open a screen saver window on the given display
  *
- * @param disp - a connected display or null for the main display
+ * @param disp - an optional connected display, otherwise the main display
  */
-async function open(disp: chrome.system.display.DisplayInfo | null) {
+async function open(disp?: chrome.system.display.DisplayInfo) {
   // window creation options
   const winOpts: chrome.windows.CreateData = {
     url: SS_URL,
@@ -180,7 +180,7 @@ async function openOnAllDisplays() {
   try {
     const displayArr = await chromep.system.display.getInfo();
     if (displayArr.length === 1) {
-      await open(null);
+      await open();
     } else {
       for (const disp of displayArr) {
         await open(disp);

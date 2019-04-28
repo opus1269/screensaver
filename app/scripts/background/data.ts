@@ -185,7 +185,7 @@ export async function update() {
   // here when the data version changes
 
   // get the previous data version
-  let oldVersion: number;
+  let oldVersion: number | undefined;
   try {
     // first, try to get from chrome.storage
     oldVersion = await ChromeStorage.asyncGet('version');
@@ -371,7 +371,7 @@ export async function restoreDefaults() {
  *
  * @param key - the item that changed
  */
-export async function processState(key = 'all') {
+export async function processState(key: string = 'all') {
   try {
     if (key === 'all') {
       // update everything

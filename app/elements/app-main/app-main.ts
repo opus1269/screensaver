@@ -95,7 +95,7 @@ interface IPage {
   /** Menu icon */
   icon: string;
   /** Function to call when we are selected */
-  fn: (index: number, prevRoute: string) => void | null;
+  fn: ((index: number, prevRoute: string) => void) | null;
   /** Url to display when we are selected */
   url: string | null;
   /** Have we been loaded the first time */
@@ -222,10 +222,10 @@ export class AppMainElement extends BaseElement {
   protected helpInsertion: HTMLElement;
 
   /** Function to call on confirm dialog confirm button click */
-  protected confirmFn: () => void = null;
+  protected confirmFn: () => void;
 
   /** Google Photos IPage */
-  protected gPhotosPage: GooglePhotosPageElement = null;
+  protected gPhotosPage: GooglePhotosPageElement;
 
   /**
    * Called when the element is added to a document.
@@ -283,9 +283,9 @@ export class AppMainElement extends BaseElement {
    *
    * @param title - dialog title
    * @param text - dialog text
-   * @param [method=null] - optional calling method
+   * @param method - optional calling method name
    */
-  public showErrorDialog(title: string, text: string, method: string = null) {
+  public showErrorDialog(title: string, text: string, method?: string) {
     if (method) {
       ChromeLog.error(text, method, title);
     }
@@ -445,7 +445,9 @@ export class AppMainElement extends BaseElement {
       this.gPhotosPage = new GooglePhotosPageElement();
       this.googlePhotosInsertion.appendChild(this.gPhotosPage);
     } else if (ChromeStorage.getBool('isAlbumMode', true)) {
-      this.gPhotosPage.loadAlbumList().catch(() => {});
+      if (this.gPhotosPage) {
+        this.gPhotosPage.loadAlbumList().catch(() => {});
+      }
     }
     this.set('route', this.pages[index].route);
   }

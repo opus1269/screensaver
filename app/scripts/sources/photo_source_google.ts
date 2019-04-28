@@ -635,7 +635,7 @@ export class GoogleSource extends PhotoSource {
     }
 
     // Try to save the updated albums
-    const set = await ChromeStorage.asyncSet('albumSelections', albums, null);
+    const set = await ChromeStorage.asyncSet('albumSelections', albums);
     if (!set) {
       ret = false;
       ChromeLog.error(ChromeLocale.localize('err_storage_title'),
@@ -677,7 +677,7 @@ export class GoogleSource extends PhotoSource {
     }
 
     // Try to save the updated photos
-    const set = await ChromeStorage.asyncSet('googleImages', savedPhotos, null);
+    const set = await ChromeStorage.asyncSet('googleImages', savedPhotos);
     if (!set) {
       ret = false;
       ChromeLog.error(ChromeLocale.localize('err_storage_title'),

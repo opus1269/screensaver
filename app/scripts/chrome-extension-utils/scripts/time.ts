@@ -19,37 +19,27 @@ import * as ChromeUtils from './utils.js';
  * Time Class
  */
 export class ChromeTime {
-  /**
-   * Milliseconds in minute
-   */
+  /** Milliseconds in minute */
   static get MSEC_IN_MIN() {
     return 60 * 1000;
   }
 
-  /**
-   * Minutes in hour
-   */
+  /** Minutes in hour */
   static get MIN_IN_HOUR() {
     return 60;
   }
 
-  /**
-   * Milliseconds in hour
-   */
+  /** Milliseconds in hour */
   static get MSEC_IN_HOUR() {
     return ChromeTime.MIN_IN_HOUR * 60 * 1000;
   }
 
-  /**
-   * Minutes in day
-   */
+  /** Minutes in day */
   static get MIN_IN_DAY() {
     return 60 * 24;
   }
 
-  /**
-   * Milliseconds in day
-   */
+  /** Milliseconds in day */
   static get MSEC_IN_DAY() {
     return ChromeTime.MIN_IN_DAY * 60 * 1000;
   }
@@ -61,8 +51,8 @@ export class ChromeTime {
    * @returns time in milliSeconds from epoch
    */
   public static getTime(timeString: string) {
-    const date = new Date();
     const time = new ChromeTime(timeString);
+    const date = new Date();
     date.setHours(time._hr);
     date.setMinutes(time._min);
     date.setSeconds(0);
@@ -121,7 +111,7 @@ export class ChromeTime {
    * @param frmt - optional format, overrides storage value
    * @returns display string
    */
-  public static getStringFull(timeString: string, frmt: number = null) {
+  public static getStringFull(timeString: string, frmt?: number) {
     const time = new ChromeTime(timeString);
     return time.toString(frmt);
   }
@@ -148,10 +138,10 @@ export class ChromeTime {
    * @param frmt - optional format, overrides storage value
    * @returns true for 24 hour time
    */
-  private static is24Hr(frmt: number = null) {
+  private static is24Hr(frmt?: number) {
     let ret = false;
     let format = ChromeStorage.getInt('showTime', 0);
-    if (frmt !== null) {
+    if (frmt) {
       format = frmt;
     }
     const localeTime = ChromeLocale.localize('time_format');
@@ -165,16 +155,18 @@ export class ChromeTime {
     return ret;
   }
 
+  /** hour in 24 hour format */
   private _hr: number;
+
+  /** minute */
   private _min: number;
 
   /**
    * Create a new Time
    *
-   * @param timeString - in '00:00' format, if null use current Date
+   * @param timeString - optional in '00:00' format, otherwise use current time
    */
-  constructor(timeString: string = null) {
-    this._hr = null;
+  constructor(timeString?: string) {
     this.parse(timeString);
   }
 
@@ -184,7 +176,7 @@ export class ChromeTime {
    * @param frmt - optional format, overrides storage value
    * @returns As string
    */
-  public toString(frmt: number = null) {
+  public toString(frmt?: number) {
     const date = new Date();
     date.setHours(this._hr, this._min);
     date.setSeconds(0);
@@ -192,7 +184,7 @@ export class ChromeTime {
     // fallback in case toLocaleTimeString fails - it does sometimes
     let ret = date.toTimeString();
     const languages = [];
-    if (typeof (navigator.language) !== 'undefined') {
+    if (navigator.language) {
       languages.push(navigator.language);
     }
     languages.push('en-US');
@@ -214,7 +206,7 @@ export class ChromeTime {
    *
    * @param timeString - in '00:00' format
    */
-  private parse(timeString: string) {
+  private parse(timeString: string | undefined) {
     if (!timeString) {
       const date = new Date();
       this._hr = date.getHours();

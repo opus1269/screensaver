@@ -90,12 +90,8 @@ export abstract class PhotoSource {
    * @returns 'lat lon'
    */
   public static createPoint(lat: number, lon: number) {
-    if ((typeof lat === 'number') && (typeof lon === 'number')) {
-      return `${lat.toFixed(6)} ${lon.toFixed(6)}`;
-    } else {
-      return `${lat} ${lon}`;
-    }
-  }
+    return `${lat} ${lon}`;
+   }
 
   private readonly _useKey: PhotoSourceFactory.UseKey;
   private readonly _photosKey: string;
@@ -224,15 +220,14 @@ export abstract class PhotoSource {
       // add the source
       try {
         const photos = await this.fetchPhotos();
-        const errMess = await this._save(photos);
-        if (!ChromeUtils.isWhiteSpace(errMess)) {
-          return Promise.reject(new Error(errMess));
+        const err = await this._save(photos);
+        if (err) {
+          return Promise.reject(err);
         }
       } catch (err) {
         let title = ChromeLocale.localize('err_photo_source_title');
         title += `: ${this._desc}`;
-        ChromeLog.error(err.message, 'PhotoSource.process', title,
-            `source: ${this._useKey}`);
+        ChromeLog.error(err.message, 'PhotoSource.process', title, `source: ${this._useKey}`);
         throw err;
       }
     } else {
@@ -242,8 +237,7 @@ export abstract class PhotoSource {
       // page is disabled
       const useGoogle = ChromeStorage.getBool('useGoogle', true);
       let isGoogleKey = false;
-      if ((this._photosKey === 'albumSelections') ||
-          (this._photosKey === 'googleImages')) {
+      if ((this._photosKey === 'albumSelections') || (this._photosKey === 'googleImages')) {
         isGoogleKey = true;
       }
 
@@ -262,15 +256,15 @@ export abstract class PhotoSource {
    * Save the data to chrome.storage.local in a safe manner
    *
    * @param photos - could be array of photos or albums
-   * @returns An error message if the save failed
+   * @returns An error if the save failed
    */
   private async _save(photos: IPhoto[] | ISelectedAlbum[]) {
-    let ret = null;
+    let ret: Error | undefined;
     const keyBool = this._useKey;
     if (photos && photos.length) {
       const set = await ChromeStorage.asyncSet(this._photosKey, photos, keyBool);
       if (!set) {
-        ret = 'Exceeded storage capacity.';
+        ret = new Error('Exceeded storage capacity.');
       }
     }
     return ret;

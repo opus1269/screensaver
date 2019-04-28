@@ -4,6 +4,7 @@
     "module": "esnext",
     "experimentalDecorators": true,
     "noImplicitAny": true,
+    "strictNullChecks": false,
     "watch": false,
     "typeRoots": [
       "./app/node_modules/@types"

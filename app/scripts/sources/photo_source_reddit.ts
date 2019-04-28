@@ -82,7 +82,7 @@ export class RedditSource extends PhotoSource {
    */
   private static _processChildren(children: any[]) {
     const photos: IPhoto[] = [];
-    let url: string;
+    let url: string | undefined;
     let width = 1;
     let height = 1;
 
