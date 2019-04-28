@@ -52,36 +52,33 @@ export class SSPhoto {
    * @param asp - an aspect ratio
    * @returns true if a photo aspect ratio differs substantially from the screens'
    */
-  private static _isBadAspect(asp: number) {
+  protected static _isBadAspect(asp: number) {
     const SCREEN_AR = screen.width / screen.height;
     // arbitrary
     const CUT_OFF = 0.5;
     return (asp < SCREEN_AR - CUT_OFF) || (asp > SCREEN_AR + CUT_OFF);
   }
 
+  /** The url */
+  protected _url: string;
+
+  /** Flag to indicate that the url failed to load */
+  protected _isBad: boolean;
+
   /** The person that took the photo */
-  private readonly _photographer: string;
+  protected readonly _photographer: string;
+
+  /** The aspect ratio */
+  protected readonly _aspectRatio: number;
+
+  /** Type dependent extra information about the photo */
+  protected readonly _ex?: any;
+
+  /** The geolocation where the photo was taken */
+  protected readonly _point?: string;
 
   /** The PhotoSource type the photo came from */
-  private readonly _type: PhotoSourceFactory.Type;
-
-  /** The aspect ratio of the photo */
-  private readonly _aspectRatio: number;
-
-  /** Extra information about the photo */
-  private readonly _ex: any | undefined;
-
-  /** The location where the photo was taken */
-  private readonly _point: string | undefined;
-
-  /** A unique id for the photo */
-  private _id: number;
-
-  /** The url to the photo */
-  private _url: string;
-
-  /** Indicates if the photo is not usable for some reason */
-  private _isBad: boolean;
+  protected readonly _type: PhotoSourceFactory.Type;
 
   /**
    * Create a new photo
@@ -91,28 +88,13 @@ export class SSPhoto {
    * @param sourceType - the PhotoSource type this photo is from
    */
   constructor(id: number, source: IPhoto, sourceType: PhotoSourceFactory.Type) {
-    this._id = id;
     this._url = source.url;
     this._photographer = source.author ? source.author : '';
-    this._type = sourceType;
     this._aspectRatio = parseFloat(source.asp);
     this._ex = source.ex;
     this._point = source.point;
+    this._type = sourceType;
     this._isBad = false;
-  }
-
-  /**
-   * Get unique id
-   */
-  public getId() {
-    return this._id;
-  }
-
-  /**
-   * Set unique id
-   */
-  public setId(id: number) {
-    this._id = id;
   }
 
   /**

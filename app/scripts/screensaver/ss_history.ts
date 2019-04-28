@@ -62,7 +62,7 @@ export function add(newIdx: number | null, selected: number, replaceIdx: number)
   if ((newIdx === null) && photo) {
     const idx = HIST.idx;
     const len = HIST.arr.length;
-    const photoId = photo.getId();
+    const photoId = SSPhotos.getIndex(photo);
     const photosPos = SSPhotos.getCurrentIndex();
 
     const item: IItem = {

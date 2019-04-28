@@ -1,5 +1,5 @@
 /**
- * Collection of {@link SSPhoto} objects
+ * A collection of {@link SSPhoto} objects and an index into them
  *
  * @module scripts/ss/photos
  */
@@ -78,6 +78,16 @@ export function get(idx: number) {
 }
 
 /**
+ * Get the index of a {@link SSPhoto}, -1 if not found
+ *
+ * @param photo - The indexA photo
+ * @returns The index, -1 if not found
+ */
+export function getIndex(photo: SSPhoto) {
+  return _photos.indexOf(photo);
+}
+
+/**
  * Get the next {@link SSPhoto} that is usable
  *
  * @param ignores - photos to ignore
@@ -113,10 +123,10 @@ export function getCurrentIndex() {
  * @returns array of photos of max length num
  */
 export function getNextGooglePhotos(num: number, idx: number) {
+  idx = (idx < 0) ? 0 : idx;
   const photos = [];
-  let ct = 0;
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
-  for (let i = 0; i < _photos.length; i++) {
+  for (let i = 0, ct = 0; i < _photos.length; i++) {
     const index = (i + idx) % _photos.length;
     const photo = _photos[index];
     if (ct >= num) {
@@ -172,8 +182,4 @@ export function incCurrentIndex() {
  */
 export function shuffle() {
   ChromeUtils.shuffleArray(_photos);
-  // renumber
-  _photos.forEach((photo, index) => {
-    photo.setId(index);
-  });
 }

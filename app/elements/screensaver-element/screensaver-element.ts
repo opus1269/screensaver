@@ -678,7 +678,8 @@ export class ScreensaverElement extends BaseElement {
         }
 
         // get max of nPhotos Google Photo ids starting at this one
-        const photos = SSPhotos.getNextGooglePhotos(nPhotos, thePhoto.getId());
+        const startIdx = SSPhotos.getIndex(thePhoto);
+        const photos = SSPhotos.getNextGooglePhotos(nPhotos, startIdx);
         const ids = [];
         for (const photo of photos) {
           // unique ids only - required for batchGet call
