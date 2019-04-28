@@ -26,9 +26,7 @@ const chromep = new ChromePromise();
  */
 const _DEBUG = false;
 
-/**
- * True if development build
- */
+/** True if development build */
 export const DEBUG = _DEBUG;
 
 /** Get the extension's name
@@ -138,9 +136,7 @@ export function isMac() {
   return isOS('mac');
 }
 
-/**
- * No operation
- */
+/** No operation */
 export function noop() {}
 
 /**

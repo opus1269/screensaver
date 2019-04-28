@@ -18,32 +18,28 @@ import * as ChromeUtils from './utils.js';
 
 declare var ga: any;
 
-/**
- * Google Analytics Event type
- */
+/** Google Analytics Event type */
 export interface IEventType {
   eventCategory: string;
   eventAction: string;
   eventLabel: string;
 }
 
-/**
- * Event types
- */
+/** Event types */
 export const EVENT = {
-  /** extension installed */
+  /** Extension installed */
   INSTALLED: {
     eventCategory: 'extension',
     eventAction: 'installed',
     eventLabel: '',
   } as IEventType,
-  /** extension updated */
+  /** Extension updated */
   UPDATED: {
     eventCategory: 'extension',
     eventAction: 'updated',
     eventLabel: '',
   } as IEventType,
-  /** cached OAuth2 token refreshed */
+  /** Cached OAuth2 token refreshed */
   REFRESHED_AUTH_TOKEN: {
     eventCategory: 'user',
     eventAction: 'refreshedAuthToken',
@@ -55,67 +51,67 @@ export const EVENT = {
     eventAction: 'triggered',
     eventLabel: '',
   } as IEventType,
-  /** menu item selected */
+  /** Menu item selected */
   MENU: {
     eventCategory: 'ui',
     eventAction: 'menuSelect',
     eventLabel: '',
   } as IEventType,
-  /** toggle state changed */
+  /** Toggle state changed */
   TOGGLE: {
     eventCategory: 'ui',
     eventAction: 'toggle',
     eventLabel: '',
   } as IEventType,
-  /** url link clicked */
+  /** Url link clicked */
   LINK: {
     eventCategory: 'ui',
     eventAction: 'linkSelect',
     eventLabel: '',
   } as IEventType,
-  /** text changed */
+  /** Text changed */
   TEXT: {
     eventCategory: 'ui',
     eventAction: 'textChanged',
     eventLabel: '',
   } as IEventType,
-  /** slider value changed */
+  /** Slider value changed */
   SLIDER_VALUE: {
     eventCategory: 'ui',
     eventAction: 'sliderValueChanged',
     eventLabel: '',
   } as IEventType,
-  /** slider unit changed */
+  /** Slider unit changed */
   SLIDER_UNITS: {
     eventCategory: 'ui',
     eventAction: 'sliderUnitsChanged',
     eventLabel: '',
   } as IEventType,
-  /** button clicked */
+  /** Button clicked */
   BUTTON: {
     eventCategory: 'ui',
     eventAction: 'buttonClicked',
     eventLabel: '',
   } as IEventType,
-  /** radio button clicked */
+  /** Radio button clicked */
   RADIO_BUTTON: {
     eventCategory: 'ui',
     eventAction: 'radioButtonClicked',
     eventLabel: '',
   } as IEventType,
-  /** toolbar icon clicked */
+  /** Toolbar icon clicked */
   ICON: {
     eventCategory: 'ui',
     eventAction: 'toolbarIconClicked',
     eventLabel: '',
   } as IEventType,
-  /** checkbox clicked */
+  /** Checkbox clicked */
   CHECK: {
     eventCategory: 'ui',
     eventAction: 'checkBoxClicked',
     eventLabel: '',
   } as IEventType,
-  /** keyboard shortcut entered */
+  /** Keyboard shortcut entered */
   KEY_COMMAND: {
     eventCategory: 'ui',
     eventAction: 'keyCommand',

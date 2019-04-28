@@ -1,6 +1,5 @@
 /**
  * Internationalization methods
- *
  * {@link https://developer.chrome.com/extensions/i18n}
  *
  * @module scripts/chrome/locales
@@ -22,9 +21,9 @@
  * @param def - default if no locales
  * @returns internationalized string
  */
-export function localize(key: string, def = '') {
+export function localize(key: string, def?: string) {
   let msg = chrome.i18n.getMessage(key);
-  if ((typeof (msg) === 'undefined') || (msg === '')) {
+  if ((msg === undefined) || (msg === '')) {
     // in case localize is missing
     msg = def || '';
   }

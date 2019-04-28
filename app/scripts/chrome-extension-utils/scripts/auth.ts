@@ -1,6 +1,5 @@
 /**
  * Google Oauth2.0 utilities
- *
  * {@link https://developer.chrome.com/apps/identity}
  *
  * @module scripts/chrome/auth
@@ -30,7 +29,7 @@ const chromep = new ChromePromise();
  * and remove the cached one with the scopes.
  *
  * @param interactive - if true may block
- * @param [scopes=[]] - optional scopes to use, overrides those in the manifest
+ * @param scopes - optional scopes to use, overrides those in the manifest
  * @throws An error if we failed to get token
  * @returns An access token
  */
@@ -47,9 +46,9 @@ export async function getToken(interactive = false, scopes?: string[]) {
 /**
  * Remove a cached OAuth2.0 token
  *
- * @param [interactive=false] - if true may block
- * @param [curToken=''] token to remove
- * @param [scopes=[]] - optional scopes to use, overrides those in the manifest
+ * @param interactive - if true may block
+ * @param curToken token to remove
+ * @param scopes - optional scopes to use, overrides those in the manifest
  * @throws An error if we failed to remove token
  * @returns The old token
  */
