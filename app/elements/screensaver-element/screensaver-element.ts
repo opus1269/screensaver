@@ -641,11 +641,11 @@ export class ScreensaverElement extends BaseElement {
         // update last call time
         errHandler.lastTime = Date.now();
 
-        const hasCors = await Permissions.hasGoogleSourceOrigin();
+        const url = thePhoto.getUrl();
+        const hasCors = await Permissions.isGoogleSourceOrigin(url);
         if (hasCors) {
           // If we can make a cors request, fetch again and check status.
           // If it is not a 403 error, return;
-          const url = thePhoto.getUrl();
           try {
             const response = await fetch(url, {method: 'get'});
             const status = response.status;

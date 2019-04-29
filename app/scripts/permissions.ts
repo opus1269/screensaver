@@ -265,6 +265,22 @@ export async function hasGoogleSourceOrigin() {
 }
 
 /**
+ * Determine if we have permissions for Google photos baseUrl's origin and the url matches
+ *
+ * @returns true if we we have permission and valid url
+ */
+export async function isGoogleSourceOrigin(url: string) {
+  let ret = false;
+
+  const hasPermission = await hasGoogleSourceOrigin();
+  if (hasPermission) {
+    ret = isInOrigins(url, GOOGLE_PHOTOS);
+  }
+
+  return ret;
+}
+
+/**
  * Remove, deny, and clear photo selections for Google Photos
  *
  * @throws An error on failure
