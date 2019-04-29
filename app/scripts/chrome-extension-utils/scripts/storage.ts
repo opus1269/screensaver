@@ -28,9 +28,11 @@ declare var ChromePromise: any;
  */
 export function get(key: string, def?: any) {
   const item = localStorage.getItem(key);
-  let value = def;
+  let value = null;
   if (item !== null) {
     value = ChromeJSON.parse(item);
+  } else if (def !== undefined) {
+    value = def;
   }
   return value;
 }
