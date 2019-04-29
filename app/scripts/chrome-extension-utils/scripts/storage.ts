@@ -47,7 +47,7 @@ export function get(key: string, def?: any) {
 export function getInt(key: string, def?: number) {
   let ret: number = Number.NaN;
   const item = localStorage.getItem(key);
-  if (item) {
+  if (item != null) {
     ret = parseInt(item, 10);
     if (Number.isNaN(ret)) {
       if (def) {
@@ -133,7 +133,7 @@ export function safeSet(key: string, value: any, keyBool?: string) {
  *
  * @param key - data key
  * @param def - optional default value if not found
- * @returns Object or Array from storage, def if not found
+ * @returns Object or Array from storage, def or null if not found
  */
 export async function asyncGet(key: string, def?: object | []) {
   let ret = null;
@@ -143,12 +143,16 @@ export async function asyncGet(key: string, def?: object | []) {
     ret = res[key];
   } catch (err) {
     ChromeGA.error(err.message, 'ChromeStorage.asyncGet');
-    ret = def;
+    if (def !== undefined) {
+      ret = def;
+    }
   }
 
   if (ret === undefined) {
     // probably not in storage
-    ret = def;
+    if (def !== undefined) {
+      ret = def;
+    }
   }
 
   return ret;
