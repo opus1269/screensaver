@@ -13,6 +13,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import * as ChromeGA from '../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeAuth from '../scripts/chrome-extension-utils/scripts/auth.js';
 import * as ChromeJSON from '../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeLog from '../scripts/chrome-extension-utils/scripts/log.js';
@@ -115,16 +116,6 @@ export function isAllowed(type: IType) {
 }
 
 /**
- * Has the user denied the permission
- *
- * @param type - permission type
- * @returns true if denied
- */
-export function isDenied(type: IType) {
-  return ChromeStorage.get(type.name, STATE.notSet) === STATE.denied;
-}
-
-/**
  * Request optional permission
  *
  * @param type - permission type
@@ -216,6 +207,43 @@ export async function deny(type: IType) {
   await _setState(type, STATE.denied);
 
   return removed;
+}
+
+/**
+ * Determine if a url is contained in the permission's origins
+ *
+ * @param url - url to check
+ * @param type - Permission type
+ */
+export function isInOrigins(url: string, type: IType) {
+  let found = false;
+  if (type.origins && type.origins.length) {
+    for (const origin of type.origins) {
+      // strip off 'https://'
+      let originPath = origin.slice(8);
+      let urlPath = url.slice(8);
+      if (originPath.charAt(0) === '*') {
+        // strip off '*'
+        originPath = originPath.slice(1);
+        // strip off to first '.'
+        urlPath = urlPath.slice(urlPath.indexOf('.'));
+      }
+      // strip off first '/' to end
+      originPath = originPath.slice(0, urlPath.indexOf('/'));
+      urlPath = urlPath.slice(0, urlPath.indexOf('/'));
+      if (urlPath === originPath) {
+        // matches origin
+        found = true;
+        break;
+      }
+    }
+  }
+
+  if (!found) {
+    ChromeGA.error(`${url} not in origins`, 'Permissions.isInOrigins');
+  }
+
+  return found;
 }
 
 /**

@@ -47,6 +47,7 @@ import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/loca
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
 
+import * as Permissions from '../../scripts/permissions.js';
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 
 /**
@@ -671,8 +672,8 @@ export class ScreensaverSlideElement
     }
 
     try {
-      if (this.detectFaces) {
-        // setup face detection
+      if (this.detectFaces && Permissions.isInOrigins(this.url, Permissions.DETECT_FACES)) {
+        // setup face detection if we have cors rights to the url
         await this.setAnimationTarget();
       }
 
