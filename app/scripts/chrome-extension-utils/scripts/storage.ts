@@ -27,12 +27,14 @@ declare var ChromePromise: any;
  * @returns json object or string, null if key does not exist
  */
 export function get(key: string, def?: any) {
-  const item = localStorage.getItem(key);
   let value = null;
+  const item = localStorage.getItem(key);
   if (item !== null) {
     value = ChromeJSON.parse(item);
   } else if (def !== undefined) {
     value = def;
+  } else {
+    ChromeGA.error(`${key} not found`, 'ChromeStorage.get');
   }
   return value;
 }
@@ -45,26 +47,23 @@ export function get(key: string, def?: any) {
  * @returns value as integer, NaN on error
  */
 export function getInt(key: string, def?: number) {
-  let ret: number = Number.NaN;
+  let value: number = Number.NaN;
   const item = localStorage.getItem(key);
   if (item != null) {
-    ret = parseInt(item, 10);
-    if (Number.isNaN(ret)) {
-      if (def) {
-        ret = def;
+    value = parseInt(item, 10);
+    if (Number.isNaN(value)) {
+      if (def !== undefined) {
+        value = def;
       } else {
         ChromeGA.error(`NaN value for: ${key} equals ${item}`, 'ChromeStorage.getInt');
       }
     }
+  } else if (def !== undefined) {
+    value = def;
   } else {
-    // key not in storage
-    if (def) {
-      ret = def;
-    } else {
-      ChromeGA.error(`${key} not found`, 'ChromeStorage.getInt');
-    }
+    ChromeGA.error(`${key} not found`, 'ChromeStorage.getInt');
   }
-  return ret;
+  return value;
 }
 
 /**
@@ -136,26 +135,26 @@ export function safeSet(key: string, value: any, keyBool?: string) {
  * @returns Object or Array from storage, def or null if not found
  */
 export async function asyncGet(key: string, def?: object | []) {
-  let ret = null;
+  let value = null;
   const chromep = new ChromePromise();
   try {
     const res = await chromep.storage.local.get([key]);
-    ret = res[key];
+    value = res[key];
   } catch (err) {
     ChromeGA.error(err.message, 'ChromeStorage.asyncGet');
     if (def !== undefined) {
-      ret = def;
+      value = def;
     }
   }
 
-  if (ret === undefined) {
+  if (value === undefined) {
     // probably not in storage
     if (def !== undefined) {
-      ret = def;
+      value = def;
     }
   }
 
-  return ret;
+  return value;
 }
 
 /**
