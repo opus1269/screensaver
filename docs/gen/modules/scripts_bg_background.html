@@ -102,13 +102,13 @@
 					<a name="onchromemessage" class="tsd-anchor"></a>
 					<h3>on<wbr>Chrome<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Chrome<wbr>Message<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Chrome<wbr>Message<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ChromeMsg.ResponseCB</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/background.ts#L166">scripts/background/background.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/background.ts#L165">scripts/background/background.ts:165</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -137,28 +137,10 @@
 									</div>
 								</li>
 								<li>
-									<h5>response: <span class="tsd-signature-type">function</span></h5>
+									<h5>response: <span class="tsd-signature-type">ChromeMsg.ResponseCB</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>function to call once after processing</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>arg0: <span class="tsd-signature-type">object</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -176,7 +158,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/background.ts#L130">scripts/background/background.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/background.ts#L128">scripts/background/background.ts:128</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -203,7 +185,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/background.ts#L56">scripts/background/background.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/background.ts#L54">scripts/background/background.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -241,7 +223,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/background.ts#L113">scripts/background/background.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/background.ts#L111">scripts/background/background.ts:111</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -268,7 +250,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/background.ts#L146">scripts/background/background.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/background.ts#L147">scripts/background/background.ts:147</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -278,6 +260,9 @@
 								<dl class="tsd-comment-tags">
 									<dt>link</dt>
 									<dd><p><a href="https://developer.mozilla.org/en-US/docs/Web/Events/storage">https://developer.mozilla.org/en-US/docs/Web/Events/storage</a></p>
+									</dd>
+									<dt>remarks</dt>
+									<dd><p>ev.key is null only if clear() is called on the storage area</p>
 									</dd>
 								</dl>
 							</div>
@@ -307,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/background.ts#L36">scripts/background/background.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/background.ts#L34">scripts/background/background.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

@@ -84,6 +84,13 @@
 								<li class="tsd-kind-interface tsd-parent-kind-external-module"><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-kind-icon">IMsg<wbr>Type</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section ">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported"><a href="scripts_chrome_msg.html#listener" class="tsd-kind-icon">Listener</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-external-module"><a href="scripts_chrome_msg.html#responsecb" class="tsd-kind-icon">ResponseCB</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
@@ -107,6 +114,87 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+					<a name="listener" class="tsd-anchor"></a>
+					<h3>Listener</h3>
+					<div class="tsd-signature tsd-kind-icon">Listener<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L68">scripts/chrome-extension-utils/scripts/msg.ts:68</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Method signature for listener</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><a href="scripts_chrome_msg.html#responsecb" class="tsd-signature-type">ResponseCB</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>request: <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a></h5>
+											</li>
+											<li>
+												<h5>sender: <span class="tsd-signature-type">MessageSender</span></h5>
+											</li>
+											<li>
+												<h5>response: <a href="scripts_chrome_msg.html#responsecb" class="tsd-signature-type">ResponseCB</a></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-external-module">
+					<a name="responsecb" class="tsd-anchor"></a>
+					<h3>ResponseCB</h3>
+					<div class="tsd-signature tsd-kind-icon">ResponseCB<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L65">scripts/chrome-extension-utils/scripts/msg.ts:65</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Method signature for response callback</p>
+						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias tsd-is-not-exported">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>jsonifiable<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>jsonifiable: <span class="tsd-signature-type">any</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
@@ -115,7 +203,7 @@
 					<div class="tsd-signature tsd-kind-icon">Chrome<wbr>Promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L20">scripts/chrome-extension-utils/scripts/msg.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L20">scripts/chrome-extension-utils/scripts/msg.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -126,13 +214,13 @@
 					<a name="addlistener" class="tsd-anchor"></a>
 					<h3>add<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Listener<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Listener<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="scripts_chrome_msg.html#listener" class="tsd-signature-type">Listener</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L91">scripts/chrome-extension-utils/scripts/msg.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L95">scripts/chrome-extension-utils/scripts/msg.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -143,52 +231,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<h5>listener: <a href="scripts_chrome_msg.html#listener" class="tsd-signature-type">Listener</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>function to receive messages</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>request: <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a></h5>
-														</li>
-														<li>
-															<h5>sender: <span class="tsd-signature-type">MessageSender</span></h5>
-														</li>
-														<li>
-															<h5>response: <span class="tsd-signature-type">function</span></h5>
-															<ul class="tsd-parameters">
-																<li class="tsd-parameter-siganture">
-																	<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-																	</ul>
-																	<ul class="tsd-descriptions">
-																		<li class="tsd-description">
-																			<h4 class="tsd-parameters-title">Parameters</h4>
-																			<ul class="tsd-parameters">
-																				<li>
-																					<h5>arg0: <span class="tsd-signature-type">object</span></h5>
-																				</li>
-																			</ul>
-																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -199,13 +245,13 @@
 					<a name="removelistener" class="tsd-anchor"></a>
 					<h3>remove<wbr>Listener</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Listener<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Listener<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="scripts_chrome_msg.html#listener" class="tsd-signature-type">Listener</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L102">scripts/chrome-extension-utils/scripts/msg.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L104">scripts/chrome-extension-utils/scripts/msg.ts:104</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -216,52 +262,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>listener: <span class="tsd-signature-type">function</span></h5>
+									<h5>listener: <a href="scripts_chrome_msg.html#listener" class="tsd-signature-type">Listener</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>function to receive messages</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>request: <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a></h5>
-														</li>
-														<li>
-															<h5>sender: <span class="tsd-signature-type">MessageSender</span></h5>
-														</li>
-														<li>
-															<h5>response: <span class="tsd-signature-type">function</span></h5>
-															<ul class="tsd-parameters">
-																<li class="tsd-parameter-siganture">
-																	<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-																	</ul>
-																	<ul class="tsd-descriptions">
-																		<li class="tsd-description">
-																			<h4 class="tsd-parameters-title">Parameters</h4>
-																			<ul class="tsd-parameters">
-																				<li>
-																					<h5>arg0: <span class="tsd-signature-type">object</span></h5>
-																				</li>
-																			</ul>
-																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-																		</li>
-																	</ul>
-																</li>
-															</ul>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -278,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L73">scripts/chrome-extension-utils/scripts/msg.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L77">scripts/chrome-extension-utils/scripts/msg.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -314,7 +318,7 @@
 					<div class="tsd-signature tsd-kind-icon">TYPE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L45">scripts/chrome-extension-utils/scripts/msg.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L43">scripts/chrome-extension-utils/scripts/msg.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -328,7 +332,7 @@
 						<div class="tsd-signature tsd-kind-icon">HIGHLIGHT<span class="tsd-signature-symbol">:</span> <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a><span class="tsd-signature-symbol"> =&nbsp;{message: &#x27;highlightTab&#x27;,} as IMsgType</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L47">scripts/chrome-extension-utils/scripts/msg.ts:47</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L45">scripts/chrome-extension-utils/scripts/msg.ts:45</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -343,7 +347,7 @@
 						<div class="tsd-signature tsd-kind-icon">RESTORE_<wbr>DEFAULTS<span class="tsd-signature-symbol">:</span> <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a><span class="tsd-signature-symbol"> =&nbsp;{message: &#x27;restoreDefaults&#x27;,} as IMsgType</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L51">scripts/chrome-extension-utils/scripts/msg.ts:51</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L49">scripts/chrome-extension-utils/scripts/msg.ts:49</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -358,7 +362,7 @@
 						<div class="tsd-signature tsd-kind-icon">STORAGE_<wbr>EXCEEDED<span class="tsd-signature-symbol">:</span> <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a><span class="tsd-signature-symbol"> =&nbsp;{message: &#x27;storageExceeded&#x27;,} as IMsgType</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L55">scripts/chrome-extension-utils/scripts/msg.ts:55</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L53">scripts/chrome-extension-utils/scripts/msg.ts:53</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -373,7 +377,7 @@
 						<div class="tsd-signature tsd-kind-icon">STORE<span class="tsd-signature-symbol">:</span> <a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a><span class="tsd-signature-symbol"> =&nbsp;{message: &#x27;store&#x27;,key: &#x27;&#x27;,value: &#x27;&#x27;,} as IMsgType</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/chrome-extension-utils/scripts/msg.ts#L59">scripts/chrome-extension-utils/scripts/msg.ts:59</a></li>
+								<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/chrome-extension-utils/scripts/msg.ts#L57">scripts/chrome-extension-utils/scripts/msg.ts:57</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -400,6 +404,12 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
 						<a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-kind-icon">IMsg<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="scripts_chrome_msg.html#listener" class="tsd-kind-icon">Listener</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="scripts_chrome_msg.html#responsecb" class="tsd-kind-icon">ResponseCB</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="scripts_chrome_msg.html#chromepromise" class="tsd-kind-icon">Chrome<wbr>Promise</a>

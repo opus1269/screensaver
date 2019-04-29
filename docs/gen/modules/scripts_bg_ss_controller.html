@@ -114,13 +114,13 @@
 					<a name="onchromemessage" class="tsd-anchor"></a>
 					<h3>on<wbr>Chrome<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Chrome<wbr>Message<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Chrome<wbr>Message<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_chrome_msg.imsgtype.html" class="tsd-signature-type">IMsgType</a>, sender<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">MessageSender</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ChromeMsg.ResponseCB</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L243">scripts/background/ss_controller.ts:243</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L235">scripts/background/ss_controller.ts:235</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -149,28 +149,10 @@
 									</div>
 								</li>
 								<li>
-									<h5>response: <span class="tsd-signature-type">function</span></h5>
+									<h5>response: <span class="tsd-signature-type">ChromeMsg.ResponseCB</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>function to call once after processing</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>arg0<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>arg0: <span class="tsd-signature-type">object</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -188,7 +170,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L206">scripts/background/ss_controller.ts:206</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L198">scripts/background/ss_controller.ts:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -227,7 +209,7 @@
 					<div class="tsd-signature tsd-kind-icon">Chrome<wbr>Promise<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L28">scripts/background/ss_controller.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L28">scripts/background/ss_controller.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -237,7 +219,7 @@
 					<div class="tsd-signature tsd-kind-icon">ERR_<wbr>SHOW<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;ChromeLocale.localize(&#x27;err_show_ss&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L39">scripts/background/ss_controller.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L35">scripts/background/ss_controller.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -252,7 +234,7 @@
 					<div class="tsd-signature tsd-kind-icon">SS_<wbr>URL<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"/html/screensaver.html"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;/html/screensaver.html&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L34">scripts/background/ss_controller.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L32">scripts/background/ss_controller.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -267,7 +249,7 @@
 					<div class="tsd-signature tsd-kind-icon">chromep<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;new ChromePromise()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L29">scripts/background/ss_controller.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L29">scripts/background/ss_controller.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -284,7 +266,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L84">scripts/background/ss_controller.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L78">scripts/background/ss_controller.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -306,7 +288,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L67">scripts/background/ss_controller.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L63">scripts/background/ss_controller.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -324,7 +306,7 @@
 								<li>
 									<h5>single: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>if true, only show on one display</p>
+										<p>if true, only show on main display</p>
 									</div>
 								</li>
 							</ul>
@@ -336,13 +318,13 @@
 					<a name="hasfullscreen" class="tsd-anchor"></a>
 					<h3>has<wbr>Fullscreen</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">has<wbr>Fullscreen<span class="tsd-signature-symbol">(</span>disp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DisplayInfo</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">has<wbr>Fullscreen<span class="tsd-signature-symbol">(</span>disp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">chrome.system.display.DisplayInfo</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L95">scripts/background/ss_controller.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L89">scripts/background/ss_controller.ts:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -353,9 +335,9 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>disp: <span class="tsd-signature-type">DisplayInfo</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> disp: <span class="tsd-signature-type">chrome.system.display.DisplayInfo</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>a connected display</p>
+										<p>an optional connected display, otherwise the main display</p>
 									</div>
 								</li>
 							</ul>
@@ -374,16 +356,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L46">scripts/background/ss_controller.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L42">scripts/background/ss_controller.ts:42</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Determine if the screen saver can be displayed</p>
+									<p>Determine if the screensaver can be displayed</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>true if should display the screensaver</p>
+							<p>true if we should display the screensaver</p>
 						</li>
 					</ul>
 				</section>
@@ -397,7 +379,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L124">scripts/background/ss_controller.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L118">scripts/background/ss_controller.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -414,26 +396,26 @@
 					<a name="open" class="tsd-anchor"></a>
 					<h3>open</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">open<span class="tsd-signature-symbol">(</span>disp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DisplayInfo</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">open<span class="tsd-signature-symbol">(</span>disp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">chrome.system.display.DisplayInfo</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L140">scripts/background/ss_controller.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L134">scripts/background/ss_controller.ts:134</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Open a screen saver window on the given display</p>
+									<p>Open a screensaver window on the given display</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>disp: <span class="tsd-signature-type">DisplayInfo</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> disp: <span class="tsd-signature-type">chrome.system.display.DisplayInfo</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>a connected display or null for the main display</p>
+										<p>an optional connected display, otherwise the main display</p>
 									</div>
 								</li>
 							</ul>
@@ -451,12 +433,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/b97ff6c/app/scripts/background/ss_controller.ts#L179">scripts/background/ss_controller.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/72371f7/app/scripts/background/ss_controller.ts#L171">scripts/background/ss_controller.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Open a screensaver on every display</p>
+									<p>Open a screensaver on every connected display</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
