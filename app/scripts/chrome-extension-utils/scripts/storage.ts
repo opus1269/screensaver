@@ -33,8 +33,6 @@ export function get(key: string, def?: any) {
     value = ChromeJSON.parse(item);
   } else if (def !== undefined) {
     value = def;
-  } else {
-    ChromeGA.error(`${key} not found`, 'ChromeStorage.get');
   }
   return value;
 }
@@ -60,8 +58,6 @@ export function getInt(key: string, def?: number) {
     }
   } else if (def !== undefined) {
     value = def;
-  } else {
-    ChromeGA.error(`${key} not found`, 'ChromeStorage.getInt');
   }
   return value;
 }
