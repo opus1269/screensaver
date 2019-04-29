@@ -20,17 +20,24 @@ declare var faceapi: any;
  *
  * @throws An error if something goes wrong
  */
-export async function initialize() {
-  await faceapi.loadTinyFaceDetectorModel('/assets/models');
+export function initialize() {
+  // do not use await here. it does not catch errors properly
+  return faceapi.loadTinyFaceDetectorModel('/assets/models').catch((err: any) => {
+    throw err;
+  });
 }
 
 /**
  * Detect all the faces in an image
  *
  * @param img - image to check
- * @throws An error if something goes wrong
  * @returns an array of detected faces
  */
-export async function detectAll(img: HTMLImageElement) {
-  return await faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions());
+export function detectAll(img: HTMLImageElement) {
+  // do not use await here. it does not catch errors properly
+  return faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions()).then((detections: any) => {
+    return detections;
+  }).catch(() => {
+    return [];
+  });
 }

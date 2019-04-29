@@ -57,9 +57,7 @@ import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 declare var ChromePromise: any;
 
-/**
- * Slide transition animation type
- */
+/** Slide transition animation type */
 export const enum TRANS_TYPE {
   SCALE_UP = 0,
   FADE,
@@ -72,9 +70,7 @@ export const enum TRANS_TYPE {
   RANDOM,
 }
 
-/**
- * Slide appearance type
- */
+/** Slide appearance type */
 export const enum VIEW_TYPE {
   LETTERBOX = 0,
   ZOOM,
@@ -83,9 +79,7 @@ export const enum VIEW_TYPE {
   RANDOM,
 }
 
-/**
- * Object to handle Google Photos load errors
- */
+/** Object to handle Google Photos load errors */
 const errHandler = {
   /** maximum number of times to call */
   MAX_COUNT: 168, // about a weeks worth, if all goes well
@@ -99,15 +93,11 @@ const errHandler = {
   lastTime: 0,
 };
 
-/**
- * Polymer element to display a screensaver
- */
+/** Polymer element to display a screensaver */
 @customElement('screensaver-element')
 export class ScreensaverElement extends BaseElement {
 
-  /**
-   * Set the window zoom factor to 1.0
-   */
+  /** Set the window zoom factor to 1.0 */
   protected static async setZoom() {
     const chromep = new ChromePromise();
     try {
@@ -216,9 +206,7 @@ export class ScreensaverElement extends BaseElement {
     }, 0);
   }
 
-  /**
-   * Launch the slide show
-   */
+  /** Launch the slide show */
   public async launch() {
     const METHOD = 'SS.launch';
     try {
@@ -263,9 +251,7 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
-  /**
-   * Get max number of slides
-   */
+  /** Get max number of slides */
   public getMaxSlideCount() {
     return this.MAX_SLIDES;
   }
@@ -317,8 +303,7 @@ export class ScreensaverElement extends BaseElement {
    */
   public findLoadedPhoto(idx: number) {
     if (!this.hasUsablePhoto()) {
-      // replace the photos
-      this.replaceAll();
+      this.replaceAllPhotos();
     }
 
     const curSlide = this.getSlide(idx);
@@ -385,7 +370,6 @@ export class ScreensaverElement extends BaseElement {
    * Set the selected index of the pages
    *
    * @param idx - slide index
-   *
    */
   public setSelectedSlideIndex(idx: number) {
     if (this.pages) {
@@ -422,9 +406,7 @@ export class ScreensaverElement extends BaseElement {
     return this.noPhotos;
   }
 
-  /**
-   * Set the state when no photos are available
-   */
+  /** Set the state when no photos are available */
   public setNoPhotos() {
     this.set('noPhotos', true);
   }
@@ -466,9 +448,7 @@ export class ScreensaverElement extends BaseElement {
     return true;
   }
 
-  /**
-   * Process settings related to slide appearance
-   */
+  /** Process settings related to slide appearance */
   protected setupViewType() {
     let type = ChromeStorage.getInt('photoSizing', VIEW_TYPE.LETTERBOX);
     if (type === VIEW_TYPE.RANDOM) {
@@ -478,9 +458,7 @@ export class ScreensaverElement extends BaseElement {
     this.set('viewType', type);
   }
 
-  /**
-   * Process settings related to between photo transitions
-   */
+  /** Process settings related to between photo transitions */
   protected setupPhotoTransitions() {
     let type: TRANS_TYPE = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
     if (type === TRANS_TYPE.RANDOM) {
@@ -490,9 +468,7 @@ export class ScreensaverElement extends BaseElement {
     this.set('aniType', type);
   }
 
-  /**
-   * Setup timer for time label
-   */
+  /** Setup timer for time label */
   protected setupTime() {
     const showTime = ChromeStorage.getInt('showTime', 0);
     if (showTime > 0) {
@@ -502,9 +478,7 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
-  /**
-   * Set the time label
-   */
+  /** Set the time label */
   protected setTimeLabel() {
     let label = '';
     const showTime = ChromeStorage.getInt('showTime', 0);
@@ -554,10 +528,8 @@ export class ScreensaverElement extends BaseElement {
     return ret;
   }
 
-  /**
-   * Replace the photo in all the slides but the current animation pair
-   */
-  protected replaceAll() {
+  /** Replace the photo in all the slides but the current animation pair */
+  protected replaceAllPhotos() {
     for (let i = 0; i < this.photos.length; i++) {
       if (SSRunner.isCurrentPair(i)) {
         // don't replace current animation pair
