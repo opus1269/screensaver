@@ -81,24 +81,6 @@ export async function process(useKey: PhotoSourceFactory.UseKey) {
 }
 
 /**
- * Get all the photos from all selected sources. These will be used by the screensaver.
- *
- * @throws An error if we failed to get photos
- * @returns Array of sources
- */
-export async function getSelectedPhotos() {
-  const ret = [];
-
-  const sources = getSelectedSources();
-  for (const source of sources) {
-    const photos = await source.getPhotos();
-    ret.push(photos);
-  }
-
-  return ret;
-}
-
-/**
  * Process all the selected photo sources.
  *
  * @param doGoogle - update user's Google Photos too

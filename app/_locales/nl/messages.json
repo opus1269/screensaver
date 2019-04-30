@@ -651,6 +651,12 @@
   "err_detect_faces_perm": {
     "message": "Detecteert geen gezichten tijdens pannen en zoomen."
   },
+  "setting_dark_mode": {
+    "message": "Donker thema"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Gebruik donkere kleuren voor deze pagina"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

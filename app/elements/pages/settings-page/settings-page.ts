@@ -47,6 +47,8 @@ import '../../../elements/shared/setting-elements/setting-slider/setting-slider.
 import '../../../elements/shared/setting-elements/setting-time/setting-time.js';
 import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
 
+import {AppMainElement} from '../../../elements/app-main/app-main.js';
+
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
 import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
@@ -204,6 +206,9 @@ export class SettingsPageElement extends BaseElement {
   @query('#settingsToggle')
   protected settingsToggle: SettingToggleElement;
 
+  @query('#darkMode')
+  protected darkModeToggle: SettingToggleElement;
+
   /**
    * Deselect the given {@link PhotoSource}
    *
@@ -221,8 +226,7 @@ export class SettingsPageElement extends BaseElement {
   @listen('change', 'settingsToggle')
   public onEnabledChanged() {
     const enabled = this.settingsToggle.checked;
-    ChromeGA.event(ChromeGA.EVENT.TOGGLE,
-        `screensaverEnabled: ${enabled}`);
+    ChromeGA.event(ChromeGA.EVENT.TOGGLE, `screensaverEnabled: ${enabled}`);
   }
 
   /**
@@ -282,7 +286,18 @@ export class SettingsPageElement extends BaseElement {
   }
 
   /**
-   * Process the background
+   * Change UI color mode
+   *
+   * @event
+   */
+  @listen('change', 'darkMode')
+  public onDarkModeChanged() {
+    const isDark = this.darkModeToggle.checked;
+    AppMainElement.setColors(isDark);
+  }
+
+  /**
+   * Process the background permission
    *
    * @event
    */
@@ -553,7 +568,7 @@ export class SettingsPageElement extends BaseElement {
                           items="[[photoSizingMenu]]" disabled$="[[!enabled]]"></setting-dropdown>
         <setting-toggle name="panAndScan" main-label="[[localize('setting_pan_and_scan')]]"
                         secondary-label="[[localize('setting_pan_and_scan_desc')]]"
-                        checked="{{panAndScanValue}}"
+                        checked="{{panAndScanValue}}" noseparator=""
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle id="detectFaces" name="detectFaces" main-label="[[localize('setting_detect_faces')]]"
                         secondary-label="[[localize('setting_detect_faces_desc')]]"
@@ -564,6 +579,10 @@ export class SettingsPageElement extends BaseElement {
         <setting-toggle name="fullResGoogle" main-label="[[localize('setting_full_res')]]"
                         secondary-label="[[localize('setting_full_res_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle id="darkMode" name="darkMode" main-label="[[localize('setting_dark_mode')]]"
+                        secondary-label="[[localize('setting_dark_mode_desc')]]"
+                        disabled$="[[!enabled]]"></setting-toggle>
+
         <setting-toggle section-title="[[localize('settings_behavior')]]" id="allowBackground" name="allowBackground"
                         main-label="[[localize('setting_background')]]"
                         secondary-label="[[localize('setting_background_desc')]]"
@@ -578,26 +597,28 @@ export class SettingsPageElement extends BaseElement {
                         secondary-label="[[localize('setting_skip_desc')]]" disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="allowPhotoClicks" main-label="[[localize('setting_photo_clicks')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
+
         <setting-toggle section-title="[[localize('settings_extras')]]" name="showPhotog"
                         main-label="[[localize('setting_photog')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
-<!--        <setting-toggle name="showLocation" main-label="[[localize('setting_location')]]"-->
-<!--                        secondary-label="[[localize('setting_location_desc')]]"-->
-<!--                        disabled$="[[!enabled]]"></setting-toggle>-->
+        <!--        <setting-toggle name="showLocation" main-label="[[localize('setting_location')]]"-->
+        <!--                        secondary-label="[[localize('setting_location_desc')]]"-->
+        <!--                        disabled$="[[!enabled]]"></setting-toggle>-->
         <setting-toggle id="showWeather" name="showCurrentWeather" main-label="[[localize('setting_weather')]]"
                         secondary-label="[[localize('setting_weather_desc')]]"
-                        checked="{{showWeatherValue}}"
+                        checked="{{showWeatherValue}}" noseparator=""
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-dropdown name="weatherTempUnit" label="[[localize('setting_temp_unit')]]"
                           items="[[tempUnitMenu]]" value="[[weatherTempUnitValue]]"
                           disabled$="[[weatherTempDisabled]]"
                           indent=""></setting-dropdown>
         <setting-dropdown name="showTime" label="[[localize('setting_show_time')]]" items="[[timeFormatMenu]]"
-                          value="{{showTimeValue}}" disabled$="[[!enabled]]"></setting-dropdown>
+                          value="{{showTimeValue}}" disabled$="[[!enabled]]" noseparator=""></setting-dropdown>
         <setting-toggle name="largeTime" main-label="[[localize('setting_large_time')]]" indent=""
                         disabled$="[[largeTimeDisabled]]" noseparator="">
         </setting-toggle>
       </div>
+
       <div>
         <setting-toggle name="allDisplays" main-label="[[localize('setting_all_displays')]]"
                         secondary-label="[[localize('setting_all_displays_desc')]]"
@@ -606,21 +627,22 @@ export class SettingsPageElement extends BaseElement {
                         secondary-label="[[localize('setting_full_screen_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle id="keepAwake" name="keepAwake" main-label="[[localize('setting_keep_awake')]]"
-                        secondary-label="[[localize('setting_keep_awake_desc')]]"
+                        secondary-label="[[localize('setting_keep_awake_desc')]]" noseparator=""
                         checked="{{keepEnabled}}"></setting-toggle>
         <paper-tooltip for="keepAwake" position="top" offset="0">
           [[localize('tooltip_keep_awake')]]
         </paper-tooltip>
-        <setting-time name="activeStart" main-label="[[localize('setting_start_time')]]"
+        <setting-time name="activeStart" main-label="[[localize('setting_start_time')]]" noseparator=""
                       secondary-label="[[localize('setting_start_time_desc')]]" format="[[showTimeValue]]" indent=""
                       disabled$="[[!keepEnabled]]"></setting-time>
-        <setting-time name="activeStop" main-label="[[localize('setting_stop_time')]]"
+        <setting-time name="activeStop" main-label="[[localize('setting_stop_time')]]" noseparator=""
                       secondary-label="[[localize('setting_stop_time_desc')]]" format="[[showTimeValue]]" indent=""
                       disabled$="[[!keepEnabled]]"></setting-time>
         <setting-toggle id="allowSuspend" name="allowSuspend" main-label="[[localize('setting_suspend')]]"
                         secondary-label="[[localize('setting_suspend_desc')]]" indent="" noseparator=""
                         disabled$="[[!keepEnabled]]"></setting-toggle>
       </div>
+      
       <div>
         <setting-toggle name="useChromecast" main-label="[[localize('setting_chromecast')]]"
                         secondary-label="[[localize('setting_chromecast_desc')]]"

@@ -651,6 +651,12 @@
   "err_detect_faces_perm": {
     "message": "Gesichter werden beim Schwenken und Zoomen nicht erkannt"
   },
+  "setting_dark_mode": {
+    "message": "Dunkles Thema"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Verwenden Sie dunkle Farben für diese Seite"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

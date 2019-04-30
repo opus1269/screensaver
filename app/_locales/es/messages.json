@@ -651,6 +651,12 @@
   "err_detect_faces_perm": {
     "message": "No detectará caras durante la panorámica y el zoom."
   },
+  "setting_dark_mode": {
+    "message": "Tema oscuro"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Usa colores oscuros para esta página."
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

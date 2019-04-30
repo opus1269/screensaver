@@ -36,7 +36,7 @@ declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
 /** Version of data - update when items are added, removed, changed */
-const DATA_VERSION = 27;
+const DATA_VERSION = 28;
 
 /** App data saved to local storage */
 export const DEFS = {
@@ -132,6 +132,8 @@ export const DEFS = {
   panAndScan: false,
   /** Detect faces during "Ken Burns" effect */
   detectFaces: false,
+  /** Dark mode for UI */
+  darkMode: false,
 };
 
 /** Initialize the saved data */

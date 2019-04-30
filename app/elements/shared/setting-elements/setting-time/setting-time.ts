@@ -77,7 +77,6 @@ export class SettingTimeElement extends SettingBase {
   <paper-input type="time" min="0:00" max="24:00" required
                class="setting-label" tabindex="-1" value={{value}} disabled$="[[disabled]]"></paper-input>
 </paper-item>
-<hr hidden$="[[noseparator]]">
 
 <app-localstorage-document key="[[name]]" data="{{value}}" storage="window.localStorage">
 </app-localstorage-document>

@@ -18,7 +18,8 @@ import '../../node_modules/@polymer/polymer/polymer-element.js';
 const sharedStyles = document.createElement('dom-module');
 
 // language=HTML format=false
-sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnresolvedCustomProperty -->
+sharedStyles.innerHTML = `
+<!--suppress CssUnresolvedCustomProperty -->
 <template>
   <style>
     .page-title {
@@ -48,10 +49,31 @@ sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnreso
     }
 
     ::-webkit-scrollbar-thumb {
-      background: rgba(48, 63, 159, 1);
-      -webkit-border-radius: 8px;
+      background-color: var(--scrollbar-color);
       border-radius: 4px;
       cursor: pointer;
+    }
+
+    paper-button {
+      color: var(--setting-item-color);
+      margin-top: 8px;
+      margin-bottom: 16px;
+      border: 1px solid var(--divider-color);
+      @apply --layout-center;
+      @apply --layout-horizontal;
+      cursor: pointer;
+    }
+    
+    paper-button[disabled] {
+      color: var(--disabled-text-color);
+    }
+    
+    paper-button iron-icon {
+      margin-right: 8px;
+    }
+
+    paper-checkbox {
+      --paper-checkbox-checked-color: var(--setting-item-color);
     }
 
     paper-dialog {
@@ -59,32 +81,57 @@ sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnreso
       max-width: 50vw;
     }
 
-    paper-material {
-      border-radius: 2px;
-      background: white;
-      padding: 0;
+    paper-dropdown-menu {
+      --paper-input-container-focus-color: var(--setting-item-color);
+      --paper-dropdown-menu: {
+        cursor: pointer;
+      };
     }
 
-    paper-listbox iron-icon {
-      margin-right: 20px;
-      opacity: 0.54;
+    paper-input {
+      --paper-input-container-focus-color: var(--setting-item-color);
     }
 
-    paper-listbox paper-item {
+    paper-listbox {
       --paper-item: {
-        color: var(--menu-link-color);
         text-rendering: optimizeLegibility;
         cursor: pointer;
       };
       --paper-item-selected: {
-        color: var(--dark-primary-color);
-        background-color: var(--selected-color);
+        background-color: var(--selected-item-background-color);
+        color: var(--selected-item-color);
+        opacity: var(--selected-item-opacity);
         text-rendering: optimizeLegibility;
         cursor: pointer;
+        --paper-item-icon: {
+          opacity: 1.0;
+        };
       };
       --paper-item-focused-before: {
         background-color: transparent;
       };
+      --paper-item-icon-width: 48px;
+      --paper-item-icon: {
+        opacity: var(--opacity);
+      };
+    }
+    
+    paper-material {
+      border-radius: 2px;
+      padding: 0;
+    }
+
+    paper-slider {
+      --paper-slider-active-color: var(--setting-item-color);
+      --paper-slider-secondary-color: var(--setting-item-color);
+      --paper-slider-knob-color: var(--setting-item-color);
+      --paper-slider-pin-color: var(--setting-item-color);
+      --paper-slider-knob-start-color: var(--setting-item-color);
+      --paper-slider-knob-start-border-color: transparent;
+      --paper-slider-pin-start-color: var(--setting-item-color);
+      --paper-slider-input: {
+        --paper-input-container-focus-color: var(--setting-item-color);
+      }
     }
 
     paper-toggle-button {
@@ -93,55 +140,26 @@ sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnreso
       --paper-toggle-button-checked-bar-color: var(--setting-item-color);
     }
 
-    paper-button {
-      margin-top: 8px;
-      margin-bottom: 16px;
-      @apply --layout-center;
-      @apply --layout-horizontal;
-    }
-
-    paper-button[raised] {
-      background: #FAFAFA;
-    }
-
-    paper-button iron-icon {
-      margin-right: 8px;
-    }
-
-    paper-dropdown-menu {
-      --paper-dropdown-menu: {
-        cursor: pointer;
-      };
-    }
-
-    app-drawer-layout:not([narrow]) [drawer-toggle] {
-      display: none;
-    }
-
-    app-drawer {
-      --app-drawer-content-container: {
-        border-right: var(--drawer-toolbar-border-color);
-      }
-    }
-
     app-toolbar {
-      color: var(--text-primary-color);
+      color: var(--toolbar-item-color);
       background-color: var(--primary-color);
     }
 
     app-toolbar paper-toggle-button {
       padding-left: 8px;
-      --paper-toggle-button-checked-button-color: white;
-      --paper-toggle-button-checked-bar-color: white;
+      --paper-toggle-button-checked-button-color: var(--toolbar-item-color);
+      --paper-toggle-button-checked-bar-color: var(--toolbar-item-color);
     }
 
     .page-toolbar {
-      /*@apply --paper-font-title;*/
-      background-color: var(--primary-color);
+      color: var(--toolbar-item-color);
+      background-color: var(--toolbar-background-color);
       margin-bottom: 8px;
     }
 
     .page-container {
+      color: var(--primary-text-color);
+      background-color: var(--primary-background-color);
       max-width: 700px;
       height: 100%;
       margin-bottom: 16px;
@@ -175,7 +193,7 @@ sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnreso
 
     .button-a {
       text-decoration: none;
-      color: var(--menu-link-color);
+      color: var(--toolbar-item-color);
       display: -ms-flexbox;
       display: -webkit-flex;
       display: flex;
@@ -191,7 +209,7 @@ sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomPropertySet, CssUnreso
     hr {
       margin: 0 8px;
       border: none;
-      border-top: 1px #CCCCCC solid;
+      border-top: 1px var(--divider-color) solid;
     }
 
   </style>

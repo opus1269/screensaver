@@ -41,6 +41,7 @@ import '../../node_modules/@polymer/paper-button/paper-button.js';
 import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
 import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 import '../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
+import '../../node_modules/@polymer/paper-item/paper-icon-item.js';
 import '../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../node_modules/@polymer/paper-listbox/paper-listbox.js';
 import '../../node_modules/@polymer/paper-material/paper-material.js';
@@ -111,6 +112,64 @@ interface IPage {
  */
 @customElement('app-main')
 export class AppMainElement extends BaseElement {
+
+  /**
+   * Set the colors for the UI
+   *
+   * @param isDark - if true, use dark mode
+   */
+  public static setColors(isDark: boolean) {
+    const root = document.documentElement;
+    if (isDark) {
+      root.style.setProperty('--base-color', 'var(--dark-theme-base-color)');
+      root.style.setProperty('--background-color', '#313131');
+      root.style.setProperty('--opacity', 'var(--light-secondary-opacity)');
+
+      root.style.setProperty('--primary-text-color', 'var(--dark-theme-text-color)');
+      root.style.setProperty('--primary-background-color', 'var(--background-color)');
+      root.style.setProperty('--secondary-text-color', 'var(--dark-theme-secondary-color)');
+      root.style.setProperty('--disabled-text-color', 'var(--dark-theme-disabled-color)');
+      root.style.setProperty('--divider-color', 'var(--paper-grey-700)');
+
+      root.style.setProperty('--primary-color', 'var(--background-color)');
+      root.style.setProperty('--light-primary-color', 'var(--paper-grey-900)');
+      root.style.setProperty('--dark-primary-color', 'var(--paper-grey-900)');
+
+      root.style.setProperty('--setting-item-color', 'var(--paper-teal-400)');
+
+      root.style.setProperty('--selected-item-color', 'white');
+      root.style.setProperty('--selected-item-background-color', 'var(--setting-item-color)');
+      root.style.setProperty('--selected-item-opacity', '1');
+
+      root.style.setProperty('--main-toolbar-background-color', 'var(--primary-color)');
+
+      root.style.setProperty('--scrollbar-color', 'var(--setting-item-color)');
+    } else {
+      root.style.setProperty('--base-color', 'var(--light-theme-base-color)');
+      root.style.setProperty('--background-color', 'var(--light-theme-background-color)');
+      root.style.setProperty('--opacity', 'var(--dark-secondary-opacity)');
+
+      root.style.setProperty('--primary-text-color', 'var(--light-theme-text-color)');
+      root.style.setProperty('--primary-background-color', 'var(--light-theme-background-color)');
+      root.style.setProperty('--secondary-text-color', 'var(--light-theme-secondary-color)');
+      root.style.setProperty('--disabled-text-color', 'var(--light-theme-disabled-color)');
+      root.style.setProperty('--divider-color', 'var(--light-theme-divider-color)');
+
+      root.style.setProperty('--primary-color', 'var(--paper-indigo-500)');
+      root.style.setProperty('--light-primary-color', '#EEEEEE');
+      root.style.setProperty('--dark-primary-color', 'var(--paper-indigo-700)');
+
+      root.style.setProperty('--setting-item-color', 'var(--paper-teal-700)');
+
+      root.style.setProperty('--selected-item-color', 'black');
+      root.style.setProperty('--selected-item-background-color', 'var(--paper-indigo-100)');
+      root.style.setProperty('--selected-item-opacity', '.9');
+
+      root.style.setProperty('--main-toolbar-background-color', 'var(--dark-primary-color)');
+
+      root.style.setProperty('--scrollbar-color', 'var(--dark-primary-color)');
+    }
+  }
 
   /** Path to the extension in the Web Store */
   protected static readonly EXT_URI =
@@ -266,10 +325,13 @@ export class AppMainElement extends BaseElement {
   public ready() {
     super.ready();
 
+    AppMainElement.setColors(ChromeStorage.getBool('darkMode', false));
+
     MyGA.initialize();
     ChromeGA.page('/options.html');
 
     setTimeout(async () => {
+
       // initialize menu enabled states
       await this.setErrorMenuState();
       this.setGooglePhotosMenuState();
@@ -599,26 +661,37 @@ export class AppMainElement extends BaseElement {
 
   static get template() {
     // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<!--suppress CssUnresolvedCustomProperty -->
+<style include="shared-styles iron-flex iron-flex-alignment">
 
   :host {
     display: block;
     position: relative;
   }
 
+  app-drawer-layout:not([narrow]) [drawer-toggle] {
+    display: none;
+  }
+
+  app-drawer {
+    --app-drawer-content-container: {
+      color: var(--primary-text-color);
+      background-color: var(--primary-background-color);
+      border-right: 1px solid var(--divider-color);
+    }
+  }
+
   .main-toolbar {
-    color: var(--text-primary-color);
-    background-color: var(--dark-primary-color);
-    /*noinspection CssUnresolvedCustomPropertySet*/
+    color: var(--toolbar-item-color);
+    background-color: var(--main-toolbar-background-color);
     @apply --paper-font-headline;
   }
 
   .menu-name {
-    /*noinspection CssUnresolvedCustomPropertySet*/
     @apply --paper-font-title;
-    color: var(--dark-primary-color);
-    background-color: var(--drawer-menu-color);
-    border-bottom: var(--drawer-toolbar-border-color);
+    color: var(--primary-text-color);
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--divider-color);
   }
 
   #mainPages neon-animatable {
@@ -637,11 +710,9 @@ export class AppMainElement extends BaseElement {
 
   .status {
     padding-top: 8px;
-    /*noinspection CssUnresolvedCustomPropertySet*/
     @apply --paper-font-title;
   }
-
-
+  
 </style>
 
 <!-- Error dialog keep above app-drawer-layout because of overlay bug -->
@@ -699,12 +770,12 @@ export class AppMainElement extends BaseElement {
                      selected="[[route]]">
         <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
           <hr hidden$="[[!item.divider]]"/>
-          <paper-item id="[[item.route]]"
+          <paper-icon-item id="[[item.route]]"
                       class="center horizontal layout"
                       on-click="onNavMenuItemTapped" disabled$="[[item.disabled]]">
-            <iron-icon icon="[[item.icon]]"></iron-icon>
+            <iron-icon icon="[[item.icon]]" slot="item-icon"></iron-icon>
             <span class="flex">[[item.label]]</span>
-          </paper-item>
+          </paper-icon-item>
         </template>
       </paper-listbox>
     </div>

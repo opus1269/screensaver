@@ -290,6 +290,7 @@ export class PhotosViewElement extends BaseElement {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Selection of photo-cat changed
    *
@@ -349,6 +350,7 @@ export class PhotosViewElement extends BaseElement {
   static get template() {
     // language=HTML format=false
     return html`
+
 <style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
@@ -357,16 +359,12 @@ export class PhotosViewElement extends BaseElement {
 
   :host .album-note {
     @apply --paper-font-title;
-    border: 1px #CCCCCC;
-    border-top-style: solid;
     padding: 8px 16px 8px 16px;
     margin-right: 0;
     white-space: normal;
   }
 
   :host .photo-count-container {
-    border: 1px #CCCCCC;
-    border-bottom-style: solid;
     padding: 16px 0 16px 0;
     white-space: normal;
   }
@@ -391,10 +389,11 @@ export class PhotosViewElement extends BaseElement {
     <paper-item class="flex" id="photoCount" disabled$="[[disabled]]">
       <span>[[localize('photo_count')]]</span>&nbsp <span>[[photoCount]]</span>
     </paper-item>
-    <paper-button id="refreshButton" raised disabled$="[[isRefreshDisabled]]">
+    <paper-button id="refreshButton" disabled$="[[isRefreshDisabled]]">
       [[localize('button_needs_refresh')]]
     </paper-button>
   </div>
+  <hr class="divider" hidden$="[[noseparator]]">
 
   <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
                   secondary-label="{{localize('photo_no_filter_desc')}}"
@@ -409,6 +408,7 @@ export class PhotosViewElement extends BaseElement {
                disabled$="[[isFilterDisabled]]"></photo-cat>
   </template>
 
+  <hr class="divider" hidden$="[[noseparator]]">
   <paper-item class="album-note">
     {{localize('note_albums')}}
   </paper-item>

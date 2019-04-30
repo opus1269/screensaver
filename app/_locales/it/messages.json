@@ -651,6 +651,12 @@
   "err_detect_faces_perm": {
     "message": "Non rileva i volti durante panoramica e zoom."
   },
+  "setting_dark_mode": {
+    "message": "Tema scuro"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Usa i colori scuri per questa pagina"
+  },
   "temp_unit": {
     "message": "C",
     "description": "Set to F for Fahrenheit C for Celsius"

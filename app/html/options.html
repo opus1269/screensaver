@@ -19,51 +19,20 @@
     /* Application theme */
     html {
       --primary-color: var(--paper-indigo-500);
-      --light-primary-color: var(--paper-indigo-300);
+      --light-primary-color: #EEEEEE;
       --dark-primary-color: var(--paper-indigo-700);
-      --text-primary-color: #FFFFFF; /*text/icons*/
       --accent-color: var(--paper-pink-a200);
       --light-accent-color: var(--paper-pink-a100);
       --dark-accent-color: var(--paper-pink-a400);
-      --primary-background-color: #FFFFFF;
-      --primary-text-color: var(--paper-grey-900);
-      --secondary-text-color: #737373;
-      --disabled-text-color: #9B9B9B;
-      --divider-color: #DBDBDB;
-      /* indigo-100 50% opacity */
-      --selected-color: rgba(197, 202, 233, .5);
 
-      /* Components */
+      /* Since both light and dark themes have dark toolbars, this is same for both */
+      --toolbar-item-color: var(--light-theme-background-color);
+      --toolbar-background-color: var(--primary-color);
 
-      --setting-item-color: var(--paper-teal-700);
+      /* need here because we need to define scrollbars here */
+      --scrollbar-color: var(--dark-primary-color);
 
-      /* app-drawer */
-      --drawer-menu-color: #FFFFFF;
-      --drawer-border-color: 1px solid #CCCCCC;
-      --drawer-toolbar-border-color: 1px solid rgba(0, 0, 0, 0.22);
-
-      /* paper-listbox */
-      --paper-listbox-background-color: #FFFFFF;
-      --menu-link-color: #111111;
-
-      /* paper-dialog */
-      --paper-dialog-background-color: #FFFFFF;
-
-      /* paper-slider */
-      --paper-slider-active-color: var(--setting-item-color);
-      --paper-slider-secondary-color: var(--setting-item-color);
-      --paper-slider-knob-color: var(--setting-item-color);
-      --paper-slider-pin-color: var(--setting-item-color);
-      --paper-slider-knob-start-color: var(--setting-item-color);
-      --paper-slider-knob-start-border-color: transparent;
-      --paper-slider-pin-start-color: var(--setting-item-color);
-
-      /* paper-input */
-      --paper-input-container-focus-color: var(--setting-item-color);;
-
-      /* paper-checkbox */
-      --paper-checkbox-checked-color: var(--setting-item-color);;
-
+      /* Needs to be defined here so `<app-drawer>` and `<app-drawer-layout>` can see it */
       --app-drawer-width: 350px;
     }
 
@@ -71,7 +40,7 @@
       margin: 0;
       font-family: "Roboto", "Noto", sans-serif;
       min-height: 100vh;
-      background-color: #EEEEEE;
+      background-color: var(--light-primary-color);
     }
 
     /* Scrollbars */
@@ -86,7 +55,7 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: rgba(48, 63, 159, 1);
+      background: var(--scrollbar-color);
       -webkit-border-radius: 8px;
       border-radius: 4px;
       cursor: pointer;
@@ -102,7 +71,9 @@
   <!-- Ensure Web Animations polyfill is loaded since neon-animation 3.0 doesn't import it -->
   <script src="../node_modules/web-animations-js/web-animations-next.min.js"></script>
 
+  <!--suppress HtmlUnknownTarget -->
   <script type="module" src="../scripts/chrome-extension-utils/scripts/ex_handler.js"></script>
+  <!--suppress HtmlUnknownTarget -->
   <script type="module" src="../scripts/options/options.js"></script>
 
 </head>

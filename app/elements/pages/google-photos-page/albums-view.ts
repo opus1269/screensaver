@@ -295,6 +295,7 @@ export class AlbumsViewElement extends BaseElement {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Album checkbox state changed
    *
@@ -475,7 +476,8 @@ export class AlbumsViewElement extends BaseElement {
 
   static get template() {
     // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<!--suppress CssUnresolvedCustomProperty -->
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -493,7 +495,7 @@ export class AlbumsViewElement extends BaseElement {
   :host .list-note {
     height: 48px;
     @apply --paper-font-title;
-    border: 1px #CCCCCC;
+    border: 1px var(--divider-color);
     border-bottom-style: solid;
     padding: 8px 16px 8px 16px;
     white-space: normal;
@@ -501,7 +503,7 @@ export class AlbumsViewElement extends BaseElement {
 
   :host .list-item {
     position: relative;
-    border: 1px #CCCCCC;
+    border: 1px var(--divider-color);
     border-bottom-style: solid;
     padding: 0 0 0 5px;
     cursor: pointer;

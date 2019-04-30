@@ -20,7 +20,6 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
-import * as MyUtils from '../../scripts/my_utils.js';
 import * as Weather from '../../scripts/weather.js';
 
 import {GoogleSource, IAlbum} from '../../scripts/sources/photo_source_google.js';

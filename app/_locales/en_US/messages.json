@@ -651,6 +651,12 @@
   "err_detect_faces_perm": {
     "message": "Will not detect faces during pan and zoom."
   },
+  "setting_dark_mode": {
+    "message": "Dark theme"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Use dark colors for this page"
+  },
   "temp_unit": {
     "message": "F",
     "description": "Set to F for Fahrenheit C for Celsius"
