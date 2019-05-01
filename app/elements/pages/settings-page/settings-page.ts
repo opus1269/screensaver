@@ -650,14 +650,17 @@ export class SettingsPageElement extends BaseElement {
         <setting-toggle name="useInterestingFlickr" main-label="[[localize('setting_flickr_int')]]"
                         secondary-label="[[localize('setting_flickr_int_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
-        <setting-toggle name="useSpaceReddit" main-label="[[localize('setting_reddit_space')]]"
-                        secondary-label="[[localize('setting_reddit_space_desc')]]" noseparator=""
+        <setting-toggle name="useAnimalReddit" main-label="[[localize('setting_reddit_animal')]]"
+                        secondary-label="[[localize('setting_reddit_animal_desc')]]" noseparator=""
+                        disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle name="useCityReddit" main-label="[[localize('setting_reddit_city')]]"
+                        secondary-label="[[localize('setting_reddit_city_desc')]]" noseparator=""
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="useEarthReddit" main-label="[[localize('setting_reddit_earth')]]"
                         secondary-label="[[localize('setting_reddit_earth_desc')]]" noseparator=""
                         disabled$="[[!enabled]]"></setting-toggle>
-        <setting-toggle name="useAnimalReddit" main-label="[[localize('setting_reddit_animal')]]"
-                        secondary-label="[[localize('setting_reddit_animal_desc')]]"
+        <setting-toggle name="useSpaceReddit" main-label="[[localize('setting_reddit_space')]]"
+                        secondary-label="[[localize('setting_reddit_space_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
         <setting-toggle name="useAuthors" main-label="[[localize('setting_mine')]]"
                         secondary-label="[[localize('setting_mine_desc')]]" disabled$="[[!enabled]]"></setting-toggle>

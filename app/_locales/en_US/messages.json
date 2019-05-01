@@ -657,6 +657,12 @@
   "setting_dark_mode_desc": {
     "message": "Use dark colors for this page"
   },
+  "setting_reddit_city": {
+    "message": "reddit - city"
+  },
+  "setting_reddit_city_desc": {
+    "message": "Primarily cityscape photos from reddit, updated daily"
+  },
   "temp_unit": {
     "message": "F",
     "description": "Set to F for Fahrenheit C for Celsius"

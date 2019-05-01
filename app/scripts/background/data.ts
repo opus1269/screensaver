@@ -98,6 +98,8 @@ export const DEFS = {
   useEarthReddit: false,
   /** Animal reddit selected state */
   useAnimalReddit: false,
+  /** City reddit selected state */
+  useCityReddit: false,
   /** Interesting flickr selected state */
   useInterestingFlickr: false,
   /** Chromecast selected state */

@@ -48,6 +48,7 @@ export enum UseKey {
   SPACE_RED = 'useSpaceReddit',
   EARTH_RED = 'useEarthReddit',
   ANIMAL_RED = 'useAnimalReddit',
+  CITY_RED = 'useCityReddit',
   INT_FLICKR = 'useInterestingFlickr',
   AUTHOR = 'useAuthors',
 }
@@ -84,6 +85,9 @@ export function create(useKey: UseKey) {
     case UseKey.ANIMAL_RED:
       return new RedditSource(useKey, 'animalRedditImages', Type.REDDIT,
           ChromeLocale.localize('setting_reddit_animal'), true, false, 'r/animalporn/');
+    case UseKey.CITY_RED:
+      return new RedditSource(useKey, 'cityRedditImages', Type.REDDIT,
+          ChromeLocale.localize('setting_reddit_city'), true, false, 'r/cityporn/');
     default:
       ChromeGA.error(`Bad PhotoSource type: ${useKey}`, 'PhotoSourceFactory.create');
       return null;
