@@ -44,9 +44,7 @@ export interface IPhoto {
   point?: string;
 }
 
-/**
- * All the photos from a {@link PhotoSource}
- */
+/** All the photos from a {@link PhotoSource} */
 export interface IPhotos {
   /** The type of the PhotoSource that provided the photos */
   type: PhotoSourceFactory.Type;
@@ -54,9 +52,7 @@ export interface IPhotos {
   photos: IPhoto[];
 }
 
-/**
- * Base class for a source of photos for a {@link Screensaver}
- */
+/** Base class for a source of photos for a {@link Screensaver} */
 export abstract class PhotoSource {
 
   /**
@@ -146,44 +142,32 @@ export abstract class PhotoSource {
    */
   public abstract fetchPhotos(): Promise<IPhoto[] | ISelectedAlbum[]>;
 
-  /**
-   * Get the source type
-   */
+  /** Get the source type */
   public getType() {
     return this._type;
   }
 
-  /**
-   * Get if the photos key that is persisted
-   */
+  /** Get the photos key that is persisted */
   public getPhotosKey() {
     return this._photosKey;
   }
 
-  /**
-   * Get a human readable description
-   */
+  /** Get a human readable description */
   public getDesc() {
     return this._desc;
   }
 
-  /**
-   * Get use key name
-   */
+  /** Get use key name */
   public getUseKey() {
     return this._useKey;
   }
 
-  /**
-   * Get use extra argument
-   */
+  /** Get extra argument */
   public getLoadArg() {
     return this._loadArg;
   }
 
-  /**
-   * Get if we should update daily
-   */
+  /** Get if we should update daily */
   public isDaily() {
     return this._isDaily;
   }
@@ -229,13 +213,15 @@ export abstract class PhotoSource {
 
   /**
    * Process the photo source.
+   *
+   * @throws An error if we failed to retrieve photos
    */
   public async process() {
     if (this.use()) {
       // add the source
       try {
         const photos = await this.fetchPhotos();
-        const err = await this._save(photos);
+        const err = await this.save(photos);
         if (err) {
           return Promise.reject(err);
         }
@@ -273,7 +259,7 @@ export abstract class PhotoSource {
    * @param photos - could be array of photos or albums
    * @returns An error if the save failed
    */
-  private async _save(photos: IPhoto[] | ISelectedAlbum[]) {
+  private async save(photos: IPhoto[] | ISelectedAlbum[]) {
     let ret: Error | undefined;
     const keyBool = this._useKey;
     if (photos && photos.length) {

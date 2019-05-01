@@ -19,9 +19,7 @@ import * as ChromeJSON from '../chrome-extension-utils/scripts/json.js';
 import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';
 
-/**
- * A source of photos from Chromecast
- */
+/** A source of photos from Chromecast */
 export class CCSource extends PhotoSource {
 
   /**

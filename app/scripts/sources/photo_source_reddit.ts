@@ -18,25 +18,17 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';
 
-/**
- * Extension's redirect uri
- */
+/** Redirect uri */
 const REDIRECT_URI = `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
 
 // noinspection SpellCheckingInspection
-/**
- * Reddit rest API authorization key
- */
+/** Reddit rest API authorization key */
 const KEY = 'bATkDOUNW_tOlg';
 
-/**
- * Max photos to return
- */
+/** Max photos to return */
 const MAX_PHOTOS = 200;
 
-/**
- * Min size of photo to use
- */
+/** Min size of photo to use */
 const MIN_SIZE = 750;
 
 /**
@@ -44,14 +36,10 @@ const MIN_SIZE = 750;
  */
 const MAX_SIZE = 3500;
 
-/**
- * Expose reddit API
- */
+/** Expose reddit API */
 let snoocore: (arg0: string) => any;
 
-/**
- * A source of photos from reddit
- */
+/** A source of photos from reddit */
 export class RedditSource extends PhotoSource {
 
   /**
@@ -80,7 +68,7 @@ export class RedditSource extends PhotoSource {
    * @param children - Array of objects from reddit
    * @returns Array of {@link IPhoto}
    */
-  private static _processChildren(children: any[]) {
+  private static processChildren(children: any[]) {
     const photos: IPhoto[] = [];
     let url: string | undefined;
     let width = 1;
@@ -174,7 +162,7 @@ export class RedditSource extends PhotoSource {
       let slice = await snoocore(SRC).listing({limit: MAX_PHOTOS});
       let slicePhotos;
       if (slice && slice.children && slice.children.length) {
-        slicePhotos = RedditSource._processChildren(slice.children);
+        slicePhotos = RedditSource.processChildren(slice.children);
         slicePhotos = slicePhotos || [];
         photos = photos.concat(slicePhotos);
       } else {
@@ -185,7 +173,7 @@ export class RedditSource extends PhotoSource {
       while (photos.length < MAX_PHOTOS) {
         slice = await slice.next();
         if (slice && slice.children && slice.children.length) {
-          slicePhotos = RedditSource._processChildren(slice.children);
+          slicePhotos = RedditSource.processChildren(slice.children);
           slicePhotos = slicePhotos || [];
           if (slicePhotos.length) {
             photos = photos.concat(slicePhotos);

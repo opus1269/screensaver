@@ -20,24 +20,16 @@ import {IPhoto, PhotoSource} from './photo_source.js';
 
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 
-/**
- * Flickr rest API
- */
-const _URL_BASE = 'https://api.flickr.com/services/rest/';
+/** Flickr rest API */
+const URL_BASE = 'https://api.flickr.com/services/rest/';
 
-/**
- * Flickr rest API authorization key
- */
-const _KEY = '1edd9926740f0e0d01d4ecd42de60ac6';
+/** Flickr rest API authorization key */
+const KEY = '1edd9926740f0e0d01d4ecd42de60ac6';
 
-/**
- * Max photos to return
- */
-const _MAX_PHOTOS = 250;
+/** Max photos to return */
+const MAX_PHOTOS = 250;
 
-/**
- * A source of photos from Flickr
- */
+/** A source of photos from Flickr */
 export class FlickrSource extends PhotoSource {
 
   /**
@@ -47,7 +39,7 @@ export class FlickrSource extends PhotoSource {
    * @throws An error if we failed to process photos
    * @returns Array of {@link IPhoto}
    */
-  private static _processPhotos(response: any) {
+  private static processPhotos(response: any) {
     if (!response.photos || !response.photos.photo) {
       throw new Error(ChromeLocale.localize('err_photo_source_title'));
     }
@@ -111,16 +103,16 @@ export class FlickrSource extends PhotoSource {
       // my photos
       const userId = '86149994@N06';
       url =
-          `${_URL_BASE}?method=flickr.people.getPublicPhotos` +
-          `&api_key=${_KEY}&user_id=${userId}` +
-          `&extras=owner_name,url_o,media,geo&per_page=${_MAX_PHOTOS}` +
+          `${URL_BASE}?method=flickr.people.getPublicPhotos` +
+          `&api_key=${KEY}&user_id=${userId}` +
+          `&extras=owner_name,url_o,media,geo&per_page=${MAX_PHOTOS}` +
           '&format=json&nojsoncallback=1';
     } else {
       // public photos
       url =
-          `${_URL_BASE}?method=flickr.interestingness.getList` +
-          `&api_key=${_KEY}&extras=owner_name,url_k,media,geo` +
-          `&per_page=${_MAX_PHOTOS}` +
+          `${URL_BASE}?method=flickr.interestingness.getList` +
+          `&api_key=${KEY}&extras=owner_name,url_k,media,geo` +
+          `&per_page=${MAX_PHOTOS}` +
           '&format=json&nojsoncallback=1';
     }
 
@@ -130,6 +122,6 @@ export class FlickrSource extends PhotoSource {
     }
 
     // convert to our format
-    return FlickrSource._processPhotos(response);
+    return FlickrSource.processPhotos(response);
   }
 }
