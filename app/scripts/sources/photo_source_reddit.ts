@@ -24,7 +24,7 @@ const REDIRECT_URI = `https://${chrome.runtime.id}.chromiumapp.org/reddit`;
 
 // noinspection SpellCheckingInspection
 /** Reddit rest API authorization key */
-const KEY = 'bATkDOUNW_tOlg';
+const KEY = 'KEY_REDDIT';
 
 /** Max photos to return */
 const MAX_PHOTOS = 200;

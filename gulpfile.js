@@ -109,9 +109,18 @@ let buildDirectory = 'build/prod';
 // code replacement
 const SRCH_DEBUG = 'const _DEBUG = false';
 const REP_DEBUG = 'const _DEBUG = true';
+const SS_ENV = process.env.KEY_SCREENSAVER;
+const SRCH_SS = 'KEY_SCREENSAVER';
+const REP_SS = `${SS_ENV}`;
 const UNSPLASH_ENV = process.env.KEY_UNSPLASH;
 const SRCH_UNSPLASH = 'const KEY = \'KEY_UNSPLASH\'';
 const REP_UNSPLASH = `const KEY = '${UNSPLASH_ENV}'`;
+const FLICKR_ENV = process.env.KEY_FLICKR;
+const SRCH_FLICKR = 'const KEY = \'KEY_FLICKR\'';
+const REP_FLICKR = `const KEY = '${FLICKR_ENV}'`;
+const REDDIT_ENV = process.env.KEY_REDDIT;
+const SRCH_REDDIT = 'const KEY = \'KEY_REDDIT\'';
+const REP_REDDIT = `const KEY = '${REDDIT_ENV}'`;
 
 // to get the current task name
 let currentTaskName = '';
@@ -149,6 +158,7 @@ async function buildPolymer() {
     await del([buildDirectory]);
 
     const sourcesStream = polymerProject.sources().
+        pipe(plumber()).
         pipe(gulpIf(/\.(png|gif|jpg|svg)$/, imageMin()));
 
     const dependenciesStream = polymerProject.dependencies();
@@ -166,6 +176,7 @@ async function buildPolymer() {
             inlineScripts: false,
             inlineCss: false,
           })).
+          pipe(plumber()).
           pipe(gulpIf(/\.js$/, minify(minifyOpts))).
           pipe(gulp.dest(buildDirectory));
     }
@@ -183,8 +194,6 @@ gulp.task('default', ['incrementalBuild']);
 
 // Incremental Development build
 gulp.task('incrementalBuild', (cb) => {
-
-  // change working directory to app
   chDir('app');
 
   isProd = false;
@@ -213,7 +222,8 @@ gulp.task('buildDev', (cb) => {
   isWatch = false;
   buildDirectory = 'build/dev';
 
-  runSequence('_lint', '_build_js', '_poly_build_dev', '_delete_js', cb);
+  runSequence('_lint', '_build_js', '_poly_build_dev',
+      '_manifest', '_delete_js', cb);
 });
 
 // Production test build - Only diff is it does not have key removed
@@ -222,8 +232,10 @@ gulp.task('buildProdTest', (cb) => {
   isProdTest = true;
   isWatch = false;
   buildDirectory = 'build/prodTest';
+  base.dist = '../build/prodTest/app';
 
-  runSequence('_build_js', '_poly_build', '_zip', '_delete_js', cb);
+  runSequence('_build_js', '_poly_build',
+      '_manifest', '_zip', '_delete_js', cb);
 });
 
 // Production build
@@ -232,15 +244,15 @@ gulp.task('buildProd', (cb) => {
   isProdTest = false;
   isWatch = false;
   buildDirectory = 'build/prod';
+  base.dist = '../build/prod/app';
 
-  runSequence('_build_js', '_poly_build', '_manifest', '_zip',
-      '_delete_js', 'docs',
-      cb);
+  runSequence('_build_js', '_poly_build',
+      '_manifest', '_zip', '_delete_js', 'docs', cb);
 });
 
 // Generate Typedoc
 gulp.task('docs', () => {
-   chDir('app');
+  chDir('app');
 
   const input = files.ts;
   return gulp.src(input).pipe(typedoc({
@@ -307,6 +319,7 @@ gulp.task('_lint', () => {
       pipe(tslint({
         formatter: 'verbose',
       })).
+      pipe(plumber()).
       pipe(tslint.report({emitError: false}));
 });
 
@@ -316,9 +329,10 @@ gulp.task('_ts_dev', () => {
   return gulp.src(input, {base: '.'}).
       pipe(tsProject(ts.reporter.longReporter())).
       on('error', () => {/* Ignore compiler errors */}).
-      pipe(plumber()).
-      pipe((isProd || isProdTest) ? noop() : replace(SRCH_DEBUG, REP_DEBUG)).
+      pipe((isProd ? replace(SRCH_DEBUG, REP_DEBUG) : noop())).
       pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
+      pipe(replace(SRCH_FLICKR, REP_FLICKR)).
+      pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -336,10 +350,11 @@ gulp.task('_build_js', () => {
 
   const input = files.ts;
   return gulp.src(input, {base: '.'}).
-      pipe(plumber()).
       pipe(tsProject(ts.reporter.longReporter())).js.
-      pipe((isProd || isProdTest) ? noop() : replace(SRCH_DEBUG, REP_DEBUG)).
+      pipe((isProd ? replace(SRCH_DEBUG, REP_DEBUG) : noop())).
       pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
+      pipe(replace(SRCH_FLICKR, REP_FLICKR)).
+      pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(gulp.dest(base.src), noop());
 });
 
@@ -363,8 +378,8 @@ gulp.task('_manifest', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
+      pipe(replace(SRCH_SS, REP_SS)).
       pipe(isProd ? gulp.dest(base.dist) : gulp.dest(base.dev));
 });
 
@@ -374,7 +389,6 @@ gulp.task('_html', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -384,7 +398,6 @@ gulp.task('_images', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -394,7 +407,6 @@ gulp.task('_assets', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -404,7 +416,6 @@ gulp.task('_lib', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -414,7 +425,6 @@ gulp.task('_locales', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -424,7 +434,6 @@ gulp.task('_css', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -434,7 +443,6 @@ gulp.task('_font', () => {
   watchOpts.name = currentTaskName;
   return gulp.src(input, {base: '.'}).
       pipe(isWatch ? watch(input, watchOpts) : noop()).
-      pipe(plumber()).
       pipe(gulp.dest(base.dev));
 });
 
@@ -443,10 +451,10 @@ gulp.task('_zip', () => {
   chDir('app');
 
   return gulp.src(`../${buildDirectory}/app/**`).
-      pipe(!isProdTest ? zip('store.zip') : zip(
-          'store-test.zip')).
-      pipe(!isProdTest ? gulp.dest(`../${base.store}`) : gulp.dest(
-          `../${buildDirectory}`));
+      pipe(!isProdTest ? zip('store.zip') :
+          zip('store-test.zip')).
+      pipe(!isProdTest ? gulp.dest(`../${base.store}`) :
+          gulp.dest(`../${buildDirectory}`));
 });
 
 

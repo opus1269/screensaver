@@ -25,7 +25,7 @@ import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.
 const URL_BASE = 'https://api.flickr.com/services/rest/';
 
 /** Flickr rest API authorization key */
-const KEY = '1edd9926740f0e0d01d4ecd42de60ac6';
+const KEY = 'KEY_FLICKR';
 
 /** Max photos to return */
 const MAX_PHOTOS = 250;
