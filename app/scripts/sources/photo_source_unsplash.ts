@@ -59,8 +59,8 @@ const URL_BASE = 'https://api.unsplash.com/';
 /** Unsplash client_id */
 const KEY = 'KEY_UNSPLASH';
 
-/** Max width of photo to use */
-const MAX_WIDTH = 3500;
+/** Max size of large dimension of photo */
+const MAX_SIZE = 3500;
 
 /** Max photos to use */
 const MAX_PHOTOS = 300;
@@ -93,8 +93,19 @@ export class UnsplashSource extends PhotoSource {
         if (ChromeUtils.isWhiteSpace(photog)) {
           photog = user.username;
         }
-        const width = Math.min(MAX_WIDTH, origWidth);
-        const url = `${photo.urls.raw}&w=${width}`;
+
+        // limit size
+        let width = origWidth;
+        let height = origHeight;
+        if ((asp >= 1.0) && (width > MAX_SIZE)) {
+          width = MAX_SIZE;
+          height = Math.round(width / asp);
+        } else if ((asp < 1.0) && (height > MAX_SIZE)) {
+          height = MAX_SIZE;
+          width = Math.round(height * asp);
+        }
+
+        const url = `${photo.urls.raw}&w=${width}&h=${height}`;
         const ex = {
           url: photo.links.html,
         };
