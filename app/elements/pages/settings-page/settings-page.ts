@@ -456,6 +456,51 @@ export class SettingsPageElement extends BaseElement {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols,JSMethodCanBeStatic
+  /**
+   * Toggle changed on one of the unsplash sources
+   *
+   * @event
+   */
+  public async onUnsplashChanged(ev: CustomEvent) {
+    // May need to get permission for origin if face detection was
+    // selected before we added this source
+    const METHOD = 'SettingsPage.onUnsplashChanged';
+    const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
+    const ERR_TEXT = ChromeLocale.localize('err_detect_faces_perm');
+    const PERM = Permissions.DETECT_FACES;
+    const KEY = (ev.target as Element).id;
+    const checked = ev.detail.value;
+    const detectFaces = ChromeStorage.getBool('detectFaces', false);
+
+    try {
+      if (checked && detectFaces) {
+        const hasOrigin = await Permissions.hasUnsplashSourceOrigin();
+        if (!hasOrigin) {
+          // try to get detect faces permission
+          const granted = await Permissions.request(PERM);
+          if (!granted) {
+            // noinspection ExceptionCaughtLocallyJS
+            throw new Error(ERR_TEXT);
+          }
+        }
+      }
+
+    } catch (err) {
+      try {
+        // set source to false
+        const msg = ChromeJSON.shallowCopy(ChromeMsg.TYPE.STORE);
+        msg.key = KEY;
+        msg.value = false;
+        await ChromeMsg.send(msg);
+      } catch (err) {
+        // ignore
+      }
+
+      Options.showErrorDialog(ERR_TITLE, err.message, METHOD);
+    }
+  }
+
   /**
    * Set checked state of a {@link PhotoSource}
    *
@@ -662,6 +707,22 @@ export class SettingsPageElement extends BaseElement {
         <setting-toggle name="useSpaceReddit" main-label="[[localize('setting_reddit_space')]]"
                         secondary-label="[[localize('setting_reddit_space_desc')]]"
                         disabled$="[[!enabled]]"></setting-toggle>
+        <setting-toggle id="useArchitectureUnsplash" name="useArchitectureUnsplash"
+                        main-label="[[localize('setting_unsplash_architecture')]]"
+                        secondary-label="[[localize('setting_unsplash_architecture_desc')]]" noseparator=""
+                        disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
+        <setting-toggle id="useNatureUnsplash" name="useNatureUnsplash"
+                        main-label="[[localize('setting_unsplash_nature')]]"
+                        secondary-label="[[localize('setting_unsplash_nature_desc')]]" noseparator=""
+                        disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
+        <setting-toggle id="usePeopleUnsplash" name="usePeopleUnsplash"
+                        main-label="[[localize('setting_unsplash_people')]]"
+                        secondary-label="[[localize('setting_unsplash_people_desc')]]" noseparator=""
+                        disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
+        <setting-toggle id="useTravelUnsplash" name="useTravelUnsplash"
+                        main-label="[[localize('setting_unsplash_travel')]]"
+                        secondary-label="[[localize('setting_unsplash_travel_desc')]]"
+                        disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
         <setting-toggle name="useAuthors" main-label="[[localize('setting_mine')]]"
                         secondary-label="[[localize('setting_mine_desc')]]" disabled$="[[!enabled]]"></setting-toggle>
         <paper-item tabindex="-1">

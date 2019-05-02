@@ -103,6 +103,9 @@ export abstract class PhotoSource {
   /** A human readable description of the source */
   private readonly _desc: string;
 
+  /** Flag to indicate if source has limits to the number of times it can be called in a time period */
+  private readonly _isLimited: boolean;
+
   /** Flag to indicate if source should be updated daily */
   private readonly _isDaily: boolean;
 
@@ -119,16 +122,18 @@ export abstract class PhotoSource {
    * @param photosKey - The key for the collection of photos
    * @param type - A descriptor of the photo source
    * @param desc - A human readable description of the source
+   * @param isLimited - Should we limit the frequency of updates
    * @param isDaily - Should the source be updated daily
    * @param isArray - Is the source an Array of photo Arrays
    * @param loadArg - optional arg for load function
    */
   protected constructor(useKey: PhotoSourceFactory.UseKey, photosKey: string, type: PhotoSourceFactory.Type,
-                        desc: string, isDaily: boolean, isArray: boolean, loadArg?: any) {
+                        desc: string, isLimited: boolean, isDaily: boolean, isArray: boolean, loadArg?: any) {
     this._useKey = useKey;
     this._photosKey = photosKey;
     this._type = type;
     this._desc = desc;
+    this._isLimited = isLimited;
     this._isDaily = isDaily;
     this._isArray = isArray;
     this._loadArg = loadArg;
@@ -141,11 +146,6 @@ export abstract class PhotoSource {
    * @returns Could be array of photos or albums
    */
   public abstract fetchPhotos(): Promise<IPhoto[] | ISelectedAlbum[]>;
-
-  /** Get the source type */
-  public getType() {
-    return this._type;
-  }
 
   /** Get the photos key that is persisted */
   public getPhotosKey() {
@@ -165,6 +165,11 @@ export abstract class PhotoSource {
   /** Get extra argument */
   public getLoadArg() {
     return this._loadArg;
+  }
+
+  /** Get if we should limit updates when possible */
+  public isLimited() {
+    return this._isLimited;
   }
 
   /** Get if we should update daily */

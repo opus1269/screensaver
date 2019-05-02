@@ -90,7 +90,8 @@ export class SettingBackgroundElement extends SettingBase {
    */
   static get mainContent() {
     // language=HTML format=false
-    return html`<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<!--suppress CssUnresolvedCustomProperty -->
+<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -117,11 +118,11 @@ export class SettingBackgroundElement extends SettingBase {
   :host .background {
     width: 200px;
     height: 112px;
-    border: 2px solid white;
+    border: 4px solid white;
   }
 
   :host .iron-selected {
-    border: 2px solid red;
+    border: 4px solid var(--setting-item-color);
   }
 
   :host .selected-background {

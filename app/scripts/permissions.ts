@@ -36,6 +36,9 @@ interface IType {
 /** Origin for the actual url's we retrieve for google photos */
 const GOOGLE_SOURCE_ORIGIN = 'https://*.googleusercontent.com/';
 
+/** Origin for the actual url's we retrieve for Unsplash */
+const UNSPLASH_SOURCE_ORIGIN = 'https://images.unsplash.com/';
+
 /** Possible states of a permission */
 export const enum STATE {
   /** Default */
@@ -90,6 +93,7 @@ export const DETECT_FACES: IType = {
   permissions: [],
   origins: [
     GOOGLE_SOURCE_ORIGIN,
+    UNSPLASH_SOURCE_ORIGIN,
     'https://*.redd.it/',
     'https://live.staticflickr.com/',
   ],
@@ -147,9 +151,9 @@ export async function request(type: IType) {
     granted = await chromep.permissions.request(permissions);
 
     if (granted) {
-      await _setState(type, STATE.allowed);
+      await setState(type, STATE.allowed);
     } else {
-      await _setState(type, STATE.denied);
+      await setState(type, STATE.denied);
       try {
         // try to remove if it has been previously granted
         await remove(type);
@@ -178,8 +182,8 @@ export async function request(type: IType) {
 export async function remove(type: IType) {
   let removed = false;
 
-  const contains = await _contains(type);
-  if (contains) {
+  const hasPermission = await contains(type);
+  if (hasPermission) {
     removed = await chromep.permissions.remove({
       permissions: type.permissions,
       origins: type.origins,
@@ -187,7 +191,7 @@ export async function remove(type: IType) {
   }
 
   if (removed) {
-    await _setState(type, STATE.notSet);
+    await setState(type, STATE.notSet);
   }
 
   return removed;
@@ -204,7 +208,7 @@ export async function deny(type: IType) {
   const removed = await remove(type);
 
   // set to denied regardless of whether it was removed
-  await _setState(type, STATE.denied);
+  await setState(type, STATE.denied);
 
   return removed;
 }
@@ -244,6 +248,24 @@ export function isInOrigins(url: string, type: IType) {
   }
 
   return found;
+}
+
+/**
+ * Determine if we have permissions for unsplash origin
+ *
+ * @returns true if we have the permission
+ */
+export async function hasUnsplashSourceOrigin() {
+  let ret = false;
+  try {
+    ret = await chromep.permissions.contains({
+      permissions: [],
+      origins: [UNSPLASH_SOURCE_ORIGIN],
+    });
+  } catch (err) {
+    // ignore
+  }
+  return ret;
 }
 
 /**
@@ -306,7 +328,7 @@ export async function removeGooglePhotos() {
  * @param type - permission type
  * @param value - permission state
  */
-async function _setState(type: IType, value: STATE) {
+async function setState(type: IType, value: STATE) {
   try {
     // send message to store value so items that are bound
     // to it will get storage event
@@ -326,7 +348,7 @@ async function _setState(type: IType, value: STATE) {
  * @throws An error if failed to get status
  * @returns true if we have the permission
  */
-async function _contains(type: IType) {
+async function contains(type: IType) {
   return await chromep.permissions.contains({
     permissions: type.permissions,
     origins: type.origins,

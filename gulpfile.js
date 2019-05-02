@@ -106,6 +106,13 @@ const polymerJson = require('./polymer.json');
 const polymerProject = new polymerBuild.PolymerProject(polymerJson);
 let buildDirectory = 'build/prod';
 
+// code replacement
+const SRCH_DEBUG = 'const _DEBUG = false';
+const REP_DEBUG = 'const _DEBUG = true';
+const UNSPLASH_ENV = process.env.KEY_UNSPLASH;
+const SRCH_UNSPLASH = 'const KEY = \'KEY_UNSPLASH\'';
+const REP_UNSPLASH = `const KEY = '${UNSPLASH_ENV}'`;
+
 // to get the current task name
 let currentTaskName = '';
 gulp.Gulp.prototype.__runTask = gulp.Gulp.prototype._runTask;
@@ -231,7 +238,7 @@ gulp.task('buildProd', (cb) => {
       cb);
 });
 
-// Generate JSDoc
+// Generate Typedoc
 gulp.task('docs', () => {
    chDir('app');
 
@@ -305,15 +312,13 @@ gulp.task('_lint', () => {
 
 // Build TypeScript for development
 gulp.task('_ts_dev', () => {
-  const SEARCH = 'const _DEBUG = false';
-  const REPLACE = 'const _DEBUG = true';
-
   const input = files.ts;
   return gulp.src(input, {base: '.'}).
       pipe(tsProject(ts.reporter.longReporter())).
       on('error', () => {/* Ignore compiler errors */}).
       pipe(plumber()).
-      pipe((isProd || isProdTest) ? noop() : replace(SEARCH, REPLACE)).
+      pipe((isProd || isProdTest) ? noop() : replace(SRCH_DEBUG, REP_DEBUG)).
+      pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -325,9 +330,6 @@ gulp.task('_watch_ts', ['_ts_dev'], () => {
 
 // Compile the typescript to js in place
 gulp.task('_build_js', () => {
-  const SEARCH = 'const _DEBUG = false';
-  const REPLACE = 'const _DEBUG = true';
-
   console.log('compiling ts to js...');
 
   chDir('app');
@@ -336,7 +338,8 @@ gulp.task('_build_js', () => {
   return gulp.src(input, {base: '.'}).
       pipe(plumber()).
       pipe(tsProject(ts.reporter.longReporter())).js.
-      pipe((isProd || isProdTest) ? noop() : replace(SEARCH, REPLACE)).
+      pipe((isProd || isProdTest) ? noop() : replace(SRCH_DEBUG, REP_DEBUG)).
+      pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
       pipe(gulp.dest(base.src), noop());
 });
 

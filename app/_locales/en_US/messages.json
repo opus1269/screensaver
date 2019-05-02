@@ -663,6 +663,30 @@
   "setting_reddit_city_desc": {
     "message": "Primarily cityscape photos from reddit, updated daily"
   },
+  "setting_unsplash_architecture": {
+    "message": "Unsplash - architecture"
+  },
+  "setting_unsplash_architecture_desc": {
+    "message": "Architecture photos from Unsplash, updated daily"
+  },
+  "setting_unsplash_nature": {
+    "message": "Unsplash - nature"
+  },
+  "setting_unsplash_nature_desc": {
+    "message": "Nature photos from Unsplash, updated daily"
+  },
+  "setting_unsplash_people": {
+    "message": "Unsplash - people"
+  },
+  "setting_unsplash_people_desc": {
+    "message": "People photos from Unsplash, updated daily"
+  },
+  "setting_unsplash_travel": {
+    "message": "Unsplash - travel"
+  },
+  "setting_unsplash_travel_desc": {
+    "message": "Travel photos from Unsplash, updated daily"
+  },
   "temp_unit": {
     "message": "F",
     "description": "Set to F for Fahrenheit C for Celsius"

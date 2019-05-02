@@ -1,5 +1,6 @@
 /**
  * A source of photos from Google Photos
+ * {@link https://developers.google.com/photos/library/reference/rest/}
  *
  * @module scripts/sources/photo_source_google
  */
@@ -330,7 +331,7 @@ export class GoogleSource extends PhotoSource {
 
       const mediaItems: IMediaItem[] = response.mediaItems;
       if (mediaItems) {
-        const newPhotos = this._processPhotos(mediaItems, name);
+        const newPhotos = this.processPhotos(mediaItems, name);
         photos = photos.concat(newPhotos);
       }
 
@@ -428,7 +429,7 @@ export class GoogleSource extends PhotoSource {
    * @returns The array of photos
    */
   public static async loadFilteredPhotos(force = false, notify = false) {
-    if (!force && !this._isFetch()) {
+    if (!force && !this.isFetch()) {
       // no need to change - save on api calls
       const curPhotos: IPhoto[] = await ChromeStorage.asyncGet('googleImages', []);
       return curPhotos;
@@ -481,7 +482,7 @@ export class GoogleSource extends PhotoSource {
         let response = await ChromeHttp.doPost(url, conf);
         response = response || {};
 
-        const photos = this._processPhotos(response.mediaItems);
+        const photos = this.processPhotos(response.mediaItems);
         if (photos.length > 0) {
           newPhotos = newPhotos.concat(photos);
         }
@@ -553,7 +554,7 @@ export class GoogleSource extends PhotoSource {
           mediaItems.push(mediaItemResult.mediaItem);
         }
       }
-      const newPhotos = this._processPhotos(mediaItems, '');
+      const newPhotos = this.processPhotos(mediaItems, '');
       photos = photos.concat(newPhotos);
 
       if (stop === ids.length) {
@@ -588,12 +589,12 @@ export class GoogleSource extends PhotoSource {
 
     const useAlbums = ChromeStorage.get('useGoogleAlbums', false);
     if (useAlbums) {
-      ret = await GoogleSource._updateAlbumsBaseUrls(photos);
+      ret = await GoogleSource.updateAlbumsBaseUrls(photos);
     }
 
     const usePhotos = ChromeStorage.get('useGooglePhotos', false);
     if (usePhotos) {
-      ret = await GoogleSource._updatePhotosBaseUrls(photos);
+      ret = await GoogleSource.updatePhotosBaseUrls(photos);
     }
 
     return ret;
@@ -606,7 +607,7 @@ export class GoogleSource extends PhotoSource {
    * @throws An error on failure
    * @returns false if couldn't persist albumSelections
    */
-  private static async _updateAlbumsBaseUrls(photos: IPhoto[]) {
+  private static async updateAlbumsBaseUrls(photos: IPhoto[]) {
     let ret = true;
 
     photos = photos || [];
@@ -652,7 +653,7 @@ export class GoogleSource extends PhotoSource {
    * @throws An error on failure
    * @returns false if couldn't persist googleImages
    */
-  private static async _updatePhotosBaseUrls(photos: IPhoto[]) {
+  private static async updatePhotosBaseUrls(photos: IPhoto[]) {
     let ret = true;
 
     photos = photos || [];
@@ -692,7 +693,7 @@ export class GoogleSource extends PhotoSource {
    *
    * @returns true if we should fetch
    */
-  private static _isFetch() {
+  private static isFetch() {
     /* only fetch new photos if all are true:
      api is authorized
      screensaver is enabled
@@ -710,8 +711,8 @@ export class GoogleSource extends PhotoSource {
    * @throws An error if we could not load an album
    * @returns Array of albums
    */
-  private static async _fetchAlbums() {
-    if (!this._isFetch()) {
+  private static async fetchAlbums() {
+    if (!this.isFetch()) {
       // no need to change - save on api calls
       const curAlbums: ISelectedAlbum[] = await ChromeStorage.asyncGet('albumSelections', []);
       return curAlbums;
@@ -735,7 +736,7 @@ export class GoogleSource extends PhotoSource {
    * @param mediaItem - Google Photos media object
    * @returns true if entry is a photo
    */
-  private static _isImage(mediaItem: IMediaItem) {
+  private static isImage(mediaItem: IMediaItem) {
     return mediaItem &&
         mediaItem.mimeType &&
         mediaItem.mimeType.startsWith('image/') &&
@@ -749,8 +750,8 @@ export class GoogleSource extends PhotoSource {
    * @param mediaMetadata - info on image
    * @returns image size
    */
-  private static _getImageSize(mediaMetadata: IMediaMetaData) {
-    const MAX_SIZE = 1920;
+  private static getImageSize(mediaMetadata: IMediaMetaData) {
+    const MAX_SIZE = 3500;
     const ret: ISize = {
       width: parseInt(mediaMetadata.width, 10),
       height: parseInt(mediaMetadata.height, 10),
@@ -779,13 +780,13 @@ export class GoogleSource extends PhotoSource {
    * @param albumName - Album name
    * @returns photo or undefined
    */
-  private static _processPhoto(mediaItem: IMediaItem, albumName: string) {
+  private static processPhoto(mediaItem: IMediaItem, albumName: string) {
 
     if (mediaItem && mediaItem.mediaMetadata) {
-      if (this._isImage(mediaItem)) {
+      if (this.isImage(mediaItem)) {
 
         const mediaMetadata = mediaItem.mediaMetadata;
-        const size = this._getImageSize(mediaMetadata);
+        const size = this.getImageSize(mediaMetadata);
         const width = size.width;
         const height = size.height;
 
@@ -809,14 +810,14 @@ export class GoogleSource extends PhotoSource {
    * @param albumName - optional Album name
    * @returns An array of photos
    */
-  private static _processPhotos(mediaItems: IMediaItem[], albumName = '') {
+  private static processPhotos(mediaItems: IMediaItem[], albumName = '') {
     const photos: IPhoto[] = [];
     if (!mediaItems) {
       return photos;
     }
 
     for (const mediaItem of mediaItems) {
-      const photo = this._processPhoto(mediaItem, albumName);
+      const photo = this.processPhoto(mediaItem, albumName);
       if (photo) {
         const asp = parseFloat(photo.asp);
         this.addPhoto(photos, photo.url, photo.author, asp, photo.ex, photo.point);
@@ -825,20 +826,9 @@ export class GoogleSource extends PhotoSource {
     return photos;
   }
 
-  /**
-   * Create a new photo source
-   *
-   * @param useKey - The key for if the source is selected
-   * @param photosKey - The key for the collection of photos
-   * @param type - A descriptor of the photo source
-   * @param desc - A human readable description of the source
-   * @param isDaily - Should the source be updated daily
-   * @param isArray - Is the source an Array of photo Arrays
-   * @param loadArg - optional arg for load function
-   */
   public constructor(useKey: PhotoSourceFactory.UseKey, photosKey: string, type: PhotoSourceFactory.Type,
-                     desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
-    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
+                     desc: string, isLimited: boolean, isDaily: boolean, isArray: boolean, loadArg?: any) {
+    super(useKey, photosKey, type, desc, isLimited, isDaily, isArray, loadArg);
   }
 
   /**
@@ -854,7 +844,7 @@ export class GoogleSource extends PhotoSource {
       const key = this.getUseKey();
       if (key === PhotoSourceFactory.UseKey.ALBUMS_GOOGLE) {
         // album mode
-        return await GoogleSource._fetchAlbums();
+        return await GoogleSource.fetchAlbums();
       } else {
         // photo mode
         return await GoogleSource.loadFilteredPhotos(false);

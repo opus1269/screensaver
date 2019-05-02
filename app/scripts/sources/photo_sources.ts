@@ -83,15 +83,14 @@ export async function process(useKey: PhotoSourceFactory.UseKey) {
 /**
  * Process all the selected photo sources.
  *
- * @param doGoogle - update user's Google Photos too
+ * @param doLimited - update sources with API limits too
  */
-export async function processAll(doGoogle = false) {
+export async function processAll(doLimited: boolean) {
   const sources = getSelectedSources();
   for (const source of sources) {
     let skip = false;
-    const type = source.getType();
-    if (type === PhotoSourceFactory.Type.GOOGLE_USER) {
-      skip = !doGoogle;
+    if (!doLimited && source.isLimited()) {
+      skip = true;
     }
     if (!skip) {
       try {
@@ -103,9 +102,7 @@ export async function processAll(doGoogle = false) {
   }
 }
 
-/**
- * Process all the selected photo sources that are to be update daily
- */
+/** Process all the selected photo sources that are to be updated daily */
 export async function processDaily() {
   const sources = getSelectedSources();
   for (const source of sources) {

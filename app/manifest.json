@@ -65,7 +65,8 @@
     "https://api.openweathermap.org/",
     "https://*.googleusercontent.com/",
     "https://*.redd.it/",
-    "https://live.staticflickr.com/"
+    "https://live.staticflickr.com/",
+    "https://images.unsplash.com/"
   ],
   "background": {
     "persistent": false,

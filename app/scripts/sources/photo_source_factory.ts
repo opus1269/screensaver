@@ -20,6 +20,7 @@ import {CCSource} from './photo_source_chromecast.js';
 import {FlickrSource} from './photo_source_flickr.js';
 import {GoogleSource} from './photo_source_google.js';
 import {RedditSource} from './photo_source_reddit.js';
+import {UnsplashSource} from './photo_source_unsplash.js';
 
 /**
  * Enum for {@link PhotoSource} Type
@@ -33,6 +34,8 @@ export const enum Type {
   FLICKR = 'flickr',
   /** Reddit public photos */
   REDDIT = 'reddit',
+  /** Unsplash public photos */
+  UNSPLASH = 'Unsplash',
 }
 
 /**
@@ -50,6 +53,10 @@ export enum UseKey {
   ANIMAL_RED = 'useAnimalReddit',
   CITY_RED = 'useCityReddit',
   INT_FLICKR = 'useInterestingFlickr',
+  ARCHITECTURE_UNSPLASH = 'useArchitectureUnsplash',
+  NATURE_UNSPLASH = 'useNatureUnsplash',
+  TRAVEL_UNSPLASH = 'useTravelUnsplash',
+  PEOPLE_UNSPLASH = 'usePeopleUnsplash',
   AUTHOR = 'useAuthors',
 }
 
@@ -63,31 +70,56 @@ export function create(useKey: UseKey) {
   switch (useKey) {
     case UseKey.ALBUMS_GOOGLE:
       return new GoogleSource(useKey, 'albumSelections', Type.GOOGLE_USER,
-          ChromeLocale.localize('google_title'), true, true);
+          ChromeLocale.localize('google_title'),
+          true, true, true);
     case UseKey.PHOTOS_GOOGLE:
       return new GoogleSource(useKey, 'googleImages', Type.GOOGLE_USER,
-          ChromeLocale.localize('google_title_photos'), true, false);
+          ChromeLocale.localize('google_title_photos'),
+          true, true, false);
     case UseKey.CHROMECAST:
       return new CCSource(useKey, 'ccImages', Type.GOOGLE,
-          ChromeLocale.localize('setting_chromecast'), false, false);
+          ChromeLocale.localize('setting_chromecast'),
+          false, false, false);
     case UseKey.INT_FLICKR:
       return new FlickrSource(useKey, 'flickrInterestingImages', Type.FLICKR,
-          ChromeLocale.localize('setting_flickr_int'), true, false, false);
+          ChromeLocale.localize('setting_flickr_int'),
+          false, true, false, false);
     case UseKey.AUTHOR:
       return new FlickrSource(useKey, 'authorImages', Type.FLICKR,
-          ChromeLocale.localize('setting_mine'), false, false, true);
+          ChromeLocale.localize('setting_mine'),
+          false, false, false, true);
     case UseKey.SPACE_RED:
       return new RedditSource(useKey, 'spaceRedditImages', Type.REDDIT,
-          ChromeLocale.localize('setting_reddit_space'), true, false, 'r/spaceporn/');
+          ChromeLocale.localize('setting_reddit_space'),
+          false, true, false, 'r/spaceporn/');
     case UseKey.EARTH_RED:
       return new RedditSource(useKey, 'earthRedditImages', Type.REDDIT,
-          ChromeLocale.localize('setting_reddit_earth'), true, false, 'r/EarthPorn/');
+          ChromeLocale.localize('setting_reddit_earth'),
+          false, true, false, 'r/EarthPorn/');
     case UseKey.ANIMAL_RED:
       return new RedditSource(useKey, 'animalRedditImages', Type.REDDIT,
-          ChromeLocale.localize('setting_reddit_animal'), true, false, 'r/animalporn/');
+          ChromeLocale.localize('setting_reddit_animal'),
+          false, true, false, 'r/animalporn/');
     case UseKey.CITY_RED:
       return new RedditSource(useKey, 'cityRedditImages', Type.REDDIT,
-          ChromeLocale.localize('setting_reddit_city'), true, false, 'r/cityporn/');
+          ChromeLocale.localize('setting_reddit_city'),
+          false, true, false, 'r/cityporn/');
+    case UseKey.ARCHITECTURE_UNSPLASH:
+      return new UnsplashSource(useKey, 'architectureUnsplashImages', Type.UNSPLASH,
+          ChromeLocale.localize('setting_unsplash_architecture'),
+          true, true, false, 'architecture');
+    case UseKey.NATURE_UNSPLASH:
+      return new UnsplashSource(useKey, 'natureUnsplashImages', Type.UNSPLASH,
+          ChromeLocale.localize('setting_unsplash_nature'),
+          true, true, false, 'nature');
+    case UseKey.PEOPLE_UNSPLASH:
+      return new UnsplashSource(useKey, 'peopleUnsplashImages', Type.UNSPLASH,
+          ChromeLocale.localize('setting_unsplash_people'),
+          true, true, false, 'people');
+    case UseKey.TRAVEL_UNSPLASH:
+      return new UnsplashSource(useKey, 'travelUnsplashImages', Type.UNSPLASH,
+          ChromeLocale.localize('setting_unsplash_travel'),
+          true, true, false, 'travel');
     default:
       ChromeGA.error(`Bad PhotoSource type: ${useKey}`, 'PhotoSourceFactory.create');
       return null;

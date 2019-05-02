@@ -22,20 +22,9 @@ import * as PhotoSourceFactory from './photo_source_factory.js';
 /** A source of photos from Chromecast */
 export class CCSource extends PhotoSource {
 
-  /**
-   * Create a new photo source
-   *
-   * @param useKey - The key for if the source is selected
-   * @param photosKey - The key for the collection of photos
-   * @param type - A descriptor of the photo source
-   * @param desc - A human readable description of the source
-   * @param isDaily - Should the source be updated daily
-   * @param isArray - Is the source an Array of photo Arrays
-   * @param loadArg - optional arg for load function
-   */
   public constructor(useKey: PhotoSourceFactory.UseKey, photosKey: string, type: PhotoSourceFactory.Type,
-                     desc: string, isDaily: boolean, isArray: boolean, loadArg: any = null) {
-    super(useKey, photosKey, type, desc, isDaily, isArray, loadArg);
+                     desc: string, isLimited: boolean, isDaily: boolean, isArray: boolean, loadArg?: any) {
+    super(useKey, photosKey, type, desc, isLimited, isDaily, isArray, loadArg);
   }
 
   /**

@@ -190,6 +190,11 @@ export class SSPhoto {
           url = this._ex.url;
         }
         break;
+      case PhotoSourceFactory.Type.UNSPLASH:
+        if (this._ex && this._ex.url) {
+          url = this._ex.url;
+        }
+        break;
       default:
         url = this._url;
         break;

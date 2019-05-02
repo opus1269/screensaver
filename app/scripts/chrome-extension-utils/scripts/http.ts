@@ -38,6 +38,8 @@ export interface IConfig {
   maxRetries: number;
   /** body of request */
   body: any;
+  /** return json portion of response only */
+  json: boolean;
 }
 
 /**
@@ -72,6 +74,7 @@ export const CONFIG: IConfig = {
   backoff: true,
   maxRetries: MAX_RETRIES,
   body: null,
+  json: true,
 };
 
 /**
@@ -109,13 +112,17 @@ export async function doPost(url: string, conf = CONFIG) {
  * @param conf - configuration
  * @param attempt - the retry attempt we are on
  * @throws An error if fetch ultimately fails
- * @returns response from server as json object
+ * @returns response from server
  */
 async function processResponse(response: Response, url: string, opts: RequestInit,
                                conf: IConfig, attempt: number): Promise<any> {
   if (response.ok) {
     // request succeeded - woo hoo!
-    return response.json();
+    if (conf.json) {
+      return await response.json();
+    } else {
+      return response;
+    }
   }
 
   if (attempt >= conf.maxRetries) {

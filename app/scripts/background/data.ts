@@ -100,6 +100,14 @@ export const DEFS = {
   useAnimalReddit: false,
   /** City reddit selected state */
   useCityReddit: false,
+  /** Architecture unsplash collection selected state */
+  useArchitectureUnsplash: false,
+  /** Nature unsplash photos selected state */
+  useNatureUnsplash: false,
+  /** People unsplash collection selected state */
+  usePeopleUnsplash: false,
+  /** Travel unsplash collection selected state */
+  useTravelUnsplash: false,
   /** Interesting flickr selected state */
   useInterestingFlickr: false,
   /** Chromecast selected state */
