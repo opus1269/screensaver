@@ -711,17 +711,17 @@ export class SettingsPageElement extends BaseElement {
                         main-label="[[localize('setting_unsplash_architecture')]]"
                         secondary-label="[[localize('setting_unsplash_architecture_desc')]]" noseparator=""
                         disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
+        <setting-toggle id="useCityUnsplash" name="useCityUnsplash" noseparator=""
+                        main-label="[[localize('setting_unsplash_city')]]"
+                        secondary-label="[[localize('setting_unsplash_city_desc')]]"
+                        disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
         <setting-toggle id="useNatureUnsplash" name="useNatureUnsplash"
                         main-label="[[localize('setting_unsplash_nature')]]"
                         secondary-label="[[localize('setting_unsplash_nature_desc')]]" noseparator=""
                         disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
         <setting-toggle id="usePeopleUnsplash" name="usePeopleUnsplash"
                         main-label="[[localize('setting_unsplash_people')]]"
-                        secondary-label="[[localize('setting_unsplash_people_desc')]]" noseparator=""
-                        disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
-        <setting-toggle id="useTravelUnsplash" name="useTravelUnsplash"
-                        main-label="[[localize('setting_unsplash_travel')]]"
-                        secondary-label="[[localize('setting_unsplash_travel_desc')]]"
+                        secondary-label="[[localize('setting_unsplash_people_desc')]]"
                         disabled$="[[!enabled]]" on-toggle-change="onUnsplashChanged"></setting-toggle>
         <setting-toggle name="useAuthors" main-label="[[localize('setting_mine')]]"
                         secondary-label="[[localize('setting_mine_desc')]]" disabled$="[[!enabled]]"></setting-toggle>

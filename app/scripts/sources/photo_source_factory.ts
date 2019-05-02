@@ -55,7 +55,7 @@ export enum UseKey {
   INT_FLICKR = 'useInterestingFlickr',
   ARCHITECTURE_UNSPLASH = 'useArchitectureUnsplash',
   NATURE_UNSPLASH = 'useNatureUnsplash',
-  TRAVEL_UNSPLASH = 'useTravelUnsplash',
+  CITY_UNSPLASH = 'useCityUnsplash',
   PEOPLE_UNSPLASH = 'usePeopleUnsplash',
   AUTHOR = 'useAuthors',
 }
@@ -111,15 +111,15 @@ export function create(useKey: UseKey) {
     case UseKey.NATURE_UNSPLASH:
       return new UnsplashSource(useKey, 'natureUnsplashImages', Type.UNSPLASH,
           ChromeLocale.localize('setting_unsplash_nature'),
-          true, true, false, 'nature');
+          true, true, false, 'landscape');
     case UseKey.PEOPLE_UNSPLASH:
       return new UnsplashSource(useKey, 'peopleUnsplashImages', Type.UNSPLASH,
           ChromeLocale.localize('setting_unsplash_people'),
           true, true, false, 'people');
-    case UseKey.TRAVEL_UNSPLASH:
-      return new UnsplashSource(useKey, 'travelUnsplashImages', Type.UNSPLASH,
-          ChromeLocale.localize('setting_unsplash_travel'),
-          true, true, false, 'travel');
+    case UseKey.CITY_UNSPLASH:
+      return new UnsplashSource(useKey, 'cityUnsplashImages', Type.UNSPLASH,
+          ChromeLocale.localize('setting_unsplash_city'),
+          true, true, false, 'city');
     default:
       ChromeGA.error(`Bad PhotoSource type: ${useKey}`, 'PhotoSourceFactory.create');
       return null;

@@ -1,162 +1,215 @@
 {
-  "chrome_extension_name": {
-    "message": "Salvapantalla de Foto"
+  "allow": {
+    "message": "PERMITIR"
   },
-  "chrome_extension_description": {
-    "message": "Un Salvapantalla con múltiples fuentes de fotografías, Incluyendo tu Google Fotos."
+  "allowed": {
+    "message": "Permitido"
   },
   "browser_action_title": {
     "message": "Salvapantalla de Foto - haga clic para ver la configuración"
   },
-  "toggle_enabled": {
-    "message": "Alternar estado activado"
+  "button_mode_switch": {
+    "message": "INTERRUPTOR"
   },
-  "photo_from": {
-    "message": "Foto de",
-    "description": "use example: Photo from Google"
-  },
-  "screensaver": {
-    "message": "Salvapantalla"
-  },
-  "on": {
-    "message": "esté Activo"
-  },
-  "off": {
-    "message": "esté Apagado"
-  },
-  "disable": {
-    "message": "Deshabilitar (Alt+Mayus+Q)"
-  },
-  "enable": {
-    "message": "Habilitar (Alt+Mayus+Q)"
-  },
-  "display_now": {
-    "message": "Mostrar ahora"
-  },
-  "ss_toggle_paused": {
-    "message": "Alternar pausado"
-  },
-  "ss_forward": {
-    "message": "Reenviar una foto"
-  },
-  "ss_back": {
-    "message": "Volver una foto"
-  },
-  "help": {
-    "message": "Ayuda"
-  },
-  "no": {
-    "message": "No"
-  },
-  "ok": {
-    "message": "BUENO",
-    "description": "All Caps"
+  "button_needs_refresh": {
+    "message": "NECESITA ACTUALIZAR"
   },
   "cancel": {
     "message": "CANCELAR",
     "description": "All Caps"
   },
-  "note": {
-    "message": "Nota:"
+  "chrome_extension_description": {
+    "message": "Un Salvapantalla con múltiples fuentes de fotografías, Incluyendo tu Google Fotos."
   },
-  "photo": {
-    "message": "foto"
+  "chrome_extension_name": {
+    "message": "Salvapantalla de Foto"
   },
-  "photos": {
-    "message": "fotos"
-  },
-  "no_photos": {
-    "message": "No Hay Fotos"
-  },
-  "seconds": {
-    "message": "segundos"
-  },
-  "minutes": {
-    "message": "minutos"
-  },
-  "hours": {
-    "message": "horas"
+  "close": {
+    "message": "CERRAR",
+    "description": "All Caps"
   },
   "days": {
     "message": "días"
   },
-  "off_abbrev": {
-    "message": "APA",
-    "description": "All Caps. max 3 letter abbreviation for OFF"
+  "denied": {
+    "message": "Negado"
   },
-  "sleep_abbrev": {
-    "message": "DOR",
-    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  "deny": {
+    "message": "NEGAR"
   },
-  "power_abbrev": {
-    "message": "ERG",
-    "description": "All Caps. max 3 letter abbreviation for POWER"
+  "desc_mode_switch": {
+    "message": "Sus selecciones de fotos actuales serán eliminadas.\n\nContinuar con el interruptor?"
+  },
+  "disable": {
+    "message": "Deshabilitar (Alt+Mayus+Q)"
+  },
+  "display_now": {
+    "message": "Mostrar ahora"
+  },
+  "enable": {
+    "message": "Habilitar (Alt+Mayus+Q)"
+  },
+  "err_auth_picasa": {
+    "message": "Usuario no autoriza a Google."
+  },
+  "err_auth_revoked": {
+    "message": "Ya no tienes acceso a tus fotos de Google. Por favor, vuelva a seleccionarlos."
+  },
+  "err_chrome_signin": {
+    "message": "Inicia sesión en Chrome con la cuenta que tiene tus fotos de Google."
+  },
+  "err_chrome_signin_title": {
+    "message": "No has iniciado sesión en Chrome"
+  },
+  "err_chrome_signout": {
+    "message": "Has salido de Chrome. Tus fotos de Google no estarán disponibles."
+  },
+  "err_detect_faces_perm": {
+    "message": "No detectará caras durante la panorámica y el zoom."
+  },
+  "err_error": {
+    "message": "Ocurrió un error"
+  },
+  "err_exception": {
+    "message": "Ocurrió una excepción"
+  },
+  "err_geolocation_perm": {
+    "message": "No has permitido compartir la ubicación."
+  },
+  "err_geolocation_title": {
+    "message": "Error al actualizar su ubicación actual"
+  },
+  "err_google_quota": {
+    "message": "Superó el límite diario de la API de Google Photos."
+  },
+  "err_load_album": {
+    "message": "Error al recuperar de álbumes de fotos de Google"
+  },
+  "err_load_album_list": {
+    "message": "Error al recuperar la lista de álbumes de fotos de Google"
+  },
+  "err_load_photos": {
+    "message": "Error al recuperar fotos de Google"
+  },
+  "err_max_albums": {
+    "message": "Se ha alcanzado el número máximo de selecciones de álbumes."
+  },
+  "err_max_photos": {
+    "message": "Se ha alcanzado el número máximo de selecciones de fotos."
+  },
+  "err_network": {
+    "message": "Error de red"
+  },
+  "err_no_albums": {
+    "message": "No hay álbumes encontrados"
+  },
+  "err_no_internet": {
+    "message": "Internet desconectado"
+  },
+  "err_optional_permissions": {
+    "message": "Error al modificar un permiso opcional"
+  },
+  "err_photo_source_title": {
+    "message": "Error al recuperar el origen de la foto"
+  },
+  "err_request_failed": {
+    "message": "Solicitud fallida"
+  },
+  "err_show_ss": {
+    "message": "Error al mostrar el protector de pantalla"
+  },
+  "err_status": {
+    "message": "Estado"
+  },
+  "err_storage_desc": {
+    "message": "Anule la selección de otras fuentes de fotografías e inténtelo de nuevo."
+  },
+  "err_storage_title": {
+    "message": "Límites de almacenamiento excedidos"
+  },
+  "err_unknown": {
+    "message": "desconocido"
+  },
+  "err_unknown_method": {
+    "message": "método desconocido"
+  },
+  "err_weather_perm": {
+    "message": "La información del tiempo no estará disponible"
+  },
+  "err_weather_update": {
+    "message": "Error al actualizar el clima"
+  },
+  "exclude": {
+    "message": "Excluir"
+  },
+  "google_loading": {
+    "message": "Cargando..."
+  },
+  "google_shared_albums_note": {
+    "message": "Nota: Los álbumes compartidos pueden no estar disponibles. Consulte las preguntas frecuentes para obtener más información."
+  },
+  "google_title": {
+    "message": "Álbumes de Fotos de Google"
+  },
+  "google_title_photos": {
+    "message": "Fotos de Google"
+  },
+  "help": {
+    "message": "Ayuda"
+  },
+  "help_bug": {
+    "message": "Reportar un error"
+  },
+  "help_contributors": {
+    "message": "Colaboradores"
+  },
+  "help_documentation": {
+    "message": "Documentación"
+  },
+  "help_faq": {
+    "message": "Preguntas frecuentes"
+  },
+  "help_feature": {
+    "message": "Solicitar característica"
+  },
+  "help_feedback": {
+    "message": "Suministre realimentación"
+  },
+  "help_issue": {
+    "message": "Enviar problema de GitHub (requiere cuenta)"
+  },
+  "help_licenses": {
+    "message": "Licencias de código abierto"
+  },
+  "help_question": {
+    "message": "Pregunta"
+  },
+  "help_release_notes": {
+    "message": "Notas de la versión"
+  },
+  "help_section_feedback": {
+    "message": "Comentarios (sólo en inglés, por favor)"
+  },
+  "help_source_code": {
+    "message": "Código fuente"
+  },
+  "help_title": {
+    "message": "Ayuda y comentarios"
+  },
+  "help_translations": {
+    "message": "Ofrecer ayuda con traducciones"
+  },
+  "hours": {
+    "message": "horas"
+  },
+  "include": {
+    "message": "Incluir"
+  },
+  "last_error_viewer_title": {
+    "message": "Último visor de errores"
   },
   "menu": {
     "message": "Menú"
-  },
-  "menu_settings": {
-    "message": "Ajustes"
-  },
-  "menu_preview": {
-    "message": "Vista previa de"
-  },
-  "menu_error": {
-    "message": "Ver último error"
-  },
-  "menu_help": {
-    "message": "Ayuda y comentarios"
-  },
-  "menu_support": {
-    "message": "Pedir soporte"
-  },
-  "menu_rate": {
-    "message": "Calificar la extensión"
-  },
-  "menu_pushy": {
-    "message": "Intente la extensión Pushy del sujetapapeles"
-  },
-  "menu_letterbox": {
-    "message": "Preservar la relación de aspecto"
-  },
-  "menu_zoom": {
-    "message": "Enfocar (puede ser recortada)"
-  },
-  "menu_frame": {
-    "message": "Marco"
-  },
-  "menu_full": {
-    "message": "Llena (puede ser distorsionada)"
-  },
-  "menu_random": {
-    "message": "Aleatorio"
-  },
-  "menu_scale_up": {
-    "message": "escala arriba"
-  },
-  "menu_fade": {
-    "message": "Descolorarse"
-  },
-  "menu_slide_from_right": {
-    "message": "Deslice desde derecha"
-  },
-  "menu_slide_down": {
-    "message": "Deslice hacia abajo"
-  },
-  "menu_spin_up": {
-    "message": "girar arriba"
-  },
-  "menu_slide_up": {
-    "message": "Deslice hacia arriba"
-  },
-  "menu_slide_from_bottom": {
-    "message": "Deslice desde abajo"
-  },
-  "menu_slide_right": {
-    "message": "Deslice hacia derecha"
-  },
-  "tooltip_select": {
-    "message": "Seleccione maximo"
   },
   "menu_12_hour": {
     "message": "12 hora"
@@ -164,140 +217,183 @@
   "menu_24_hour": {
     "message": "24 hora"
   },
-  "tooltip_deselect": {
-    "message": "Deseleccionar todo"
+  "menu_error": {
+    "message": "Ver último error"
   },
-  "tooltip_restore": {
-    "message": "Restaurar ajustes predeterminados"
+  "menu_fade": {
+    "message": "Descolorarse"
   },
-  "tooltip_refresh": {
-    "message": "Actualizar lista"
+  "menu_frame": {
+    "message": "Marco"
   },
-  "tooltip_keep_awake": {
-    "message": "Las funciones Mantenerse despierto están disponibles incluso si el salvapantalla está deshabilitado, por lo que puede utilizar la aplicación como un programador de energía general. El icono mostrará 'ERG' en este estado."
+  "menu_full": {
+    "message": "Llena (puede ser distorsionada)"
   },
-  "tooltip_settings_toggle": {
-    "message": "Habilitar / Deshabilitar el salvapantalla"
+  "menu_google": {
+    "message": "Seleccione Google Photos"
   },
-  "tooltip_google_toggle": {
-    "message": "Habilitar / Deshabilitar el uso de los álbumes"
+  "menu_help": {
+    "message": "Ayuda y comentarios"
   },
-  "tooltip_google_mode_albums": {
-    "message": "Cambiar al modo de foto"
+  "menu_letterbox": {
+    "message": "Preservar la relación de aspecto"
   },
-  "tooltip_google_mode_photos": {
-    "message": "Cambiar al modo de álbum"
+  "menu_permission": {
+    "message": "Administrar el acceso a Google Photos"
   },
-  "setting_background": {
-    "message": "Ejecutar Chrome en segundo plano"
+  "menu_preview": {
+    "message": "Vista previa de"
   },
-  "setting_background_desc": {
-    "message": "Inicia Chrome en el arranque del equipo y sigue funcionando cuando está cerrado (recomendado)"
+  "menu_pushy": {
+    "message": "Intente la extensión Pushy del sujetapapeles"
   },
-  "setting_idle_time": {
-    "message": "Tiempo de espera"
+  "menu_random": {
+    "message": "Aleatorio"
   },
-  "setting_transition_time": {
-    "message": "Tiempo de transición de la foto"
+  "menu_rate": {
+    "message": "Calificar la extensión"
   },
-  "setting_photo_sizing": {
-    "message": "Modo de visualización de fotos"
+  "menu_scale_up": {
+    "message": "escala arriba"
   },
-  "setting_photo_transition": {
-    "message": "Foto método de transición"
+  "menu_settings": {
+    "message": "Ajustes"
   },
-  "setting_interactive": {
-    "message": "Modo interactivo"
+  "menu_slide_down": {
+    "message": "Deslice hacia abajo"
   },
-  "setting_interactive_desc": {
-    "message": "Alternar pausado (Alt+Mayus+Espacio), Atrás (Alt+Mayus+Flecha izquierda), Adelante (Alt+Mayus+Flecha derecha)"
+  "menu_slide_from_bottom": {
+    "message": "Deslice desde abajo"
   },
-  "setting_show_time": {
-    "message": "Tiempo de la funcion"
+  "menu_slide_from_right": {
+    "message": "Deslice desde derecha"
   },
-  "setting_large_time": {
-    "message": "Etiqueta de tiempo grande"
+  "menu_slide_right": {
+    "message": "Deslice hacia derecha"
   },
-  "setting_shuffle": {
-    "message": "Aleatorizar"
+  "menu_slide_up": {
+    "message": "Deslice hacia arriba"
   },
-  "setting_shuffle_desc": {
-    "message": "Mostrar fotos en orden aleatorio"
+  "menu_spin_up": {
+    "message": "girar arriba"
   },
-  "setting_skip": {
-    "message": "Omitir fotografías de relación de aspecto extrema"
+  "menu_support": {
+    "message": "Pedir soporte"
   },
-  "setting_skip_desc": {
-    "message": "No mostrar ciertas fotos en los modos Zoom y Completo"
+  "menu_zoom": {
+    "message": "Enfocar (puede ser recortada)"
   },
-  "setting_photog": {
-    "message": "Muestra el nombre del álbum para tus fotos."
+  "minutes": {
+    "message": "minutos"
   },
-  "setting_full_res": {
-    "message": "Utilice la resolución completa para las fotos que posee"
+  "no": {
+    "message": "No"
   },
-  "setting_full_res_desc": {
-    "message": "Estos archivos pueden ser muy grandes y rotados"
+  "no_photos": {
+    "message": "No Hay Fotos"
   },
-  "setting_location": {
-    "message": "Mostrar ubicación de la foto, si está disponible"
+  "notSet": {
+    "message": "No establecido"
   },
-  "setting_location_desc": {
-    "message": "No mostrará la ubicación estimada de Google Fotos"
+  "note": {
+    "message": "Nota:"
   },
-  "setting_photo_clicks": {
-    "message": "Mostrar el origen de la foto en el clic del ratón, si está disponible"
+  "note_albums": {
+    "message": "Nota: para tener más control sobre las selecciones de fotos, cree álbumes en Google Photos"
   },
-  "setting_bg": {
-    "message": "Fondo"
+  "off": {
+    "message": "esté Apagado"
   },
-  "setting_bg_desc": {
-    "message": "Establecer la imagen de fondo para el salvapantalla"
+  "off_abbrev": {
+    "message": "APA",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
   },
-  "setting_bg_dialog_title": {
-    "message": "Seleccionar imagen de fondo"
+  "ok": {
+    "message": "BUENO",
+    "description": "All Caps"
   },
-  "setting_all_displays": {
-    "message": "Todas las pantallas"
+  "on": {
+    "message": "esté Activo"
   },
-  "setting_all_displays_desc": {
-    "message": "Mostrar el salvapantalla en todas las pantallas conectadas"
+  "permission_message": {
+    "message": "La extensión tiene un permiso opcional que le permite acceder a su cuenta de Google Fotos. Si hace clic en PERMITIR, se mostrará otro cuadro de diálogo que le solicitará que permita o rechace este permiso, si aún no lo ha hecho."
   },
-  "setting_full_screen": {
-    "message": "No mostrar en pantalla completa las ventanas de Chrome"
+  "permission_message1": {
+    "message": "Además, debes haber iniciado sesión en Chrome. Si cierra la sesión de Chrome o inicia sesión como otro usuario, se eliminarán las selecciones de su álbum actual y tendrá que volver a autorizar."
   },
-  "setting_full_screen_desc": {
-    "message": "Útil si estás viendo videos"
+  "permission_message2": {
+    "message": "Para revocar completamente el acceso, vaya a https://myaccount.google.com/permissions, haga clic en la aplicación Photo Screen Saver y seleccione REMOVE ACCESS. Esto suele requerir unos minutos para que surta efecto."
   },
-  "setting_keep_awake": {
-    "message": "Mantenerse despierto"
+  "permission_status": {
+    "message": "Estado actual:"
   },
-  "setting_keep_awake_desc": {
-    "message": "Impedir la visualización de dormir (siempre activa si los tiempos de inicio y parada son iguales)"
+  "photo": {
+    "message": "foto"
   },
-  "setting_start_time": {
-    "message": "Tiempo de empezar"
+  "photo_cat_animals": {
+    "message": "ANIMALES"
   },
-  "setting_start_time_desc": {
-    "message": "Permitir la pantalla del salvapantalla, comenzando en este momento"
+  "photo_cat_cityscapes": {
+    "message": "paisajes urbanos"
   },
-  "setting_stop_time": {
-    "message": "Tiempo de parar"
+  "photo_cat_food": {
+    "message": "COMIDA"
   },
-  "setting_stop_time_desc": {
-    "message": "Desactivar pantalla de salvapantalla después de este tiempo"
+  "photo_cat_landmarks": {
+    "message": "PUNTOS DE REFERENCIA"
   },
-  "setting_suspend": {
-    "message": "Permitir suspensión del sistema"
+  "photo_cat_landscapes": {
+    "message": "PAISAJES"
   },
-  "setting_suspend_desc": {
-    "message": "La computadora puede dormir durante el tiempo inactivo"
+  "photo_cat_people": {
+    "message": "GENTE"
   },
-  "setting_chromecast": {
-    "message": "Chromecast"
+  "photo_cat_performances": {
+    "message": "ACTUACIONES"
   },
-  "setting_chromecast_desc": {
-    "message": "Algunas fotos de fondo del dispositivo Chromecast"
+  "photo_cat_pets": {
+    "message": "MASCOTAS"
+  },
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_sport": {
+    "message": "DEPORTE"
+  },
+  "photo_cat_title": {
+    "message": "Seleziona le categorie di foto da includere"
+  },
+  "photo_cat_utility": {
+    "message": "UTILIDAD (recomendado para excluir)"
+  },
+  "photo_count": {
+    "message": "Número de fotos:"
+  },
+  "photo_from": {
+    "message": "Foto de",
+    "description": "use example: Photo from Google"
+  },
+  "photo_no_filter": {
+    "message": "Todas las fotos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Utiliza tus fotos más recientes de cualquier tipo."
+  },
+  "photos": {
+    "message": "fotos"
+  },
+  "power_abbrev": {
+    "message": "ERG",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "removed_album": {
+    "message": "Álbum eliminado"
+  },
+  "screensaver": {
+    "message": "Salvapantalla"
+  },
+  "seconds": {
+    "message": "segundos"
   },
   "setting_500editors": {
     "message": "500px - elección de los editores"
@@ -317,29 +413,92 @@
   "setting_500yest_desc": {
     "message": "Fotos recientes del 500px, actualizado diariamente"
   },
+  "setting_all_displays": {
+    "message": "Todas las pantallas"
+  },
+  "setting_all_displays_desc": {
+    "message": "Mostrar el salvapantalla en todas las pantallas conectadas"
+  },
+  "setting_background": {
+    "message": "Ejecutar Chrome en segundo plano"
+  },
+  "setting_background_desc": {
+    "message": "Inicia Chrome en el arranque del equipo y sigue funcionando cuando está cerrado (recomendado)"
+  },
+  "setting_bg": {
+    "message": "Fondo"
+  },
+  "setting_bg_desc": {
+    "message": "Establecer la imagen de fondo para el salvapantalla"
+  },
+  "setting_bg_dialog_title": {
+    "message": "Seleccionar imagen de fondo"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Algunas fotos de fondo del dispositivo Chromecast"
+  },
+  "setting_click_to_view": {
+    "message": "Haga clic en el ratón para ver la foto"
+  },
+  "setting_dark_mode": {
+    "message": "Tema oscuro"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Usa colores oscuros para esta página."
+  },
+  "setting_detect_faces": {
+    "message": "Detectar caras"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Utiliza el reconocimiento de patrones para desplazarte y acercarte a los rostros"
+  },
+  "setting_flickr_api": {
+    "message": "Este producto utiliza la API de Flickr pero no está avalada ni certificada por Flickr"
+  },
   "setting_flickr_int": {
     "message": "Flickr - interesante"
   },
   "setting_flickr_int_desc": {
     "message": "Fotos interesantes del Flickr, actualizadas diariamente"
   },
-  "setting_reddit_space": {
-    "message": "Reddit - espacio"
+  "setting_full_res": {
+    "message": "Utilice la resolución completa para las fotos que posee"
   },
-  "setting_reddit_space_desc": {
-    "message": "Primariamente fotos celestiales de reddit, actualizadas diariamente"
+  "setting_full_res_desc": {
+    "message": "Estos archivos pueden ser muy grandes y rotados"
   },
-  "setting_reddit_earth": {
-    "message": "Reddit - tierra"
+  "setting_full_screen": {
+    "message": "No mostrar en pantalla completa las ventanas de Chrome"
   },
-  "setting_reddit_earth_desc": {
-    "message": "Primariamente fotos de paisaje de reddit, actualizadas diariamente"
+  "setting_full_screen_desc": {
+    "message": "Útil si estás viendo videos"
   },
-  "setting_reddit_animal": {
-    "message": "Reddit - animal"
+  "setting_idle_time": {
+    "message": "Tiempo de espera"
   },
-  "setting_reddit_animal_desc": {
-    "message": "Fotos de animales de reddit, actualizadas diariamente"
+  "setting_interactive": {
+    "message": "Modo interactivo"
+  },
+  "setting_interactive_desc": {
+    "message": "Alternar pausado (Alt+Mayus+Espacio), Atrás (Alt+Mayus+Flecha izquierda), Adelante (Alt+Mayus+Flecha derecha)"
+  },
+  "setting_keep_awake": {
+    "message": "Mantenerse despierto"
+  },
+  "setting_keep_awake_desc": {
+    "message": "Impedir la visualización de dormir (siempre activa si los tiempos de inicio y parada son iguales)"
+  },
+  "setting_large_time": {
+    "message": "Etiqueta de tiempo grande"
+  },
+  "setting_location": {
+    "message": "Mostrar ubicación de la foto, si está disponible"
+  },
+  "setting_location_desc": {
+    "message": "No mostrará la ubicación estimada de Google Fotos"
   },
   "setting_mine": {
     "message": "Desarrollador de extensión"
@@ -347,291 +506,116 @@
   "setting_mine_desc": {
     "message": "Fotos del tipo que escribió esto"
   },
-  "setting_click_to_view": {
-    "message": "Haga clic en el ratón para ver la foto"
-  },
-  "setting_flickr_api": {
-    "message": "Este producto utiliza la API de Flickr pero no está avalada ni certificada por Flickr"
-  },
-  "tab_slideshow": {
-    "message": "CONTROLES DE LA DIAPOSITIVA",
-    "description": "All Caps"
-  },
-  "tab_display": {
-    "message": "CONTROLES DE PANTALLA",
-    "description": "All Caps"
-  },
-  "tab_sources": {
-    "message": "FUENTES DE FOTO",
-    "description": "All Caps"
-  },
-  "google_title": {
-    "message": "Álbumes de Fotos de Google"
-  },
-  "google_title_photos": {
-    "message": "Fotos de Google"
-  },
-  "google_shared_albums_note": {
-    "message": "Nota: Los álbumes compartidos pueden no estar disponibles. Consulte las preguntas frecuentes para obtener más información."
-  },
-  "google_loading": {
-    "message": "Cargando..."
-  },
-  "help_title": {
-    "message": "Ayuda y comentarios"
-  },
-  "help_section_feedback": {
-    "message": "Comentarios (sólo en inglés, por favor)"
-  },
-  "help_question": {
-    "message": "Pregunta"
-  },
-  "help_bug": {
-    "message": "Reportar un error"
-  },
-  "help_feature": {
-    "message": "Solicitar característica"
-  },
-  "help_feedback": {
-    "message": "Suministre realimentación"
-  },
-  "help_issue": {
-    "message": "Enviar problema de GitHub (requiere cuenta)"
-  },
-  "help_documentation": {
-    "message": "Documentación"
-  },
-  "help_faq": {
-    "message": "Preguntas frecuentes"
-  },
-  "help_translations": {
-    "message": "Ofrecer ayuda con traducciones"
-  },
-  "help_release_notes": {
-    "message": "Notas de la versión"
-  },
-  "help_contributors": {
-    "message": "Colaboradores"
-  },
-  "help_licenses": {
-    "message": "Licencias de código abierto"
-  },
-  "help_source_code": {
-    "message": "Código fuente"
-  },
-  "err_request_failed": {
-    "message": "Solicitud fallida"
-  },
-  "err_storage_title": {
-    "message": "Límites de almacenamiento excedidos"
-  },
-  "err_storage_desc": {
-    "message": "Anule la selección de otras fuentes de fotografías e inténtelo de nuevo."
-  },
-  "err_status": {
-    "message": "Estado"
-  },
-  "err_network": {
-    "message": "Error de red"
-  },
-  "err_photo_source_title": {
-    "message": "Error al recuperar el origen de la foto"
-  },
-  "err_auth_picasa": {
-    "message": "Usuario no autoriza a Google."
-  },
-  "err_no_albums": {
-    "message": "No hay álbumes encontrados"
-  },
-  "last_error_viewer_title": {
-    "message": "Último visor de errores"
-  },
-  "err_load_album_list": {
-    "message": "Error al recuperar la lista de álbumes de fotos de Google"
-  },
-  "err_load_album": {
-    "message": "Error al recuperar de álbumes de fotos de Google"
-  },
-  "err_show_ss": {
-    "message": "Error al mostrar el protector de pantalla"
-  },
-  "err_optional_permissions": {
-    "message": "Error al modificar un permiso opcional"
-  },
-  "err_max_albums": {
-    "message": "Se ha alcanzado el número máximo de selecciones de álbumes."
-  },
-  "err_max_photos": {
-    "message": "Se ha alcanzado el número máximo de selecciones de fotos."
-  },
-  "err_unknown": {
-    "message": "desconocido"
-  },
-  "err_unknown_method": {
-    "message": "método desconocido"
-  },
-  "err_error": {
-    "message": "Ocurrió un error"
-  },
-  "err_exception": {
-    "message": "Ocurrió una excepción"
-  },
-  "err_google_quota": {
-    "message": "Superó el límite diario de la API de Google Photos."
-  },
-  "err_chrome_signout": {
-    "message": "Has salido de Chrome. Tus fotos de Google no estarán disponibles."
-  },
-  "err_chrome_signin_title": {
-    "message": "No has iniciado sesión en Chrome"
-  },
-  "err_chrome_signin": {
-    "message": "Inicia sesión en Chrome con la cuenta que tiene tus fotos de Google."
-  },
-  "menu_permission": {
-    "message": "Administrar el acceso a Google Photos"
-  },
-  "permission_message": {
-    "message": "La extensión tiene un permiso opcional que le permite acceder a su cuenta de Google Fotos. Si hace clic en PERMITIR, se mostrará otro cuadro de diálogo que le solicitará que permita o rechace este permiso, si aún no lo ha hecho."
-  },
-  "permission_message1": {
-    "message": "Además, debes haber iniciado sesión en Chrome. Si cierra la sesión de Chrome o inicia sesión como otro usuario, se eliminarán las selecciones de su álbum actual y tendrá que volver a autorizar."
-  },
-  "permission_message2": {
-    "message": "Para revocar completamente el acceso, vaya a https://myaccount.google.com/permissions, haga clic en la aplicación Photo Screen Saver y seleccione REMOVE ACCESS. Esto suele requerir unos minutos para que surta efecto."
-  },
-  "permission_status": {
-    "message": "Estado actual:"
-  },
-  "allowed": {
-    "message": "Permitido"
-  },
-  "denied": {
-    "message": "Negado"
-  },
-  "notSet": {
-    "message": "No establecido"
-  },
-  "err_auth_revoked": {
-    "message": "Ya no tienes acceso a tus fotos de Google. Por favor, vuelva a seleccionarlos."
-  },
-  "note_albums": {
-    "message": "Nota: para tener más control sobre las selecciones de fotos, cree álbumes en Google Photos"
-  },
-  "menu_google": {
-    "message": "Seleccione Google Photos"
-  },
-  "err_load_photos": {
-    "message": "Error al recuperar fotos de Google"
-  },
-  "photo_no_filter": {
-    "message": "Todas las fotos"
-  },
-  "photo_no_filter_desc": {
-    "message": "Utiliza tus fotos más recientes de cualquier tipo."
-  },
-  "photo_cat_title": {
-    "message": "Seleziona le categorie di foto da includere"
-  },
-  "photo_count": {
-    "message": "Número de fotos:"
-  },
-  "include": {
-    "message": "Incluir"
-  },
-  "exclude": {
-    "message": "Excluir"
-  },
-  "photo_cat_utility": {
-    "message": "UTILIDAD (recomendado para excluir)"
-  },
-  "photo_cat_selfies": {
-    "message": "SELFIES"
-  },
-  "photo_cat_food": {
-    "message": "COMIDA"
-  },
-  "photo_cat_people": {
-    "message": "GENTE"
-  },
-  "photo_cat_landscapes": {
-    "message": "PAISAJES"
-  },
-  "photo_cat_cityscapes": {
-    "message": "paisajes urbanos"
-  },
-  "photo_cat_animals": {
-    "message": "ANIMALES"
-  },
-  "photo_cat_sport": {
-    "message": "DEPORTE"
-  },
-  "photo_cat_performances": {
-    "message": "ACTUACIONES"
-  },
-  "photo_cat_pets": {
-    "message": "MASCOTAS"
-  },
-  "photo_cat_landmarks": {
-    "message": "PUNTOS DE REFERENCIA"
-  },
-  "button_needs_refresh": {
-    "message": "NECESITA ACTUALIZAR"
-  },
-  "tooltip_refresh_photos": {
-    "message": "Actualizar fotos"
-  },
-  "title_mode_switch": {
-    "message": "Cambia el modo de fotos de Google"
-  },
-  "desc_mode_switch": {
-    "message": "Sus selecciones de fotos actuales serán eliminadas.\n\nContinuar con el interruptor?"
-  },
-  "button_mode_switch": {
-    "message": "INTERRUPTOR"
-  },
-  "close": {
-    "message": "CERRAR",
-    "description": "All Caps"
-  },
-  "deny": {
-    "message": "NEGAR"
-  },
-  "allow": {
-    "message": "PERMITIR"
-  },
-  "removed_album": {
-    "message": "Álbum eliminado"
-  },
-  "setting_weather": {
-    "message": "Mostrar el clima actual, si está disponible"
-  },
-  "setting_weather_desc": {
-    "message": "Se le pedirá que permita ver su ubicación y acceder a la API de clima."
-  },
-  "setting_temp_unit": {
-    "message": "Unidad de temperatura"
-  },
-  "err_weather_perm": {
-    "message": "La información del tiempo no estará disponible"
-  },
-  "err_geolocation_perm": {
-    "message": "No has permitido compartir la ubicación."
-  },
-  "err_weather_update": {
-    "message": "Error al actualizar el clima"
-  },
-  "err_geolocation_title": {
-    "message": "Error al actualizar su ubicación actual"
-  },
   "setting_pan_and_scan": {
     "message": "Panorámica y zoom de la foto actual"
   },
   "setting_pan_and_scan_desc": {
     "message": "Aplica el efecto \"Ken Burns\" a las fotos."
   },
-  "err_no_internet": {
-    "message": "Internet desconectado"
+  "setting_photo_clicks": {
+    "message": "Mostrar el origen de la foto en el clic del ratón, si está disponible"
+  },
+  "setting_photo_sizing": {
+    "message": "Modo de visualización de fotos"
+  },
+  "setting_photo_transition": {
+    "message": "Foto método de transición"
+  },
+  "setting_photog": {
+    "message": "Muestra el nombre del álbum para tus fotos."
+  },
+  "setting_reddit_animal": {
+    "message": "Reddit - animal"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Fotos de animales de reddit, actualizadas diariamente"
+  },
+  "setting_reddit_city": {
+    "message": "reddit - ciudad"
+  },
+  "setting_reddit_city_desc": {
+    "message": "Principalmente fotos de paisajes urbanos de reddit, actualizadas diariamente."
+  },
+  "setting_reddit_earth": {
+    "message": "Reddit - tierra"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "Primariamente fotos de paisaje de reddit, actualizadas diariamente"
+  },
+  "setting_reddit_space": {
+    "message": "Reddit - espacio"
+  },
+  "setting_reddit_space_desc": {
+    "message": "Primariamente fotos celestiales de reddit, actualizadas diariamente"
+  },
+  "setting_show_time": {
+    "message": "Tiempo de la funcion"
+  },
+  "setting_shuffle": {
+    "message": "Aleatorizar"
+  },
+  "setting_shuffle_desc": {
+    "message": "Mostrar fotos en orden aleatorio"
+  },
+  "setting_skip": {
+    "message": "Omitir fotografías de relación de aspecto extrema"
+  },
+  "setting_skip_desc": {
+    "message": "No mostrar ciertas fotos en los modos Zoom y Completo"
+  },
+  "setting_start_time": {
+    "message": "Tiempo de empezar"
+  },
+  "setting_start_time_desc": {
+    "message": "Permitir la pantalla del salvapantalla, comenzando en este momento"
+  },
+  "setting_stop_time": {
+    "message": "Tiempo de parar"
+  },
+  "setting_stop_time_desc": {
+    "message": "Desactivar pantalla de salvapantalla después de este tiempo"
+  },
+  "setting_suspend": {
+    "message": "Permitir suspensión del sistema"
+  },
+  "setting_suspend_desc": {
+    "message": "La computadora puede dormir durante el tiempo inactivo"
+  },
+  "setting_temp_unit": {
+    "message": "Unidad de temperatura"
+  },
+  "setting_transition_time": {
+    "message": "Tiempo de transición de la foto"
+  },
+  "setting_unsplash_architecture": {
+    "message": "Unsplash - arquitectura"
+  },
+  "setting_unsplash_architecture_desc": {
+    "message": "Fotos de arquitectura de Unsplash, actualizadas diariamente."
+  },
+  "setting_unsplash_city": {
+    "message": "Unsplash - ciudad"
+  },
+  "setting_unsplash_city_desc": {
+    "message": "Fotos de la ciudad de Unsplash, actualizadas diariamente."
+  },
+  "setting_unsplash_nature": {
+    "message": "Unsplash - paisaje"
+  },
+  "setting_unsplash_nature_desc": {
+    "message": "Principalmente fotos de paisajes de Unsplash, actualizadas diariamente."
+  },
+  "setting_unsplash_people": {
+    "message": "Unsplash - gente"
+  },
+  "setting_unsplash_people_desc": {
+    "message": "Fotos de personas de Unsplash, actualizadas diariamente."
+  },
+  "setting_weather": {
+    "message": "Mostrar el clima actual, si está disponible"
+  },
+  "setting_weather_desc": {
+    "message": "Se le pedirá que permita ver su ubicación y acceder a la API de clima."
   },
   "settings_appearance": {
     "message": "Apariencia"
@@ -642,20 +626,30 @@
   "settings_extras": {
     "message": "Características de visualización adicionales"
   },
-  "setting_detect_faces": {
-    "message": "Detectar caras"
+  "sleep_abbrev": {
+    "message": "DOR",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
   },
-  "setting_detect_faces_desc": {
-    "message": "Utiliza el reconocimiento de patrones para desplazarte y acercarte a los rostros"
+  "ss_back": {
+    "message": "Volver una foto"
   },
-  "err_detect_faces_perm": {
-    "message": "No detectará caras durante la panorámica y el zoom."
+  "ss_forward": {
+    "message": "Reenviar una foto"
   },
-  "setting_dark_mode": {
-    "message": "Tema oscuro"
+  "ss_toggle_paused": {
+    "message": "Alternar pausado"
   },
-  "setting_dark_mode_desc": {
-    "message": "Usa colores oscuros para esta página."
+  "tab_display": {
+    "message": "CONTROLES DE PANTALLA",
+    "description": "All Caps"
+  },
+  "tab_slideshow": {
+    "message": "CONTROLES DE LA DIAPOSITIVA",
+    "description": "All Caps"
+  },
+  "tab_sources": {
+    "message": "FUENTES DE FOTO",
+    "description": "All Caps"
   },
   "temp_unit": {
     "message": "C",
@@ -664,5 +658,41 @@
   "time_format": {
     "message": "24",
     "description": "Set to 12 for AM/PM format or 24"
+  },
+  "title_mode_switch": {
+    "message": "Cambia el modo de fotos de Google"
+  },
+  "toggle_enabled": {
+    "message": "Alternar estado activado"
+  },
+  "tooltip_deselect": {
+    "message": "Deseleccionar todo"
+  },
+  "tooltip_google_mode_albums": {
+    "message": "Cambiar al modo de foto"
+  },
+  "tooltip_google_mode_photos": {
+    "message": "Cambiar al modo de álbum"
+  },
+  "tooltip_google_toggle": {
+    "message": "Habilitar / Deshabilitar el uso de los álbumes"
+  },
+  "tooltip_keep_awake": {
+    "message": "Las funciones Mantenerse despierto están disponibles incluso si el salvapantalla está deshabilitado, por lo que puede utilizar la aplicación como un programador de energía general. El icono mostrará 'ERG' en este estado."
+  },
+  "tooltip_refresh": {
+    "message": "Actualizar lista"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Actualizar fotos"
+  },
+  "tooltip_restore": {
+    "message": "Restaurar ajustes predeterminados"
+  },
+  "tooltip_select": {
+    "message": "Seleccione maximo"
+  },
+  "tooltip_settings_toggle": {
+    "message": "Habilitar / Deshabilitar el salvapantalla"
   }
 }

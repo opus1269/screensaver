@@ -1,159 +1,215 @@
 {
-  "chrome_extension_name": {
-    "message": "Photo Screen Saver"
+  "allow": {
+    "message": "ALLOW"
   },
-  "chrome_extension_description": {
-    "message": "A screensaver with multiple photo sources, including your Google Photos."
+  "allowed": {
+    "message": "Allowed"
   },
   "browser_action_title": {
     "message": "Photo Screen Saver - click for options"
   },
-  "toggle_enabled": {
-    "message": "Toggle enabled state"
+  "button_mode_switch": {
+    "message": "SWITCH"
   },
-  "photo_from": {
-    "message": "Photo from",
-    "description": "use example: Photo from Google"
-  },
-  "screensaver": {
-    "message": "Screensaver"
-  },
-  "on": {
-    "message": "is On"
-  },
-  "off": {
-    "message": "is Off"
-  },
-  "disable": {
-    "message": "Disable (Alt+Shift+Q)"
-  },
-  "enable": {
-    "message": "Enable (Alt+Shift+Q)"
-  },
-  "display_now": {
-    "message": "Display now"
-  },
-  "ss_toggle_paused": {
-    "message": "Toggle paused"
-  },
-  "ss_forward": {
-    "message": "Forward one photo"
-  },
-  "ss_back": {
-    "message": "Back one photo"
-  },
-  "help": {
-    "message": "Help"
-  },
-  "no": {
-    "message": "No"
-  },
-  "ok": {
-    "message": "OK",
-    "description": "All Caps"
+  "button_needs_refresh": {
+    "message": "NEEDS REFRESH"
   },
   "cancel": {
     "message": "CANCEL",
     "description": "All Caps"
   },
-  "note": {
-    "message": "Note:"
+  "chrome_extension_description": {
+    "message": "A screensaver with multiple photo sources, including your Google Photos."
   },
-  "photo": {
-    "message": "photo"
+  "chrome_extension_name": {
+    "message": "Photo Screen Saver"
   },
-  "photos": {
-    "message": "photos"
-  },
-  "no_photos": {
-    "message": "No Photos"
-  },
-  "seconds": {
-    "message": "seconds"
-  },
-  "minutes": {
-    "message": "minutes"
-  },
-  "hours": {
-    "message": "hours"
+  "close": {
+    "message": "CLOSE",
+    "description": "All Caps"
   },
   "days": {
     "message": "days"
   },
-  "off_abbrev": {
-    "message": "OFF",
-    "description": "All Caps. max 3 letter abbreviation for OFF"
+  "denied": {
+    "message": "Denied"
   },
-  "sleep_abbrev": {
-    "message": "SLP",
-    "description": "All Caps. max 3 letter abbreviation for SLEEP"
+  "deny": {
+    "message": "DENY"
   },
-  "power_abbrev": {
-    "message": "PWR",
-    "description": "All Caps. max 3 letter abbreviation for POWER"
+  "desc_mode_switch": {
+    "message": "Your current photo selections will be removed.\n\nContinue with switch?"
+  },
+  "disable": {
+    "message": "Disable (Alt+Shift+Q)"
+  },
+  "display_now": {
+    "message": "Display now"
+  },
+  "enable": {
+    "message": "Enable (Alt+Shift+Q)"
+  },
+  "err_auth_picasa": {
+    "message": "User did not authorize Google."
+  },
+  "err_auth_revoked": {
+    "message": "You no longer have access to your Google Photos. Please reselect them."
+  },
+  "err_chrome_signin": {
+    "message": "Please sign in to Chrome with the account that has your Google Photos."
+  },
+  "err_chrome_signin_title": {
+    "message": "Not signed in to Chrome"
+  },
+  "err_chrome_signout": {
+    "message": "You are signed out of Chrome. Your Google Photos will not be available."
+  },
+  "err_detect_faces_perm": {
+    "message": "Will not detect faces during pan and zoom."
+  },
+  "err_error": {
+    "message": "An error occurred"
+  },
+  "err_exception": {
+    "message": "An exception occurred"
+  },
+  "err_geolocation_perm": {
+    "message": "You have not allowed location sharing"
+  },
+  "err_geolocation_title": {
+    "message": "Failed to update your current location"
+  },
+  "err_google_quota": {
+    "message": "Exceeded the daily Google Photos API limit."
+  },
+  "err_load_album": {
+    "message": "Failed to retrieve Google Photo album"
+  },
+  "err_load_album_list": {
+    "message": "Failed to retrieve list of Google Photo albums"
+  },
+  "err_load_photos": {
+    "message": "Failed to retrieve Google Photos"
+  },
+  "err_max_albums": {
+    "message": "The maximum number of album selections has been reached."
+  },
+  "err_max_photos": {
+    "message": "The maximum number of photo selections has been reached."
+  },
+  "err_network": {
+    "message": "Network error"
+  },
+  "err_no_albums": {
+    "message": "No albums found"
+  },
+  "err_no_internet": {
+    "message": "Internet disconnected"
+  },
+  "err_optional_permissions": {
+    "message": "Failed to modify an optional permission"
+  },
+  "err_photo_source_title": {
+    "message": "Failed to retrieve photo source"
+  },
+  "err_request_failed": {
+    "message": "Request failed"
+  },
+  "err_show_ss": {
+    "message": "Failed to display screensaver"
+  },
+  "err_status": {
+    "message": "Status"
+  },
+  "err_storage_desc": {
+    "message": "Deselect other photo sources and try again."
+  },
+  "err_storage_title": {
+    "message": "Exceeded storage limits"
+  },
+  "err_unknown": {
+    "message": "unknown"
+  },
+  "err_unknown_method": {
+    "message": "unknownMethod"
+  },
+  "err_weather_perm": {
+    "message": "Weather information will not be available"
+  },
+  "err_weather_update": {
+    "message": "Failed to update weather"
+  },
+  "exclude": {
+    "message": "Exclude"
+  },
+  "google_loading": {
+    "message": "Loading..."
+  },
+  "google_shared_albums_note": {
+    "message": "Note: Shared albums may not be available.  See the FAQ for more info."
+  },
+  "google_title": {
+    "message": "Google Photos Albums"
+  },
+  "google_title_photos": {
+    "message": "Google Photos"
+  },
+  "help": {
+    "message": "Help"
+  },
+  "help_bug": {
+    "message": "Report bug"
+  },
+  "help_contributors": {
+    "message": "Contributors"
+  },
+  "help_documentation": {
+    "message": "Documentation"
+  },
+  "help_faq": {
+    "message": "Frequently asked questions"
+  },
+  "help_feature": {
+    "message": "Request feature"
+  },
+  "help_feedback": {
+    "message": "Provide feedback"
+  },
+  "help_issue": {
+    "message": "Submit GitHub issue (requires account)"
+  },
+  "help_licenses": {
+    "message": "Open source licenses"
+  },
+  "help_question": {
+    "message": "Ask question"
+  },
+  "help_release_notes": {
+    "message": "Release notes"
+  },
+  "help_section_feedback": {
+    "message": "Feedback (English only, please)"
+  },
+  "help_source_code": {
+    "message": "Source code"
+  },
+  "help_title": {
+    "message": "Help & Feedback"
+  },
+  "help_translations": {
+    "message": "Offer assistance with translations"
+  },
+  "hours": {
+    "message": "hours"
+  },
+  "include": {
+    "message": "Include"
+  },
+  "last_error_viewer_title": {
+    "message": "Last error viewer"
   },
   "menu": {
     "message": "Menu"
-  },
-  "menu_settings": {
-    "message": "Settings"
-  },
-  "menu_preview": {
-    "message": "Preview screensaver"
-  },
-  "menu_error": {
-    "message": "View last error"
-  },
-  "menu_help": {
-    "message": "Help & feedback"
-  },
-  "menu_support": {
-    "message": "Request support"
-  },
-  "menu_rate": {
-    "message": "Rate the extension"
-  },
-  "menu_pushy": {
-    "message": "Try the Pushy Clipboard extension"
-  },
-  "menu_letterbox": {
-    "message": "Letterbox"
-  },
-  "menu_zoom": {
-    "message": "Zoom (May crop)"
-  },
-  "menu_frame": {
-    "message": "Frame"
-  },
-  "menu_full": {
-    "message": "Full (May distort)"
-  },
-  "menu_random": {
-    "message": "Random"
-  },
-  "menu_scale_up": {
-    "message": "Scale up"
-  },
-  "menu_fade": {
-    "message": "Fade"
-  },
-  "menu_slide_from_right": {
-    "message": "Slide from right"
-  },
-  "menu_slide_down": {
-    "message": "Slide down"
-  },
-  "menu_spin_up": {
-    "message": "Spin up"
-  },
-  "menu_slide_up": {
-    "message": "Slide up"
-  },
-  "menu_slide_from_bottom": {
-    "message": "Slide from bottom"
-  },
-  "menu_slide_right": {
-    "message": "Slide right"
   },
   "menu_12_hour": {
     "message": "12 hour"
@@ -161,143 +217,183 @@
   "menu_24_hour": {
     "message": "24 hour"
   },
-  "tooltip_select": {
-    "message": "Select maximum"
+  "menu_error": {
+    "message": "View last error"
   },
-  "tooltip_deselect": {
-    "message": "Deselect all"
+  "menu_fade": {
+    "message": "Fade"
   },
-  "tooltip_restore": {
-    "message": "Restore default settings"
+  "menu_frame": {
+    "message": "Frame"
   },
-  "tooltip_refresh": {
-    "message": "Refresh list"
+  "menu_full": {
+    "message": "Full (May distort)"
   },
-  "tooltip_keep_awake": {
-    "message": "The Keep awake features are available even if the screensaver is disabled, so you can use the app as a general power scheduler. The icon will display 'PWR' when in this state."
+  "menu_google": {
+    "message": "Select Google Photos"
   },
-  "tooltip_settings_toggle": {
-    "message": "Enable/disable the screensaver"
+  "menu_help": {
+    "message": "Help & feedback"
   },
-  "tooltip_google_toggle": {
-    "message": "Enable/disable use of albums"
+  "menu_letterbox": {
+    "message": "Letterbox"
   },
-  "tooltip_google_mode_albums": {
-    "message": "Switch to photo mode"
+  "menu_permission": {
+    "message": "Manage access to Google Photos"
   },
-  "tooltip_google_mode_photos": {
-    "message": "Switch to album mode"
+  "menu_preview": {
+    "message": "Preview screensaver"
   },
-  "setting_background": {
-    "message": "Run Chrome in background"
+  "menu_pushy": {
+    "message": "Try the Pushy Clipboard extension"
   },
-  "setting_background_desc": {
-    "message": "Starts Chrome on computer boot and keeps running when closed (Recommended)"
+  "menu_random": {
+    "message": "Random"
   },
-  "setting_idle_time": {
-    "message": "Wait time"
+  "menu_rate": {
+    "message": "Rate the extension"
   },
-  "setting_transition_time": {
-    "message": "Photo transition time"
+  "menu_scale_up": {
+    "message": "Scale up"
   },
-  "setting_photo_sizing": {
-    "message": "Photo display mode"
+  "menu_settings": {
+    "message": "Settings"
   },
-  "setting_photo_transition": {
-    "message": "Photo transition method"
+  "menu_slide_down": {
+    "message": "Slide down"
   },
-  "setting_interactive": {
-    "message": "Interactive mode"
+  "menu_slide_from_bottom": {
+    "message": "Slide from bottom"
   },
-  "setting_interactive_desc": {
-    "message": "Toggle paused (Alt+Shift+Space), Back (Alt+Shift+LeftArrow), Forward (Alt+Shift+RightArrow)"
+  "menu_slide_from_right": {
+    "message": "Slide from right"
   },
-  "setting_show_time": {
-    "message": "Show time"
+  "menu_slide_right": {
+    "message": "Slide right"
   },
-  "setting_large_time": {
-    "message": "Large time label"
+  "menu_slide_up": {
+    "message": "Slide up"
   },
-  "setting_shuffle": {
-    "message": "Randomize"
+  "menu_spin_up": {
+    "message": "Spin up"
   },
-  "setting_shuffle_desc": {
-    "message": "Present photos in random order"
+  "menu_support": {
+    "message": "Request support"
   },
-  "setting_skip": {
-    "message": "Skip extreme aspect ratio photos"
+  "menu_zoom": {
+    "message": "Zoom (May crop)"
   },
-  "setting_skip_desc": {
-    "message": "Do not display certain photos in Zoom and Full modes"
+  "minutes": {
+    "message": "minutes"
   },
-  "setting_photog": {
-    "message": "Show album name for your photos"
+  "no": {
+    "message": "No"
   },
-  "setting_full_res": {
-    "message": "Use full resolution for photos you own"
+  "no_photos": {
+    "message": "No Photos"
   },
-  "setting_full_res_desc": {
-    "message": "These files may be very large and rotated"
+  "notSet": {
+    "message": "Not Set"
   },
-  "setting_location": {
-    "message": "Show photo location, if available"
+  "note": {
+    "message": "Note:"
   },
-  "setting_location_desc": {
-    "message": "Will not show Google Photos 'estimated' location"
+  "note_albums": {
+    "message": "Note: For more control over photo selections, create albums in Google Photos"
   },
-  "setting_photo_clicks": {
-    "message": "Show source of photo on mouse click, if available"
+  "off": {
+    "message": "is Off"
   },
-  "setting_bg": {
-    "message": "Background"
+  "off_abbrev": {
+    "message": "OFF",
+    "description": "All Caps. max 3 letter abbreviation for OFF"
   },
-  "setting_bg_desc": {
-    "message": "Set the background image of the screensaver"
+  "ok": {
+    "message": "OK",
+    "description": "All Caps"
   },
-  "setting_bg_dialog_title": {
-    "message": "Select background image"
+  "on": {
+    "message": "is On"
   },
-  "setting_all_displays": {
-    "message": "All displays"
+  "permission_message": {
+    "message": "The extension has an optional permission that allows access to your Google Photos account.  If you click on ALLOW another dialog will be displayed asking you to allow or deny this permission, if you have not already done so."
   },
-  "setting_all_displays_desc": {
-    "message": "Show screensaver on all connected displays"
+  "permission_message1": {
+    "message": "In addition, you must be signed in to Chrome. If you sign out of Chrome or sign in as another user, your current album selections will be removed and you will need to reauthorize."
   },
-  "setting_full_screen": {
-    "message": "Do not show over fullscreen Chrome windows"
+  "permission_message2": {
+    "message": "To completely revoke access, go to https://myaccount.google.com/permissions, click on the Photo Screen Saver app, and select REMOVE ACCESS. This usually requires a few minutes to take effect."
   },
-  "setting_full_screen_desc": {
-    "message": "Useful if you are watching videos"
+  "permission_status": {
+    "message": "Current Status:"
   },
-  "setting_keep_awake": {
-    "message": "Keep Awake"
+  "photo": {
+    "message": "photo"
   },
-  "setting_keep_awake_desc": {
-    "message": "Prevent display from sleeping (always active if start and stop times are equal)"
+  "photo_cat_animals": {
+    "message": "ANIMALS"
   },
-  "setting_start_time": {
-    "message": "Time to start"
+  "photo_cat_cityscapes": {
+    "message": "CITYSCAPES"
   },
-  "setting_start_time_desc": {
-    "message": "Allow screensaver display, starting at this time"
+  "photo_cat_food": {
+    "message": "FOOD"
   },
-  "setting_stop_time": {
-    "message": "Time to stop"
+  "photo_cat_landmarks": {
+    "message": "LANDMARKS"
   },
-  "setting_stop_time_desc": {
-    "message": "Disallow screensaver display after this time"
+  "photo_cat_landscapes": {
+    "message": "LANDSCAPES"
   },
-  "setting_suspend": {
-    "message": "Allow system suspend"
+  "photo_cat_people": {
+    "message": "PEOPLE"
   },
-  "setting_suspend_desc": {
-    "message": "Computer may sleep during inactive time"
+  "photo_cat_performances": {
+    "message": "PERFORMANCES"
   },
-  "setting_chromecast": {
-    "message": "Chromecast"
+  "photo_cat_pets": {
+    "message": "PETS"
   },
-  "setting_chromecast_desc": {
-    "message": "Some backdrop photos from the Chromecast device"
+  "photo_cat_selfies": {
+    "message": "SELFIES"
+  },
+  "photo_cat_sport": {
+    "message": "SPORT"
+  },
+  "photo_cat_title": {
+    "message": "Select photo categories to include"
+  },
+  "photo_cat_utility": {
+    "message": "UTILITY (recommended to exclude)"
+  },
+  "photo_count": {
+    "message": "Number of photos:"
+  },
+  "photo_from": {
+    "message": "Photo from",
+    "description": "use example: Photo from Google"
+  },
+  "photo_no_filter": {
+    "message": "All photos"
+  },
+  "photo_no_filter_desc": {
+    "message": "Use your most recent photos of any type"
+  },
+  "photos": {
+    "message": "photos"
+  },
+  "power_abbrev": {
+    "message": "PWR",
+    "description": "All Caps. max 3 letter abbreviation for POWER"
+  },
+  "removed_album": {
+    "message": "Removed album"
+  },
+  "screensaver": {
+    "message": "Screensaver"
+  },
+  "seconds": {
+    "message": "seconds"
   },
   "setting_500editors": {
     "message": "500px - editors' choice"
@@ -317,29 +413,92 @@
   "setting_500yest_desc": {
     "message": "Recent photos from the 500px, updated daily"
   },
+  "setting_all_displays": {
+    "message": "All displays"
+  },
+  "setting_all_displays_desc": {
+    "message": "Show screensaver on all connected displays"
+  },
+  "setting_background": {
+    "message": "Run Chrome in background"
+  },
+  "setting_background_desc": {
+    "message": "Starts Chrome on computer boot and keeps running when closed (Recommended)"
+  },
+  "setting_bg": {
+    "message": "Background"
+  },
+  "setting_bg_desc": {
+    "message": "Set the background image of the screensaver"
+  },
+  "setting_bg_dialog_title": {
+    "message": "Select background image"
+  },
+  "setting_chromecast": {
+    "message": "Chromecast"
+  },
+  "setting_chromecast_desc": {
+    "message": "Some backdrop photos from the Chromecast device"
+  },
+  "setting_click_to_view": {
+    "message": "Click mouse to view photo"
+  },
+  "setting_dark_mode": {
+    "message": "Dark theme"
+  },
+  "setting_dark_mode_desc": {
+    "message": "Use dark colors for this page"
+  },
+  "setting_detect_faces": {
+    "message": "Detect faces"
+  },
+  "setting_detect_faces_desc": {
+    "message": "Use pattern recognition to pan and zoom to people's faces"
+  },
+  "setting_flickr_api": {
+    "message": "This product uses the Flickr API but is not endorsed or certified by Flickr"
+  },
   "setting_flickr_int": {
     "message": "Flickr - interesting"
   },
   "setting_flickr_int_desc": {
     "message": "Interesting photos from the Flickr, updated daily"
   },
-  "setting_reddit_space": {
-    "message": "reddit - space"
+  "setting_full_res": {
+    "message": "Use full resolution for photos you own"
   },
-  "setting_reddit_space_desc": {
-    "message": "Primarily celestial photos from reddit, updated daily"
+  "setting_full_res_desc": {
+    "message": "These files may be very large and rotated"
   },
-  "setting_reddit_earth": {
-    "message": "reddit - earth"
+  "setting_full_screen": {
+    "message": "Do not show over fullscreen Chrome windows"
   },
-  "setting_reddit_earth_desc": {
-    "message": "Primarily landscape photos from reddit, updated daily"
+  "setting_full_screen_desc": {
+    "message": "Useful if you are watching videos"
   },
-  "setting_reddit_animal": {
-    "message": "reddit - animal"
+  "setting_idle_time": {
+    "message": "Wait time"
   },
-  "setting_reddit_animal_desc": {
-    "message": "Animal photos from reddit, updated daily"
+  "setting_interactive": {
+    "message": "Interactive mode"
+  },
+  "setting_interactive_desc": {
+    "message": "Toggle paused (Alt+Shift+Space), Back (Alt+Shift+LeftArrow), Forward (Alt+Shift+RightArrow)"
+  },
+  "setting_keep_awake": {
+    "message": "Keep Awake"
+  },
+  "setting_keep_awake_desc": {
+    "message": "Prevent display from sleeping (always active if start and stop times are equal)"
+  },
+  "setting_large_time": {
+    "message": "Large time label"
+  },
+  "setting_location": {
+    "message": "Show photo location, if available"
+  },
+  "setting_location_desc": {
+    "message": "Will not show Google Photos 'estimated' location"
   },
   "setting_mine": {
     "message": "Extension developer"
@@ -347,291 +506,116 @@
   "setting_mine_desc": {
     "message": "Photos from the guy who wrote this"
   },
-  "setting_click_to_view": {
-    "message": "Click mouse to view photo"
-  },
-  "setting_flickr_api": {
-    "message": "This product uses the Flickr API but is not endorsed or certified by Flickr"
-  },
-  "tab_slideshow": {
-    "message": "SLIDE SHOW CONTROLS",
-    "description": "All Caps"
-  },
-  "tab_display": {
-    "message": "DISPLAY CONTROLS",
-    "description": "All Caps"
-  },
-  "tab_sources": {
-    "message": "PHOTO SOURCES",
-    "description": "All Caps"
-  },
-  "google_title": {
-    "message": "Google Photos Albums"
-  },
-  "google_title_photos": {
-    "message": "Google Photos"
-  },
-  "google_shared_albums_note": {
-    "message": "Note: Shared albums may not be available.  See the FAQ for more info."
-  },
-  "google_loading": {
-    "message": "Loading..."
-  },
-  "last_error_viewer_title": {
-    "message": "Last error viewer"
-  },
-  "help_title": {
-    "message": "Help & Feedback"
-  },
-  "help_section_feedback": {
-    "message": "Feedback (English only, please)"
-  },
-  "help_question": {
-    "message": "Ask question"
-  },
-  "help_bug": {
-    "message": "Report bug"
-  },
-  "help_feature": {
-    "message": "Request feature"
-  },
-  "help_feedback": {
-    "message": "Provide feedback"
-  },
-  "help_issue": {
-    "message": "Submit GitHub issue (requires account)"
-  },
-  "help_documentation": {
-    "message": "Documentation"
-  },
-  "help_faq": {
-    "message": "Frequently asked questions"
-  },
-  "help_translations": {
-    "message": "Offer assistance with translations"
-  },
-  "help_release_notes": {
-    "message": "Release notes"
-  },
-  "help_contributors": {
-    "message": "Contributors"
-  },
-  "help_licenses": {
-    "message": "Open source licenses"
-  },
-  "help_source_code": {
-    "message": "Source code"
-  },
-  "err_load_album_list": {
-    "message": "Failed to retrieve list of Google Photo albums"
-  },
-  "err_load_album": {
-    "message": "Failed to retrieve Google Photo album"
-  },
-  "err_show_ss": {
-    "message": "Failed to display screensaver"
-  },
-  "err_optional_permissions": {
-    "message": "Failed to modify an optional permission"
-  },
-  "err_request_failed": {
-    "message": "Request failed"
-  },
-  "err_storage_title": {
-    "message": "Exceeded storage limits"
-  },
-  "err_storage_desc": {
-    "message": "Deselect other photo sources and try again."
-  },
-  "err_status": {
-    "message": "Status"
-  },
-  "err_network": {
-    "message": "Network error"
-  },
-  "err_photo_source_title": {
-    "message": "Failed to retrieve photo source"
-  },
-  "err_auth_picasa": {
-    "message": "User did not authorize Google."
-  },
-  "err_no_albums": {
-    "message": "No albums found"
-  },
-  "err_max_albums": {
-    "message": "The maximum number of album selections has been reached."
-  },
-  "err_max_photos": {
-    "message": "The maximum number of photo selections has been reached."
-  },
-  "err_unknown": {
-    "message": "unknown"
-  },
-  "err_unknown_method": {
-    "message": "unknownMethod"
-  },
-  "err_error": {
-    "message": "An error occurred"
-  },
-  "err_exception": {
-    "message": "An exception occurred"
-  },
-  "err_google_quota": {
-    "message": "Exceeded the daily Google Photos API limit."
-  },
-  "err_chrome_signout": {
-    "message": "You are signed out of Chrome. Your Google Photos will not be available."
-  },
-  "err_chrome_signin_title": {
-    "message": "Not signed in to Chrome"
-  },
-  "err_chrome_signin": {
-    "message": "Please sign in to Chrome with the account that has your Google Photos."
-  },
-  "menu_permission": {
-    "message": "Manage access to Google Photos"
-  },
-  "permission_message": {
-    "message": "The extension has an optional permission that allows access to your Google Photos account.  If you click on ALLOW another dialog will be displayed asking you to allow or deny this permission, if you have not already done so."
-  },
-  "permission_message1": {
-    "message": "In addition, you must be signed in to Chrome. If you sign out of Chrome or sign in as another user, your current album selections will be removed and you will need to reauthorize."
-  },
-  "permission_message2": {
-    "message": "To completely revoke access, go to https://myaccount.google.com/permissions, click on the Photo Screen Saver app, and select REMOVE ACCESS. This usually requires a few minutes to take effect."
-  },
-  "permission_status": {
-    "message": "Current Status:"
-  },
-  "allowed": {
-    "message": "Allowed"
-  },
-  "denied": {
-    "message": "Denied"
-  },
-  "notSet": {
-    "message": "Not Set"
-  },
-  "err_auth_revoked": {
-    "message": "You no longer have access to your Google Photos. Please reselect them."
-  },
-  "note_albums": {
-    "message": "Note: For more control over photo selections, create albums in Google Photos"
-  },
-  "menu_google": {
-    "message": "Select Google Photos"
-  },
-  "err_load_photos": {
-    "message": "Failed to retrieve Google Photos"
-  },
-  "photo_no_filter": {
-    "message": "All photos"
-  },
-  "photo_no_filter_desc": {
-    "message": "Use your most recent photos of any type"
-  },
-  "photo_cat_title": {
-    "message": "Select photo categories to include"
-  },
-  "photo_count": {
-    "message": "Number of photos:"
-  },
-  "include": {
-    "message": "Include"
-  },
-  "exclude": {
-    "message": "Exclude"
-  },
-  "photo_cat_utility": {
-    "message": "UTILITY (recommended to exclude)"
-  },
-  "photo_cat_selfies": {
-    "message": "SELFIES"
-  },
-  "photo_cat_food": {
-    "message": "FOOD"
-  },
-  "photo_cat_people": {
-    "message": "PEOPLE"
-  },
-  "photo_cat_landscapes": {
-    "message": "LANDSCAPES"
-  },
-  "photo_cat_cityscapes": {
-    "message": "CITYSCAPES"
-  },
-  "photo_cat_animals": {
-    "message": "ANIMALS"
-  },
-  "photo_cat_sport": {
-    "message": "SPORT"
-  },
-  "photo_cat_performances": {
-    "message": "PERFORMANCES"
-  },
-  "photo_cat_pets": {
-    "message": "PETS"
-  },
-  "photo_cat_landmarks": {
-    "message": "LANDMARKS"
-  },
-  "button_needs_refresh": {
-    "message": "NEEDS REFRESH"
-  },
-  "tooltip_refresh_photos": {
-    "message": "Refresh photos"
-  },
-  "title_mode_switch": {
-    "message": "Switch Google Photos mode"
-  },
-  "desc_mode_switch": {
-    "message": "Your current photo selections will be removed.\n\nContinue with switch?"
-  },
-  "button_mode_switch": {
-    "message": "SWITCH"
-  },
-  "close": {
-    "message": "CLOSE",
-    "description": "All Caps"
-  },
-  "deny": {
-    "message": "DENY"
-  },
-  "allow": {
-    "message": "ALLOW"
-  },
-  "removed_album": {
-    "message": "Removed album"
-  },
-  "setting_weather": {
-    "message": "Show current weather, if available"
-  },
-  "setting_weather_desc": {
-    "message": "You will be prompted to allow viewing your location and accessing the weather api"
-  },
-  "setting_temp_unit": {
-    "message": "Temperature unit"
-  },
-  "err_weather_perm": {
-    "message": "Weather information will not be available"
-  },
-  "err_geolocation_perm": {
-    "message": "You have not allowed location sharing"
-  },
-  "err_weather_update": {
-    "message": "Failed to update weather"
-  },
-  "err_geolocation_title": {
-    "message": "Failed to update your current location"
-  },
   "setting_pan_and_scan": {
     "message": "Pan and zoom current photo"
   },
   "setting_pan_and_scan_desc": {
     "message": "Apply the \"Ken Burns\" effect to the photos"
   },
-  "err_no_internet": {
-    "message": "Internet disconnected"
+  "setting_photo_clicks": {
+    "message": "Show source of photo on mouse click, if available"
+  },
+  "setting_photo_sizing": {
+    "message": "Photo display mode"
+  },
+  "setting_photo_transition": {
+    "message": "Photo transition method"
+  },
+  "setting_photog": {
+    "message": "Show album name for your photos"
+  },
+  "setting_reddit_animal": {
+    "message": "reddit - animal"
+  },
+  "setting_reddit_animal_desc": {
+    "message": "Animal photos from reddit, updated daily"
+  },
+  "setting_reddit_city": {
+    "message": "reddit - city"
+  },
+  "setting_reddit_city_desc": {
+    "message": "Primarily cityscape photos from reddit, updated daily"
+  },
+  "setting_reddit_earth": {
+    "message": "reddit - earth"
+  },
+  "setting_reddit_earth_desc": {
+    "message": "Primarily landscape photos from reddit, updated daily"
+  },
+  "setting_reddit_space": {
+    "message": "reddit - space"
+  },
+  "setting_reddit_space_desc": {
+    "message": "Primarily celestial photos from reddit, updated daily"
+  },
+  "setting_show_time": {
+    "message": "Show time"
+  },
+  "setting_shuffle": {
+    "message": "Randomize"
+  },
+  "setting_shuffle_desc": {
+    "message": "Present photos in random order"
+  },
+  "setting_skip": {
+    "message": "Skip extreme aspect ratio photos"
+  },
+  "setting_skip_desc": {
+    "message": "Do not display certain photos in Zoom and Full modes"
+  },
+  "setting_start_time": {
+    "message": "Time to start"
+  },
+  "setting_start_time_desc": {
+    "message": "Allow screensaver display, starting at this time"
+  },
+  "setting_stop_time": {
+    "message": "Time to stop"
+  },
+  "setting_stop_time_desc": {
+    "message": "Disallow screensaver display after this time"
+  },
+  "setting_suspend": {
+    "message": "Allow system suspend"
+  },
+  "setting_suspend_desc": {
+    "message": "Computer may sleep during inactive time"
+  },
+  "setting_temp_unit": {
+    "message": "Temperature unit"
+  },
+  "setting_transition_time": {
+    "message": "Photo transition time"
+  },
+  "setting_unsplash_architecture": {
+    "message": "Unsplash - architecture"
+  },
+  "setting_unsplash_architecture_desc": {
+    "message": "Architecture photos from Unsplash, updated daily"
+  },
+  "setting_unsplash_city": {
+    "message": "Unsplash - city"
+  },
+  "setting_unsplash_city_desc": {
+    "message": "City photos from Unsplash, updated daily"
+  },
+  "setting_unsplash_nature": {
+    "message": "Unsplash - landscape"
+  },
+  "setting_unsplash_nature_desc": {
+    "message": "Primarily landscape photos from Unsplash, updated daily"
+  },
+  "setting_unsplash_people": {
+    "message": "Unsplash - people"
+  },
+  "setting_unsplash_people_desc": {
+    "message": "People photos from Unsplash, updated daily"
+  },
+  "setting_weather": {
+    "message": "Show current weather, if available"
+  },
+  "setting_weather_desc": {
+    "message": "You will be prompted to allow viewing your location and accessing the weather api"
   },
   "settings_appearance": {
     "message": "Appearance"
@@ -642,50 +626,30 @@
   "settings_extras": {
     "message": "Additional display features"
   },
-  "setting_detect_faces": {
-    "message": "Detect faces"
+  "sleep_abbrev": {
+    "message": "SLP",
+    "description": "All Caps. max 3 letter abbreviation for SLEEP"
   },
-  "setting_detect_faces_desc": {
-    "message": "Use pattern recognition to pan and zoom to people's faces"
+  "ss_back": {
+    "message": "Back one photo"
   },
-  "err_detect_faces_perm": {
-    "message": "Will not detect faces during pan and zoom."
+  "ss_forward": {
+    "message": "Forward one photo"
   },
-  "setting_dark_mode": {
-    "message": "Dark theme"
+  "ss_toggle_paused": {
+    "message": "Toggle paused"
   },
-  "setting_dark_mode_desc": {
-    "message": "Use dark colors for this page"
+  "tab_display": {
+    "message": "DISPLAY CONTROLS",
+    "description": "All Caps"
   },
-  "setting_reddit_city": {
-    "message": "reddit - city"
+  "tab_slideshow": {
+    "message": "SLIDE SHOW CONTROLS",
+    "description": "All Caps"
   },
-  "setting_reddit_city_desc": {
-    "message": "Primarily cityscape photos from reddit, updated daily"
-  },
-  "setting_unsplash_architecture": {
-    "message": "Unsplash - architecture"
-  },
-  "setting_unsplash_architecture_desc": {
-    "message": "Architecture photos from Unsplash, updated daily"
-  },
-  "setting_unsplash_nature": {
-    "message": "Unsplash - nature"
-  },
-  "setting_unsplash_nature_desc": {
-    "message": "Nature photos from Unsplash, updated daily"
-  },
-  "setting_unsplash_people": {
-    "message": "Unsplash - people"
-  },
-  "setting_unsplash_people_desc": {
-    "message": "People photos from Unsplash, updated daily"
-  },
-  "setting_unsplash_travel": {
-    "message": "Unsplash - travel"
-  },
-  "setting_unsplash_travel_desc": {
-    "message": "Travel photos from Unsplash, updated daily"
+  "tab_sources": {
+    "message": "PHOTO SOURCES",
+    "description": "All Caps"
   },
   "temp_unit": {
     "message": "F",
@@ -694,6 +658,41 @@
   "time_format": {
     "message": "12",
     "description": "Set to 12 for AM/PM format or 24"
+  },
+  "title_mode_switch": {
+    "message": "Switch Google Photos mode"
+  },
+  "toggle_enabled": {
+    "message": "Toggle enabled state"
+  },
+  "tooltip_deselect": {
+    "message": "Deselect all"
+  },
+  "tooltip_google_mode_albums": {
+    "message": "Switch to photo mode"
+  },
+  "tooltip_google_mode_photos": {
+    "message": "Switch to album mode"
+  },
+  "tooltip_google_toggle": {
+    "message": "Enable/disable use of albums"
+  },
+  "tooltip_keep_awake": {
+    "message": "The Keep awake features are available even if the screensaver is disabled, so you can use the app as a general power scheduler. The icon will display 'PWR' when in this state."
+  },
+  "tooltip_refresh": {
+    "message": "Refresh list"
+  },
+  "tooltip_refresh_photos": {
+    "message": "Refresh photos"
+  },
+  "tooltip_restore": {
+    "message": "Restore default settings"
+  },
+  "tooltip_select": {
+    "message": "Select maximum"
+  },
+  "tooltip_settings_toggle": {
+    "message": "Enable/disable the screensaver"
   }
 }
-

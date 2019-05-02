@@ -93,37 +93,37 @@ export const DEFS = {
   /** Allow left mouse click to show original photo source state */
   allowPhotoClicks: true,
   /** Space reddit selected state */
-  useSpaceReddit: false,
+  [PhotoSourceFactory.UseKey.SPACE_RED]: false,
   /** Earth reddit selected state */
-  useEarthReddit: false,
+  [PhotoSourceFactory.UseKey.EARTH_RED]: false,
   /** Animal reddit selected state */
-  useAnimalReddit: false,
+  [PhotoSourceFactory.UseKey.ANIMAL_RED]: false,
   /** City reddit selected state */
-  useCityReddit: false,
+  [PhotoSourceFactory.UseKey.CITY_RED]: false,
   /** Architecture unsplash collection selected state */
-  useArchitectureUnsplash: false,
+  [PhotoSourceFactory.UseKey.ARCHITECTURE_UNSPLASH]: false,
   /** Nature unsplash photos selected state */
-  useNatureUnsplash: false,
+  [PhotoSourceFactory.UseKey.NATURE_UNSPLASH]: false,
   /** People unsplash collection selected state */
-  usePeopleUnsplash: false,
-  /** Travel unsplash collection selected state */
-  useTravelUnsplash: false,
+  [PhotoSourceFactory.UseKey.PEOPLE_UNSPLASH]: false,
+  /** City unsplash collection selected state */
+  [PhotoSourceFactory.UseKey.CITY_UNSPLASH]: false,
   /** Interesting flickr selected state */
-  useInterestingFlickr: false,
+  [PhotoSourceFactory.UseKey.INT_FLICKR]: false,
   /** Chromecast selected state */
-  useChromecast: true,
+  [PhotoSourceFactory.UseKey.CHROMECAST]: true,
   /** My photos selected state */
-  useAuthors: false,
+  [PhotoSourceFactory.UseKey.AUTHOR]: false,
+  /** User's Google Photos albums selected state */
+  [PhotoSourceFactory.UseKey.ALBUMS_GOOGLE]: true,
+  /** User's Google Photos photos state */
+  [PhotoSourceFactory.UseKey.PHOTOS_GOOGLE]: false,
+  /** User's Google Photos selected state */
+  useGoogle: true,
   /** Full resolution for user's Google Photos state */
   fullResGoogle: false,
   /** Is album mode for user's Google Photos state */
   isAlbumMode: true,
-  /** User's Google Photos selected state */
-  useGoogle: true,
-  /** User's Google Photos albums selected state */
-  useGoogleAlbums: true,
-  /** User's Google Photos photos state */
-  useGooglePhotos: false,
   /** Chrome signin state */
   signedInToChrome: true,
   /** Don't filter user's Google Photos by categories state */
