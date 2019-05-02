@@ -64,6 +64,32 @@ import * as Weather from '../../../scripts/weather.js';
 
 import {Options} from '../../../scripts/options/options.js';
 
+/** Time DISPLAY */
+export const enum TIME_DISPLAY {
+  /** Do not display */
+  OFF = 0,
+  /** 12 hour format */
+  HR_12,
+  /** 24 hour format */
+  HR_24,
+}
+
+/** Temperature units */
+export const enum TEMP_UNIT {
+  C = 0,
+  F,
+}
+
+/** Page tabs */
+const enum TAB {
+  /** Screensaver controls */
+  CONTROLS = 0,
+  /** Screensaver display controls */
+  DISPLAY,
+  /** Screensaver photo sources */
+  SOURCES,
+}
+
 /**
  * Polymer element for the Settings Page
  */
@@ -89,7 +115,7 @@ export class SettingsPageElement extends BaseElement {
 
   /** Index of current tab */
   @property({type: Number, notify: true})
-  public selectedTab = 0;
+  public selectedTab = TAB.CONTROLS;
 
   /** Enabled state of screensaver flag */
   @property({type: Boolean, notify: true})
@@ -97,7 +123,7 @@ export class SettingsPageElement extends BaseElement {
 
   /** Index of time value to show on screensaver */
   @property({type: Number, notify: true})
-  public showTimeValue = 1;
+  public showTimeValue = TIME_DISPLAY.HR_12;
 
   /** Show current weather flag */
   @property({type: Boolean, notify: true})
@@ -109,7 +135,7 @@ export class SettingsPageElement extends BaseElement {
 
   /** Index of temp unit to show on screensaver */
   @property({type: Number, notify: true})
-  public weatherTempUnitValue = 0;
+  public weatherTempUnitValue = TEMP_UNIT.C;
 
   /** Wait time unit menu */
   @property({type: Array})
@@ -170,14 +196,14 @@ export class SettingsPageElement extends BaseElement {
   /** Flag to indicate visibility of toolbar icons */
   @computed('selectedTab')
   get menuHidden() {
-    return (this.selectedTab !== 2);
+    return (this.selectedTab !== TAB.SOURCES);
   }
 
   /** Disabled state of weather temperature */
   @computed('enabled', 'showTimeValue')
   get largeTimeDisabled() {
     let ret = false;
-    if (!this.enabled || (this.showTimeValue === 0)) {
+    if (!this.enabled || (this.showTimeValue === TIME_DISPLAY.OFF)) {
       ret = true;
     }
     return ret;
@@ -239,13 +265,13 @@ export class SettingsPageElement extends BaseElement {
     ChromeGA.event(ChromeGA.EVENT.ICON, 'settingsHelp');
     let anchor = 'ss_controls';
     switch (this.selectedTab) {
-      case 0:
+      case TAB.CONTROLS:
         anchor = 'ss_controls';
         break;
-      case 1:
+      case TAB.DISPLAY:
         anchor = 'display_controls';
         break;
-      case 2:
+      case TAB.SOURCES:
         anchor = 'photo_sources';
         break;
       default:

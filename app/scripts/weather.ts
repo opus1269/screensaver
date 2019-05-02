@@ -68,14 +68,14 @@ export const DEF_LOC_OPTIONS = {
   maximumAge: 0,
 };
 
-/** The most frequently we will call the API */
-const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
-
 /** Default geolocation options */
-const DEF_LOC: IWeatherLocation = {
+export const DEF_LOC: IWeatherLocation = {
   lat: 0.0,
   lon: 0.0,
 };
+
+/** The most frequently we will call the API */
+const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 
 /** API key */
 const KEY = '2eab968d43699c1b6e126228b34880c9';

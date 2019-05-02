@@ -13,6 +13,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {TEMP_UNIT, TIME_DISPLAY} from '../../elements/pages/settings-page/settings-page';
+import {TRANS_TYPE, VIEW_TYPE} from '../../elements/screensaver-element/screensaver-element';
 import {IUnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
 
 import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
@@ -63,13 +65,13 @@ export const DEFS = {
   /** Show photos in random order state */
   shuffle: true,
   /** Photo sizing menu selection */
-  photoSizing: 0,
+  photoSizing: VIEW_TYPE.LETTERBOX,
   /** Between photo animation menu selection */
-  photoTransition: 1,
+  photoTransition: TRANS_TYPE.FADE,
   /** Manual control of screensaver state */
   interactive: false,
   /** Time format for screensaver */
-  showTime: 2, // 24 hr format
+  showTime: TIME_DISPLAY.HR_24,
   /** Display time on larger font state */
   largeTime: false,
   /** Show photographer state */
@@ -131,11 +133,11 @@ export const DEFS = {
   /** Filter to use for users' Google Photos */
   googlePhotosFilter: GoogleSource.DEF_FILTER,
   /** Current geolocation */
-  location: {lat: 0, lon: 0},
+  location: Weather.DEF_LOC,
   /** Display current weather state */
   showCurrentWeather: false,
   /** Weather temperature display unit */
-  weatherTempUnit: 0,
+  weatherTempUnit: TEMP_UNIT.C,
   /** Current weather */
   currentWeather: Weather.DEF_WEATHER,
   /** "Ken Burns" effect state */
@@ -543,24 +545,16 @@ function processIdleTime() {
   chrome.idle.setDetectionInterval(getIdleSeconds());
 }
 
-/**
- * Get default time format index based on locale
- *
- * @returns 1 or 2
- */
+/** Get default time format index based on locale */
 function getTimeFormat() {
   const format = ChromeLocale.localize('time_format', '12');
-  return (format === '12') ? 1 : 2;
+  return (format === '12') ? TIME_DISPLAY.HR_12 : TIME_DISPLAY.HR_24;
 }
 
-/**
- * Get default temperature unit index based on locale
- *
- * @returns 0 or 1
- */
+/** Get default temperature unit index based on locale */
 function getTempUnit() {
   const unit = ChromeLocale.localize('temp_unit', 'C');
-  return (unit === 'C') ? 0 : 1;
+  return (unit === 'C') ? TEMP_UNIT.C : TEMP_UNIT.F;
 }
 
 /** Set the operating system value */
