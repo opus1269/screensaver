@@ -104,6 +104,22 @@ export async function doPost(url: string, conf = CONFIG) {
 }
 
 /**
+ * Get Error message
+ *
+ * @param response - server response
+ * @returns Error
+ */
+export function getError(response: Response) {
+  let msg = 'Unknown error.';
+  if (response && response.status && (typeof (response.statusText) !== 'undefined')) {
+    const statusMsg = ChromeLocale.localize('err_status', 'Status');
+    msg = `${statusMsg}: ${response.status}`;
+    msg += `\n${response.statusText}`;
+  }
+  return new Error(msg);
+}
+
+/**
  * Check response and act accordingly, including retrying
  *
  * @param response - server response
@@ -127,7 +143,11 @@ async function processResponse(response: Response, url: string, opts: RequestIni
 
   if (attempt >= conf.maxRetries) {
     // request still failed after maxRetries
-    throw getError(response);
+    if (conf.json) {
+      throw getError(response);
+    } else {
+      return response;
+    }
   }
 
   const status = response.status;
@@ -149,23 +169,11 @@ async function processResponse(response: Response, url: string, opts: RequestIni
   }
 
   // request failed
-  throw getError(response);
-}
-
-/**
- * Get Error message
- *
- * @param response - server response
- * @returns Error
- */
-function getError(response: Response) {
-  let msg = 'Unknown error.';
-  if (response && response.status && (typeof (response.statusText) !== 'undefined')) {
-    const statusMsg = ChromeLocale.localize('err_status', 'Status');
-    msg = `${statusMsg}: ${response.status}`;
-    msg += `\n${response.statusText}`;
+  if (conf.json) {
+    throw getError(response);
+  } else {
+    return response;
   }
-  return new Error(msg);
 }
 
 /**

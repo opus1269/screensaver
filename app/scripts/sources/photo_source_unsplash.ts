@@ -16,6 +16,7 @@
 
 import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeJSON from '../chrome-extension-utils/scripts/json.js';
 
 import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';
@@ -49,6 +50,7 @@ interface IUnsplashPhotos {
   total: number;
   total_pages: number;
   results: IUnsplashPhoto[];
+  errors: string[];
 }
 
 /** Unsplash API */
@@ -121,14 +123,34 @@ export class UnsplashSource extends PhotoSource {
     const collection = this.getLoadArg();
     const baseUrl = URL_BASE + `search/photos?client_id=${KEY}&per_page=30&query=${collection}`;
 
+    // process response ourselves
+    const conf: ChromeHttp.IConfig = ChromeJSON.shallowCopy(ChromeHttp.CONFIG);
+    conf.json = false;
+
     for (let i = 0; i < 11; i++) {
       const url = `${baseUrl}&page=${i + 1}`;
-      const response: IUnsplashPhotos = await ChromeHttp.doGet(url);
-      const totalPages = response.total_pages;
-      const results = response.results;
+      const response: Response = await ChromeHttp.doGet(url, conf);
+      let totalPages = 0;
+      let results: IUnsplashPhoto[];
+      if (response.ok) {
+        const json: IUnsplashPhotos = await response.json();
+        totalPages = json.total_pages;
+        results = json.results;
 
-      // convert to our format
-      photos.push(...UnsplashSource.processPhotos(results));
+        // convert to our format
+        photos.push(...UnsplashSource.processPhotos(results));
+      } else {
+        let msg = '';
+        const json: IUnsplashPhotos = await response.json();
+        if (json.errors && json.errors.length) {
+          for (const error of json.errors) {
+            msg += `${error} `;
+          }
+          throw new Error(msg);
+        } else {
+          throw ChromeHttp.getError(response);
+        }
+      }
 
       if ((photos.length >= MAX_PHOTOS) || ((i + 1) >= totalPages)) {
         break;
