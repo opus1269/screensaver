@@ -15,6 +15,7 @@
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
+import {TIME_DISPLAY} from '../pages/settings-page/settings-page';
 import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
 
 import {
@@ -50,9 +51,7 @@ import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils
 import * as Permissions from '../../scripts/permissions.js';
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';
 
-/**
- * A rectangle
- */
+/** A rectangle */
 interface IRect {
   x: number;
   y: number;
@@ -60,9 +59,7 @@ interface IRect {
   height: number;
 }
 
-/**
- * Polymer element to provide an animatable slide
- */
+/** Polymer element to provide an animatable slide */
 @customElement('screensaver-slide')
 export class ScreensaverSlideElement
     extends (mixinBehaviors([NeonAnimatableBehavior], BaseElement) as new () => BaseElement) {
@@ -369,9 +366,7 @@ export class ScreensaverSlideElement
     }
   }
 
-  /**
-   * Render the slide according to the view type
-   */
+  /** Render the slide according to the view type */
   protected render() {
     switch (this.viewType) {
       case VIEW_TYPE.ZOOM:
@@ -391,9 +386,7 @@ export class ScreensaverSlideElement
     }
   }
 
-  /**
-   * Render fullscreen view type
-   */
+  /** Render fullscreen view type */
   protected renderFull() {
     const img: HTMLImageElement = this.ironImage.$.img as HTMLImageElement;
     img.style.width = '100%';
@@ -401,9 +394,7 @@ export class ScreensaverSlideElement
     img.style.objectFit = 'fill';
   }
 
-  /**
-   * Render zoom view type
-   */
+  /** Render zoom view type */
   protected renderZoom() {
     const img: HTMLImageElement = this.ironImage.$.img as HTMLImageElement;
     img.style.width = '100%';
@@ -411,9 +402,7 @@ export class ScreensaverSlideElement
     img.style.objectFit = 'cover';
   }
 
-  /**
-   * Render letterbox view type
-   */
+  /** Render letterbox view type */
   protected renderLetterbox() {
     if (!this.photo) {
       return;
@@ -469,7 +458,8 @@ export class ScreensaverSlideElement
     timeStyle.right = (right + 1) + 'vw';
     timeStyle.bottom = (bottom + 3.5) + 'vh';
 
-    if (ChromeStorage.getBool('showTime', false)) {
+    const showTime = ChromeStorage.getInt('showTime', TIME_DISPLAY.OFF);
+    if (showTime !== TIME_DISPLAY.OFF) {
       // don't wrap author
       authorStyle.textOverflow = 'ellipsis';
       authorStyle.whiteSpace = 'nowrap';
@@ -488,9 +478,7 @@ export class ScreensaverSlideElement
     }
   }
 
-  /**
-   * Render frame view type
-   */
+  /** Render frame view type */
   protected renderFrame() {
     if (!this.photo) {
       return;
@@ -569,9 +557,7 @@ export class ScreensaverSlideElement
     }
   }
 
-  /**
-   * Set the face detection target
-   */
+  /** Set the face detection target */
   protected async setAnimationTarget() {
     const ironImage = this.ironImage;
     if (!ironImage) {
@@ -648,9 +634,7 @@ export class ScreensaverSlideElement
     }
   }
 
-  /**
-   * Start the photo animation
-   */
+  /** Start the photo animation */
   protected async startAnimation() {
     if (this.animation) {
       this.animation.cancel();

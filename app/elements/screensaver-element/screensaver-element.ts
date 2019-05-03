@@ -18,6 +18,7 @@ import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-re
 
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {IPhoto} from '../../scripts/sources/photo_source';
+import {TIME_DISPLAY} from '../pages/settings-page/settings-page.js';
 import {ScreensaverSlideElement} from '../screensaver-slide/screensaver-slide';
 
 import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
@@ -227,6 +228,7 @@ export class ScreensaverElement extends BaseElement {
   public async launch() {
     const METHOD = 'SS.launch';
     try {
+      // load all the photos
       const shuffle = ChromeStorage.getBool('shuffle', false);
       const hasPhotos = await SSPhotos.loadPhotos(shuffle);
       if (!hasPhotos) {
@@ -241,7 +243,7 @@ export class ScreensaverElement extends BaseElement {
         ChromeGA.error(err.message, METHOD);
       }
 
-      // initialize the photos
+      // initialize the slide photos
       const photos: SSPhoto[] = [];
       const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
       for (let i = 0; i < length; i++) {
@@ -276,11 +278,7 @@ export class ScreensaverElement extends BaseElement {
     return this.MAX_SLIDES;
   }
 
-  /**
-   * Get the photos
-   *
-   * @returns The array of photos
-   */
+  /** Get the photos currently in the slides */
   public getPhotos() {
     return this.photos;
   }
@@ -300,7 +298,7 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Replace the photo at the given index
+   * Replace the slide photo at the given index
    *
    * @param photo - new photo
    * @param idx - index to replace
@@ -316,7 +314,7 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Try to find a photo that has finished loading
+   * Try to find a slide photo that has finished loading
    *
    * @param idx - index into {@link photos}
    * @returns index into {@link photos}, -1 if none are loaded
@@ -369,9 +367,9 @@ export class ScreensaverElement extends BaseElement {
   }
 
   /**
-   * Get the selected index of the pages
+   * Get the index of the selected slide
    *
-   * @returns The index of the current slide, -1 if not found
+   * @returns The index of the current slide, -1 if none selected
    */
   public getSelectedSlideIndex() {
     if (this.pages) {
@@ -442,8 +440,8 @@ export class ScreensaverElement extends BaseElement {
 
   /** Setup timer for time label */
   protected setupTime() {
-    const showTime = ChromeStorage.getInt('showTime', 0);
-    if (showTime > 0) {
+    const showTime = ChromeStorage.getInt('showTime', TIME_DISPLAY.OFF);
+    if (showTime !== TIME_DISPLAY.OFF) {
       this.setTimeLabel();
       // update current time once a minute
       setInterval(this.setTimeLabel.bind(this), 61 * 1000);
@@ -453,8 +451,8 @@ export class ScreensaverElement extends BaseElement {
   /** Set the time label */
   protected setTimeLabel() {
     let label = '';
-    const showTime = ChromeStorage.getInt('showTime', 0);
-    if ((showTime !== 0)) {
+    const showTime = ChromeStorage.getInt('showTime', TIME_DISPLAY.OFF);
+    if ((showTime !== TIME_DISPLAY.OFF)) {
       label = ChromeTime.getStringShort();
       this.set('timeLabel', label);
     }
