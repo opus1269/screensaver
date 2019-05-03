@@ -14,46 +14,55 @@
  */
 
 import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../chrome-extension-utils/scripts/analytics.js';
 
 import {IPhoto, PhotoSource} from '../sources/photo_source.js';
 import * as PhotoSourceFactory from '../sources/photo_source_factory.js';
+import * as PhotoSources from '../sources/photo_sources.js';
 import {SSPhoto} from './ss_photo.js';
 
-/**
- * The array of photos
- */
-const _photos: SSPhoto[] = [];
+/** The array of photos */
+const PHOTOS: SSPhoto[] = [];
+
+/** Current index into {@link PHOTOS} */
+let CUR_IDX = 0;
 
 /**
- * Current index into {@link _photos}
- */
-let _curIdx = 0;
-
-/**
- * Add the photos from a {@link PhotoSource}
+ * Load the photos to be used in a {@Link Screensaver}
  *
- * @throws An error if we failed to add the photos
+ * @param randomize - random sort of photos
+ * @return true if there is at least one photo
  */
-export async function addFromSource(photoSource: PhotoSource) {
-  const sourcePhotos = await photoSource.getPhotos();
-  const sourceType = sourcePhotos.type;
+export async function loadPhotos(randomize: boolean) {
+  let ret = true;
 
-  let ct = 0;
-  for (const photo of sourcePhotos.photos) {
-    const asp = parseFloat(photo.asp);
-    if (!SSPhoto.ignore(asp)) {
-      const ssPhoto = new SSPhoto(ct, photo, sourceType);
-      _photos.push(ssPhoto);
-      ct++;
+  try {
+    const sources = PhotoSources.getSelectedSources();
+
+    for (const source of sources) {
+      await addFromSource(source);
     }
+
+    if (!getCount()) {
+      // No usable photos
+      ret = false;
+    } else if (randomize) {
+        shuffle();
+    }
+
+  } catch (err) {
+    ChromeGA.error(err.message, 'SSPhotos.loadPhotos');
+    ret = false;
   }
+
+  return ret;
 }
 
 /**
  * Get number of photos
  */
 export function getCount() {
-  return _photos.length;
+  return PHOTOS.length;
 }
 
 /**
@@ -62,7 +71,7 @@ export function getCount() {
  * @returns true if at least one photo is good
  */
 export function hasUsable() {
-  return !_photos.every((photo) => {
+  return !PHOTOS.every((photo) => {
     return photo.isBad();
   });
 }
@@ -74,7 +83,7 @@ export function hasUsable() {
  * @returns The SSPhoto
  */
 export function get(idx: number) {
-  return _photos[idx];
+  return PHOTOS[idx];
 }
 
 /**
@@ -84,7 +93,7 @@ export function get(idx: number) {
  * @returns The index, -1 if not found
  */
 export function getIndex(photo: SSPhoto) {
-  return _photos.indexOf(photo);
+  return PHOTOS.indexOf(photo);
 }
 
 /**
@@ -95,12 +104,12 @@ export function getIndex(photo: SSPhoto) {
  */
 export function getNextUsable(ignores: SSPhoto[] = []) {
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
-  for (let i = 0; i < _photos.length; i++) {
+  for (let i = 0; i < PHOTOS.length; i++) {
     // find a url that is ok, AFAWK
-    const index = (i + _curIdx) % _photos.length;
-    const photo = _photos[index];
+    const index = (i + CUR_IDX) % PHOTOS.length;
+    const photo = PHOTOS[index];
     if (!photo.isBad() && !ignores.includes(photo)) {
-      _curIdx = index;
+      CUR_IDX = index;
       incCurrentIndex();
       return photo;
     }
@@ -109,10 +118,10 @@ export function getNextUsable(ignores: SSPhoto[] = []) {
 }
 
 /**
- * Get current index into {@link _photos}
+ * Get current index into {@link PHOTOS}
  */
 export function getCurrentIndex() {
-  return _curIdx;
+  return CUR_IDX;
 }
 
 /**
@@ -126,9 +135,9 @@ export function getNextGooglePhotos(num: number, idx: number) {
   idx = (idx < 0) ? 0 : idx;
   const photos = [];
   // wrap-around loop: https://stackoverflow.com/a/28430482/4468645
-  for (let i = 0, ct = 0; i < _photos.length; i++) {
-    const index = (i + idx) % _photos.length;
-    const photo = _photos[index];
+  for (let i = 0, ct = 0; i < PHOTOS.length; i++) {
+    const index = (i + idx) % PHOTOS.length;
+    const photo = PHOTOS[index];
     if (ct >= num) {
       break;
     } else if (photo.getType() === PhotoSourceFactory.Type.GOOGLE_USER) {
@@ -145,41 +154,61 @@ export function getNextGooglePhotos(num: number, idx: number) {
  * @param photos - The photos to update
  */
 export function updateGooglePhotoUrls(photos: IPhoto[]) {
-  for (let i = _photos.length - 1; i >= 0; i--) {
-    if (_photos[i].getType() !== PhotoSourceFactory.Type.GOOGLE_USER) {
+  for (let i = PHOTOS.length - 1; i >= 0; i--) {
+    if (PHOTOS[i].getType() !== PhotoSourceFactory.Type.GOOGLE_USER) {
       continue;
     }
 
     const index = photos.findIndex((e: IPhoto) => {
-      return e.ex.id === _photos[i].getEx().id;
+      return e.ex.id === PHOTOS[i].getEx().id;
     });
     if (index >= 0) {
-      _photos[i].setUrl(photos[index].url);
+      PHOTOS[i].setUrl(photos[index].url);
     }
   }
 }
 
 /**
- * Set current index into {@link _photos}
+ * Set current index into {@link PHOTOS}
  *
  * @param idx - The index
  */
 export function setCurrentIndex(idx: number) {
-  _curIdx = idx;
+  CUR_IDX = idx;
 }
 
 /**
- * Increment current index into {@link _photos}
+ * Increment current index into {@link PHOTOS}
  *
  * @returns The new current index
  */
 export function incCurrentIndex() {
-  return _curIdx = (_curIdx === _photos.length - 1) ? 0 : _curIdx + 1;
+  return CUR_IDX = (CUR_IDX === PHOTOS.length - 1) ? 0 : CUR_IDX + 1;
+}
+
+/**
+ * Add the photos from a {@link PhotoSource}
+ *
+ * @throws An error if we failed to add the photos
+ */
+async function addFromSource(photoSource: PhotoSource) {
+  const sourcePhotos = await photoSource.getPhotos();
+  const sourceType = sourcePhotos.type;
+
+  let ct = 0;
+  for (const photo of sourcePhotos.photos) {
+    const asp = parseFloat(photo.asp);
+    if (!SSPhoto.ignore(asp)) {
+      const ssPhoto = new SSPhoto(ct, photo, sourceType);
+      PHOTOS.push(ssPhoto);
+      ct++;
+    }
+  }
 }
 
 /**
  * Randomize the photos
  */
-export function shuffle() {
-  ChromeUtils.shuffleArray(_photos);
+function shuffle() {
+  ChromeUtils.shuffleArray(PHOTOS);
 }

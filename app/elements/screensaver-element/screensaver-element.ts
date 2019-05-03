@@ -53,7 +53,6 @@ import * as SSPhotos from '../../scripts/screensaver/ss_photos.js';
 import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
-import * as PhotoSources from '../../scripts/sources/photo_sources.js';
 
 declare var ChromePromise: any;
 
@@ -97,6 +96,26 @@ const errHandler = {
 @customElement('screensaver-element')
 export class ScreensaverElement extends BaseElement {
 
+  /** Get slide appearance */
+  protected static getViewType() {
+    let type = ChromeStorage.getInt('photoSizing', VIEW_TYPE.LETTERBOX);
+    if (type === VIEW_TYPE.RANDOM) {
+      // pick random sizing
+      type = ChromeUtils.getRandomInt(0, VIEW_TYPE.RANDOM - 1);
+    }
+    return type;
+  }
+
+  /** Get between photo's animation */
+  protected static getAniType() {
+    let type = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+    if (type === TRANS_TYPE.RANDOM) {
+      // pick random transition
+      type = ChromeUtils.getRandomInt(0, TRANS_TYPE.RANDOM - 1);
+    }
+    return type;
+  }
+
   /** Set the window zoom factor to 1.0 */
   protected static async setZoom() {
     const chromep = new ChromePromise();
@@ -136,7 +155,11 @@ export class ScreensaverElement extends BaseElement {
 
   /** Type for between photo animation */
   @property({type: Number})
-  protected aniType = 0;
+  protected readonly aniType = ScreensaverElement.getAniType();
+
+  /** Type for photo appearance */
+  @property({type: Number})
+  protected readonly viewType = ScreensaverElement.getViewType();
 
   /** Flag to indicate if slideshow is paused */
   @property({type: Boolean, observer: 'pausedChanged'})
@@ -150,11 +173,11 @@ export class ScreensaverElement extends BaseElement {
   @property({type: String})
   protected timeLabel = '';
 
-  /** Slide template */
+  /** Slide repeat template */
   @query('#repeatTemplate')
   protected repeatTemplate: DomRepeat;
 
-  /** Slide pages */
+  /** NeonAnimatedPages */
   @query('#pages')
   protected pages: NeonAnimatedPagesElement;
 
@@ -187,64 +210,61 @@ export class ScreensaverElement extends BaseElement {
    * Called during Polymer-specific element initialization.
    * Called once, the first time the element is attached to the document.
    */
-  public ready() {
+  public async ready() {
     super.ready();
 
     // set selected background image
     document.body.style.background = ChromeStorage.get('background',
         'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)').substring(11);
 
-    setTimeout(async () => {
-      MyGA.initialize();
-      ChromeGA.page('/screensaver.html');
+    MyGA.initialize();
+    ChromeGA.page('/screensaver.html');
 
-      await ScreensaverElement.setZoom();
-
-      this.setupPhotoTransitions();
-
-      this.setupViewType();
-    }, 0);
+    await ScreensaverElement.setZoom();
   }
 
   /** Launch the slide show */
   public async launch() {
     const METHOD = 'SS.launch';
     try {
-      const hasPhotos = await this.loadPhotos();
-      if (hasPhotos) {
-
-        // setup face detection
-        try {
-          await ScreensaverElement.setupFaceDetect();
-        } catch (err) {
-          ChromeGA.error(err.message, METHOD);
-        }
-
-        // initialize the photos
-        const photos: SSPhoto[] = [];
-        const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
-        for (let i = 0; i < length; i++) {
-          const photo = SSPhotos.getNextUsable();
-          if (photo) {
-            photos.push(photo);
-          }
-        }
-        this.set('photos', photos);
-        this.repeatTemplate.render();
-        if (photos.length === 0) {
-          this.setNoPhotos();
-          return;
-        }
-
-        // send msg to update weather. don't wait can be slow
-        ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
-
-        // set time label timer
-        this.setupTime();
-
-        // kick off the slide show
-        SSRunner.start(this.delayTime);
+      const shuffle = ChromeStorage.getBool('shuffle', false);
+      const hasPhotos = await SSPhotos.loadPhotos(shuffle);
+      if (!hasPhotos) {
+        this.setNoPhotos();
+        return;
       }
+
+      // setup face detection
+      try {
+        await ScreensaverElement.setupFaceDetect();
+      } catch (err) {
+        ChromeGA.error(err.message, METHOD);
+      }
+
+      // initialize the photos
+      const photos: SSPhoto[] = [];
+      const length = Math.min(SSPhotos.getCount(), this.MAX_SLIDES);
+      for (let i = 0; i < length; i++) {
+        const photo = SSPhotos.getNextUsable();
+        if (photo) {
+          photos.push(photo);
+        }
+      }
+      this.set('photos', photos);
+      this.repeatTemplate.render();
+      if (photos.length === 0) {
+        this.setNoPhotos();
+        return;
+      }
+
+      // send msg to update weather. don't wait can be slow
+      ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
+
+      // set time label timer
+      this.setupTime();
+
+      // kick off the slide show
+      SSRunner.start(this.delayTime);
     } catch (err) {
       ChromeLog.error(err.message, METHOD);
       this.setNoPhotos();
@@ -418,54 +438,6 @@ export class ScreensaverElement extends BaseElement {
    */
   public setPaused(paused: boolean) {
     this.set('paused', paused);
-  }
-
-  /**
-   * Load the {@link SSPhotos} that will be displayed
-   *
-   * @throws An error if we failed to load photos
-   * @returns true if there is at least one photo
-   */
-  protected async loadPhotos() {
-    let sources = PhotoSources.getSelectedSources();
-    sources = sources || [];
-
-    for (const source of sources) {
-      await SSPhotos.addFromSource(source);
-    }
-
-    if (!SSPhotos.getCount()) {
-      // No usable photos
-      this.setNoPhotos();
-      return false;
-    }
-
-    if (ChromeStorage.getBool('shuffle')) {
-      // randomize the order
-      SSPhotos.shuffle();
-    }
-
-    return true;
-  }
-
-  /** Process settings related to slide appearance */
-  protected setupViewType() {
-    let type = ChromeStorage.getInt('photoSizing', VIEW_TYPE.LETTERBOX);
-    if (type === VIEW_TYPE.RANDOM) {
-      // pick random sizing
-      type = ChromeUtils.getRandomInt(0, VIEW_TYPE.RANDOM - 1);
-    }
-    this.set('viewType', type);
-  }
-
-  /** Process settings related to between photo transitions */
-  protected setupPhotoTransitions() {
-    let type: TRANS_TYPE = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
-    if (type === TRANS_TYPE.RANDOM) {
-      // pick random transition
-      type = ChromeUtils.getRandomInt(0, TRANS_TYPE.RANDOM - 1);
-    }
-    this.set('aniType', type);
   }
 
   /** Setup timer for time label */
