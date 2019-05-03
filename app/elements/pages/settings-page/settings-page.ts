@@ -13,6 +13,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
+import {TIME_FORMAT} from '../../../scripts/chrome-extension-utils/scripts/time';
 import {SettingToggleElement} from '../../shared/setting-elements/setting-toggle/setting-toggle';
 
 import {
@@ -64,22 +65,6 @@ import * as Weather from '../../../scripts/weather.js';
 
 import {Options} from '../../../scripts/options/options.js';
 
-/** Time DISPLAY */
-export const enum TIME_DISPLAY {
-  /** Do not display */
-  OFF = 0,
-  /** 12 hour format */
-  HR_12,
-  /** 24 hour format */
-  HR_24,
-}
-
-/** Temperature units */
-export const enum TEMP_UNIT {
-  C = 0,
-  F,
-}
-
 /** Page tabs */
 const enum TAB {
   /** Screensaver controls */
@@ -123,7 +108,7 @@ export class SettingsPageElement extends BaseElement {
 
   /** Index of time value to show on screensaver */
   @property({type: Number, notify: true})
-  public showTimeValue = TIME_DISPLAY.HR_12;
+  public showTimeValue = TIME_FORMAT.HR_12;
 
   /** Show current weather flag */
   @property({type: Boolean, notify: true})
@@ -135,7 +120,7 @@ export class SettingsPageElement extends BaseElement {
 
   /** Index of temp unit to show on screensaver */
   @property({type: Number, notify: true})
-  public weatherTempUnitValue = TEMP_UNIT.C;
+  public weatherTempUnitValue = Weather.TEMP_UNIT.C;
 
   /** Wait time unit menu */
   @property({type: Array})
@@ -203,7 +188,7 @@ export class SettingsPageElement extends BaseElement {
   @computed('enabled', 'showTimeValue')
   get largeTimeDisabled() {
     let ret = false;
-    if (!this.enabled || (this.showTimeValue === TIME_DISPLAY.OFF)) {
+    if (!this.enabled || (this.showTimeValue === TIME_FORMAT.NONE)) {
       ret = true;
     }
     return ret;

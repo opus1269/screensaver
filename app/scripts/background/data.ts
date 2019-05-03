@@ -13,7 +13,6 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {TEMP_UNIT, TIME_DISPLAY} from '../../elements/pages/settings-page/settings-page';
 import {TRANS_TYPE, VIEW_TYPE} from '../../elements/screensaver-element/screensaver-element';
 import {IUnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
 
@@ -24,6 +23,7 @@ import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/loca
 import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
 import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
 import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import {DEF_TIME, TIME_FORMAT} from '../../scripts/chrome-extension-utils/scripts/time.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
@@ -70,26 +70,26 @@ export const DEFS = {
   photoTransition: TRANS_TYPE.FADE,
   /** Manual control of screensaver state */
   interactive: false,
-  /** Time format for screensaver */
-  showTime: TIME_DISPLAY.HR_24,
-  /** Display time on larger font state */
-  largeTime: false,
   /** Show photographer state */
   showPhotog: true,
   /** Show geolocation state */
   showLocation: true,
   /** Background style for screensaver */
   background: 'background:linear-gradient(to bottom, #3a3a3a, #b5bdc8)',
-  /** Prevent screen/computer from sleeping state */
-  keepAwake: false,
   /** Don't display over full screen Chrome windows state */
   chromeFullscreen: true,
   /** Show on all displays state */
   allDisplays: false,
+  /** Display time on larger font state */
+  largeTime: false,
+  /** Time format for screensaver */
+  showTime: TIME_FORMAT.HR_24,
+  /** Prevent screen/computer from sleeping state */
+  keepAwake: false,
   /** Start time for displaying screensaver */
-  activeStart: '00:00', // 24 hr time
+  activeStart: DEF_TIME, // 24 hr time
   /** Stop time for displaying screensaver */
-  activeStop: '00:00', // 24 hr time
+  activeStop: DEF_TIME, // 24 hr time
   /** Allow computer to sleep during active keep awake state */
   allowSuspend: false,
   /** Allow left mouse click to show original photo source state */
@@ -126,18 +126,18 @@ export const DEFS = {
   fullResGoogle: false,
   /** Is album mode for user's Google Photos state */
   isAlbumMode: true,
-  /** Chrome signin state */
-  signedInToChrome: true,
   /** Don't filter user's Google Photos by categories state */
   googlePhotosNoFilter: true,
   /** Filter to use for users' Google Photos */
   googlePhotosFilter: GoogleSource.DEF_FILTER,
+  /** Chrome signin state */
+  signedInToChrome: true,
   /** Current geolocation */
   location: Weather.DEF_LOC,
   /** Display current weather state */
   showCurrentWeather: false,
   /** Weather temperature display unit */
-  weatherTempUnit: TEMP_UNIT.C,
+  weatherTempUnit: Weather.TEMP_UNIT.C,
   /** Current weather */
   currentWeather: Weather.DEF_WEATHER,
   /** "Ken Burns" effect state */
@@ -548,13 +548,13 @@ function processIdleTime() {
 /** Get default time format index based on locale */
 function getTimeFormat() {
   const format = ChromeLocale.localize('time_format', '12');
-  return (format === '12') ? TIME_DISPLAY.HR_12 : TIME_DISPLAY.HR_24;
+  return (format === '12') ? TIME_FORMAT.HR_12 : TIME_FORMAT.HR_24;
 }
 
 /** Get default temperature unit index based on locale */
 function getTempUnit() {
   const unit = ChromeLocale.localize('temp_unit', 'C');
-  return (unit === 'C') ? TEMP_UNIT.C : TEMP_UNIT.F;
+  return (unit === 'C') ? Weather.TEMP_UNIT.C : Weather.TEMP_UNIT.F;
 }
 
 /** Set the operating system value */

@@ -74,6 +74,12 @@ export const DEF_LOC: IWeatherLocation = {
   lon: 0.0,
 };
 
+/** Temperature units */
+export const enum TEMP_UNIT {
+  C = 0,
+  F,
+}
+
 /** The most frequently we will call the API */
 const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 

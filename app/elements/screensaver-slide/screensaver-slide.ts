@@ -14,8 +14,8 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
+import {TIME_FORMAT} from '../../scripts/chrome-extension-utils/scripts/time';
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
-import {TIME_DISPLAY} from '../pages/settings-page/settings-page';
 import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
 
 import {
@@ -458,8 +458,8 @@ export class ScreensaverSlideElement
     timeStyle.right = (right + 1) + 'vw';
     timeStyle.bottom = (bottom + 3.5) + 'vh';
 
-    const showTime = ChromeStorage.getInt('showTime', TIME_DISPLAY.OFF);
-    if (showTime !== TIME_DISPLAY.OFF) {
+    const showTime = ChromeStorage.getInt('showTime', TIME_FORMAT.NONE);
+    if (showTime !== TIME_FORMAT.NONE) {
       // don't wrap author
       authorStyle.textOverflow = 'ellipsis';
       authorStyle.whiteSpace = 'nowrap';

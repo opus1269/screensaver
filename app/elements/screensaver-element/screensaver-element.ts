@@ -15,10 +15,10 @@
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
+import {TIME_FORMAT} from '../../scripts/chrome-extension-utils/scripts/time';
 
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {IPhoto} from '../../scripts/sources/photo_source';
-import {TIME_DISPLAY} from '../pages/settings-page/settings-page.js';
 import {ScreensaverSlideElement} from '../screensaver-slide/screensaver-slide';
 
 import {customElement, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
@@ -440,8 +440,8 @@ export class ScreensaverElement extends BaseElement {
 
   /** Setup timer for time label */
   protected setupTime() {
-    const showTime = ChromeStorage.getInt('showTime', TIME_DISPLAY.OFF);
-    if (showTime !== TIME_DISPLAY.OFF) {
+    const showTime = ChromeStorage.getInt('showTime', TIME_FORMAT.NONE);
+    if (showTime !== TIME_FORMAT.NONE) {
       this.setTimeLabel();
       // update current time once a minute
       setInterval(this.setTimeLabel.bind(this), 61 * 1000);
@@ -451,9 +451,9 @@ export class ScreensaverElement extends BaseElement {
   /** Set the time label */
   protected setTimeLabel() {
     let label = '';
-    const showTime = ChromeStorage.getInt('showTime', TIME_DISPLAY.OFF);
-    if ((showTime !== TIME_DISPLAY.OFF)) {
-      label = ChromeTime.getStringShort();
+    const showTime = ChromeStorage.getInt('showTime', TIME_FORMAT.NONE);
+    if ((showTime !== TIME_FORMAT.NONE)) {
+      label = ChromeTime.getStringShort(showTime);
       this.set('timeLabel', label);
     }
   }

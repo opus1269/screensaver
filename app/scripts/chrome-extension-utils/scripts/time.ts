@@ -1,4 +1,6 @@
 /**
+ * Time utilities
+ *
  * @module scripts/chrome/time
  */
 
@@ -11,13 +13,17 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeLocale from './locales.js';
-import * as ChromeStorage from './storage.js';
-import * as ChromeUtils from './utils.js';
+/** Default time */
+export const DEF_TIME = '00:00';
 
-/**
- * Time Class
- */
+/** Time format */
+export const enum TIME_FORMAT {
+  NONE = 0,
+  HR_12,
+  HR_24,
+}
+
+/** Time Class */
 export class ChromeTime {
   /** Milliseconds in minute */
   static get MSEC_IN_MIN() {
@@ -108,22 +114,23 @@ export class ChromeTime {
    * Get time as string suitable for display, including AM/PM if 12hr
    *
    * @param timeString - in '00:00' format
-   * @param frmt - optional format, overrides storage value
+   * @param format - time format
    * @returns display string
    */
-  public static getStringFull(timeString: string, frmt?: number) {
+  public static getStringFull(timeString: string, format: number) {
     const time = new ChromeTime(timeString);
-    return time.toString(frmt);
+    return time.toString(format);
   }
 
   /**
    * Get current time suitable for display w/o AM/PM if 12hr
    *
+   * @param format = time format
    * @returns display string
    */
-  public static getStringShort() {
+  public static getStringShort(format: number) {
     const time = new ChromeTime();
-    let timeString = time.toString();
+    let timeString = time.toString(format);
     // strip off all non-digits but :
     timeString = timeString.replace(/[^\d:]/g, '');
     // strip off everything after 'xx:xx'
@@ -135,21 +142,12 @@ export class ChromeTime {
   /**
    * Determine if user wants 24 hr time
    *
-   * @param frmt - optional format, overrides storage value
+   * @param format - time format
    * @returns true for 24 hour time
    */
-  private static is24Hr(frmt?: number) {
+  private static is24Hr(format: number) {
     let ret = false;
-    let format = ChromeStorage.getInt('showTime', 0);
-    if (frmt) {
-      format = frmt;
-    }
-    const localeTime = ChromeLocale.localize('time_format');
-    if (format === 2) {
-      // time display 24hr
-      ret = true;
-    } else if ((format === 0) && (localeTime === '24')) {
-      // time display off, locale time 24
+    if (format === TIME_FORMAT.HR_24) {
       ret = true;
     }
     return ret;
@@ -173,10 +171,10 @@ export class ChromeTime {
   /**
    * Get string representation of Time
    *
-   * @param frmt - optional format, overrides storage value
+   * @param format - time format
    * @returns As string
    */
-  public toString(frmt?: number) {
+  public toString(format: number) {
     const date = new Date();
     date.setHours(this._hr, this._min);
     date.setSeconds(0);
@@ -191,12 +189,12 @@ export class ChromeTime {
     const opts = {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: !ChromeTime.is24Hr(frmt),
+      hour12: !ChromeTime.is24Hr(format),
     };
     try {
       ret = date.toLocaleTimeString(languages, opts);
     } catch (err) {
-      ChromeUtils.noop();
+      // ignore;
     }
     return ret;
   }

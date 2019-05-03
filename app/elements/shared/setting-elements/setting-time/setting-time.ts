@@ -21,6 +21,8 @@ import '../../../../node_modules/@polymer/app-storage/app-localstorage/app-local
 
 import {SettingBase} from '../setting-base/setting-base.js';
 
+import {DEF_TIME} from '../../../../scripts/chrome-extension-utils/scripts/time.js';
+
 /**
  * Polymer element for time entry
  */
@@ -29,7 +31,7 @@ export class SettingTimeElement extends SettingBase {
 
   /** Time value '00:00' 24 hr format */
   @property({type: String, notify: true})
-  protected value = '00:00';
+  protected value = DEF_TIME;
 
   /** Descriptive label */
   @property({type: String})
