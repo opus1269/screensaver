@@ -329,7 +329,7 @@ gulp.task('_ts_dev', () => {
   return gulp.src(input, {base: '.'}).
       pipe(tsProject(ts.reporter.longReporter())).
       on('error', () => {/* Ignore compiler errors */}).
-      pipe((isProd ? replace(SRCH_DEBUG, REP_DEBUG) : noop())).
+      pipe((!isProd ? replace(SRCH_DEBUG, REP_DEBUG) : noop())).
       pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
@@ -351,7 +351,7 @@ gulp.task('_build_js', () => {
   const input = files.ts;
   return gulp.src(input, {base: '.'}).
       pipe(tsProject(ts.reporter.longReporter())).js.
-      pipe((isProd ? replace(SRCH_DEBUG, REP_DEBUG) : noop())).
+      pipe((!isProd ? replace(SRCH_DEBUG, REP_DEBUG) : noop())).
       pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
