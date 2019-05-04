@@ -105,12 +105,30 @@ export const EVENT = {
     eventAction: 'toolbarIconClicked',
     eventLabel: '',
   } as IEventType,
+  /** Item clicked */
+  CLICK: {
+    eventCategory: 'ui',
+    eventAction: 'click',
+    eventLabel: '',
+  },
   /** Checkbox clicked */
   CHECK: {
     eventCategory: 'ui',
     eventAction: 'checkBoxClicked',
     eventLabel: '',
   } as IEventType,
+  /** Image button clicked */
+  IMAGE_BUTTON: {
+    eventCategory: 'ui',
+    eventAction: 'imageButtonClicked',
+    eventLabel: '',
+  },
+  /** Fab button clicked */
+  FAB_BUTTON: {
+    eventCategory: 'ui',
+    eventAction: 'fabButtonClicked',
+    eventLabel: '',
+  },
   /** Keyboard shortcut entered */
   KEY_COMMAND: {
     eventCategory: 'ui',
