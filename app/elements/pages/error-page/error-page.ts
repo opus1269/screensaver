@@ -27,7 +27,7 @@ import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BasePageElement} from '../base-page/base-page.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import {ChromeLastError} from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
@@ -38,7 +38,7 @@ import * as MyUtils from '../../../scripts/my_utils.js';
  * Polymer element for the LastError page
  */
 @customElement('error-page')
-export class ErrorPageElement extends BaseElement {
+export class ErrorPageElement extends BasePageElement {
 
   /** Last error */
   @property({type: Object})

@@ -22,7 +22,7 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../../elements/shared/setting-elements/setting-link/setting-link.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BasePageElement} from '../base-page/base-page.js';
 
 import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 
@@ -32,7 +32,7 @@ import * as MyUtils from '../../../scripts/my_utils.js';
  * Polymer element for the Help page
  */
 @customElement('help-page')
-export class HelpPageElement extends BaseElement {
+export class HelpPageElement extends BasePageElement {
 
   /** Path to our Github repo */
   @property({type: String})

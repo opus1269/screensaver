@@ -39,7 +39,7 @@ import '../../../node_modules/@polymer/paper-tooltip/paper-tooltip.js';
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BasePageElement} from '../base-page/base-page.js';
 
 import '../../../elements/my_icons.js';
 import '../../../elements/shared/setting-elements/setting-background/setting-background.js';
@@ -79,7 +79,7 @@ const enum TAB {
  * Polymer element for the Settings Page
  */
 @customElement('settings-page')
-export class SettingsPageElement extends BaseElement {
+export class SettingsPageElement extends BasePageElement {
 
   /**
    * Get a Unit object

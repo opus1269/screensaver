@@ -28,7 +28,7 @@ import {
 } from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BasePageElement} from '../base-page/base-page.js';
 
 import '../../../node_modules/@polymer/paper-icon-button/paper-icon-button.js';
 import '../../../node_modules/@polymer/paper-material/paper-material.js';
@@ -57,7 +57,7 @@ import {Options} from '../../../scripts/options/options.js';
  * @PolymerElement
  */
 @customElement('google-photos-page')
-export class GooglePhotosPageElement extends BaseElement {
+export class GooglePhotosPageElement extends BasePageElement {
 
   /** Select by albums or photos */
   @property({type: Boolean, notify: true})
@@ -120,18 +120,13 @@ export class GooglePhotosPageElement extends BaseElement {
   @query('#googlePhotosToggle')
   protected googlePhotosToggle: PaperToggleButtonElement;
 
-  /**
-   * Called during Polymer-specific element initialization.
-   * Called once, the first time the element is attached to the document.
-   */
-  public ready() {
-    super.ready();
+  /** We are becoming active */
+  public onEnterPage() {
+    super.onEnterPage();
 
-    setTimeout(() => {
-      if (this.isAlbumMode) {
-        this.loadAlbumList().catch(() => {});
-      }
-    }, 0);
+    if (this.isAlbumMode) {
+      this.loadAlbumList().catch(() => {});
+    }
   }
 
   /**

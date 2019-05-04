@@ -15,10 +15,10 @@
 
 import {AppDrawerLayoutElement} from '../../node_modules/@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppDrawerElement} from '../../node_modules/@polymer/app-layout/app-drawer/app-drawer';
+import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper-dialog';
 import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/paper-listbox';
-
-import {SettingsPageElement} from '../../elements/pages/settings-page/settings-page';
+import {PolymerElementConstructor} from '../../node_modules/@polymer/polymer/interfaces';
 
 import {ConfirmDialogElement} from '../../elements/confirm-dialog/confirm-dialog';
 import {ErrorDialogElement} from '../../elements/error-dialog/error-dialog';
@@ -59,12 +59,13 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {BaseElement} from '../shared/base-element/base-element.js';
+import {BasePageElement} from '../../elements/pages/base-page/base-page.js';
+import {BaseElement} from '../../elements/shared/base-element/base-element.js';
 
 import {ErrorPageElement} from '../../elements/pages/error-page/error-page.js';
 import {GooglePhotosPageElement} from '../../elements/pages/google-photos-page/google-photos-page.js';
 import {HelpPageElement} from '../../elements/pages/help-page/help-page.js';
-import '../../elements/pages/settings-page/settings-page.js';
+import {SettingsPageElement} from '../../elements/pages/settings-page/settings-page.js';
 
 import '../../elements/confirm-dialog/confirm-dialog.js';
 import '../../elements/error-dialog/error-dialog.js';
@@ -96,7 +97,7 @@ interface IPage {
   /** Menu icon */
   icon: string;
   /** Function to call when we are selected */
-  fn: ((index: number, prevRoute: string) => void) | null;
+  fn: (() => void) | null;
   /** Url to display when we are selected */
   url: string | null;
   /** Have we been loaded the first time */
@@ -105,6 +106,12 @@ interface IPage {
   disabled: boolean;
   /** Should we display a divider along with the Menu item */
   divider: boolean;
+  /** Insertion element id */
+  insertion: string | null;
+  /** Page element */
+  el: BasePageElement | null;
+  /** Page element constructor */
+  obj: PolymerElementConstructor | null;
 }
 
 /**
@@ -186,51 +193,61 @@ export class AppMainElement extends BaseElement {
       label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
       icon: 'myicons:settings', fn: null, url: null,
       ready: true, disabled: false, divider: false,
+      insertion: 'settingsInsertion', obj: SettingsPageElement, el: null,
     },
     {
       label: ChromeLocale.localize('menu_preview'), route: 'page-preview',
       icon: 'myicons:pageview', fn: this.showScreensaverPreview.bind(this), url: null,
       ready: true, disabled: false, divider: false,
+      insertion: null, obj: null, el: null,
     },
     {
       label: ChromeLocale.localize('menu_google'), route: 'page-google-photos',
       icon: 'myicons:cloud', fn: this.showGooglePhotosPage.bind(this), url: null,
       ready: false, divider: true, disabled: false,
+      insertion: 'googlePhotosInsertion', obj: GooglePhotosPageElement, el: null,
     },
     {
       label: ChromeLocale.localize('menu_permission'), route: 'page-permission',
       icon: 'myicons:perm-data-setting', fn: this.showPermissionsDialog.bind(this), url: null,
       ready: true, divider: false, disabled: false,
+      insertion: null, obj: null, el: null,
     },
     {
       label: ChromeLocale.localize('menu_error'), route: 'page-error',
-      icon: 'myicons:error', fn: this.showErrorPage.bind(this), url: null,
+      icon: 'myicons:error', fn: null, url: null,
       ready: false, disabled: false, divider: true,
+      insertion: 'errorInsertion', obj: ErrorPageElement, el: null,
     },
     {
       label: ChromeLocale.localize('menu_help'), route: 'page-help',
-      icon: 'myicons:help', fn: this.showHelpPage.bind(this), url: null,
+      icon: 'myicons:help', fn: null, url: null,
       ready: false, divider: false, disabled: false,
+      insertion: 'helpInsertion', obj: HelpPageElement, el: null,
     },
     {
       label: ChromeLocale.localize('help_faq'), route: 'page-faq',
       icon: 'myicons:help', fn: null, url: 'https://opus1269.github.io/screensaver/faq.html',
       ready: true, divider: false, disabled: false,
+      insertion: null, obj: null, el: null,
     },
     {
       label: ChromeLocale.localize('menu_support'), route: 'page-support',
       icon: 'myicons:help', fn: null, url: `${AppMainElement.EXT_URI}support`,
       ready: true, divider: false, disabled: false,
+      insertion: null, obj: null, el: null,
     },
     {
       label: ChromeLocale.localize('menu_rate'), route: 'page-rate',
       icon: 'myicons:grade', fn: null, url: `${AppMainElement.EXT_URI}reviews`,
       ready: true, divider: false, disabled: false,
+      insertion: null, obj: null, el: null,
     },
     {
       label: ChromeLocale.localize('menu_pushy'), route: 'page-pushy',
       icon: 'myicons:extension', fn: null, url: AppMainElement.PUSHY_URI,
       ready: true, divider: true, disabled: false,
+      insertion: null, obj: null, el: null,
     },
   ];
 
@@ -247,6 +264,9 @@ export class AppMainElement extends BaseElement {
   get permissionStatus() {
     return `${ChromeLocale.localize('permission_status')} ${ChromeLocale.localize(this.permission)}`;
   }
+
+  @query('#mainPages')
+  protected mainPages: NeonAnimatedPagesElement;
 
   @query('#mainMenu')
   protected mainMenu: PaperListboxElement;
@@ -269,20 +289,11 @@ export class AppMainElement extends BaseElement {
   @query('#settingsPage')
   protected settingsPage: SettingsPageElement;
 
-  @query('#googlePhotosInsertion')
-  protected googlePhotosInsertion: HTMLElement;
-
-  @query('#errorInsertion')
-  protected errorInsertion: HTMLElement;
-
-  @query('#helpInsertion')
-  protected helpInsertion: HTMLElement;
+  /** Previous {@link IPage} */
+  protected prevRoute = '';
 
   /** Function to call on confirm dialog confirm button click */
   protected confirmFn: () => void;
-
-  /** Google Photos IPage */
-  protected gPhotosPage: GooglePhotosPageElement;
 
   /**
    * Called when the element is added to a document.
@@ -331,6 +342,8 @@ export class AppMainElement extends BaseElement {
     ChromeGA.page('/options.html');
 
     setTimeout(async () => {
+      // select initial page
+      this.mainPages.select(this.route);
 
       // initialize menu enabled states
       await this.setErrorMenuState();
@@ -375,6 +388,31 @@ export class AppMainElement extends BaseElement {
   public showConfirmDialog(text: string, title: string, confirmLabel: string, fn: () => void) {
     this.confirmFn = fn;
     this.confirmDialog.open(text, title, confirmLabel);
+  }
+
+  /**
+   * The selected neon-animated-pages page changed
+   *
+   * @event
+   */
+  @listen('selected-item-changed', 'mainPages')
+  public onSelectedPageChanged() {
+    if (this.route === this.prevRoute) {
+      return;
+    }
+
+    const prevPage: IPage = this.pages[this.getPageIdx(this.prevRoute)];
+    const page: IPage = this.pages[this.getPageIdx(this.route)];
+    if (prevPage && prevPage.el) {
+      // give page a change to do cleanup
+      prevPage.el.onLeavePage();
+    }
+    if (page && page.el) {
+      // give page a change to initialize
+      page.el.onEnterPage();
+    }
+
+    this.prevRoute = this.route;
   }
 
   /**
@@ -464,8 +502,6 @@ export class AppMainElement extends BaseElement {
       appDrawer.close();
     }
 
-    const prevRoute = this.route;
-
     const idx = this.getPageIdx((ev.currentTarget as HTMLElement).id);
     const page = this.pages[idx];
 
@@ -473,24 +509,42 @@ export class AppMainElement extends BaseElement {
 
     if (page.url) {
       // some pages are url links
-      this.mainMenu.select(prevRoute);
       chrome.tabs.create({url: page.url});
+      // reselect previous menu
+      this.set('route', this.prevRoute);
     } else if (page.fn) {
       // some pages have functions to view them
-      page.fn(idx, prevRoute);
+      page.fn();
     } else {
       // some pages are just pages
-      this.set('route', page.route);
+      this.showPage(idx);
     }
   }
 
   /**
-   * Show the Google Photos page
+   * Show the page at the given index
    *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
+   * @param index - index into {@link #pages}
    */
-  protected showGooglePhotosPage(index: number, prevRoute: string) {
+  protected showPage(index: number) {
+    const page = this.pages[index];
+    if (!page.ready) {
+      // insert the page the first time
+      page.ready = true;
+      if (page.insertion && page.obj) {
+        page.el = new page.obj() as BasePageElement;
+        // @ts-ignore
+        const insertEl = this.shadowRoot.getElementById(page.insertion);
+        if (insertEl) {
+          insertEl.appendChild(page.el);
+        }
+      }
+    }
+    this.mainPages.select(this.route);
+  }
+
+  /** Show the Google Photos page */
+  protected showGooglePhotosPage() {
     const signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
       // Display Error Dialog if not signed in to Chrome
@@ -499,66 +553,24 @@ export class AppMainElement extends BaseElement {
       this.errorDialog.open(title, text);
       return;
     }
-    if (!this.pages[index].ready) {
-      // create the page the first time
-      this.pages[index].ready = true;
-      this.gPhotosPage = new GooglePhotosPageElement();
-      this.googlePhotosInsertion.appendChild(this.gPhotosPage);
-    } else if (ChromeStorage.getBool('isAlbumMode', true)) {
-      if (this.gPhotosPage) {
-        this.gPhotosPage.loadAlbumList().catch(() => {});
-      }
+
+    const index = this.getPageIdx('page-google-photos');
+    this.showPage(index);
+  }
+
+  /** Display a preview of the screen saver */
+  protected async showScreensaverPreview() {
+    try {
+      await ChromeMsg.send(MyMsg.TYPE.SS_SHOW);
+    } catch (err) {
+      ChromeLog.error(err.message, 'AppMain.showScreensaverPreview');
+    } finally {
+      // reselect previous
+      this.set('route', this.prevRoute);
     }
-    this.set('route', this.pages[index].route);
   }
 
-  /**
-   * Show the error viewer page
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  protected showErrorPage(index: number, prevRoute: string) {
-    if (!this.pages[index].ready) {
-      // insert the page the first time
-      this.pages[index].ready = true;
-      const el = new ErrorPageElement();
-      this.errorInsertion.appendChild(el);
-    }
-    this.set('route', this.pages[index].route);
-  }
-
-  /**
-   * Show the help page
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  protected showHelpPage(index: number, prevRoute: string) {
-    if (!this.pages[index].ready) {
-      // insert the page the first time
-      this.pages[index].ready = true;
-      const el = new HelpPageElement();
-      this.helpInsertion.appendChild(el);
-    }
-    this.set('route', this.pages[index].route);
-  }
-
-  /**
-   * Display a preview of the screen saver
-   *
-   * @param index into the {@link #pages} array
-   * @param prevRoute - last page selected
-   */
-  protected showScreensaverPreview(index: number, prevRoute: string) {
-    // reselect previous page - need to delay so tap event is done
-    setTimeout(() => this.mainMenu.select(prevRoute), 500);
-    ChromeMsg.send(MyMsg.TYPE.SS_SHOW).catch(() => {});
-  }
-
-  /**
-   * Show the permissions dialog
-   */
+  /** Show the permissions dialog */
   protected showPermissionsDialog() {
     this.permissionsDialog.open();
   }
@@ -767,7 +779,7 @@ export class AppMainElement extends BaseElement {
 
       <!-- Menu Items -->
       <paper-listbox id="mainMenu" attr-for-selected="id"
-                     selected="[[route]]">
+                     selected="{{route}}">
         <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
           <hr hidden$="[[!item.divider]]"/>
           <paper-icon-item id="[[item.route]]"
@@ -798,10 +810,9 @@ export class AppMainElement extends BaseElement {
     <!--Main Contents-->
     <div id="mainContainer">
 
-      <!-- Options Tabbed Pages -->
+      <!-- Options Pages -->
       <neon-animated-pages id="mainPages"
                            attr-for-selected="data-route"
-                           selected="{{route}}"
                            entry-animation="fade-in-animation"
                            exit-animation="fade-out-animation">
         <neon-animatable data-route="page-settings">
