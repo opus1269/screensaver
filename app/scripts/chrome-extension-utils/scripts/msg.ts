@@ -29,6 +29,8 @@ export interface IMsgType {
   key?: string;
   /** value */
   value?: any;
+  /** item */
+  item?: any;
   /** id */
   id?: string;
   /** name */
