@@ -114,9 +114,7 @@ interface IPage {
   obj: PolymerElementConstructor | null;
 }
 
-/**
- * Polymer element for the main UI
- */
+/** Polymer element for the main UI */
 @customElement('app-main')
 export class AppMainElement extends BaseElement {
 
@@ -186,9 +184,46 @@ export class AppMainElement extends BaseElement {
   protected static readonly PUSHY_URI =
       'https://chrome.google.com/webstore/detail/pushy-clipboard/jemdfhaheennfkehopbpkephjlednffd';
 
+  /** Current {@link IPage} */
+  @property({type: String, notify: true, observer: 'routeChanged'})
+  public route = 'page-settings';
+
+  /** Google Photos permission status */
+  @property({type: String, notify: true})
+  public permission = Permissions.STATE.notSet;
+
+  /** Permission status */
+  @computed('permission')
+  get permissionStatus() {
+    return `${ChromeLocale.localize('permission_status')} ${ChromeLocale.localize(this.permission)}`;
+  }
+
+  @query('#mainPages')
+  protected mainPages: NeonAnimatedPagesElement;
+
+  @query('#mainMenu')
+  protected mainMenu: PaperListboxElement;
+
+  @query('#appDrawer')
+  protected appDrawer: AppDrawerElement;
+
+  @query('#appDrawerLayout')
+  protected appDrawerLayout: AppDrawerLayoutElement;
+
+  @query('#errorDialog')
+  protected errorDialog: ErrorDialogElement;
+
+  @query('#confirmDialog')
+  protected confirmDialog: ConfirmDialogElement;
+
+  @query('#permissionsDialog')
+  protected permissionsDialog: PaperDialogElement;
+
+  @query('#settingsPage')
+  protected settingsPage: SettingsPageElement;
+
   /** The app's pages */
-  @property({type: Array})
-  public readonly pages: IPage[] = [
+  protected readonly pages: IPage[] = [
     {
       label: ChromeLocale.localize('menu_settings'), route: 'page-settings',
       icon: 'myicons:settings', fn: null, url: null,
@@ -251,44 +286,6 @@ export class AppMainElement extends BaseElement {
     },
   ];
 
-  /** Current {@link IPage} */
-  @property({type: String, notify: true})
-  public route = 'page-settings';
-
-  /** Google Photos permission status */
-  @property({type: String, notify: true})
-  public permission = Permissions.STATE.notSet;
-
-  /** Permission status */
-  @computed('permission')
-  get permissionStatus() {
-    return `${ChromeLocale.localize('permission_status')} ${ChromeLocale.localize(this.permission)}`;
-  }
-
-  @query('#mainPages')
-  protected mainPages: NeonAnimatedPagesElement;
-
-  @query('#mainMenu')
-  protected mainMenu: PaperListboxElement;
-
-  @query('#appDrawer')
-  protected appDrawer: AppDrawerElement;
-
-  @query('#appDrawerLayout')
-  protected appDrawerLayout: AppDrawerLayoutElement;
-
-  @query('#errorDialog')
-  protected errorDialog: ErrorDialogElement;
-
-  @query('#confirmDialog')
-  protected confirmDialog: ConfirmDialogElement;
-
-  @query('#permissionsDialog')
-  protected permissionsDialog: PaperDialogElement;
-
-  @query('#settingsPage')
-  protected settingsPage: SettingsPageElement;
-
   /** Previous {@link IPage} */
   protected prevRoute = '';
 
@@ -342,9 +339,6 @@ export class AppMainElement extends BaseElement {
     ChromeGA.page('/options.html');
 
     setTimeout(async () => {
-      // select initial page
-      this.mainPages.select(this.route);
-
       // initialize menu enabled states
       await this.setErrorMenuState();
       this.setGooglePhotosMenuState();
@@ -393,6 +387,9 @@ export class AppMainElement extends BaseElement {
   /**
    * The selected neon-animated-pages page changed
    *
+   * @remarks
+   * This is called twice for some reason, hence the check for prevRoute
+   *
    * @event
    */
   @listen('selected-item-changed', 'mainPages')
@@ -401,14 +398,14 @@ export class AppMainElement extends BaseElement {
       return;
     }
 
-    const prevPage: IPage = this.pages[this.getPageIdx(this.prevRoute)];
-    const page: IPage = this.pages[this.getPageIdx(this.route)];
+    const prevPage = this.getPage(this.prevRoute);
+    const page = this.getPage(this.route);
     if (prevPage && prevPage.el) {
-      // give page a change to do cleanup
+      // give page a chance to do cleanup
       prevPage.el.onLeavePage();
     }
     if (page && page.el) {
-      // give page a change to initialize
+      // give page a chance to initialize
       page.el.onEnterPage();
     }
 
@@ -487,59 +484,59 @@ export class AppMainElement extends BaseElement {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
-  /**
-   * Navigation menu selected. Route to proper page
-   *
-   * @param ev - ClickEvent
-   * @event
-   */
-  protected onNavMenuItemTapped(ev: CustomEvent) {
-    // Close drawer after menu item is selected if it is in narrow layout
-    const appDrawerLayout = this.appDrawerLayout;
-    const appDrawer = this.appDrawer;
-    if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
-      appDrawer.close();
-    }
+  /** Simple Observer: route changed */
+  protected routeChanged(route: string | undefined, prevRoute: string | undefined) {
+    if (route && (route !== prevRoute)) {
+      const page = this.getPage(route);
+      if (!page) {
+        ChromeGA.error('Failed to get page', 'AppMain.onSelectedMenuChanged');
+        return;
+      }
 
-    const idx = this.getPageIdx((ev.currentTarget as HTMLElement).id);
-    const page = this.pages[idx];
+      // Close drawer after menu item is selected if it is in narrow layout
+      const appDrawerLayout = this.appDrawerLayout;
+      const appDrawer = this.appDrawer;
+      if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
+        appDrawer.close();
+      }
 
-    ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
+      ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
 
-    if (page.url) {
-      // some pages are url links
-      chrome.tabs.create({url: page.url});
-      // reselect previous menu
-      this.set('route', this.prevRoute);
-    } else if (page.fn) {
-      // some pages have functions to view them
-      page.fn();
-    } else {
-      // some pages are just pages
-      this.showPage(idx);
+      if (page.url) {
+        // some pages are url links
+        chrome.tabs.create({url: page.url});
+        // reselect previous menu
+        if (prevRoute) {
+          this.set('route', prevRoute);
+        }
+      } else if (page.fn) {
+        // some pages have functions to view them
+        page.fn();
+      } else {
+        // some pages are just pages
+        this.showPage(page);
+      }
     }
   }
 
   /**
-   * Show the page at the given index
+   * Show a page
    *
-   * @param index - index into {@link #pages}
+   * @param page - the page
    */
-  protected showPage(index: number) {
-    const page = this.pages[index];
+  protected showPage(page: IPage) {
     if (!page.ready) {
-      // insert the page the first time
+      // insert the page the first time, if needed
       page.ready = true;
       if (page.insertion && page.obj) {
         page.el = new page.obj() as BasePageElement;
-        // @ts-ignore
-        const insertEl = this.shadowRoot.getElementById(page.insertion);
+        const insertEl = (this.shadowRoot as ShadowRoot).getElementById(page.insertion);
         if (insertEl) {
           insertEl.appendChild(page.el);
         }
       }
     }
+    // now select the neon animated page
     this.mainPages.select(this.route);
   }
 
@@ -554,8 +551,12 @@ export class AppMainElement extends BaseElement {
       return;
     }
 
-    const index = this.getPageIdx('page-google-photos');
-    this.showPage(index);
+    const page = this.getPage('page-google-photos');
+    if (page) {
+      this.showPage(page);
+    } else {
+      ChromeGA.error('Failed to get page', 'AppMain.showGooglePhotosPage');
+    }
   }
 
   /** Display a preview of the screen saver */
@@ -580,9 +581,7 @@ export class AppMainElement extends BaseElement {
    */
   protected setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
-    const idx = this.getPageIdx('page-google-photos');
-    // @ts-ignore
-    const el = this.shadowRoot.querySelector(`#${this.pages[idx].route}`);
+    const el = (this.shadowRoot as ShadowRoot).querySelector('#page-google-photos');
     if (!el) {
       ChromeGA.error('no element found', 'AppMain.setGooglePhotosMenuState');
     } else if (this.permission !== 'allowed') {
@@ -592,25 +591,23 @@ export class AppMainElement extends BaseElement {
     }
   }
 
-  /**
-   * Set enabled state of Error Viewer menu item
-   */
+  /** Set enabled state of Error Viewer menu item */
   protected async setErrorMenuState() {
+    const METHOD = 'AppMain.setErrorMenuState';
     // disable error-page if no lastError
     try {
       const lastError = await ChromeLastError.load();
+      const el = (this.shadowRoot as ShadowRoot).querySelector('#page-error');
 
-      const idx = this.getPageIdx('page-error');
-      const route = this.pages[idx].route;
-      // @ts-ignore
-      const el = this.shadowRoot.querySelector(`#${route}`);
-      if (el && !ChromeUtils.isWhiteSpace(lastError.message)) {
-        el.removeAttribute('disabled');
-      } else if (el) {
+      if (!el) {
+        ChromeGA.error('no element found', METHOD);
+      } else if (ChromeUtils.isWhiteSpace(lastError.message)) {
         el.setAttribute('disabled', 'true');
+      } else {
+        el.removeAttribute('disabled');
       }
     } catch (err) {
-      ChromeGA.error(err.message, 'AppMain.setErrorMenuState');
+      ChromeGA.error(err.message, METHOD);
     }
   }
 
@@ -660,15 +657,15 @@ export class AppMainElement extends BaseElement {
   }
 
   /**
-   * Get the index into the {@link pages} array
+   * Get the page with the given route name
    *
-   * @param name - route to get index for
-   * @returns index into array
+   * @param route - route to get index for
+   * @returns The page
    */
-  protected getPageIdx(name: string) {
-    return this.pages.map((e) => {
-      return e.route;
-    }).indexOf(name);
+  protected getPage(route: string) {
+    return this.pages.find((page) => {
+      return page.route === route;
+    });
   }
 
   static get template() {
@@ -778,13 +775,10 @@ export class AppMainElement extends BaseElement {
       </app-toolbar>
 
       <!-- Menu Items -->
-      <paper-listbox id="mainMenu" attr-for-selected="id"
-                     selected="{{route}}">
+      <paper-listbox id="mainMenu" attr-for-selected="id" selected="{{route}}">
         <template is="dom-repeat" id="menuTemplate" items="[[pages]]">
           <hr hidden$="[[!item.divider]]"/>
-          <paper-icon-item id="[[item.route]]"
-                      class="center horizontal layout"
-                      on-click="onNavMenuItemTapped" disabled$="[[item.disabled]]">
+          <paper-icon-item id="[[item.route]]" class="center horizontal layout" disabled$="[[item.disabled]]">
             <iron-icon icon="[[item.icon]]" slot="item-icon"></iron-icon>
             <span class="flex">[[item.label]]</span>
           </paper-icon-item>
