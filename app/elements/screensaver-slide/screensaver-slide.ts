@@ -271,12 +271,7 @@ export class ScreensaverSlideElement
   public onErrorChanged(ev: CustomEvent) {
     const error = ev.detail.value;
     if (error) {
-      const customEvent = new CustomEvent('image-error', {
-        bubbles: true,
-        composed: true,
-        detail: {index: this.index},
-      });
-      this.dispatchEvent(customEvent);
+      this.fireEvent('image-error', this.index);
     }
   }
 

@@ -59,13 +59,8 @@ export class PhotoCatElement extends BaseElement {
   public onCheckedChange(ev: CustomEvent) {
     const checked = (ev.target as PaperCheckboxElement).checked;
     ChromeGA.event(ChromeGA.EVENT.CHECK, `${this.id}: ${checked}`);
-    const customEvent = new CustomEvent('value-changed', {
-      bubbles: true,
-      composed: true,
-      detail: {value: checked},
-    });
-    this.dispatchEvent(customEvent);
-  }
+    this.fireEvent('value-changed', checked);
+   }
 
   static get template() {
     // language=HTML format=false

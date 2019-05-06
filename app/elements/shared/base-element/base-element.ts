@@ -38,4 +38,28 @@ import {I8nMixin} from '../mixins/i8n_mixin.js';
  */
 @customElement('base-element')
 export class BaseElement extends I8nMixin(GestureEventListeners(DeclarativeEventListeners(PolymerElement))) {
+
+  /**
+   * Dispatch an event
+   *
+   * @param name - event name
+   * @param detailValue - optional value
+   */
+  protected fireEvent(name: string, detailValue?: any) {
+    let customEvent;
+    if (detailValue) {
+      customEvent = new CustomEvent(name, {
+        bubbles: true,
+        composed: true,
+        detail: {value: detailValue},
+      });
+    } else {
+      customEvent = new CustomEvent(name, {
+        bubbles: true,
+        composed: true,
+      });
+    }
+    this.dispatchEvent(customEvent);
+  }
+
 }

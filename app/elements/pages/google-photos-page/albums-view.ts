@@ -219,11 +219,7 @@ export class AlbumsViewElement extends BaseElement {
         const text = ChromeLocale.localize('err_no_albums');
         ChromeLog.error(text, METHOD, ERR_TITLE);
         // fire event to let others know
-        const customEvent = new CustomEvent('no-albums', {
-          bubbles: true,
-          composed: true,
-        });
-        this.dispatchEvent(customEvent);
+        this.fireEvent('no-albums');
         return;
       }
 

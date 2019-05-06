@@ -55,11 +55,7 @@ export class ConfirmDialogElement extends BaseElement {
   @listen('click', 'confirmButton')
   public onConfirmTapped() {
     ChromeGA.event(ChromeGA.EVENT.BUTTON, 'ConfirmDialog.onConfirmTapped');
-    const customEvent = new CustomEvent('confirm-tap', {
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(customEvent);
+    this.fireEvent('confirm-tap');
   }
 
   /**

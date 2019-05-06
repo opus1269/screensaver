@@ -63,12 +63,7 @@ export class SettingToggleElement extends SettingBase {
   @listen('change', 'toggle')
   public onChange() {
     ChromeGA.event(ChromeGA.EVENT.TOGGLE, `${this.name}: ${this.checked}`);
-    const customEvent = new CustomEvent('toggle-change', {
-      bubbles: true,
-      composed: true,
-      detail: {value: this.checked},
-    });
-    this.dispatchEvent(customEvent);
+    this.fireEvent('toggle-change', this.checked);
   }
 
   /**
