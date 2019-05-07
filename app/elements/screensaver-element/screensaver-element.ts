@@ -552,7 +552,7 @@ export class ScreensaverElement extends BaseElement {
     // url failed to load
     errHandler.isUpdating = true;
 
-    const index = ev.detail.index;
+    const index = ev.detail.value;
     const thePhoto = this.photos[index];
     const theType = thePhoto.getType();
     if (theType === PhotoSourceFactory.Type.GOOGLE_USER) {
