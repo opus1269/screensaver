@@ -47,7 +47,7 @@ export class BaseElement extends I8nMixin(GestureEventListeners(DeclarativeEvent
    */
   protected fireEvent(name: string, detailValue?: any) {
     let customEvent;
-    if (detailValue) {
+    if (detailValue !== undefined) {
       customEvent = new CustomEvent(name, {
         bubbles: true,
         composed: true,
