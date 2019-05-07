@@ -338,6 +338,12 @@ export class AppMainElement extends BaseElement {
     MyGA.initialize();
     ChromeGA.page('/options.html');
 
+    // set settings-page el
+    const settingsPage = this.getPage('page-main');
+    if (settingsPage) {
+      settingsPage.el =
+          (this.shadowRoot as ShadowRoot).getElementById('settingsPage') as SettingsPageElement;
+    }
     setTimeout(async () => {
       // initialize menu enabled states
       await this.setErrorMenuState();
