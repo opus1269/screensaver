@@ -183,7 +183,6 @@ export class ErrorPageElement extends BasePageElement {
   <!-- Tool bar -->
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
-      <span class="space"></span>
       <div class="middle middle-container center horizontal layout flex">
         <div class="flex">{{localize('last_error_viewer_title')}}</div>
         <paper-icon-button id="email" icon="myicons:mail" disabled$="[[!lastError.message]]">
