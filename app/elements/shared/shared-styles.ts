@@ -54,6 +54,11 @@ sharedStyles.innerHTML = `
       cursor: pointer;
     }
 
+    /*** For text selection ***/
+    ::selection {
+      background-color: var(--selected-item-background-color);
+    }
+
     paper-button {
       color: var(--setting-item-color);
       margin-top: 8px;
