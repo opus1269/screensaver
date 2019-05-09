@@ -100,7 +100,6 @@ sharedStyles.innerHTML = `
       --paper-item-selected: {
         background-color: var(--selected-item-background-color);
         color: var(--selected-item-color);
-        opacity: var(--selected-item-opacity);
         text-rendering: optimizeLegibility;
         cursor: pointer;
         --paper-item-icon: {

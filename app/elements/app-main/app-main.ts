@@ -144,7 +144,6 @@ export class AppMainElement extends BaseElement {
 
       root.style.setProperty('--selected-item-color', 'white');
       root.style.setProperty('--selected-item-background-color', 'var(--setting-item-color)');
-      root.style.setProperty('--selected-item-opacity', '1');
 
       root.style.setProperty('--main-toolbar-background-color', 'var(--primary-color)');
 
@@ -168,7 +167,6 @@ export class AppMainElement extends BaseElement {
 
       root.style.setProperty('--selected-item-color', 'black');
       root.style.setProperty('--selected-item-background-color', 'var(--paper-indigo-100)');
-      root.style.setProperty('--selected-item-opacity', '.9');
 
       root.style.setProperty('--main-toolbar-background-color', 'var(--dark-primary-color)');
 
