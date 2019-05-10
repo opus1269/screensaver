@@ -140,14 +140,27 @@ export class AppMainElement extends BaseElement {
       root.style.setProperty('--light-primary-color', 'var(--paper-grey-900)');
       root.style.setProperty('--dark-primary-color', 'var(--paper-grey-900)');
 
+      root.style.setProperty('--accent-color', 'var(--background-color)');
+      root.style.setProperty('--light-accent-color', 'var(--paper-grey-900)');
+      root.style.setProperty('--dark-accent-color', 'var(--paper-grey-900)');
+
       root.style.setProperty('--setting-item-color', 'var(--paper-teal-400)');
 
       root.style.setProperty('--selected-item-color', 'white');
-      root.style.setProperty('--selected-item-background-color', 'var(--setting-item-color)');
+      // teal-300
+      root.style.setProperty('--selected-item-background-color', 'rgba(77, 182, 172, .3)');
+
+      // teal-300
+      root.style.setProperty('--accent-color', 'rgba(77, 182, 172, .3)');
+      root.style.setProperty('--light-accent-color', 'var(--paper-teal-200)');
+      root.style.setProperty('--dark-accent-color', 'var(--paper-teal-900)');
 
       root.style.setProperty('--main-toolbar-background-color', 'var(--primary-color)');
 
-      root.style.setProperty('--scrollbar-color', 'var(--setting-item-color)');
+      root.style.setProperty('--toast-background-color', 'var(--dark-primary-color)');
+
+      // teal-300
+      root.style.setProperty('--scrollbar-color', 'rgba(77, 182, 172, .3)');
     } else {
       root.style.setProperty('--base-color', 'var(--light-theme-base-color)');
       root.style.setProperty('--background-color', 'var(--light-theme-background-color)');
@@ -163,12 +176,18 @@ export class AppMainElement extends BaseElement {
       root.style.setProperty('--light-primary-color', '#EEEEEE');
       root.style.setProperty('--dark-primary-color', 'var(--paper-indigo-700)');
 
+      root.style.setProperty('--accent-color', 'var(--paper-teal-700)');
+      root.style.setProperty('--light-accent-color', 'var(--paper-teal-200)');
+      root.style.setProperty('--dark-accent-color', 'var(--paper-teal-900)');
+
       root.style.setProperty('--setting-item-color', 'var(--paper-teal-700)');
 
       root.style.setProperty('--selected-item-color', 'black');
       root.style.setProperty('--selected-item-background-color', 'var(--paper-indigo-100)');
 
       root.style.setProperty('--main-toolbar-background-color', 'var(--dark-primary-color)');
+
+      root.style.setProperty('--toast-background-color', '#323232');
 
       root.style.setProperty('--scrollbar-color', 'var(--dark-primary-color)');
     }
