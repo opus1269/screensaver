@@ -80,7 +80,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="els_shared_base_element.baseelement.html" class="tsd-signature-type">BaseElement</a>
+						<a href="els_pages_base.basepageelement.html" class="tsd-signature-type">BasePageElement</a>
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">SettingsPageElement</span>
@@ -103,6 +103,7 @@
 							<h3>Events</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onchromebackgroundtapped" class="tsd-kind-icon">on<wbr>Chrome<wbr>Background<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#ondarkmodechanged" class="tsd-kind-icon">on<wbr>Dark<wbr>Mode<wbr>Changed</a></li>
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#ondeselectalltapped" class="tsd-kind-icon">on<wbr>Deselect<wbr>All<wbr>Tapped</a></li>
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#ondetectfacestapped" class="tsd-kind-icon">on<wbr>Detect<wbr>Faces<wbr>Tapped</a></li>
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onenabledchanged" class="tsd-kind-icon">on<wbr>Enabled<wbr>Changed</a></li>
@@ -110,11 +111,13 @@
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onrestoredefaultstapped" class="tsd-kind-icon">on<wbr>Restore<wbr>Defaults<wbr>Tapped</a></li>
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onselectalltapped" class="tsd-kind-icon">on<wbr>Select<wbr>All<wbr>Tapped</a></li>
 								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onshowweathertapped" class="tsd-kind-icon">on<wbr>Show<wbr>Weather<wbr>Tapped</a></li>
+								<li class="tsd-kind-event tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#onunsplashchanged" class="tsd-kind-icon">on<wbr>Unsplash<wbr>Changed</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#darkmodetoggle" class="tsd-kind-icon">dark<wbr>Mode<wbr>Toggle</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#enabled" class="tsd-kind-icon">enabled</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#panandscanvalue" class="tsd-kind-icon">pan<wbr>And<wbr>Scan<wbr>Value</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#photosizingmenu" class="tsd-kind-icon">photo<wbr>Sizing<wbr>Menu</a></li>
@@ -144,6 +147,9 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="els_pages_settings.settingspageelement.html#deselectphotosource" class="tsd-kind-icon">deselect<wbr>Photo<wbr>Source</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#fireevent" class="tsd-kind-icon">fire<wbr>Event</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="els_pages_settings.settingspageelement.html#onenterpage" class="tsd-kind-icon">on<wbr>Enter<wbr>Page</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="els_pages_settings.settingspageelement.html#onleavepage" class="tsd-kind-icon">on<wbr>Leave<wbr>Page</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#setphotosourcechecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Source<wbr>Checked</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="els_pages_settings.settingspageelement.html#setphotosourceschecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Sources<wbr>Checked</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-static"><a href="els_pages_settings.settingspageelement.html#getunit" class="tsd-kind-icon">get<wbr>Unit</a></li>
@@ -166,7 +172,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from (Anonymous class).__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/shared/mixins/i8n_mixin.ts#L25">elements/shared/mixins/i8n_mixin.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/shared/mixins/i8n_mixin.ts#L25">elements/shared/mixins/i8n_mixin.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="els_pages_settings.settingspageelement.html" class="tsd-signature-type">SettingsPageElement</a></h4>
@@ -186,12 +192,34 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L290">elements/pages/settings-page/settings-page.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L316">elements/pages/settings-page/settings-page.ts:316</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Process the background</p>
+									<p>Process the background permission</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="ondarkmodechanged" class="tsd-anchor"></a>
+					<h3>on<wbr>Dark<wbr>Mode<wbr>Changed</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Dark<wbr>Mode<wbr>Changed<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L305">elements/pages/settings-page/settings-page.ts:305</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Change UI color mode</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -208,7 +236,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L270">elements/pages/settings-page/settings-page.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L285">elements/pages/settings-page/settings-page.ts:285</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -230,7 +258,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L399">elements/pages/settings-page/settings-page.ts:399</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L425">elements/pages/settings-page/settings-page.ts:425</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -252,7 +280,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L222">elements/pages/settings-page/settings-page.ts:222</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L238">elements/pages/settings-page/settings-page.ts:238</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,7 +302,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L234">elements/pages/settings-page/settings-page.ts:234</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L249">elements/pages/settings-page/settings-page.ts:249</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -296,7 +324,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L280">elements/pages/settings-page/settings-page.ts:280</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L295">elements/pages/settings-page/settings-page.ts:295</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -318,7 +346,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L260">elements/pages/settings-page/settings-page.ts:260</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L275">elements/pages/settings-page/settings-page.ts:275</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -340,7 +368,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L312">elements/pages/settings-page/settings-page.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L338">elements/pages/settings-page/settings-page.ts:338</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -352,16 +380,54 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-event tsd-parent-kind-class">
+					<a name="onunsplashchanged" class="tsd-anchor"></a>
+					<h3>on<wbr>Unsplash<wbr>Changed</h3>
+					<ul class="tsd-signatures tsd-kind-event tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Unsplash<wbr>Changed<span class="tsd-signature-symbol">(</span>ev<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">CustomEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L476">elements/pages/settings-page/settings-page.ts:476</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Toggle changed on one of the unsplash sources</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ev: <span class="tsd-signature-type">CustomEvent</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="darkmodetoggle" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> dark<wbr>Mode<wbr>Toggle</h3>
+					<div class="tsd-signature tsd-kind-icon">dark<wbr>Mode<wbr>Toggle<span class="tsd-signature-symbol">:</span> <a href="els_shared_setting_elements.settingtoggleelement.html" class="tsd-signature-type">SettingToggleElement</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L221">elements/pages/settings-page/settings-page.ts:221</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="enabled" class="tsd-anchor"></a>
 					<h3>enabled</h3>
 					<div class="tsd-signature tsd-kind-icon">enabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L94">elements/pages/settings-page/settings-page.ts:94</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L107">elements/pages/settings-page/settings-page.ts:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -376,7 +442,7 @@
 					<div class="tsd-signature tsd-kind-icon">pan<wbr>And<wbr>Scan<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L106">elements/pages/settings-page/settings-page.ts:106</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L119">elements/pages/settings-page/settings-page.ts:119</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -391,7 +457,7 @@
 					<div class="tsd-signature tsd-kind-icon">photo<wbr>Sizing<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[ChromeLocale.localize(&#x27;menu_letterbox&#x27;),ChromeLocale.localize(&#x27;menu_zoom&#x27;),ChromeLocale.localize(&#x27;menu_frame&#x27;),ChromeLocale.localize(&#x27;menu_full&#x27;),ChromeLocale.localize(&#x27;menu_random&#x27;),]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L131">elements/pages/settings-page/settings-page.ts:131</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L144">elements/pages/settings-page/settings-page.ts:144</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -406,7 +472,7 @@
 					<div class="tsd-signature tsd-kind-icon">photo<wbr>Transmission<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[ChromeLocale.localize(&#x27;menu_scale_up&#x27;),ChromeLocale.localize(&#x27;menu_fade&#x27;),ChromeLocale.localize(&#x27;menu_slide_from_right&#x27;),ChromeLocale.localize(&#x27;menu_slide_down&#x27;),ChromeLocale.localize(&#x27;menu_spin_up&#x27;),ChromeLocale.localize(&#x27;menu_slide_up&#x27;),ChromeLocale.localize(&#x27;menu_slide_from_bottom&#x27;),ChromeLocale.localize(&#x27;menu_slide_right&#x27;),ChromeLocale.localize(&#x27;menu_random&#x27;),]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L141">elements/pages/settings-page/settings-page.ts:141</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L154">elements/pages/settings-page/settings-page.ts:154</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -418,10 +484,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="selectedtab" class="tsd-anchor"></a>
 					<h3>selected<wbr>Tab</h3>
-					<div class="tsd-signature tsd-kind-icon">selected<wbr>Tab<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<div class="tsd-signature tsd-kind-icon">selected<wbr>Tab<span class="tsd-signature-symbol">:</span> <a href="../enums/els_pages_settings.tab.html" class="tsd-signature-type">TAB</a><span class="tsd-signature-symbol"> =&nbsp;TAB.CONTROLS</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L90">elements/pages/settings-page/settings-page.ts:90</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L103">elements/pages/settings-page/settings-page.ts:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -436,17 +502,17 @@
 					<div class="tsd-signature tsd-kind-icon">settings<wbr>Toggle<span class="tsd-signature-symbol">:</span> <a href="els_shared_setting_elements.settingtoggleelement.html" class="tsd-signature-type">SettingToggleElement</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L205">elements/pages/settings-page/settings-page.ts:205</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L218">elements/pages/settings-page/settings-page.ts:218</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="showtimevalue" class="tsd-anchor"></a>
 					<h3>show<wbr>Time<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">show<wbr>Time<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<div class="tsd-signature tsd-kind-icon">show<wbr>Time<wbr>Value<span class="tsd-signature-symbol">:</span> <a href="../enums/scripts_chrome_time.time_format.html" class="tsd-signature-type">TIME_FORMAT</a><span class="tsd-signature-symbol"> =&nbsp;TIME_FORMAT.HR_12</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L98">elements/pages/settings-page/settings-page.ts:98</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L111">elements/pages/settings-page/settings-page.ts:111</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -461,7 +527,7 @@
 					<div class="tsd-signature tsd-kind-icon">show<wbr>Weather<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L102">elements/pages/settings-page/settings-page.ts:102</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L115">elements/pages/settings-page/settings-page.ts:115</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -476,7 +542,7 @@
 					<div class="tsd-signature tsd-kind-icon">temp<wbr>Unit<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[&#x27;\u00b0C&#x27;,&#x27;\u00b0F&#x27;,]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L163">elements/pages/settings-page/settings-page.ts:163</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L176">elements/pages/settings-page/settings-page.ts:176</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -491,7 +557,7 @@
 					<div class="tsd-signature tsd-kind-icon">time<wbr>Format<wbr>Menu<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[ChromeLocale.localize(&#x27;no&#x27;),ChromeLocale.localize(&#x27;menu_12_hour&#x27;),ChromeLocale.localize(&#x27;menu_24_hour&#x27;),]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L155">elements/pages/settings-page/settings-page.ts:155</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L168">elements/pages/settings-page/settings-page.ts:168</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -506,7 +572,7 @@
 					<div class="tsd-signature tsd-kind-icon">transition<wbr>Time<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[SettingsPageElement.getUnit(&#x27;seconds&#x27;, 10, 60, 1, 1),SettingsPageElement.getUnit(&#x27;minutes&#x27;, 1, 60, 1, 60),SettingsPageElement.getUnit(&#x27;hours&#x27;, 1, 24, 1, 3600),SettingsPageElement.getUnit(&#x27;days&#x27;, 1, 365, 1, 86400),]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L122">elements/pages/settings-page/settings-page.ts:122</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L135">elements/pages/settings-page/settings-page.ts:135</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -521,7 +587,7 @@
 					<div class="tsd-signature tsd-kind-icon">wait<wbr>Time<wbr>Units<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[SettingsPageElement.getUnit(&#x27;minutes&#x27;, 1, 60, 1, 1),SettingsPageElement.getUnit(&#x27;hours&#x27;, 1, 24, 1, 60),SettingsPageElement.getUnit(&#x27;days&#x27;, 1, 365, 1, 1440),]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L114">elements/pages/settings-page/settings-page.ts:114</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L127">elements/pages/settings-page/settings-page.ts:127</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -533,10 +599,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="weathertempunitvalue" class="tsd-anchor"></a>
 					<h3>weather<wbr>Temp<wbr>Unit<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">weather<wbr>Temp<wbr>Unit<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<div class="tsd-signature tsd-kind-icon">weather<wbr>Temp<wbr>Unit<wbr>Value<span class="tsd-signature-symbol">:</span> <a href="../enums/scripts_weather.temp_unit.html" class="tsd-signature-type">TEMP_UNIT</a><span class="tsd-signature-symbol"> =&nbsp;Weather.TEMP_UNIT.C</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L110">elements/pages/settings-page/settings-page.ts:110</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L123">elements/pages/settings-page/settings-page.ts:123</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -558,7 +624,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L186">elements/pages/settings-page/settings-page.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L199">elements/pages/settings-page/settings-page.ts:199</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -580,7 +646,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L176">elements/pages/settings-page/settings-page.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L189">elements/pages/settings-page/settings-page.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -602,7 +668,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L170">elements/pages/settings-page/settings-page.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L183">elements/pages/settings-page/settings-page.ts:183</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,7 +690,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L196">elements/pages/settings-page/settings-page.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L209">elements/pages/settings-page/settings-page.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -646,7 +712,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L471">elements/pages/settings-page/settings-page.ts:471</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L542">elements/pages/settings-page/settings-page.ts:542</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HTMLTemplateElement</span></h4>
@@ -666,7 +732,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L212">elements/pages/settings-page/settings-page.ts:212</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L228">elements/pages/settings-page/settings-page.ts:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -687,6 +753,90 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="fireevent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> fire<wbr>Event</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">fire<wbr>Event<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, detailValue<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="els_shared_base_element.baseelement.html">BaseElement</a>.<a href="els_shared_base_element.baseelement.html#fireevent">fireEvent</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/shared/base-element/base-element.ts#L48">elements/shared/base-element/base-element.ts:48</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Dispatch an event</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>event name</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> detailValue: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>optional value</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="onenterpage" class="tsd-anchor"></a>
+					<h3>on<wbr>Enter<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Enter<wbr>Page<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="els_pages_base.basepageelement.html">BasePageElement</a>.<a href="els_pages_base.basepageelement.html#onenterpage">onEnterPage</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/base-page/base-page.ts#L27">elements/pages/base-page/base-page.ts:27</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>We are now the current page</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="onleavepage" class="tsd-anchor"></a>
+					<h3>on<wbr>Leave<wbr>Page</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Leave<wbr>Page<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="els_pages_base.basepageelement.html">BasePageElement</a>.<a href="els_pages_base.basepageelement.html#onleavepage">onLeavePage</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/base-page/base-page.ts#L32">elements/pages/base-page/base-page.ts:32</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>We are not going to be current anymore</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="setphotosourcechecked" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Photo<wbr>Source<wbr>Checked</h3>
@@ -697,7 +847,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L450">elements/pages/settings-page/settings-page.ts:450</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L521">elements/pages/settings-page/settings-page.ts:521</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -734,7 +884,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L464">elements/pages/settings-page/settings-page.ts:464</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L535">elements/pages/settings-page/settings-page.ts:535</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -765,7 +915,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/pages/settings-page/settings-page.ts#L81">elements/pages/settings-page/settings-page.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/pages/settings-page/settings-page.ts#L94">elements/pages/settings-page/settings-page.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -839,7 +989,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from (Anonymous class).localize</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/elements/shared/mixins/i8n_mixin.ts#L37">elements/shared/mixins/i8n_mixin.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/elements/shared/mixins/i8n_mixin.ts#L37">elements/shared/mixins/i8n_mixin.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -881,6 +1031,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-external-module tsd-is-not-exported">
+						<a href="../enums/els_pages_settings.tab.html" class="tsd-kind-icon">TAB</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
@@ -891,6 +1044,9 @@
 							</li>
 							<li class=" tsd-kind-event tsd-parent-kind-class">
 								<a href="els_pages_settings.settingspageelement.html#onchromebackgroundtapped" class="tsd-kind-icon">on<wbr>Chrome<wbr>Background<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#ondarkmodechanged" class="tsd-kind-icon">on<wbr>Dark<wbr>Mode<wbr>Changed</a>
 							</li>
 							<li class=" tsd-kind-event tsd-parent-kind-class">
 								<a href="els_pages_settings.settingspageelement.html#ondeselectalltapped" class="tsd-kind-icon">on<wbr>Deselect<wbr>All<wbr>Tapped</a>
@@ -912,6 +1068,12 @@
 							</li>
 							<li class=" tsd-kind-event tsd-parent-kind-class">
 								<a href="els_pages_settings.settingspageelement.html#onshowweathertapped" class="tsd-kind-icon">on<wbr>Show<wbr>Weather<wbr>Tapped</a>
+							</li>
+							<li class=" tsd-kind-event tsd-parent-kind-class">
+								<a href="els_pages_settings.settingspageelement.html#onunsplashchanged" class="tsd-kind-icon">on<wbr>Unsplash<wbr>Changed</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="els_pages_settings.settingspageelement.html#darkmodetoggle" class="tsd-kind-icon">dark<wbr>Mode<wbr>Toggle</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="els_pages_settings.settingspageelement.html#enabled" class="tsd-kind-icon">enabled</a>
@@ -969,6 +1131,15 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="els_pages_settings.settingspageelement.html#deselectphotosource" class="tsd-kind-icon">deselect<wbr>Photo<wbr>Source</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="els_pages_settings.settingspageelement.html#fireevent" class="tsd-kind-icon">fire<wbr>Event</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="els_pages_settings.settingspageelement.html#onenterpage" class="tsd-kind-icon">on<wbr>Enter<wbr>Page</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="els_pages_settings.settingspageelement.html#onleavepage" class="tsd-kind-icon">on<wbr>Leave<wbr>Page</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="els_pages_settings.settingspageelement.html#setphotosourcechecked" class="tsd-kind-icon">set<wbr>Photo<wbr>Source<wbr>Checked</a>

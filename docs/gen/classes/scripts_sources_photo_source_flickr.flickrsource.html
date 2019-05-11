@@ -107,14 +107,14 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#getloadarg" class="tsd-kind-icon">get<wbr>Load<wbr>Arg</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#getphotos" class="tsd-kind-icon">get<wbr>Photos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#getphotoskey" class="tsd-kind-icon">get<wbr>Photos<wbr>Key</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#gettype" class="tsd-kind-icon">get<wbr>Type</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#getusekey" class="tsd-kind-icon">get<wbr>Use<wbr>Key</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#isdaily" class="tsd-kind-icon">is<wbr>Daily</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#islimited" class="tsd-kind-icon">is<wbr>Limited</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#process" class="tsd-kind-icon">process</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="scripts_sources_photo_source_flickr.flickrsource.html#use" class="tsd-kind-icon">use</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="scripts_sources_photo_source_flickr.flickrsource.html#_processphotos" class="tsd-kind-icon">_process<wbr>Photos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="scripts_sources_photo_source_flickr.flickrsource.html#addphoto" class="tsd-kind-icon">add<wbr>Photo</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="scripts_sources_photo_source_flickr.flickrsource.html#createpoint" class="tsd-kind-icon">create<wbr>Point</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="scripts_sources_photo_source_flickr.flickrsource.html#processphotos" class="tsd-kind-icon">process<wbr>Photos</a></li>
 							</ul>
 						</section>
 					</div>
@@ -126,78 +126,41 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Flickr<wbr>Source<span class="tsd-signature-symbol">(</span>useKey<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.usekey.html" class="tsd-signature-type">UseKey</a>, photosKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a>, desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, isDaily<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, isArray<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, loadArg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scripts_sources_photo_source_flickr.flickrsource.html" class="tsd-signature-type">FlickrSource</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Flickr<wbr>Source<span class="tsd-signature-symbol">(</span>useKey<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.usekey.html" class="tsd-signature-type">UseKey</a>, photosKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a>, desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, isLimited<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, isDaily<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, isArray<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, loadArg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scripts_sources_photo_source_flickr.flickrsource.html" class="tsd-signature-type">FlickrSource</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source_flickr.ts#L84">scripts/sources/photo_source_flickr.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source_flickr.ts#L77">scripts/sources/photo_source_flickr.ts:77</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Create a new photo source</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>useKey: <a href="../enums/scripts_sources_photo_source_factory.usekey.html" class="tsd-signature-type">UseKey</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The key for if the source is selected</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>photosKey: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The key for the collection of photos</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>A descriptor of the photo source</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>desc: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>A human readable description of the source</p>
-										</div>
-									</div>
+								</li>
+								<li>
+									<h5>isLimited: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 								<li>
 									<h5>isDaily: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Should the source be updated daily</p>
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>isArray: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Is the source an Array of photo Arrays</p>
-										</div>
-									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> loadArg: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> =&nbsp;null</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>optional arg for load function</p>
-										</div>
-									</div>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> loadArg: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="scripts_sources_photo_source_flickr.flickrsource.html" class="tsd-signature-type">FlickrSource</a></h4>
@@ -218,7 +181,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#fetchphotos">fetchPhotos</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source_flickr.ts#L108">scripts/sources/photo_source_flickr.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source_flickr.ts#L90">scripts/sources/photo_source_flickr.ts:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -247,7 +210,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#getdesc">getDesc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L166">scripts/sources/photo_source.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L156">scripts/sources/photo_source.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -270,12 +233,12 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#getloadarg">getLoadArg</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L180">scripts/sources/photo_source.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L166">scripts/sources/photo_source.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get use extra argument</p>
+									<p>Get extra argument</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -293,7 +256,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#getphotos">getPhotos</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L196">scripts/sources/photo_source.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L185">scripts/sources/photo_source.ts:185</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,38 +280,15 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#getphotoskey">getPhotosKey</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L159">scripts/sources/photo_source.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L151">scripts/sources/photo_source.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get if the photos key that is persisted</p>
+									<p>Get the photos key that is persisted</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-					<a name="gettype" class="tsd-anchor"></a>
-					<h3>get<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#gettype">getType</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L152">scripts/sources/photo_source.ts:152</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the source type</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -363,7 +303,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#getusekey">getUseKey</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L173">scripts/sources/photo_source.ts:173</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L161">scripts/sources/photo_source.ts:161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -386,12 +326,35 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#isdaily">isDaily</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L187">scripts/sources/photo_source.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L176">scripts/sources/photo_source.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get if we should update daily</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="islimited" class="tsd-anchor"></a>
+					<h3>is<wbr>Limited</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Limited<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#islimited">isLimited</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L171">scripts/sources/photo_source.ts:171</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get if we should limit updates when possible</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -409,13 +372,18 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#process">process</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L233">scripts/sources/photo_source.ts:233</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L224">scripts/sources/photo_source.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Process the photo source.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>An error if we failed to retrieve photos</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
@@ -432,7 +400,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#use">use</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L226">scripts/sources/photo_source.ts:226</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L215">scripts/sources/photo_source.ts:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -442,43 +410,6 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 							<p>true if selected</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
-					<a name="_processphotos" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> _process<wbr>Photos</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">_process<wbr>Photos<span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source_flickr.ts#L50">scripts/sources/photo_source_flickr.ts:50</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Extract the photos into an Array</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>throws</dt>
-									<dd><p>An error if we failed to process photos</p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>response: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>server response</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span></h4>
-							<p>Array of <a href="../interfaces/scripts_sources_photo_source.iphoto.html">IPhoto</a></p>
 						</li>
 					</ul>
 				</section>
@@ -493,7 +424,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#addphoto">addPhoto</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L72">scripts/sources/photo_source.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L68">scripts/sources/photo_source.ts:68</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -555,7 +486,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="scripts_sources_photo_source.photosource.html">PhotoSource</a>.<a href="scripts_sources_photo_source.photosource.html#createpoint">createPoint</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L94">scripts/sources/photo_source.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L90">scripts/sources/photo_source.ts:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -580,6 +511,43 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 							<p>&#39;lat lon&#39;</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="processphotos" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> process<wbr>Photos</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">process<wbr>Photos<span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source_flickr.ts#L43">scripts/sources/photo_source_flickr.ts:43</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Extract the photos into an Array</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>An error if we failed to process photos</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>response: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>server response</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span></h4>
+							<p>Array of <a href="../interfaces/scripts_sources_photo_source.iphoto.html">IPhoto</a></p>
 						</li>
 					</ul>
 				</section>
@@ -622,13 +590,13 @@
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#getphotoskey" class="tsd-kind-icon">get<wbr>Photos<wbr>Key</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-								<a href="scripts_sources_photo_source_flickr.flickrsource.html#gettype" class="tsd-kind-icon">get<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#getusekey" class="tsd-kind-icon">get<wbr>Use<wbr>Key</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#isdaily" class="tsd-kind-icon">is<wbr>Daily</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="scripts_sources_photo_source_flickr.flickrsource.html#islimited" class="tsd-kind-icon">is<wbr>Limited</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#process" class="tsd-kind-icon">process</a>
@@ -636,27 +604,27 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#use" class="tsd-kind-icon">use</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
-								<a href="scripts_sources_photo_source_flickr.flickrsource.html#_processphotos" class="tsd-kind-icon">_process<wbr>Photos</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#addphoto" class="tsd-kind-icon">add<wbr>Photo</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static">
 								<a href="scripts_sources_photo_source_flickr.flickrsource.html#createpoint" class="tsd-kind-icon">create<wbr>Point</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="scripts_sources_photo_source_flickr.flickrsource.html#processphotos" class="tsd-kind-icon">process<wbr>Photos</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/scripts_sources_photo_source_flickr.html#_key" class="tsd-kind-icon">_KEY</a>
+						<a href="../modules/scripts_sources_photo_source_flickr.html#key" class="tsd-kind-icon">KEY</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/scripts_sources_photo_source_flickr.html#_max_photos" class="tsd-kind-icon">_MAX_<wbr>PHOTOS</a>
+						<a href="../modules/scripts_sources_photo_source_flickr.html#max_photos" class="tsd-kind-icon">MAX_<wbr>PHOTOS</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/scripts_sources_photo_source_flickr.html#_url_base" class="tsd-kind-icon">_URL_<wbr>BASE</a>
+						<a href="../modules/scripts_sources_photo_source_flickr.html#url_base" class="tsd-kind-icon">URL_<wbr>BASE</a>
 					</li>
 				</ul>
 			</nav>

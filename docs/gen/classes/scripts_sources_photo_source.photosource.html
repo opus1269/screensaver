@@ -94,6 +94,9 @@
 							<li>
 								<a href="scripts_sources_photo_source_reddit.redditsource.html" class="tsd-signature-type">RedditSource</a>
 							</li>
+							<li>
+								<a href="scripts_sources_photo_source_unsplash.unsplashsource.html" class="tsd-signature-type">UnsplashSource</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -114,6 +117,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_desc" class="tsd-kind-icon">_desc</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_isarray" class="tsd-kind-icon">_is<wbr>Array</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_isdaily" class="tsd-kind-icon">_is<wbr>Daily</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_islimited" class="tsd-kind-icon">_is<wbr>Limited</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_loadarg" class="tsd-kind-icon">_load<wbr>Arg</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_photoskey" class="tsd-kind-icon">_photos<wbr>Key</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_type" class="tsd-kind-icon">_type</a></li>
@@ -123,16 +127,16 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#_save" class="tsd-kind-icon">_save</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#fetchphotos" class="tsd-kind-icon">fetch<wbr>Photos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#getdesc" class="tsd-kind-icon">get<wbr>Desc</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#getloadarg" class="tsd-kind-icon">get<wbr>Load<wbr>Arg</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#getphotos" class="tsd-kind-icon">get<wbr>Photos</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#getphotoskey" class="tsd-kind-icon">get<wbr>Photos<wbr>Key</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#gettype" class="tsd-kind-icon">get<wbr>Type</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#getusekey" class="tsd-kind-icon">get<wbr>Use<wbr>Key</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#isdaily" class="tsd-kind-icon">is<wbr>Daily</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#islimited" class="tsd-kind-icon">is<wbr>Limited</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#process" class="tsd-kind-icon">process</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="scripts_sources_photo_source.photosource.html#save" class="tsd-kind-icon">save</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="scripts_sources_photo_source.photosource.html#use" class="tsd-kind-icon">use</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="scripts_sources_photo_source.photosource.html#addphoto" class="tsd-kind-icon">add<wbr>Photo</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="scripts_sources_photo_source.photosource.html#createpoint" class="tsd-kind-icon">create<wbr>Point</a></li>
@@ -147,13 +151,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Photo<wbr>Source<span class="tsd-signature-symbol">(</span>useKey<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.usekey.html" class="tsd-signature-type">UseKey</a>, photosKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a>, desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, isDaily<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, isArray<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, loadArg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scripts_sources_photo_source.photosource.html" class="tsd-signature-type">PhotoSource</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Photo<wbr>Source<span class="tsd-signature-symbol">(</span>useKey<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.usekey.html" class="tsd-signature-type">UseKey</a>, photosKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a>, desc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, isLimited<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, isDaily<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, isArray<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, loadArg<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scripts_sources_photo_source.photosource.html" class="tsd-signature-type">PhotoSource</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L117">scripts/sources/photo_source.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L116">scripts/sources/photo_source.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -196,6 +200,14 @@
 									</div>
 								</li>
 								<li>
+									<h5>isLimited: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Should we limit the frequency of updates</p>
+										</div>
+									</div>
+								</li>
+								<li>
 									<h5>isDaily: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
@@ -233,7 +245,7 @@
 					<div class="tsd-signature tsd-kind-icon">_desc<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L108">scripts/sources/photo_source.ts:108</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L104">scripts/sources/photo_source.ts:104</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -248,7 +260,7 @@
 					<div class="tsd-signature tsd-kind-icon">_is<wbr>Array<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L114">scripts/sources/photo_source.ts:114</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L113">scripts/sources/photo_source.ts:113</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -263,7 +275,7 @@
 					<div class="tsd-signature tsd-kind-icon">_is<wbr>Daily<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L111">scripts/sources/photo_source.ts:111</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L110">scripts/sources/photo_source.ts:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -273,12 +285,27 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="_islimited" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _is<wbr>Limited</h3>
+					<div class="tsd-signature tsd-kind-icon">_is<wbr>Limited<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L107">scripts/sources/photo_source.ts:107</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Flag to indicate if source has limits to the number of times it can be called in a time period</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a name="_loadarg" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> <span class="tsd-flag ts-flagOptional">Optional</span> _load<wbr>Arg</h3>
 					<div class="tsd-signature tsd-kind-icon">_load<wbr>Arg<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L117">scripts/sources/photo_source.ts:117</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L116">scripts/sources/photo_source.ts:116</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -293,7 +320,7 @@
 					<div class="tsd-signature tsd-kind-icon">_photos<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L102">scripts/sources/photo_source.ts:102</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L98">scripts/sources/photo_source.ts:98</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -308,7 +335,7 @@
 					<div class="tsd-signature tsd-kind-icon">_type<span class="tsd-signature-symbol">:</span> <a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L105">scripts/sources/photo_source.ts:105</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L101">scripts/sources/photo_source.ts:101</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -323,7 +350,7 @@
 					<div class="tsd-signature tsd-kind-icon">_use<wbr>Key<span class="tsd-signature-symbol">:</span> <a href="../enums/scripts_sources_photo_source_factory.usekey.html" class="tsd-signature-type">UseKey</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L99">scripts/sources/photo_source.ts:99</a></li>
+							<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L95">scripts/sources/photo_source.ts:95</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -335,38 +362,6 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
-					<a name="_save" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _save</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-						<li class="tsd-signature tsd-kind-icon">_save<span class="tsd-signature-symbol">(</span>photos<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/scripts_sources_photo_source_google.iselectedalbum.html" class="tsd-signature-type">ISelectedAlbum</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L276">scripts/sources/photo_source.ts:276</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Save the data to chrome.storage.local in a safe manner</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>photos: <a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/scripts_sources_photo_source_google.iselectedalbum.html" class="tsd-signature-type">ISelectedAlbum</a><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>could be array of photos or albums</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>An error if the save failed</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="fetchphotos" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> fetch<wbr>Photos</h3>
@@ -377,7 +372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L147">scripts/sources/photo_source.ts:147</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L148">scripts/sources/photo_source.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -405,7 +400,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L166">scripts/sources/photo_source.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L156">scripts/sources/photo_source.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,12 +422,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L180">scripts/sources/photo_source.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L166">scripts/sources/photo_source.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get use extra argument</p>
+									<p>Get extra argument</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
@@ -449,7 +444,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L196">scripts/sources/photo_source.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L185">scripts/sources/photo_source.ts:185</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -472,37 +467,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L159">scripts/sources/photo_source.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L151">scripts/sources/photo_source.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get if the photos key that is persisted</p>
+									<p>Get the photos key that is persisted</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="gettype" class="tsd-anchor"></a>
-					<h3>get<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Type<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L152">scripts/sources/photo_source.ts:152</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the source type</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/scripts_sources_photo_source_factory.type.html" class="tsd-signature-type">Type</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -516,7 +489,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L173">scripts/sources/photo_source.ts:173</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L161">scripts/sources/photo_source.ts:161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -538,12 +511,34 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L187">scripts/sources/photo_source.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L176">scripts/sources/photo_source.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get if we should update daily</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="islimited" class="tsd-anchor"></a>
+					<h3>is<wbr>Limited</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Limited<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L171">scripts/sources/photo_source.ts:171</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get if we should limit updates when possible</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -560,15 +555,52 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L233">scripts/sources/photo_source.ts:233</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L224">scripts/sources/photo_source.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Process the photo source.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>An error if we failed to retrieve photos</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="save" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> save</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">save<span class="tsd-signature-symbol">(</span>photos<span class="tsd-signature-symbol">: </span><a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/scripts_sources_photo_source_google.iselectedalbum.html" class="tsd-signature-type">ISelectedAlbum</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L267">scripts/sources/photo_source.ts:267</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Save the data to chrome.storage.local in a safe manner</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>photos: <a href="../interfaces/scripts_sources_photo_source.iphoto.html" class="tsd-signature-type">IPhoto</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/scripts_sources_photo_source_google.iselectedalbum.html" class="tsd-signature-type">ISelectedAlbum</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>could be array of photos or albums</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>An error if the save failed</p>
 						</li>
 					</ul>
 				</section>
@@ -582,7 +614,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L226">scripts/sources/photo_source.ts:226</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L215">scripts/sources/photo_source.ts:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -605,7 +637,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L72">scripts/sources/photo_source.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L68">scripts/sources/photo_source.ts:68</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -666,7 +698,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/c134f0d/app/scripts/sources/photo_source.ts#L94">scripts/sources/photo_source.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/opus1269/screensaver/blob/9c41ca8/app/scripts/sources/photo_source.ts#L90">scripts/sources/photo_source.ts:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -727,6 +759,9 @@
 								<a href="scripts_sources_photo_source.photosource.html#_isdaily" class="tsd-kind-icon">_is<wbr>Daily</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="scripts_sources_photo_source.photosource.html#_islimited" class="tsd-kind-icon">_is<wbr>Limited</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="scripts_sources_photo_source.photosource.html#_loadarg" class="tsd-kind-icon">_load<wbr>Arg</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -737,9 +772,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="scripts_sources_photo_source.photosource.html#_usekey" class="tsd-kind-icon">_use<wbr>Key</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
-								<a href="scripts_sources_photo_source.photosource.html#_save" class="tsd-kind-icon">_save</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scripts_sources_photo_source.photosource.html#fetchphotos" class="tsd-kind-icon">fetch<wbr>Photos</a>
@@ -757,16 +789,19 @@
 								<a href="scripts_sources_photo_source.photosource.html#getphotoskey" class="tsd-kind-icon">get<wbr>Photos<wbr>Key</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="scripts_sources_photo_source.photosource.html#gettype" class="tsd-kind-icon">get<wbr>Type</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scripts_sources_photo_source.photosource.html#getusekey" class="tsd-kind-icon">get<wbr>Use<wbr>Key</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scripts_sources_photo_source.photosource.html#isdaily" class="tsd-kind-icon">is<wbr>Daily</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="scripts_sources_photo_source.photosource.html#islimited" class="tsd-kind-icon">is<wbr>Limited</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scripts_sources_photo_source.photosource.html#process" class="tsd-kind-icon">process</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="scripts_sources_photo_source.photosource.html#save" class="tsd-kind-icon">save</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="scripts_sources_photo_source.photosource.html#use" class="tsd-kind-icon">use</a>
