@@ -203,7 +203,7 @@ export class AppMainElement extends BaseElement {
 
   /** Current {@link IPage} */
   @property({type: String, notify: true, observer: 'routeChanged'})
-  public route = 'page-settings';
+  public route = '';
 
   /** Google Photos permission status */
   @property({type: String, notify: true})
@@ -237,7 +237,7 @@ export class AppMainElement extends BaseElement {
   protected permissionsDialog: PaperDialogElement;
 
   @query('#settingsPage')
-  protected settingsPage: SettingsPageElement;
+  protected settingsPageEl: SettingsPageElement;
 
   /** The app's pages */
   protected readonly pages: IPage[] = [
@@ -350,21 +350,25 @@ export class AppMainElement extends BaseElement {
   public ready() {
     super.ready();
 
-    AppMainElement.setColors(ChromeStorage.getBool('darkMode', false));
-
     MyGA.initialize();
     ChromeGA.page('/options.html');
 
+    AppMainElement.setColors(ChromeStorage.getBool('darkMode', false));
+
     // set settings-page el
-    const settingsPage = this.getPage('page-main');
+    const settingsPage = this.getPage('page-settings');
     if (settingsPage) {
-      settingsPage.el =
-          (this.shadowRoot as ShadowRoot).getElementById('settingsPage') as SettingsPageElement;
+      settingsPage.el = this.settingsPageEl;
     }
+
     setTimeout(async () => {
       // initialize menu enabled states
       await this.setErrorMenuState();
       this.setGooglePhotosMenuState();
+
+      // route to main UI
+      this.set('route', 'page-settings');
+
     }, 0);
   }
 
@@ -508,37 +512,40 @@ export class AppMainElement extends BaseElement {
   }
 
   /** Simple Observer: route changed */
-  protected routeChanged(route: string | undefined, prevRoute: string | undefined) {
-    if (route && (route !== prevRoute)) {
-      const page = this.getPage(route);
-      if (!page) {
-        ChromeGA.error('Failed to get page', 'AppMain.onSelectedMenuChanged');
-        return;
-      }
+  protected routeChanged(route: string | undefined, oldRoute: string | undefined) {
+    const METHOD = 'AppMain.routeChanged';
+    const appDrawerLayout = this.appDrawerLayout;
+    const appDrawer = this.appDrawer;
 
-      // Close drawer after menu item is selected if it is in narrow layout
-      const appDrawerLayout = this.appDrawerLayout;
-      const appDrawer = this.appDrawer;
-      if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
-        appDrawer.close();
-      }
+    // Close drawer after menu item is selected if it is in narrow layout
+    if (appDrawer && appDrawerLayout && appDrawerLayout.narrow) {
+      appDrawer.close();
+    }
 
-      ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
+    if ((route === undefined) || (oldRoute === undefined)) {
+      return;
+    }
 
-      if (page.url) {
-        // some pages are url links
-        chrome.tabs.create({url: page.url});
-        // reselect previous menu
-        if (prevRoute) {
-          this.set('route', prevRoute);
-        }
-      } else if (page.fn) {
-        // some pages have functions to view them
-        page.fn();
-      } else {
-        // some pages are just pages
-        this.showPage(page);
-      }
+    // page to route to
+    const page = this.getPage(route);
+    if (!page) {
+      ChromeGA.error('Failed to get page', METHOD);
+      return;
+    }
+
+    ChromeGA.event(ChromeGA.EVENT.MENU, page.route);
+
+    if (page.url) {
+      // some pages are url links
+      chrome.tabs.create({url: page.url});
+      // reselect previous menu
+      this.set('route', oldRoute);
+    } else if (page.fn) {
+      // some pages have functions to view them
+      page.fn();
+    } else {
+      // some pages are just pages
+      this.showPage(page);
     }
   }
 
@@ -560,7 +567,7 @@ export class AppMainElement extends BaseElement {
       }
     }
     // now select the neon animated page
-    this.mainPages.select(this.route);
+    this.mainPages.select(page.route);
   }
 
   /** Show the Google Photos page */
@@ -670,7 +677,7 @@ export class AppMainElement extends BaseElement {
     } else if (request.message === MyMsg.TYPE.PHOTO_SOURCE_FAILED.message) {
       // failed to load
       if (request.key) {
-        this.settingsPage.deselectPhotoSource(request.key);
+        this.settingsPageEl.deselectPhotoSource(request.key);
       }
       const title = ChromeLocale.localize('err_photo_source_title');
       const text = request.error || '';
@@ -833,7 +840,7 @@ export class AppMainElement extends BaseElement {
                            entry-animation="fade-in-animation"
                            exit-animation="fade-out-animation">
         <neon-animatable data-route="page-settings">
-          <section>
+          <section id="settingsInsertion">
             <settings-page id="settingsPage"></settings-page>
           </section>
         </neon-animatable>
