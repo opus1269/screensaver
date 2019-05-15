@@ -220,9 +220,7 @@ async function retry(url: string, opts: RequestInit, conf: IConfig, attempt: num
   attempt++;
   const delay = (Math.pow(2, attempt) - 1) * DELAY;
 
-  // wait function
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-  await wait(delay);
+  await ChromeUtils.wait(delay);
 
   ChromeGA.error(`Retry fetch, attempt: ${attempt}`, 'ChromeHttp.retry');
 

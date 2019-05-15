@@ -222,6 +222,16 @@ export function checkNetworkConnection() {
 }
 
 /**
+ * Wait for the specified time
+ *
+ * @param time - wait time in milliSecs
+ */
+export async function wait(time: number) {
+  const waiter = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+  return await waiter(time);
+}
+
+/**
  * Determine if we are a given operating system
  *
  * @param os - os short name
