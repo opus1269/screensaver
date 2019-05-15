@@ -32,15 +32,31 @@ export function parse(jsonString: string) {
 }
 
 /**
- * Return shallow copy of Object
+ * Stringify json, with exception handling
  *
- * @param object - object to copy
+ * @param jsonifiable - object to stringify
+ * @returns string, null on error
+ */
+export function stringify(jsonifiable: any) {
+  let ret = null;
+  try {
+    ret = JSON.stringify(jsonifiable);
+  } catch (err) {
+    ChromeGA.error(err.message, 'ChromeJSON.stringify');
+  }
+  return ret;
+}
+
+/**
+ * Create a shallow copy of an object
+ *
+ * @param jsonifiable - object to copy
  * @returns shallow copy of input, null on error
  */
-export function shallowCopy(object: object) {
+export function shallowCopy(jsonifiable: any) {
   let ret = null;
-  const jsonString = JSON.stringify(object);
-  if (jsonString !== undefined) {
+  const jsonString = stringify(jsonifiable);
+  if (jsonString !== null) {
     ret = parse(jsonString);
   }
   return ret;
