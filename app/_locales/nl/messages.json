@@ -694,5 +694,11 @@
   },
   "tooltip_settings_toggle": {
     "message": "Schakel de screensaver in/uit"
+  },
+  "tooltip_error_delete": {
+    "message": "Wis de fout"
+  },
+  "tooltip_error_email": {
+    "message": "Stuur e-mail naar ondersteuning"
   }
 }

@@ -694,5 +694,11 @@
   },
   "tooltip_settings_toggle": {
     "message": "Activer/désactiver l'écran de veille"
+  },
+  "tooltip_error_delete": {
+    "message": "Supprimer l'erreur"
+  },
+  "tooltip_error_email": {
+    "message": "Envoyer un email à l'assistance"
   }
 }

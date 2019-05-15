@@ -694,5 +694,11 @@
   },
   "tooltip_settings_toggle": {
     "message": "Abilitare/disabilitare il salvaschermo"
+  },
+  "tooltip_error_delete": {
+    "message": "Elimina l'errore"
+  },
+  "tooltip_error_email": {
+    "message": "Invia email a supporto"
   }
 }

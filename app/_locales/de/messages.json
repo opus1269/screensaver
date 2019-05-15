@@ -694,5 +694,11 @@
   },
   "tooltip_settings_toggle": {
     "message": "Bildschirmschoner Aktivieren / Deaktivieren"
+  },
+  "tooltip_error_delete": {
+    "message": "Löschen Sie den Fehler"
+  },
+  "tooltip_error_email": {
+    "message": "E-Mail an den Support senden"
   }
 }
