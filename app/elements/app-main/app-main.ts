@@ -20,8 +20,8 @@ import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper
 import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/paper-listbox';
 import {PolymerElementConstructor} from '../../node_modules/@polymer/polymer/interfaces';
 
-import {ConfirmDialogElement} from '../../elements/confirm-dialog/confirm-dialog';
-import {ErrorDialogElement} from '../../elements/error-dialog/error-dialog';
+import {ConfirmDialogElement} from '../../elements/shared/confirm-dialog/confirm-dialog';
+import {ErrorDialogElement} from '../../elements/shared/error-dialog/error-dialog';
 
 import {
   computed,
@@ -67,8 +67,8 @@ import {GooglePhotosPageElement} from '../../elements/pages/google-photos-page/g
 import {HelpPageElement} from '../../elements/pages/help-page/help-page.js';
 import {SettingsPageElement} from '../../elements/pages/settings-page/settings-page.js';
 
-import '../../elements/confirm-dialog/confirm-dialog.js';
-import '../../elements/error-dialog/error-dialog.js';
+import '../../elements/shared/confirm-dialog/confirm-dialog.js';
+import '../../elements/shared/error-dialog/error-dialog.js';
 
 import '../../elements/my_icons.js';
 
@@ -416,27 +416,38 @@ export class AppMainElement extends BaseElement {
    *
    * @remarks
    * This is called twice for some reason, hence the check for prevRoute
+   * {@link https://github.com/PolymerElements/iron-selector/issues/170}
    *
    * @event
    */
   @listen('selected-item-changed', 'mainPages')
-  public onSelectedPageChanged() {
+  public async onSelectedPageChanged() {
+    const METHOD = 'AppMain.onSelectedPageChanged';
     if (this.route === this.prevRoute) {
       return;
     }
 
     const prevPage = this.getPage(this.prevRoute);
     const page = this.getPage(this.route);
+    this.prevRoute = this.route;
+
     if (prevPage && prevPage.el) {
       // give page a chance to do cleanup
-      prevPage.el.onLeavePage();
-    }
-    if (page && page.el) {
-      // give page a chance to initialize
-      page.el.onEnterPage();
+      try {
+        await prevPage.el.onLeavePage();
+      } catch (err) {
+        ChromeGA.error(err.message, METHOD);
+      }
     }
 
-    this.prevRoute = this.route;
+    if (page && page.el) {
+      // give page a chance to initialize
+      try {
+        await page.el.onEnterPage();
+      } catch (err) {
+        ChromeGA.error(err.message, METHOD);
+      }
+    }
   }
 
   /**

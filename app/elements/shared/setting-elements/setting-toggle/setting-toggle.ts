@@ -27,9 +27,7 @@ import {SettingBase} from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
-/**
- * Polymer element for a toggle button
- */
+/** Polymer element for a toggle button */
 @customElement('setting-toggle')
 export class SettingToggleElement extends SettingBase {
 
@@ -78,9 +76,7 @@ export class SettingToggleElement extends SettingBase {
     ev.stopPropagation();
   }
 
-  /**
-   * Override mainContent from {@link SettingBase}
-   */
+  /** Override mainContent from {@link SettingBase} */
   static get mainContent() {
     // language=HTML format=false
     return html`<style include="shared-styles iron-flex iron-flex-alignment">

@@ -39,7 +39,7 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import {BaseElement} from '../../shared/base-element/base-element.js';
 
 import '../../../elements/my_icons.js';
-import '../../../elements/waiter-element/waiter-element.js';
+import '../../../elements/shared/waiter-element/waiter-element.js';
 
 import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
 import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';

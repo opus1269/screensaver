@@ -7,25 +7,23 @@
 /** */
 
 /*
- *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
- *  Licensed under the BSD-3-Clause
- *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
+ * Copyright (c) 2016-2019, Michael A. Updike All rights reserved.
+ * Licensed under Apache 2.0
+ * https://opensource.org/licenses/Apache-2.0
+ * https://goo.gl/wFvBM1
  */
 
-import {PaperItemElement} from '../../node_modules/@polymer/paper-item/paper-item';
+import {PaperItemElement} from '../../../node_modules/@polymer/paper-item/paper-item';
 
-import {customElement, observe, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
-import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, observe, property, query} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../node_modules/@polymer/paper-item/paper-item.js';
-import '../../node_modules/@polymer/paper-spinner/paper-spinner.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
-import {BaseElement} from '../shared/base-element/base-element.js';
+import {BaseElement} from '../base-element/base-element.js';
 
-/**
- * Polymer element to display waiter for lengthy operations
- */
+/** Polymer element to display waiter for lengthy operations */
 @customElement('waiter-element')
 export class WaiterElement extends BaseElement {
 
@@ -63,7 +61,6 @@ export class WaiterElement extends BaseElement {
     margin: 40px auto;
   }
 
-  /*noinspection CssUnresolvedCustomPropertySet*/
   :host paper-item {
     @apply --paper-font-title;
     text-align: center;

@@ -28,12 +28,6 @@ import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/an
 @customElement('setting-text')
 export class SettingTextElement extends SettingBase {
 
-  // TODO need?
-  // hostAttributes: {
-  //   role: 'group',
-  //   tabIndex: -1,
-  // },
-
   /** Text value */
   @property({type: String, notify: true})
   protected value = '';

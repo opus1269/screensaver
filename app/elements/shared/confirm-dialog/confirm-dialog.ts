@@ -8,30 +8,30 @@
 /** */
 
 /*
- *  Copyright (c) 2015-2019, Michael A. Updike All rights reserved.
- *  Licensed under the BSD-3-Clause
- *  https://opensource.org/licenses/BSD-3-Clause
- *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
+ * Copyright (c) 2016-2019, Michael A. Updike All rights reserved.
+ * Licensed under Apache 2.0
+ * https://opensource.org/licenses/Apache-2.0
+ * https://goo.gl/wFvBM1
  */
 
-import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper-dialog';
+import {PaperDialogElement} from '../../../node_modules/@polymer/paper-dialog/paper-dialog.js';
 
-import {customElement, listen, property, query} from '../../node_modules/@polymer/decorators/lib/decorators.js';
-import {html} from '../../node_modules/@polymer/polymer/polymer-element.js';
+import {customElement, listen, property, query} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
+import {html} from '../../../node_modules/@polymer/polymer/polymer-element.js';
 
-import '../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '../../node_modules/@polymer/paper-dialog/paper-dialog.js';
-import '../../node_modules/@polymer/paper-item/paper-item.js';
+import '../../../node_modules/@polymer/paper-button/paper-button.js';
+import '../../../node_modules/@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
+import '../../../node_modules/@polymer/paper-dialog/paper-dialog.js';
+import '../../../node_modules/@polymer/paper-item/paper-item.js';
 
-import '../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
-import '../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
+import '../../../node_modules/@polymer/neon-animation/animations/fade-out-animation.js';
+import '../../../node_modules/@polymer/neon-animation/animations/scale-up-animation.js';
 
-import {BaseElement} from '../shared/base-element/base-element.js';
+import {BaseElement} from '../../../elements/shared/base-element/base-element.js';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
 
 /**
  * Polymer dialog to confirm an action
