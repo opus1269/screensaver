@@ -203,9 +203,7 @@ export class SettingSliderElement extends SettingBase {
 
   #label {
     margin: 20px 0 0 0;
-    --paper-item-min-height: {
-      min-height: 0;
-    };
+    --paper-item-min-height: 0;
   }
 
   :host paper-slider {

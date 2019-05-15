@@ -111,22 +111,6 @@ sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomProperty -->
       --paper-input-container-focus-color: var(--setting-item-color);
     }
 
-    /* Not sure why these are needed - only for pushy extension */
-    paper-item {
-      padding: 0 16px;
-      --paper-item: {
-        min-height: 48px;
-      }
-    }
-
-    paper-icon-item {
-      padding: 0 16px;
-      --paper-item: {
-        min-height: 48px;
-      }
-    }
-    /* Not sure why these are needed - only for pushy extension */
-
     paper-listbox {
       --paper-item: {
         text-rendering: optimizeLegibility;
