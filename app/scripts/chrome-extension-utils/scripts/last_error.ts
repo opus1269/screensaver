@@ -72,7 +72,7 @@ export class ChromeLastError extends Error {
   }
 
   /** Title for error */
-  public readonly title: string;
+  public title: string;
 
   /**
    * Create a new LastError
