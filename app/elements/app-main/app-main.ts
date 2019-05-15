@@ -144,7 +144,7 @@ export class AppMainElement extends BaseElement {
       root.style.setProperty('--light-accent-color', 'var(--paper-grey-900)');
       root.style.setProperty('--dark-accent-color', 'var(--paper-grey-900)');
 
-      root.style.setProperty('--setting-item-color', 'var(--paper-teal-400)');
+      root.style.setProperty('--setting-item-color', 'var(--paper-teal-300)');
 
       root.style.setProperty('--selected-item-color', 'white');
       // teal-300
