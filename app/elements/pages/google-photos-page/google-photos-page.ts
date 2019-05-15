@@ -51,11 +51,7 @@ import * as MyUtils from '../../../scripts/my_utils.js';
 
 import {Options} from '../../../scripts/options/options.js';
 
-/**
- * Polymer element for the Google Photos page
- *
- * @PolymerElement
- */
+/** Polymer element for the Google Photos page */
 @customElement('google-photos-page')
 export class GooglePhotosPageElement extends BasePageElement {
 
@@ -121,12 +117,10 @@ export class GooglePhotosPageElement extends BasePageElement {
   protected googlePhotosToggle: PaperToggleButtonElement;
 
   /** We are becoming active */
-  public onEnterPage() {
-    super.onEnterPage();
+  public async onEnterPage() {
+    await super.onEnterPage();
 
-    if (this.isAlbumMode) {
-      this.loadAlbumList().catch(() => {});
-    }
+    await this.loadAlbumList();
   }
 
   /**
@@ -297,19 +291,20 @@ export class GooglePhotosPageElement extends BasePageElement {
     margin: 0;
   }
 
-  :host .page-container {
+  :host .page-content {
     margin-bottom: 0;
   }
 
-  :host .page-content {
+  :host .body-content {
     min-height: calc(100vh - 128px);
     margin: 0;
   }
 
 </style>
 
-<paper-material elevation="1" class="page-container">
-  
+<paper-material elevation="1" class="page-content">
+
+  <!-- Tool bar -->
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
       <div class="flex">[[pageTitle]]</div>
@@ -347,7 +342,8 @@ export class GooglePhotosPageElement extends BasePageElement {
     </app-toolbar>
   </paper-material>
 
-  <div class="page-content">
+  <!-- Content -->
+  <div class="body-content">
 
     <!-- Albums UI -->
     <div hidden$="[[!isAlbumMode]]">
@@ -361,18 +357,19 @@ export class GooglePhotosPageElement extends BasePageElement {
 
   </div>
 
-  <app-localstorage-document key="isAlbumMode" data="{{isAlbumMode}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="useGoogle" data="{{useGoogle}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="useGoogleAlbums" data="{{useGoogleAlbums}}" storage="window.localStorage">
-  </app-localstorage-document>
-  <app-localstorage-document key="useGooglePhotos" data="{{useGooglePhotos}}" storage="window.localStorage">
-  </app-localstorage-document>
-
   <slot></slot>
 
 </paper-material>
+
+<app-localstorage-document key="isAlbumMode" data="{{isAlbumMode}}" storage="window.localStorage">
+</app-localstorage-document>
+<app-localstorage-document key="useGoogle" data="{{useGoogle}}" storage="window.localStorage">
+</app-localstorage-document>
+<app-localstorage-document key="useGoogleAlbums" data="{{useGoogleAlbums}}" storage="window.localStorage">
+</app-localstorage-document>
+<app-localstorage-document key="useGooglePhotos" data="{{useGooglePhotos}}" storage="window.localStorage">
+</app-localstorage-document>
+
 `;
   }
 }

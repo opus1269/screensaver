@@ -24,12 +24,12 @@ import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/ut
 export class BasePageElement extends BaseElement {
 
   /** We are now the current page */
-  public onEnterPage() {
+  public async onEnterPage() {
     ChromeUtils.noop();
   }
 
   /** We are not going to be current anymore */
-  public onLeavePage() {
+  public async onLeavePage() {
     ChromeUtils.noop();
   }
 }

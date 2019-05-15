@@ -73,13 +73,17 @@ export class HelpPageElement extends BasePageElement {
 
 </style>
 
-<paper-material elevation="1" class="page-container">
+<paper-material elevation="1" class="page-content">
+
+  <!-- Tool bar -->
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
       <div>{{localize('help_title')}}</div>
     </app-toolbar>
   </paper-material>
-  <div class="page-content">
+
+  <!-- Content -->
+  <div class="body-content">
     <setting-link section-title="{{localize('help_section_feedback')}}" name="questionMail"
                   label="{{localize('help_question')}}" icon="myicons:mail"
                   url="[[computeMailToUrl('Question')]]"></setting-link>

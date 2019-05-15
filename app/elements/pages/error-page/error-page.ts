@@ -34,9 +34,7 @@ import {ChromeLastError} from '../../../scripts/chrome-extension-utils/scripts/l
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
-/**
- * Polymer element for the LastError page
- */
+/** Polymer element to display a {@link LastError} */
 @customElement('error-page')
 export class ErrorPageElement extends BasePageElement {
 
@@ -149,7 +147,7 @@ export class ErrorPageElement extends BasePageElement {
     position: relative;
   }
 
-  .page-container {
+  .page-content {
     max-width: 1000px;
     height: 100%;
     margin-bottom: 16px;
@@ -178,7 +176,7 @@ export class ErrorPageElement extends BasePageElement {
 
 </style>
 
-<paper-material elevation="1" class="page-container">
+<paper-material elevation="1" class="page-content vertical layout">
 
   <!-- Tool bar -->
   <paper-material elevation="1">
@@ -200,15 +198,14 @@ export class ErrorPageElement extends BasePageElement {
   </paper-material>
 
   <!-- Content -->
-  <div class="page-content">
+  <div class="body-content">
     <div id="errorViewer">
-      <paper-item class="error-title">[[title]]</paper-item>
-      <paper-item class="error-text">[[lastError.message]]</paper-item>
-      <paper-item class="error-text">[[stack]]</paper-item>
+      <paper-item tabindex="-1" class="error-title">[[title]]</paper-item>
+      <paper-item tabindex="-1" class="error-text">[[lastError.message]]</paper-item>
+      <paper-item tabindex="-1" class="error-text">[[stack]]</paper-item>
     </div>
   </div>
 </paper-material>
 `;
   }
-
 }

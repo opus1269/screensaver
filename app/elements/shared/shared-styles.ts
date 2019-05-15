@@ -12,14 +12,11 @@
  */
 import '../../node_modules/@polymer/polymer/polymer-element.js';
 
-/**
- * Element for the shared styles
- */
+/** Element for the shared styles */
 const sharedStyles = document.createElement('dom-module');
 
 // language=HTML format=false
-sharedStyles.innerHTML = `
-<!--suppress CssUnresolvedCustomProperty -->
+sharedStyles.innerHTML = `<!--suppress CssUnresolvedCustomProperty -->
 <template>
   <style>
     .page-title {
@@ -30,6 +27,19 @@ sharedStyles.innerHTML = `
       .page-title {
         font-size: 24px !important;
       }
+    }
+
+    /* Disables text selection */
+    .no-select {
+      -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+      -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+      user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+    }
+
+    .space {
+      @apply --layout-flex;
     }
 
     /* see https://github.com/Polymer/polymer/issues/3711#issuecomment-226361758*/
@@ -68,11 +78,11 @@ sharedStyles.innerHTML = `
       @apply --layout-horizontal;
       cursor: pointer;
     }
-    
+
     paper-button[disabled] {
       color: var(--disabled-text-color);
     }
-    
+
     paper-button iron-icon {
       margin-right: 8px;
     }
@@ -93,9 +103,29 @@ sharedStyles.innerHTML = `
       };
     }
 
+    paper-fab {
+      margin: 1em;
+    }
+
     paper-input {
       --paper-input-container-focus-color: var(--setting-item-color);
     }
+
+    /* Not sure why these are needed - only for pushy extension */
+    paper-item {
+      padding: 0 16px;
+      --paper-item: {
+        min-height: 48px;
+      }
+    }
+
+    paper-icon-item {
+      padding: 0 16px;
+      --paper-item: {
+        min-height: 48px;
+      }
+    }
+    /* Not sure why these are needed - only for pushy extension */
 
     paper-listbox {
       --paper-item: {
@@ -119,7 +149,7 @@ sharedStyles.innerHTML = `
         opacity: var(--opacity);
       };
     }
-    
+
     paper-material {
       border-radius: 2px;
       padding: 0;
@@ -136,6 +166,14 @@ sharedStyles.innerHTML = `
       --paper-slider-input: {
         --paper-input-container-focus-color: var(--setting-item-color);
       }
+    }
+
+    paper-toast {
+      --paper-toast-background-color: var(--toast-background-color);
+    }
+
+    paper-toast paper-button {
+      border: none;
     }
 
     paper-toggle-button {
@@ -158,20 +196,41 @@ sharedStyles.innerHTML = `
     .page-toolbar {
       color: var(--toolbar-item-color);
       background-color: var(--toolbar-background-color);
-      margin-bottom: 8px;
+      margin-bottom: 0;
     }
 
-    .page-container {
+    .page-content {
       color: var(--primary-text-color);
       background-color: var(--primary-background-color);
       max-width: 700px;
       height: 100%;
-      margin-bottom: 16px;
+      margin: 0;
+      padding: 0;
     }
 
-    .page-content {
-      margin-top: 16px;
-      margin-bottom: 16px;
+    .page-content p {
+      @apply --paper-font-subhead;
+    }
+
+    .body-content {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .list-content {
+      margin: 0;
+      padding: 0;
+    }
+
+    .list {
+      padding: 0;
+      margin: 0;
+    }
+
+    .fab-content {
+      margin: 0;
+      padding: 0;
     }
 
     .section-title {
@@ -214,6 +273,10 @@ sharedStyles.innerHTML = `
       margin: 0 8px;
       border: none;
       border-top: 1px var(--divider-color) solid;
+    }
+
+    a {
+      color: var(--setting-item-color);
     }
 
   </style>

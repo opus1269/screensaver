@@ -75,9 +75,7 @@ const enum TAB {
   SOURCES,
 }
 
-/**
- * Polymer element for the Settings Page
- */
+/** Polymer element for the Settings Page */
 @customElement('settings-page')
 export class SettingsPageElement extends BasePageElement {
 
@@ -561,7 +559,9 @@ export class SettingsPageElement extends BasePageElement {
 
 </style>
 
-<paper-material elevation="1" class="page-container">
+<paper-material elevation="1" class="page-content">
+
+  <!-- Tool bar -->
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
       <div id="topToolbar" top-item="" class="horizontal layout flex">
@@ -602,14 +602,11 @@ export class SettingsPageElement extends BasePageElement {
         <paper-tab>[[localize('tab_display')]]</paper-tab>
         <paper-tab>[[localize('tab_sources')]]</paper-tab>
       </paper-tabs>
-
     </app-toolbar>
-    <app-localstorage-document key="enabled" data="{{enabled}}" storage="window.localStorage">
-    </app-localstorage-document>
-
   </paper-material>
 
-  <div class="page-content">
+  <!-- Content -->
+  <div class="body-content">
     <iron-pages selected="{{selectedTab}}">
       <div>
         <setting-slider section-title="[[localize('settings_appearance')]]" name="idleTime"
@@ -743,6 +740,10 @@ export class SettingsPageElement extends BasePageElement {
     </iron-pages>
   </div>
 </paper-material>
+
+<app-localstorage-document key="enabled" data="{{enabled}}" storage="window.localStorage">
+</app-localstorage-document>
+
 `;
   }
 }
