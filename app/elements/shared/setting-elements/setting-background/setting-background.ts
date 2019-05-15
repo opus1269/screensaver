@@ -34,9 +34,7 @@ import {SettingBase} from '../setting-base/setting-base.js';
 
 import * as ChromeGA from '../../../../scripts/chrome-extension-utils/scripts/analytics.js';
 
-/**
- * Polymer element to select a background style
- */
+/** Polymer element to select a background style */
 @customElement('setting-background')
 export class SettingBackgroundElement extends SettingBase {
 
@@ -77,17 +75,14 @@ export class SettingBackgroundElement extends SettingBase {
    */
   @listen('tap', 'confirmButton')
   public onOK() {
-    // @ts-ignore
-    const el = this.shadowRoot.getElementById(this.selected);
+    const el = (this.shadowRoot as ShadowRoot).getElementById(this.selected);
     if (el) {
       this.set('value', 'background:' + el.style.background);
       ChromeGA.event(ChromeGA.EVENT.BUTTON, `SettingBackground.OK: ${this.selected}`);
     }
   }
 
-  /**
-   * Override mainContent from {@link SettingBase}
-   */
+  /** Override mainContent from {@link SettingBase} */
   static get mainContent() {
     // language=HTML format=false
     return html`<!--suppress CssUnresolvedCustomProperty -->

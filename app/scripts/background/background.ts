@@ -143,7 +143,7 @@ async function onIconClicked() {
  * @param ev - StorageEvent
  * @event
  */
-async function onStorageChanged(ev: StorageEvent) {
+async function onLocalStorageChanged(ev: StorageEvent) {
   if (ev.key) {
     await AppData.processState(ev.key);
   }
@@ -229,7 +229,7 @@ chrome.runtime.onStartup.addListener(onStartup);
 chrome.browserAction.onClicked.addListener(onIconClicked);
 
 // listen for changes to the stored data
-window.addEventListener('storage', onStorageChanged, false);
+window.addEventListener('storage', onLocalStorageChanged, false);
 
 // listen for chrome messages
 ChromeMsg.addListener(onChromeMessage);

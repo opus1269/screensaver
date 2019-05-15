@@ -48,9 +48,7 @@ import * as Permissions from '../../../scripts/permissions.js';
 import {Options} from '../../../scripts/options/options.js';
 import {GoogleSource} from '../../../scripts/sources/photo_source_google.js';
 
-/**
- * Polymer element for the Google Photos page photos view UI
- */
+/** Polymer element for the Google Photos page photos view UI */
 @customElement('photos-view')
 export class PhotosViewElement extends BaseElement {
 
@@ -59,7 +57,7 @@ export class PhotosViewElement extends BaseElement {
   public needsPhotoRefresh = true;
 
   /** Flag to indicate if we should not filter photos */
-  @property({type: Boolean, notify: true, observer: '_noFilterChanged'})
+  @property({type: Boolean, notify: true, observer: 'noFilterChanged'})
   public noFilter = true;
 
   /** Status of the option permission for the Google Photos API */
@@ -130,7 +128,7 @@ export class PhotosViewElement extends BaseElement {
     ChromeMsg.addListener(this.onChromeMessage.bind(this));
 
     // listen for changes to chrome.storage
-    chrome.storage.onChanged.addListener(this.chromeStorageChanged.bind(this));
+    chrome.storage.onChanged.addListener(this.onChromeStorageChanged.bind(this));
   }
 
   /**
@@ -144,7 +142,7 @@ export class PhotosViewElement extends BaseElement {
     ChromeMsg.removeListener(this.onChromeMessage.bind(this));
 
     // stop listening for changes to chrome.storage
-    chrome.storage.onChanged.removeListener(this.chromeStorageChanged.bind(this));
+    chrome.storage.onChanged.removeListener(this.onChromeStorageChanged.bind(this));
   }
 
   /**
@@ -154,18 +152,16 @@ export class PhotosViewElement extends BaseElement {
   public ready() {
     super.ready();
 
-    setTimeout(() => {
-      this.setPhotoCount().catch(() => {});
+    setTimeout(async () => {
+      await this.setPhotoCount().catch(() => {});
 
       // set state of photo categories
-      this._setPhotoCats();
+      this.setPhotoCats();
 
     }, 0);
   }
 
-  /**
-   * Query Google Photos for the array of user's photos
-   */
+  /** Query Google Photos for the array of user's photos */
   public async loadPhotos() {
     const METHOD = 'PhotosView.loadPhotos';
     let error: Error | undefined;
@@ -215,9 +211,7 @@ export class PhotosViewElement extends BaseElement {
     }
   }
 
-  /**
-   * Set the photo count that is currently saved
-   */
+  /** Set the photo count that is currently saved */
   public async setPhotoCount() {
     const photos = await ChromeStorage.asyncGet('googleImages', []);
     this.set('photoCount', photos.length);
@@ -240,7 +234,7 @@ export class PhotosViewElement extends BaseElement {
    * @param changes - details on changes
    * @event
    */
-  protected chromeStorageChanged(changes: any) {
+  protected onChromeStorageChanged(changes: { [key: string]: chrome.storage.StorageChange }) {
     for (const key of Object.keys(changes)) {
       if (key === 'googleImages') {
         this.setPhotoCount().catch(() => {});
@@ -250,9 +244,7 @@ export class PhotosViewElement extends BaseElement {
     }
   }
 
-  /**
-   * Wait for load changed
-   */
+  /** Wait for load changed */
   @observe('waitForLoad', 'waiterStatus')
   protected waitForLoadChanged(waitForLoad: boolean, waiterStatus: string) {
     if (!waitForLoad && waiterStatus) {
@@ -260,10 +252,8 @@ export class PhotosViewElement extends BaseElement {
     }
   }
 
-  /**
-   * Simple Observer: noFilter changed
-   */
-  protected _noFilterChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
+  /** Simple Observer: noFilter changed */
+  protected noFilterChanged(newValue: boolean, oldValue: boolean) {
     if ((newValue !== undefined) && (oldValue !== undefined)) {
       if (newValue !== oldValue) {
         this.set('needsPhotoRefresh', true);
@@ -271,12 +261,9 @@ export class PhotosViewElement extends BaseElement {
     }
   }
 
-  /**
-   * Set the states of the photo-cat elements
-   */
-  protected _setPhotoCats() {
-    // @ts-ignore
-    const els = this.shadowRoot.querySelectorAll('photo-cat') as NodeListOf<PhotoCatElement>;
+  /** Set the states of the photo-cat elements */
+  protected setPhotoCats() {
+    const els = (this.shadowRoot as ShadowRoot).querySelectorAll('photo-cat') as NodeListOf<PhotoCatElement>;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
     filter.contentFilter = filter.contentFilter || {};
     const includes = filter.contentFilter.includedContentCategories || [];
@@ -292,11 +279,11 @@ export class PhotosViewElement extends BaseElement {
 
   // noinspection JSUnusedGlobalSymbols
   /**
-   * Selection of photo-cat changed
+   * Selection of a photo-cat changed
    *
    * @event
    */
-  protected _onPhotoCatChanged(ev: CustomEvent) {
+  protected onPhotoCatChanged(ev: CustomEvent) {
     const cat = (ev.target as Element).id;
     const checked = ev.detail.value;
     const filter = ChromeStorage.get('googlePhotosFilter', GoogleSource.DEF_FILTER);
@@ -349,9 +336,7 @@ export class PhotosViewElement extends BaseElement {
 
   static get template() {
     // language=HTML format=false
-    return html`
-
-<style include="shared-styles iron-flex iron-flex-alignment">
+    return html`<style include="shared-styles iron-flex iron-flex-alignment">
   :host {
     display: block;
     position: relative;
@@ -395,8 +380,8 @@ export class PhotosViewElement extends BaseElement {
   </div>
   <hr class="divider" hidden$="[[noseparator]]">
 
-  <setting-toggle name="noFilter" main-label="{{localize('photo_no_filter')}}"
-                  secondary-label="{{localize('photo_no_filter_desc')}}"
+  <setting-toggle name="noFilter" main-label="[[localize('photo_no_filter')]]"
+                  secondary-label="[[localize('photo_no_filter_desc')]]"
                   checked="{{noFilter}}" disabled$="[[disabled]]"></setting-toggle>
 
   <div class="section-title">[[localize('photo_cat_title')]]</div>
@@ -404,13 +389,13 @@ export class PhotosViewElement extends BaseElement {
   <template id="t" is="dom-repeat" items="[[cats]]" as="cat">
     <photo-cat id="[[cat.name]]"
                label="[[cat.label]]"
-               on-value-changed="_onPhotoCatChanged"
+               on-value-changed="onPhotoCatChanged"
                disabled$="[[isFilterDisabled]]"></photo-cat>
   </template>
 
   <hr class="divider" hidden$="[[noseparator]]">
   <paper-item class="album-note">
-    {{localize('note_albums')}}
+    [[localize('note_albums')]]
   </paper-item>
 
   <app-localstorage-document key="permPicasa" data="{{permPicasa}}" storage="window.localStorage">

@@ -28,9 +28,7 @@ import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/ut
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 
-/**
- * Polymer element for the Help page
- */
+/** Polymer element for the Help page */
 @customElement('help-page')
 export class HelpPageElement extends BasePageElement {
 
@@ -48,10 +46,10 @@ export class HelpPageElement extends BasePageElement {
 
   // noinspection JSMethodCanBeStatic,JSUnusedGlobalSymbols
   /**
-   * computed binding: Get a mailto url
+   * Computed binding: Get a mailto url
    *
    * @param subject - email subject
-   * @returns url
+   * @returns mailTo url
    */
   protected computeMailToUrl(subject: string) {
     return MyUtils.getEmailUrl(subject, MyUtils.getEmailBody());
@@ -78,38 +76,38 @@ export class HelpPageElement extends BasePageElement {
   <!-- Tool bar -->
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
-      <div>{{localize('help_title')}}</div>
+      <div>[[localize('help_title')]]</div>
     </app-toolbar>
   </paper-material>
 
   <!-- Content -->
   <div class="body-content">
-    <setting-link section-title="{{localize('help_section_feedback')}}" name="questionMail"
-                  label="{{localize('help_question')}}" icon="myicons:mail"
+    <setting-link section-title="[[localize('help_section_feedback')]]" name="questionMail"
+                  label="[[localize('help_question')]]" icon="myicons:mail"
                   url="[[computeMailToUrl('Question')]]"></setting-link>
-    <setting-link label="{{localize('help_bug')}}" name="bugMail" icon="myicons:mail"
+    <setting-link label="[[localize('help_bug')]]" name="bugMail" icon="myicons:mail"
                   url="[[computeMailToUrl('Bug report')]]"></setting-link>
-    <setting-link label="{{localize('help_feature')}}" name="featureMail" icon="myicons:mail"
+    <setting-link label="[[localize('help_feature')]]" name="featureMail" icon="myicons:mail"
                   url="[[computeMailToUrl('Feature request')]]"></setting-link>
-    <setting-link label="{{localize('help_feedback')}}" name="feedbackMail" icon="myicons:mail"
+    <setting-link label="[[localize('help_feedback')]]" name="feedbackMail" icon="myicons:mail"
                   url="[[computeMailToUrl('General feedback')]]"></setting-link>
-    <setting-link label="{{localize('help_issue')}}" name="submitGitHubIssue" noseparator="" icon="myicons:github"
+    <setting-link label="[[localize('help_issue')]]" name="submitGitHubIssue" noseparator="" icon="myicons:github"
                   url="[[githubPath]]issues/new"></setting-link>
     <hr>
-    <setting-link section-title="{{localize('help')}}" name="documentation"
-                  label="{{localize('help_documentation')}}" icon="myicons:info"
+    <setting-link section-title="[[localize('help')]]" name="documentation"
+                  label="[[localize('help_documentation')]]" icon="myicons:info"
                   url="[[githubPagesPath]]documentation.html"></setting-link>
-    <setting-link label="{{localize('help_faq')}}" name="faq" icon="myicons:help"
+    <setting-link label="[[localize('help_faq')]]" name="faq" icon="myicons:help"
                   url="[[githubPagesPath]]faq.html"></setting-link>
-    <setting-link label="{{localize('help_translations')}}" name="translations"
+    <setting-link label="[[localize('help_translations')]]" name="translations"
                   icon="myicons:info" url="[[githubPagesPath]]translate.html"></setting-link>
-    <setting-link label="{{localize('help_release_notes')}}" name="releaseNotes" icon="myicons:github"
+    <setting-link label="[[localize('help_release_notes')]]" name="releaseNotes" icon="myicons:github"
                   url="[[githubPath]]releases/tag/v[[version]]"></setting-link>
-    <setting-link label="{{localize('help_contributors')}}" name="contributors" icon="myicons:github"
+    <setting-link label="[[localize('help_contributors')]]" name="contributors" icon="myicons:github"
                   url="[[githubPath]]blob/master/CONTRIBUTORS.md"></setting-link>
-    <setting-link label="{{localize('help_licenses')}}" name="licenses" icon="myicons:github"
+    <setting-link label="[[localize('help_licenses')]]" name="licenses" icon="myicons:github"
                   url="[[githubPath]]blob/master/LICENSES.md"></setting-link>
-    <setting-link label="{{localize('help_source_code')}}" name="sourceCode" noseparator=""
+    <setting-link label="[[localize('help_source_code')]]" name="sourceCode" noseparator=""
                   icon="myicons:github" url="[[githubPath]]"></setting-link>
   </div>
 </paper-material>

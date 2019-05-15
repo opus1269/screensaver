@@ -289,7 +289,7 @@ export class ScreensaverElement extends BaseElement {
    * @returns The selected photo, undefined if non selected
    */
   public getSelectedPhoto() {
-    let ret: SSPhoto | undefined;
+    let ret;
     const idx = this.getSelectedSlideIndex();
     if (idx !== -1) {
       ret = this.photos[idx];
@@ -395,31 +395,18 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
-  /**
-   * Get the selected index of the pages
-   *
-   * @returns The index of the current view
-   */
+  /** Get the number of slides */
   public getSlideCount() {
     return this.photos ? this.photos.length : 0;
   }
 
-  /**
-   * Get the slide at the given index
-   *
-   * @returns The slide
-   */
+  /** Get the slide at the given index */
   public getSlide(idx: number) {
     const selector = `#slide${idx}`;
-    // @ts-ignore
-    return this.shadowRoot.querySelector(selector) as ScreensaverSlideElement;
+    return (this.shadowRoot as ShadowRoot).querySelector(selector) as ScreensaverSlideElement;
   }
 
-  /**
-   * Do we have usable photos
-   *
-   * @returns true if all photos are bad
-   */
+  /** Do we have usable photos */
   public isNoPhotos() {
     return this.noPhotos;
   }
@@ -429,11 +416,7 @@ export class ScreensaverElement extends BaseElement {
     this.set('noPhotos', true);
   }
 
-  /**
-   * Set the state when slideshow is paused
-   *
-   * @param paused - paused state
-   */
+  /** Set the paused state of the slideshow */
   public setPaused(paused: boolean) {
     this.set('paused', paused);
   }
@@ -464,8 +447,8 @@ export class ScreensaverElement extends BaseElement {
    * @param newValue - new value
    * @param oldValue - old value
    */
-  protected pausedChanged(newValue: boolean | undefined, oldValue: boolean | undefined) {
-    if (typeof oldValue === 'undefined') {
+  protected pausedChanged(newValue: boolean, oldValue: boolean) {
+    if (oldValue === undefined) {
       return;
     }
     if (newValue) {
@@ -477,11 +460,7 @@ export class ScreensaverElement extends BaseElement {
     }
   }
 
-  /**
-   * Do we have a photo that is loaded
-   *
-   * @returns true if at least one photo is valid
-   */
+  /** Do we have a photo that is loaded */
   protected hasUsablePhoto() {
     let ret = false;
     for (let i = 0; i < this.photos.length; i++) {

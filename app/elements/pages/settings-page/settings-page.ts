@@ -518,8 +518,7 @@ export class SettingsPageElement extends BasePageElement {
    */
   protected setPhotoSourceChecked(useName: string, state: boolean) {
     const selector = `[name=${useName}]`;
-    // @ts-ignore
-    const el = this.shadowRoot.querySelector(selector) as SettingToggleElement;
+    const el = (this.shadowRoot as ShadowRoot).querySelector(selector) as SettingToggleElement;
     if (el && !useName.includes('useGoogle')) {
       el.setChecked(state);
     }

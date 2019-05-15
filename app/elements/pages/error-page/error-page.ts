@@ -62,7 +62,7 @@ export class ErrorPageElement extends BasePageElement {
     super.connectedCallback();
 
     // listen for changes to chrome.storage
-    chrome.storage.onChanged.addListener(this.chromeStorageChanged.bind(this));
+    chrome.storage.onChanged.addListener(this.onChromeStorageChanged.bind(this));
   }
 
   /**
@@ -73,7 +73,7 @@ export class ErrorPageElement extends BasePageElement {
     super.disconnectedCallback();
 
     // stop listening for changes to chrome.storage
-    chrome.storage.onChanged.removeListener(this.chromeStorageChanged.bind(this));
+    chrome.storage.onChanged.removeListener(this.onChromeStorageChanged.bind(this));
   }
 
   /**
@@ -128,7 +128,7 @@ export class ErrorPageElement extends BasePageElement {
    * @param changes - details on changes
    * @event
    */
-  protected chromeStorageChanged(changes: any) {
+  protected onChromeStorageChanged(changes: { [key: string]: chrome.storage.StorageChange }) {
     for (const key of Object.keys(changes)) {
       if (key === 'lastError') {
         const change = changes[key];
@@ -182,16 +182,16 @@ export class ErrorPageElement extends BasePageElement {
   <paper-material elevation="1">
     <app-toolbar class="page-toolbar">
       <div class="middle middle-container center horizontal layout flex">
-        <div class="flex">{{localize('last_error_viewer_title')}}</div>
+        <div class="flex">[[localize('last_error_viewer_title')]]</div>
         <paper-icon-button id="email" icon="myicons:mail" disabled$="[[!lastError.message]]">
         </paper-icon-button>
         <paper-tooltip for="email" position="left" offset="0">
-          Send email to support
+          [[localize('tooltip_error_email')]]
         </paper-tooltip>
         <paper-icon-button id="remove" icon="myicons:delete" disabled$="[[!lastError.message]]">
         </paper-icon-button>
         <paper-tooltip for="remove" position="left" offset="0">
-          Delete the error
+          [[localize('tooltip_error_delete')]]
         </paper-tooltip>
       </div>
     </app-toolbar>

@@ -86,9 +86,7 @@ import * as Permissions from '../../scripts/permissions.js';
 
 declare var ChromePromise: any;
 
-/**
- * The pages for our SPA
- */
+/** The pages for our SPA */
 interface IPage {
   /** Menu label */
   label: string;
@@ -320,10 +318,10 @@ export class AppMainElement extends BaseElement {
     ChromeMsg.addListener(this.onChromeMessage.bind(this));
 
     // listen for changes to chrome.storage
-    chrome.storage.onChanged.addListener(this.chromeStorageChanged.bind(this));
+    chrome.storage.onChanged.addListener(this.onChromeStorageChanged.bind(this));
 
     // listen for changes to localStorage
-    window.addEventListener('storage', this.localStorageChanged.bind(this));
+    window.addEventListener('storage', this.onLocalStorageChanged.bind(this));
   }
 
   /**
@@ -337,10 +335,10 @@ export class AppMainElement extends BaseElement {
     ChromeMsg.removeListener(this.onChromeMessage.bind(this));
 
     // stop listening for changes to chrome.storage
-    chrome.storage.onChanged.removeListener(this.chromeStorageChanged.bind(this));
+    chrome.storage.onChanged.removeListener(this.onChromeStorageChanged.bind(this));
 
     // stop listening for changes to localStorage
-    window.removeEventListener('storage', this.localStorageChanged.bind(this));
+    window.removeEventListener('storage', this.onLocalStorageChanged.bind(this));
   }
 
   /**
@@ -477,7 +475,7 @@ export class AppMainElement extends BaseElement {
         await Permissions.removeGooglePhotos();
       }
     } catch (err) {
-      ChromeLog.error(err.message, 'AppMain._onAcceptPermissionsClicked');
+      ChromeLog.error(err.message, 'AppMain.onAcceptPermissionsClicked');
     }
   }
 
@@ -492,7 +490,7 @@ export class AppMainElement extends BaseElement {
     try {
       await Permissions.removeGooglePhotos();
     } catch (err) {
-      ChromeLog.error(err.message, 'AppMain._onDenyPermissionsClicked');
+      ChromeLog.error(err.message, 'AppMain.onDenyPermissionsClicked');
     }
   }
 
@@ -501,7 +499,7 @@ export class AppMainElement extends BaseElement {
    *
    * @event
    */
-  protected localStorageChanged(ev: StorageEvent) {
+  protected onLocalStorageChanged(ev: StorageEvent) {
     if (ev.key === 'permPicasa') {
       this.setGooglePhotosMenuState();
     }
@@ -513,7 +511,7 @@ export class AppMainElement extends BaseElement {
    * @param changes - details on changes
    * @event
    */
-  protected chromeStorageChanged(changes: any) {
+  protected onChromeStorageChanged(changes: { [key: string]: chrome.storage.StorageChange }) {
     for (const key of Object.keys(changes)) {
       if (key === 'lastError') {
         this.setErrorMenuState().catch(() => {});
@@ -583,9 +581,9 @@ export class AppMainElement extends BaseElement {
 
   /** Show the Google Photos page */
   protected showGooglePhotosPage() {
+    // make sure were singed in Chrome
     const signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
     if (!signedInToChrome) {
-      // Display Error Dialog if not signed in to Chrome
       const title = ChromeLocale.localize('err_chrome_signin_title');
       const text = ChromeLocale.localize('err_chrome_signin');
       this.errorDialog.open(title, text);
@@ -614,12 +612,12 @@ export class AppMainElement extends BaseElement {
 
   /** Show the permissions dialog */
   protected showPermissionsDialog() {
+    // set to previous page
+    this.set('route', this.prevRoute);
     this.permissionsDialog.open();
   }
 
-  /**
-   * Set enabled state of Google Photos menu item
-   */
+  /** Set enabled state of Google Photos menu item */
   protected setGooglePhotosMenuState() {
     // disable google-page if user hasn't allowed
     const el = (this.shadowRoot as ShadowRoot).querySelector('#page-google-photos');

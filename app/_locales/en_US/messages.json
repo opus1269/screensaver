@@ -694,5 +694,11 @@
   },
   "tooltip_settings_toggle": {
     "message": "Enable/disable the screensaver"
+  },
+  "tooltip_error_delete": {
+    "message": "Delete the error"
+  },
+  "tooltip_error_email": {
+    "message": "Send email to support"
   }
 }
