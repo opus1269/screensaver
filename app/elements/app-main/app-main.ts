@@ -201,7 +201,7 @@ export class AppMainElement extends BaseElement {
 
   /** Current {@link IPage} */
   @property({type: String, notify: true, observer: 'routeChanged'})
-  public route = '';
+  public route: string;
 
   /** Google Photos permission status */
   @property({type: String, notify: true})
@@ -301,8 +301,8 @@ export class AppMainElement extends BaseElement {
     },
   ];
 
-  /** Previous {@link IPage} */
-  protected prevRoute = '';
+  /** Previously selected {@link IPage} */
+  protected prevRoute = 'page-settings';
 
   /** Function to call on confirm dialog confirm button click */
   protected confirmFn: () => void;
@@ -353,13 +353,13 @@ export class AppMainElement extends BaseElement {
 
     AppMainElement.setColors(ChromeStorage.getBool('darkMode', false));
 
-    // set settings-page el
-    const settingsPage = this.getPage('page-settings');
-    if (settingsPage) {
-      settingsPage.el = this.settingsPageEl;
-    }
-
     setTimeout(async () => {
+      // set settings-page el
+      const settingsPage = this.getPage('page-settings');
+      if (settingsPage) {
+        settingsPage.el = this.settingsPageEl;
+      }
+
       // initialize menu enabled states
       await this.setErrorMenuState();
       this.setGooglePhotosMenuState();
@@ -531,14 +531,14 @@ export class AppMainElement extends BaseElement {
       appDrawer.close();
     }
 
-    if ((route === undefined) || (oldRoute === undefined)) {
+    if (!route) {
       return;
     }
 
     // page to route to
     const page = this.getPage(route);
     if (!page) {
-      ChromeGA.error('Failed to get page', METHOD);
+      ChromeGA.error(`Failed to get page: ${route}`, METHOD);
       return;
     }
 
@@ -548,7 +548,9 @@ export class AppMainElement extends BaseElement {
       // some pages are url links
       chrome.tabs.create({url: page.url});
       // reselect previous menu
-      this.set('route', oldRoute);
+      if (oldRoute) {
+        this.set('route', oldRoute);
+      }
     } else if (page.fn) {
       // some pages have functions to view them
       page.fn();
