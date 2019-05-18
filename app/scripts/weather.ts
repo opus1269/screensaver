@@ -84,7 +84,7 @@ export const enum TEMP_UNIT {
 const MIN_CALL_FREQ = ChromeTime.MSEC_IN_HOUR;
 
 /** API key */
-const KEY = '2eab968d43699c1b6e126228b34880c9';
+const KEY = 'KEY_WEATHER';
 
 /** Base url of weather API */
 const URL_BASE = 'https://api.openweathermap.org/data/2.5/weather';

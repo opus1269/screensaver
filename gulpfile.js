@@ -121,6 +121,9 @@ const REP_FLICKR = `const KEY = '${FLICKR_ENV}'`;
 const REDDIT_ENV = process.env.KEY_REDDIT;
 const SRCH_REDDIT = 'const KEY = \'KEY_REDDIT\'';
 const REP_REDDIT = `const KEY = '${REDDIT_ENV}'`;
+const WTHR_ENV = process.env.KEY_WEATHER;
+const SRCH_WTHR = 'const KEY = \'KEY_WEATHER\'';
+const REP_WTHR = `const KEY = '${WTHR_ENV}'`;
 
 // to get the current task name
 let currentTaskName = '';
@@ -333,6 +336,7 @@ gulp.task('_ts_dev', () => {
       pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
+      pipe(replace(SRCH_WTHR, REP_WTHR)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -355,6 +359,7 @@ gulp.task('_build_js', () => {
       pipe(replace(SRCH_UNSPLASH, REP_UNSPLASH)).
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
+      pipe(replace(SRCH_WTHR, REP_WTHR)).
       pipe(gulp.dest(base.src), noop());
 });
 
