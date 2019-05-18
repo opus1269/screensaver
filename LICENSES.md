@@ -8,6 +8,10 @@
 
 ### [License](https://github.com/justadudewhohacks/face-api.js/blob/master/LICENSE)
 
+## Polymer
+
+### [License](https://github.com/Polymer/polymer/blob/master/LICENSE.txt)
+
 ## Snoocore
 
 ### [License](https://snoocore.readme.io/docs/license)
