@@ -14,7 +14,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';

@@ -17,8 +17,8 @@ import {ScreensaverElement} from '../../elements/screensaver-element/screensaver
 
 import '../../elements/screensaver-element/screensaver-element.js';
 
-import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
+import * as ChromeLog from '../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
+import * as ChromeMsg from '../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 

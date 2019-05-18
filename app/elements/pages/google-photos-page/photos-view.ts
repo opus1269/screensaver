@@ -30,17 +30,17 @@ import '../../../node_modules/@polymer/paper-spinner/paper-spinner.js';
 
 import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BaseElement} from '../../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
 
-import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
-import '../../../elements/shared/waiter-element/waiter-element.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-toggle/setting-toggle.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/waiter-element/waiter-element.js';
 
 import './photo_cat.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeLocale from '../../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
+import * as ChromeMsg from '../../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
+import * as ChromeStorage from '../../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as Permissions from '../../../scripts/permissions.js';

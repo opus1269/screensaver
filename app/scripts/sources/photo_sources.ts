@@ -13,7 +13,7 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
 
 import * as PhotoSourceFactory from './photo_source_factory.js';
 

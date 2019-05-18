@@ -11,6 +11,13 @@
       "check-format",
       "allow-leading-underscore"
     ],
+    "max-line-length": [
+      true,
+      {
+        "limit": 120,
+        "ignore-pattern": "^import"
+      }
+    ],
     "no-default-export": true,
     "no-redundant-jsdoc": false,
     "no-trailing-whitespace": false,

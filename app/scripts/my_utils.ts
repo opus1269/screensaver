@@ -13,8 +13,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeStorage from '../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils from '../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeStorage from '../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
+import * as ChromeUtils from '../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 /** Get our email address */
 export function getEmail() {

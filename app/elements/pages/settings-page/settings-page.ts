@@ -13,8 +13,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import {TIME_FORMAT} from '../../../scripts/chrome-extension-utils/scripts/time';
-import {SettingToggleElement} from '../../shared/setting-elements/setting-toggle/setting-toggle';
+import {TIME_FORMAT} from '../../../node_modules/@opus1269/chrome-ext-utils/src/time';
+import {SettingToggleElement} from '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-toggle/setting-toggle';
 
 import {
   computed,
@@ -42,20 +42,20 @@ import '../../../node_modules/@polymer/app-storage/app-localstorage/app-localsto
 import {BasePageElement} from '../base-page/base-page.js';
 
 import '../../../elements/my_icons.js';
-import '../../../elements/shared/setting-elements/setting-background/setting-background.js';
-import '../../../elements/shared/setting-elements/setting-dropdown/setting-dropdown.js';
-import '../../../elements/shared/setting-elements/setting-slider/setting-slider.js';
-import '../../../elements/shared/setting-elements/setting-time/setting-time.js';
-import '../../../elements/shared/setting-elements/setting-toggle/setting-toggle.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-background/setting-background.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-dropdown/setting-dropdown.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-slider/setting-slider.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-time/setting-time.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-toggle/setting-toggle.js';
 
 import {AppMainElement} from '../../../elements/app-main/app-main.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeJSON from '../../../scripts/chrome-extension-utils/scripts/json.js';
-import * as ChromeLocale from '../../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog from '../../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../../scripts/chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeJSON from '../../../node_modules/@opus1269/chrome-ext-utils/src/json.js';
+import * as ChromeLocale from '../../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
+import * as ChromeLog from '../../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
+import * as ChromeMsg from '../../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
+import * as ChromeStorage from '../../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
 
 import * as MyMsg from '../../../scripts/my_msg.js';
 import * as MyUtils from '../../../scripts/my_utils.js';

@@ -15,7 +15,8 @@
 
 import {NeonAnimatedPagesElement} from '../../node_modules/@polymer/neon-animation/neon-animated-pages';
 import {DomRepeat} from '../../node_modules/@polymer/polymer/lib/elements/dom-repeat';
-import {TIME_FORMAT} from '../../scripts/chrome-extension-utils/scripts/time';
+
+import {TIME_FORMAT} from '../../node_modules/@opus1269/chrome-ext-utils/src/time';
 
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {IPhoto} from '../../scripts/sources/photo_source';
@@ -32,16 +33,16 @@ import '../../node_modules/@polymer/neon-animation/neon-animatable.js';
 import '../../node_modules/@polymer/neon-animation/neon-animated-pages.js';
 import '../../node_modules/@polymer/neon-animation/neon-animations.js';
 
-import {BaseElement} from '../../elements/shared/base-element/base-element.js';
+import {BaseElement} from '../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
 
 import '../../elements/screensaver-slide/screensaver-slide.js';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import {ChromeTime} from '../../scripts/chrome-extension-utils/scripts/time.js';
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeLog from '../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
+import * as ChromeMsg from '../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
+import {ChromeTime} from '../../node_modules/@opus1269/chrome-ext-utils/src/time.js';
+import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';

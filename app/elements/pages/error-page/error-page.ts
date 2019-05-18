@@ -29,8 +29,8 @@ import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
 import {BasePageElement} from '../base-page/base-page.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
-import {ChromeLastError} from '../../../scripts/chrome-extension-utils/scripts/last_error.js';
+import * as ChromeGA from '../../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import {ChromeLastError} from '../../../node_modules/@opus1269/chrome-ext-utils/src/last_error.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 

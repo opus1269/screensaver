@@ -13,13 +13,13 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeGA from '../chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale from '../chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog from '../chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
-import {ChromeTime} from '../chrome-extension-utils/scripts/time.js';
-import * as ChromeUtils from '../chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
+import * as ChromeLog from '../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
+import * as ChromeMsg from '../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
+import {ChromeTime} from '../../node_modules/@opus1269/chrome-ext-utils/src/time.js';
+import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 

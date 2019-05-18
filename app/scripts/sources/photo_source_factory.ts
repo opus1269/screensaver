@@ -13,8 +13,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
 
 import {CCSource} from './photo_source_chromecast.js';
 import {FlickrSource} from './photo_source_flickr.js';

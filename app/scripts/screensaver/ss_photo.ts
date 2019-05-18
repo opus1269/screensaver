@@ -15,8 +15,8 @@
 
 import {IPhoto} from '../sources/photo_source';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeStorage from '../chrome-extension-utils/scripts/storage.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 

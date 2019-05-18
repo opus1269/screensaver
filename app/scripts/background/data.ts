@@ -14,16 +14,16 @@
  */
 
 import {TRANS_TYPE, VIEW_TYPE} from '../../elements/screensaver-element/screensaver-element';
-import {IUnitValue} from '../../elements/shared/setting-elements/setting-slider/setting-slider';
+import {IUnitValue} from '../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-slider/setting-slider';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeAuth from '../../scripts/chrome-extension-utils/scripts/auth.js';
-import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import {DEF_TIME, TIME_FORMAT} from '../../scripts/chrome-extension-utils/scripts/time.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeAuth from '../../node_modules/@opus1269/chrome-ext-utils/src/auth.js';
+import {ChromeLastError} from '../../node_modules/@opus1269/chrome-ext-utils/src/last_error.js';
+import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
+import * as ChromeLog from '../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
+import * as ChromeMsg from '../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
+import {DEF_TIME, TIME_FORMAT} from '../../node_modules/@opus1269/chrome-ext-utils/src/time.js';
 
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
@@ -38,12 +38,14 @@ declare var ChromePromise: any;
 const chromep = new ChromePromise();
 
 /** Version of data - update when items are added, removed, changed */
-const DATA_VERSION = 28;
+const DATA_VERSION = 29;
 
 /** App data saved to local storage */
 export const DEFS = {
   /** localstorage data version */
   version: DATA_VERSION,
+  /** Set to true for development build */
+  isDevelopmentBuild: false,
   /** Screensaver enabled state */
   enabled: true,
   /** Google Photos optional permission */

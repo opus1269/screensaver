@@ -20,8 +20,8 @@ import {PaperDialogElement} from '../../node_modules/@polymer/paper-dialog/paper
 import {PaperListboxElement} from '../../node_modules/@polymer/paper-listbox/paper-listbox';
 import {PolymerElementConstructor} from '../../node_modules/@polymer/polymer/interfaces';
 
-import {ConfirmDialogElement} from '../../elements/shared/confirm-dialog/confirm-dialog';
-import {ErrorDialogElement} from '../../elements/shared/error-dialog/error-dialog';
+import {ConfirmDialogElement} from '../../node_modules/@opus1269/common-custom-elements/src/confirm-dialog/confirm-dialog';
+import {ErrorDialogElement} from '../../node_modules/@opus1269/common-custom-elements/src/error-dialog/error-dialog';
 
 import {
   computed,
@@ -60,25 +60,25 @@ import '../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '../../node_modules/@polymer/app-storage/app-localstorage/app-localstorage-document.js';
 
 import {BasePageElement} from '../../elements/pages/base-page/base-page.js';
-import {BaseElement} from '../../elements/shared/base-element/base-element.js';
+import {BaseElement} from '../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
 
 import {ErrorPageElement} from '../../elements/pages/error-page/error-page.js';
 import {GooglePhotosPageElement} from '../../elements/pages/google-photos-page/google-photos-page.js';
 import {HelpPageElement} from '../../elements/pages/help-page/help-page.js';
 import {SettingsPageElement} from '../../elements/pages/settings-page/settings-page.js';
 
-import '../../elements/shared/confirm-dialog/confirm-dialog.js';
-import '../../elements/shared/error-dialog/error-dialog.js';
+import '../../node_modules/@opus1269/common-custom-elements/src/confirm-dialog/confirm-dialog.js';
+import '../../node_modules/@opus1269/common-custom-elements/src/error-dialog/error-dialog.js';
 
 import '../../elements/my_icons.js';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import {ChromeLastError} from '../../scripts/chrome-extension-utils/scripts/last_error.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeLog from '../../scripts/chrome-extension-utils/scripts/log.js';
-import * as ChromeMsg from '../../scripts/chrome-extension-utils/scripts/msg.js';
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import {ChromeLastError} from '../../node_modules/@opus1269/chrome-ext-utils/src/last_error.js';
+import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
+import * as ChromeLog from '../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
+import * as ChromeMsg from '../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
+import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';

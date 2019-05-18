@@ -14,7 +14,9 @@
  */
 
 import {IronImageElement} from '../../node_modules/@polymer/iron-image/iron-image';
-import {TIME_FORMAT} from '../../scripts/chrome-extension-utils/scripts/time';
+
+import {TIME_FORMAT} from '../../node_modules/@opus1269/chrome-ext-utils/src/time';
+
 import {SSPhoto} from '../../scripts/screensaver/ss_photo';
 import {TRANS_TYPE, VIEW_TYPE} from '../screensaver-element/screensaver-element';
 
@@ -39,14 +41,15 @@ import '../../elements/animations/spin-down-animation/spin-down-animation.js';
 import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/weather-element/weather-element.js';
 
-import {BaseElement} from '../shared/base-element/base-element.js';
-import {IUnitValue} from '../shared/setting-elements/setting-slider/setting-slider';
+import {BaseElement} from '../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
+import {IUnitValue} from '../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-slider/setting-slider';
+
 import {WeatherElement} from '../weather-element/weather-element';
 
-import * as ChromeGA from '../../scripts/chrome-extension-utils/scripts/analytics.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
-import * as ChromeStorage from '../../scripts/chrome-extension-utils/scripts/storage.js';
-import * as ChromeUtils from '../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
+import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
+import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import * as Permissions from '../../scripts/permissions.js';
 import * as FaceDetect from '../../scripts/screensaver/face_detect.js';

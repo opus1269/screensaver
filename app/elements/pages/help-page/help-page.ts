@@ -20,11 +20,11 @@ import '../../../node_modules/@polymer/paper-material/paper-material.js';
 
 import '../../../node_modules/@polymer/app-layout/app-toolbar/app-toolbar.js';
 
-import '../../../elements/shared/setting-elements/setting-link/setting-link.js';
+import '../../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-link/setting-link.js';
 
 import {BasePageElement} from '../base-page/base-page.js';
 
-import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeUtils from '../../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
 

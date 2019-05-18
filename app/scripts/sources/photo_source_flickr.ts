@@ -14,8 +14,8 @@
  *  https://github.com/opus1269/screensaver/blob/master/LICENSE.md
  */
 
-import * as ChromeHttp from '../../scripts/chrome-extension-utils/scripts/http.js';
-import * as ChromeLocale from '../../scripts/chrome-extension-utils/scripts/locales.js';
+import * as ChromeHttp from '../../node_modules/@opus1269/chrome-ext-utils/src/http.js';
+import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
 
 import {IPhoto, PhotoSource} from './photo_source.js';
 

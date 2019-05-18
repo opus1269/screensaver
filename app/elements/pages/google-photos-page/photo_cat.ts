@@ -24,9 +24,9 @@ import '../../../node_modules/@polymer/paper-item/paper-item-body.js';
 import '../../../node_modules/@polymer/paper-item/paper-item.js';
 import '../../../node_modules/@polymer/paper-ripple/paper-ripple.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BaseElement} from '../../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
 
-import * as ChromeGA from '../../../scripts/chrome-extension-utils/scripts/analytics.js';
+import * as ChromeGA from '../../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
 
 /**
  * Polymer element to include or exclude a Google Photos category

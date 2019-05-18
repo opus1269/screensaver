@@ -15,9 +15,9 @@
 
 import {customElement} from '../../../node_modules/@polymer/decorators/lib/decorators.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BaseElement} from '../../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
 
-import * as ChromeUtils from '../../../scripts/chrome-extension-utils/scripts/utils.js';
+import * as ChromeUtils from '../../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 /** Polymer element base class for a SPA page */
 @customElement('base-page')

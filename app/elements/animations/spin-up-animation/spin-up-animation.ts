@@ -15,7 +15,7 @@ import {mixinBehaviors} from '../../../node_modules/@polymer/polymer/lib/legacy/
 
 import {NeonAnimationBehavior} from '../../../node_modules/@polymer/neon-animation/neon-animation-behavior.js';
 
-import {BaseElement} from '../../shared/base-element/base-element.js';
+import {BaseElement} from '../../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
 
 /*
  <spin-up-animation> animates the scale transform of an element from 1 to 0
