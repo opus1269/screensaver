@@ -1,23 +1,20 @@
 {
-  "name": "photo-screen-saver",
+  "name": "screensaver",
   "version": "1.0.0",
-  "description": "https://chrome.google.com/webstore/detail/kohpcmlfdjfdggcjmjhhbcbankgmppgc",
-  "main": "background.js",
-  "scripts": {
-    "update_savedev": "npm update --save-dev",
-    "prune": "npm prune",
-    "delete_all": "rmdir node_modules /s /q"
-  },
+  "description": "Photo screensaver Chrome extension",
   "repository": {
     "type": "git",
-    "url": "https://github.com/opus1269/photo-screen-saver.git"
+    "url": "https://github.com/opus1269/screensaver.git"
   },
-  "author": "Michael Updike <igreilly1269@gmail.com>",
-  "license": "BSD 3-Clause",
+  "author": {
+    "name": "Michael A. Updike",
+    "email": "igreilly1269@gmail.com"
+  },
+  "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/opus1269/photo-screen-saver/issues"
+    "url": "https://github.com/opus1269/screensaver/issues"
   },
-  "homepage": "https://github.com/opus1269/photo-screen-saver",
+  "homepage": "https://github.com/opus1269/screensaver",
   "private": true,
   "devDependencies": {
     "@polymer/gen-typescript-declarations": "^1.6.1",

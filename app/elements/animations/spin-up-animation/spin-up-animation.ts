@@ -30,9 +30,7 @@ import {BaseElement} from '../../../node_modules/@opus1269/common-custom-element
  }
  */
 
-/**
- * Polymer element to provide a spin up animation
- */
+/** Polymer element to provide a spin up animation */
 @customElement('spin-up-animation')
 export class SpinUpAnimationElement extends
     (mixinBehaviors([NeonAnimationBehavior], BaseElement) as new () => BaseElement) {

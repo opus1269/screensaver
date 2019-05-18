@@ -169,9 +169,9 @@ export async function update(force = false) {
     if (main && main.temp) {
       curWeather.tempValue = main.temp;
       if (tempUnit === 1) {
-        curWeather.temp = _kToF(curWeather.tempValue);
+        curWeather.temp = kToF(curWeather.tempValue);
       } else {
-        curWeather.temp = _kToC(curWeather.tempValue);
+        curWeather.temp = kToC(curWeather.tempValue);
       }
     }
 
@@ -197,9 +197,9 @@ export function updateUnits() {
   const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
   const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
   if (tempUnit === 1) {
-    curWeather.temp = _kToF(curWeather.tempValue);
+    curWeather.temp = kToF(curWeather.tempValue);
   } else {
-    curWeather.temp = _kToC(curWeather.tempValue);
+    curWeather.temp = kToC(curWeather.tempValue);
   }
   ChromeStorage.set('currentWeather', curWeather);
 }
@@ -237,13 +237,13 @@ export async function getLocation(options = DEF_LOC_OPTIONS) {
 }
 
 /** Convert Kelvin to degrees F */
-function _kToF(temp: number) {
+function kToF(temp: number) {
   const value = (temp - 273.17) * 9.0 / 5.0 + 32.0;
   return `${value.toFixed(0)} \u00b0F`;
 }
 
 /** Convert Kelvin to degrees C */
-function _kToC(temp: number) {
+function kToC(temp: number) {
   const value = temp - 273.17;
   return `${value.toFixed(0)} \u00b0C`;
 }
