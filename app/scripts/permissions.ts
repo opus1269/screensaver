@@ -20,7 +20,7 @@ import * as ChromeLog from '../node_modules/@opus1269/chrome-ext-utils/src/log.j
 import * as ChromeMsg from '../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
 import * as ChromeStorage from '../node_modules/@opus1269/chrome-ext-utils/src/storage.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
 const chromep = new ChromePromise();
 
 /** A permission type */

@@ -22,7 +22,8 @@ import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/
 
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+const chromep = new ChromePromise();
 
 /**
  * A photo from a {@link PhotoSource}
@@ -249,7 +250,6 @@ export abstract class PhotoSource {
 
       if (!(isGoogleKey && !useGoogle)) {
         try {
-          const chromep = new ChromePromise();
           await chromep.storage.local.remove(this._photosKey);
         } catch (err) {
           // ignore

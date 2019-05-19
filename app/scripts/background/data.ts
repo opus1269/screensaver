@@ -34,7 +34,7 @@ import * as Weather from '../../scripts/weather.js';
 
 import * as Alarm from './alarm.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
 const chromep = new ChromePromise();
 
 /** Version of data - update when items are added, removed, changed */

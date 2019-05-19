@@ -21,7 +21,8 @@ import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/sr
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+const chromep = new ChromePromise();
 
 /** Unique menu ids */
 const enum MENU {
@@ -35,8 +36,6 @@ const enum MENU {
 
 /** Initialize the menus */
 export async function initialize() {
-  const chromep = new ChromePromise();
-
   try {
     await chromep.contextMenus.create({
       type: 'normal',

@@ -25,7 +25,7 @@ import * as MyMsg from '../../scripts/my_msg.js';
 
 import * as AppData from './data.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
 const chromep = new ChromePromise();
 
 /** Screensaver URL */
@@ -169,8 +169,9 @@ async function open(disp?: chrome.system.display.DisplayInfo) {
 
 /** Open a screensaver on every connected display */
 async function openOnAllDisplays() {
+  // TODO: Replace typecast if chromep.system.display is type added
   try {
-    const displayArr = await chromep.system.display.getInfo();
+    const displayArr: chrome.system.display.DisplayInfo[] = await (chromep as any).system.display.getInfo();
     if (displayArr.length === 1) {
       await open();
     } else {

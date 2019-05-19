@@ -84,7 +84,8 @@ import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+const chromep = new ChromePromise();
 
 /** The pages for our SPA */
 interface IPage {
@@ -670,8 +671,7 @@ export class AppMainElement extends BaseElement {
     if (request.message === ChromeMsg.TYPE.HIGHLIGHT.message) {
       // highlight ourselves and let the sender know we are here
       ret = true;
-      const chromep = new ChromePromise();
-      chromep.tabs.getCurrent().then((tab: chrome.tabs.Tab) => {
+      chromep.tabs.getCurrent().then((tab) => {
         if (tab && tab.id) {
           chrome.tabs.update(tab.id, {highlighted: true});
         }

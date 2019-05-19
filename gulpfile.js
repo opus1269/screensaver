@@ -124,6 +124,9 @@ const REP_REDDIT = `const KEY = '${REDDIT_ENV}'`;
 const WTHR_ENV = process.env.KEY_WEATHER;
 const SRCH_WTHR = 'const KEY = \'KEY_WEATHER\'';
 const REP_WTHR = `const KEY = '${WTHR_ENV}'`;
+// stupid typescript doesn't handle ES6 modules correctly w/o a build tool
+const SRCH_CP = 'import ChromePromise from \'chrome-promise/chrome-promise\';';
+const REP_CP = '';
 
 // to get the current task name
 let currentTaskName = '';
@@ -337,6 +340,7 @@ gulp.task('_ts_dev', () => {
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(replace(SRCH_WTHR, REP_WTHR)).
+      pipe(replace(SRCH_CP, REP_CP)).
       pipe(gulp.dest(base.dev));
 });
 
@@ -360,6 +364,7 @@ gulp.task('_build_js', () => {
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(replace(SRCH_WTHR, REP_WTHR)).
+      pipe(replace(SRCH_CP, REP_CP)).
       pipe(gulp.dest(base.src), noop());
 });
 

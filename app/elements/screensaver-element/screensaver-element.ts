@@ -56,7 +56,8 @@ import * as SSRunner from '../../scripts/screensaver/ss_runner.js';
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 import {GoogleSource} from '../../scripts/sources/photo_source_google.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+const chromep = new ChromePromise();
 
 /** Slide transition animation type */
 export const enum TRANS_TYPE {
@@ -120,7 +121,6 @@ export class ScreensaverElement extends BaseElement {
 
   /** Set the window zoom factor to 1.0 */
   protected static async setZoom() {
-    const chromep = new ChromePromise();
     try {
       const zoomFactor = await chromep.tabs.getZoom();
       if ((zoomFactor <= 0.99) || (zoomFactor >= 1.01)) {

@@ -27,7 +27,7 @@ import * as Weather from '../../scripts/weather.js';
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
-declare var ChromePromise: any;
+import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
 const chromep = new ChromePromise();
 
 /** Unique alarm ids */
