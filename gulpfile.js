@@ -223,7 +223,7 @@ function tsCompile() {
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(replace(SRCH_WTHR, REP_WTHR)).
       pipe(replace(SRCH_CP, REP_CP)).
-      pipe(isProd ? minify(minifyOpts) : noop()).
+      // pipe(isProd ? minify(minifyOpts) : noop()).
       pipe(gulp.dest(base.src));
 }
 

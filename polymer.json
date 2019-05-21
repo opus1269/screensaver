@@ -35,14 +35,14 @@
         "modules"
       ],
       "js": {
-        "minify": false,
+        "minify": true,
         "transformModulesToAmd": false
       },
       "css": {
-        "minify": false
+        "minify": true
       },
       "html": {
-        "minify": false
+        "minify": true
       },
       "bundle": {
         "inlineCss": false,
