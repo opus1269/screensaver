@@ -51,8 +51,8 @@
     "chrome-promise": "^3.0.4",
     "face-api.js": "^0.19.0",
     "web-animations-js": "^2.3.1",
-    "@opus1269/chrome-ext-utils": "github:opus1269/chrome-ext-utils#v1.2.0",
-    "@opus1269/common-custom-elements": "github:opus1269/common-custom-elements#v1.2.0"
+    "@opus1269/chrome-ext-utils": "github:opus1269/chrome-ext-utils#v1.4.0",
+    "@opus1269/common-custom-elements": "github:opus1269/common-custom-elements#v1.4.0"
   },
   "devDependencies": {}
 }
