@@ -21,21 +21,8 @@ module.exports = {
   },
 
   'globals': {
-    'Chrome': true,
     'require': true,
-    'chrome': true,
-    'runtime': true,
-    'wrap': true,
-    'unwrap': true,
-    'Polymer': true,
-    'Platform': true,
-    'gapi': true,
-    'self': true,
-    'clients': true,
-    'Snoocore': true,
-    'ChromePromise': true,
-    'ExHandler': true,
-    'ga': true,
+    'exports': true,
   },
 
   'rules': {
