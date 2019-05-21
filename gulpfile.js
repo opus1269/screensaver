@@ -66,17 +66,6 @@ const eslint = require('gulp-eslint');
 const stripLine = require('gulp-strip-line');
 const zip = require('gulp-zip');
 
-// ECMA6
-const uglifyjs = require('uglify-es');
-const composer = require('gulp-uglify/composer');
-const minify = composer(uglifyjs, console);
-const minifyOpts = {
-  output: {
-    beautify: false,
-    comments: '/Copyright/',
-  },
-};
-
 // TypeScript
 const ts = require('gulp-typescript');
 const tsProject = ts.createProject('tsconfig.json');
@@ -223,7 +212,6 @@ function tsCompile() {
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(replace(SRCH_WTHR, REP_WTHR)).
       pipe(replace(SRCH_CP, REP_CP)).
-      // pipe(isProd ? minify(minifyOpts) : noop()).
       pipe(gulp.dest(base.src));
 }
 
