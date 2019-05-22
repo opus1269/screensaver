@@ -104,16 +104,33 @@ const REP_CP = '';
 
 // copy a directory - Windows only
 // preconditions: srcDir and destDir set
-function copyDir(done) {
-  const child = require('child_process');
+function copyDirWindows(done) {
   const from = srcDir.replace(/\//gim, '\\');
   const to = destDir.replace(/\//gim, '\\');
-  const command = `xcopy /y /q /s "${from}\\*" "${to}\\"`;
-  console.log(command);
+  const command = 'xcopy';
+  console.log(`copying ${from} to ${to} ...`);
 
-  child.exec(command);
+  const args = [
+    '/y',
+    '/q',
+    '/s',
+    `${from}\\*`,
+    `${to}\\`,
+  ];
+  const copy = spawn(command, args);
 
-  done();
+  copy.stdout.on('data', (data) => {
+    console.log(data.toString());
+  });
+
+  copy.stderr.on('data', (data) => {
+    console.log(`stderr: ${data.toString()}`);
+  });
+
+  copy.on('exit', (code) => {
+    console.log(`${command} exited with code ${code.toString()}`);
+    done();
+  });
 }
 
 // Development build
@@ -148,8 +165,8 @@ function buildProd(done) {
   zipDirectory = 'build/prod';
   manifestDest = 'build/prodTest/app';
 
-  return gulp.series(jsLint, tsLint, tsCompile, polyBuildProd,
-      copyDir, manifest, jsDelete, zipBuild, prodTestDelete, docs)(done);
+  return gulp.series(jsLint, tsLint, tsCompile, polyBuildProd, manifest,
+      copyDirWindows, docs, jsDelete, zipBuild, prodTestDelete)(done);
 }
 
 // watch for file changes
