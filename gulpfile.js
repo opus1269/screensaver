@@ -64,6 +64,7 @@ const plumber = require('gulp-plumber');
 const replace = require('gulp-replace');
 const eslint = require('gulp-eslint');
 const stripLine = require('gulp-strip-line');
+const removeCode = require('gulp-remove-code');
 const zip = require('gulp-zip');
 
 // TypeScript
@@ -98,9 +99,6 @@ const REP_REDDIT = `const KEY = '${REDDIT_ENV}'`;
 const WTHR_ENV = process.env.KEY_WEATHER;
 const SRCH_WTHR = 'const KEY = \'KEY_WEATHER\'';
 const REP_WTHR = `const KEY = '${WTHR_ENV}'`;
-// stupid typescript doesn't handle ES6 modules correctly w/o a build tool
-const SRCH_CP = 'import ChromePromise from \'chrome-promise/chrome-promise\';';
-const REP_CP = '';
 
 // copy a directory - Windows only
 // preconditions: srcDir and destDir set
@@ -228,7 +226,7 @@ function tsCompile() {
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(replace(SRCH_WTHR, REP_WTHR)).
-      pipe(replace(SRCH_CP, REP_CP)).
+      pipe(removeCode({always: true})).
       pipe(gulp.dest(base.src));
 }
 
@@ -244,7 +242,7 @@ function tsCompileDev() {
       pipe(replace(SRCH_FLICKR, REP_FLICKR)).
       pipe(replace(SRCH_REDDIT, REP_REDDIT)).
       pipe(replace(SRCH_WTHR, REP_WTHR)).
-      pipe(replace(SRCH_CP, REP_CP)).
+      pipe(removeCode({always: true})).
       pipe(gulp.dest(base.dev));
 }
 

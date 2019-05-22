@@ -21,7 +21,9 @@ import * as ChromeStorage from '../../node_modules/@opus1269/chrome-ext-utils/sr
 import * as AppData from './data.js';
 import * as SSController from './ss_controller.js';
 
-import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+// removeIf(always)
+import ChromePromise from 'chrome-promise/chrome-promise';
+// endRemoveIf(always)
 const chromep = new ChromePromise();
 
 /** Unique menu ids */

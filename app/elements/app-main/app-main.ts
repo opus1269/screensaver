@@ -84,7 +84,9 @@ import * as MyGA from '../../scripts/my_analytics.js';
 import * as MyMsg from '../../scripts/my_msg.js';
 import * as Permissions from '../../scripts/permissions.js';
 
-import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+// removeIf(always)
+import ChromePromise from 'chrome-promise/chrome-promise';
+// endRemoveIf(always)
 const chromep = new ChromePromise();
 
 /** The pages for our SPA */

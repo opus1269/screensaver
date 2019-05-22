@@ -22,7 +22,9 @@ import * as ChromeUtils from '../../node_modules/@opus1269/chrome-ext-utils/src/
 
 import * as PhotoSourceFactory from '../../scripts/sources/photo_source_factory.js';
 
-import ChromePromise from 'chrome-promise/chrome-promise'; // removed in all build's - stupid typescript
+// removeIf(always)
+import ChromePromise from 'chrome-promise/chrome-promise';
+// endRemoveIf(always)
 const chromep = new ChromePromise();
 
 /**
