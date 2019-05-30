@@ -171,6 +171,7 @@ function buildProd(done) {
 function watch() {
   gulp.watch(files.ts, gulp.series(tsLint, tsCompileDev));
   gulp.watch(files.devjs, gulp.series(jsLint));
+  gulp.watch(files.manifest, gulp.series(manifest));
   gulp.watch(files.assets, gulp.series(assets));
   gulp.watch(files.css, gulp.series(css));
   gulp.watch(files.font, gulp.series(fonts));
