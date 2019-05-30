@@ -51,7 +51,7 @@ export function start(delay = 2000) {
   VARS.transTime = transTime.base * 1000;
   setWaitTime(transTime.base * 1000);
 
-  VARS.interactive = ChromeStorage.getBool('interactive', false);
+  VARS.interactive = ChromeStorage.get('interactive', false);
 
   SSHistory.initialize();
 
@@ -157,7 +157,7 @@ function stop() {
  * @param newIdx optional idx to use for current idx
  */
 function restart(newIdx: number | null = null) {
-  const transTime = ChromeStorage.get('transitionTime');
+  const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
   if (transTime) {
     setWaitTime(transTime.base * 1000);
   }

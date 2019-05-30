@@ -26,7 +26,7 @@ export function getSelectedSources() {
   const ret = [];
   const useKeyValues = getUseKeyValues();
   for (const useKeyValue of useKeyValues) {
-    const isSelected = ChromeStorage.getBool(useKeyValue, false);
+    const isSelected = ChromeStorage.get(useKeyValue, false);
     if (isSelected) {
       const source = PhotoSourceFactory.create(useKeyValue);
       if (source) {

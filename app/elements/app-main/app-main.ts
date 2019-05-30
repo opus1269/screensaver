@@ -354,7 +354,7 @@ export class AppMainElement extends BaseElement {
     MyGA.initialize();
     ChromeGA.page('/options.html');
 
-    AppMainElement.setColors(ChromeStorage.getBool('darkMode', false));
+    AppMainElement.setColors(ChromeStorage.get('darkMode', false));
 
     setTimeout(async () => {
       // set settings-page el
@@ -587,7 +587,7 @@ export class AppMainElement extends BaseElement {
   /** Show the Google Photos page */
   protected showGooglePhotosPage() {
     // make sure were singed in Chrome
-    const signedInToChrome = ChromeStorage.getBool('signedInToChrome', true);
+    const signedInToChrome = ChromeStorage.get('signedInToChrome', true);
     if (!signedInToChrome) {
       const title = ChromeLocale.localize('err_chrome_signin_title');
       const text = ChromeLocale.localize('err_chrome_signin');

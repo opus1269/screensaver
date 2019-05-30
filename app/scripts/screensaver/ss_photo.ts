@@ -35,8 +35,8 @@ export class SSPhoto {
    */
   public static ignore(asp: number) {
     let ret = false;
-    const skip = ChromeStorage.getBool('skip', false);
-    const photoSizing = ChromeStorage.getInt('photoSizing', 0);
+    const skip = ChromeStorage.get('skip', false);
+    const photoSizing = ChromeStorage.get('photoSizing', 0);
 
     if ((skip && ((photoSizing === 1) || (photoSizing === 3)) && SSPhoto._isBadAspect(asp))) {
       // ignore photos that would look bad with cropped or stretched sizing options

@@ -42,7 +42,6 @@ import '../../elements/animations/spin-up-animation/spin-up-animation.js';
 import '../../elements/weather-element/weather-element.js';
 
 import {BaseElement} from '../../node_modules/@opus1269/common-custom-elements/src/base-element/base-element.js';
-import {IUnitValue} from '../../node_modules/@opus1269/common-custom-elements/src/setting-elements/setting-slider/setting-slider';
 
 import {WeatherElement} from '../weather-element/weather-element';
 
@@ -150,7 +149,7 @@ export class ScreensaverSlideElement
 
   /** Detect faces during photo animation flag */
   @property({type: Boolean})
-  protected readonly detectFaces = ChromeStorage.getBool('detectFaces', false);
+  protected readonly detectFaces = ChromeStorage.get('detectFaces', false);
 
   /** The target rectangle for the photo animation when detecting faces */
   @property({type: Object})
@@ -188,7 +187,7 @@ export class ScreensaverSlideElement
       let newType: string = type;
       const idx = type.search('User');
 
-      if (!ChromeStorage.getBool('showPhotog', true) && (idx !== -1)) {
+      if (!ChromeStorage.get('showPhotog', true) && (idx !== -1)) {
         // don't show label for user's own photos, if requested
         return '';
       }
@@ -253,7 +252,7 @@ export class ScreensaverSlideElement
   /** Prep the photo for display */
   public async prep() {
 
-    if (ChromeStorage.getBool('largeTime', false)) {
+    if (ChromeStorage.get('largeTime', false)) {
       this.time.style.fontSize = '8.5vh';
       this.time.style.fontWeight = '300';
     }
@@ -456,7 +455,7 @@ export class ScreensaverSlideElement
     timeStyle.right = (right + 1) + 'vw';
     timeStyle.bottom = (bottom + 3.5) + 'vh';
 
-    const showTime = ChromeStorage.getInt('showTime', TIME_FORMAT.NONE);
+    const showTime = ChromeStorage.get('showTime', TIME_FORMAT.NONE);
     if (showTime !== TIME_FORMAT.NONE) {
       // don't wrap author
       authorStyle.textOverflow = 'ellipsis';
@@ -659,12 +658,12 @@ export class ScreensaverSlideElement
         await this.setAnimationTarget();
       }
 
-      const transTime: IUnitValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+      const transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
       const aniTime = transTime.base * 1000;
       let delayTime = 1000;
 
       // hack for spinup animation since it is slower than the others
-      const photoTransition = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+      const photoTransition = ChromeStorage.get('photoTransition', TRANS_TYPE.FADE);
       if (photoTransition === TRANS_TYPE.SPIN_UP) {
         delayTime = 2000;
       }

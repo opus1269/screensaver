@@ -48,7 +48,7 @@ const enum ALARMS {
 
 /** Set the repeating alarms for the keep awake */
 export function updateKeepAwakeAlarm() {
-  const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
+  const keepAwake = ChromeStorage.get('keepAwake', AppData.DEFS.keepAwake);
   const aStart = ChromeStorage.get('activeStart', AppData.DEFS.activeStart);
   const aStop = ChromeStorage.get('activeStop', AppData.DEFS.activeStop);
 
@@ -98,8 +98,7 @@ export async function updatePhotoAlarm() {
 
 /** Set the weather alarm */
 export async function updateWeatherAlarm() {
-  const showWeather = ChromeStorage.getBool('showCurrentWeather',
-      AppData.DEFS.showCurrentWeather);
+  const showWeather = ChromeStorage.get('showCurrentWeather', AppData.DEFS.showCurrentWeather);
   if (showWeather) {
     // Add repeating alarm to update current weather
     // Trigger it every ten minutes, even though weather won't
@@ -131,8 +130,8 @@ export function updateBadgeTextAlarm() {
 
 /** Set state when the screensaver is in the active time range */
 async function setActiveState() {
-  const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
-  const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
+  const keepAwake = ChromeStorage.get('keepAwake', AppData.DEFS.keepAwake);
+  const enabled = ChromeStorage.get('enabled', AppData.DEFS.enabled);
   if (keepAwake) {
     chrome.power.requestKeepAwake('display');
   }
@@ -154,8 +153,7 @@ async function setActiveState() {
 
 /** Set state when the screensaver is in the inactive time range */
 function setInactiveState() {
-  const allowSuspend = ChromeStorage.getBool('allowSuspend',
-      AppData.DEFS.allowSuspend);
+  const allowSuspend = ChromeStorage.get('allowSuspend', AppData.DEFS.allowSuspend);
   if (allowSuspend) {
     chrome.power.releaseKeepAwake();
   } else {
@@ -167,8 +165,8 @@ function setInactiveState() {
 
 /** Set the Badge text on the icon */
 function setBadgeText() {
-  const enabled = ChromeStorage.getBool('enabled', AppData.DEFS.enabled);
-  const keepAwake = ChromeStorage.getBool('keepAwake', AppData.DEFS.keepAwake);
+  const enabled = ChromeStorage.get('enabled', AppData.DEFS.enabled);
+  const keepAwake = ChromeStorage.get('keepAwake', AppData.DEFS.keepAwake);
   let text = '';
   if (enabled) {
     text = SSController.isActive() ? '' : ChromeLocale.localize('sleep_abbrev');

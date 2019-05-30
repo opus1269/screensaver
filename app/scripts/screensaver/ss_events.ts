@@ -197,7 +197,7 @@ function onMouseMove(ev: MouseEvent) {
 function onMouseClick() {
   if (SSRunner.isStarted()) {
     const photo = Screensaver.getSelectedPhoto();
-    const allowPhotoClicks = ChromeStorage.getBool('allowPhotoClicks', true);
+    const allowPhotoClicks = ChromeStorage.get('allowPhotoClicks', true);
     if (allowPhotoClicks && photo) {
       photo.showSource();
     }

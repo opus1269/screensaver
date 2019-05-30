@@ -25,7 +25,7 @@ export function getEmail() {
 export function getEmailBody() {
   return `Extension version: ${ChromeUtils.getVersion()}\n`
       + `Chrome version: ${ChromeUtils.getFullChromeVersion()}\n`
-      + `OS: ${ChromeStorage.get('os')}\n\n\n`;
+      + `OS: ${ChromeStorage.get('os', 'unknown')}\n\n\n`;
 }
 
 /**

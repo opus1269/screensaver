@@ -122,7 +122,7 @@ export class AlbumsViewElement extends BaseElement {
    */
   protected static async getTotalPhotoCount() {
     let ct = 0;
-    const albums = await ChromeStorage.asyncGet('albumSelections', []);
+    const albums = await ChromeStorage.asyncGet<ISelectedAlbum[]>('albumSelections', []);
     for (const album of albums) {
       album.photos = album.photos || [];
       ct += album.photos.length;

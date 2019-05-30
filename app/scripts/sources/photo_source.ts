@@ -55,6 +55,9 @@ export interface IPhotos {
   photos: IPhoto[];
 }
 
+/** The array of all the photo arrays from a {@link PhotoSource} */
+export interface IPhotosArray extends Array<IPhotos> {}
+
 /** Base class for a source of photos for a {@link Screensaver} */
 export abstract class PhotoSource {
 
@@ -92,9 +95,9 @@ export abstract class PhotoSource {
    */
   public static createPoint(lat: number, lon: number) {
     return `${lat} ${lon}`;
-   }
+  }
 
-   /** The storage key for if the source is selected */
+  /** The storage key for if the source is selected */
   private readonly _useKey: PhotoSourceFactory.UseKey;
 
   /** The storage key for the collection of photos */
@@ -194,16 +197,12 @@ export abstract class PhotoSource {
     if (this.use()) {
       let photos: IPhoto[] = [];
       if (this._isArray) {
-        let items = await ChromeStorage.asyncGet(this._photosKey);
-        // could be that items have not been retrieved yet
-        items = items || [];
+        const items = await ChromeStorage.asyncGet<IPhotos[]>(this._photosKey, []);
         for (const item of items) {
           photos = photos.concat(item.photos);
         }
       } else {
-        photos = await ChromeStorage.asyncGet(this._photosKey);
-        // could be that items have not been retrieved yet
-        photos = photos || [];
+        photos = await ChromeStorage.asyncGet<IPhoto[]>(this._photosKey, []);
       }
       ret.photos = photos;
     }
@@ -216,7 +215,7 @@ export abstract class PhotoSource {
    * @returns true if selected
    */
   public use() {
-    return ChromeStorage.getBool(this._useKey);
+    return ChromeStorage.get<boolean>(this._useKey);
   }
 
   /**
@@ -244,7 +243,7 @@ export abstract class PhotoSource {
 
       // HACK so we don't delete album or photos when Google Photos
       // page is disabled
-      const useGoogle = ChromeStorage.getBool('useGoogle', true);
+      const useGoogle = ChromeStorage.get('useGoogle', true);
       let isGoogleKey = false;
       if ((this._photosKey === 'albumSelections') || (this._photosKey === 'googleImages')) {
         isGoogleKey = true;

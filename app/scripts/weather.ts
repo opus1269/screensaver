@@ -100,7 +100,7 @@ export async function update(force = false) {
   const ERR_TITLE = ChromeLocale.localize('err_weather_update');
 
   const showWeather = ChromeStorage.get('showCurrentWeather', false);
-  const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
+  const tempUnit = ChromeStorage.get('weatherTempUnit', 0);
 
   if (!showWeather) {
     return;
@@ -195,7 +195,7 @@ export async function update(force = false) {
 /** Update the display units */
 export function updateUnits() {
   const curWeather = ChromeStorage.get('currentWeather', DEF_WEATHER);
-  const tempUnit = ChromeStorage.getInt('weatherTempUnit', 0);
+  const tempUnit = ChromeStorage.get('weatherTempUnit', 0);
   if (tempUnit === 1) {
     curWeather.temp = kToF(curWeather.tempValue);
   } else {

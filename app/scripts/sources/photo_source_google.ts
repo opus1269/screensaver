@@ -26,9 +26,7 @@ import * as MyMsg from '../../scripts/my_msg.js';
 import {IPhoto, PhotoSource} from './photo_source.js';
 import * as PhotoSourceFactory from './photo_source_factory.js';
 
-/**
- * A Google Photo Album
- */
+/** A Google Photo Album */
 export interface IAlbum {
   /** The index when in an array */
   index: number;
@@ -48,9 +46,7 @@ export interface IAlbum {
   photos: IPhoto[];
 }
 
-/**
- * A Selected Google Photo Album, this is persisted
- */
+/** A Selected Google Photo Album, an array of these is persisted for album mode */
 export interface ISelectedAlbum {
   /** Unique id */
   id: string;
@@ -60,25 +56,19 @@ export interface ISelectedAlbum {
   photos: IPhoto[];
 }
 
-/**
- * Size of a photo
- */
+/** Size of a photo */
 interface ISize {
   width: number;
   height: number;
 }
 
-/**
- * Google Photos API meta data for a media item
- */
+/** Google Photos API meta data for a media item */
 interface IMediaMetaData {
   width: string;
   height: string;
 }
 
-/**
- * Google Photos API media item
- */
+/** Google Photos API media item */
 interface IMediaItem {
   /** Unique id */
   id: string;
@@ -92,9 +82,7 @@ interface IMediaItem {
   mediaMetadata: IMediaMetaData;
 }
 
-/**
- * Google Photos API representation of an album
- */
+/** Google Photos API representation of an album */
 interface IGAlbum {
   /** Unique id */
   id: string;
@@ -106,41 +94,27 @@ interface IGAlbum {
   coverPhotoBaseUrl: string;
 }
 
-/**
- * Path to Google Photos API
- */
+/** Path to Google Photos API */
 const URL_BASE = 'https://photoslibrary.googleapis.com/v1/';
 
-/**
- * Query for list of albums
- */
+/** Query for list of albums */
 const ALBUMS_QUERY =
-    '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,' +
-    'coverPhotoBaseUrl)';
+    '?pageSize=50&fields=nextPageToken,albums(id,title,mediaItemsCount,coverPhotoBaseUrl)';
 
-/**
- * Only return stuff we use
- */
+/** Only return stuff we use */
 const MEDIA_ITEMS_FIELDS =
-    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,' +
-    'mediaMetadata/width,mediaMetadata/height)';
+    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,mediaMetadata/width,mediaMetadata/height)';
 
-/**
- * Only return stuff we use
- */
+/** Only return stuff we use */
 const MEDIA_ITEMS_RESULTS_FIELDS =
     'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,' +
     'mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,' +
     'mediaItem/mediaMetadata/height)';
 
-/**
- * A source of photos from Google Photos
- */
+/** A source of photos from Google Photos */
 export class GoogleSource extends PhotoSource {
 
-  /**
-   * Default photo filter
-   */
+  /** Default photo filter */
   static get DEF_FILTER() {
     return {
       mediaTypeFilter: {
@@ -158,9 +132,7 @@ export class GoogleSource extends PhotoSource {
     };
   }
 
-  /**
-   * No filtering
-   */
+  /** No filtering */
   static get NO_FILTER() {
     return {
       mediaTypeFilter: {
@@ -171,30 +143,22 @@ export class GoogleSource extends PhotoSource {
     };
   }
 
-  /**
-   * Max albums to use
-   */
+  /** Max albums to use */
   static get MAX_ALBUMS() {
     return 200;
   }
 
-  /**
-   * Max photos per album to use
-   */
+  /** Max photos per album to use */
   static get MAX_ALBUM_PHOTOS() {
     return 2000;
   }
 
-  /**
-   * Max photos total to use for album mode
-   */
+  /** Max photos total to use for album mode */
   static get MAX_PHOTOS() {
     return 30000;
   }
 
-  /**
-   * Max photos for google images mode
-   */
+  /** Max photos for google images mode */
   static get MAX_FILTERED_PHOTOS() {
     return 3000;
   }
@@ -615,7 +579,7 @@ export class GoogleSource extends PhotoSource {
       return ret;
     }
 
-    const albums = await ChromeStorage.asyncGet('albumSelections', []);
+    const albums = await ChromeStorage.asyncGet<ISelectedAlbum[]>('albumSelections', []);
     if (albums.length === 0) {
       return ret;
     }
@@ -661,7 +625,7 @@ export class GoogleSource extends PhotoSource {
       return ret;
     }
 
-    const savedPhotos = await ChromeStorage.asyncGet('googleImages', []);
+    const savedPhotos = await ChromeStorage.asyncGet<IPhoto[]>('googleImages', []);
     if (savedPhotos.length === 0) {
       return ret;
     }
@@ -688,11 +652,7 @@ export class GoogleSource extends PhotoSource {
     return ret;
   }
 
-  /**
-   * Return true if we should be fetching from Google: trying to minimize Google Photos API usage
-   *
-   * @returns true if we should fetch
-   */
+  /** Return true if we should be fetching from Google: trying to minimize Google Photos API usage */
   private static isFetch() {
     /* only fetch new photos if all are true:
      api is authorized
@@ -700,8 +660,8 @@ export class GoogleSource extends PhotoSource {
      using google photos
      */
     const auth = ChromeStorage.get('permPicasa', 'notSet') === 'allowed';
-    const enabled = ChromeStorage.getBool('enabled', true);
-    const useGoogle = ChromeStorage.getBool('useGoogle', true);
+    const enabled = ChromeStorage.get('enabled', true);
+    const useGoogle = ChromeStorage.get('useGoogle', true);
     return auth && enabled && useGoogle;
   }
 
@@ -757,7 +717,7 @@ export class GoogleSource extends PhotoSource {
       height: parseInt(mediaMetadata.height, 10),
     };
 
-    if (!ChromeStorage.getBool('fullResGoogle', false)) {
+    if (!ChromeStorage.get('fullResGoogle', false)) {
       // limit size of image to download
       const max = Math.max(MAX_SIZE, ret.width, ret.height);
       if (max > MAX_SIZE) {

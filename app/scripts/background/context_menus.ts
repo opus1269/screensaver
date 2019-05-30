@@ -79,7 +79,7 @@ export async function initialize() {
 
 /** Toggle enabled state of the screen saver */
 async function toggleEnabled() {
-  const oldState = ChromeStorage.getBool('enabled', true);
+  const oldState = ChromeStorage.get('enabled', true);
   ChromeStorage.set('enabled', !oldState);
 
   // storage changed event not fired on same page as the change
@@ -103,7 +103,7 @@ async function onMenuClicked(info: chrome.contextMenus.OnClickData) {
       ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}`);
       await SSController.display(false);
     } else if (info.menuItemId === MENU.ENABLE) {
-      const isEnabled = ChromeStorage.getBool('enabled');
+      const isEnabled = ChromeStorage.get('enabled', true);
       ChromeGA.event(ChromeGA.EVENT.MENU, `${info.menuItemId}: ${isEnabled}`);
       await toggleEnabled();
     }

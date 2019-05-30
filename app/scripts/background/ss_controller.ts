@@ -42,10 +42,10 @@ const ERR_SHOW = ChromeLocale.localize('err_show_ss');
  * @returns true if we should display the screensaver
  */
 export function isActive() {
-  const enabled = ChromeStorage.getBool('enabled');
-  const keepAwake = ChromeStorage.getBool('keepAwake');
-  const aStart = ChromeStorage.get('activeStart');
-  const aStop = ChromeStorage.get('activeStop');
+  const enabled = ChromeStorage.get('enabled', AppData.DEFS.enabled);
+  const keepAwake = ChromeStorage.get('keepAwake', AppData.DEFS.keepAwake);
+  const aStart = ChromeStorage.get('activeStart', AppData.DEFS.activeStart);
+  const aStop = ChromeStorage.get('activeStop', AppData.DEFS.activeStop);
   const inRange = ChromeTime.isInRange(aStart, aStop);
 
   // do not display if screen saver is not enabled or
@@ -65,7 +65,7 @@ export function isActive() {
 export async function display(single: boolean) {
 
   try {
-    const all = ChromeStorage.getBool('allDisplays', AppData.DEFS.allDisplays);
+    const all = ChromeStorage.get('allDisplays', AppData.DEFS.allDisplays);
     if (!single && all) {
       await openOnAllDisplays();
     } else {
@@ -90,7 +90,7 @@ export function close() {
  */
 async function hasFullscreen(disp?: chrome.system.display.DisplayInfo) {
   let ret = false;
-  const fullScreen = ChromeStorage.getBool('chromeFullscreen', AppData.DEFS.chromeFullscreen);
+  const fullScreen = ChromeStorage.get('chromeFullscreen', AppData.DEFS.chromeFullscreen);
 
   try {
     if (fullScreen) {

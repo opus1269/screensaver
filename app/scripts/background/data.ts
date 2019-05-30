@@ -194,16 +194,16 @@ export async function update() {
   // here when the data version changes
 
   // get the previous data version
-  let oldVersion: number | undefined;
+  let oldVersion: number | null = null;
   try {
     // first, try to get from chrome.storage
-    oldVersion = await ChromeStorage.asyncGet('version');
+    oldVersion = await ChromeStorage.asyncGet<number>('version');
   } catch (err) {
     // ignore
   }
   if (!oldVersion) {
     // used to save this to localstorage before DATA_VERSION 26
-    oldVersion = ChromeStorage.getInt('version');
+    oldVersion = ChromeStorage.get<number>('version');
   }
 
   // update version number
@@ -315,7 +315,7 @@ export async function update() {
     if (oldVersion < 25) {
       // reload chromecast photos since asp is now a string
       const key = PhotoSourceFactory.UseKey.CHROMECAST;
-      const useChromecast = ChromeStorage.getBool(key, DEFS[key]);
+      const useChromecast = ChromeStorage.get(key, DEFS[key]);
       if (useChromecast) {
         try {
           await PhotoSources.process(key);
@@ -401,7 +401,7 @@ export async function processState(key: string = 'all') {
       }
 
       // set os, if not already
-      if (!ChromeStorage.get('os')) {
+      if (!ChromeStorage.get<string>('os')) {
         await setOS();
       }
     } else {
@@ -412,7 +412,7 @@ export async function processState(key: string = 'all') {
         if (key === 'fullResGoogle') {
           // full res photo state changed update albums or photos
 
-          const isAlbums = ChromeStorage.getBool(PhotoSourceFactory.UseKey.ALBUMS_GOOGLE, DEFS.useGoogleAlbums);
+          const isAlbums = ChromeStorage.get(PhotoSourceFactory.UseKey.ALBUMS_GOOGLE, DEFS.useGoogleAlbums);
           if (isAlbums) {
             // update albums
             const useKey = PhotoSourceFactory.UseKey.ALBUMS_GOOGLE;
@@ -426,7 +426,7 @@ export async function processState(key: string = 'all') {
             }
           }
 
-          const isPhotos = ChromeStorage.getBool(PhotoSourceFactory.UseKey.PHOTOS_GOOGLE, DEFS.useGooglePhotos);
+          const isPhotos = ChromeStorage.get(PhotoSourceFactory.UseKey.PHOTOS_GOOGLE, DEFS.useGooglePhotos);
           if (isPhotos) {
             // update photos
             const useKey = PhotoSourceFactory.UseKey.PHOTOS_GOOGLE;
@@ -520,7 +520,7 @@ async function updateToChromeLocaleStorage() {
 async function processEnabled() {
   Alarm.updateBadgeTextAlarm();
 
-  const isEnabled = ChromeStorage.getBool('enabled', DEFS.enabled);
+  const isEnabled = ChromeStorage.get('enabled', DEFS.enabled);
 
   try {
     // update context menu text
@@ -536,7 +536,7 @@ async function processEnabled() {
 
 /** Set power scheduling features */
 function processKeepAwake() {
-  const keepAwake = ChromeStorage.getBool('keepAwake', DEFS.keepAwake);
+  const keepAwake = ChromeStorage.get('keepAwake', DEFS.keepAwake);
   keepAwake
       ? chrome.power.requestKeepAwake('display')
       : chrome.power.releaseKeepAwake();

@@ -103,7 +103,7 @@ export class ScreensaverElement extends BaseElement {
 
   /** Get slide appearance */
   protected static getViewType() {
-    let type = ChromeStorage.getInt('photoSizing', VIEW_TYPE.LETTERBOX);
+    let type = ChromeStorage.get('photoSizing', VIEW_TYPE.LETTERBOX);
     if (type === VIEW_TYPE.RANDOM) {
       // pick random sizing
       type = ChromeUtils.getRandomInt(0, VIEW_TYPE.RANDOM - 1);
@@ -113,7 +113,7 @@ export class ScreensaverElement extends BaseElement {
 
   /** Get between photo's animation */
   protected static getAniType() {
-    let type = ChromeStorage.getInt('photoTransition', TRANS_TYPE.FADE);
+    let type = ChromeStorage.get('photoTransition', TRANS_TYPE.FADE);
     if (type === TRANS_TYPE.RANDOM) {
       // pick random transition
       type = ChromeUtils.getRandomInt(0, TRANS_TYPE.RANDOM - 1);
@@ -139,7 +139,7 @@ export class ScreensaverElement extends BaseElement {
    * @throws An error if failed to initialize face-api.js
    */
   protected static async setupFaceDetect() {
-    const panAndZoom = ChromeStorage.getBool('panAndScan', false);
+    const panAndZoom = ChromeStorage.get('panAndScan', false);
     if (panAndZoom) {
       await FaceDetect.initialize();
     }
@@ -232,7 +232,7 @@ export class ScreensaverElement extends BaseElement {
     const METHOD = 'SS.launch';
     try {
       // load all the photos
-      const shuffle = ChromeStorage.getBool('shuffle', false);
+      const shuffle = ChromeStorage.get('shuffle', false);
       const hasPhotos = await SSPhotos.loadPhotos(shuffle);
       if (!hasPhotos) {
         this.setNoPhotos();
@@ -426,7 +426,7 @@ export class ScreensaverElement extends BaseElement {
 
   /** Setup timer for time label */
   protected setupTime() {
-    const showTime = ChromeStorage.getInt('showTime', TIME_FORMAT.NONE);
+    const showTime = ChromeStorage.get('showTime', TIME_FORMAT.NONE);
     if (showTime !== TIME_FORMAT.NONE) {
       this.setTimeLabel();
       // update current time once a minute
@@ -437,7 +437,7 @@ export class ScreensaverElement extends BaseElement {
   /** Set the time label */
   protected setTimeLabel() {
     let label = '';
-    const showTime = ChromeStorage.getInt('showTime', TIME_FORMAT.NONE);
+    const showTime = ChromeStorage.get('showTime', TIME_FORMAT.NONE);
     if ((showTime !== TIME_FORMAT.NONE)) {
       label = ChromeTime.getStringShort(showTime);
       this.set('timeLabel', label);
@@ -586,8 +586,8 @@ export class ScreensaverElement extends BaseElement {
         }
 
         // Calculate an hours worth of photos max
-        let transTime = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
-        transTime = transTime.base * 1000;
+        const transValue = ChromeStorage.get('transitionTime', {base: 30, display: 30, unit: 0});
+        const transTime = transValue.base * 1000;
         let nPhotos = Math.round(ChromeTime.MSEC_IN_HOUR / transTime);
         // do at least 50, still one rpc. will help when displaying
         // a lot for short times

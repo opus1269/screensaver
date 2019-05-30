@@ -315,7 +315,7 @@ export class SettingsPageElement extends BasePageElement {
     const METHOD = 'SettingsPage.onChromeBackgroundTapped';
     const ERR_TITLE = ChromeLocale.localize('err_optional_permissions');
     // this used to not be updated yet in Polymer 1
-    const isSet = ChromeStorage.getBool('allowBackground');
+    const isSet = ChromeStorage.get('allowBackground', false);
     const perm = Permissions.BACKGROUND;
     const isAllowed = Permissions.isAllowed(perm);
     if (isSet && !isAllowed) {
@@ -341,7 +341,7 @@ export class SettingsPageElement extends BasePageElement {
     const KEY = 'showCurrentWeather';
     const ALARM = MyMsg.TYPE.UPDATE_WEATHER_ALARM;
 
-    const isShow = ChromeStorage.getBool(KEY, false);
+    const isShow = ChromeStorage.get(KEY, false);
 
     try {
       if (isShow) {
@@ -427,7 +427,7 @@ export class SettingsPageElement extends BasePageElement {
     const PERM = Permissions.DETECT_FACES;
     const KEY = 'detectFaces';
 
-    const detectFaces = ChromeStorage.getBool(KEY, false);
+    const detectFaces = ChromeStorage.get(KEY, false);
 
     try {
       if (detectFaces) {
@@ -480,7 +480,7 @@ export class SettingsPageElement extends BasePageElement {
     const PERM = Permissions.DETECT_FACES;
     const KEY = (ev.target as Element).id;
     const checked = ev.detail.value;
-    const detectFaces = ChromeStorage.getBool('detectFaces', false);
+    const detectFaces = ChromeStorage.get('detectFaces', false);
 
     try {
       if (checked && detectFaces) {
