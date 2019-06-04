@@ -24,6 +24,7 @@ import '../../../node_modules/@opus1269/common-custom-elements/src/setting-eleme
 
 import {BasePageElement} from '../base-page/base-page.js';
 
+import * as ChromeGA from '../../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
 import * as ChromeUtils from '../../../node_modules/@opus1269/chrome-ext-utils/src/utils.js';
 
 import * as MyUtils from '../../../scripts/my_utils.js';
@@ -43,6 +44,29 @@ export class HelpPageElement extends BasePageElement {
   /** Extension version */
   @property({type: String})
   protected readonly version = encodeURIComponent(ChromeUtils.getVersion());
+
+  /** Are we ChromeOS */
+  @property({type: Boolean})
+  protected isChromeOS = false;
+
+  /**
+   * Called during Polymer-specific element initialization.
+   * Called once, the first time the element is attached to the document.
+   */
+  public ready() {
+    super.ready();
+
+    setTimeout(async () => {
+      try {
+        // initialize OS
+        // see: https://bugs.chromium.org/p/chromium/issues/detail?id=934022
+        const isChromeOS = await ChromeUtils.isChromeOS();
+        this.set('isChromeOS', isChromeOS);
+      } catch (err) {
+        ChromeGA.error(err.message, 'HelpPage.ready');
+      }
+    }, 0);
+  }
 
   // noinspection JSMethodCanBeStatic,JSUnusedGlobalSymbols
   /**
@@ -84,13 +108,13 @@ export class HelpPageElement extends BasePageElement {
   <div class="body-content">
     <setting-link section-title="[[localize('help_section_feedback')]]" name="questionMail"
                   label="[[localize('help_question')]]" icon="myicons:mail"
-                  url="[[computeMailToUrl('Question')]]"></setting-link>
+                  url="[[computeMailToUrl('Question')]]" disabled$="[[isChromeOS]]"></setting-link>
     <setting-link label="[[localize('help_bug')]]" name="bugMail" icon="myicons:mail"
-                  url="[[computeMailToUrl('Bug report')]]"></setting-link>
+                  url="[[computeMailToUrl('Bug report')]]" disabled$="[[isChromeOS]]"></setting-link>
     <setting-link label="[[localize('help_feature')]]" name="featureMail" icon="myicons:mail"
-                  url="[[computeMailToUrl('Feature request')]]"></setting-link>
+                  url="[[computeMailToUrl('Feature request')]]" disabled$="[[isChromeOS]]"></setting-link>
     <setting-link label="[[localize('help_feedback')]]" name="feedbackMail" icon="myicons:mail"
-                  url="[[computeMailToUrl('General feedback')]]"></setting-link>
+                  url="[[computeMailToUrl('General feedback')]]" disabled$="[[isChromeOS]]"></setting-link>
     <setting-link label="[[localize('help_issue')]]" name="submitGitHubIssue" noseparator="" icon="myicons:github"
                   url="[[githubPath]]issues/new"></setting-link>
     <hr>
