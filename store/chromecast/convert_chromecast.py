@@ -33,11 +33,11 @@ outputFile = open(outputFilename, "w")
 
 i = 0
 for url in urls:
-	outputFile.write("  {\n")
-	val = urls[i][1].replace("s240-w240-h135", "s1920-w1920-h1080")
-	outputFile.write("    \"url\": \"" + val + "\",\n")
-	outputFile.write("  },\n")
-	i += 1
+    outputFile.write("  {\n")
+    val = urls[i][1].replace("s240-w240-h135", "s1920-w1920-h1080")
+    outputFile.write("    \"url\": \"" + val + "\",\n")
+    outputFile.write("  },\n")
+    i += 1
 
 outputFile.close();
 
