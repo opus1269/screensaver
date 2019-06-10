@@ -39,6 +39,6 @@ for url in urls:
     outputFile.write("  },\n")
     i += 1
 
-outputFile.close();
+outputFile.close()
 
 print("done")
