@@ -152,11 +152,17 @@ function onKey(ev: KeyboardEvent) {
     return;
   }
   switch (keyName) {
+    case ' ':
+      SSRunner.togglePaused();
+      break;
+    case 'ArrowLeft':
+      SSRunner.back();
+      break;
+    case 'ArrowRight':
+      SSRunner.forward();
+      break;
     case 'Alt':
     case 'Shift':
-    case ' ':
-    case 'ArrowLeft':
-    case 'ArrowRight':
       // fallthrough
       if (!SSRunner.isInteractive()) {
         close();

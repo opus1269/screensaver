@@ -151,7 +151,7 @@ export class ScreensaverElement extends BaseElement {
    *  @remarks
    *  Actual number will be the smaller of this and the total number of photos
    */
-  protected readonly MAX_SLIDES = 10;
+  protected readonly MAX_SLIDES = 25;
 
   /** Array of {@link SSPhoto} in the views */
   @property({type: Array})
