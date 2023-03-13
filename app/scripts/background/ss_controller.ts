@@ -14,6 +14,7 @@
  */
 
 import * as ChromeGA from '../../node_modules/@opus1269/chrome-ext-utils/src/analytics.js';
+import * as ChromeHttp from '../../node_modules/@opus1269/chrome-ext-utils/src/http.js';
 import * as ChromeLocale from '../../node_modules/@opus1269/chrome-ext-utils/src/locales.js';
 import * as ChromeLog from '../../node_modules/@opus1269/chrome-ext-utils/src/log.js';
 import * as ChromeMsg from '../../node_modules/@opus1269/chrome-ext-utils/src/msg.js';
@@ -64,6 +65,10 @@ export function isActive() {
  */
 export async function display(single: boolean) {
 
+  if (await hasWakeLock()) {
+    return;
+  }
+
   try {
     const all = ChromeStorage.get('allDisplays', AppData.DEFS.allDisplays);
     if (!single && all) {
@@ -80,6 +85,14 @@ export async function display(single: boolean) {
 export function close() {
   // send message to the screensavers to close themselves
   ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
+}
+
+async function hasWakeLock() {
+  const url = 'http://localhost:32123/check-wake-locks';
+  const response = await ChromeHttp.doGet(url);
+  if (response.cod === 200) {
+    return response.hasWakeLocks;
+  }
 }
 
 /**
