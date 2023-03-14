@@ -95,6 +95,16 @@ async function hasWakeLock() {
   }
 }
 
+async function placeWindowOnTop() {
+  try {
+    const url = 'http://localhost:32123/place-window';
+    await ChromeHttp.doGet(url);
+  }
+  catch (e) {
+    console.log('Error with Companion app', e);
+  }
+}
+
 /**
  * Determine if there is a full screen chrome window running on a display
  *
@@ -176,6 +186,8 @@ async function open(disp?: chrome.system.display.DisplayInfo) {
       }
       await chromep.windows.update(win.id, {focused: true});
     }
+
+    await placeWindowOnTop();
 
   } catch (err) {
     ChromeLog.error(err.message, 'SSControl.open', ERR_SHOW);
