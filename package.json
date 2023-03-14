@@ -42,5 +42,7 @@
     "typescript": "^3.4.5",
     "uglify-es": "^3.3.10"
   },
-  "dependencies": {}
+  "dependencies": {
+    "polymer": "^0.5.0"
+  }
 }

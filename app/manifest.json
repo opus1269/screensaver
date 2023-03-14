@@ -44,7 +44,7 @@
   "content_security_policy": "script-src 'self'  https://www.googleapis.com https://apis.google.com/ https://www.google-analytics.com; object-src 'self'",
   "key": "KEY_SCREENSAVER",
   "oauth2": {
-    "client_id": "595750713699-odrvm10qr3eua2nt2q9vre27bvbtvhe1.apps.googleusercontent.com",
+    "client_id": "OAUTH_CLIENT_ID.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/photoslibrary.readonly"
     ]
@@ -57,7 +57,8 @@
     "power",
     "system.display",
     "alarms",
-    "contextMenus"
+    "contextMenus",
+    "geolocation"
   ],
   "optional_permissions": [
     "background",

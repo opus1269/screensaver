@@ -87,6 +87,9 @@ const REP_DEBUG = '  isDevelopmentBuild: true,';
 const SS_ENV = process.env.KEY_SCREENSAVER;
 const SRCH_SS = 'KEY_SCREENSAVER';
 const REP_SS = `${SS_ENV}`;
+const CLIENT_ID_ENV = process.env.OAUTH_CLIENT_ID;
+const SRCH_CLIENT_ID = 'OAUTH_CLIENT_ID';
+const REP_CLIENT_ID = `${CLIENT_ID_ENV}`;
 const UNSPLASH_ENV = process.env.KEY_UNSPLASH;
 const SRCH_UNSPLASH = 'const KEY = \'KEY_UNSPLASH\'';
 const REP_UNSPLASH = `const KEY = '${UNSPLASH_ENV}'`;
@@ -334,6 +337,7 @@ function manifest() {
   return gulp.src(input, {base: base.src}).
       pipe((isProd && !isProdTest) ? stripLine('"key":') : noop()).
       pipe(replace(SRCH_SS, REP_SS)).
+      pipe(replace(SRCH_CLIENT_ID, REP_CLIENT_ID)).
       pipe(gulp.dest(manifestDest));
 }
 
