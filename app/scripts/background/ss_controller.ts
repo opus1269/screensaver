@@ -98,9 +98,8 @@ async function hasWakeLock() {
     if (response.cod === 200) {
       return response.hasWakeLocks;
     }
-  }
-  catch (e) {
-    console.log('Error with Companion app', e);
+  } catch (e) {
+    ChromeLog.error(e.message, 'SSController.hasWakeLock()', 'Error with Companion app');
   }
 }
 
@@ -111,9 +110,8 @@ async function placeWindowOnTop() {
   try {
     const url = 'http://localhost:32123/place-window';
     await ChromeHttp.doGet(url);
-  }
-  catch (e) {
-    console.log('Error with Companion app', e);
+  } catch (e) {
+    ChromeLog.error(e.message, 'SSController.placeWindowOnTop()', 'Error with Companion app');
   }
 }
 
