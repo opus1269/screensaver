@@ -139,6 +139,10 @@ export class ScreensaverSlideElement
   @property({type: String})
   protected timeLabel = '';
 
+  /** Label for current date */
+  @property({type: String})
+  protected dateLabel = '';
+
   /** Flag for photo animation */
   @property({type: Boolean, notify: true})
   protected isAnimate = false;
@@ -198,7 +202,7 @@ export class ScreensaverSlideElement
       }
 
       if (!ChromeUtils.isWhiteSpace(photographer)) {
-        ret = `${photographer} / ${newType}`;
+        ret = photographer;
       } else {
         // no photographer name
         ret = `${ChromeLocale.localize('photo_from')} ${newType}`;
@@ -211,6 +215,20 @@ export class ScreensaverSlideElement
   /** Location label */
   @computed('photo')
   get locationLabel() {
+    if (this.photo) {
+      const ex = this.photo.getEx();
+      return ex && ex.location ? `📍 ${ex.location}` : '📍 -';
+    }
+    return '';
+  }
+
+  /** Creation date label */
+  @computed('photo')
+  get creationDateLabel() {
+    if (this.photo) {
+      const ex = this.photo.getEx();
+      return ex && ex.creationTime ? `📅 ${ex.creationTime}` : '📅 -';
+    }
     return '';
   }
 
@@ -220,11 +238,17 @@ export class ScreensaverSlideElement
   @query('.time')
   protected time: HTMLDivElement;
 
+  @query('.date')
+  protected date: HTMLDivElement;
+
   @query('.author')
   protected author: HTMLDivElement;
 
   @query('.location')
   protected location: HTMLDivElement;
+
+  @query('.creationDate')
+  protected creationDate: HTMLDivElement;
 
   @query('.weather')
   protected weather: WeatherElement;
@@ -411,8 +435,10 @@ export class ScreensaverSlideElement
     const imageStyle = image.style;
     const img: HTMLImageElement = image.$.img as HTMLImageElement;
     const imgStyle = img.style;
+    const dateStyle = this.date.style;
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;
+    const creationDateStyle = this.creationDate.style;
     const timeStyle = this.time.style;
     const weatherStyle = this.weather.style;
 
@@ -436,19 +462,29 @@ export class ScreensaverSlideElement
     imageStyle.left = (screen.width - width) / 2 + 'px';
 
     // position other elements
-    authorStyle.textAlign = 'right';
+    dateStyle.textAlign = 'right';
+    authorStyle.textAlign = 'left';
     locationStyle.textAlign = 'left';
-    weatherStyle.textAlign = 'left';
+    creationDateStyle.textAlign = 'left';
+    weatherStyle.textAlign = 'right';
 
-    authorStyle.right = (right + 1) + 'vw';
-    authorStyle.bottom = (bottom + 1) + 'vh';
+    dateStyle.right = (right + 1) + 'vw';
+    dateStyle.bottom = (bottom + 1) + 'vh';
+    dateStyle.width = imgWidthPer - .5 + 'vw';
+
+    authorStyle.left = (right + 1) + 'vw';
+    authorStyle.bottom = (bottom + 9.5) + 'vh';
     authorStyle.width = imgWidthPer - .5 + 'vw';
 
     locationStyle.left = (right + 1) + 'vw';
-    locationStyle.bottom = (bottom + 1) + 'vh';
+    locationStyle.bottom = (bottom + 5) + 'vh';
     locationStyle.width = imgWidthPer - .5 + 'vw';
 
-    weatherStyle.left = (right + 1) + 'vw';
+    creationDateStyle.left = (right + 1) + 'vw';
+    creationDateStyle.bottom = (bottom + 1) + 'vh';
+    creationDateStyle.width = imgWidthPer - .5 + 'vw';
+
+    weatherStyle.right = (right + 1) + 'vw';
     weatherStyle.bottom = (bottom + 3.5) + 'vh';
     weatherStyle.width = imgWidthPer - .5 + 'vw';
 
@@ -457,22 +493,23 @@ export class ScreensaverSlideElement
 
     const showTime = ChromeStorage.get('showTime', TIME_FORMAT.NONE);
     if (showTime !== TIME_FORMAT.NONE) {
-      // don't wrap author
-      authorStyle.textOverflow = 'ellipsis';
-      authorStyle.whiteSpace = 'nowrap';
+      // don't wrap date
+      dateStyle.textOverflow = 'ellipsis';
+      dateStyle.whiteSpace = 'nowrap';
     }
 
     // percent of half the width of image
     const maxWidth = imgWidthPer / 2;
     if (!ChromeUtils.isWhiteSpace(this.locationLabel)) {
-      // limit author width if we also have a location
-      authorStyle.maxWidth = maxWidth - 1.1 + 'vw';
+      // limit date width if we also have a location
+      dateStyle.maxWidth = maxWidth - 1.1 + 'vw';
     }
 
-    if (!ChromeUtils.isWhiteSpace(this.authorLabel)) {
-      // limit location width if we also have an author
-      locationStyle.maxWidth = maxWidth - 1.1 + 'vw';
-    }
+    // limit location width
+    locationStyle.maxWidth = maxWidth + 20 + 'vw';
+    // don't wrap location
+    locationStyle.textOverflow = 'ellipsis';
+    locationStyle.whiteSpace = 'nowrap';
   }
 
   /** Render frame view type */
@@ -487,8 +524,10 @@ export class ScreensaverSlideElement
     const imageStyle = image.style;
     const img: HTMLImageElement = image.$.img as HTMLImageElement;
     const imgStyle = img.style;
+    const dateStyle = this.date.style;
     const authorStyle = this.author.style;
     const locationStyle = this.location.style;
+    const creationDateStyle = this.creationDate.style;
     const weatherStyle = this.weather.style;
     const timeStyle = this.time.style;
 
@@ -521,8 +560,10 @@ export class ScreensaverSlideElement
     imgStyle.top = screen.height / 2 + 'px';
     imgStyle.left = screen.width / 2 + 'px';
 
-    ScreensaverSlideElement.setFrameLabelStyle(authorStyle, frWidth, frHeight, false);
+    ScreensaverSlideElement.setFrameLabelStyle(dateStyle, frWidth, frHeight, false);
+    ScreensaverSlideElement.setFrameLabelStyle(authorStyle, frWidth, frHeight, true);
     ScreensaverSlideElement.setFrameLabelStyle(locationStyle, frWidth, frHeight, true);
+    ScreensaverSlideElement.setFrameLabelStyle(creationDateStyle, frWidth, frHeight, true);
 
     // percent of screen height of image
     const imgHtPer = (frHeight / screen.height) * 100;
@@ -537,21 +578,19 @@ export class ScreensaverSlideElement
     timeStyle.textAlign = 'right';
     timeStyle.bottom = topPer + 5.0 + 'vh';
 
-    weatherStyle.left = sidePer + 1.0 + 'vw';
-    weatherStyle.textAlign = 'left';
-    weatherStyle.bottom = topPer + 6.5 + 'vh';
+    weatherStyle.right = sidePer + 1.0 + 'vw';
+    weatherStyle.textAlign = 'right';
+    weatherStyle.bottom = topPer + 3.5 + 'vh';
 
     // percent of half the width of image
     const maxWidth = imgWidthPer / 2;
     if (!ChromeUtils.isWhiteSpace(this.locationLabel)) {
-      // limit author width if we also have a location
-      authorStyle.maxWidth = maxWidth - 1 + 'vw';
+      // limit date width if we also have a location
+      dateStyle.maxWidth = maxWidth - 1 + 'vw';
     }
 
-    if (!ChromeUtils.isWhiteSpace(this.authorLabel)) {
-      // limit location width if we also have an author
-      locationStyle.maxWidth = maxWidth - 1 + 'vw';
-    }
+    // limit location width
+    locationStyle.maxWidth = maxWidth + 20 + 'vw';
   }
 
   /** Set the face detection target */
@@ -752,18 +791,18 @@ export class ScreensaverSlideElement
   }
 
   .weather {
-    font-size: 5.25vh;
+    font-size: 4vh;
     font-weight: 200;
     position: fixed;
-    left: 1vw;
-    bottom: 3.5vh;
-    padding: 0;
-    margin: 0;
+    right: 0;
+    bottom: 0;
+    padding-bottom: 9.5vh;
+    margin-left: -1.75vw;
     color: white;
     opacity: 1.0;
   }
 
-  .author {
+  .date {
     font-size: 2.5vh;
     font-weight: 300;
     position: fixed;
@@ -776,7 +815,34 @@ export class ScreensaverSlideElement
     opacity: 1.0;
   }
 
+  .author {
+    font-size: 4.5vh;
+    font-weight: 300;
+    position: fixed;
+    overflow: hidden;
+    left: 0.75vw;
+    bottom: 9.5vh;
+    padding: 0;
+    margin: 0;
+    margin-left: -0.3vw;
+    color: white;
+    opacity: 1.0;
+  }
+
   .location {
+    font-size: 2.5vh;
+    font-weight: 300;
+    position: fixed;
+    overflow: hidden;
+    left: 1vw;
+    bottom: 5vh;
+    padding: 0;
+    margin: 0;
+    color: white;
+    opacity: 1.0;
+  }
+
+  .creationDate {
     font-size: 2.5vh;
     font-weight: 300;
     position: fixed;
@@ -785,6 +851,7 @@ export class ScreensaverSlideElement
     bottom: 1vh;
     padding: 0;
     margin: 0;
+    margin-left: 0.1vw;
     color: white;
     opacity: 1.0;
   }
@@ -801,8 +868,10 @@ export class ScreensaverSlideElement
       preload>
   </iron-image>
   <div class="time">[[timeLabel]]</div>
+  <div class="date">[[dateLabel]]</div>
   <div class="author">[[authorLabel]]</div>
   <div class="location">[[locationLabel]]</div>
+  <div class="creationDate">[[creationDateLabel]]</div>
   <weather-element class="weather"></weather-element>
 </section>
 

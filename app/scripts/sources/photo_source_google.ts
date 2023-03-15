@@ -64,6 +64,7 @@ interface ISize {
 
 /** Google Photos API meta data for a media item */
 interface IMediaMetaData {
+  creationTime: string;
   width: string;
   height: string;
 }
@@ -78,6 +79,8 @@ interface IMediaItem {
   baseUrl: string;
   /** Url to item in Google Photos account */
   productUrl: string;
+  /** Description of item */
+  description?: string;
   /** Extra information about item */
   mediaMetadata: IMediaMetaData;
 }
@@ -103,13 +106,14 @@ const ALBUMS_QUERY =
 
 /** Only return stuff we use */
 const MEDIA_ITEMS_FIELDS =
-    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,mimeType,mediaMetadata/width,mediaMetadata/height)';
+    'fields=nextPageToken,mediaItems(id,productUrl,baseUrl,description,mimeType,' +
+    'mediaMetadata/creationTime,mediaMetadata/width,mediaMetadata/height)';
 
 /** Only return stuff we use */
 const MEDIA_ITEMS_RESULTS_FIELDS =
     'fields=mediaItemResults(status/code,mediaItem/id,mediaItem/productUrl,' +
-    'mediaItem/baseUrl,mediaItem/mimeType,mediaItem/mediaMetadata/width,' +
-    'mediaItem/mediaMetadata/height)';
+    'mediaItem/baseUrl,mediaItem/description,mediaItem/mimeType,mediaItem/mediaMetadata/creationTime,' +
+    'mediaItem/mediaMetadata/width,mediaItem/mediaMetadata/height)';
 
 /** A source of photos from Google Photos */
 export class GoogleSource extends PhotoSource {
@@ -734,6 +738,37 @@ export class GoogleSource extends PhotoSource {
   }
 
   /**
+   * Parse description of mediaItem.
+   * Expect description in the following format: `ownerName;geocodedLocation`
+   * @param mediaItem
+   * @private
+   */
+  private static getImageDescription(mediaItem: IMediaItem) {
+    const description = mediaItem.description;
+
+    if (!description) {
+      return;
+    }
+
+    const parts = description.split(';');
+
+    if (parts.length === 0 || parts[0] === '') {
+      return;
+    }
+
+    const owner = parts[0];
+    let location;
+    if (parts.length > 1) {
+      location = parts[1];
+    }
+
+    return {
+      owner,
+      location,
+    };
+  }
+
+  /**
    * Get a photo from a mediaItem
    *
    * @param mediaItem - object from Google Photos API call
@@ -750,13 +785,26 @@ export class GoogleSource extends PhotoSource {
         const width = size.width;
         const height = size.height;
 
+        const description = this.getImageDescription(mediaItem);
+
         return {
           url: `${mediaItem.baseUrl}=w${width}-h${height}`,
           asp: (width / height).toPrecision(3),
-          author: albumName,
+          author: description && description.owner ? description.owner : albumName,
           ex: {
             id: mediaItem.id,
             url: mediaItem.productUrl,
+            location: description ? description.location : undefined,
+            creationTime: new Date(mediaMetadata.creationTime)
+                .toLocaleDateString(
+                    'hu-HU',
+                    {
+                      year: 'numeric',
+                      month: 'numeric',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    }),
           },
         } as IPhoto;
       }

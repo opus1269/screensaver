@@ -75,14 +75,14 @@ export class WeatherElement extends BaseElement {
   }
 
   :host .temp {
-    font-size: 5.25vh;
+    font-size: 4vh;
     font-weight: 200;
     margin: 0;
     padding: 0 0 0 16px;
   }
 
   :host .icon {
-    font-size: 5.25vh;
+    font-size: 4vh;
     font-weight: 200;
     margin: 0;
     padding: 0;
@@ -90,7 +90,7 @@ export class WeatherElement extends BaseElement {
 
 </style>
 
-<div class="horizontal layout center" hidden$="[[!show]]">
+<div class="horizontal layout center end-justified" hidden$="[[!show]]">
   <i id="weatherIcon" class="icon wi"></i>
   <paper-item class="temp">[[weather.temp]]</paper-item>
 </div>

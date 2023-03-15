@@ -177,6 +177,10 @@ export class ScreensaverElement extends BaseElement {
   @property({type: String})
   protected timeLabel = '';
 
+  /** Label for current date */
+  @property({type: String})
+  protected dateLabel = '';
+
   /** Slide repeat template */
   @query('#repeatTemplate')
   protected repeatTemplate: DomRepeat;
@@ -264,6 +268,9 @@ export class ScreensaverElement extends BaseElement {
 
       // send msg to update weather. don't wait can be slow
       ChromeMsg.send(MyMsg.TYPE.UPDATE_WEATHER).catch(() => {});
+
+      // set date label
+      this.setDateLabel();
 
       // set time label timer
       this.setupTime();
@@ -442,6 +449,18 @@ export class ScreensaverElement extends BaseElement {
       label = ChromeTime.getStringShort(showTime);
       this.set('timeLabel', label);
     }
+  }
+
+  /** Set the date label */
+  protected setDateLabel() {
+    const label = new Date().toLocaleDateString(
+        'hu-HU',
+        {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        });
+    this.set('dateLabel', label);
   }
 
   /**
@@ -695,7 +714,8 @@ export class ScreensaverElement extends BaseElement {
   <neon-animated-pages id="pages" class="fit" animate-initial-selection>
     <template is="dom-repeat" id="repeatTemplate" as="photo" items="[[photos]]">
       <screensaver-slide class="fit" id="slide[[index]]" view-type="[[viewType]]" ani-type="[[aniType]]"
-                         photo="[[photo]]" index="[[index]]" time-label="[[timeLabel]]" on-image-error="onImageError">
+                         photo="[[photo]]" index="[[index]]" date-label="[[dateLabel]]" time-label="[[timeLabel]]"
+                         on-image-error="onImageError">
       </screensaver-slide>
     </template>
   </neon-animated-pages>
