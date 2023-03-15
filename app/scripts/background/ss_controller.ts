@@ -87,14 +87,26 @@ export function close() {
   ChromeMsg.send(MyMsg.TYPE.SS_CLOSE).catch(() => {});
 }
 
+/**
+ * Determine if there is an active display wakelock on the system
+ * by calling the Companion application.
+ */
 async function hasWakeLock() {
-  const url = 'http://localhost:32123/check-wake-locks';
-  const response = await ChromeHttp.doGet(url);
-  if (response.cod === 200) {
-    return response.hasWakeLocks;
+  try {
+    const url = 'http://localhost:32123/check-wake-locks';
+    const response = await ChromeHttp.doGet(url);
+    if (response.cod === 200) {
+      return response.hasWakeLocks;
+    }
+  }
+  catch (e) {
+    console.log('Error with Companion app', e);
   }
 }
 
+/**
+ * Request placing the screensaver window on top from the Companion application.
+ */
 async function placeWindowOnTop() {
   try {
     const url = 'http://localhost:32123/place-window';
