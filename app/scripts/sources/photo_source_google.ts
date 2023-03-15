@@ -150,7 +150,7 @@ export class GoogleSource extends PhotoSource {
 
   /** Max photos per album to use */
   static get MAX_ALBUM_PHOTOS() {
-    return 2000;
+    return 10000;
   }
 
   /** Max photos total to use for album mode */
